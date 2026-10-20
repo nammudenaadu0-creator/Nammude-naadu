@@ -506,108 +506,107 @@
         </section>
 
         <!-- ============================================================== -->
-        <!-- SCREEN 3: CREATE POST                                          -->
+        <!-- SCREEN 3: CREATE POST (COMPACT, RICH & SPACE-EFFICIENT)        -->
         <!-- ============================================================== -->
-        <section id="screen-add" class="screen">
-            <header class="app-header" style="background:#fff;padding:14px 16px;border-bottom:1px solid #E5E7EB">
+        <section id="screen-add" class="screen" style="background:#EEF2F6;min-height:100vh">
+            <header class="app-header" style="background:linear-gradient(135deg, #064E3B 0%, #065F46 60%, #047857 100%);padding:12px 14px;box-shadow:0 3px 12px rgba(6,78,59,0.25)">
                 <div class="subpage-header" style="display:flex;align-items:center;gap:12px">
-                    <button class="header-back-btn" onclick="navTo('home')">❮</button>
+                    <button class="header-back-btn" onclick="navTo('home')" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.18);color:#fff;border:none;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer">❮</button>
                     <div class="header-title-box">
-                        <h1 style="margin:0;font-size:17px;font-weight:800">വിശേഷങ്ങൾ പങ്കുവെക്കാം (Create Post)</h1>
-                        <p style="margin:0;font-size:11px;color:#6B7280">നിങ്ങളുടെ നാടിനായി അറിയിപ്പുകൾ നൽകാം</p>
+                        <h1 style="margin:0;font-size:16px;font-weight:800;color:#fff">വിശേഷങ്ങൾ പങ്കുവെക്കാം</h1>
+                        <p style="margin:0;font-size:11px;color:rgba(255,255,255,0.85)">നാടിന്റെ പുതിയ വാർത്തകളും അറിയിപ്പുകളും</p>
                     </div>
                 </div>
             </header>
 
-            <div style="padding:16px">
-                <!-- ACTIVE USER PROFILE POSTING BAR -->
-                <div class="posting-profile-identity-bar" style="display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:10px 14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
-                    <div style="display:flex;align-items:center;gap:10px">
-                        <img id="postingAsAvatar" src="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #10B981" alt="Profile">
-                        <div>
-                            <div style="font-size:11px;color:#64748B;font-weight:700">പോസ്റ്റ് ചെയ്യുന്നത് (Posting as):</div>
-                            <div id="postingAsName" style="font-size:14px;font-weight:800;color:#0F172A">നാട്ടുകാരൻ</div>
+            <div style="padding:12px 12px 80px;display:flex;flex-direction:column;gap:10px">
+                <!-- COMPACT ALL-IN-ONE POST CREATOR CARD -->
+                <div style="background:#FFFFFF;border-radius:16px;border:1px solid #CBD5E1;box-shadow:0 2px 10px rgba(0,0,0,0.04);padding:12px;display:flex;flex-direction:column;gap:10px">
+                    
+                    <!-- USER IDENTITY & LOCATION HEADER (COMPACT 1-LINE) -->
+                    <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #F1F5F9;padding-bottom:10px">
+                        <div style="display:flex;align-items:center;gap:8px">
+                            <img id="postingAsAvatar" src="" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid #10B981;flex-shrink:0" alt="Profile">
+                            <div style="line-height:1.2">
+                                <div id="postingAsName" style="font-size:13px;font-weight:800;color:#0F172A">നാട്ടുകാരൻ</div>
+                                <div style="display:flex;align-items:center;gap:4px;font-size:10.5px;color:#059669;font-weight:700">
+                                    <span>📍</span>
+                                    <span class="user-live-city-name">കണ്ണൂർ, കേരളം</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" onclick="openEditProfileModal()" style="background:#F0FDF4;color:#0E7043;border:1px solid #BBF7D0;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:800;cursor:pointer">✏️ പ്രൊഫൈൽ</button>
+                    </div>
+
+                    <!-- COMPACT CATEGORY PILLS -->
+                    <div class="post-type-selector" style="display:flex;gap:6px;margin:0;padding:0">
+                        <button class="post-type-chip active" onclick="selectPostType('announcement', this)" style="flex:1;padding:6px 4px;font-size:11.5px;border-radius:10px">📣 അറിയിപ്പ്</button>
+                        <button class="post-type-chip" onclick="selectPostType('photo', this)" style="flex:1;padding:6px 4px;font-size:11.5px;border-radius:10px">🖼️ ഫോട്ടോ</button>
+                        <button class="post-type-chip" onclick="selectPostType('offer', this)" style="flex:1;padding:6px 4px;font-size:11.5px;border-radius:10px">🏷️ ഓഫർ</button>
+                    </div>
+
+                    <!-- TEXTAREA WITH INLINE ATTACHMENT TOOLBAR -->
+                    <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:10px">
+                        <textarea id="postContentInput" class="post-textarea"
+                            placeholder="നാട്ടുകാരുമായി പങ്കുവെക്കാൻ ആഗ്രഹിക്കുന്ന വിവരങ്ങൾ ഇവിടെ എഴുതുക..." maxlength="10000"
+                            oninput="document.getElementById('charCount').textContent = this.value.length;"
+                            style="width:100%;height:85px;border:none;outline:none;font-size:13.5px;resize:none;background:transparent;color:#0F172A;line-height:1.45"></textarea>
+
+                        <!-- PHOTO PREVIEW (IF ATTACHED) -->
+                        <div id="mediaPreviewBox" class="media-preview-box" style="display:none;position:relative;margin-top:8px">
+                            <img id="mediaPreviewImg" src="" alt="Post Preview"
+                                style="width:100%;border-radius:10px;max-height:180px;object-fit:cover;border:1px solid #CBD5E1">
+                            <button class="remove-preview-btn" onclick="removePostPhoto(event)"
+                                style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.65);color:#fff;border:none;border-radius:50%;width:26px;height:26px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center">✕</button>
+                        </div>
+
+                        <!-- COMPACT TOOLBAR (PHOTO BUTTON + CHAR COUNT) -->
+                        <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid #E2E8F0;padding-top:8px;margin-top:6px">
+                            <button type="button" onclick="document.getElementById('postFileInput').click()"
+                                style="background:#ECFDF5;border:1px solid #A7F3D0;color:#065F46;border-radius:20px;padding:5px 12px;font-size:11.5px;font-weight:800;display:flex;align-items:center;gap:6px;cursor:pointer">
+                                <span>📸 ഫോട്ടോ ചേർക്കാം</span>
+                            </button>
+                            <input type="file" id="postFileInput" accept="image/*" style="display:none" onchange="handlePostPhotoUpload(event)">
+                            <div class="char-counter" style="font-size:11px;color:#94A3B8"><span id="charCount">0</span> അക്ഷരങ്ങൾ</div>
                         </div>
                     </div>
-                    <button type="button" onclick="openEditProfileModal()" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;padding:6px 12px;border-radius:10px;font-size:11.5px;font-weight:800;cursor:pointer">✏️ പ്രൊഫൈൽ</button>
+
+                    <!-- PUBLISH BUTTON (COMPACT & MODERN GRADIENT) -->
+                    <button class="primary-action-btn" onclick="publishPost()"
+                        style="width:100%;padding:11px;background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#fff;border:none;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;box-shadow:0 3px 10px rgba(5,150,105,0.25);display:flex;align-items:center;justify-content:center;gap:6px">
+                        <span>✈ പോസ്റ്റ് പബ്ലിഷ് ചെയ്യുക</span>
+                    </button>
                 </div>
-
-                <div class="post-type-selector" style="display:flex;gap:8px;margin-bottom:14px">
-                    <button class="post-type-chip active" onclick="selectPostType('announcement', this)">📣 അറിയിപ്പ്</button>
-                    <button class="post-type-chip" onclick="selectPostType('photo', this)">🖼️ ഫോട്ടോ</button>
-                    <button class="post-type-chip" onclick="selectPostType('offer', this)">🏷️ ഓഫർ</button>
-                </div>
-
-                <div class="create-post-box" style="background:#fff;border-radius:16px;padding:14px;border:1px solid #E5E7EB">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-                        <span style="font-size:12px;font-weight:700;color:#374151">📝 നിങ്ങളുടെ പോസ്റ്റ്</span>
-                        <span style="font-size:11px;color:#059669;font-weight:700;background:#ECFDF5;padding:2px 8px;border-radius:10px">♾️ പരിധിയില്ലാതെ എത്ര പോസ്റ്റും ഇടാം</span>
-                    </div>
-                    <textarea id="postContentInput" class="post-textarea"
-                        placeholder="നാട്ടുകാരുമായി പങ്കുവെക്കാൻ ആഗ്രഹിക്കുന്ന വിവരങ്ങൾ ഇവിടെ എഴുതുക..." maxlength="10000"
-                        oninput="document.getElementById('charCount').textContent = this.value.length;"
-                        style="width:100%;height:120px;border:none;outline:none;font-size:14px;resize:none"></textarea>
-                    
-                    <div class="char-counter" style="text-align:right;font-size:11px;color:#9CA3AF"><span id="charCount">0</span> അക്ഷരങ്ങൾ</div>
-
-                    <!-- PHOTO UPLOAD -->
-                    <div class="media-upload-dropzone" onclick="document.getElementById('postFileInput').click()"
-                        style="border:2px dashed #A7F3D0;background:#F0FDF4;border-radius:12px;padding:14px;text-align:center;cursor:pointer;margin-top:10px">
-                        <div class="upload-icon-box" style="font-size:24px">📸</div>
-                        <div class="upload-title" style="font-size:12px;font-weight:700;color:#0E7043">ഫോട്ടോ ചേർക്കാം (Add Photo)</div>
-                        <input type="file" id="postFileInput" accept="image/*" style="display:none"
-                            onchange="handlePostPhotoUpload(event)">
-                    </div>
-
-                    <div id="mediaPreviewBox" class="media-preview-box" style="display:none;position:relative;margin-top:10px">
-                        <img id="mediaPreviewImg" src="" alt="Post Preview"
-                            style="width:100%;border-radius:12px;max-height:220px;object-fit:cover">
-                        <button class="remove-preview-btn" onclick="removePostPhoto(event)"
-                            style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer">✕</button>
-                    </div>
-                </div>
-
-                <div style="background:#F9FAFB;padding:12px;border-radius:12px;margin:14px 0;display:flex;align-items:center;gap:10px;border:1px solid #E5E7EB">
-                    <span style="font-size:18px">📍</span>
-                    <div>
-                        <div style="font-size:11px;color:#6B7280;font-weight:700">ലൊക്കേഷൻ</div>
-                        <div class="user-live-city-name" style="font-size:13px;font-weight:800;color:#111827">കണ്ണൂർ, കേരളം</div>
-                    </div>
-                </div>
-
-                <button class="primary-action-btn" onclick="publishPost()"
-                    style="width:100%;padding:14px;background:#0E7043;color:#fff;border:none;border-radius:14px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 4px 12px rgba(14,112,67,0.3)">
-                    ✈ പോസ്റ്റ് പബ്ലിഷ് ചെയ്യുക
-                </button>
             </div>
         </section>
 
         <!-- ============================================================== -->
-        <!-- SCREEN 4: COMMUNITY FEED                                       -->
+        <!-- SCREEN 4: COMMUNITY FEED (COMPACT, RICH & VIBRANT)             -->
         <!-- ============================================================== -->
-        <section id="screen-community" class="screen" style="background:#F3F4F6">
-            <div style="background:#ffffff;border-bottom:1px solid #E5E7EB;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:30">
-                <div style="display:flex;align-items:center;gap:12px">
-                    <button onclick="navTo('home')" style="background:none;border:none;cursor:pointer;font-size:18px">❮</button>
-                    <div>
-                        <h2 style="font-size:16px;font-weight:800;margin:0">കമ്മ്യൂണിറ്റി വിശേഷങ്ങൾ</h2>
-                        <div style="font-size:11px;color:#6B7280">നാടിന്റെ പുതിയ വാർത്തകൾ</div>
+        <section id="screen-community" class="screen" style="background:#EEF2F6;min-height:100vh">
+            <header class="app-header" style="background:linear-gradient(135deg, #064E3B 0%, #065F46 60%, #047857 100%);padding:12px 14px;box-shadow:0 3px 12px rgba(6,78,59,0.25);position:sticky;top:0;z-index:30">
+                <div style="display:flex;align-items:center;justify-content:space-between">
+                    <div style="display:flex;align-items:center;gap:10px">
+                        <button onclick="navTo('home')" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.18);color:#fff;border:none;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer">❮</button>
+                        <div>
+                            <h2 style="font-size:16px;font-weight:800;margin:0;color:#fff">കമ്മ്യൂണിറ്റി വിശേഷങ്ങൾ</h2>
+                            <div style="font-size:11px;color:rgba(255,255,255,0.85)">നാടിന്റെ തത്സമയ വാർത്തകൾ</div>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px">
+                        <button onclick="refreshCommunityFeedLive()" title="പുതുക്കുക"
+                            style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.18);color:#fff;border:none;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer">
+                            🔄
+                        </button>
+                        <button onclick="navTo('add')"
+                            style="background:#FFFFFF;color:#065F46;border:none;border-radius:20px;padding:6px 12px;font-weight:800;font-size:11.5px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.1);display:flex;align-items:center;gap:4px">
+                            <span>➕ പോസ്റ്റ്</span>
+                        </button>
                     </div>
                 </div>
-                <div style="display:flex;align-items:center;gap:8px">
-                    <button onclick="refreshCommunityFeedLive()" title="പുതിയ പോസ്റ്റുകൾ കാണുക"
-                        style="background:#ECFDF5;border:1px solid #A7F3D0;color:#065F46;border-radius:20px;padding:7px 12px;font-weight:800;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:4px">
-                        <span>🔄</span>
-                        <span>പുതുക്കുക</span>
-                    </button>
-                    <button onclick="navTo('add')"
-                        style="background:#0E7043;color:#fff;border:none;border-radius:20px;padding:7px 16px;font-weight:800;font-size:12px;cursor:pointer">
-                        ➕ പുതിയ പോസ്റ്റ്
-                    </button>
-                </div>
-            </div>
+            </header>
 
-            <div class="community-feed fb-feed-stream" id="communityFeedContainer"></div>
+            <div class="community-feed fb-feed-stream" id="communityFeedContainer" style="padding:10px 10px 90px;display:flex;flex-direction:column;gap:8px"></div>
         </section>
 
         <!-- ============================================================== -->
@@ -714,16 +713,22 @@
         <!-- SCREEN 7: RENTALS & MARKETPLACE (വാടക & വിൽപന)                 -->
         <!-- ============================================================== -->
         <section id="screen-rentals" class="screen">
-            <div style="background:#0E7043;color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between">
-                <button onclick="navTo('home')" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer">❮</button>
+            <div style="background:linear-gradient(135deg, #064E3B 0%, #065F46 60%, #047857 100%);color:#fff;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 12px rgba(6,78,59,0.25)">
+                <button onclick="navTo('home')" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.18);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">❮</button>
                 <div style="text-align:center">
-                    <h2 style="margin:0;font-size:16px;font-weight:800">🏠 വാടക & വീടുകൾ</h2>
-                    <div style="font-size:11px;opacity:0.9">Rentals, Vehicles & Marketplace</div>
+                    <h2 style="margin:0;font-size:16px;font-weight:800;color:#fff">🏠 വാടക & വിൽപന</h2>
+                    <div style="font-size:11px;color:rgba(255,255,255,0.85)">Rentals, Vehicles & Marketplace</div>
                 </div>
-                <button onclick="openAddRentalModal()"
-                    style="background:#fff;color:#0E7043;border:none;border-radius:10px;padding:6px 12px;font-weight:800;font-size:12px;cursor:pointer">
-                    ➕ ലിസ്റ്റ് ചെയ്യാം
-                </button>
+                <div style="display:flex;align-items:center;gap:6px">
+                    <button onclick="refreshRentalsLive()" title="പുതുക്കുക"
+                        style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.18);color:#fff;border:none;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer">
+                        🔄
+                    </button>
+                    <button onclick="openAddRentalModal()"
+                        style="background:#fff;color:#065F46;border:none;border-radius:20px;padding:6px 12px;font-weight:800;font-size:11.5px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.1)">
+                        ➕ ലിസ്റ്റ് ചെയ്യാം
+                    </button>
+                </div>
             </div>
 
             <!-- RADIUS FILTER CHIPS -->
@@ -1419,6 +1424,162 @@
                     <span style="font-size:15px">👶 ചൈൽഡ് ലൈൻ ഹെൽപ്പ്</span>
                     <span style="background:#15803D;color:#fff;padding:4px 12px;border-radius:8px">1098</span>
                 </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: AMBULANCE DIRECTORY & EMERGENCY CALL HUB                -->
+    <!-- ============================================================== -->
+    <div id="modal-ambulance" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-ambulance')">
+        <div class="modal-sheet" style="max-height:90vh;display:flex;flex-direction:column;padding:0;overflow:hidden">
+            <!-- HEADER -->
+            <div style="background:linear-gradient(135deg, #BE123C 0%, #9F1239 100%);padding:14px 16px;color:#fff;display:flex;align-items:center;justify-content:space-between">
+                <div style="display:flex;align-items:center;gap:10px">
+                    <span style="font-size:24px">🚑</span>
+                    <div>
+                        <h3 style="margin:0;font-size:16px;font-weight:800;color:#fff">ആംബുലൻസ് സർവീസ് (24x7)</h3>
+                        <div style="font-size:11px;color:rgba(255,255,255,0.85)">അടിയന്തര സേവനത്തിന് ഡ്രൈവർമാരെ ഉടൻ വിളിക്കാം</div>
+                    </div>
+                </div>
+                <button onclick="closeModal('modal-ambulance')" style="background:rgba(255,255,255,0.2);border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:14px;cursor:pointer">✕</button>
+            </div>
+
+            <div style="padding:14px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:10px">
+                <!-- 108 TOLL-FREE CARD -->
+                <div style="background:#FFF1F2;border:1.5px solid #FECDD3;border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:space-between">
+                    <div style="display:flex;align-items:center;gap:10px">
+                        <span style="font-size:26px">🚨</span>
+                        <div>
+                            <div style="font-weight:800;font-size:13.5px;color:#9F1239">കേരള സർക്കാർ സൗജന്യ ആംബുലൻസ്</div>
+                            <div style="font-size:11px;color:#881337">Toll-Free 108 Emergency Life Support</div>
+                        </div>
+                    </div>
+                    <a href="tel:108" style="background:#E11D48;color:#fff;text-decoration:none;font-weight:800;font-size:12px;padding:8px 14px;border-radius:20px;box-shadow:0 2px 8px rgba(225,29,72,0.3);display:flex;align-items:center;gap:4px">
+                        <span>📞 108</span>
+                    </a>
+                </div>
+
+                <!-- DRIVER REGISTRATION PROMO BANNER -->
+                <div onclick="openAmbulanceDriverRegister()" style="background:linear-gradient(135deg, #065F46 0%, #047857 100%);color:#fff;padding:12px 14px;border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 10px rgba(6,95,70,0.2)">
+                    <div style="display:flex;align-items:center;gap:10px">
+                        <span style="font-size:22px">🚑</span>
+                        <div>
+                            <div style="font-weight:800;font-size:13px">ആംബുലൻസ് ഡ്രൈവറാണോ?</div>
+                            <div style="font-size:10.5px;color:rgba(255,255,255,0.85)">നിങ്ങളുടെ നമ്പറും വാഹനവും ഇവിടെ രജിസ്റ്റർ ചെയ്യാം</div>
+                        </div>
+                    </div>
+                    <span style="background:#fff;color:#065F46;font-weight:800;font-size:11px;padding:5px 12px;border-radius:20px">➕ രജിസ്റ്റർ</span>
+                </div>
+
+                <!-- SEARCH & FILTER -->
+                <div style="position:relative">
+                    <input type="text" id="ambulanceSearchInput" oninput="filterAmbulances(this.value)" placeholder="🔍 സ്ഥലം, ഹോസ്പിറ്റൽ അല്ലെങ്കിൽ ഡ്രൈവറെ തിരയുക..." 
+                           style="width:100%;padding:9px 12px 9px 32px;border:1px solid #E2E8F0;border-radius:10px;font-size:12.5px;outline:none;background:#F8FAFC">
+                    <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;color:#94A3B8;pointer-events:none">🔍</span>
+                </div>
+
+                <!-- DRIVERS LIST CONTAINER -->
+                <div style="font-size:12px;font-weight:800;color:#334151;margin-top:2px;display:flex;justify-content:space-between;align-items:center">
+                    <span>സമീപത്തെ ആംബുലൻസ് ഡ്രൈവർമാർ</span>
+                    <span id="ambDriversCountBadge" style="font-size:10.5px;color:#059669;background:#ECFDF5;padding:2px 8px;border-radius:10px;border:1px solid #A7F3D0">ലഭ്യമാണ്</span>
+                </div>
+
+                <div id="ambulanceDriversList" style="display:flex;flex-direction:column;gap:8px"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: AMBULANCE DRIVER REGISTRATION FORM                      -->
+    <!-- ============================================================== -->
+    <div id="modal-ambulance-driver" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-ambulance-driver')">
+        <div class="modal-sheet" style="max-height:90vh;display:flex;flex-direction:column;padding:0;overflow:hidden">
+            <!-- HEADER -->
+            <div style="background:linear-gradient(135deg, #065F46 0%, #047857 100%);padding:14px 16px;color:#fff;display:flex;align-items:center;justify-content:space-between">
+                <div style="display:flex;align-items:center;gap:10px">
+                    <span style="font-size:24px">🚑</span>
+                    <div>
+                        <h3 style="margin:0;font-size:16px;font-weight:800;color:#fff">ആംബുലൻസ് ഡ്രൈവർ രജിസ്ട്രേഷൻ</h3>
+                        <div style="font-size:11px;color:rgba(255,255,255,0.85)">നാട്ടുകാരുടെ അടിയന്തര ആവശ്യങ്ങൾക്ക് നിങ്ങളുടെ നമ്പർ നൽകാം</div>
+                    </div>
+                </div>
+                <button onclick="closeModal('modal-ambulance-driver'); openAmbulanceModal();" style="background:rgba(255,255,255,0.2);border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:14px;cursor:pointer">✕</button>
+            </div>
+
+            <div style="padding:14px;overflow-y:auto;flex:1">
+                <form onsubmit="submitAmbulanceDriverRegistration(event)" style="display:flex;flex-direction:column;gap:11px">
+                    
+                    <!-- DRIVER NAME -->
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">ഡ്രൈവറുടെ / സർവീസിന്റെ പേര് (Driver Name) *</label>
+                        <input type="text" id="ambDriverName" required placeholder="Eg: സുരേഷ് കുമാർ (Ambulance Driver)" 
+                               style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                    </div>
+
+                    <!-- DRIVER PHONE NUMBER -->
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">ഡ്രൈവറുടെ മൊബൈൽ നമ്പർ (അടിയന്തിരമായി വിളിക്കാൻ) *</label>
+                        <input type="tel" id="ambDriverPhone" required placeholder="Eg: 9847123456" 
+                               style="width:100%;padding:9px 12px;border:1.5px solid #10B981;border-radius:10px;font-size:13px;outline:none;margin-top:3px;background:#F0FDF4;font-weight:700">
+                    </div>
+
+                    <!-- WHATSAPP NUMBER -->
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">വാട്സ്ആപ്പ് നമ്പർ (ലൊക്കേഷൻ അയച്ചുനൽകാൻ)</label>
+                        <input type="tel" id="ambDriverWhatsApp" placeholder="Eg: 9847123456" 
+                               style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                    </div>
+
+                    <!-- VEHICLE NUMBER -->
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">ആംബുലൻസ് വാഹന നമ്പർ (Vehicle Reg No) *</label>
+                        <input type="text" id="ambVehicleNo" required placeholder="Eg: KL-13-AB-1234" 
+                               style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px;text-transform:uppercase">
+                    </div>
+
+                    <!-- AMBULANCE FACILITY / TYPE -->
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">ആംബുലൻസ് സൗകര്യങ്ങൾ (Type / Facility)</label>
+                        <select id="ambVehicleType" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px;background:#fff">
+                            <option value="🟢 ഓക്സിജൻ സപ്പോർട്ട് (Oxygen Unit)">🟢 ഓക്സിജൻ സപ്പോർട്ട് (Oxygen Unit)</option>
+                            <option value="🚨 ഐസിയു & വെന്റിലേറ്റർ (ICU / Ventilator)">🚨 ഐസിയു & വെന്റിലേറ്റർ (ICU / Ventilator)</option>
+                            <option value="🚑 ബേസിക് ലൈഫ് സപ്പോർട്ട് (Basic Life Support)">🚑 ബേസിക് ലൈഫ് സപ്പോർട്ട് (Basic Life Support)</option>
+                            <option value="❄️ ഫ്രീസർ മോർച്ചറി ആംബുലൻസ് (Mortuary Unit)">❄️ ഫ്രീസർ മോർച്ചറി ആംബുലൻസ് (Mortuary Unit)</option>
+                            <option value="🚐 പേഷ്യന്റ് ട്രാൻസ്പോർട്ട് വാൻ (Patient Shifting)">🚐 പേഷ്യന്റ് ട്രാൻസ്പോർട്ട് വാൻ (Patient Shifting)</option>
+                        </select>
+                    </div>
+
+                    <!-- BASE LOCATION / STAND / HOSPITAL -->
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">സ്റ്റാൻഡ് / ഹോസ്പിറ്റൽ പരിസരം / സ്ഥലം (Base Location) *</label>
+                        <input type="text" id="ambDriverLocation" required placeholder="Eg: ജില്ലാ ആശുപത്രി പരിസരം, കണ്ണൂർ" 
+                               style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                    </div>
+
+                    <!-- AVAILABILITY -->
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">ലഭ്യത (Availability)</label>
+                        <select id="ambAvailability" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px;background:#fff">
+                            <option value="24x7 മുഴുവൻ സമയവും ലഭ്യമാണ്">🟢 24x7 മുഴുവൻ സമയവും ലഭ്യമാണ് (Ready Anytime)</option>
+                            <option value="പകൽ സമയം മാത്രം">☀️ പകൽ സമയം മാത്രം (Day Time Only)</option>
+                            <option value="രാത്രി സമയം മാത്രം">🌙 രാത്രി സമയം മാത്രം (Night Time Only)</option>
+                        </select>
+                    </div>
+
+                    <!-- LICENCE / BADGE NO -->
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">ഡ്രൈവിംഗ് ലൈസൻസ് / ബാഡ്ജ് നമ്പർ (ഓപ്ഷണൽ)</label>
+                        <input type="text" id="ambLicenceNo" placeholder="Eg: KL13 20180000000" 
+                               style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                    </div>
+
+                    <!-- SUBMIT BUTTON -->
+                    <button type="submit" 
+                            style="margin-top:8px;padding:12px;background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(5,150,105,0.3);display:flex;align-items:center;justify-content:center;gap:6px">
+                        <span>🚑 ആംബുലൻസ് ഡ്രൈവറായി രജിസ്റ്റർ ചെയ്യാം</span>
+                    </button>
+                </form>
             </div>
         </div>
     </div>

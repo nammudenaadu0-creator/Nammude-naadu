@@ -1150,21 +1150,110 @@
     initSupabase();
     if (client) {
       try {
-        await client.from('rentals').upsert({
+        const payload = {
           id: rentObj.id || ('rent_' + Date.now()),
           title: rentObj.title || '',
-          owner: rentObj.owner || '',
+          owner: rentObj.owner || rentObj.authorName || 'നാട്ടുകാരൻ',
           type: rentObj.type || 'house',
           category: rentObj.category || 'rent',
-          price: rentObj.price || '',
+          price: rentObj.price || rentObj.rate || '',
           deposit: rentObj.deposit || '',
-          phone: rentObj.phone || '',
-          location: rentObj.location || '',
-          latitude: rentObj.lat || null,
-          longitude: rentObj.lon || null,
+          phone: rentObj.phone || rentObj.ownerPhone || rentObj.authorPhone || (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser ? APP_STATE.currentUser.phone : '') || '9847000000',
+          location: rentObj.location || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.name : 'കേരളം'),
+          latitude: rentObj.lat || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.lat : null),
+          longitude: rentObj.lon || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.lon : null),
           image_url: rentObj.image || '',
+          created_at: Number(rentObj.createdAt) || Date.now()
+        };
+
+        const { error } = await client.from('rentals').upsert(payload);
+        if (error) {
+          console.warn('⚠️ [Supabase Rentals Upsert Error]:', error.message);
+        } else {
+          console.info('✅ [Supabase] Rental saved successfully to Cloud:', payload.id);
+        }
+
+        // Realtime broadcast to other phones
+        const channel = client.channel('nn_community_rentals');
+        channel.send({
+          type: 'broadcast',
+          event: 'new_rental',
+          payload: { rental: rentObj }
+        }).catch(() => {});
+      } catch (err) {
+        console.warn('Save rental exception:', err);
+      }
+    }
+  }
+
+  async function syncRentals(callback) {
+    initSupabase();
+    if (!client) return;
+    try {
+      const { data, error } = await client.from('rentals').select('*').order('created_at', { ascending: false }).limit(200);
+      if (!error && Array.isArray(data) && data.length > 0) {
+        const mapped = data.map(r => ({
+          id: r.id,
+          title: r.title,
+          type: r.type || 'വാടക',
+          rate: r.price || '',
+          price: r.price || '',
+          owner: r.owner || 'നാട്ടുകാരൻ',
+          ownerPhone: r.phone || '',
+          phone: r.phone || '',
+          location: r.location || '',
+          lat: r.latitude,
+          lon: r.longitude,
+          image: r.image_url || 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=400&q=80',
+          createdAt: Number(r.created_at) || Date.now(),
+          isCloud: true
+        }));
+
+        if (typeof APP_STATE !== 'undefined' && Array.isArray(APP_STATE.rentals)) {
+          mapped.forEach(cloudRent => {
+            const idx = APP_STATE.rentals.findIndex(rn => rn.id === cloudRent.id || (rn.title === cloudRent.title && rn.ownerPhone === cloudRent.ownerPhone));
+            if (idx >= 0) {
+              APP_STATE.rentals[idx] = { ...APP_STATE.rentals[idx], ...cloudRent };
+            } else {
+              APP_STATE.rentals.unshift(cloudRent);
+            }
+          });
+          try {
+            localStorage.setItem('nn_rentals', JSON.stringify(APP_STATE.rentals));
+          } catch (_) {}
+          if (typeof renderRentalsScreen === 'function') renderRentalsScreen();
+        }
+
+        if (typeof callback === 'function') callback(mapped);
+      }
+    } catch (err) {
+      console.warn('Sync rentals exception:', err);
+    }
+  }
+
+  async function saveAmbulanceDriver(ambObj) {
+    if (!ambObj) return;
+    initSupabase();
+    if (client) {
+      try {
+        const payload = {
+          id: ambObj.id || ('amb_' + Date.now()),
+          name: ambObj.name || '',
+          phone: ambObj.phone || '',
+          trade: 'ആംബുലൻസ് സർവീസ്',
+          category: 'driver',
+          location: ambObj.location || '',
+          district: ambObj.district || '',
+          latitude: ambObj.lat || null,
+          longitude: ambObj.lon || null,
+          visiting_fee: ambObj.vehicle || '',
+          work_hours: ambObj.availability || '24x7 ലഭ്യമാണ്',
+          bio: `${ambObj.type || 'Ambulance'} · വാഹനം: ${ambObj.vehicle || ''} · വിളിക്കാം: ${ambObj.phone || ''}`,
+          rating: 5.0,
           created_at: Date.now()
-        });
+        };
+        await client.from('services').upsert(payload);
+        console.info('🚑 [Supabase] Ambulance driver synced to cloud:', payload.id);
       } catch (_) {}
     }
   }
@@ -1324,7 +1413,9 @@
     requestNotificationPermission,
     // Jobs & Rentals
     saveJob,
-    saveRental
+    saveRental,
+    syncRentals,
+    saveAmbulanceDriver
   };
 
   window.NN_SUPABASE_SERVICES = api;

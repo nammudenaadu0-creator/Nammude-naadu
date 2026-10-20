@@ -883,6 +883,9 @@
 
       const storedRentals = localStorage.getItem('nn_rentals');
       APP_STATE.rentals = storedRentals ? JSON.parse(storedRentals) : SEED_RENTALS;
+      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncRentals === 'function') {
+        window.NN_SUPABASE_SERVICES.syncRentals();
+      }
 
       const storedDonors = localStorage.getItem('nn_blood_donors');
       APP_STATE.bloodDonors = storedDonors ? JSON.parse(storedDonors) : SEED_BLOOD_DONORS;
@@ -1044,6 +1047,9 @@
       renderJobsScreen();
     } else if (screenId === 'rentals') {
       renderRentalsScreen();
+      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncRentals === 'function') {
+        window.NN_SUPABASE_SERVICES.syncRentals();
+      }
     } else if (screenId === 'blood') {
       renderBloodScreen();
     } else if (screenId === 'add') {
@@ -1686,66 +1692,73 @@
     const locationSafe = post.authorLocation || post.locationName || 'കേരളം';
     const avatarSafe = post.authorAvatar || window.DEFAULT_USER_AVATAR || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80';
 
+    const typeBadge = post.type === 'offer' ? '<span style="background:#FEF3C7;color:#92400E;font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px">🏷️ ഓഫർ</span>' :
+                      post.type === 'photo' ? '<span style="background:#EFF6FF;color:#1E40AF;font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px">🖼️ ചിത്രം</span>' :
+                      '<span style="background:#ECFDF5;color:#065F46;font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px">📣 അറിയിപ്പ്</span>';
+
     return `
-      <article class="fb-card" id="${post.id}" style="margin-bottom:14px">
-        <div class="fb-card-header">
-          <div class="fb-author-row" onclick="openAuthorProfile('${encodeURIComponent(post.authorName || 'നാട്ടുകാരൻ')}', '${encodeURIComponent(post.authorPhone || '')}', '${encodeURIComponent(avatarSafe)}', '${encodeURIComponent(locationSafe)}', '${encodeURIComponent(post.authorBlood || 'O+')}', '${post.authorId || ''}')">
-            <div class="fb-author-avatar-wrap">
-              <img src="${avatarSafe}" alt="${authorNameSafe}" class="fb-author-avatar" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
-              <span class="fb-author-online"></span>
+      <article class="fb-card" id="${post.id}" style="background:#FFFFFF;border-radius:14px;border:1px solid #CBD5E1;box-shadow:0 1px 4px rgba(0,0,0,0.03);padding:10px 12px;margin:0">
+        <div class="fb-card-header" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div class="fb-author-row" onclick="openAuthorProfile('${encodeURIComponent(post.authorName || 'നാട്ടുകാരൻ')}', '${encodeURIComponent(post.authorPhone || '')}', '${encodeURIComponent(avatarSafe)}', '${encodeURIComponent(locationSafe)}', '${encodeURIComponent(post.authorBlood || 'O+')}', '${post.authorId || ''}')" style="display:flex;align-items:center;gap:8px;cursor:pointer;flex:1">
+            <div class="fb-author-avatar-wrap" style="position:relative;width:36px;height:36px;flex-shrink:0">
+              <img src="${avatarSafe}" alt="${authorNameSafe}" class="fb-author-avatar" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1.5px solid #10B981" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
             </div>
-            <div class="fb-author-meta">
-              <div class="fb-author-name">
+            <div class="fb-author-meta" style="line-height:1.2">
+              <div class="fb-author-name" style="font-size:13.5px;font-weight:800;color:#0F172A;display:flex;align-items:center;gap:4px">
                 ${authorNameSafe}
-                <span class="fb-verified-badge" title="വെരിഫൈഡ് അംഗം">✓</span>
+                <span class="fb-verified-badge" title="വെരിഫൈഡ് അംഗം" style="color:#0284C7;font-size:11px">✓</span>
               </div>
-              <div class="fb-sub-meta">
+              <div class="fb-sub-meta" style="display:flex;align-items:center;gap:6px;font-size:10.5px;color:#64748B;margin-top:2px">
                 <span>${timeFormatted}</span>
                 <span>•</span>
-                <span class="fb-loc-tag">📍 ${locationSafe}</span>
+                <span class="fb-loc-tag" style="background:#ECFDF5;color:#065F46;padding:1px 6px;border-radius:8px;font-weight:700">📍 ${locationSafe}</span>
               </div>
             </div>
           </div>
 
-          <div class="fb-header-actions">
+          <div class="fb-header-actions" style="display:flex;align-items:center;gap:4px">
+            ${typeBadge}
             ${isMine ? `
-              <div style="display:flex;gap:4px">
-                <button onclick="openEditPostModal('${post.id}')" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;padding:5px 8px;border-radius:10px;font-size:11.5px;font-weight:800;cursor:pointer">
-                  ✏️ എഡിറ്റ്
+              <div style="display:flex;gap:4px;margin-left:4px">
+                <button onclick="openEditPostModal('${post.id}')" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;padding:3px 7px;border-radius:8px;font-size:11px;font-weight:800;cursor:pointer">
+                  ✏️
                 </button>
-                <button class="fb-delete-btn" onclick="deletePost('${post.id}', event)" title="പോസ്റ്റ് ഡിലീറ്റ് ചെയ്യുക">
-                  <span>🗑️</span>
+                <button class="fb-delete-btn" onclick="deletePost('${post.id}', event)" title="പോസ്റ്റ് ഡിലീറ്റ് ചെയ്യുക" style="background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;padding:3px 7px;border-radius:8px;font-size:11px;font-weight:800;cursor:pointer">
+                  🗑️
                 </button>
               </div>
             ` : `
               <button onclick="openChatForPost('${post.id}')" 
-                      style="background:#ECFDF5;border:1px solid #A7F3D0;color:#0E7043;padding:5px 10px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer">
+                      style="background:#ECFDF5;border:1px solid #A7F3D0;color:#0E7043;padding:4px 8px;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer;margin-left:4px">
                 💬 ചാറ്റ്
               </button>
             `}
           </div>
         </div>
 
-        <div class="fb-post-text" style="font-size:14px;line-height:1.55;color:#1E293B;margin-bottom:10px;white-space:pre-line">${post.content || ''}</div>
+        <div class="fb-post-text" style="font-size:13.5px;line-height:1.45;color:#1E293B;margin-bottom:8px;white-space:pre-line">${post.content || ''}</div>
 
         ${post.image ? `
-          <div class="fb-post-image-box" style="margin-bottom:10px">
-            <img src="${post.image}" alt="Post attachment" class="fb-post-image" loading="lazy" style="width:100%;border-radius:12px;max-height:360px;object-fit:cover" onerror="this.parentElement.style.display='none'">
+          <div class="fb-post-image-box" style="margin-bottom:8px;border-radius:10px;overflow:hidden;border:1px solid #CBD5E1">
+            <img src="${post.image}" alt="Post attachment" class="fb-post-image" loading="lazy" style="width:100%;border-radius:10px;max-height:240px;object-fit:cover;display:block" onerror="this.parentElement.style.display='none'">
           </div>
         ` : ''}
 
-        <div class="fb-action-bar">
-          <button class="fb-action-btn ${post.isLiked ? 'liked' : ''}" onclick="togglePostLike('${post.id}', event)">
+        <div class="fb-action-bar" style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid #F1F5F9;padding-top:8px;margin-top:4px">
+          <button class="fb-action-btn ${post.isLiked ? 'liked' : ''}" onclick="togglePostLike('${post.id}', event)"
+                  style="background:${post.isLiked ? '#FEF2F2' : '#F8FAFC'};color:${post.isLiked ? '#DC2626' : '#475569'};border:1px solid ${post.isLiked ? '#FECACA' : '#E2E8F0'};border-radius:8px;padding:4px 10px;font-size:11.5px;font-weight:700;display:flex;align-items:center;gap:4px;cursor:pointer">
             <span>${post.isLiked ? '❤️' : '🤍'}</span>
             <span>${post.likes || 0} ലൈക്ക്</span>
           </button>
 
-          <button class="fb-action-btn" onclick="openChatForPost('${post.id}')">
+          <button class="fb-action-btn" onclick="openChatForPost('${post.id}')"
+                  style="background:#F8FAFC;color:#475569;border:1px solid #E2E8F0;border-radius:8px;padding:4px 10px;font-size:11.5px;font-weight:700;display:flex;align-items:center;gap:4px;cursor:pointer">
             <span>💬</span>
             <span>ചാറ്റ് ചെയ്യാം</span>
           </button>
 
-          <button class="fb-action-btn" onclick="shareCommunityPost('${authorNameSafe}', '${postSnippet}')">
+          <button class="fb-action-btn" onclick="shareCommunityPost('${authorNameSafe}', '${postSnippet}')"
+                  style="background:#F8FAFC;color:#475569;border:1px solid #E2E8F0;border-radius:8px;padding:4px 10px;font-size:11.5px;font-weight:700;display:flex;align-items:center;gap:4px;cursor:pointer">
             <span>🔗</span>
             <span>ഷെയർ</span>
           </button>
@@ -3766,10 +3779,258 @@
   }
   window.openEmergencyModal = openEmergencyModal;
 
+  // ==============================================================
+  // 12. AMBULANCE EMERGENCY DIRECTORY & DRIVER REGISTRATION
+  // ==============================================================
+  const DEFAULT_AMBULANCES = [
+    {
+      id: 'amb_def_1',
+      name: 'കണ്ണൂർ ജില്ലാ ആശുപത്രി ആംബുലൻസ് (Govt 108)',
+      vehicle: 'KL-13-G-1080',
+      type: '🟢 ഓക്സിജൻ & ഐസിയു സപ്പോർട്ട്',
+      location: 'ജില്ലാ ആശുപത്രി സ്റ്റാൻഡ്, കണ്ണൂർ',
+      phone: '108',
+      whatsapp: '9847108108',
+      availability: '24x7 മുഴുവൻ സമയവും ലഭ്യമാണ്'
+    },
+    {
+      id: 'amb_def_2',
+      name: 'ലൈഫ് കെയർ എമർജൻസി ആംബുലൻസ് സർവീസ്',
+      vehicle: 'KL-13-AB-4011',
+      type: '🚨 ഐസിയു & വെന്റിലേറ്റർ സപ്പോർട്ട്',
+      location: 'സെൻട്രൽ ജംഗ്ഷൻ, കണ്ണൂർ',
+      phone: '9847123999',
+      whatsapp: '9847123999',
+      availability: '24x7 മുഴുവൻ സമയവും ലഭ്യമാണ്'
+    },
+    {
+      id: 'amb_def_3',
+      name: 'റെഡ് ക്രോസ് ആംബുലൻസ് സർവീസ്',
+      vehicle: 'KL-58-H-8922',
+      type: '🟢 ഓക്സിജൻ ആംബുലൻസ്',
+      location: 'ജനറൽ ആശുപത്രി പരിസരം, തലശ്ശേരി',
+      phone: '9447012345',
+      whatsapp: '9447012345',
+      availability: '24x7 മുഴുവൻ സമയവും ലഭ്യമാണ്'
+    },
+    {
+      id: 'amb_def_4',
+      name: 'പയ്യന്നൂർ കാരുണ്യ ചാരിറ്റബിൾ ആംബുലൻസ്',
+      vehicle: 'KL-59-C-2211',
+      type: '🚑 ബേസിക് ലൈഫ് സപ്പോർട്ട്',
+      location: 'പഴയ ബസ് സ്റ്റാൻഡ്, പയ്യന്നൂർ',
+      phone: '9745123888',
+      whatsapp: '9745123888',
+      availability: '24x7 മുഴുവൻ സമയവും ലഭ്യമാണ്'
+    }
+  ];
+
+  function getAmbulanceDriversList() {
+    let custom = [];
+    try {
+      custom = JSON.parse(localStorage.getItem('nammude_ambulance_drivers') || '[]');
+    } catch (_) {}
+
+    // Also pull from registered services in APP_STATE where trade contains 'ആംബുലൻസ്'
+    const srvDrivers = (APP_STATE.services || []).filter(s => 
+      s.trade && (s.trade.toLowerCase().includes('ആംബുലൻസ്') || s.trade.toLowerCase().includes('ambulance'))
+    ).map(s => ({
+      id: s.id,
+      name: s.name,
+      vehicle: s.visitingFee || 'വാഹനം ലഭ്യമാണ്',
+      type: '🟢 ഓക്സിജൻ സപ്പോർട്ട് (Verified)',
+      location: s.location || 'കണ്ണൂർ',
+      phone: s.phone,
+      whatsapp: s.phone,
+      availability: s.workHours || '24x7 മുഴുവൻ സമയവും ലഭ്യമാണ്'
+    }));
+
+    const seenPhones = new Set();
+    const merged = [];
+    [...custom, ...srvDrivers, ...DEFAULT_AMBULANCES].forEach(item => {
+      const p = (item.phone || '').replace(/\D/g, '');
+      if (p && !seenPhones.has(p)) {
+        seenPhones.add(p);
+        merged.push(item);
+      } else if (!p) {
+        merged.push(item);
+      }
+    });
+    return merged;
+  }
+
+  function renderAmbulanceDrivers(query = '') {
+    const listEl = document.getElementById('ambulanceDriversList');
+    if (!listEl) return;
+
+    let drivers = getAmbulanceDriversList();
+    const q = (query || '').toLowerCase().trim();
+    if (q) {
+      drivers = drivers.filter(d => 
+        (d.name && d.name.toLowerCase().includes(q)) ||
+        (d.location && d.location.toLowerCase().includes(q)) ||
+        (d.vehicle && d.vehicle.toLowerCase().includes(q)) ||
+        (d.type && d.type.toLowerCase().includes(q)) ||
+        (d.phone && d.phone.includes(q))
+      );
+    }
+
+    const badgeEl = document.getElementById('ambDriversCountBadge');
+    if (badgeEl) {
+      badgeEl.textContent = `${drivers.length} എണ്ണം ലഭ്യമാണ്`;
+    }
+
+    if (drivers.length === 0) {
+      listEl.innerHTML = `
+        <div style="text-align:center;padding:24px 14px;background:#F8FAFC;border-radius:12px;border:1px dashed #CBD5E1">
+          <div style="font-size:26px;margin-bottom:6px">🚑</div>
+          <div style="font-size:13px;font-weight:700;color:#334151">ആംബുലൻസുകൾ കണ്ടെത്താനായില്ല</div>
+          <div style="font-size:11px;color:#64748B;margin-top:2px">നിങ്ങളുടെ ആംബുലൻസ് നമ്പർ ഇവിടെ ചേർക്കാം</div>
+          <button type="button" onclick="openAmbulanceDriverRegister()" style="margin-top:10px;background:#059669;color:#fff;border:none;padding:6px 14px;border-radius:20px;font-size:11.5px;font-weight:800;cursor:pointer">
+            ➕ ആംബുലൻസ് ഡ്രൈവർ രജിസ്റ്റർ ചെയ്യാം
+          </button>
+        </div>
+      `;
+      return;
+    }
+
+    listEl.innerHTML = drivers.map(d => {
+      const cleanPhone = (d.phone || '').replace(/\D/g, '');
+      const waPhone = (d.whatsapp || d.phone || '').replace(/\D/g, '');
+      const waUrl = waPhone ? `https://wa.me/91${waPhone.slice(-10)}?text=${encodeURIComponent('ഹലോ, അടിയന്തിര ആവശ്യത്തിന് ആംബുലൻസ് ലഭ്യമാണോ?')}` : '#';
+
+      return `
+        <div style="background:#FFFFFF;border:1px solid #CBD5E1;border-radius:14px;padding:12px;box-shadow:0 1px 4px rgba(0,0,0,0.03);display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:38px;height:38px;border-radius:10px;background:#FFF1F2;border:1px solid #FECDD3;color:#E11D48;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">
+                🚑
+              </div>
+              <div>
+                <div style="font-weight:800;font-size:13.5px;color:#0F172A">${escapeHtml(d.name || 'ആംബുലൻസ് ഡ്രൈവർ')}</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-top:2px">
+                  <span style="font-size:11px;font-weight:800;color:#0369A1;background:#F0F9FF;border:1px solid #BAE6FD;padding:1px 6px;border-radius:6px">
+                    🚘 ${escapeHtml(d.vehicle || 'വാഹനം')}
+                  </span>
+                  <span style="font-size:10.5px;color:#059669;font-weight:700">
+                    ${escapeHtml(d.type || 'ഓക്സിജൻ ആംബുലൻസ്')}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <span style="background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0;font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px;white-space:nowrap">
+              🟢 24x7
+            </span>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:#64748B">
+            <span>📍</span>
+            <span>${escapeHtml(d.location || 'കണ്ണൂർ')}</span>
+            ${d.availability ? `<span>• ⏰ ${escapeHtml(d.availability)}</span>` : ''}
+          </div>
+
+          <div style="display:flex;align-items:center;gap:8px;margin-top:2px">
+            <a href="tel:${cleanPhone}" style="flex:1;background:linear-gradient(135deg, #E11D48 0%, #BE123C 100%);color:#fff;text-decoration:none;padding:8px;border-radius:10px;font-size:12.5px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 6px rgba(225,29,72,0.25)">
+              <span>📞 വിളിക്കുക: ${escapeHtml(d.phone)}</span>
+            </a>
+            ${waPhone ? `
+              <a href="${waUrl}" target="_blank" style="background:#25D366;color:#fff;text-decoration:none;padding:8px 12px;border-radius:10px;font-size:12px;font-weight:800;display:flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(37,211,102,0.25)">
+                <span>💬 വാട്സ്ആപ്പ്</span>
+              </a>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function filterAmbulances(query) {
+    renderAmbulanceDrivers(query);
+  }
+  window.filterAmbulances = filterAmbulances;
+
   function openAmbulanceModal() {
+    renderAmbulanceDrivers();
     openModal('modal-ambulance');
   }
   window.openAmbulanceModal = openAmbulanceModal;
+
+  function openAmbulanceDriverRegister() {
+    closeModal('modal-ambulance');
+    const nameInput = document.getElementById('ambDriverName');
+    const phoneInput = document.getElementById('ambDriverPhone');
+    const waInput = document.getElementById('ambDriverWhatsApp');
+    const locInput = document.getElementById('ambDriverLocation');
+
+    if (nameInput && !nameInput.value) {
+      nameInput.value = (APP_STATE.currentUser.name && APP_STATE.currentUser.name !== 'നാട്ടുകാരൻ') ? APP_STATE.currentUser.name : '';
+    }
+    if (phoneInput && !phoneInput.value) {
+      phoneInput.value = APP_STATE.currentUser.phone || '';
+    }
+    if (waInput && !waInput.value) {
+      waInput.value = APP_STATE.currentUser.phone || '';
+    }
+    if (locInput && !locInput.value) {
+      locInput.value = (APP_STATE.currentUser.location || APP_STATE.location.name || 'കണ്ണൂർ');
+    }
+    openModal('modal-ambulance-driver');
+  }
+  window.openAmbulanceDriverRegister = openAmbulanceDriverRegister;
+
+  function submitAmbulanceDriverRegistration(e) {
+    if (e) e.preventDefault();
+    const name = (document.getElementById('ambDriverName')?.value || '').trim();
+    const phone = (document.getElementById('ambDriverPhone')?.value || '').trim();
+    const whatsapp = (document.getElementById('ambDriverWhatsApp')?.value || phone).trim();
+    const vehicle = (document.getElementById('ambVehicleNo')?.value || '').trim();
+    const type = (document.getElementById('ambVehicleType')?.value || 'ഓക്സിജൻ ആംബുലൻസ്').trim();
+    const location = (document.getElementById('ambDriverLocation')?.value || '').trim();
+    const availability = (document.getElementById('ambAvailability')?.value || '24x7 മുഴുവൻ സമയവും ലഭ്യമാണ്').trim();
+    const licence = (document.getElementById('ambLicenceNo')?.value || '').trim();
+
+    if (!name || !phone || !vehicle || !location) {
+      toast('⚠️ ദയവായി പേര്, ഫോൺ നമ്പർ, വാഹന നമ്പർ, സ്ഥലം എന്നിവ നൽകുക.');
+      return;
+    }
+
+    const newAmb = {
+      id: 'amb_' + Date.now(),
+      name: name,
+      phone: phone,
+      whatsapp: whatsapp,
+      vehicle: vehicle,
+      type: type,
+      location: location,
+      availability: availability,
+      licence: licence,
+      lat: APP_STATE.location.lat,
+      lon: APP_STATE.location.lon,
+      createdAt: Date.now()
+    };
+
+    let list = [];
+    try {
+      list = JSON.parse(localStorage.getItem('nammude_ambulance_drivers') || '[]');
+    } catch (_) {}
+    list.unshift(newAmb);
+    try {
+      localStorage.setItem('nammude_ambulance_drivers', JSON.stringify(list));
+    } catch (_) {}
+
+    // Sync to Supabase Cloud so all other phones receive it
+    if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES) {
+      if (typeof window.NN_SUPABASE_SERVICES.saveAmbulanceDriver === 'function') {
+        window.NN_SUPABASE_SERVICES.saveAmbulanceDriver(newAmb);
+      }
+    }
+
+    closeModal('modal-ambulance-driver');
+    openAmbulanceModal();
+    renderAmbulanceDrivers();
+    toast('🚑 ആംബുലൻസ് ഡ്രൈവർ രജിസ്ട്രേഷൻ വിജയകരമായി പൂർത്തിയായി! അടിയന്തര ലിസ്റ്റിൽ ചേർത്തു.');
+  }
+  window.submitAmbulanceDriverRegistration = submitAmbulanceDriverRegistration;
 
   // ==============================================================
   // 13. JOBS PORTAL & LOCAL RENTALS / MARKETPLACE
@@ -4910,12 +5171,15 @@
       title: title,
       type: type,
       rate: rate,
+      price: rate,
       owner: owner,
       ownerPhone: phone,
+      phone: phone,
       location: loc,
       lat: APP_STATE.location.lat,
       lon: APP_STATE.location.lon,
       image: APP_STATE.tempRentalImage || defaultImg,
+      createdAt: Date.now(),
       isUserCreated: true
     };
 
@@ -4924,7 +5188,7 @@
       localStorage.setItem('nn_rentals', JSON.stringify(APP_STATE.rentals));
     } catch (_) {}
 
-    // Save rental to Supabase Cloud
+    // Save rental to Supabase Cloud & broadcast to other devices
     if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveRental === 'function') {
       window.NN_SUPABASE_SERVICES.saveRental(newRental);
     }
@@ -4936,9 +5200,22 @@
 
     renderRentalsScreen();
     if (APP_STATE.currentScreen === 'profile') renderProfileScreen();
-    toast('🏠 വാടക ഇനം വിജയകരമായി ലിസ്റ്റ് ചെയ്തു!');
+    toast('🏠 വാടക ഇനം വിജയകരമായി ലിസ്റ്റ് ചെയ്തു! ക്ലൗഡിലേക്ക് സേവ് ചെയ്തു.');
   }
   window.submitRentalPosting = submitRentalPosting;
+
+  function refreshRentalsLive() {
+    toast('🔄 പുതിയ വാടക പോസ്റ്റുകൾ ക്ലൗഡിൽ നിന്ന് പരിശോധിക്കുന്നു...');
+    if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncRentals === 'function') {
+      window.NN_SUPABASE_SERVICES.syncRentals(() => {
+        renderRentalsScreen();
+        toast('✅ പുതിയ വാടക വിവരങ്ങൾ ലഭ്യമാക്കി!');
+      });
+    } else {
+      renderRentalsScreen();
+    }
+  }
+  window.refreshRentalsLive = refreshRentalsLive;
 
   function openEditProfileModal() {
     const nameEl = document.getElementById('editProfName');
