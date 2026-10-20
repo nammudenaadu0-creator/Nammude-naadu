@@ -277,552 +277,17 @@
   // ==============================================================
   // 3. SEED DATA GENERATOR
   // ==============================================================
-  const SEED_POSTS = [
-    {
-      id: 'post_101',
-      authorId: 'usr_me_' + (localStorage.getItem('nn_user_id') || 'local'),
-      authorName: (APP_STATE.currentUser && APP_STATE.currentUser.name && APP_STATE.currentUser.name !== 'നാട്ടുകാരൻ') ? APP_STATE.currentUser.name : 'നിങ്ങൾ (You)',
-      authorPhone: APP_STATE.currentUser.phone || '',
-      authorAvatar: APP_STATE.currentUser.avatar || DEFAULT_USER_AVATAR,
-      authorLocation: 'കണ്ണൂർ ടൗൺ, കണ്ണൂർ',
-      authorBlood: 'O+',
-      type: 'announcement',
-      content: 'നമ്മുടെ നാട്ടിലെ എല്ലാ സുഹൃത്തുക്കൾക്കും നമസ്കാരം! കമ്മ്യൂണിറ്റി ശുചീകരണ ഡ്രൈവ് അടുത്ത ഞായറാഴ്ച രാവിലെ 7 മണിക്ക് സംഘടിപ്പിക്കുന്നു. എല്ലാവരും പങ്കുചേരുമല്ലോ 🌿🧹',
-      image: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80',
-      timestamp: '5 മിനിറ്റ് മുൻപ്',
-      createdAt: Date.now() - 300000,
-      likes: 18,
-      isLiked: false,
-      isCurrentUser: true,
-      lat: 11.8745,
-      lon: 75.3704
-    },
-    {
-      id: 'post_102',
-      authorId: 'usr_raghavan',
-      authorName: 'രാഘവൻ മേനോൻ',
-      authorPhone: '+91 98470 12345',
-      authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
-      authorLocation: 'പയ്യാമ്പലം, കണ്ണൂർ',
-      authorBlood: 'A+',
-      type: 'photo',
-      content: 'ഇന്നത്തെ പയ്യാമ്പലം ബീച്ചിലെ അതിമനോഹരമായ സൂര്യാസ്തമയം. നമ്മുടെ കേരളത്തിന്റെ പ്രകൃതിഭംഗി അവാച്യമാണ്! 🌅🌊',
-      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
-      timestamp: '25 മിനിറ്റ് മുൻപ്',
-      createdAt: Date.now() - 1500000,
-      likes: 34,
-      isLiked: true,
-      isCurrentUser: false,
-      lat: 11.8720,
-      lon: 75.3620
-    },
-    {
-      id: 'post_103',
-      authorId: 'usr_deepa',
-      authorName: 'ദീപാ കൃഷ്ണൻ',
-      authorPhone: '+91 97455 67890',
-      authorAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80',
-      authorLocation: 'തോട്ടട, കണ്ണൂർ',
-      authorBlood: 'B+',
-      type: 'offer',
-      content: 'വീട്ടിൽ തയ്യാറാക്കിയ നല്ല നാടൻ മാങ്ങയച്ചാറും പായസവും ഓർഡർ അനുസരിച്ച് ലഭ്യമാണ്. ആവശ്യമുള്ളവർ ബന്ധപ്പെടുക 🥭🍯',
-      image: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=80',
-      timestamp: '1 മണിക്കൂർ മുൻപ്',
-      createdAt: Date.now() - 3600000,
-      likes: 21,
-      isLiked: false,
-      isCurrentUser: false,
-      lat: 11.8340,
-      lon: 75.4050
-    },
-    {
-      id: 'post_104',
-      authorId: 'usr_suresh_taliparamba',
-      authorName: 'സുരേഷ് കുമാർ',
-      authorPhone: '+91 94471 99882',
-      authorAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
-      authorLocation: 'തളിപ്പറമ്പ്, കണ്ണൂർ',
-      authorBlood: 'B+',
-      type: 'announcement',
-      content: '🚨 അടിയന്തര ആവശ്യം: തളിപ്പറമ്പ് താലൂക്ക് ആശുപത്രിയിൽ ചികിത്സയിലുള്ള രോഗിക്ക് B+ (B Positive) രക്തം 2 യൂണിറ്റ് അടിയന്തിരമായി ആവശ്യമുണ്ട്. സന്മനസ്സുള്ളവർ ഉടൻ വിളിക്കുക!',
-      image: '',
-      timestamp: '2 മണിക്കൂർ മുൻപ്',
-      createdAt: Date.now() - 7200000,
-      likes: 45,
-      isLiked: false,
-      isCurrentUser: false,
-      lat: 12.0437,
-      lon: 75.3585
-    },
-    {
-      id: 'post_105',
-      authorId: 'usr_vinod_farmer',
-      authorName: 'വിനോദ് മാത്യു',
-      authorPhone: '+91 94952 11223',
-      authorAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80',
-      authorLocation: 'മാനന്തവാടി, വയനാട്',
-      authorBlood: 'O+',
-      type: 'offer',
-      content: 'വയനാടൻ തോട്ടത്തിൽ നിന്ന് ജൈവരീതിയിൽ വിളവെടുത്ത ശുദ്ധമായ കുരുമുളകും റോബസ്റ്റ കാപ്പിപ്പൊടിയും ലഭ്യമാണ്. താല്പര്യമുള്ളവർക്ക് നേരിട്ട് കൊറിയർ ചെയ്തു നൽകും ☕🌿',
-      image: 'https://images.unsplash.com/photo-1610632380989-680fe40816c6?auto=format&fit=crop&w=800&q=80',
-      timestamp: '3 മണിക്കൂർ മുൻപ്',
-      createdAt: Date.now() - 10800000,
-      likes: 29,
-      isLiked: false,
-      isCurrentUser: false,
-      lat: 11.8026,
-      lon: 76.0033
-    },
-    {
-      id: 'post_106',
-      authorId: 'usr_kannur_association',
-      authorName: 'റസിഡന്റ്സ് അസോസിയേഷൻ കണ്ണൂർ',
-      authorPhone: '+91 98460 55443',
-      authorAvatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=200&q=80',
-      authorLocation: 'കണ്ണൂർ സിറ്റി',
-      authorBlood: 'AB+',
-      type: 'announcement',
-      content: '🏥 സൗജന്യ മെഡിക്കൽ & നേത്ര പരിശോധനാ ക്യാമ്പ് അടുത്ത ഞായറാഴ്ച രാവിലെ 9 മുതൽ 1 മണി വരെ കമ്മ്യൂണിറ്റി ഹാളിൽ നടക്കുന്നു. പ്രമുഖ ഡോക്ടർമാരുടെ സേവനവും മരുന്നുകളും സൗജന്യമാണ്.',
-      image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80',
-      timestamp: '5 മണിക്കൂർ മുൻപ്',
-      createdAt: Date.now() - 18000000,
-      likes: 52,
-      isLiked: true,
-      isCurrentUser: false,
-      lat: 11.8745,
-      lon: 75.3704
-    },
-    {
-      id: 'post_107',
-      authorId: 'usr_shafi_sports',
-      authorName: 'മുഹമ്മദ് ഷാഫി',
-      authorPhone: '+91 97471 88776',
-      authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-      authorLocation: 'തലശ്ശേരി, കണ്ണൂർ',
-      authorBlood: 'O+',
-      type: 'photo',
-      content: 'ഗ്രാമീണ ഫുട്ബോൾ ടൂർണമെന്റ് ആവേശകരമായ ഫൈനൽ മത്സരം ഇന്ന് വൈകുന്നേരം 4:30 ന് മുനിസിപ്പൽ ഗ്രൗണ്ടിൽ നടക്കും. കായിക പ്രേമികളെ ഏവരെയും സ്നേഹപൂർവ്വം ക്ഷണിക്കുന്നു ⚽🏆',
-      image: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80',
-      timestamp: 'ഇന്നലെ',
-      createdAt: Date.now() - 86400000,
-      likes: 67,
-      isLiked: false,
-      isCurrentUser: false,
-      lat: 11.7480,
-      lon: 75.4894
-    }
-  ];
-
+  const SEED_POSTS = [];
+  
   // Fake accounts purged: Only real verified and admin/user added services are loaded
   const SEED_SERVICES = [];
-  const REMOVED_SEED_SERVICES = [
-    {
-      id: 'srv_1',
-      name: 'സന്തോഷ് കുമാർ',
-      category: 'electrician',
-      trade: 'ഇലക്ട്രീഷ്യൻ & വയറിംഗ്',
-      phone: '+91 94471 23456',
-      rating: '4.9 (42)',
-      experience: '12 വർഷം പ്രവൃത്തിപരിചയം',
-      location: 'കണ്ണൂർ സിറ്റി',
-      lat: 11.8750,
-      lon: 75.3710,
-      avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80',
-      badge: 'വെരിഫൈഡ് പ്രൊവൈഡർ'
-    },
-    {
-      id: 'srv_2',
-      name: 'വിനോദ് അലക്സ്',
-      category: 'plumber',
-      trade: 'പ്ലംബർ & പൈപ്പ് ഫിറ്റിംഗ്',
-      phone: '+91 98472 34567',
-      rating: '4.8 (38)',
-      experience: '9 വർഷം പ്രവൃത്തിപരിചയം',
-      location: 'തളാപ്പ്, കണ്ണൂർ',
-      lat: 11.8810,
-      lon: 75.3650,
-      avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80',
-      badge: '24x7 ലഭ്യമാണ്'
-    },
-    {
-      id: 'srv_3',
-      name: 'രമേഷ് ബാബു',
-      category: 'driver',
-      trade: 'ഓട്ടോ & ടാക്സി ഡ്രൈവർ',
-      phone: '+91 97443 45678',
-      rating: '4.9 (65)',
-      experience: '15 വർഷം ഡ്രൈവിംഗ്',
-      location: 'റെയിൽവേ സ്റ്റേഷൻ പരിസരം',
-      lat: 11.8710,
-      lon: 75.3725,
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
-      badge: 'ഓട്ടോ & ഇനോവ'
-    },
-    {
-      id: 'srv_4',
-      name: 'മനോജ് ആശാരി',
-      category: 'carpenter',
-      trade: 'ആശാരി & ഫർണിച്ചർ വർക്ക്',
-      phone: '+91 94004 56789',
-      rating: '4.7 (29)',
-      experience: '14 വർഷം പ്രവൃത്തിപരിചയം',
-      location: 'ചാല, കണ്ണൂർ',
-      lat: 11.8520,
-      lon: 75.4120,
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
-      badge: 'ഇന്റീരിയർ വർക്ക്സ്'
-    },
-    {
-      id: 'srv_5',
-      name: 'ബാബുരാജ് കെ.',
-      category: 'painter',
-      trade: 'പെയിന്റിംഗ് & പോളിഷിംഗ്',
-      phone: '+91 98955 67890',
-      rating: '4.8 (34)',
-      experience: '8 വർഷം പരിചയം',
-      location: 'ചിറക്കൽ, കണ്ണൂർ',
-      lat: 11.9050,
-      lon: 75.3650,
-      avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=200&q=80',
-      badge: 'റോയൽ & പ്രീമിയം'
-    },
-    {
-      id: 'srv_6',
-      name: 'അനീഷ് എയർകൂൾ',
-      category: 'acrepair',
-      trade: 'എസി & ഫ്രിഡ്ജ് റിപ്പയർ',
-      phone: '+91 96056 78901',
-      rating: '4.9 (51)',
-      experience: '7 വർഷം സർവീസ്',
-      location: 'കണ്ണൂർ ടൗൺ',
-      lat: 11.8730,
-      lon: 75.3680,
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-      badge: 'ഡ്രോപ്പ് ഇൻ സർവീസ്'
-    },
-    {
-      id: 'srv_7',
-      name: 'ഗ്രീൻ ക്ലീൻ സർവീസ്',
-      category: 'cleaning',
-      trade: 'ഡീപ് ക്ലീനിംഗ് & മാലിന്യ നിർമാർജനം',
-      phone: '+91 94467 89012',
-      rating: '4.8 (27)',
-      experience: 'ടീം വർക്ക്',
-      location: 'കണ്ണൂർ',
-      lat: 11.8700,
-      lon: 75.3750,
-      avatar: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=200&q=80',
-      badge: 'സമ്പൂർണ്ണ ക്ലീനിംഗ്'
-    },
-    {
-      id: 'srv_8',
-      name: 'മുരളി മേസൺ',
-      category: 'mason',
-      trade: 'മേസൺ & വാർപ്പ് പണികൾ',
-      phone: '+91 98468 90123',
-      rating: '4.9 (44)',
-      experience: '18 വർഷം കൺസ്ട്രക്ഷൻ',
-      location: 'വളപട്ടണം, കണ്ണൂർ',
-      lat: 11.9280,
-      lon: 75.3620,
-      avatar: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=200&q=80',
-      badge: 'വീട് നിർമ്മാണം'
-    },
-    {
-      id: 'srv_9',
-      name: 'ഷമീർ ഫാബ്രിക്കേഷൻ',
-      category: 'welding',
-      trade: 'വെൽഡിങ്ങ് & ഗേറ്റ് നിർമ്മാണം',
-      phone: '+91 97479 01234',
-      rating: '4.7 (31)',
-      experience: '10 വർഷം വർക്ക്ഷോപ്പ്',
-      location: 'ചൊവ്വ, കണ്ണൂർ',
-      lat: 11.8610,
-      lon: 75.3950,
-      avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=200&q=80',
-      badge: 'റൂഫിംഗ് & ഷട്ടർ'
-    },
-    {
-      id: 'srv_10',
-      name: 'ശങ്കരൻ കൃഷിക്കാരൻ',
-      category: 'gardening',
-      trade: 'തോട്ടം പണികൾ & തെങ്ങുകയറ്റം',
-      phone: '+91 94950 12345',
-      rating: '4.9 (60)',
-      experience: 'പരമ്പരാഗത കർഷകൻ',
-      location: 'എടക്കാട്, കണ്ണൂർ',
-      lat: 11.8150,
-      lon: 75.4410,
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
-      badge: 'വിശ്വസ്ത സേവനം'
-    },
-    {
-      id: 'srv_11',
-      name: 'രേവതി ബ്യൂട്ടി പാർലർ',
-      category: 'beautician',
-      trade: 'ബ്രൈഡൽ മേക്കപ്പ് & ബ്യൂട്ടീഷ്യൻ',
-      phone: '+91 98471 12399',
-      rating: '4.9 (53)',
-      experience: 'ഹോം സർവീസ് ലഭ്യമാണ്',
-      location: 'കണ്ണൂർ',
-      lat: 11.8740,
-      lon: 75.3690,
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-      badge: 'സർട്ടിഫൈഡ്'
-    },
-    {
-      id: 'srv_12',
-      name: 'സെക്യൂർ സിസിടിവി വേൾഡ്',
-      category: 'cctv',
-      trade: 'സിസിടിവി ക്യാമറ & സെക്യൂരിറ്റി ഫിറ്റിംഗ്',
-      phone: '+91 94473 34455',
-      rating: '4.8 (39)',
-      experience: '6 വർഷം ഇൻസ്റ്റലേഷൻ',
-      location: 'കണ്ണൂർ സിറ്റി',
-      lat: 11.8760,
-      lon: 75.3720,
-      avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80',
-      badge: '2 വർഷ വാറന്റി'
-    },
-    {
-      id: 'srv_13',
-      name: 'മാലിക കാറ്ററിംഗ്',
-      category: 'catering',
-      trade: 'സദ്യ, ബിരിയാണി & ഇവന്റ് കുക്കിംഗ്',
-      phone: '+91 98462 23344',
-      rating: '5.0 (82)',
-      experience: '20 വർഷം കാറ്ററിംഗ്',
-      location: 'കണ്ണൂർ',
-      lat: 11.8720,
-      lon: 75.3700,
-      avatar: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=200&q=80',
-      badge: 'രുചികരം & ശുചിത്വം'
-    },
-    {
-      id: 'srv_14',
-      name: 'ശ്രീ ലക്ഷ്മി ടൈലേഴ്സ്',
-      category: 'tailoring',
-      trade: 'ലേഡീസ് & ജെന്റ്സ് ടൈലറിംഗ്',
-      phone: '+91 97451 98765',
-      rating: '4.8 (40)',
-      experience: 'കുർത്ത & ബ്ലൗസ് സ്പെഷ്യലിസ്റ്റ്',
-      location: 'തളാപ്പ്, കണ്ണൂർ',
-      lat: 11.8820,
-      lon: 75.3640,
-      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80',
-      badge: 'ഫാസ്റ്റ് ഡെലിവറി'
-    },
-    {
-      id: 'srv_15',
-      name: 'കെയർ ഹോം നഴ്സിംഗ്',
-      category: 'nursing',
-      trade: 'ഹോം നഴ്സിംഗ് & വയോജന പരിചരണം',
-      phone: '+91 94002 88776',
-      rating: '4.9 (47)',
-      experience: 'സർട്ടിഫൈഡ് നഴ്സുമാർ',
-      location: 'കണ്ണൂർ',
-      lat: 11.8780,
-      lon: 75.3670,
-      avatar: 'https://images.unsplash.com/photo-1594824813586-455b88c227e7?auto=format&fit=crop&w=200&q=80',
-      badge: '24 മണിക്കൂർ ഷിഫ്റ്റ്'
-    },
-    {
-      id: 'srv_16',
-      name: 'പ്രൊഫ. സുരേഷ് ട്യൂഷൻസ്',
-      category: 'tuition',
-      trade: 'കണക്ക് & സയൻസ് (8 മുതൽ 12 വരെ)',
-      phone: '+91 98950 44332',
-      rating: '4.9 (61)',
-      experience: '15 വർഷം അധ്യാപകൻ',
-      location: 'കണ്ണൂർ ടൗൺ',
-      lat: 11.8745,
-      lon: 75.3704,
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
-      badge: 'ഓൺലൈൻ & ഓഫ്‌ലൈൻ'
-    },
-    {
-      id: 'srv_17',
-      name: 'ശുദ്ധജലം വാട്ടർ സപ്ലൈ',
-      category: 'water',
-      trade: 'വാട്ടർ ടാങ്കർ സപ്ലൈ (3000L - 6000L)',
-      phone: '+91 94474 11223',
-      rating: '4.8 (35)',
-      experience: 'തൽക്ഷണ ഡെലിവറി',
-      location: 'കണ്ണൂർ & പരിസരങ്ങൾ',
-      lat: 11.8700,
-      lon: 75.3680,
-      avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80',
-      badge: 'ക്ലീൻ ആർഒ വാട്ടർ'
-    }
-  ];
-
-  const SEED_JOBS = [
-    {
-      id: 'job_1',
-      title: 'ഹെവി ഡ്രൈവർ ആവശ്യം (ടിപ്പർ & ലോറി)',
-      employer: 'റോയൽ ട്രാൻസ്പോർട്ട്സ്',
-      employerPhone: '+91 94471 99887',
-      category: 'driver',
-      salary: '₹22,000 - ₹28,000 / മാസം',
-      type: 'ഫുൾ ടൈം',
-      location: 'കണ്ണൂർ ബൈപ്പാസ്',
-      lat: 11.8740,
-      lon: 75.3710,
-      description: 'ടിപ്പർ ഓടിക്കാൻ പരിചയസമ്പന്നരായ ഹെവി ഡ്രൈവർമാരെ ഉടൻ ആവശ്യമുണ്ട്. താമസം സൗജന്യം.'
-    },
-    {
-      id: 'job_2',
-      title: 'ഷോറൂം സെയിൽസ് എക്സിക്യൂട്ടീവ്',
-      employer: 'സ്റ്റാർ ഇലക്ട്രോണിക്സ്',
-      employerPhone: '+91 98472 88776',
-      category: 'sales',
-      salary: '₹15,000 - ₹20,000 + ഇൻസെന്റീവ്',
-      type: 'ഫുൾ ടൈം',
-      location: 'ഫോർട്ട് റോഡ്, കണ്ണൂർ',
-      lat: 11.8710,
-      lon: 75.3740,
-      description: 'ഇലക്ട്രോണിക്സ് ഷോറൂമിൽ കസ്റ്റമർ മാനേജ്മെന്റിനായി സ്ത്രീ/പുരുഷ സെയിൽസ് എക്സിക്യൂട്ടീവ്സ്.'
-    },
-    {
-      id: 'job_3',
-      title: 'ഓഫീസ് അക്കൗണ്ടന്റ് (ടാലി പരിചയം)',
-      employer: 'ഗ്രീൻവാലി ട്രേഡേഴ്സ്',
-      employerPhone: '+91 97453 77665',
-      category: 'office',
-      salary: '₹18,000 - ₹24,000 / മാസം',
-      type: 'ഫുൾ ടൈം',
-      location: 'കണ്ണൂർ സിറ്റി',
-      lat: 11.8755,
-      lon: 75.3695,
-      description: 'B.Com ബിരുദവും Tally Prime, GST ഫയലിംഗ് പരിജ്ഞാനവും ഉള്ളവരെ ആവശ്യമുണ്ട്.'
-    },
-    {
-      id: 'job_4',
-      title: 'ചൈനീസ് & സൗത്ത് ഇന്ത്യൻ കുക്ക്',
-      employer: 'മലബാർ സ്പൈസ് റെസ്റ്റോറന്റ്',
-      employerPhone: '+91 94005 66554',
-      category: 'hotel',
-      salary: '₹25,000 - ₹32,000 / മാസം',
-      type: 'ഫുൾ ടൈം (ഭക്ഷണം & താമസം)',
-      location: 'സൗത്ത് ബസാർ, കണ്ണൂർ',
-      lat: 11.8680,
-      lon: 75.3780,
-      description: 'പ്രമുഖ റെസ്റ്റോറന്റിലേക്ക് വിദഗ്ദ്ധനായ ചീഫ് കുക്കിനെ അടിയന്തിരമായി ആവശ്യമുണ്ട്.'
-    },
-    {
-      id: 'job_5',
-      title: 'ഫുഡ് & പാർസൽ ഡെലിവറി ബോയ്സ്',
-      employer: 'ക്വിക്ക്ഡ്രോപ്പ് കണ്ണൂർ',
-      employerPhone: '+91 98956 55443',
-      category: 'delivery',
-      salary: '₹18,000 - ₹25,000 (പ്രതിവാര പേയ്മെന്റ്)',
-      type: 'ഫ്ലെക്സിബിൾ ഷിഫ്റ്റ്',
-      location: 'കണ്ണൂർ ടൗൺ',
-      lat: 11.8745,
-      lon: 75.3704,
-      description: 'സ്വന്തമായി ഇരുചക്രവാഹനവും ലൈസൻസും ഉള്ളവർക്ക് കണ്ണൂർ സിറ്റിയിൽ പാർട്ട് ടൈം/ഫുൾ ടൈം ജോലി.'
-    }
-  ];
-
-  const SEED_RENTALS = [
-    {
-      id: 'rent_me_1',
-      title: 'ഹോണ്ട ആക്റ്റീവ 6G സ്കൂട്ടർ വാടകയ്ക്ക് (പ്രതിദിനം)',
-      type: 'വാഹനങ്ങൾ',
-      rate: '₹350 / ദിവസം',
-      owner: APP_STATE.currentUser.name,
-      ownerPhone: APP_STATE.currentUser.phone,
-      location: 'കണ്ണൂർ സിറ്റി',
-      lat: 11.8745,
-      lon: 75.3704,
-      image: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=400&q=80',
-      isUserCreated: true
-    },
-    {
-      id: 'rent_1',
-      title: 'കോൺക്രീറ്റ് മിക്സർ & വൈബ്രേറ്റർ വാടകയ്ക്ക്',
-      type: 'ടൂളുകൾ & യന്ത്രങ്ങൾ',
-      rate: '₹800 / ദിവസം',
-      owner: 'സുധീർ കൺസ്ട്രക്ഷൻ ഇക്വിപ്മെന്റ്സ്',
-      ownerPhone: '+91 94472 11000',
-      location: 'കണ്ണൂർ',
-      lat: 11.8740,
-      lon: 75.3700,
-      image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=400&q=80'
-    },
-    {
-      id: 'rent_2',
-      title: 'മഹീന്ദ്ര പിക്കപ്പ് വാഹനം വാടകയ്ക്ക് (വിത്ത് ഡ്രൈവർ)',
-      type: 'വാഹനങ്ങൾ',
-      rate: '₹1,500 / ട്രിപ്പ്',
-      owner: 'ജയൻ ഗുഡ്സ് ട്രാൻസ്പോർട്ട്',
-      ownerPhone: '+91 98473 22111',
-      location: 'തളാപ്പ്, കണ്ണൂർ',
-      lat: 11.8810,
-      lon: 75.3650,
-      image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80'
-    },
-    {
-      id: 'rent_3',
-      title: '3 BHK ആധുനിക വീട് വാടകയ്ക്ക് (കുടുംബങ്ങൾക്ക്)',
-      type: 'വാടക വീട് / മുറി',
-      rate: '₹14,000 / മാസം',
-      owner: 'പ്രഭാകരൻ കെ.',
-      ownerPhone: '+91 97454 33222',
-      location: 'പയ്യാമ്പലം പരിസരം, കണ്ണൂർ',
-      lat: 11.8720,
-      lon: 75.3620,
-      image: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=400&q=80'
-    },
-    {
-      id: 'rent_4',
-      title: 'മഹീന്ദ്ര ട്രാക്ടർ & റോട്ടവേറ്റർ വാടകയ്ക്ക്',
-      type: 'ടൂളുകൾ & യന്ത്രങ്ങൾ',
-      rate: '₹900 / മണിക്കൂർ',
-      owner: 'ഹരിദാസൻ അഗ്രി',
-      ownerPhone: '+91 94475 77889',
-      location: 'ചിറക്കൽ, കണ്ണൂർ',
-      lat: 11.9050,
-      lon: 75.3650,
-      image: 'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=400&q=80'
-    },
-    {
-      id: 'rent_5',
-      title: 'വിവാഹ പന്തൽ, സ്റ്റേജ്, സൗണ്ട് & എൽഇഡി ലൈറ്റ്സ് സെറ്റ്',
-      type: 'സ്റ്റേജ് & പന്തൽ',
-      rate: '₹12,000 / ദിവസം',
-      owner: 'ശ്രീ മൂകാംബിക സൗണ്ട്സ് & ഇവന്റ്സ്',
-      ownerPhone: '+91 98478 66778',
-      location: 'കണ്ണൂർ ടൗൺ',
-      lat: 11.8745,
-      lon: 75.3704,
-      image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=400&q=80'
-    },
-    {
-      id: 'rent_6',
-      title: 'സോണി A7III 4K ക്യാമറ & ലെൻസുകൾ ഷൂട്ടിംഗിന്',
-      type: 'ഇലക്ട്രോണിക്സ്',
-      rate: '₹1,500 / ദിവസം',
-      owner: 'റോണി മീഡിയ',
-      ownerPhone: '+91 97459 55443',
-      location: 'തളാപ്പ്, കണ്ണൂർ',
-      lat: 11.8810,
-      lon: 75.3650,
-      image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80'
-    }
-  ];
-
-  const SEED_BLOOD_DONORS = [
-    { name: 'മുഹമ്മദ് ഷാഫി', group: 'O+', phone: '+91 94471 55443', location: 'കണ്ണൂർ സിറ്റി', lat: 11.8745, lon: 75.3704, status: 'ലഭ്യമാണ്' },
-    { name: 'വിജീഷ് പത്മനാഭൻ', group: 'A+', phone: '+91 98472 66554', location: 'തലശ്ശേരി, കണ്ണൂർ', lat: 11.7480, lon: 75.4894, status: 'ലഭ്യമാണ്' },
-    { name: 'അഞ്ജലി പ്രസാദ്', group: 'B+', phone: '+91 97453 77665', location: 'പയ്യന്നൂർ, കണ്ണൂർ', lat: 12.1009, lon: 75.2038, status: 'ലഭ്യമാണ്' },
-    { name: 'രഞ്ജിത്ത് വർമ്മ', group: 'AB+', phone: '+91 94004 88776', location: 'തളിപ്പറമ്പ്, കണ്ണൂർ', lat: 12.0437, lon: 75.3585, status: 'ലഭ്യമാണ്' },
-    { name: 'സുരേഷ് കുമാർ', group: 'O-', phone: '+91 98955 99887', location: 'കണ്ണൂർ ടൗൺ', lat: 11.8745, lon: 75.3704, status: 'അടിയന്തരം' },
-    { name: 'ദിവ്യാ മനോജ്', group: 'A-', phone: '+91 96056 11223', location: 'തോട്ടട, കണ്ണൂർ', lat: 11.8340, lon: 75.4050, status: 'ലഭ്യമാണ്' },
-    { name: 'അബ്ദുൾ സമദ്', group: 'B-', phone: '+91 94467 22334', location: 'ചൊവ്വ, കണ്ണൂർ', lat: 11.8610, lon: 75.3950, status: 'ലഭ്യമാണ്' },
-    { name: 'പ്രവീൺ കൃഷ്ണ', group: 'AB-', phone: '+91 98468 33445', location: 'ചിറക്കൽ, കണ്ണൂർ', lat: 11.9050, lon: 75.3650, status: 'ലഭ്യമാണ്' }
-  ];
-
+  
+  const SEED_JOBS = [];
+  
+  const SEED_RENTALS = [];
+  
+  const SEED_BLOOD_DONORS = [];
+  
   // Load from LocalStorage or seed
   function initData() {
     try {
@@ -843,20 +308,15 @@
         loadedPosts = null;
       }
 
-      if (!Array.isArray(loadedPosts) || loadedPosts.length === 0) {
-        loadedPosts = [...SEED_POSTS];
-        try {
-          localStorage.setItem('nn_posts', JSON.stringify(loadedPosts));
-        } catch (_) {}
-      } else {
-        // Guarantee seed posts are present so feed is always lively
-        SEED_POSTS.forEach(seed => {
-          if (!loadedPosts.some(p => p.id === seed.id)) {
-            loadedPosts.push(seed);
-          }
-        });
-      }
+      // REAL ACCOUNTS ONLY: Purge mock seed posts
+      const mockPostIds = new Set(['post_101', 'post_102', 'post_103', 'post_104', 'post_105', 'post_106', 'post_107']);
+      loadedPosts = (Array.isArray(loadedPosts) ? loadedPosts : []).filter(p => 
+        p && !mockPostIds.has(p.id) && (p.isCurrentUser || p.authorId?.startsWith('usr_me_') || p.id?.startsWith('post_blood_') || p.isCloud)
+      );
       APP_STATE.posts = loadedPosts;
+      try {
+        localStorage.setItem('nn_posts', JSON.stringify(loadedPosts));
+      } catch (_) {}
 
       // Sync community posts from Supabase Cloud (Unlimited posts)
       if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncPosts === 'function') {
@@ -865,9 +325,9 @@
 
       const storedServices = localStorage.getItem('nn_services');
       let loadedServices = storedServices ? JSON.parse(storedServices) : [];
-      // PURGE ALL 500 FAKE SEED ACCOUNTS: Only keep user-created, admin-created or real services
+      // REAL ACCOUNTS ONLY: Purge all mock seed services (srv_1 to srv_500)
       loadedServices = (Array.isArray(loadedServices) ? loadedServices : []).filter(s => 
-        s && (s.isUserCreated || (s.id && s.id.startsWith('srv_adm_')) || (s.verified && !s.id?.match(/^srv_\d+$/)))
+        s && !s.id?.match(/^srv_\d+$/) && (s.isUserCreated || s.isCloud || s.userId || (s.id && s.id.startsWith('srv_adm_')) || s.verified)
       );
       try {
         localStorage.setItem('nn_services', JSON.stringify(loadedServices));
@@ -878,25 +338,53 @@
       if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncServices === 'function') {
         window.NN_SUPABASE_SERVICES.syncServices();
       }
-      // Sync blood donors from Supabase Cloud
-      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncBloodDonors === 'function') {
-        window.NN_SUPABASE_SERVICES.syncBloodDonors();
-      }
 
+      // REAL ACCOUNTS ONLY: Purge mock jobs
+      const mockJobIds = new Set(['job_1', 'job_2', 'job_3', 'job_4', 'job_5']);
       const storedJobs = localStorage.getItem('nn_jobs');
-      APP_STATE.jobs = storedJobs ? JSON.parse(storedJobs) : SEED_JOBS;
+      let loadedJobs = storedJobs ? JSON.parse(storedJobs) : [];
+      loadedJobs = (Array.isArray(loadedJobs) ? loadedJobs : []).filter(j => 
+        j && !mockJobIds.has(j.id) && (j.isUserCreated || j.userId || j.id?.startsWith('job_adm_') || j.isCloud)
+      );
+      APP_STATE.jobs = loadedJobs;
+      try {
+        localStorage.setItem('nn_jobs', JSON.stringify(loadedJobs));
+      } catch (_) {}
       if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncJobs === 'function') {
         window.NN_SUPABASE_SERVICES.syncJobs();
       }
 
+      // REAL ACCOUNTS ONLY: Purge mock rentals
+      const mockRentIds = new Set(['rent_1', 'rent_2', 'rent_3', 'rent_4', 'rent_5', 'rent_6']);
       const storedRentals = localStorage.getItem('nn_rentals');
-      APP_STATE.rentals = storedRentals ? JSON.parse(storedRentals) : SEED_RENTALS;
+      let loadedRentals = storedRentals ? JSON.parse(storedRentals) : [];
+      loadedRentals = (Array.isArray(loadedRentals) ? loadedRentals : []).filter(r => 
+        r && !mockRentIds.has(r.id) && (r.isUserCreated || r.userId || r.id?.startsWith('rent_adm_') || r.isCloud)
+      );
+      APP_STATE.rentals = loadedRentals;
+      try {
+        localStorage.setItem('nn_rentals', JSON.stringify(loadedRentals));
+      } catch (_) {}
       if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncRentals === 'function') {
         window.NN_SUPABASE_SERVICES.syncRentals();
       }
 
+      // REAL ACCOUNTS ONLY: Purge mock blood donors
+      const mockDonorNames = new Set(['മുഹമ്മദ് ഷാഫി', 'വിജീഷ് പത്മനാഭൻ', 'അഞ്ജലി പ്രസാദ്', 'രഞ്ജിത്ത് വർമ്മ', 'സുരേഷ് കുമാർ', 'ദിവ്യാ മനോജ്', 'അബ്ദുൾ സമദ്', 'പ്രവീൺ കൃഷ്ണ']);
       const storedDonors = localStorage.getItem('nn_blood_donors');
-      APP_STATE.bloodDonors = storedDonors ? JSON.parse(storedDonors) : SEED_BLOOD_DONORS;
+      let loadedDonors = storedDonors ? JSON.parse(storedDonors) : [];
+      loadedDonors = (Array.isArray(loadedDonors) ? loadedDonors : []).filter(d => 
+        d && !mockDonorNames.has(d.name) && (d.userId || d.isUserCreated || d.isCloud || (d.id && d.id.startsWith('donor_') && !mockDonorNames.has(d.name)))
+      );
+      APP_STATE.bloodDonors = loadedDonors;
+      try {
+        localStorage.setItem('nn_blood_donors', JSON.stringify(loadedDonors));
+      } catch (_) {}
+
+      // Sync blood donors from Supabase Cloud
+      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncBloodDonors === 'function') {
+        window.NN_SUPABASE_SERVICES.syncBloodDonors();
+      }
 
       const storedRequests = localStorage.getItem('nn_blood_requests');
       APP_STATE.bloodRequests = storedRequests ? JSON.parse(storedRequests) : [];
@@ -913,24 +401,17 @@
       const storedMeta = localStorage.getItem('nn_chats_meta');
       APP_STATE.chatMeta = storedMeta ? JSON.parse(storedMeta) : {};
 
-      // Seed a welcome conversation if no chats exist
-      if (Object.keys(APP_STATE.chats).length === 0) {
-        const sampleKey = 'chat_919447123456';
-        APP_STATE.chats[sampleKey] = [
-          {
-            id: 'msg_welcome_1',
-            sender: 'them',
-            text: 'നമസ്കാരം! ഞാൻ സന്തോഷ് കുമാർ (ഇലക്ട്രീഷ്യൻ). എന്തെങ്കിലും സഹായം ആവശ്യമുണ്ടോ? 🌿',
-            time: 'ഇന്ന് 10:30 AM'
-          }
-        ];
-        APP_STATE.chatMeta[sampleKey] = {
-          name: 'സന്തോഷ് കുമാർ (ഇലക്ട്രീഷ്യൻ)',
-          phone: '+91 94471 23456',
-          avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=120&q=80'
-        };
-        saveChats();
+      // REAL CHATS ONLY: Purge mock welcome conversation
+      if (APP_STATE.chats['chat_919447123456']) {
+        delete APP_STATE.chats['chat_919447123456'];
       }
+      if (APP_STATE.chatMeta['chat_919447123456']) {
+        delete APP_STATE.chatMeta['chat_919447123456'];
+      }
+      try {
+        localStorage.setItem('nn_chats_store', JSON.stringify(APP_STATE.chats));
+        localStorage.setItem('nn_chats_meta', JSON.stringify(APP_STATE.chatMeta));
+      } catch (_) {}
 
       const storedServiceReqs = localStorage.getItem('nn_service_requests');
       APP_STATE.serviceRequests = storedServiceReqs ? JSON.parse(storedServiceReqs) : [];
@@ -960,11 +441,8 @@
           else if (srv.category === 'painter') srv.specializations = ['ഇന്റീരിയർ പെയിന്റിംഗ്', 'വാട്ടർപ്രൂഫിംഗ്', 'പോളിഷിംഗ്'];
           else srv.specializations = ['പ്രാദേശിക സേവനം', 'ദ്രുത സഹായം', 'വിശ്വസ്ത സേവനം'];
         }
-        if (!srv.reviews || !srv.reviews.length) {
-          srv.reviews = [
-            { user: 'രതീഷ് കണ്ണൂർ', rating: 5, date: '2 ദിവസം മുൻപ്', text: 'വളരെ നല്ല സർവീസ്! കൃത്യസമയത്ത് എത്തി പണി പൂർത്തിയാക്കി.' },
-            { user: 'സുധീർ കെ.', rating: 5, date: 'കഴിഞ്ഞ ആഴ്ച', text: 'ന്യായമായ കൂലി മാത്രം വാങ്ങി, വളരെ സംതൃപ്തനാണ്.' }
-          ];
+        if (!srv.reviews) {
+          srv.reviews = [];
         }
       });
     } catch (e) {
@@ -983,6 +461,13 @@
     } catch (_) {}
   }
   window.savePosts = savePosts;
+
+  function saveServices() {
+    try {
+      localStorage.setItem('nn_services', JSON.stringify(APP_STATE.services));
+    } catch (_) {}
+  }
+  window.saveServices = saveServices;
 
   function saveChats() {
     try {
@@ -1917,14 +1402,10 @@
         </div>
       </div>
 
-      <div class="profile-preview-actions">
-        <a href="tel:${phone}" class="profile-action-cta call">
-          <span>📞</span>
-          <span>വിളിക്കുക</span>
-        </a>
-        <button onclick="closeModal('modal-author-profile'); openChatModal('${name.replace(/'/g, "\\'")}', '${phone}', '${avatar}', 'ഹലോ ${name.replace(/'/g, "\\'")}', '${authorId}')" class="profile-action-cta chat">
+      <div class="profile-preview-actions" style="grid-template-columns:1fr">
+        <button onclick="closeModal('modal-author-profile'); openChatModal('${name.replace(/'/g, "\\'")}', '${phone}', '${avatar}', 'ഹലോ ${name.replace(/'/g, "\\'")}', '${authorId}')" class="profile-action-cta chat" style="width:100%;justify-content:center">
           <span>💬</span>
-          <span>ചാറ്റ് ചെയ്യാം</span>
+          <span>ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം</span>
         </button>
       </div>
 
@@ -2335,6 +1816,11 @@
   }
   window.openChatForDonor = openChatForDonor;
 
+  function openChatForAmbulance(name, phone) {
+    openChatModal(name, phone, DEFAULT_USER_AVATAR, `അടിയന്തിര ആംബുലൻസ് ആവശ്യം`, 'amb_' + (phone ? phone.replace(/\D/g, '') : name));
+  }
+  window.openChatForAmbulance = openChatForAmbulance;
+
   function syncUserChatsLive() {
     toast('🔄 പുതിയ സന്ദേശങ്ങൾ Supabase ക്ലൗഡിൽ നിന്ന് പരിശോധിക്കുന്നു...');
     if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncUserChats === 'function') {
@@ -2737,15 +2223,11 @@
             <span style="color:#059669;font-weight:700">വിശദാംശങ്ങൾ & റേറ്റിംഗ് ➔</span>
           </div>
 
-          <!-- DIRECT ACTIONS: PHONE CALL & IN-APP CHAT (NO WHATSAPP) -->
+          <!-- DIRECT ACTION: IN-APP CHAT ONLY -->
           <div class="service-actions-row" onclick="event.stopPropagation()">
-            <a href="tel:${srv.phone}" class="prov-btn-call" title="നേരിട്ട് വിളിക്കുക">
-              <span>📞</span>
-              <span>വിളിക്കുക</span>
-            </a>
-            <button class="prov-btn-chat" onclick="openChatForService('${srv.id}')" title="ആപ്പ് ചാറ്റ്">
+            <button class="prov-btn-chat" onclick="openChatForService('${srv.id}')" title="ആപ്പ് ചാറ്റ്" style="flex:1;justify-content:center">
               <span>💬</span>
-              <span>ആപ്പ് ചാറ്റ്</span>
+              <span>ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം</span>
             </button>
           </div>
         </div>
@@ -2814,15 +2296,11 @@
           </div>
         </div>
 
-        <!-- DIRECT ACTIONS (CALL & APP CHAT ONLY - NO WHATSAPP) -->
+        <!-- DIRECT ACTION (APP CHAT ONLY) -->
         <div style="display:flex;gap:10px;margin-top:4px">
-          <a href="tel:${srv.phone}" class="prov-btn-call" style="padding:12px;font-size:0.92rem;border-radius:14px">
-            <span>📞</span>
-            <span>നേരിട്ട് വിളിക്കുക</span>
-          </a>
-          <button class="prov-btn-chat" style="padding:12px;font-size:0.92rem;border-radius:14px" onclick="closeModal('modal-service-detail'); openChatForService('${srv.id}')">
+          <button class="prov-btn-chat" style="padding:12px;font-size:0.92rem;border-radius:14px;flex:1;display:flex;align-items:center;justify-content:center;gap:8px" onclick="closeModal('modal-service-detail'); openChatForService('${srv.id}')">
             <span>💬</span>
-            <span>ആപ്പ് ചാറ്റ് ചെയ്യാം</span>
+            <span>ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം</span>
           </button>
         </div>
 
@@ -3718,6 +3196,18 @@
       list = list.filter(d => d.group === APP_STATE.activeBloodGroup);
     }
 
+    if (!list || list.length === 0) {
+      container.innerHTML = `
+        <div style="text-align:center;padding:32px 16px;background:#fff;border-radius:16px;border:1px dashed #FECACA">
+          <div style="font-size:32px;margin-bottom:6px">🩸</div>
+          <div style="font-weight:800;font-size:14px;color:#1E293B">രക്തദാതാക്കൾ ലഭ്യമല്ല</div>
+          <div style="font-size:12px;color:#64748B;margin:4px 0 14px">നിങ്ങൾക്ക് രക്തദാതാവായി രജിസ്റ്റർ ചെയ്യാം.</div>
+          <button onclick="openModal('modal-edit-profile')" style="padding:8px 16px;background:#DC2626;color:#fff;border:none;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer">🩸 രക്തദാതാവാകാം</button>
+        </div>
+      `;
+      return;
+    }
+
     container.innerHTML = list.map(d => `
       <div style="background:#fff;border-radius:16px;padding:14px;border:1px solid #FECACA;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
         <div style="display:flex;align-items:center;gap:12px">
@@ -4332,43 +3822,12 @@
   // ==============================================================
   const DEFAULT_AMBULANCES = [
     {
-      id: 'amb_def_1',
-      name: 'കണ്ണൂർ ജില്ലാ ആശുപത്രി ആംബുലൻസ് (Govt 108)',
-      vehicle: 'KL-13-G-1080',
-      type: '🟢 ഓക്സിജൻ & ഐസിയു സപ്പോർട്ട്',
-      location: 'ജില്ലാ ആശുപത്രി സ്റ്റാൻഡ്, കണ്ണൂർ',
+      id: 'amb_govt_108',
+      name: 'കനിവ് 108 സൗജന്യ സർക്കാർ ആംബുലൻസ് (Govt 108)',
+      vehicle: 'KL-Govt-108',
+      type: '🟢 അത്യാഹിത & ഐസിയു സപ്പോർട്ട്',
+      location: 'കേരളം ഒട്ടാകെ (24x7)',
       phone: '108',
-      whatsapp: '9847108108',
-      availability: '24x7 മുഴുവൻ സമയവും ലഭ്യമാണ്'
-    },
-    {
-      id: 'amb_def_2',
-      name: 'ലൈഫ് കെയർ എമർജൻസി ആംബുലൻസ് സർവീസ്',
-      vehicle: 'KL-13-AB-4011',
-      type: '🚨 ഐസിയു & വെന്റിലേറ്റർ സപ്പോർട്ട്',
-      location: 'സെൻട്രൽ ജംഗ്ഷൻ, കണ്ണൂർ',
-      phone: '9847123999',
-      whatsapp: '9847123999',
-      availability: '24x7 മുഴുവൻ സമയവും ലഭ്യമാണ്'
-    },
-    {
-      id: 'amb_def_3',
-      name: 'റെഡ് ക്രോസ് ആംബുലൻസ് സർവീസ്',
-      vehicle: 'KL-58-H-8922',
-      type: '🟢 ഓക്സിജൻ ആംബുലൻസ്',
-      location: 'ജനറൽ ആശുപത്രി പരിസരം, തലശ്ശേരി',
-      phone: '9447012345',
-      whatsapp: '9447012345',
-      availability: '24x7 മുഴുവൻ സമയവും ലഭ്യമാണ്'
-    },
-    {
-      id: 'amb_def_4',
-      name: 'പയ്യന്നൂർ കാരുണ്യ ചാരിറ്റബിൾ ആംബുലൻസ്',
-      vehicle: 'KL-59-C-2211',
-      type: '🚑 ബേസിക് ലൈഫ് സപ്പോർട്ട്',
-      location: 'പഴയ ബസ് സ്റ്റാൻഡ്, പയ്യന്നൂർ',
-      phone: '9745123888',
-      whatsapp: '9745123888',
       availability: '24x7 മുഴുവൻ സമയവും ലഭ്യമാണ്'
     }
   ];
@@ -4478,14 +3937,15 @@
           </div>
 
           <div style="display:flex;align-items:center;gap:8px;margin-top:2px">
-            <a href="tel:${cleanPhone}" style="flex:1;background:linear-gradient(135deg, #E11D48 0%, #BE123C 100%);color:#fff;text-decoration:none;padding:8px;border-radius:10px;font-size:12.5px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 6px rgba(225,29,72,0.25)">
-              <span>📞 വിളിക്കുക: ${escapeHtml(d.phone)}</span>
-            </a>
-            ${waPhone ? `
-              <a href="${waUrl}" target="_blank" style="background:#25D366;color:#fff;text-decoration:none;padding:8px 12px;border-radius:10px;font-size:12px;font-weight:800;display:flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(37,211,102,0.25)">
-                <span>💬 വാട്സ്ആപ്പ്</span>
+            ${cleanPhone === '108' ? `
+              <a href="tel:108" style="flex:1;background:linear-gradient(135deg, #E11D48 0%, #BE123C 100%);color:#fff;text-decoration:none;padding:10px;border-radius:10px;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 6px rgba(225,29,72,0.25)">
+                <span>📞 108 വിളിക്കുക (സൗജന്യ സർക്കാർ ആംബുലൻസ്)</span>
               </a>
-            ` : ''}
+            ` : `
+              <button onclick="openChatForAmbulance('${(d.name || 'ആംബുലൻസ്').replace(/'/g, "\\'")}', '${d.phone || ''}')" style="flex:1;background:#0E7043;color:#fff;border:none;padding:10px;border-radius:10px;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer">
+                <span>💬 ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം</span>
+              </button>
+            `}
           </div>
         </div>
       `;
@@ -4677,12 +4137,9 @@
               📝 അപേക്ഷിക്കുക
             </button>
             <button onclick="openChatForJob('${j.id}')" 
-                    style="background:#E0F2FE;color:#0369A1;border:1px solid #BAE6FD;padding:10px 14px;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer">
-              💬 Chat
+                    style="flex:1;background:#E0F2FE;color:#0369A1;border:1px solid #BAE6FD;padding:10px 14px;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+              💬 ആപ്പ് ചാറ്റ്
             </button>
-            <a href="tel:${j.employerPhone}" style="background:#F0FDF4;color:#15803D;border:1px solid #BBF7D0;padding:10px 14px;border-radius:10px;font-weight:800;font-size:13px;text-decoration:none;display:flex;align-items:center">
-              📞 Call
-            </a>
           </div>
         </div>
       `).join('');
@@ -4756,9 +4213,8 @@
           </div>
           <div style="font-size:11px;background:#F0FDF4;color:#166534;padding:3px 8px;border-radius:6px;align-self:flex-start;font-weight:700">${r.type || 'വാടക & വിൽപന'}</div>
           <div style="font-size:12px;color:#6B7280">ഉടമസ്ഥൻ: ${r.owner} • 📍 ${r.location} • <span style="color:#0E7043;font-weight:700">${r._calculatedDist || 1.2} km അകലെ</span></div>
-          <div style="display:flex;gap:8px;margin-top:6px">
-            <a href="tel:${r.ownerPhone}" style="flex:1;background:#10B981;color:#fff;padding:10px;border-radius:10px;text-align:center;text-decoration:none;font-weight:800;font-size:13px">📞 Call</a>
-            <button onclick="openChatForRental('${r.id}')" style="flex:1;background:#0E7043;color:#fff;border:none;padding:10px;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer">💬 Chat</button>
+          <div style="margin-top:6px">
+            <button onclick="openChatForRental('${r.id}')" style="width:100%;background:#0E7043;color:#fff;border:none;padding:10px;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">💬 ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം</button>
           </div>
         </div>
       `).join('');
@@ -5133,10 +4589,7 @@
           </div>
 
           <div style="display:flex;gap:6px;flex-shrink:0;margin-left:8px" onclick="event.stopPropagation()">
-            ${item.phone ? `
-              <a href="tel:${item.phone}" style="background:#10B981;color:#fff;width:38px;height:38px;border-radius:12px;text-decoration:none;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 2px 6px rgba(16,185,129,0.25)" title="വിളിക്കുക">📞</a>
-            ` : ''}
-            <button type="button" onclick="openChatModal('${item.name.replace(/'/g, "\\'")}', '${item.phone}', '${item.avatar}', '${item.subtitle.replace(/'/g, "\\'")}', '${item.id}')" style="background:#0E7043;color:#fff;border:none;width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;box-shadow:0 2px 6px rgba(14,112,67,0.25)" title="ചാറ്റ് ചെയ്യാം">💬</button>
+            <button type="button" onclick="openChatModal('${item.name.replace(/'/g, "\\'")}', '${item.phone}', '${item.avatar}', '${item.subtitle.replace(/'/g, "\\'")}', '${item.id}')" style="background:#0E7043;color:#fff;border:none;padding:8px 12px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:4px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 2px 6px rgba(14,112,67,0.25)" title="ചാറ്റ് ചെയ്യാം">💬 ചാറ്റ്</button>
           </div>
         </div>
       `;
@@ -6369,15 +5822,11 @@
             ${(srv.specializations || []).slice(0, 2).map(s => `<span class="provider-spec-tag">${s}</span>`).join('')}
           </div>
 
-          <!-- DIRECT ACTIONS: PHONE CALL & IN-APP CHAT (NO WHATSAPP) -->
+          <!-- DIRECT ACTION: IN-APP CHAT ONLY -->
           <div class="service-actions-row" onclick="event.stopPropagation()">
-            <a href="tel:${srv.phone}" class="prov-btn-call" title="നേരിട്ട് വിളിക്കുക">
-              <span>📞</span>
-              <span>വിളിക്കുക</span>
-            </a>
-            <button class="prov-btn-chat" onclick="openChatForService('${srv.id}')" title="ആപ്പ് ചാറ്റ്">
+            <button class="prov-btn-chat" onclick="openChatForService('${srv.id}')" title="ആപ്പ് ചാറ്റ്" style="flex:1;justify-content:center">
               <span>💬</span>
-              <span>ആപ്പ് ചാറ്റ്</span>
+              <span>ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം</span>
             </button>
           </div>
         </div>
