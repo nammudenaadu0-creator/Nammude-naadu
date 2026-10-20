@@ -64,12 +64,152 @@
         </section>
 
         <!-- ============================================================== -->
-        <!-- SCREEN 1: HOME                                                 -->
+        <!-- DESKTOP WEB TOPBAR (Visible on screens >= 769px)               -->
         <!-- ============================================================== -->
+        <header class="desktop-web-header" id="desktopWebHeader">
+            <div class="desktop-header-inner">
+                <!-- Brand / Logo -->
+                <div class="desktop-brand-wrap" onclick="navTo('home')">
+                    <div class="desktop-brand-icon-circle">🌴</div>
+                    <div>
+                        <h1 class="desktop-brand-title">നമ്മുടെ നാട്</h1>
+                        <span class="desktop-brand-badge">കേരള കമ്മ്യൂണിറ്റി പോർട്ടൽ</span>
+                    </div>
+                </div>
+
+                <!-- Center: Location & Universal Search -->
+                <div class="desktop-header-center">
+                    <div class="desktop-location-chip" onclick="openLocationModal()" title="ലൊക്കേഷൻ മാറ്റുക">
+                        <span>📍</span>
+                        <span class="desktop-loc-text" id="desktopLiveLocText">കണ്ണൂർ, കേരളം</span>
+                        <span style="font-size:11px;color:#64748B">▾</span>
+                        <button type="button" onclick="event.stopPropagation(); detectLiveGpsLocation(true);" style="background:none;border:none;cursor:pointer;font-size:12px;padding:0 2px" title="GPS പുതുക്കുക">🔄</button>
+                    </div>
+
+                    <div class="desktop-search-input-wrap">
+                        <span class="desktop-search-icon">🔍</span>
+                        <input type="text" id="desktopSearchInput" placeholder="സേവനങ്ങൾ, ജോലികൾ, രക്തം, വാടക തിരയുക..." onkeyup="if(event.key==='Enter')triggerDesktopSearch()" autocomplete="off">
+                    </div>
+                </div>
+
+                <!-- Right: Quick Actions & Profile -->
+                <div class="desktop-header-actions">
+                    <button type="button" class="desktop-action-btn post" onclick="navTo('add')">
+                        <span>➕</span>
+                        <span>പോസ്റ്റ്</span>
+                    </button>
+                    <button type="button" class="desktop-action-btn blood" onclick="openBloodModal()">
+                        <span>🩸</span>
+                        <span>രക്തദാനം</span>
+                    </button>
+                    <button type="button" class="desktop-action-btn service" onclick="openQuickServiceModal()">
+                        <span>⚡</span>
+                        <span>സേവനം</span>
+                    </button>
+
+                    <div class="desktop-user-profile-chip" onclick="navTo('profile')" title="എന്റെ പ്രൊഫൈൽ">
+                        <img id="desktopUserAvatar" src="img/kerala-splash.jpg" alt="Profile" class="desktop-user-avatar">
+                        <span id="desktopUserName" class="desktop-user-name">പ്രൊഫൈൽ</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
         <!-- ============================================================== -->
-        <!-- SCREEN 1: HOME (MODERN 3D APP DESIGN & PROPER LOCATION/SEARCH) -->
+        <!-- DESKTOP 3-COLUMN MAIN LAYOUT WRAPPER                           -->
         <!-- ============================================================== -->
-        <section id="screen-home" class="screen home-3d-root">
+        <div class="desktop-main-layout" id="desktopMainLayout">
+
+            <!-- 1. LEFT NAVIGATION & PROFILE SIDEBAR -->
+            <aside class="desktop-sidebar-left" id="webLeftSidebar">
+                <!-- User mini hero -->
+                <div class="desktop-card desktop-user-hero-mini" onclick="navTo('profile')">
+                    <img id="desktopSidebarAvatar" src="img/kerala-splash.jpg" alt="User" class="desktop-sidebar-avatar">
+                    <div class="desktop-sidebar-user-info">
+                        <h4 id="desktopSidebarName">നമ്മുടെ ഉപയോക്താവ്</h4>
+                        <p id="desktopSidebarSub">📍 കേരളം · പ്രൊഫൈൽ കാണാം</p>
+                    </div>
+                </div>
+
+                <!-- Navigation List -->
+                <div class="desktop-card">
+                    <div class="desktop-nav-list">
+                        <a class="desktop-nav-item active" data-dest="home" onclick="navTo('home')">
+                            <span class="desktop-nav-icon">🏠</span>
+                            <span>ഹോം ഫീഡ് (Home)</span>
+                        </a>
+                        <a class="desktop-nav-item" data-dest="community" onclick="navTo('community')">
+                            <span class="desktop-nav-icon">👥</span>
+                            <span>കമ്മ്യൂണിറ്റി (Community)</span>
+                        </a>
+                        <a class="desktop-nav-item" data-dest="services" onclick="navTo('services')">
+                            <span class="desktop-nav-icon">⚡</span>
+                            <span>സേവനങ്ങൾ (Services)</span>
+                        </a>
+                        <a class="desktop-nav-item" data-dest="jobs" onclick="navTo('jobs')">
+                            <span class="desktop-nav-icon">💼</span>
+                            <span>തൊഴിൽ & ജോലി (Jobs)</span>
+                        </a>
+                        <a class="desktop-nav-item" data-dest="rentals" onclick="navTo('rentals')">
+                            <span class="desktop-nav-icon">🏠</span>
+                            <span>വാടക & വിൽപന (Rentals)</span>
+                        </a>
+                        <a class="desktop-nav-item" data-dest="blood" onclick="navTo('blood')">
+                            <span class="desktop-nav-icon">🩸</span>
+                            <span>രക്തദാനം (Blood Network)</span>
+                        </a>
+                        <a class="desktop-nav-item" data-dest="nearby" onclick="navTo('nearby')">
+                            <span class="desktop-nav-icon">📍</span>
+                            <span>അടുത്തുള്ളവ (Nearby)</span>
+                        </a>
+                        <a class="desktop-nav-item" data-dest="chat" onclick="navTo('chat')">
+                            <span class="desktop-nav-icon">💬</span>
+                            <span>സന്ദേശങ്ങൾ (Messages)</span>
+                        </a>
+                        <a class="desktop-nav-item" data-dest="profile" onclick="navTo('profile')">
+                            <span class="desktop-nav-icon">👤</span>
+                            <span>എന്റെ പ്രൊഫൈൽ (Profile)</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Emergency Helplines Widget -->
+                <div class="desktop-emergency-widget">
+                    <div class="desktop-emergency-title">
+                        <span>🚨</span>
+                        <span>അടിയന്തിര നമ്പറുകൾ (Helplines)</span>
+                    </div>
+                    <div class="desktop-emergency-grid">
+                        <a href="tel:108" class="desktop-emergency-badge">
+                            <strong>108</strong>
+                            <span>ആംബുലൻസ്</span>
+                        </a>
+                        <a href="tel:112" class="desktop-emergency-badge">
+                            <strong>112</strong>
+                            <span>പോലീസ്</span>
+                        </a>
+                        <a href="tel:101" class="desktop-emergency-badge">
+                            <strong>101</strong>
+                            <span>ഫയർഫോഴ്സ്</span>
+                        </a>
+                        <a href="tel:1056" class="desktop-emergency-badge">
+                            <strong>1056</strong>
+                            <span>ദിശ ഹെൽത്ത്</span>
+                        </a>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- 2. CENTER ACTIVE CONTENT SCREEN FEED -->
+            <main class="desktop-center-content" id="webCenterContent">
+
+                <!-- ============================================================== -->
+                <!-- SCREEN 1: HOME                                                 -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- SCREEN 1: HOME (MODERN 3D APP DESIGN & PROPER LOCATION/SEARCH) -->
+                <!-- ============================================================== -->
+                <section id="screen-home" class="screen home-3d-root">
             <!-- 3D TOP NAVBAR (BRAND & PROFILE) -->
             <header class="home-top-navbar">
                 <div class="brand-3d-badge">
@@ -581,7 +721,10 @@
                     <h2 style="margin:0;font-size:17px;font-weight:800">സന്ദേശങ്ങൾ (Messages)</h2>
                     <div style="font-size:11px;color:#059669;font-weight:700">⚡ തത്സമയ ക്ലൗഡ് ചാറ്റ് (Live Cloud)</div>
                 </div>
-                <button class="round-gear-btn" onclick="syncUserChatsLive()" title="സന്ദേശങ്ങൾ പുതുക്കുക">🔄</button>
+                <div style="display:flex;align-items:center;gap:6px">
+                    <button class="round-gear-btn" onclick="openNewChatModal()" title="പുതിയ ചാറ്റ് ആരംഭിക്കുക" style="background:#0E7043;color:#fff;border:none;font-weight:900">➕</button>
+                    <button class="round-gear-btn" onclick="syncUserChatsLive()" title="സന്ദേശങ്ങൾ പുതുക്കുക">🔄</button>
+                </div>
             </div>
             <div id="chatThreadsList" style="display:flex;flex-direction:column;gap:10px;padding:16px"></div>
         </section>
@@ -687,8 +830,66 @@
             </div>
         </section>
 
+            </main><!-- END .desktop-center-content -->
+
+            <!-- 3. RIGHT SIDEBAR (WIDGETS & EMERGENCY HIGHLIGHTS) -->
+            <aside class="desktop-sidebar-right" id="webRightSidebar">
+                <!-- Blood Urgent Box -->
+                <div class="desktop-blood-widget">
+                    <div class="desktop-blood-header">
+                        <div class="desktop-blood-title">
+                            <span>🩸</span>
+                            <span>അടിയന്തിര രക്തദാനം</span>
+                        </div>
+                        <span class="desktop-blood-pill">Live Alerts</span>
+                    </div>
+                    <p style="font-size:12px;color:#475569;margin:0 0 10px;line-height:1.4">
+                        നിങ്ങളുടെ പ്രദേശത്ത് രക്തം ആവശ്യമുണ്ടെങ്കിൽ അറിയിക്കാം അല്ലെങ്കിൽ ദാതാവാകാം.
+                    </p>
+                    <div style="display:flex;gap:8px">
+                        <button type="button" onclick="openBloodRequestModal()" style="flex:1;background:#DC2626;color:#fff;border:none;border-radius:10px;padding:8px;font-size:11.5px;font-weight:800;cursor:pointer">
+                            🚨 റിക്വസ്റ്റ് നൽകാം
+                        </button>
+                        <button type="button" onclick="openRegisterDonorModal()" style="flex:1;background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;border-radius:10px;padding:8px;font-size:11.5px;font-weight:800;cursor:pointer">
+                            ➕ ദാതാവാകാം
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 1-Tap Quick Service Box -->
+                <div class="desktop-service-widget">
+                    <h4>⚡ സേവനം ആവശ്യമുണ്ടോ?</h4>
+                    <p>1 മിനിറ്റിൽ വർക്കർമാരെ ആവശ്യപ്പെടാം. അടുത്തുള്ള തൊഴിലാളികൾ ബന്ധപ്പെടും.</p>
+                    <div class="desktop-service-grid">
+                        <button type="button" class="desktop-svc-btn" onclick="openQuickServiceModal('പ്ലംബർ')">🔧 പ്ലംബർ</button>
+                        <button type="button" class="desktop-svc-btn" onclick="openQuickServiceModal('ഇലക്ട്രീഷ്യൻ')">⚡ ഇലക്ട്രീഷ്യൻ</button>
+                        <button type="button" class="desktop-svc-btn" onclick="openQuickServiceModal('ഓട്ടോ / ടാക്സി')">🚕 ടാക്സി / ഓട്ടോ</button>
+                        <button type="button" class="desktop-svc-btn" onclick="openQuickServiceModal('പെയിന്റർ')">🎨 പെയിന്റർ</button>
+                    </div>
+                </div>
+
+                <!-- Mobile App Download Promotion Card -->
+                <div class="desktop-app-download-card">
+                    <h4 class="desktop-app-download-title">📱 മൊബൈൽ ആപ്പ് ലഭ്യമാണ്</h4>
+                    <p class="desktop-app-download-sub">
+                        സ്മാർട്ട്ഫോണിൽ കൂടുതൽ സൗകര്യത്തോടെ ഉപയോഗിക്കാൻ ആപ്പ് ഡൗൺലോഡ് ചെയ്യാം.
+                    </p>
+                    <a href="NammudeNaadu.apk" download class="desktop-apk-btn">
+                        <span>⬇️</span>
+                        <span>Android APK ഡൗൺലോഡ്</span>
+                    </a>
+                </div>
+
+                <!-- Portal Info Footer -->
+                <div style="font-size:11px;color:#94A3B8;text-align:center;padding:4px 8px;line-height:1.5">
+                    <strong>നമ്മുടെ നാട്</strong> · കേരളത്തിന്റെ സ്വന്തം ഓൺലൈൻ കൂട്ടായ്മ & ലോക്കൽ നെറ്റ്‌വർക്ക്
+                </div>
+            </aside>
+
+        </div><!-- END .desktop-main-layout -->
+
         <!-- ============================================================== -->
-        <!-- BOTTOM NAVIGATION BAR                                          -->
+        <!-- BOTTOM NAVIGATION BAR (Mobile Native Only)                     -->
         <!-- ============================================================== -->
         <nav class="bottom-nav" id="bottomNav" style="display:none">
             <button class="nav-item active" data-page="home" onclick="navTo('home')">
@@ -768,6 +969,35 @@
                     onkeydown="if(event.key==='Enter')sendChatMessage()">
                 <button class="chat-send-btn" onclick="sendChatMessage()">➤</button>
             </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: START NEW CHAT (DIRECT PHONE / CITIZEN SELECTOR)        -->
+    <!-- ============================================================== -->
+    <div id="modal-new-chat" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-new-chat')">
+        <div class="modal-sheet" style="max-height:85vh;display:flex;flex-direction:column">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div style="display:flex;align-items:center;gap:8px">
+                    <span style="font-size:22px">💬</span>
+                    <h3 style="margin:0;color:#0E7043;font-size:17px;font-weight:800">പുതിയ ചാറ്റ് ആരംഭിക്കാം</h3>
+                </div>
+                <button onclick="closeModal('modal-new-chat')" style="background:none;border:none;font-size:20px;cursor:pointer">✕</button>
+            </div>
+
+            <!-- Direct Phone Number Input -->
+            <form onsubmit="startDirectChatFromForm(event)" style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;background:#F8FAFC;padding:12px;border-radius:14px;border:1px solid #E2E8F0">
+                <label style="font-size:12px;font-weight:800;color:#334155">ഫോൺ നമ്പർ നൽകി ചാറ്റ് ചെയ്യാം (Enter Phone):</label>
+                <div style="display:flex;gap:8px">
+                    <input type="tel" id="newChatPhoneInput" placeholder="Eg: 94471 00000" required style="flex:1;padding:10px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13.5px;outline:none;background:#fff">
+                    <button type="submit" style="background:#0E7043;color:#fff;border:none;border-radius:10px;padding:0 16px;font-weight:800;font-size:13px;cursor:pointer">തുടങ്ങാം ➔</button>
+                </div>
+                <input type="text" id="newChatNameInput" placeholder="പേര് (Optional Name)" style="padding:8px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:12px;outline:none;background:#fff">
+            </form>
+
+            <div style="font-size:12px;font-weight:800;color:#64748B;margin-bottom:8px">അല്ലെങ്കിൽ അടുത്തുള്ളവരെ തിരഞ്ഞെടുക്കൂ:</div>
+            <!-- Quick contacts list from active services / blood donors / neighbors -->
+            <div id="newChatContactsList" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;max-height:300px"></div>
         </div>
     </div>
 

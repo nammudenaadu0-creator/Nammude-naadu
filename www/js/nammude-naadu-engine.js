@@ -886,6 +886,11 @@
       });
     }
 
+    // Toggle desktop sidebar navigation active state
+    document.querySelectorAll('.desktop-nav-item').forEach(item => {
+      item.classList.toggle('active', item.dataset.dest === screenId);
+    });
+
     // Screen specific triggers
     if (screenId === 'home') {
       renderHomeScreen();
@@ -1001,6 +1006,9 @@
 
     const homeLoc = document.getElementById('homeLiveLocText');
     if (homeLoc) homeLoc.textContent = cleanName;
+
+    const desktopLoc = document.getElementById('desktopLiveLocText');
+    if (desktopLoc) desktopLoc.textContent = cleanName;
 
     const quickLoc = document.getElementById('quickReqLocation');
     if (quickLoc && (!quickLoc.value || quickLoc.value === 'കണ്ണൂർ, കേരളം')) {
@@ -1694,25 +1702,43 @@
   window.openAuthorProfile = openAuthorProfile;
 
   // ==============================================================
-  // 10. REALTIME 1-ON-1 IN-APP CLOUD CHAT ENGINE (FIREBASE RTDB)
+  // 10. REALTIME 1-ON-1 IN-APP CLOUD CHAT ENGINE (SUPABASE REALTIME)
   // ==============================================================
+  function normalizePhone(p) {
+    if (!p) return '';
+    const digits = String(p).replace(/\D/g, '');
+    return digits.length >= 10 ? digits.slice(-10) : digits;
+  }
+  window.normalizePhone = normalizePhone;
+
   function computeChatKey(id1, phone1, name1, id2, phone2, name2) {
     function sanitize(s) {
       if (!s) return '';
-      return String(s).replace(/[^a-zA-Z0-9]/g, '');
+      return String(s).trim().toLowerCase().replace(/[^a-zA-Z0-9]/g, '');
     }
-    const clean1 = (phone1 ? phone1.replace(/\D/g, '') : '') || sanitize(id1) || sanitize(name1) || 'user1';
-    const clean2 = (phone2 ? phone2.replace(/\D/g, '') : '') || sanitize(id2) || sanitize(name2) || 'user2';
+    const p1 = normalizePhone(phone1);
+    const p2 = normalizePhone(phone2);
+
+    if (p1 && p2 && p1 !== p2) {
+      return 'chat_' + [p1, p2].sort().join('_');
+    }
+
+    const clean1 = p1 || sanitize(id1) || 'user1';
+    const clean2 = p2 || sanitize(id2) || 'user2';
+
+    if (clean1 === clean2) {
+      return 'chat_' + clean1 + '_peer';
+    }
     return 'chat_' + [clean1, clean2].sort().join('_');
   }
 
-  function openChatModal(recipientName, recipientPhone, recipientAvatar, initialContext, recipientId) {
+  function openChatModal(recipientName, recipientPhone, recipientAvatar, initialContext, recipientId, explicitChatKey) {
     const safeName = recipientName || 'പ്രാദേശിക സുഹൃത്ത്';
     const safePhone = recipientPhone || '';
     const safeAvatar = recipientAvatar || DEFAULT_USER_AVATAR;
 
-    // Compute symmetric chat key so both users land in the identical Firebase conversation
-    const chatKey = computeChatKey(
+    // Use explicit chat key if passed directly from chat list, or compute symmetric key
+    const chatKey = explicitChatKey || computeChatKey(
       APP_STATE.currentUser.id,
       APP_STATE.currentUser.phone,
       APP_STATE.currentUser.name,
@@ -1776,6 +1802,8 @@
         thread.push({
           id: 'msg_ctx_' + Date.now(),
           sender: 'me',
+          senderId: APP_STATE.currentUser.id,
+          senderPhone: APP_STATE.currentUser.phone || '',
           senderName: APP_STATE.currentUser.name,
           text: `📌 അന്വേഷണം: ${initialContext}`,
           time: 'ഇപ്പോൾ',
@@ -1798,19 +1826,34 @@
       window._activeChatUnsubscribe = window.NN_SUPABASE_SERVICES.subscribeChatThread(chatKey, (cloudMsgs) => {
         if (Array.isArray(cloudMsgs) && cloudMsgs.length > 0) {
           const myId = APP_STATE.currentUser.id;
-          const myCleanPhone = (APP_STATE.currentUser.phone ? APP_STATE.currentUser.phone.replace(/\D/g, '') : '');
-          APP_STATE.chats[chatKey] = cloudMsgs.map(m => {
-            const mPhone = (m.senderPhone ? m.senderPhone.replace(/\D/g, '') : '');
-            const isMe = (m.senderId === myId) || (myCleanPhone && mPhone && mPhone === myCleanPhone);
-            return {
-              id: m.id || ('msg_' + Date.now()),
-              sender: isMe ? 'me' : 'them',
-              senderName: m.senderName || '',
-              text: m.text,
-              time: m.time || 'ഇപ്പോൾ',
-              timestamp: m.timestamp || Date.now()
-            };
+          const myCleanPhone = normalizePhone(APP_STATE.currentUser.phone);
+
+          if (!APP_STATE.chats[chatKey]) APP_STATE.chats[chatKey] = [];
+
+          cloudMsgs.forEach(m => {
+            const mPhone = normalizePhone(m.senderPhone || m.sender_phone);
+            const isMe = m.sender === 'me' || (m.senderId && m.senderId === myId) || (myCleanPhone && mPhone && mPhone === myCleanPhone);
+            const exists = APP_STATE.chats[chatKey].some(local => local.id === m.id || (local.timestamp === m.timestamp && local.text === m.text));
+            if (!exists) {
+              APP_STATE.chats[chatKey].push({
+                id: m.id || ('msg_' + Date.now()),
+                sender: isMe ? 'me' : 'them',
+                senderId: m.senderId,
+                senderPhone: m.senderPhone,
+                senderName: m.senderName || '',
+                text: m.text,
+                time: m.time || 'ഇപ്പോൾ',
+                timestamp: m.timestamp || Date.now()
+              });
+            } else {
+              const localMsg = APP_STATE.chats[chatKey].find(local => local.id === m.id || (local.timestamp === m.timestamp && local.text === m.text));
+              if (localMsg && isMe) {
+                localMsg.sender = 'me';
+              }
+            }
           });
+
+          APP_STATE.chats[chatKey].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
           saveChats();
           renderChatMessages();
         }
@@ -1882,6 +1925,8 @@
     APP_STATE.chats[chatKey].push({
       id: msgId,
       sender: 'me',
+      senderId: APP_STATE.currentUser.id,
+      senderPhone: APP_STATE.currentUser.phone || '',
       senderName: senderName,
       text: text,
       time: timeStr,
@@ -2058,6 +2103,99 @@
   }
   window.syncUserChatsLive = syncUserChatsLive;
 
+  function openNewChatModal() {
+    renderNewChatContacts();
+    openModal('modal-new-chat');
+  }
+  window.openNewChatModal = openNewChatModal;
+
+  function renderNewChatContacts() {
+    const list = document.getElementById('newChatContactsList');
+    if (!list) return;
+
+    const contacts = [];
+    const seenPhones = new Set();
+    const myPhone = normalizePhone(APP_STATE.currentUser.phone);
+
+    (APP_STATE.services || []).forEach(s => {
+      const p = normalizePhone(s.phone);
+      if (p && p !== myPhone && !seenPhones.has(p)) {
+        seenPhones.add(p);
+        contacts.push({
+          name: s.name,
+          phone: s.phone,
+          sub: `${s.trade} • 📍 ${s.location || 'കണ്ണൂർ'}`,
+          avatar: s.avatar || DEFAULT_USER_AVATAR,
+          id: s.id
+        });
+      }
+    });
+
+    (APP_STATE.bloodDonors || []).forEach(d => {
+      const p = normalizePhone(d.phone);
+      if (p && p !== myPhone && !seenPhones.has(p)) {
+        seenPhones.add(p);
+        contacts.push({
+          name: d.name,
+          phone: d.phone,
+          sub: `🩸 ${d.group || 'O+'} രക്തദാതാവ് • 📍 ${d.location || 'കണ്ണൂർ'}`,
+          avatar: DEFAULT_USER_AVATAR,
+          id: 'donor_' + p
+        });
+      }
+    });
+
+    if (contacts.length === 0) {
+      list.innerHTML = `<div style="text-align:center;padding:20px;color:#94A3B8;font-size:12px">കോൺടാക്റ്റുകൾ ലഭ്യമല്ല. മുകളിൽ ഫോൺ നമ്പർ നൽകി ചാറ്റ് ചെയ്യാം.</div>`;
+      return;
+    }
+
+    list.innerHTML = contacts.slice(0, 15).map(c => `
+      <div onclick="closeModal('modal-new-chat'); openChatModal('${escapeHtml(c.name).replace(/'/g, "\\'")}', '${c.phone}', '${c.avatar}', 'ഹലോ ${escapeHtml(c.name).replace(/'/g, "\\'")}', '${c.id}')"
+           style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;cursor:pointer;transition:background 0.15s">
+        <img src="${c.avatar}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:1.5px solid #CBD5E1">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:800;color:#1E293B">${escapeHtml(c.name)}</div>
+          <div style="font-size:11px;color:#64748B">${escapeHtml(c.sub)}</div>
+        </div>
+        <button style="background:#0E7043;color:#fff;border:none;border-radius:8px;padding:4px 10px;font-size:11px;font-weight:800;cursor:pointer">ചാറ്റ് 💬</button>
+      </div>
+    `).join('');
+  }
+  window.renderNewChatContacts = renderNewChatContacts;
+
+  function startDirectChatFromForm(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const phoneInput = document.getElementById('newChatPhoneInput');
+    const nameInput = document.getElementById('newChatNameInput');
+    const rawPhone = (phoneInput ? phoneInput.value : '').trim();
+    const rawName = (nameInput ? nameInput.value : '').trim();
+
+    if (!rawPhone) {
+      toast('⚠️ ദയവായി ഫോൺ നമ്പർ നൽകുക.');
+      return;
+    }
+
+    const cleanPhone = normalizePhone(rawPhone);
+    if (cleanPhone.length < 10) {
+      toast('⚠️ സാധുവായ 10 അക്ക മൊബൈൽ നമ്പർ നൽകുക.');
+      return;
+    }
+
+    const myPhone = normalizePhone(APP_STATE.currentUser.phone);
+    if (myPhone && cleanPhone === myPhone) {
+      toast('ℹ️ ഇത് നിങ്ങളുടെ സ്വന്തം നമ്പറാണ്.');
+      return;
+    }
+
+    const displayName = rawName || `സുഹൃത്ത് (${cleanPhone})`;
+    closeModal('modal-new-chat');
+    if (phoneInput) phoneInput.value = '';
+    if (nameInput) nameInput.value = '';
+    openChatModal(displayName, cleanPhone, DEFAULT_USER_AVATAR, '', 'usr_' + cleanPhone);
+  }
+  window.startDirectChatFromForm = startDirectChatFromForm;
+
   function renderChatListScreen() {
     const container = document.getElementById('chatThreadsList');
     if (!container) return;
@@ -2065,11 +2203,14 @@
     const keys = Object.keys(APP_STATE.chats).filter(k => APP_STATE.chats[k] && APP_STATE.chats[k].length > 0);
     if (keys.length === 0) {
       container.innerHTML = `
-        <div style="text-align:center;padding:50px 20px;background:#fff;border-radius:18px;">
-          <div style="font-size:40px;margin-bottom:10px">💬</div>
-          <h3 style="margin:0 0 6px">സന്ദേശങ്ങളൊന്നുമില്ല</h3>
-          <p style="font-size:13px;color:#6B7280;margin-bottom:16px">നാട്ടുകാരുമായോ സേവനദാതാക്കളുമായോ ലൈവ് ചാറ്റ് ആരംഭിക്കൂ.</p>
-          <button onclick="navTo('services')" style="padding:10px 20px;background:#0E7043;color:#fff;border:none;border-radius:12px;font-weight:800;cursor:pointer">പ്രാദേശിക സേവനങ്ങൾ കാണുക</button>
+        <div style="text-align:center;padding:40px 20px;background:#fff;border-radius:18px;border:1px solid #E2E8F0">
+          <div style="font-size:42px;margin-bottom:10px">💬</div>
+          <h3 style="margin:0 0 6px;color:#1E293B">സന്ദേശങ്ങളൊന്നുമില്ല</h3>
+          <p style="font-size:13px;color:#64748B;margin:0 0 16px">നാട്ടുകാരുമായോ വർക്കർമാരുമായോ ഉടൻ ലൈവ് ചാറ്റ് ആരംഭിക്കൂ.</p>
+          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+            <button onclick="openNewChatModal()" style="padding:10px 18px;background:#0E7043;color:#fff;border:none;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer">➕ പുതിയ ചാറ്റ് ആരംഭിക്കാം</button>
+            <button onclick="navTo('services')" style="padding:10px 18px;background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer">സേവനങ്ങൾ കാണുക</button>
+          </div>
         </div>
       `;
       return;
@@ -2084,7 +2225,7 @@
       };
       const lastMsg = thread[thread.length - 1] || { text: 'No messages', time: '' };
       return `
-        <div onclick="openChatModal('${meta.name.replace(/'/g, "\\'")}', '${meta.phone}', '${meta.avatar || DEFAULT_USER_AVATAR}', '', '${meta.recipientId || ''}')"
+        <div onclick="openChatModal('${escapeHtml(meta.name).replace(/'/g, "\\'")}', '${meta.phone || ''}', '${meta.avatar || DEFAULT_USER_AVATAR}', '', '${meta.recipientId || ''}', '${k}')"
              style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#fff;border-radius:16px;border:1px solid #E2E8F0;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.03);margin-bottom:8px;transition:background 0.15s ease">
           <img src="${meta.avatar || DEFAULT_USER_AVATAR}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #E2E8F0;flex-shrink:0" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
           <div style="flex:1;min-width:0">
@@ -4121,6 +4262,21 @@
     if (composerAvatar) composerAvatar.src = currentAvatar;
     if (homeAvatar) homeAvatar.src = currentAvatar;
 
+    // Synchronize Desktop Topbar and Sidebar Profile Elements
+    const desktopAvatar = document.getElementById('desktopUserAvatar');
+    if (desktopAvatar) desktopAvatar.src = currentAvatar;
+    const desktopName = document.getElementById('desktopUserName');
+    if (desktopName) desktopName.textContent = displayName;
+    const sidebarAvatar = document.getElementById('desktopSidebarAvatar');
+    if (sidebarAvatar) sidebarAvatar.src = currentAvatar;
+    const sidebarName = document.getElementById('desktopSidebarName');
+    if (sidebarName) sidebarName.textContent = displayName;
+    const sidebarSub = document.getElementById('desktopSidebarSub');
+    if (sidebarSub) {
+      const myLoc = APP_STATE.currentUser.location || APP_STATE.location.name || 'കേരളം';
+      sidebarSub.textContent = `📍 ${myLoc} · പ്രൊഫൈൽ`;
+    }
+
     // Calculate Facebook-style Stats: Posts count, Total likes, Citizens count
     const myPosts = APP_STATE.posts.filter(p => p.isCurrentUser || p.authorId === APP_STATE.currentUser.id || p.authorName === APP_STATE.currentUser.name);
     const postCountEl = document.getElementById('profStatPosts');
@@ -4752,6 +4908,18 @@
       }
     }
     window.triggerHomeSearch = triggerHomeSearch;
+
+    function triggerDesktopSearch() {
+      const dInput = document.getElementById('desktopSearchInput');
+      if (!dInput) return;
+      const q = dInput.value.trim();
+      if (!q) return;
+      const hInput = document.getElementById('homeSearchInput');
+      if (hInput) hInput.value = q;
+      navTo('home');
+      triggerHomeSearch();
+    }
+    window.triggerDesktopSearch = triggerDesktopSearch;
 
     const homeSearch = document.getElementById('homeSearchInput');
     const homeDropdown = document.getElementById('homeSearchResultsDropdown');

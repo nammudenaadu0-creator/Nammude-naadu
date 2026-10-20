@@ -2445,3 +2445,599 @@
   }
 }
 
+/* ==============================================================
+   DESKTOP WEB & HYBRID RESPONSIVE ARCHITECTURE
+   ============================================================== */
+
+/* 1. Desktop Sticky Navigation Header (>= 769px) */
+.desktop-web-header {
+  display: none;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  height: 68px;
+}
+
+.desktop-header-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.desktop-brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.desktop-brand-icon-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0E7043 0%, #064E3B 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 4px 12px rgba(14, 112, 67, 0.28);
+}
+
+.desktop-brand-title {
+  font-size: 20px;
+  font-weight: 900;
+  color: #064E3B;
+  font-family: 'Manjari', sans-serif;
+  letter-spacing: -0.3px;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.desktop-brand-badge {
+  display: inline-block;
+  background: #ECFDF5;
+  color: #047857;
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1px solid #A7F3D0;
+  margin-top: 2px;
+}
+
+/* Desktop Search Bar & Location */
+.desktop-header-center {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  max-width: 580px;
+}
+
+.desktop-location-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.desktop-location-chip:hover {
+  background: #F1F5F9;
+  border-color: #CBD5E1;
+}
+.desktop-loc-text {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #064E3B;
+}
+
+.desktop-search-input-wrap {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.desktop-search-input-wrap input {
+  width: 100%;
+  height: 42px;
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 0 16px 0 38px;
+  font-size: 13.5px;
+  outline: none;
+  transition: all 0.2s;
+  color: #1E293B;
+}
+.desktop-search-input-wrap input:focus {
+  background: #FFFFFF;
+  border-color: #10B981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+.desktop-search-icon {
+  position: absolute;
+  left: 12px;
+  color: #64748B;
+  font-size: 15px;
+  pointer-events: none;
+}
+
+/* Desktop Header Action Buttons */
+.desktop-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.desktop-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.desktop-action-btn.post {
+  background: #0E7043;
+  color: #FFFFFF;
+  box-shadow: 0 3px 10px rgba(14, 112, 67, 0.25);
+}
+.desktop-action-btn.post:hover {
+  background: #065F46;
+  transform: translateY(-1px);
+}
+.desktop-action-btn.blood {
+  background: #FEE2E2;
+  color: #DC2626;
+  border: 1px solid #FECACA;
+}
+.desktop-action-btn.blood:hover {
+  background: #DC2626;
+  color: #FFFFFF;
+}
+.desktop-action-btn.service {
+  background: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+}
+.desktop-action-btn.service:hover {
+  background: #F59E0B;
+  color: #FFFFFF;
+}
+
+.desktop-user-profile-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px 4px 6px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.desktop-user-profile-chip:hover {
+  background: #ECFDF5;
+  border-color: #A7F3D0;
+}
+.desktop-user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #10B981;
+}
+.desktop-user-name {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #1E293B;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 2. Desktop 3-Column Grid Layout */
+.desktop-main-layout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Left Sidebar */
+.desktop-sidebar-left {
+  display: none;
+  width: 270px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 84px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  flex-direction: column;
+  gap: 16px;
+  scrollbar-width: none;
+}
+.desktop-sidebar-left::-webkit-scrollbar {
+  display: none;
+}
+
+.desktop-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+.desktop-user-hero-mini {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 12px;
+  transition: background 0.2s;
+}
+.desktop-user-hero-mini:hover {
+  background: #F8FAFC;
+}
+.desktop-sidebar-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #0E7043;
+}
+.desktop-sidebar-user-info h4 {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 800;
+  color: #064E3B;
+}
+.desktop-sidebar-user-info p {
+  margin: 2px 0 0;
+  font-size: 11.5px;
+  color: #64748B;
+  font-weight: 600;
+}
+
+/* Left Sidebar Nav Links */
+.desktop-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 10px;
+}
+
+.desktop-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #334155;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+.desktop-nav-item:hover {
+  background: #ECFDF5;
+  color: #047857;
+  transform: translateX(3px);
+}
+.desktop-nav-item.active {
+  background: linear-gradient(135deg, #0E7043 0%, #064E3B 100%);
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(14, 112, 67, 0.25);
+}
+.desktop-nav-icon {
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+}
+
+/* Emergency Hotline Mini Box */
+.desktop-emergency-widget {
+  background: linear-gradient(135deg, #FEF2F2 0%, #FFF5F5 100%);
+  border: 1px solid #FECACA;
+  border-radius: 16px;
+  padding: 14px;
+}
+.desktop-emergency-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: #DC2626;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.desktop-emergency-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+.desktop-emergency-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border: 1px solid #FEE2E2;
+  border-radius: 10px;
+  padding: 6px;
+  text-decoration: none;
+  color: #991B1B;
+  transition: all 0.2s;
+}
+.desktop-emergency-badge:hover {
+  background: #DC2626;
+  color: #FFFFFF;
+}
+.desktop-emergency-badge strong {
+  font-size: 13px;
+  font-weight: 900;
+}
+.desktop-emergency-badge span {
+  font-size: 9.5px;
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+/* Center Content Column */
+.desktop-center-content {
+  width: 100%;
+  max-width: 660px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Right Sidebar */
+.desktop-sidebar-right {
+  display: none;
+  width: 320px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 84px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  flex-direction: column;
+  gap: 16px;
+  scrollbar-width: none;
+}
+.desktop-sidebar-right::-webkit-scrollbar {
+  display: none;
+}
+
+/* Blood Need Box */
+.desktop-blood-widget {
+  background: #FFFFFF;
+  border: 1px solid #FEE2E2;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 4px 16px rgba(220, 38, 38, 0.05);
+}
+.desktop-blood-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.desktop-blood-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #DC2626;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.desktop-blood-pill {
+  background: #FEE2E2;
+  color: #991B1B;
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+/* Quick Service Widget */
+.desktop-service-widget {
+  background: linear-gradient(135deg, #F0FDF4 0%, #FFFFFF 100%);
+  border: 1px solid #BBF7D0;
+  border-radius: 18px;
+  padding: 16px;
+}
+.desktop-service-widget h4 {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #065F46;
+}
+.desktop-service-widget p {
+  margin: 0 0 12px;
+  font-size: 11.5px;
+  color: #475569;
+  line-height: 1.4;
+}
+.desktop-service-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.desktop-svc-btn {
+  background: #FFFFFF;
+  border: 1px solid #D1FAE5;
+  border-radius: 10px;
+  padding: 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #064E3B;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.desktop-svc-btn:hover {
+  background: #0E7043;
+  color: #FFFFFF;
+  border-color: #0E7043;
+}
+
+/* Mobile App Download Card */
+.desktop-app-download-card {
+  background: linear-gradient(135deg, #064E3B 0%, #022C1E 100%);
+  border-radius: 18px;
+  padding: 18px;
+  color: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+}
+.desktop-app-download-card::after {
+  content: '📱';
+  position: absolute;
+  right: -10px;
+  bottom: -10px;
+  font-size: 80px;
+  opacity: 0.15;
+  pointer-events: none;
+}
+.desktop-app-download-title {
+  font-size: 14.5px;
+  font-weight: 800;
+  margin: 0 0 4px;
+  font-family: 'Manjari', sans-serif;
+}
+.desktop-app-download-sub {
+  font-size: 11.5px;
+  color: #A7F3D0;
+  margin: 0 0 14px;
+  line-height: 1.4;
+}
+.desktop-apk-btn {
+  background: #F59E0B;
+  color: #042F2C;
+  border: none;
+  border-radius: 12px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+  transition: all 0.2s;
+}
+.desktop-apk-btn:hover {
+  background: #D97706;
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+
+/* Responsive Breakpoints */
+@media (min-width: 769px) {
+  .desktop-web-header {
+    display: block;
+  }
+  .desktop-sidebar-left {
+    display: flex;
+  }
+  .desktop-center-content {
+    background: #FFFFFF;
+    border-radius: 20px;
+    border: 1px solid rgba(226, 232, 240, 0.85);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    overflow: hidden;
+  }
+  .desktop-center-content .screen {
+    padding-bottom: 24px !important;
+  }
+  .home-top-navbar {
+    display: none !important;
+  }
+  #bottomNav {
+    display: none !important;
+  }
+
+  /* Centered Desktop Modals */
+  .modal-overlay {
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .modal-sheet,
+  .chat-modal-sheet,
+  .profile-preview-sheet {
+    border-radius: 24px !important;
+    max-width: 580px !important;
+    width: 92% !important;
+    margin: auto !important;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.28) !important;
+    transform: scale(0.96) translateY(0) !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  .modal-overlay.active .modal-sheet,
+  .modal-overlay.active .chat-modal-sheet,
+  .modal-overlay.active .profile-preview-sheet {
+    transform: scale(1) translateY(0) !important;
+  }
+}
+
+@media (min-width: 1080px) {
+  .desktop-sidebar-right {
+    display: flex;
+  }
+}
+
+@media (max-width: 768px) {
+  .desktop-web-header,
+  .desktop-sidebar-left,
+  .desktop-sidebar-right {
+    display: none !important;
+  }
+  .desktop-main-layout {
+    display: block !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+  .desktop-center-content {
+    max-width: 100% !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+}
+
+

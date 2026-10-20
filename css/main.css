@@ -80,14 +80,12 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Mobile Viewport Frame */
+        /* App Viewport Container */
         .app-container {
             width: 100%;
-            max-width: 480px;
             min-height: 100vh;
             background: var(--bg-page);
             position: relative;
-            box-shadow: 0 4px 24px rgba(16, 24, 40, 0.08);
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
@@ -2195,41 +2193,36 @@
         }
 
         body {
-            background: #042417 radial-gradient(circle at 50% 12%, rgba(250, 204, 21, 0.18) 0%, #063523 55%, #02170f 100%) !important;
+            background: #F4F7F4 radial-gradient(circle at 50% 0%, rgba(14, 112, 67, 0.08) 0%, #F0F4F1 40%, #E8EFEA 100%) !important;
             color: var(--ink) !important;
             font-family: 'Plus Jakarta Sans', 'Manjari', system-ui, -apple-system, sans-serif !important;
             margin: 0 !important;
             padding: 0 !important;
-            display: flex !important;
-            justify-content: center !important;
-            align-items: flex-start !important;
+            display: block !important;
             min-height: 100vh !important;
         }
 
-        /* Rounded App Shell with Lush Green & Sunshine Yellow Ambiance + Subtle Leaf Watermark */
+        /* Responsive App Shell: Full screen on Mobile APK, Spacious Adaptive Layout on Web */
         .app-container {
-            background-color: #F8FAF7 !important;
-            background-image: 
-                radial-gradient(circle at 100% 0%, rgba(254, 240, 138, 0.35) 0%, transparent 40%),
-                radial-gradient(circle at 0% 45%, rgba(220, 252, 231, 0.4) 0%, transparent 45%),
-                url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30,10 C45,15 55,30 52,50 C40,55 25,48 20,35 C15,22 22,12 30,10 Z M30,10 L45,45 M26,20 L35,26 M28,28 L38,36' fill='none' stroke='%230e7043' stroke-width='1.1' stroke-linecap='round' stroke-opacity='0.045'/%3E%3Cpath d='M95,65 C110,70 118,88 114,106 C102,110 88,102 84,90 C80,78 87,68 95,65 Z M95,65 L108,100 M92,75 L100,81 M94,84 L103,91' fill='none' stroke='%2310b981' stroke-width='1.1' stroke-linecap='round' stroke-opacity='0.045'/%3E%3Cpath d='M80,20 C85,28 82,38 72,42 C64,40 60,32 63,24 C66,17 74,15 80,20 Z' fill='none' stroke='%2316a34a' stroke-width='0.9' stroke-linecap='round' stroke-opacity='0.035'/%3E%3C/svg%3E"),
-                linear-gradient(180deg, #FEFCE8 0%, #F0FDF4 160px, #F6FAF3 420px, #ECFDF5 100%) !important;
-            background-repeat: no-repeat, no-repeat, repeat, no-repeat !important;
-            background-size: 100% auto, 100% auto, 120px 120px, 100% 100% !important;
-            max-width: 440px !important;
+            background-color: transparent !important;
+            max-width: 1360px !important;
             width: 100% !important;
             min-height: 100vh !important;
-            box-shadow: 0 24px 60px rgba(6, 44, 30, 0.55), 0 0 0 1px rgba(254, 240, 138, 0.25) !important;
+            box-shadow: none !important;
             position: relative !important;
             display: flex !important;
             flex-direction: column !important;
             overflow-x: hidden !important;
-            border-radius: 40px !important;
-            margin: 12px auto !important;
+            border-radius: 0 !important;
+            margin: 0 auto !important;
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 768px) {
+            body {
+                background: #F8FAF7 !important;
+            }
             .app-container {
+                max-width: 100% !important;
                 border-radius: 0 !important;
                 margin: 0 !important;
                 box-shadow: none !important;

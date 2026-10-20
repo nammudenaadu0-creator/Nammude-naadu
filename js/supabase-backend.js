@@ -230,7 +230,12 @@
       if (extraData.type === 'blood') {
         if (typeof navTo === 'function') navTo('blood');
       } else if (extraData.type === 'chat') {
-        if (typeof navTo === 'function') navTo('chat');
+        if (extraData.chatKey && typeof openChatModal === 'function' && typeof APP_STATE !== 'undefined' && APP_STATE.chatMeta && APP_STATE.chatMeta[extraData.chatKey]) {
+          const m = APP_STATE.chatMeta[extraData.chatKey];
+          openChatModal(m.name, m.phone, m.avatar, '', m.recipientId, extraData.chatKey);
+        } else if (typeof navTo === 'function') {
+          navTo('chat');
+        }
       } else if (extraData.type === 'service') {
         if (typeof navTo === 'function') navTo('services');
       }
@@ -474,10 +479,24 @@
     const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser.id : '';
     const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone)
       ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
-    const senderPhone = (msgObj.senderPhone ? msgObj.senderPhone.replace(/\D/g, '').slice(-10) : '');
+    const senderPhone = (msgObj.senderPhone ? String(msgObj.senderPhone).replace(/\D/g, '').slice(-10) : '');
 
     // Ignore duplicate of own message
     if (msgObj.senderId === myId || (myPhone && senderPhone && myPhone === senderPhone)) {
+      return;
+    }
+
+    // Verify recipient so 1-on-1 chats only go to the intended participant
+    const recPhone = (metaObj && metaObj.recipientPhone ? String(metaObj.recipientPhone).replace(/\D/g, '').slice(-10) : '');
+    const recId = (metaObj && metaObj.recipientId ? metaObj.recipientId : '');
+    const cleanMyId = myId ? myId.replace(/[^a-zA-Z0-9]/g, '') : '';
+    const isForMe = (!metaObj) ||
+      (myPhone && recPhone && myPhone === recPhone) ||
+      (myId && recId && myId === recId) ||
+      (myPhone && chatKey.includes(myPhone)) ||
+      (cleanMyId && chatKey.includes(cleanMyId));
+
+    if (!isForMe) {
       return;
     }
 
@@ -492,6 +511,8 @@
         APP_STATE.chats[chatKey].push({
           id: msgObj.id || ('msg_' + Date.now()),
           sender: 'them',
+          senderId: msgObj.senderId || '',
+          senderPhone: msgObj.senderPhone || '',
           senderName: msgObj.senderName || 'സുഹൃത്ത്',
           senderAvatar: msgObj.senderAvatar || '',
           text: msgObj.text,
@@ -660,14 +681,16 @@
             console.info('📥 [Supabase] Loaded past thread messages:', data.length);
             const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser.id : '';
             const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone) 
-              ? APP_STATE.currentUser.phone.replace(/\D/g, '') : '';
+              ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
 
             const mapped = data.map(m => {
-              const mPhone = (m.sender_phone ? m.sender_phone.replace(/\D/g, '') : '');
+              const mPhone = (m.sender_phone ? String(m.sender_phone).replace(/\D/g, '').slice(-10) : '');
               const isMe = (m.sender_id === myId) || (myPhone && mPhone && mPhone === myPhone);
               return {
                 id: m.id,
                 sender: isMe ? 'me' : 'them',
+                senderId: m.sender_id,
+                senderPhone: m.sender_phone,
                 senderName: m.sender_name,
                 senderAvatar: m.sender_avatar,
                 text: m.text,
@@ -691,8 +714,9 @@
     initSupabase();
     if (!client) return;
     try {
-      const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone)
+      const myPhoneRaw = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone)
         ? APP_STATE.currentUser.phone.replace(/\D/g, '') : '';
+      const myPhone = myPhoneRaw.length >= 10 ? myPhoneRaw.slice(-10) : myPhoneRaw;
       const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser.id : '';
 
       const { data, error } = await client.from('messages')
@@ -704,16 +728,26 @@
         data.forEach(row => {
           const key = row.chat_key;
           if (!key) return;
+
+          const rowSenderPhone = row.sender_phone ? String(row.sender_phone).replace(/\D/g, '').slice(-10) : '';
+          const rowRecipientPhone = row.recipient_phone ? String(row.recipient_phone).replace(/\D/g, '').slice(-10) : '';
+
+          const isForMe = (myId && (row.sender_id === myId || row.recipient_id === myId)) ||
+                          (myPhone && (rowSenderPhone === myPhone || rowRecipientPhone === myPhone || key.includes(myPhone)));
+
+          if (!isForMe) return;
+
           if (typeof APP_STATE !== 'undefined') {
             if (!APP_STATE.chats) APP_STATE.chats = {};
             if (!APP_STATE.chats[key]) APP_STATE.chats[key] = [];
             const exists = APP_STATE.chats[key].some(m => m.id === row.id);
             if (!exists) {
-              const mPhone = (row.sender_phone ? row.sender_phone.replace(/\D/g, '') : '');
-              const isMe = (row.sender_id === myId) || (myPhone && mPhone && mPhone === myPhone);
+              const isMe = (row.sender_id === myId) || (myPhone && rowSenderPhone && myPhone === rowSenderPhone);
               APP_STATE.chats[key].push({
                 id: row.id,
                 sender: isMe ? 'me' : 'them',
+                senderId: row.sender_id,
+                senderPhone: row.sender_phone,
                 senderName: row.sender_name,
                 senderAvatar: row.sender_avatar,
                 text: row.text,
@@ -725,8 +759,7 @@
             // Populate metadata so user can tap and reply immediately
             if (!APP_STATE.chatMeta) APP_STATE.chatMeta = {};
             if (!APP_STATE.chatMeta[key]) {
-              const mPhone = (row.sender_phone ? row.sender_phone.replace(/\D/g, '') : '');
-              const isMe = (row.sender_id === myId) || (myPhone && mPhone && mPhone === myPhone);
+              const isMe = (row.sender_id === myId) || (myPhone && rowSenderPhone && myPhone === rowSenderPhone);
               APP_STATE.chatMeta[key] = {
                 name: isMe ? (row.recipient_name || 'സുഹൃത്ത്') : (row.sender_name || 'സുഹൃത്ത്'),
                 phone: isMe ? (row.recipient_phone || '') : (row.sender_phone || ''),
@@ -739,8 +772,6 @@
         if (typeof saveChats === 'function') saveChats();
         if (typeof renderChatListScreen === 'function' && APP_STATE.currentScreen === 'chat') {
           renderChatListScreen();
-        }
-      }
         }
       }
     } catch (_) {}
