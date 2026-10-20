@@ -15,8 +15,7 @@ const filesToCopy = [
     'admin.html',
     'privacy-policy.html',
     'manifest.json',
-    'sw.js',
-    'location-service.js'
+    'sw.js'
 ];
 
 const dirsToCopy = [
