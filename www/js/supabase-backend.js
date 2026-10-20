@@ -122,6 +122,17 @@
     bloodChannel.subscribe((status) => {
       console.info('🩸 [Supabase Realtime Blood] Status:', status);
     });
+
+    // 7. EMERGENCY CONTACTS CHANNEL (Realtime broadcast across phones)
+    const emergencyChannel = client.channel('nn_community_emergency_contacts', {
+      config: { broadcast: { self: false } }
+    });
+    emergencyChannel.on('broadcast', { event: 'new_emergency_contact' }, ({ payload }) => {
+      if (payload && payload.contact) handleIncomingEmergencyContact(payload.contact);
+    });
+    emergencyChannel.subscribe((status) => {
+      console.info('🚨 [Supabase Realtime Emergency Contacts] Status:', status);
+    });
   }
 
   // Request Android / Browser notification permissions
@@ -642,6 +653,15 @@
           }
         })
         .subscribe();
+
+      // Realtime listener for emergency contacts table
+      client.channel('public:emergency_contacts')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'emergency_contacts' }, payload => {
+          if (payload && payload.new) {
+            handleIncomingEmergencyContact(payload.new);
+          }
+        })
+        .subscribe();
     } catch (e) {
       console.warn('ℹ️ [Supabase Realtime DB Listeners note]:', e.message);
     }
@@ -871,6 +891,54 @@
       } catch (_) {}
       if (typeof renderRentalsScreen === 'function' && APP_STATE.currentScreen === 'rentals') {
         renderRentalsScreen();
+      }
+    }
+  }
+
+  // Handle incoming emergency contact from broadcast or postgres_changes
+  function handleIncomingEmergencyContact(c) {
+    if (!c) return;
+    if (c.id === 'app_setting_splash_bg' || c.name === 'Splash Background Image') {
+      const splashUrl = c.description || c.location;
+      if (splashUrl) {
+        try {
+          localStorage.setItem('nn_app_splash_bg', splashUrl);
+        } catch (_) {}
+        const splashEl = document.getElementById('splashMainBgImage');
+        if (splashEl) splashEl.src = splashUrl;
+      }
+      return;
+    }
+    if (!c.title && !c.name) return;
+    const mapped = {
+      id: c.id || ('emg_' + Date.now()),
+      title: c.title || c.name,
+      category: c.category || 'അടിയന്തിരം',
+      phone: c.phone || '',
+      icon: c.icon || '📞',
+      badge: c.badge || 'സഹായം',
+      location: c.location || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.name : 'കേരളം'),
+      district: c.district || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.district : 'കണ്ണൂർ'),
+      description: c.description || '',
+      createdAt: Number(c.created_at) || Date.now(),
+      isCloud: true
+    };
+
+    if (typeof APP_STATE !== 'undefined') {
+      if (!Array.isArray(APP_STATE.emergencyContacts)) {
+        APP_STATE.emergencyContacts = (typeof DEFAULT_EMERGENCY_CONTACTS !== 'undefined') ? [...DEFAULT_EMERGENCY_CONTACTS] : [];
+      }
+      const idx = APP_STATE.emergencyContacts.findIndex(item => item.id === mapped.id || (item.title === mapped.title && item.phone === mapped.phone));
+      if (idx >= 0) {
+        APP_STATE.emergencyContacts[idx] = { ...APP_STATE.emergencyContacts[idx], ...mapped };
+      } else {
+        APP_STATE.emergencyContacts.push(mapped);
+      }
+      try {
+        localStorage.setItem('nn_emergency_contacts', JSON.stringify(APP_STATE.emergencyContacts));
+      } catch (_) {}
+      if (typeof renderEmergencyModalList === 'function') {
+        renderEmergencyModalList();
       }
     }
   }
@@ -1580,6 +1648,91 @@
     }
   }
 
+  // 8B. EMERGENCY DIRECTORY CONTACTS
+  async function saveEmergencyContact(contactObj) {
+    if (!contactObj) return;
+    initSupabase();
+    if (client) {
+      try {
+        const payload = {
+          id: contactObj.id || ('emg_' + Date.now()),
+          title: contactObj.title || '',
+          category: contactObj.category || 'അടിയന്തിരം',
+          phone: contactObj.phone || '',
+          icon: contactObj.icon || '📞',
+          badge: contactObj.badge || 'സഹായം',
+          location: contactObj.location || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.name : 'കേരളം'),
+          district: contactObj.district || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.district : 'കണ്ണൂർ'),
+          description: contactObj.description || '',
+          created_at: Number(contactObj.createdAt) || Date.now()
+        };
+
+        const { error } = await client.from('emergency_contacts').upsert(payload);
+        if (error) {
+          console.warn('⚠️ [Supabase Emergency Contact Upsert Error]:', error.message);
+        } else {
+          console.info('✅ [Supabase] Emergency contact saved:', payload.id);
+        }
+
+        const channel = client.channel('nn_community_emergency_contacts');
+        channel.send({
+          type: 'broadcast',
+          event: 'new_emergency_contact',
+          payload: { contact: payload }
+        }).catch(() => {});
+      } catch (err) {
+        console.warn('Save emergency contact exception:', err);
+      }
+    }
+  }
+
+  async function syncEmergencyContacts(callback) {
+    initSupabase();
+    if (!client) return;
+    try {
+      const { data, error } = await client.from('emergency_contacts').select('*').order('created_at', { ascending: false });
+      if (!error && Array.isArray(data) && data.length > 0) {
+        const mapped = data.map(c => ({
+          id: c.id,
+          title: c.title,
+          category: c.category || 'അടിയന്തിരം',
+          phone: c.phone || '',
+          icon: c.icon || '📞',
+          badge: c.badge || 'സഹായം',
+          location: c.location || 'കേരളം',
+          district: c.district || '',
+          description: c.description || '',
+          createdAt: Number(c.created_at) || Date.now(),
+          isCloud: true
+        }));
+
+        if (typeof APP_STATE !== 'undefined') {
+          if (!Array.isArray(APP_STATE.emergencyContacts)) {
+            APP_STATE.emergencyContacts = (typeof DEFAULT_EMERGENCY_CONTACTS !== 'undefined') ? [...DEFAULT_EMERGENCY_CONTACTS] : [];
+          }
+          mapped.forEach(cloudItem => {
+            const idx = APP_STATE.emergencyContacts.findIndex(item => item.id === cloudItem.id || (item.title === cloudItem.title && item.phone === cloudItem.phone));
+            if (idx >= 0) {
+              APP_STATE.emergencyContacts[idx] = { ...APP_STATE.emergencyContacts[idx], ...cloudItem };
+            } else {
+              APP_STATE.emergencyContacts.push(cloudItem);
+            }
+          });
+          try {
+            localStorage.setItem('nn_emergency_contacts', JSON.stringify(APP_STATE.emergencyContacts));
+          } catch (_) {}
+          if (typeof renderEmergencyModalList === 'function') {
+            renderEmergencyModalList();
+          }
+        }
+
+        if (typeof callback === 'function') callback(mapped);
+      }
+    } catch (err) {
+      console.warn('Sync emergency contacts error:', err);
+    }
+  }
+
   // 9. USER PROFILES CLOUD SYNC (Phone-based deterministic ID)
   async function saveUserProfile(userObj) {
     if (!userObj) return false;
@@ -1738,7 +1891,10 @@
     syncJobs,
     saveRental,
     syncRentals,
-    saveAmbulanceDriver
+    saveAmbulanceDriver,
+    // Emergency & Helpline Directory
+    saveEmergencyContact,
+    syncEmergencyContacts
   };
 
   window.NN_SUPABASE_SERVICES = api;

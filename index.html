@@ -39,7 +39,7 @@
         <section id="screen-splash" class="screen active" onclick="enterAppFromSplash()" style="cursor:pointer">
             <div class="splash-fullscreen-wrapper">
                 <!-- Gorgeous Kerala Theme Background Image -->
-                <img src="img/kerala-splash.jpg" alt="നമ്മുടെ നാട് - കേരളം" class="splash-full-img">
+                <img id="splashMainBgImage" src="img/kerala-splash.jpg" alt="നമ്മുടെ നാട് - കേരളം" class="splash-full-img">
 
                 <!-- Dark-to-Transparent Artistic Gradient Overlay for Contrast -->
                 <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(6,78,59,0.3) 0%, rgba(5,46,22,0.15) 30%, rgba(6,20,14,0.7) 70%, rgba(3,15,10,0.96) 100%);z-index:2;pointer-events:none"></div>
@@ -901,6 +901,18 @@
                     <span>🩸 ബ്ലഡ് ഡോണർ നെറ്റ്‌വർക്ക്</span>
                     <span>→</span>
                 </div>
+                <!-- ADMIN PORTAL TRIGGER (SERVICES & NUMBERS) -->
+                <div class="profile-menu-row" onclick="openAdminPortal()" style="background:linear-gradient(135deg, #064E3B 0%, #0E7043 100%);color:#fff;padding:14px;border-radius:14px;margin-bottom:8px;cursor:pointer;font-weight:800;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 12px rgba(6,78,59,0.25)">
+                    <span style="display:flex;align-items:center;gap:10px">
+                        <span style="font-size:20px">⚙️</span>
+                        <div>
+                            <div style="font-size:14px;font-weight:800">അഡ്മിൻ കൺസോൾ (Admin Hub)</div>
+                            <div style="font-size:11px;color:#A7F3D0;font-weight:600">പുതിയ സർവീസുകളും നമ്പറുകളും ചേർക്കാം</div>
+                        </div>
+                    </span>
+                    <span style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:12px;font-size:11px;font-weight:800">തുറക്കുക &rsaquo;</span>
+                </div>
+
                 <a href="privacy-policy.html" target="_blank" class="profile-menu-row" style="background:#fff;padding:14px;border-radius:14px;border:1px solid #E5E7EB;margin-bottom:8px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:#0F172A">
                     <span style="display:flex;align-items:center;gap:8px"><span>🛡️</span> <span>പ്രൈവസി പോളിസി (Privacy Policy)</span></span>
                     <span>→</span>
@@ -1372,21 +1384,35 @@
     <!-- ============================================================== -->
     <!-- MODAL: EMERGENCY BLOOD REQUEST BROADCAST                       -->
     <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- MODAL: STATUTORY & LEGAL BLOOD REQUISITION FORM                 -->
+    <!-- ============================================================== -->
     <div id="modal-blood-request" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-blood-request')">
-        <div class="modal-sheet">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-                <h3 style="margin:0;color:#DC2626;font-size:17px;font-weight:800">🚨 അടിയന്തര രക്ത ആവശ്യം</h3>
+        <div class="modal-sheet" style="max-height:90vh;overflow-y:auto">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;border-bottom:1px solid #FECACA;padding-bottom:10px">
+                <div>
+                    <h3 style="margin:0;color:#DC2626;font-size:16px;font-weight:800;display:flex;align-items:center;gap:6px">
+                        <span>⚖️</span> <span>നിയമാനുസൃത രക്ത അപേക്ഷാ ഫോം</span>
+                    </h3>
+                    <div style="font-size:11px;color:#991B1B;font-weight:600;margin-top:2px">NBTC & Drugs and Cosmetics Act ചട്ടങ്ങൾ പ്രകാരം</div>
+                </div>
                 <button onclick="closeModal('modal-blood-request')" style="background:none;border:none;font-size:20px;cursor:pointer">✕</button>
             </div>
-            <form onsubmit="submitBloodRequest(event)" style="display:flex;flex-direction:column;gap:10px">
+
+            <form onsubmit="submitBloodRequest(event)" style="display:flex;flex-direction:column;gap:11px">
                 <div>
-                    <label style="font-size:12px;font-weight:700">രോഗിയുടെ പേര് (Patient Name)</label>
-                    <input type="text" id="bReqPatient" required placeholder="രോഗിയുടെ പേര്..." style="width:100%;padding:10px;border:1px solid #FECACA;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                    <label style="font-size:12px;font-weight:700;color:#374151">രോഗിയുടെ മുഴുവൻ പേര് (Patient Full Name) *</label>
+                    <input type="text" id="bReqPatient" required placeholder="രോഗിയുടെ പേര്..." style="width:100%;padding:9px 12px;border:1.5px solid #FECACA;border-radius:10px;font-size:13px;outline:none;margin-top:3px;background:#FFF5F5">
                 </div>
-                <div style="display:flex;gap:10px">
+
+                <div style="display:flex;gap:8px">
                     <div style="flex:1">
-                        <label style="font-size:12px;font-weight:700">രക്തഗ്രൂപ്പ് (Group)</label>
-                        <select id="bReqGroup" style="width:100%;padding:10px;border:1px solid #FECACA;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                        <label style="font-size:12px;font-weight:700;color:#374151">പ്രായം & ലിംഗം (Age/Gender)</label>
+                        <input type="text" id="bReqAge" placeholder="Eg: 34 / Male" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                    </div>
+                    <div style="flex:1">
+                        <label style="font-size:12px;font-weight:700;color:#DC2626">രക്തഗ്രൂപ്പ് (Group) *</label>
+                        <select id="bReqGroup" style="width:100%;padding:9px 12px;border:1.5px solid #DC2626;border-radius:10px;font-size:13.5px;font-weight:800;outline:none;margin-top:3px;background:#FEF2F2;color:#DC2626">
                             <option value="O+">O+</option>
                             <option value="O-">O-</option>
                             <option value="A+">A+</option>
@@ -1397,61 +1423,298 @@
                             <option value="AB-">AB-</option>
                         </select>
                     </div>
-                    <div style="flex:1">
-                        <label style="font-size:12px;font-weight:700">യൂണിറ്റ് (Units)</label>
-                        <input type="number" id="bReqUnits" value="1" min="1" max="10" style="width:100%;padding:10px;border:1px solid #FECACA;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                    <div style="width:85px">
+                        <label style="font-size:12px;font-weight:700;color:#374151">യൂണിറ്റ് *</label>
+                        <input type="number" id="bReqUnits" value="1" min="1" max="10" required style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                     </div>
                 </div>
+
                 <div>
-                    <label style="font-size:12px;font-weight:700">ആശുപത്രി (Hospital & Place)</label>
-                    <input type="text" id="bReqHospital" required placeholder="Eg: ജില്ലാ ആശുപത്രി, കണ്ണൂർ" style="width:100%;padding:10px;border:1px solid #FECACA;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                    <label style="font-size:12px;font-weight:700;color:#374151">ആശുപത്രി & സ്ഥലം (Hospital & Location) *</label>
+                    <input type="text" id="bReqHospital" required placeholder="Eg: ജില്ലാ ആശുപത്രി, കണ്ണൂർ (വാർഡ് 4)" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                 </div>
+
+                <div style="display:flex;gap:8px">
+                    <div style="flex:1">
+                        <label style="font-size:12px;font-weight:700;color:#374151">IP/OP നമ്പർ അല്ലെങ്കിൽ രോഗവിവരം</label>
+                        <input type="text" id="bReqIpNo" placeholder="Eg: IP: 4120 / സർജറി / അത്യാഹിതം" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                    </div>
+                    <div style="flex:1">
+                        <label style="font-size:12px;font-weight:700;color:#374151">കൂട്ടിരിപ്പുകാരന്റെ പേര് *</label>
+                        <input type="text" id="bReqBystander" required placeholder="അപേക്ഷകന്റെ പേര്" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                    </div>
+                </div>
+
                 <div>
-                    <label style="font-size:12px;font-weight:700">ബന്ധപ്പെടേണ്ട നമ്പർ (Contact Phone)</label>
-                    <input type="tel" id="bReqPhone" required placeholder="+91 94470 00000" style="width:100%;padding:10px;border:1px solid #FECACA;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                    <label style="font-size:12px;font-weight:700;color:#374151">ബന്ധപ്പെടേണ്ട ഫോൺ നമ്പർ *</label>
+                    <input type="tel" id="bReqPhone" required placeholder="+91 94470 00000" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px;background:#F9FAFB">
                 </div>
-                <button type="submit" style="background:#DC2626;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;margin-top:6px">
-                    📢 നാട്ടുകാരിലേക്ക് ബ്രോഡ്കാസ്റ്റ് ചെയ്യാം
+
+                <!-- PRIVACY OPTION: SHOW NUMBER OR IN-APP ONLY -->
+                <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:10px 12px">
+                    <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:12.5px;font-weight:700;color:#166534">
+                        <input type="checkbox" id="bReqShowPhone" style="width:18px;height:18px;cursor:pointer;accent-color:#0E7043">
+                        <span>👁️ ഫോൺ നമ്പർ പരസ്യമാക്കണോ?</span>
+                    </label>
+                    <div style="font-size:11px;color:#15803D;margin-top:4px;padding-left:28px">
+                        ടിക്ക് ചെയ്തില്ലെങ്കിൽ നമ്പർ രഹസ്യമായിരിക്കും; ആശയവിനിമയം സുരക്ഷിതമായി <strong>ആപ്പ് ചാറ്റ് വഴി മാത്രം</strong> നടക്കും.
+                    </div>
+                </div>
+
+                <!-- STATUTORY LEGAL DECLARATION -->
+                <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:10px 12px">
+                    <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:11.5px;color:#92400E;line-height:1.4">
+                        <input type="checkbox" id="bReqDeclaration" required checked style="width:16px;height:16px;margin-top:2px;accent-color:#D97706">
+                        <span><strong>സത്യവാങ്മൂലം:</strong> ഈ രക്ത ആവശ്യം തികച്ചും സൗജന്യ രക്തദാനത്തിനായുള്ളതാണ്. രക്തം പണത്തിനായോ വാണിജ്യപരമായോ വിൽക്കാനും വാങ്ങാനും പാടില്ല എന്ന സർക്കാർ ചട്ടം (Drugs & Cosmetics Act) ഞാൻ പൂർണ്ണമായി അംഗീകരിക്കുന്നു.</span>
+                    </label>
+                </div>
+
+                <button type="submit" style="background:linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;box-shadow:0 3px 10px rgba(220,38,38,0.3);margin-top:2px">
+                    📢 നിയമാനുസൃത അപേക്ഷ സമർപ്പിക്കാം
                 </button>
             </form>
         </div>
     </div>
 
     <!-- ============================================================== -->
-    <!-- MODAL: EMERGENCY HELP NUMBERS                                  -->
+    <!-- MODAL: EMERGENCY & ESSENTIAL DIRECTORY (DYNAMIC & SEARCHABLE)  -->
     <!-- ============================================================== -->
     <div id="modal-emergency" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-emergency')">
-        <div class="modal-sheet">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-                <h3 style="margin:0;color:#DC2626;font-size:17px;font-weight:800">🚨 അടിയന്തര സഹായം (Emergency Help)</h3>
-                <button onclick="closeModal('modal-emergency')" style="background:none;border:none;font-size:20px;cursor:pointer">✕</button>
+        <div class="modal-sheet" style="max-height:90vh;display:flex;flex-direction:column;padding:0;overflow:hidden">
+            <!-- HEADER -->
+            <div style="background:linear-gradient(135deg, #DC2626 0%, #991B1B 100%);padding:14px 16px;color:#fff;display:flex;align-items:center;justify-content:space-between">
+                <div style="display:flex;align-items:center;gap:10px">
+                    <span style="font-size:24px">🚨</span>
+                    <div>
+                        <h3 style="margin:0;font-size:16px;font-weight:800;color:#fff">അടിയന്തര & അവശ്യ സഹായം</h3>
+                        <div style="font-size:11px;color:rgba(255,255,255,0.85)">Emergency & Essential Helplines</div>
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px">
+                    <button onclick="openAdminPortal('numbers')" style="background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:14px;padding:4px 10px;font-size:11px;font-weight:800;cursor:pointer">
+                        ➕ നമ്പർ ചേർക്കാം (Admin)
+                    </button>
+                    <button onclick="closeModal('modal-emergency')" style="background:none;border:none;color:#fff;font-size:22px;cursor:pointer">✕</button>
+                </div>
             </div>
-            <div style="display:flex;flex-direction:column;gap:10px">
-                <a href="tel:112"
-                    style="padding:14px;background:#FEF2F2;border:1px solid #FECACA;border-radius:14px;text-decoration:none;color:#991B1B;font-weight:800;display:flex;justify-content:space-between;align-items:center">
-                    <span style="font-size:15px">🛡️ പോലീസ് കൺട്രോൾ റൂം</span>
-                    <span style="background:#DC2626;color:#fff;padding:4px 12px;border-radius:8px">112</span>
-                </a>
-                <a href="tel:101"
-                    style="padding:14px;background:#FEF2F2;border:1px solid #FECACA;border-radius:14px;text-decoration:none;color:#991B1B;font-weight:800;display:flex;justify-content:space-between;align-items:center">
-                    <span style="font-size:15px">🚒 ഫയർ & റെസ്ക്യൂ ഫോഴ്സ്</span>
-                    <span style="background:#DC2626;color:#fff;padding:4px 12px;border-radius:8px">101</span>
-                </a>
-                <a href="tel:108"
-                    style="padding:14px;background:#FEF2F2;border:1px solid #FECACA;border-radius:14px;text-decoration:none;color:#991B1B;font-weight:800;display:flex;justify-content:space-between;align-items:center">
-                    <span style="font-size:15px">🚑 ആംബുലൻസ് സർവീസ് (24x7)</span>
-                    <span style="background:#DC2626;color:#fff;padding:4px 12px;border-radius:8px">108</span>
-                </a>
-                <a href="tel:1091"
-                    style="padding:14px;background:#FDF2F8;border:1px solid #FBCFE8;border-radius:14px;text-decoration:none;color:#9D174D;font-weight:800;display:flex;justify-content:space-between;align-items:center">
-                    <span style="font-size:15px">👩 വനിതാ ഹെൽപ്പ് ലൈൻ</span>
-                    <span style="background:#BE185D;color:#fff;padding:4px 12px;border-radius:8px">1091</span>
-                </a>
-                <a href="tel:1098"
-                    style="padding:14px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:14px;text-decoration:none;color:#166534;font-weight:800;display:flex;justify-content:space-between;align-items:center">
-                    <span style="font-size:15px">👶 ചൈൽഡ് ലൈൻ ഹെൽപ്പ്</span>
-                    <span style="background:#15803D;color:#fff;padding:4px 12px;border-radius:8px">1098</span>
-                </a>
+
+            <!-- SEARCH & FILTER -->
+            <div style="padding:10px 14px;background:#F8FAFC;border-bottom:1px solid #E2E8F0">
+                <input type="text" id="emergencySearchInput" oninput="filterEmergencyContacts(this.value)" placeholder="🔍 KSEB, പോലീസ്, ഹോസ്പിറ്റൽ, ഓഫീസ് തിരയുക..." style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;background:#fff">
+                <div style="display:flex;gap:6px;overflow-x:auto;padding-top:8px;scrollbar-width:none">
+                    <button class="emg-filter-chip active" onclick="setEmergencyCategory('all', this)" style="padding:4px 10px;border-radius:12px;border:none;background:#DC2626;color:#fff;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">എല്ലാം</button>
+                    <button class="emg-filter-chip" onclick="setEmergencyCategory('അടിയന്തിരം', this)" style="padding:4px 10px;border-radius:12px;border:1px solid #CBD5E1;background:#fff;color:#475569;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">🚨 അടിയന്തിരം</button>
+                    <button class="emg-filter-chip" onclick="setEmergencyCategory('ആരോഗ്യം', this)" style="padding:4px 10px;border-radius:12px;border:1px solid #CBD5E1;background:#fff;color:#475569;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">🏥 ആരോഗ്യം</button>
+                    <button class="emg-filter-chip" onclick="setEmergencyCategory('വൈദ്യുതി & കുടിവെള്ളം', this)" style="padding:4px 10px;border-radius:12px;border:1px solid #CBD5E1;background:#fff;color:#475569;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">⚡ KSEB & വാട്ടർ</button>
+                    <button class="emg-filter-chip" onclick="setEmergencyCategory('സർക്കാർ', this)" style="padding:4px 10px;border-radius:12px;border:1px solid #CBD5E1;background:#fff;color:#475569;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">🏛️ സർക്കാർ സേവനം</button>
+                </div>
+            </div>
+
+            <!-- DYNAMIC CONTACTS CONTAINER -->
+            <div id="emergencyListContainer" style="flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px">
+                <!-- Injected via renderEmergencyModalList() -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: ADMIN CONSOLE — ADD SERVICES & NUMBERS                  -->
+    <!-- ============================================================== -->
+    <div id="modal-admin-hub" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-admin-hub')">
+        <div class="modal-sheet" style="max-height:90vh;display:flex;flex-direction:column;padding:0;overflow:hidden">
+            <!-- HEADER -->
+            <div style="background:linear-gradient(135deg, #064E3B 0%, #0E7043 100%);padding:14px 16px;color:#fff;display:flex;align-items:center;justify-content:space-between">
+                <div style="display:flex;align-items:center;gap:10px">
+                    <span style="font-size:24px">⚙️</span>
+                    <div>
+                        <h3 style="margin:0;font-size:16px;font-weight:800;color:#fff">അഡ്മിൻ കൺസോൾ (Admin Hub)</h3>
+                        <div style="font-size:11px;color:#A7F3D0">പുതിയ സർവീസുകളും സഹായ നമ്പറുകളും ചേർക്കാം</div>
+                    </div>
+                </div>
+                <button onclick="closeModal('modal-admin-hub')" style="background:none;border:none;color:#fff;font-size:22px;cursor:pointer">✕</button>
+            </div>
+
+            <!-- TAB SWITCHER -->
+            <div style="display:flex;border-bottom:1px solid #E2E8F0;background:#F8FAFC">
+                <button id="adminTabBtnServices" onclick="switchAdminHubTab('services')" style="flex:1;padding:12px;border:none;background:#fff;color:#0E7043;font-weight:800;font-size:12.5px;cursor:pointer;border-bottom:2px solid #0E7043">
+                    🛠️ സർവീസ്
+                </button>
+                <button id="adminTabBtnNumbers" onclick="switchAdminHubTab('numbers')" style="flex:1;padding:12px;border:none;background:none;color:#64748B;font-weight:700;font-size:12.5px;cursor:pointer">
+                    🚨 നമ്പറുകൾ
+                </button>
+                <button id="adminTabBtnSplash" onclick="switchAdminHubTab('splash')" style="flex:1;padding:12px;border:none;background:none;color:#64748B;font-weight:700;font-size:12.5px;cursor:pointer">
+                    🖼️ ഓപ്പണിംഗ് ഫോട്ടോ
+                </button>
+            </div>
+
+            <div style="flex:1;overflow-y:auto;padding:16px">
+                <!-- FORM 1: ADD SERVICE / WORKER -->
+                <form id="adminAddServiceForm" onsubmit="submitAdminAddService(event)" style="display:flex;flex-direction:column;gap:11px">
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">പേര് / സ്ഥാപനത്തിന്റെ പേര് (Provider Name) *</label>
+                        <input type="text" id="adminSvcName" required placeholder="Eg: മനോജ് കുമാർ / റോയൽ വർക്ക്‌ഷോപ്പ്" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                    </div>
+
+                    <div style="display:flex;gap:8px">
+                        <div style="flex:1">
+                            <label style="font-size:12px;font-weight:700;color:#374151">തൊഴിൽ വിഭാഗം (Category/Trade) *</label>
+                            <input type="text" id="adminSvcTrade" required placeholder="Eg: പ്ലംബർ, ഇലക്ട്രീഷ്യൻ, ഡ്രൈവർ..." style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                        </div>
+                        <div style="width:90px">
+                            <label style="font-size:12px;font-weight:700;color:#374151">ഐക്കൺ</label>
+                            <select id="adminSvcIcon" style="width:100%;padding:9px;border:1px solid #CBD5E1;border-radius:10px;font-size:14px;outline:none;margin-top:3px;background:#fff">
+                                <option value="🛠️">🛠️ പണി</option>
+                                <option value="⚡">⚡ ഇലക്ട്രിക്</option>
+                                <option value="🔧">🔧 പ്ലംബർ</option>
+                                <option value="🚗">🚗 ഡ്രൈവർ</option>
+                                <option value="🧹">🧹 ക്ലീനിംഗ്</option>
+                                <option value="🎨">🎨 പെയിന്റിംഗ്</option>
+                                <option value="🍳">🍳 കുക്കിംഗ്</option>
+                                <option value="🩺">🩺 നഴ്സിങ്</option>
+                                <option value="💻">💻 കമ്പ്യൂട്ടർ</option>
+                                <option value="📦">📦 ഡെലിവറി</option>
+                                <option value="🌾">🌾 കൃഷി</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display:flex;gap:8px">
+                        <div style="flex:1">
+                            <label style="font-size:12px;font-weight:700;color:#374151">ഫോൺ നമ്പർ *</label>
+                            <input type="tel" id="adminSvcPhone" required placeholder="9447000000" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                        </div>
+                        <div style="flex:1">
+                            <label style="font-size:12px;font-weight:700;color:#374151">സ്ഥലം (Location) *</label>
+                            <input type="text" id="adminSvcLoc" required placeholder="Eg: കണ്ണൂർ, തളിപ്പറമ്പ്" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                        </div>
+                    </div>
+
+                    <div style="display:flex;gap:8px">
+                        <div style="flex:1">
+                            <label style="font-size:12px;font-weight:700;color:#374151">വിസിറ്റിംഗ് ചാർജ്</label>
+                            <input type="text" id="adminSvcFee" placeholder="Eg: ₹200 / സംസാരിക്കാം" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                        </div>
+                        <div style="flex:1">
+                            <label style="font-size:12px;font-weight:700;color:#374151">പ്രവർത്തന സമയം</label>
+                            <input type="text" id="adminSvcHours" placeholder="Eg: 8 AM - 8 PM / 24x7" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">വിവരണം / സേവന വിശേഷങ്ങൾ</label>
+                        <input type="text" id="adminSvcDesc" placeholder="Eg: വയറിംഗ്, ഇൻവെർട്ടർ സർവീസ്, പ്ലംബിംഗ്..." style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                    </div>
+
+                    <div style="display:flex;align-items:center;gap:8px;background:#F0FDF4;padding:8px 12px;border-radius:10px;border:1px solid #BBF7D0">
+                        <input type="checkbox" id="adminSvcVerified" checked style="width:16px;height:16px;accent-color:#0E7043">
+                        <label for="adminSvcVerified" style="font-size:12px;font-weight:700;color:#166534;cursor:pointer">✓ അഡ്മിൻ അംഗീകൃത ബാഡ്ജ് നൽകുക (Verified Badge)</label>
+                    </div>
+
+                    <button type="submit" style="background:linear-gradient(135deg, #064E3B 0%, #0E7043 100%);color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;margin-top:4px;box-shadow:0 3px 10px rgba(14,112,67,0.3)">
+                        🚀 സർവീസ് ചേർത്ത് ക്ലൗഡിലേക്ക് അപ്‌ലോഡ് ചെയ്യാം
+                    </button>
+                </form>
+
+                <!-- FORM 2: ADD EMERGENCY / HELPLINE NUMBER -->
+                <form id="adminAddNumberForm" onsubmit="submitAdminAddEmergencyNumber(event)" style="display:none;flex-direction:column;gap:11px">
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">സേവന സ്ഥാപനം / ഹെൽപ്പ്‌ലൈൻ പേര് *</label>
+                        <input type="text" id="adminNumTitle" required placeholder="Eg: KSEB ഇലക്ട്രിസിറ്റി, താലൂക്ക് ആശുപത്രി, പോലീസ്..." style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                    </div>
+
+                    <div style="display:flex;gap:8px">
+                        <div style="flex:1">
+                            <label style="font-size:12px;font-weight:700;color:#374151">വിഭാഗം (Category) *</label>
+                            <select id="adminNumCategory" style="width:100%;padding:9px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px;background:#fff">
+                                <option value="അടിയന്തിരം">🚨 അടിയന്തിരം</option>
+                                <option value="ആരോഗ്യം">🏥 ആരോഗ്യം & ആശുപത്രി</option>
+                                <option value="വൈദ്യുതി & കുടിവെള്ളം">⚡ വൈദ്യുതി & കുടിവെള്ളം</option>
+                                <option value="സർക്കാർ">🏛️ സർക്കാർ ഓഫീസുകൾ</option>
+                                <option value="സുരക്ഷ">🛡️ വനിത / ശിശു സംരക്ഷണം</option>
+                                <option value="മറ്റ് സഹായങ്ങൾ">📞 മറ്റ് സഹായങ്ങൾ</option>
+                            </select>
+                        </div>
+                        <div style="width:90px">
+                            <label style="font-size:12px;font-weight:700;color:#374151">ഐക്കൺ</label>
+                            <select id="adminNumIcon" style="width:100%;padding:9px;border:1px solid #CBD5E1;border-radius:10px;font-size:14px;outline:none;margin-top:3px;background:#fff">
+                                <option value="📞">📞 കോൾ</option>
+                                <option value="⚡">⚡ കറന്റ്</option>
+                                <option value="💧">💧 വെള്ളം</option>
+                                <option value="🏥">🏥 ഹോസ്പിറ്റൽ</option>
+                                <option value="🚒">🚒 ഫയർ</option>
+                                <option value="🛡️">🛡️ പോലീസ്</option>
+                                <option value="🏛️">🏛️ ഓഫീസ്</option>
+                                <option value="🐍">🐍 പാമ്പ് പിടുത്തം</option>
+                                <option value="🌲">🌲 ഫോറസ്റ്റ്</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display:flex;gap:8px">
+                        <div style="flex:1">
+                            <label style="font-size:12px;font-weight:700;color:#374151">ഹെൽപ്പ്‌ലൈൻ / ഫോൺ നമ്പർ *</label>
+                            <input type="tel" id="adminNumPhone" required placeholder="Eg: 1912, 0497-2700000, 9447..." style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                        </div>
+                        <div style="flex:1">
+                            <label style="font-size:12px;font-weight:700;color:#374151">പ്രദേശം (Location) *</label>
+                            <input type="text" id="adminNumLoc" required placeholder="Eg: കണ്ണൂർ, തലശ്ശേരി, കേരളം" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                        </div>
+                    </div>
+
+                    <div style="display:flex;gap:8px">
+                        <div style="flex:1">
+                            <label style="font-size:12px;font-weight:700;color:#374151">ബാഡ്ജ് / ടാഗ്</label>
+                            <input type="text" id="adminNumBadge" placeholder="Eg: 24x7, ടോൾ ഫ്രീ, അത്യാഹിതം" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                        </div>
+                        <div style="flex:1">
+                            <label style="font-size:12px;font-weight:700;color:#374151">ലഘുവിവരണം</label>
+                            <input type="text" id="adminNumDesc" placeholder="Eg: 24 മണിക്കൂറും സേവനം ലഭ്യമാണ്" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                        </div>
+                    </div>
+
+                    <button type="submit" style="background:linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;margin-top:4px;box-shadow:0 3px 10px rgba(220,38,38,0.3)">
+                        📢 പുതിയ നമ്പർ ലിസ്റ്റ് ചെയ്ത് പബ്ലിഷ് ചെയ്യാം
+                    </button>
+                </form>
+
+                <!-- SECTION 3: CHANGE OPENING SPLASH PHOTO -->
+                <div id="adminSplashPhotoSection" style="display:none;flex-direction:column;gap:12px">
+                    <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:12px;text-align:center">
+                        <div style="font-size:13px;font-weight:800;color:#166534">🖼️ ആപ്പ് ഓപ്പൺ ചെയ്യുമ്പോഴുള്ള ഫോട്ടോ മാറ്റുക</div>
+                        <div style="font-size:11px;color:#15803D;margin-top:2px">ഇവിടെ മാറ്റുന്ന ഫോട്ടോ എല്ലാ നാട്ടുകാരുടെയും ഫോണിൽ അപ്‌ഡേറ്റ് ചെയ്യപ്പെടും.</div>
+                    </div>
+
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">നിലവിലെ പ്രിവ്യൂ (Current Opening Photo)</label>
+                        <div style="position:relative;margin-top:6px;border-radius:14px;overflow:hidden;border:2px solid #E2E8F0;box-shadow:0 2px 8px rgba(0,0,0,0.08);height:200px">
+                            <img id="adminSplashPreview" src="img/kerala-splash.jpg" style="width:100%;height:100%;object-fit:cover">
+                            <div style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,0.6);color:#fff;padding:3px 10px;border-radius:20px;font-size:10.5px;font-weight:700">
+                                ലൈവ് പ്രിവ്യൂ
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display:flex;gap:8px">
+                        <button type="button" onclick="document.getElementById('adminSplashFileInput').click()" style="flex:1;background:#0E7043;color:#fff;border:none;padding:11px;border-radius:12px;font-size:12.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+                            <span>📸 ഫോണിൽ നിന്ന് ഫോട്ടോ തിരഞ്ഞെടുക്കാം</span>
+                        </button>
+                        <input type="file" id="adminSplashFileInput" accept="image/*" style="display:none" onchange="handleAdminSplashPhotoSelected(event)">
+                    </div>
+
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">അല്ലെങ്കിൽ ഇന്റർനെറ്റ് ഫോട്ടോ ലിങ്ക് (Image URL)</label>
+                        <input type="url" id="adminSplashUrlInput" placeholder="https://example.com/photo.jpg" oninput="previewAdminSplashUrl(this.value)" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:12.5px;outline:none;margin-top:3px">
+                    </div>
+
+                    <div style="display:flex;gap:8px;margin-top:4px">
+                        <button type="button" onclick="saveAdminSplashPhoto()" style="flex:2;background:linear-gradient(135deg, #064E3B 0%, #0E7043 100%);color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:13.5px;cursor:pointer;box-shadow:0 3px 10px rgba(14,112,67,0.3)">
+                            💾 ഓപ്പണിംഗ് ഫോട്ടോ അപ്‌ഡേറ്റ് ചെയ്യാം
+                        </button>
+                        <button type="button" onclick="resetAdminSplashPhoto()" style="flex:1;background:#F1F5F9;color:#475569;border:1px solid #CBD5E1;padding:12px;border-radius:12px;font-weight:700;font-size:12px;cursor:pointer">
+                            🔄 ഡിഫോൾട്ട്
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1775,6 +2038,13 @@
                 <button onclick="closeModal('modal-edit-profile')" style="background:none;border:none;font-size:20px;cursor:pointer">✕</button>
             </div>
 
+            <!-- ONBOARDING WELCOME BANNER (SHOWN WHEN OPENING APP FOR FIRST TIME) -->
+            <div id="profileOnboardingNotice" style="display:none;background:linear-gradient(135deg, #ECFDF5 0%, #DCFCE7 100%);border:1.5px solid #10B981;border-radius:14px;padding:12px 14px;margin-bottom:14px;text-align:center">
+                <div style="font-size:26px;margin-bottom:2px">🌴 👋</div>
+                <div style="font-size:15px;font-weight:900;color:#064E3B">നമ്മുടെ നാട്ടിലേക്ക് സ്വാഗതം!</div>
+                <div style="font-size:12px;color:#047857;margin-top:3px;font-weight:600">തുടങ്ങുന്നതിനായി നിങ്ങളുടെ പേരും രക്തഗ്രൂപ്പും നൽകി പ്രൊഫൈൽ പൂർത്തിയാക്കുക.</div>
+            </div>
+
             <!-- PROFILE PHOTO CHANGER -->
             <div style="text-align:center;margin-bottom:14px;background:#F9FAFB;padding:12px;border-radius:14px;border:1px solid #E5E7EB">
                 <div style="position:relative;width:72px;height:72px;margin:0 auto 8px">
@@ -1795,12 +2065,12 @@
 
             <form onsubmit="submitProfileUpdate(event)" style="display:flex;flex-direction:column;gap:10px">
                 <div>
-                    <label style="font-size:12px;font-weight:700">പൂർണ്ണ നാമം (Your Full Name)</label>
-                    <input type="text" id="editProfName" required placeholder="നിങ്ങളുടെ പേര് നൽകുക..." style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                    <label style="font-size:12px;font-weight:700">പൂർണ്ണ നാമം (Your Full Name) *</label>
+                    <input type="text" id="editProfName" required placeholder="നിങ്ങളുടെ പേര് നൽകുക..." style="width:100%;padding:10px;border:1.5px solid #10B981;border-radius:10px;font-size:13px;outline:none;margin-top:4px;background:#F0FDF4">
                 </div>
                 <div>
-                    <label style="font-size:12px;font-weight:700">ഫോൺ നമ്പർ (Phone Number - Unique ID)</label>
-                    <input type="tel" id="editProfPhone" oninput="checkPhoneProfileLookup(this.value)" placeholder="10 അക്ക മൊബൈൽ നമ്പർ..." style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                    <label style="font-size:12px;font-weight:700">ഫോൺ നമ്പർ (Phone Number - Unique ID) *</label>
+                    <input type="tel" id="editProfPhone" required oninput="checkPhoneProfileLookup(this.value)" placeholder="10 അക്ക മൊബൈൽ നമ്പർ..." style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
                     <div id="phoneLookupStatus" style="font-size:11px;color:#0E7043;font-weight:700;margin-top:3px;display:none"></div>
                     <div style="font-size:10.5px;color:#64748B;margin-top:2px">💡 ഈ നമ്പർ വെച്ചാണ് നിങ്ങളുടെ അക്കൗണ്ട് ഐഡി രൂപീകരിക്കപ്പെടുന്നത്.</div>
                 </div>
@@ -1813,8 +2083,8 @@
                     <input type="text" id="editProfBio" placeholder="നിങ്ങളെക്കുറിച്ച് ചെറുതായി എഴുതാം (ഉദാ: കണ്ണൂർ • സാമൂഹിക പ്രവർത്തകൻ)..." style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
                 </div>
                 <div>
-                    <label style="font-size:12px;font-weight:700">രക്തഗ്രൂപ്പ് (Blood Group)</label>
-                    <select id="editProfBlood" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                    <label style="font-size:12px;font-weight:800;color:#DC2626">രക്തഗ്രൂപ്പ് (Blood Group) *</label>
+                    <select id="editProfBlood" required style="width:100%;padding:10px;border:1.5px solid #DC2626;border-radius:10px;font-size:13.5px;font-weight:800;outline:none;margin-top:4px;background:#FEF2F2;color:#DC2626">
                         <option value="O+">O+</option>
                         <option value="A+">A+</option>
                         <option value="B+">B+</option>
@@ -1825,8 +2095,18 @@
                         <option value="AB-">AB-</option>
                     </select>
                 </div>
-                <button type="submit" style="background:#0E7043;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;margin-top:6px">
-                    💾 പ്രൊഫൈൽ സേവ് ചെയ്യാം
+
+                <!-- BLOOD DONOR ENROLLMENT CHECKBOX -->
+                <div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:10px;padding:10px 12px;margin-top:2px">
+                    <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:12.5px;font-weight:700;color:#991B1B">
+                        <input type="checkbox" id="editProfIsDonor" checked style="width:18px;height:18px;accent-color:#DC2626;cursor:pointer">
+                        <span>🩸 സന്നദ്ധ രക്തദാതാവായി രജിസ്റ്റർ ചെയ്യാം</span>
+                    </label>
+                    <div style="font-size:11px;color:#B91C1C;margin-top:3px;padding-left:28px">അടിയന്തിര ഘട്ടത്തിൽ രക്തം ആവശ്യമുള്ളവർക്ക് ആപ്പ് വഴി നിങ്ങളെ ബന്ധപ്പെടാം.</div>
+                </div>
+
+                <button type="submit" style="background:#0E7043;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;margin-top:6px;box-shadow:0 2px 8px rgba(14,112,67,0.3)">
+                    💾 പ്രൊഫൈൽ പൂർത്തിയാക്കാം
                 </button>
             </form>
         </div>

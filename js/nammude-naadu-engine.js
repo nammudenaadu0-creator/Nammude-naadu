@@ -104,7 +104,8 @@
     bloodDonors: [],
     bloodRequests: [],
     chats: {},
-    serviceRequests: []
+    serviceRequests: [],
+    emergencyContacts: []
   };
 
   // Expose APP_STATE globally for Firebase cloud synchronization
@@ -412,9 +413,9 @@
     }
   ];
 
-  const SEED_SERVICES = (typeof window !== 'undefined' && ((window.SEED_SERVICES_500 && window.SEED_SERVICES_500.length) || (window.SEED_SERVICES_200 && window.SEED_SERVICES_200.length)))
-    ? (window.SEED_SERVICES_500 || window.SEED_SERVICES_200)
-    : [
+  // Fake accounts purged: Only real verified and admin/user added services are loaded
+  const SEED_SERVICES = [];
+  const REMOVED_SEED_SERVICES = [
     {
       id: 'srv_1',
       name: 'സന്തോഷ് കുമാർ',
@@ -825,6 +826,13 @@
   // Load from LocalStorage or seed
   function initData() {
     try {
+      // Apply custom splash image if saved by admin
+      const customSplash = localStorage.getItem('nn_app_splash_bg');
+      if (customSplash) {
+        const splashEl = document.getElementById('splashMainBgImage');
+        if (splashEl) splashEl.src = customSplash;
+      }
+
       let loadedPosts = null;
       try {
         const storedPosts = localStorage.getItem('nn_posts');
@@ -856,17 +864,14 @@
       }
 
       const storedServices = localStorage.getItem('nn_services');
-      let loadedServices = storedServices ? JSON.parse(storedServices) : null;
-      const fullCatalog = (typeof window !== 'undefined' && ((window.SEED_SERVICES_500 && window.SEED_SERVICES_500.length) || (window.SEED_SERVICES_200 && window.SEED_SERVICES_200.length)))
-        ? (window.SEED_SERVICES_500 || window.SEED_SERVICES_200)
-        : SEED_SERVICES;
-
-      if (!loadedServices || loadedServices.length < 450) {
-        loadedServices = fullCatalog;
-        try {
-          localStorage.setItem('nn_services', JSON.stringify(loadedServices));
-        } catch (_) {}
-      }
+      let loadedServices = storedServices ? JSON.parse(storedServices) : [];
+      // PURGE ALL 500 FAKE SEED ACCOUNTS: Only keep user-created, admin-created or real services
+      loadedServices = (Array.isArray(loadedServices) ? loadedServices : []).filter(s => 
+        s && (s.isUserCreated || (s.id && s.id.startsWith('srv_adm_')) || (s.verified && !s.id?.match(/^srv_\d+$/)))
+      );
+      try {
+        localStorage.setItem('nn_services', JSON.stringify(loadedServices));
+      } catch (_) {}
       APP_STATE.services = loadedServices;
 
       // Sync community registered services from Supabase Cloud
@@ -895,6 +900,12 @@
 
       const storedRequests = localStorage.getItem('nn_blood_requests');
       APP_STATE.bloodRequests = storedRequests ? JSON.parse(storedRequests) : [];
+
+      const storedEmergencyContacts = localStorage.getItem('nn_emergency_contacts');
+      APP_STATE.emergencyContacts = storedEmergencyContacts ? JSON.parse(storedEmergencyContacts) : [];
+      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncEmergencyContacts === 'function') {
+        window.NN_SUPABASE_SERVICES.syncEmergencyContacts();
+      }
 
       const storedChats = localStorage.getItem('nn_chats_store');
       APP_STATE.chats = storedChats ? JSON.parse(storedChats) : {};
@@ -1093,11 +1104,30 @@
         splash.style.opacity = '';
         splash.style.transform = '';
         navTo('home');
+
+        // PROMPT ONBOARDING PROFILE SETUP: If user hasn't completed their profile yet (especially name, phone & blood group)
+        const profileDone = localStorage.getItem('nn_profile_completed');
+        const userPhone = APP_STATE.currentUser.phone ? APP_STATE.currentUser.phone.replace(/\D/g, '') : '';
+        const isDefaultName = !APP_STATE.currentUser.name || APP_STATE.currentUser.name === 'നാട്ടുകാരൻ';
+        if (!profileDone || !userPhone || isDefaultName) {
+          setTimeout(() => {
+            openEditProfileModal(true);
+          }, 350);
+        }
+
         // Auto-detect GPS non-blockingly upon first launch
-        setTimeout(() => detectLiveGpsLocation(false), 400);
+        setTimeout(() => detectLiveGpsLocation(false), 500);
       }, 300);
     } else {
       navTo('home');
+      const profileDone = localStorage.getItem('nn_profile_completed');
+      const userPhone = APP_STATE.currentUser.phone ? APP_STATE.currentUser.phone.replace(/\D/g, '') : '';
+      const isDefaultName = !APP_STATE.currentUser.name || APP_STATE.currentUser.name === 'നാട്ടുകാരൻ';
+      if (!profileDone || !userPhone || isDefaultName) {
+        setTimeout(() => {
+          openEditProfileModal(true);
+        }, 350);
+      }
     }
   }
   window.enterAppFromSplash = enterAppFromSplash;
@@ -3700,9 +3730,10 @@
           </div>
         </div>
 
-        <div style="display:flex;gap:6px">
-          <a href="tel:${d.phone}" style="background:#10B981;color:#fff;padding:8px 12px;border-radius:10px;text-decoration:none;font-size:12px;font-weight:800">📞 Call</a>
-          <button onclick="openChatForDonor('${d.name.replace(/'/g, "\\'")}', '${d.phone}', '${d.group}')" style="background:#DC2626;color:#fff;border:none;padding:8px 12px;border-radius:10px;cursor:pointer;font-size:12px;font-weight:800">💬 Chat</button>
+        <div>
+          <button onclick="openChatForDonor('${d.name.replace(/'/g, "\\'")}', '${d.phone}', '${d.group}')" style="background:linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);color:#fff;border:none;padding:9px 14px;border-radius:10px;cursor:pointer;font-size:12.5px;font-weight:800;display:flex;align-items:center;gap:6px;box-shadow:0 2px 6px rgba(220,38,38,0.25)">
+            <span>💬 ആപ്പ് ചാറ്റ്</span>
+          </button>
         </div>
       </div>
     `).join('');
@@ -3720,35 +3751,50 @@
 
   function submitBloodRequest(e) {
     if (e) e.preventDefault();
-    const patient = document.getElementById('bReqPatient').value.trim();
-    const hospital = document.getElementById('bReqHospital').value.trim();
-    const group = document.getElementById('bReqGroup').value;
-    const units = document.getElementById('bReqUnits').value.trim() || '1';
-    const phone = document.getElementById('bReqPhone').value.trim();
+    const patient = (document.getElementById('bReqPatient')?.value || '').trim();
+    const age = (document.getElementById('bReqAge')?.value || '').trim();
+    const hospital = (document.getElementById('bReqHospital')?.value || '').trim();
+    const ipNo = (document.getElementById('bReqIpNo')?.value || '').trim();
+    const bystander = (document.getElementById('bReqBystander')?.value || '').trim();
+    const group = document.getElementById('bReqGroup')?.value || 'O+';
+    const units = (document.getElementById('bReqUnits')?.value || '').trim() || '1';
+    const phone = (document.getElementById('bReqPhone')?.value || '').trim();
+    const showPhone = document.getElementById('bReqShowPhone')?.checked || false;
+    const declaration = document.getElementById('bReqDeclaration')?.checked;
 
-    if (!patient || !hospital || !phone) {
-      toast('⚠️ ദയവായി രോഗിയുടെ പേര്, ഹോസ്പിറ്റൽ, ഫോൺ നൽകുക.');
+    if (!patient || !hospital || !phone || !bystander) {
+      toast('⚠️ ദയവായി രോഗിയുടെ പേര്, ആശുപത്രി, കൂട്ടിരിപ്പുകാരൻ, ഫോൺ നൽകുക.');
       return;
     }
+
+    if (!declaration) {
+      toast('⚠️ സൗജന്യ രക്തദാന സത്യവാങ്മൂലം അംഗീകരിക്കേണ്ടതാണ്.');
+      return;
+    }
+
+    const contactDisplay = showPhone ? `${phone} (ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം)` : '🔒 നമ്പർ രഹസ്യമാണ് (താഴെയുള്ള "ആപ്പ് ചാറ്റ്" വഴി സന്ദേശമയക്കുക)';
 
     // Automatically create an urgent post in Community Feed as well
     const urgentPost = {
       id: 'post_blood_' + Date.now(),
       authorId: APP_STATE.currentUser.id,
       authorName: APP_STATE.currentUser.name,
-      authorPhone: phone,
+      authorPhone: showPhone ? phone : '',
       authorAvatar: APP_STATE.currentUser.avatar,
       authorLocation: hospital,
       authorBlood: group,
       type: 'announcement',
-      content: `🚨 അടിയന്തര രക്ത ആവശ്യം (URGENT BLOOD REQUIRED) 🩸\n\nരോഗി: ${patient}\nരക്തഗ്രൂപ്പ്: ${group} (${units} യൂണിറ്റ്)\nആശുപത്രി: ${hospital}\nബന്ധപ്പെടേണ്ട നമ്പർ: ${phone}\n\nദയവായി ആർക്കെങ്കിലും നൽകാൻ സാധിക്കുമെങ്കിൽ ഉടൻ ബന്ധപ്പെടുക!`,
+      content: `🚨 അടിയന്തര രക്ത ആവശ്യം (URGENT BLOOD REQUIRED) 🩸\n\nരോഗി: ${patient}${age ? ' (' + age + ')' : ''}\nരക്തഗ്രൂപ്പ്: ${group} (${units} യൂണിറ്റ്)\nആശുപത്രി: ${hospital}\n${ipNo ? 'IP/OP വിവരം: ' + ipNo + '\n' : ''}കൂട്ടിരിപ്പുകാരൻ: ${bystander}\nബന്ധപ്പെടാൻ: ${contactDisplay}\n\n⚖️ സത്യവാങ്മൂലം: സൗജന്യ സന്നദ്ധ രക്തദാനം (Drugs & Cosmetics Act പ്രകാരം വാണിജ്യപരമായ ക്രയവിക്രയം പാടില്ല)`,
       image: '',
       timestamp: 'ഇപ്പോൾ',
       likes: 0,
       isLiked: false,
       isCurrentUser: true,
       lat: APP_STATE.location.lat,
-      lon: APP_STATE.location.lon
+      lon: APP_STATE.location.lon,
+      isBloodRequest: true,
+      bloodGroup: group,
+      showPhone: showPhone
     };
 
     APP_STATE.posts.unshift(urgentPost);
@@ -3759,11 +3805,15 @@
       window.NN_SUPABASE_SERVICES.saveBloodRequest({
         id: 'breq_' + Date.now(),
         patientName: patient,
+        patientAge: age,
         group: group,
         bloodGroup: group,
         units: units,
         hospital: hospital,
+        ipNo: ipNo,
+        bystander: bystander,
         phone: phone,
+        showPhone: showPhone,
         neededBy: 'അടിയന്തിരം',
         lat: APP_STATE.location.lat,
         lon: APP_STATE.location.lon,
@@ -3780,10 +3830,502 @@
   }
   window.submitBloodRequest = submitBloodRequest;
 
+  // ==============================================================
+  // 11B. EMERGENCY CONTACTS DIRECTORY & REALTIME HUB
+  // ==============================================================
+  const DEFAULT_EMERGENCY_CONTACTS = [
+    {
+      id: 'emg_112',
+      name: 'നാഷണൽ എമർജൻസി നമ്പർ (ERSS)',
+      phone: '112',
+      category: 'police',
+      categoryName: 'പോലീസ് & അത്യാഹിതം',
+      icon: '🚨',
+      location: 'കേരളം ഒട്ടാകെ (All Kerala)',
+      description: 'പോലീസ്, ഫയർ, ആംബുലൻസ് സംയോജിത 24x7 അടിയന്തര സേവനം'
+    },
+    {
+      id: 'emg_108',
+      name: 'കനിവ് 108 ആംബുലൻസ് സർവീസ്',
+      phone: '108',
+      category: 'medical',
+      categoryName: 'ആരോഗ്യം & ആംബുലൻസ്',
+      icon: '🚑',
+      location: 'കേരളം ഒട്ടാകെ (All Kerala)',
+      description: 'സൗജന്യ അടിയന്തിര മെഡിക്കൽ ആംബുലൻസ് സർവീസ് 24x7'
+    },
+    {
+      id: 'emg_101',
+      name: 'ഫയർ & റെസ്ക്യൂ സർവീസ് (Fire Force)',
+      phone: '101',
+      category: 'fire',
+      categoryName: 'ഫയർ ഫോഴ്സ്',
+      icon: '🚒',
+      location: 'കേരളം ഒട്ടാകെ (All Kerala)',
+      description: 'തീപിടുത്തം, വെള്ളപ്പൊക്കം, രക്ഷാപ്രവർത്തനം'
+    },
+    {
+      id: 'emg_100',
+      name: 'കേരള പോലീസ് കൺട്രോൾ റൂം',
+      phone: '100',
+      category: 'police',
+      categoryName: 'പോലീസ്',
+      icon: '👮',
+      location: 'കേരളം ഒട്ടാകെ (All Kerala)',
+      description: 'ക്രമസമാധാനം, അടിയന്തര പോലീസ് സഹായം'
+    },
+    {
+      id: 'emg_1091',
+      name: 'വനിതാ ഹെൽപ്പ്‌ലൈൻ (Women Helpline)',
+      phone: '1091',
+      category: 'women',
+      categoryName: 'വനിതാ സഹായം',
+      icon: '👩',
+      location: 'കേരളം ഒട്ടാകെ (All Kerala)',
+      description: 'സ്ത്രീകൾക്കെതിരെയുള്ള അതിക്രമങ്ങൾ തടയൽ & സഹായം'
+    },
+    {
+      id: 'emg_181',
+      name: 'മിത്ര 181 വുമൺ ഇൻ ഡിസ്ട്രസ്സ്',
+      phone: '181',
+      category: 'women',
+      categoryName: 'വനിതാ സഹായം',
+      icon: '🛡️',
+      location: 'കേരളം ഒട്ടാകെ (All Kerala)',
+      description: 'വനിതാ ശിശു വികസന വകുപ്പ് 24 മണിക്കൂർ ഹെൽപ്പ്‌ലൈൻ'
+    },
+    {
+      id: 'emg_1098',
+      name: 'ചൈൽഡ്‌ലൈൻ (Childline India)',
+      phone: '1098',
+      category: 'utility',
+      categoryName: 'കുട്ടികളുടെ സുരക്ഷ',
+      icon: '👶',
+      location: 'ഇന്ത്യ ഒട്ടാകെ',
+      description: 'കുട്ടികളുടെ അവകാശ സംരക്ഷണവും സഹായവും'
+    },
+    {
+      id: 'emg_1912',
+      name: 'KSEB എമർജൻസി കൺട്രോൾ റൂം',
+      phone: '1912',
+      category: 'utility',
+      categoryName: 'വൈദ്യുതി (KSEB)',
+      icon: '⚡',
+      location: 'കേരളം ഒട്ടാകെ',
+      description: 'വൈദ്യുത തകരാറുകൾ, അപകടങ്ങൾ 24x7 റിപ്പോർട്ട് ചെയ്യാം'
+    },
+    {
+      id: 'emg_1056',
+      name: 'ദിശ 1056 (DISHA Health Helpline)',
+      phone: '1056',
+      category: 'medical',
+      categoryName: 'ആരോഗ്യ സംശയം',
+      icon: '🩺',
+      location: 'കേരളം ഒട്ടാകെ',
+      description: 'ആരോഗ്യ സംശയങ്ങൾ, മാനസികാരോഗ്യ കൗൺസിലിംഗ്'
+    },
+    {
+      id: 'emg_1077',
+      name: 'ദുരന്ത നിവാരണ അതോറിറ്റി (Disaster Helpline)',
+      phone: '1077',
+      category: 'utility',
+      categoryName: 'ദുരന്ത നിവാരണം',
+      icon: '⚠️',
+      location: 'ജില്ലാ തലത്തിൽ',
+      description: 'പ്രകൃതി ദുരന്തങ്ങൾ, മുന്നറിയിപ്പുകൾ, സഹായം'
+    }
+  ];
+
+  function getEmergencyCategoryIcon(cat) {
+    switch (cat) {
+      case 'police': return '👮';
+      case 'medical': return '🚑';
+      case 'fire': return '🚒';
+      case 'utility': return '⚡';
+      case 'women': return '👩';
+      default: return '🚨';
+    }
+  }
+
+  function getEmergencyCategoryNameMalayalam(cat) {
+    switch (cat) {
+      case 'police': return 'പോലീസ്';
+      case 'medical': return 'ആരോഗ്യം';
+      case 'fire': return 'ഫയർ ഫോഴ്സ്';
+      case 'utility': return 'യൂട്ടിലിറ്റി';
+      case 'women': return 'വനിത & ശിശു';
+      default: return 'അത്യാഹിതം';
+    }
+  }
+
+  function getAllEmergencyContacts() {
+    let custom = [];
+    try {
+      custom = JSON.parse(localStorage.getItem('nn_emergency_contacts') || '[]');
+    } catch (_) {}
+    if (Array.isArray(APP_STATE.emergencyContacts) && APP_STATE.emergencyContacts.length > 0) {
+      custom = APP_STATE.emergencyContacts;
+    }
+    const map = new Map();
+    [...custom, ...DEFAULT_EMERGENCY_CONTACTS].forEach(c => {
+      const k = c.id || (c.phone ? c.phone.replace(/\D/g, '') : c.name);
+      if (!map.has(k)) {
+        map.set(k, c);
+      }
+    });
+    return Array.from(map.values());
+  }
+
+  let activeEmergencyCategory = 'all';
+
+  function setEmergencyCategory(cat, el) {
+    activeEmergencyCategory = cat;
+    document.querySelectorAll('.emg-filter-chip').forEach(c => c.classList.remove('active'));
+    if (el) el.classList.add('active');
+    const searchVal = document.getElementById('emergencySearchInput')?.value || '';
+    renderEmergencyModalList(searchVal, activeEmergencyCategory);
+  }
+  window.setEmergencyCategory = setEmergencyCategory;
+
+  function filterEmergencyContacts(query) {
+    renderEmergencyModalList(query, activeEmergencyCategory);
+  }
+  window.filterEmergencyContacts = filterEmergencyContacts;
+
+  function renderEmergencyModalList(query = '', category = 'all') {
+    const listEl = document.getElementById('emergencyListContainer');
+    if (!listEl) return;
+
+    let contacts = getAllEmergencyContacts();
+    const cat = category || activeEmergencyCategory || 'all';
+    if (cat !== 'all') {
+      contacts = contacts.filter(c => c.category === cat);
+    }
+
+    const q = (query || '').toLowerCase().trim();
+    if (q) {
+      contacts = contacts.filter(c => 
+        (c.name && c.name.toLowerCase().includes(q)) ||
+        (c.phone && c.phone.includes(q)) ||
+        (c.categoryName && c.categoryName.toLowerCase().includes(q)) ||
+        (c.location && c.location.toLowerCase().includes(q)) ||
+        (c.description && c.description.toLowerCase().includes(q))
+      );
+    }
+
+    const badgeEl = document.getElementById('emgCountBadge');
+    if (badgeEl) {
+      badgeEl.textContent = `${contacts.length} നമ്പറുകൾ ലഭ്യമാണ്`;
+    }
+
+    if (contacts.length === 0) {
+      listEl.innerHTML = `
+        <div style="text-align:center;padding:28px 16px;background:#F8FAFC;border-radius:14px;border:1px dashed #CBD5E1">
+          <div style="font-size:32px;margin-bottom:8px">🚨</div>
+          <div style="font-size:14px;font-weight:800;color:#334155">നമ്പറുകൾ കണ്ടെത്താനായില്ല</div>
+          <div style="font-size:12px;color:#64748B;margin-top:4px">തിരഞ്ഞ പദം മാറ്റി നോക്കുക അല്ലെങ്കിൽ പുതിയ നമ്പർ ചേർക്കുക</div>
+          <button type="button" onclick="openAdminPortal('emergency')" style="margin-top:12px;background:#0E7043;color:#fff;border:none;padding:7px 16px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer">
+            ➕ അഡ്മിൻ നമ്പർ ചേർക്കുക
+          </button>
+        </div>
+      `;
+      return;
+    }
+
+    listEl.innerHTML = contacts.map(c => {
+      const cleanPhone = (c.phone || '').replace(/\D/g, '');
+      const icon = c.icon || getEmergencyCategoryIcon(c.category);
+      const catName = c.categoryName || getEmergencyCategoryNameMalayalam(c.category);
+
+      return `
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:12px 14px;box-shadow:0 1px 3px rgba(0,0,0,0.04);display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:42px;height:42px;border-radius:12px;background:#FEF2F2;border:1px solid #FECACA;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">
+                ${icon}
+              </div>
+              <div>
+                <div style="font-weight:800;font-size:14px;color:#0F172A">${escapeHtml(c.name)}</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-top:2px">
+                  <span style="font-size:11px;font-weight:800;color:#DC2626;background:#FEF2F2;border:1px solid #FCA5A5;padding:1px 6px;border-radius:6px">
+                    ${escapeHtml(catName)}
+                  </span>
+                  ${c.location ? `<span style="font-size:11px;color:#64748B">📍 ${escapeHtml(c.location)}</span>` : ''}
+                </div>
+              </div>
+            </div>
+            <div style="background:#F0FDF4;color:#166534;font-size:11px;font-weight:800;padding:2px 8px;border-radius:8px;border:1px solid #BBF7D0;white-space:nowrap">
+              🟢 24x7
+            </div>
+          </div>
+
+          ${c.description ? `<div style="font-size:12px;color:#475569;line-height:1.4">${escapeHtml(c.description)}</div>` : ''}
+
+          <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+            <a href="tel:${cleanPhone}" style="flex:1;background:linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);color:#fff;text-decoration:none;padding:9px;border-radius:10px;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 6px rgba(220,38,38,0.25)">
+              <span>📞 വിളിക്കുക: ${escapeHtml(c.phone)}</span>
+            </a>
+            <button type="button" onclick="navigator.clipboard?.writeText('${escapeHtml(c.phone)}'); toast('📋 നമ്പർ കോപ്പി ചെയ്തു: ${escapeHtml(c.phone)}')" style="background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;padding:9px 12px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer" title="കോപ്പി ചെയ്യുക">
+              📋 കോപ്പി
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+  window.renderEmergencyModalList = renderEmergencyModalList;
+
   function openEmergencyModal() {
+    renderEmergencyModalList();
     openModal('modal-emergency');
   }
   window.openEmergencyModal = openEmergencyModal;
+
+  // ==============================================================
+  // 11C. ADMIN PORTAL (SERVICES & EMERGENCY DIRECTORY MANAGEMENT)
+  // ==============================================================
+  function checkIsAdmin() {
+    const userPhone = (APP_STATE.currentUser.phone || '').replace(/\D/g, '').slice(-10);
+    return userPhone === '9605406699' || localStorage.getItem('nn_is_admin') === 'true';
+  }
+  window.checkIsAdmin = checkIsAdmin;
+
+  function promptAdminAuth(callback) {
+    if (checkIsAdmin()) {
+      if (typeof callback === 'function') callback();
+      return;
+    }
+    const pin = prompt('🔐 അഡ്മിൻ ആക്സസ് PIN നൽകുക:');
+    if (pin === '2026') {
+      localStorage.setItem('nn_is_admin', 'true');
+      toast('✅ അഡ്മിൻ തിരിച്ചറിഞ്ഞു!');
+      if (typeof callback === 'function') callback();
+    } else if (pin !== null) {
+      toast('❌ തെറ്റായ PIN! ആക്സസ് നിരസിച്ചു.');
+    }
+  }
+  window.promptAdminAuth = promptAdminAuth;
+
+  function openAdminPortal(tab = 'services') {
+    promptAdminAuth(() => {
+      openModal('modal-admin-hub');
+      switchAdminHubTab(tab);
+    });
+  }
+  window.openAdminPortal = openAdminPortal;
+
+  function switchAdminHubTab(tab) {
+    const btnSrv = document.getElementById('adminTabBtnServices');
+    const btnNum = document.getElementById('adminTabBtnNumbers') || document.getElementById('adminTabBtnEmergency');
+    const btnSpl = document.getElementById('adminTabBtnSplash');
+
+    const formSrv = document.getElementById('adminAddServiceForm') || document.getElementById('adminTabContentServices');
+    const formNum = document.getElementById('adminAddNumberForm') || document.getElementById('adminTabContentEmergency');
+    const secSpl = document.getElementById('adminSplashPhotoSection');
+
+    // Reset buttons
+    [btnSrv, btnNum, btnSpl].forEach(b => {
+      if (b) {
+        b.style.background = 'none';
+        b.style.color = '#64748B';
+        b.style.borderBottom = 'none';
+        b.style.fontWeight = '700';
+      }
+    });
+
+    // Hide all
+    if (formSrv) formSrv.style.display = 'none';
+    if (formNum) formNum.style.display = 'none';
+    if (secSpl) secSpl.style.display = 'none';
+
+    if (tab === 'services') {
+      if (btnSrv) {
+        btnSrv.style.background = '#fff';
+        btnSrv.style.color = '#0E7043';
+        btnSrv.style.borderBottom = '2px solid #0E7043';
+        btnSrv.style.fontWeight = '800';
+      }
+      if (formSrv) formSrv.style.display = 'flex';
+    } else if (tab === 'numbers' || tab === 'emergency') {
+      if (btnNum) {
+        btnNum.style.background = '#fff';
+        btnNum.style.color = '#DC2626';
+        btnNum.style.borderBottom = '2px solid #DC2626';
+        btnNum.style.fontWeight = '800';
+      }
+      if (formNum) formNum.style.display = 'flex';
+    } else if (tab === 'splash') {
+      if (btnSpl) {
+        btnSpl.style.background = '#fff';
+        btnSpl.style.color = '#0E7043';
+        btnSpl.style.borderBottom = '2px solid #0E7043';
+        btnSpl.style.fontWeight = '800';
+      }
+      if (secSpl) secSpl.style.display = 'flex';
+      const cur = localStorage.getItem('nn_app_splash_bg') || 'img/kerala-splash.jpg';
+      const preview = document.getElementById('adminSplashPreview');
+      if (preview) preview.src = cur;
+    }
+  }
+  window.switchAdminHubTab = switchAdminHubTab;
+
+  let tempAdminSplashBase64 = null;
+
+  function handleAdminSplashPhotoSelected(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      tempAdminSplashBase64 = e.target.result;
+      const preview = document.getElementById('adminSplashPreview');
+      if (preview) preview.src = tempAdminSplashBase64;
+      toast('📸 ഫോട്ടോ തിരഞ്ഞെടുത്തു! സേവ് ചെയ്യാൻ താഴെയുള്ള ബട്ടൺ അമർത്തുക.');
+    };
+    reader.readAsDataURL(file);
+  }
+  window.handleAdminSplashPhotoSelected = handleAdminSplashPhotoSelected;
+
+  function previewAdminSplashUrl(url) {
+    const preview = document.getElementById('adminSplashPreview');
+    if (preview && url && url.startsWith('http')) {
+      preview.src = url.trim();
+    }
+  }
+  window.previewAdminSplashUrl = previewAdminSplashUrl;
+
+  function saveAdminSplashPhoto() {
+    const preview = document.getElementById('adminSplashPreview');
+    const urlInput = document.getElementById('adminSplashUrlInput');
+    const targetSrc = tempAdminSplashBase64 || (urlInput && urlInput.value.trim()) || (preview && preview.src);
+
+    if (!targetSrc) {
+      toast('⚠️ ദയവായി ഒരു ഫോട്ടോ തിരഞ്ഞെടുക്കുക.');
+      return;
+    }
+
+    localStorage.setItem('nn_app_splash_bg', targetSrc);
+    const mainSplash = document.getElementById('splashMainBgImage');
+    if (mainSplash) mainSplash.src = targetSrc;
+
+    // Broadcast update across devices via Supabase emergency / settings table
+    if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveEmergencyContact === 'function') {
+      window.NN_SUPABASE_SERVICES.saveEmergencyContact({
+        id: 'app_setting_splash_bg',
+        name: 'Splash Background Image',
+        phone: '112',
+        category: 'utility',
+        location: targetSrc.substring(0, 500),
+        description: targetSrc
+      });
+    }
+
+    toast('🎉 ഓപ്പണിംഗ് ഫോട്ടോ വിജയകരമായി അപ്‌ഡേറ്റ് ചെയ്തു!');
+    closeModal('modal-admin-hub');
+  }
+  window.saveAdminSplashPhoto = saveAdminSplashPhoto;
+
+  function resetAdminSplashPhoto() {
+    tempAdminSplashBase64 = null;
+    localStorage.removeItem('nn_app_splash_bg');
+    const mainSplash = document.getElementById('splashMainBgImage');
+    if (mainSplash) mainSplash.src = 'img/kerala-splash.jpg';
+    const preview = document.getElementById('adminSplashPreview');
+    if (preview) preview.src = 'img/kerala-splash.jpg';
+    const urlInput = document.getElementById('adminSplashUrlInput');
+    if (urlInput) urlInput.value = '';
+    toast('🔄 ഡിഫോൾട്ട് ചിത്രം പുനഃസ്ഥാപിച്ചു.');
+  }
+  window.resetAdminSplashPhoto = resetAdminSplashPhoto;
+
+  function submitAdminAddService(e) {
+    if (e) e.preventDefault();
+    const name = (document.getElementById('adminSvcName')?.value || document.getElementById('admSrvName')?.value || '').trim();
+    const trade = (document.getElementById('adminSvcTrade')?.value || document.getElementById('admSrvTrade')?.value || '').trim();
+    const cat = document.getElementById('adminSvcCategory')?.value || document.getElementById('admSrvCategory')?.value || 'other';
+    const phone = (document.getElementById('adminSvcPhone')?.value || document.getElementById('admSrvPhone')?.value || '').trim();
+    const loc = (document.getElementById('adminSvcLoc')?.value || document.getElementById('admSrvLocation')?.value || '').trim();
+    const exp = (document.getElementById('adminSvcDesc')?.value || document.getElementById('admSrvExp')?.value || '').trim();
+    const fee = (document.getElementById('adminSvcFee')?.value || document.getElementById('admSrvFee')?.value || '').trim();
+    const hours = (document.getElementById('adminSvcHours')?.value || document.getElementById('admSrvHours')?.value || '').trim();
+    const icon = document.getElementById('adminSvcIcon')?.value || '🛠️';
+
+    if (!name || !trade || !phone || !loc) {
+      toast('⚠️ ദയവായി പേര്, തൊഴിൽ, ഫോൺ, സ്ഥലം നൽകുക.');
+      return;
+    }
+
+    const newService = {
+      id: 'srv_adm_' + Date.now(),
+      name: name,
+      trade: trade,
+      category: cat,
+      icon: icon,
+      phone: phone,
+      location: loc,
+      experience: exp || 'പരിചയസമ്പന്നൻ',
+      visitingFee: fee || 'മിതമായ നിരക്ക്',
+      workHours: hours || 'രാവിലെ 8:00 AM - വൈകുന്നേരം 7:30 PM',
+      rating: '5.0',
+      reviewsCount: 1,
+      verified: true,
+      isUserCreated: false,
+      timestamp: Date.now()
+    };
+
+    APP_STATE.services.unshift(newService);
+    saveServices();
+
+    if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveService === 'function') {
+      window.NN_SUPABASE_SERVICES.saveService(newService);
+    }
+
+    renderServicesScreen();
+    closeModal('modal-admin-hub');
+    toast('✅ പുതിയ സർവീസ് അഡ്മിൻ വിജയകരമായി ചേർത്തു!');
+    if (e.target && typeof e.target.reset === 'function') e.target.reset();
+  }
+  window.submitAdminAddService = submitAdminAddService;
+
+  function submitAdminAddEmergencyNumber(e) {
+    if (e) e.preventDefault();
+    const name = (document.getElementById('adminNumTitle')?.value || document.getElementById('admEmgName')?.value || '').trim();
+    const phone = (document.getElementById('adminNumPhone')?.value || document.getElementById('admEmgPhone')?.value || '').trim();
+    const cat = document.getElementById('adminNumCategory')?.value || document.getElementById('admEmgCategory')?.value || 'utility';
+    const loc = (document.getElementById('adminNumLoc')?.value || document.getElementById('admEmgLocation')?.value || '').trim();
+    const desc = (document.getElementById('adminNumDesc')?.value || document.getElementById('admEmgDesc')?.value || '').trim();
+    const icon = document.getElementById('adminNumIcon')?.value || '🚨';
+
+    if (!name || !phone) {
+      toast('⚠️ ദയവായി ഡിപ്പാർട്മെന്റ് പേരും ഫോൺ നമ്പറും നൽകുക.');
+      return;
+    }
+
+    const newEmg = {
+      id: 'emg_' + Date.now(),
+      name: name,
+      phone: phone,
+      category: cat,
+      categoryName: typeof getEmergencyCategoryNameMalayalam === 'function' ? getEmergencyCategoryNameMalayalam(cat) : 'അത്യാഹിതം',
+      icon: icon,
+      location: loc || 'കേരളം',
+      description: desc || 'അടിയന്തര സഹായത്തിന് ബന്ധപ്പെടാം',
+      created_at: Date.now()
+    };
+
+    if (!Array.isArray(APP_STATE.emergencyContacts)) APP_STATE.emergencyContacts = [];
+    APP_STATE.emergencyContacts.unshift(newEmg);
+    localStorage.setItem('nn_emergency_contacts', JSON.stringify(APP_STATE.emergencyContacts));
+
+    if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveEmergencyContact === 'function') {
+      window.NN_SUPABASE_SERVICES.saveEmergencyContact(newEmg);
+    }
+
+    renderEmergencyModalList();
+    closeModal('modal-admin-hub');
+    toast('✅ പുതിയ അത്യാവശ്യ നമ്പർ വിജയകരമായി ചേർത്തു!');
+    if (e.target && typeof e.target.reset === 'function') e.target.reset();
+  }
+  window.submitAdminAddEmergencyNumber = submitAdminAddEmergencyNumber;
 
   // ==============================================================
   // 12. AMBULANCE EMERGENCY DIRECTORY & DRIVER REGISTRATION
@@ -5280,19 +5822,24 @@
   }
   window.refreshRentalsLive = refreshRentalsLive;
 
-  function openEditProfileModal() {
+  function openEditProfileModal(isOnboarding = false) {
     const nameEl = document.getElementById('editProfName');
     const phoneEl = document.getElementById('editProfPhone');
     const locEl = document.getElementById('editProfLoc');
     const bloodEl = document.getElementById('editProfBlood');
     const previewEl = document.getElementById('editProfAvatarPreview');
     const statusEl = document.getElementById('phoneLookupStatus');
+    const noticeEl = document.getElementById('profileOnboardingNotice');
+
+    if (noticeEl) {
+      noticeEl.style.display = isOnboarding ? 'block' : 'none';
+    }
     if (statusEl) statusEl.style.display = 'none';
 
     if (nameEl) nameEl.value = (APP_STATE.currentUser.name && APP_STATE.currentUser.name !== 'നാട്ടുകാരൻ') ? APP_STATE.currentUser.name : '';
     if (phoneEl) phoneEl.value = APP_STATE.currentUser.phone || '';
     if (locEl) locEl.value = APP_STATE.currentUser.location || APP_STATE.location.name || '';
-    if (bloodEl) bloodEl.value = APP_STATE.currentUser.bloodGroup || 'O+';
+    if (bloodEl) bloodEl.value = APP_STATE.currentUser.bloodGroup || localStorage.getItem('nn_user_blood') || 'O+';
     const bioEl = document.getElementById('editProfBio');
     if (bioEl) bioEl.value = (APP_STATE.currentUser.bio && APP_STATE.currentUser.bio !== 'കണ്ണൂർ • നമ്മുടെ നാട് കൂട്ടായ്മ 🌿') ? APP_STATE.currentUser.bio : '';
     if (previewEl) previewEl.src = APP_STATE.currentUser.avatar || DEFAULT_USER_AVATAR;
@@ -5366,9 +5913,14 @@
     const loc = (document.getElementById('editProfLoc').value || '').trim() || APP_STATE.location.name || 'കേരളം';
     const blood = document.getElementById('editProfBlood').value;
     const bio = (document.getElementById('editProfBio')?.value || '').trim() || 'കണ്ണൂർ • നമ്മുടെ നാട് കൂട്ടായ്മ 🌿';
+    const isDonor = document.getElementById('editProfIsDonor')?.checked !== false;
 
     if (!name) {
       toast('⚠️ ദയവായി നിങ്ങളുടെ പേര് നൽകുക.');
+      return;
+    }
+    if (!phone) {
+      toast('⚠️ ദയവായി നിങ്ങളുടെ ഫോൺ നമ്പർ നൽകുക.');
       return;
     }
 
@@ -5394,7 +5946,36 @@
       localStorage.setItem('nn_user_loc', loc);
       localStorage.setItem('nn_user_blood', blood);
       localStorage.setItem('nn_user_bio', bio);
+      localStorage.setItem('nn_profile_completed', 'true');
     } catch (_) {}
+
+    // Register user as Blood Donor if opted in
+    if (isDonor && blood) {
+      if (!Array.isArray(APP_STATE.bloodDonors)) APP_STATE.bloodDonors = [];
+      const cleanP = phone.replace(/\D/g, '');
+      const existingIdx = APP_STATE.bloodDonors.findIndex(d => (d.phone && d.phone.replace(/\D/g, '') === cleanP) || d.name === name);
+      const donorObj = {
+        id: 'donor_' + (cleanP || Date.now()),
+        name: name,
+        group: blood,
+        phone: phone,
+        location: loc,
+        status: 'ലഭ്യമാണ്',
+        lat: APP_STATE.location.lat,
+        lon: APP_STATE.location.lon
+      };
+      if (existingIdx >= 0) {
+        APP_STATE.bloodDonors[existingIdx] = donorObj;
+      } else {
+        APP_STATE.bloodDonors.unshift(donorObj);
+      }
+      try {
+        localStorage.setItem('nn_blood_donors', JSON.stringify(APP_STATE.bloodDonors));
+      } catch (_) {}
+      if (typeof window.NN_SUPABASE_SERVICES?.saveBloodDonor === 'function') {
+        window.NN_SUPABASE_SERVICES.saveBloodDonor(donorObj);
+      }
+    }
 
     // Synchronize to Supabase Cloud Profiles
     if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveUserProfile === 'function') {
@@ -5405,7 +5986,7 @@
     renderProfileScreen();
     updatePostingProfileBar();
     renderHomeScreen();
-    toast(`🎉 സ്വാഗതം ${name}! നിങ്ങളുടെ പ്രൊഫൈൽ സേവ് ചെയ്തു.`);
+    toast(`🎉 സ്വാഗതം ${name}! നിങ്ങളുടെ പ്രൊഫൈലും രക്തഗ്രൂപ്പും (${blood}) വിജയകരമായി സേവ് ചെയ്തു.`);
   }
   window.submitProfileUpdate = submitProfileUpdate;
 

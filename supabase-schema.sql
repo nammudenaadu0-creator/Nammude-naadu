@@ -271,7 +271,32 @@ create policy "Allow public select profiles" on public.profiles for select using
 create policy "Allow public insert profiles" on public.profiles for insert with check (true);
 create policy "Allow public update profiles" on public.profiles for update using (true);
 
--- 11. ENABLE SUPABASE REALTIME REPLICATION
+-- 11. EMERGENCY & ESSENTIAL DIRECTORY CONTACTS TABLE
+create table if not exists public.emergency_contacts (
+  id text primary key,
+  title text not null,
+  category text default 'അടിയന്തിരം',
+  phone text not null,
+  icon text default '📞',
+  badge text default 'സഹായം',
+  location text default 'കേരളം',
+  district text,
+  description text,
+  created_at bigint not null,
+  created_at_iso timestamp with time zone default timezone('utc'::text, now())
+);
+
+alter table public.emergency_contacts enable row level security;
+drop policy if exists "Allow public select emergency_contacts" on public.emergency_contacts;
+drop policy if exists "Allow public insert emergency_contacts" on public.emergency_contacts;
+drop policy if exists "Allow public update emergency_contacts" on public.emergency_contacts;
+drop policy if exists "Allow public delete emergency_contacts" on public.emergency_contacts;
+create policy "Allow public select emergency_contacts" on public.emergency_contacts for select using (true);
+create policy "Allow public insert emergency_contacts" on public.emergency_contacts for insert with check (true);
+create policy "Allow public update emergency_contacts" on public.emergency_contacts for update using (true) with check (true);
+create policy "Allow public delete emergency_contacts" on public.emergency_contacts for delete using (true);
+
+-- 12. ENABLE SUPABASE REALTIME REPLICATION
 alter publication supabase_realtime add table public.messages;
 alter publication supabase_realtime add table public.posts;
 alter publication supabase_realtime add table public.services;
@@ -281,3 +306,4 @@ alter publication supabase_realtime add table public.jobs;
 alter publication supabase_realtime add table public.rentals;
 alter publication supabase_realtime add table public.service_requests;
 alter publication supabase_realtime add table public.profiles;
+alter publication supabase_realtime add table public.emergency_contacts;
