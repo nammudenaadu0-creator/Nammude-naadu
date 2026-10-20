@@ -275,7 +275,7 @@
             </div>
 
             <!-- ADMIN AD & PROMOTIONAL FEATURE BANNER (അഡ്മിൻ പരസ്യങ്ങൾ / ബാനർ) -->
-            <div class="yg-village-promo-banner mode-full-image" id="homeVillagePromoBanner" onclick="navTo('community')" title="അറിയിപ്പുകൾ കാണാം" style="margin: 0 16px 14px; position:relative; overflow:hidden; border-radius:20px; box-shadow:0 8px 24px rgba(6,78,59,0.18); min-height:135px; cursor:pointer">
+            <div class="yg-village-promo-banner mode-full-image" id="homeVillagePromoBanner" onclick="openAdDetailModal()" style="margin: 0 16px 14px; position:relative; overflow:hidden; border-radius:20px; box-shadow:0 8px 24px rgba(6,78,59,0.18); min-height:135px; cursor:pointer">
                 <img id="homeVillageBannerFullImg" class="yg-village-full-bg-img" alt="നമ്മുടെ നാട് പരസ്യം" src="img/kerala-splash.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;border-radius:20px">
                 <div id="homeVillageBannerOverlay" class="yg-village-full-overlay" style="position:absolute;inset:0;background:linear-gradient(90deg, rgba(6,78,59,0.85) 0%, rgba(6,78,59,0.45) 55%, rgba(0,0,0,0.15) 100%);z-index:2;border-radius:20px"></div>
                 <div class="yg-promo-left" style="position:relative;z-index:3;display:flex;align-items:center;gap:12px;padding:16px">
@@ -293,8 +293,8 @@
                 <div class="yg-promo-right" id="homeVillageBannerArtWrap" style="display:none"></div>
             </div>
 
-            <!-- 1-TAP QUICK SERVICE REQUEST (EASY WORKFLOW CTA) -->
-            <div class="home-quick-request-card" onclick="openQuickServiceModal()">
+            <!-- 1-TAP QUICK SERVICE REQUEST (EASY WORKFLOW CTA - 4 SEC AUTO CLOSE) -->
+            <div class="home-quick-request-card" id="homeQuickRequestCard" onclick="openQuickServiceModal()">
                 <div class="quick-req-left">
                     <div class="quick-req-icon-pulse">⚡</div>
                     <div>
@@ -303,7 +303,10 @@
                         <p class="quick-req-sub">ആവശ്യം പോസ്റ്റ് ചെയ്യൂ, അടുത്തുള്ള വർക്കർമാർ ഉടൻ ബന്ധപ്പെടും</p>
                     </div>
                 </div>
-                <button class="quick-req-btn">ആവശ്യപ്പെടാം ➔</button>
+                <div style="display:flex;align-items:center;gap:8px">
+                    <button class="quick-req-btn">ആവശ്യപ്പെടാം ➔</button>
+                    <button type="button" onclick="event.stopPropagation(); dismissQuickRequestCard();" title="ക്ലോസ് ചെയ്യുക" style="background:rgba(255,255,255,0.22);color:#fff;border:none;border-radius:50%;width:24px;height:24px;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;cursor:pointer">✕</button>
+                </div>
             </div>
 
             <!-- 4. 3D MAIN CATEGORIES (6 ISOMETRIC ELEVATED CARDS) -->
@@ -1749,6 +1752,62 @@
                     🚀 അടുത്തുള്ള വർക്കർമാരെ അറിയിക്കാം
                 </button>
             </form>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: AD / ANNOUNCEMENT DETAILS (പരസ്യ വിവരങ്ങൾ)               -->
+    <!-- ============================================================== -->
+    <div id="modal-ad-detail" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-ad-detail')">
+        <div class="modal-sheet" style="max-height:88vh;overflow-y:auto;padding:0;border-radius:24px;overflow:hidden">
+            <!-- AD IMAGE HEADER WITH CLOSE BUTTON -->
+            <div style="position:relative;width:100%;height:210px;background:#064E3B;overflow:hidden">
+                <img id="adDetailImage" src="img/kerala-splash.jpg" alt="പരസ്യം" style="width:100%;height:100%;object-fit:cover;display:block">
+                <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.75) 100%)"></div>
+                <button type="button" onclick="closeModal('modal-ad-detail')" style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;width:32px;height:32px;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(6px);z-index:5">✕</button>
+                <div style="position:absolute;top:14px;left:14px;background:rgba(16,185,129,0.9);color:#fff;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:800;backdrop-filter:blur(6px);z-index:5">
+                    ✨ ഔദ്യോഗിക അറിയിപ്പ് / Ads
+                </div>
+                <div style="position:absolute;bottom:12px;left:16px;right:16px;z-index:5">
+                    <h2 id="adDetailTitle" style="color:#fff;font-size:20px;font-weight:900;margin:0;text-shadow:0 2px 6px rgba(0,0,0,0.8)">നമ്മുടെ നാട്</h2>
+                    <div id="adDetailSub" style="color:#A7F3D0;font-size:13px;font-weight:700;margin-top:2px;text-shadow:0 1px 4px rgba(0,0,0,0.6)">🤝 നാടിനൊപ്പം നാം</div>
+                </div>
+            </div>
+
+            <!-- AD BODY CONTENT -->
+            <div style="padding:18px 20px 24px">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+                    <span style="font-size:12px;background:#F0FDF4;color:#166534;border:1px solid #BBF7D0;padding:4px 10px;border-radius:8px;font-weight:800">
+                        📍 കേരളം • തത്സമയ അപ്‌ഡേറ്റ്
+                    </span>
+                    <span id="adDetailDate" style="font-size:11.5px;color:#94A3B8;font-weight:600">തത്സമയ പരസ്യം</span>
+                </div>
+
+                <!-- DESCRIPTION PARAGRAPH -->
+                <div id="adDetailDesc" style="font-size:14.5px;line-height:1.65;color:#334155;margin-bottom:20px;white-space:pre-line">
+                    നമ്മുടെ നാട്ടിലെ എല്ലാ പ്രധാന വാർത്തകളും, സേവനങ്ങളും, ആഘോഷ വിശേഷങ്ങളും അറിയാം.
+                </div>
+
+                <!-- INTERACTIVE ACTION BUTTONS -->
+                <div style="display:flex;flex-direction:column;gap:10px">
+                    <div id="adDetailCallRow" style="display:none">
+                        <a id="adDetailCallBtn" href="tel:" style="display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;background:#059669;color:#fff;font-size:14px;font-weight:800;padding:12px;border-radius:12px;box-shadow:0 4px 14px rgba(5,150,105,0.25)">
+                            <span>📞</span> <span id="adDetailCallText">വിളിക്കുക / ബന്ധപ്പെടുക</span>
+                        </a>
+                    </div>
+                    <div id="adDetailLinkRow" style="display:none">
+                        <a id="adDetailLinkBtn" href="#" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;background:#2563EB;color:#fff;font-size:14px;font-weight:800;padding:12px;border-radius:12px;box-shadow:0 4px 14px rgba(37,99,235,0.25)">
+                            <span>🌐</span> കൂടുതൽ വിവരങ്ങൾക്ക് വെബ്സൈറ്റ് സന്ദർശിക്കുക ➔
+                        </a>
+                    </div>
+                    <button type="button" onclick="shareAdDetail()" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#F1F5F9;border:1px solid #CBD5E1;color:#1E293B;font-size:13.5px;font-weight:800;padding:11px;border-radius:12px;cursor:pointer">
+                        <span>📲</span> സുഹൃത്തുക്കൾക്ക് ഷെയർ ചെയ്യാം
+                    </button>
+                    <button type="button" onclick="closeModal('modal-ad-detail')" style="background:none;border:none;color:#64748B;font-size:13px;font-weight:700;padding:6px;cursor:pointer">
+                        ✕ ക്ലോസ് ചെയ്യാം
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 

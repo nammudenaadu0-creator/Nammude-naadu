@@ -5161,6 +5161,106 @@
   }
   window.renderHomeVillageBanner = renderHomeVillageBanner;
 
+  function openAdDetailModal() {
+    const customArt = localStorage.getItem('thuna_custom_village_banner_art') || localStorage.getItem('thuna_custom_hero_banner');
+    const customTitle = localStorage.getItem('thuna_custom_village_banner_title') || 'നമ്മുടെ നാട്';
+    const customSub = localStorage.getItem('thuna_custom_village_banner_sub') || '🤝 നാടിനൊപ്പം നാം';
+    const customDesc = localStorage.getItem('thuna_custom_village_banner_desc') || 
+      'നമ്മുടെ നാട്ടിലെ പ്രാദേശിക സേവനങ്ങൾ, അടിയന്തര സഹായം, തൊഴിലുകൾ, വാടക വിൽപന തുടങ്ങിയവയെല്ലാം ഒരു കുടക്കീഴിൽ ലഭ്യമാക്കാൻ രൂപകൽപ്പന ചെയ്ത ആപ്പാണ് നമ്മുടെ നാട്.\n\nനാട്ടിലെ എല്ലാ തത്സമയ വാർത്തകളും അറിയിപ്പുകളും ഇവിടെ ലഭ്യമാണ്. പരസ്യങ്ങൾക്കും സ്പോൺസർഷിപ്പുകൾക്കും അഡ്മിനുമായി ബന്ധപ്പെടാം.';
+    const customPhone = localStorage.getItem('thuna_custom_village_banner_phone') || '';
+    const customLink = localStorage.getItem('thuna_custom_village_banner_link') || '';
+
+    const imgEl = document.getElementById('adDetailImage');
+    const titleEl = document.getElementById('adDetailTitle');
+    const subEl = document.getElementById('adDetailSub');
+    const descEl = document.getElementById('adDetailDesc');
+    const callRow = document.getElementById('adDetailCallRow');
+    const callBtn = document.getElementById('adDetailCallBtn');
+    const callText = document.getElementById('adDetailCallText');
+    const linkRow = document.getElementById('adDetailLinkRow');
+    const linkBtn = document.getElementById('adDetailLinkBtn');
+
+    if (imgEl) imgEl.src = customArt || 'img/kerala-splash.jpg';
+    if (titleEl) titleEl.textContent = customTitle;
+    if (subEl) subEl.textContent = customSub;
+    if (descEl) descEl.textContent = customDesc;
+
+    if (callRow && callBtn) {
+      if (customPhone && customPhone.trim()) {
+        callRow.style.display = 'block';
+        callBtn.href = `tel:${customPhone.trim()}`;
+        if (callText) callText.textContent = `വിളിക്കുക: ${customPhone.trim()}`;
+      } else {
+        callRow.style.display = 'none';
+      }
+    }
+
+    if (linkRow && linkBtn) {
+      if (customLink && customLink.trim()) {
+        linkRow.style.display = 'block';
+        linkBtn.href = customLink.trim();
+      } else {
+        linkRow.style.display = 'none';
+      }
+    }
+
+    openModal('modal-ad-detail');
+  }
+  window.openAdDetailModal = openAdDetailModal;
+
+  function shareAdDetail() {
+    const title = localStorage.getItem('thuna_custom_village_banner_title') || 'നമ്മുടെ നാട്';
+    const sub = localStorage.getItem('thuna_custom_village_banner_sub') || 'നാടിനൊപ്പം നാം';
+    const desc = localStorage.getItem('thuna_custom_village_banner_desc') || '';
+    const text = `📢 *${title}*\n${sub}\n\n${desc ? desc.slice(0, 150) + '...' : ''}\n\n'നമ്മുടെ നാട്' ആപ്പിൽ കൂടുതൽ വിവരങ്ങൾ കാണാം.`;
+    
+    if (navigator.share) {
+      navigator.share({ title, text, url: window.location.href }).catch(() => {});
+    } else {
+      const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+      window.open(waUrl, '_blank');
+    }
+  }
+  window.shareAdDetail = shareAdDetail;
+
+  let quickRequestAutoCloseTimer = null;
+  function startQuickRequestAutoClose() {
+    const card = document.getElementById('homeQuickRequestCard');
+    if (!card) return;
+    if (quickRequestAutoCloseTimer) clearTimeout(quickRequestAutoCloseTimer);
+
+    // Auto-dismiss 4 seconds after opening
+    quickRequestAutoCloseTimer = setTimeout(() => {
+      dismissQuickRequestCard();
+    }, 4000);
+  }
+
+  function dismissQuickRequestCard() {
+    const card = document.getElementById('homeQuickRequestCard');
+    if (!card) return;
+    if (quickRequestAutoCloseTimer) {
+      clearTimeout(quickRequestAutoCloseTimer);
+      quickRequestAutoCloseTimer = null;
+    }
+    card.style.transition = 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+    card.style.maxHeight = card.offsetHeight + 'px';
+    card.style.overflow = 'hidden';
+    
+    requestAnimationFrame(() => {
+      card.style.maxHeight = '0px';
+      card.style.opacity = '0';
+      card.style.margin = '0 16px 0';
+      card.style.padding = '0 18px';
+      card.style.transform = 'scale(0.96)';
+    });
+
+    setTimeout(() => {
+      card.style.display = 'none';
+    }, 550);
+  }
+  window.dismissQuickRequestCard = dismissQuickRequestCard;
+  window.startQuickRequestAutoClose = startQuickRequestAutoClose;
+
   // ==============================================================
   // 17. INITIALIZATION ON DOM READY
   // ==============================================================
@@ -5168,6 +5268,7 @@
     updateLocationDisplay(APP_STATE.location.name, APP_STATE.location.district, APP_STATE.location.lat, APP_STATE.location.lon);
     renderActiveServiceTracker();
     renderHomeVillageBanner();
+    startQuickRequestAutoClose();
 
     const homeHeaderAvatar = document.getElementById('homeHeaderAvatar');
     if (homeHeaderAvatar) {

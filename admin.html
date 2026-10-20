@@ -1092,14 +1092,33 @@
             </div>
 
             <!-- Edit Texts -->
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:var(--muted)">Banner Title:</label>
+                <label style="font-size:11.5px;font-weight:700;color:var(--muted)">Banner Title / പരസ്യത്തിന്റെ പേര്:</label>
                 <input type="text" id="adminVillageTitleInput" value="നമ്മുടെ നാട്" style="width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-size:13px;font-weight:700;margin-top:4px" oninput="updateAdminVillageMockup()">
               </div>
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:var(--muted)">Banner Subtitle / Tagline:</label>
+                <label style="font-size:11.5px;font-weight:700;color:var(--muted)">Banner Subtitle / ടാഗ്‌ലൈൻ:</label>
                 <input type="text" id="adminVillageSubInput" value="🤝 നാടിനൊപ്പം നാം" style="width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-size:13px;font-weight:700;margin-top:4px" oninput="updateAdminVillageMockup()">
+              </div>
+            </div>
+
+            <!-- Ad Details on Click -->
+            <div style="background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:20px">
+              <div style="font-size:13px;font-weight:800;color:#0F172A;margin-bottom:8px">ℹ️ പരസ്യത്തെക്കുറിച്ചുള്ള വിശദ വിവരങ്ങൾ (Ad Detailed Info on Click):</div>
+              <div style="margin-bottom:12px">
+                <label style="font-size:11.5px;font-weight:700;color:var(--muted)">വിശദ വിവരണം / സന്ദേശം (Full Description / Announcement Body):</label>
+                <textarea id="adminVillageDescInput" rows="3" placeholder="പരസ്യത്തെക്കുറിച്ചോ ഓഫറിനെക്കുറിച്ചോ അറിയിപ്പുകളെക്കുറിച്ചോ ഉള്ള പൂർണ്ണ വിവരങ്ങൾ ഇവിടെ എഴുതാം..." style="width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-size:13px;margin-top:4px;resize:vertical"></textarea>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+                <div>
+                  <label style="font-size:11.5px;font-weight:700;color:var(--muted)">ബന്ധപ്പെടാനുള്ള ഫോൺ നമ്പർ (Contact Phone - Optional):</label>
+                  <input type="tel" id="adminVillagePhoneInput" placeholder="ഉദാ: 9847123456" style="width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-size:13px;margin-top:4px">
+                </div>
+                <div>
+                  <label style="font-size:11.5px;font-weight:700;color:var(--muted)">വെബ്സൈറ്റ് ലിങ്ക് (Website / External Link - Optional):</label>
+                  <input type="url" id="adminVillageLinkInput" placeholder="https://example.com" style="width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-size:13px;margin-top:4px">
+                </div>
               </div>
             </div>
 
@@ -1547,8 +1566,15 @@
 
       const titleInput = document.getElementById('adminVillageTitleInput');
       const subInput = document.getElementById('adminVillageSubInput');
+      const descInput = document.getElementById('adminVillageDescInput');
+      const phoneInput = document.getElementById('adminVillagePhoneInput');
+      const linkInput = document.getElementById('adminVillageLinkInput');
+
       if (titleInput) titleInput.value = savedTitle;
       if (subInput) subInput.value = savedSub;
+      if (descInput) descInput.value = localStorage.getItem('thuna_custom_village_banner_desc') || '';
+      if (phoneInput) phoneInput.value = localStorage.getItem('thuna_custom_village_banner_phone') || '';
+      if (linkInput) linkInput.value = localStorage.getItem('thuna_custom_village_banner_link') || '';
 
       setAdminVillageMode(savedMode);
     }
@@ -1712,6 +1738,19 @@
         localStorage.setItem('thuna_custom_village_banner_title', title);
         localStorage.setItem('thuna_custom_village_banner_sub', sub);
         localStorage.setItem('thuna_custom_village_banner_mode', pendingAdminVillageMode);
+
+        const descVal = (document.getElementById('adminVillageDescInput')?.value || '').trim();
+        const phoneVal = (document.getElementById('adminVillagePhoneInput')?.value || '').trim();
+        const linkVal = (document.getElementById('adminVillageLinkInput')?.value || '').trim();
+
+        if (descVal) localStorage.setItem('thuna_custom_village_banner_desc', descVal);
+        else localStorage.removeItem('thuna_custom_village_banner_desc');
+
+        if (phoneVal) localStorage.setItem('thuna_custom_village_banner_phone', phoneVal);
+        else localStorage.removeItem('thuna_custom_village_banner_phone');
+
+        if (linkVal) localStorage.setItem('thuna_custom_village_banner_link', linkVal);
+        else localStorage.removeItem('thuna_custom_village_banner_link');
       } catch (err) {
         console.warn('LocalStorage quota error in admin:', err);
       }
