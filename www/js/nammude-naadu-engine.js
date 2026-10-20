@@ -47,19 +47,31 @@
     savedUserPhone = '';
     try { localStorage.removeItem('nn_user_phone'); } catch (_) {}
   }
-
+  try {
+    const storedLocName = localStorage.getItem('nn_curr_loc_name');
+    if (storedLocName && (storedLocName.includes('കണ്ണൂർ') || storedLocName.toLowerCase().includes('kannur'))) {
+      localStorage.removeItem('nn_curr_loc_name');
+      localStorage.removeItem('nn_curr_district');
+    }
+    const storedUserLoc = localStorage.getItem('nn_user_loc');
+    if (storedUserLoc && (storedUserLoc.includes('കണ്ണൂർ') || storedUserLoc.toLowerCase().includes('kannur'))) {
+      localStorage.removeItem('nn_user_loc');
+    }
+    const storedUserBio = localStorage.getItem('nn_user_bio');
+    if (storedUserBio && storedUserBio.includes('കണ്ണൂർ')) {
+      localStorage.setItem('nn_user_bio', 'നമ്മുടെ നാട് കൂട്ടായ്മ 🌿');
+    }
+  } catch (_) {}
   function generateUserIdFromPhone(rawPhone) {
     if (!rawPhone) return null;
     const digits = String(rawPhone).replace(/\D/g, '').slice(-10);
     return (digits && digits.length >= 10) ? ('usr_' + digits) : null;
   }
   window.generateUserIdFromPhone = generateUserIdFromPhone;
-
   const phoneBasedId = generateUserIdFromPhone(savedUserPhone);
   if (phoneBasedId && !localStorage.getItem('nn_user_id')) {
     try { localStorage.setItem('nn_user_id', phoneBasedId.replace('usr_', '')); } catch (_) {}
   }
-
   const APP_STATE = {
     currentScreen: 'splash',
     previousScreen: 'home',
@@ -67,25 +79,27 @@
       id: phoneBasedId || (localStorage.getItem('nn_user_id') ? ('usr_' + localStorage.getItem('nn_user_id')) : ('usr_me_' + Math.random().toString(36).substring(2, 9))),
       name: savedUserName || 'നാട്ടുകാരൻ',
       phone: savedUserPhone || '',
-      location: localStorage.getItem('nn_user_loc') || 'കണ്ണൂർ, കേരളം',
+      location: localStorage.getItem('nn_user_loc') || 'തത്സമയ ലൊക്കേഷൻ',
       bloodGroup: localStorage.getItem('nn_user_blood') || 'O+',
       avatar: savedUserAvatar || DEFAULT_USER_AVATAR,
       cover: localStorage.getItem('nn_user_cover') || 'img/kerala-splash.jpg',
-      bio: localStorage.getItem('nn_user_bio') || 'കണ്ണൂർ • നമ്മുടെ നാട് കൂട്ടായ്മ 🌿',
+      bio: localStorage.getItem('nn_user_bio') || 'നമ്മുടെ നാട് കൂട്ടായ്മ 🌿',
       isDonor: localStorage.getItem('nn_user_is_donor') === 'true',
       isCustomized: !!savedUserName
     },
     location: {
-      name: localStorage.getItem('nn_curr_loc_name') || 'കണ്ണൂർ, കേരളം',
-      lat: parseFloat(localStorage.getItem('nn_curr_lat')) || 11.8745,
-      lon: parseFloat(localStorage.getItem('nn_curr_lon')) || 75.3704,
-      district: localStorage.getItem('nn_curr_district') || 'Kannur'
+      name: localStorage.getItem('nn_curr_loc_name') || 'തത്സമയ ലൊക്കേഷൻ',
+      lat: parseFloat(localStorage.getItem('nn_curr_lat')) || 10.8505,
+      lon: parseFloat(localStorage.getItem('nn_curr_lon')) || 76.2711,
+      district: localStorage.getItem('nn_curr_district') || ''
     },
+    activeRadiusKm: parseFloat(localStorage.getItem('nn_user_chosen_radius') || '5'),
     radiusFilters: {
-      nearby: 5,
-      services: 5,
-      jobs: 10,
-      rentals: 10
+      nearby: parseFloat(localStorage.getItem('nn_user_chosen_radius') || '5'),
+      services: parseFloat(localStorage.getItem('nn_user_chosen_radius') || '5'),
+      jobs: parseFloat(localStorage.getItem('nn_user_chosen_radius') || '5'),
+      rentals: parseFloat(localStorage.getItem('nn_user_chosen_radius') || '5'),
+      blood: parseFloat(localStorage.getItem('nn_user_chosen_radius') || '5')
     },
     activeNearbyCategory: 'all',
     nearbySearchQuery: '',
@@ -226,6 +240,43 @@
   }
   window.calculateDistanceKm = calculateDistanceKm;
 
+  // Resolve closest preset Kerala town from GPS coordinates
+  function getNearestKeralaPreset(lat, lon) {
+    const validLat = Number.isFinite(Number(lat)) ? Number(lat) : 11.8745;
+    const validLon = Number.isFinite(Number(lon)) ? Number(lon) : 75.3704;
+    let closest = KERALA_PRESETS[0];
+    let minDist = Infinity;
+    for (let i = 0; i < KERALA_PRESETS.length; i++) {
+      const p = KERALA_PRESETS[i];
+      const d = calculateDistanceKm(validLat, validLon, p.lat, p.lon);
+      if (d < minDist) {
+        minDist = d;
+        closest = p;
+      }
+    }
+    return closest;
+  }
+  window.getNearestKeralaPreset = getNearestKeralaPreset;
+
+  // Resolve genuine location name from coordinates if item has default or mismatched location text
+  function resolveItemLocation(item) {
+    if (!item) return (typeof APP_STATE !== 'undefined' && APP_STATE.location && APP_STATE.location.name) ? APP_STATE.location.name : 'തത്സമയ ലൊക്കേഷൻ';
+    let loc = (item.location || item.locationName || item.place || item.authorLocation || '').trim();
+    const coords = extractItemCoordinates(item);
+    if (coords && Number.isFinite(coords.lat) && Number.isFinite(coords.lon)) {
+      const distToKannur = calculateDistanceKm(coords.lat, coords.lon, 11.8745, 75.3704);
+      const isKannurText = loc.toLowerCase().includes('കണ്ണൂർ') || loc.toLowerCase().includes('kannur');
+      if (!loc || loc === 'കേരളം' || loc === 'തത്സമയ ലൊക്കേഷൻ' || (isKannurText && distToKannur > 25)) {
+        const nearest = getNearestKeralaPreset(coords.lat, coords.lon);
+        if (nearest && nearest.name) {
+          return nearest.name.split(',')[0].trim();
+        }
+      }
+    }
+    return loc || ((typeof APP_STATE !== 'undefined' && APP_STATE.location && APP_STATE.location.name) ? APP_STATE.location.name : 'തത്സമയ ലൊക്കേഷൻ');
+  }
+  window.resolveItemLocation = resolveItemLocation;
+
   // Universal distance resolver for any entity (service, user, donor, job, rental)
   function getItemDistanceKm(item, userLat = null, userLon = null) {
     if (!item) return 1.2;
@@ -325,10 +376,22 @@
 
       const storedServices = localStorage.getItem('nn_services');
       let loadedServices = storedServices ? JSON.parse(storedServices) : [];
-      // REAL ACCOUNTS ONLY: Purge all mock seed services (srv_1 to srv_500)
+      // Keep real user-created, cloud, and verified Kerala directory services
       loadedServices = (Array.isArray(loadedServices) ? loadedServices : []).filter(s => 
-        s && !s.id?.match(/^srv_\d+$/) && (s.isUserCreated || s.isCloud || s.userId || (s.id && s.id.startsWith('srv_adm_')) || s.verified)
+        s && !s.id?.match(/^srv_\d+$/) && (s.isUserCreated || s.isCloud || s.userId || (s.id && s.id.startsWith('srv_adm_')) || (s.id && s.id.startsWith('srv_kerala_')) || s.isKeralaDirectory || s.verified)
       );
+
+      // Load 200 verified Kerala Directory services from window.KERALA_200_SERVICES
+      if (typeof window !== 'undefined' && Array.isArray(window.KERALA_200_SERVICES) && window.KERALA_200_SERVICES.length > 0) {
+        const existingIds = new Set(loadedServices.map(s => s.id));
+        window.KERALA_200_SERVICES.forEach(ks => {
+          if (!existingIds.has(ks.id)) {
+            loadedServices.push(ks);
+            existingIds.add(ks.id);
+          }
+        });
+      }
+
       try {
         localStorage.setItem('nn_services', JSON.stringify(loadedServices));
       } catch (_) {}
@@ -476,7 +539,34 @@
         localStorage.setItem('nn_chats_meta', JSON.stringify(APP_STATE.chatMeta));
       }
     } catch (_) {}
+    if (typeof updateChatBadgeCounter === 'function') {
+      updateChatBadgeCounter();
+    }
   }
+
+  function updateChatBadgeCounter() {
+    const keys = Object.keys(APP_STATE.chats || {}).filter(k => APP_STATE.chats[k] && APP_STATE.chats[k].length > 0);
+    const count = keys.length;
+    const badge = document.getElementById('bottomNavChatBadge');
+    if (badge) {
+      if (count > 0) {
+        badge.textContent = count > 99 ? '99+' : String(count);
+        badge.style.display = 'inline-flex';
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+    const desktopBadge = document.getElementById('desktopNavChatBadge');
+    if (desktopBadge) {
+      if (count > 0) {
+        desktopBadge.textContent = count > 99 ? '99+' : String(count);
+        desktopBadge.style.display = 'inline-flex';
+      } else {
+        desktopBadge.style.display = 'none';
+      }
+    }
+  }
+  window.updateChatBadgeCounter = updateChatBadgeCounter;
 
   // ==============================================================
   // 4. TOAST & NOTIFICATION SYSTEM
@@ -621,22 +711,19 @@
   // 6. GPS LOCATION & REVERSE GEOCODING (NOMINATIM API)
   // ==============================================================
   function updateLocationDisplay(name, district, lat, lon) {
-    const validLat = Number.isFinite(Number(lat)) ? Number(lat) : (APP_STATE.location.lat || 11.8745);
-    const validLon = Number.isFinite(Number(lon)) ? Number(lon) : (APP_STATE.location.lon || 75.3704);
-    const cleanName = (name || APP_STATE.location.name || 'കണ്ണൂർ, കേരളം').trim();
-    const cleanDistrict = (district || APP_STATE.location.district || 'Kannur').trim();
-
+    const validLat = Number.isFinite(Number(lat)) ? Number(lat) : (APP_STATE.location.lat || 10.8505);
+    const validLon = Number.isFinite(Number(lon)) ? Number(lon) : (APP_STATE.location.lon || 76.2711);
+    const cleanName = (name || APP_STATE.location.name || 'തത്സമയ ലൊക്കേഷൻ').trim();
+    const cleanDistrict = (district || APP_STATE.location.district || '').trim();
     APP_STATE.location.name = cleanName;
     APP_STATE.location.district = cleanDistrict;
     APP_STATE.location.lat = validLat;
     APP_STATE.location.lon = validLon;
-
     try {
       localStorage.setItem('nn_curr_loc_name', cleanName);
       localStorage.setItem('nn_curr_district', cleanDistrict);
       localStorage.setItem('nn_curr_lat', String(validLat));
       localStorage.setItem('nn_curr_lon', String(validLon));
-
       // Synchronize with Thuna storage keys
       localStorage.setItem('thuna_user_location', cleanName);
       localStorage.setItem('thuna_user_coordinates', JSON.stringify({
@@ -647,7 +734,6 @@
         timestamp: Date.now()
       }));
     } catch (_) {}
-
     // Synchronize window.LocationService if active
     if (typeof window !== 'undefined' && window.LocationService) {
       try {
@@ -663,20 +749,25 @@
         if (typeof window.LocationService._notify === 'function') window.LocationService._notify();
       } catch (_) {}
     }
-
     document.querySelectorAll('.user-live-city-name').forEach(el => {
       el.textContent = cleanName;
     });
-
     const homeLoc = document.getElementById('homeLiveLocText');
     if (homeLoc) homeLoc.textContent = cleanName;
-
+    const homeRadiusBadge = document.getElementById('homeLiveRadiusBadge');
+    if (homeRadiusBadge) {
+      const curR = APP_STATE.activeRadiusKm || 5;
+      homeRadiusBadge.textContent = curR >= 1000 ? 'മുഴുവൻ' : (curR + ' km');
+    }
     const desktopLoc = document.getElementById('desktopLiveLocText');
     if (desktopLoc) desktopLoc.textContent = cleanName;
-
     const quickLoc = document.getElementById('quickReqLocation');
-    if (quickLoc && (!quickLoc.value || quickLoc.value === 'കണ്ണൂർ, കേരളം')) {
+    if (quickLoc && (!quickLoc.value || quickLoc.value.includes('കണ്ണൂർ') || quickLoc.value === 'തത്സമയ ലൊക്കേഷൻ')) {
       quickLoc.value = cleanName;
+    }
+    const regLoc = document.getElementById('regServiceLoc');
+    if (regLoc && (!regLoc.value || regLoc.value.includes('കണ്ണൂർ') || regLoc.value === 'തത്സമയ ലൊക്കേഷൻ')) {
+      regLoc.value = cleanName;
     }
 
     console.info('[Location Updated State]', {
@@ -725,8 +816,9 @@
       if (res.ok) {
         const data = await res.json();
         const addr = data.address || {};
-        const town = addr.suburb || addr.town || addr.village || addr.municipality || addr.city || addr.county || 'കണ്ണൂർ';
-        const district = (addr.state_district || addr.district || 'Kerala').replace(' District', '');
+        const fallbackPreset = getNearestKeralaPreset(validLat, validLon);
+        const town = addr.suburb || addr.town || addr.village || addr.municipality || addr.city || addr.county || fallbackPreset.name.split(',')[0].trim();
+        const district = (addr.state_district || addr.district || fallbackPreset.district || 'Kerala').replace(' District', '');
         const formatted = `${town}, ${district}`;
         return { formatted, district };
       }
@@ -735,15 +827,7 @@
     }
 
     // 3. Fallback: Find closest Kerala preset by lat/lon
-    let closest = KERALA_PRESETS[0];
-    let minDist = Infinity;
-    KERALA_PRESETS.forEach(p => {
-      const d = calculateDistanceKm(validLat, validLon, p.lat, p.lon);
-      if (d < minDist) {
-        minDist = d;
-        closest = p;
-      }
-    });
+    const closest = getNearestKeralaPreset(validLat, validLon);
     return { formatted: closest.name, district: closest.district };
   }
 
@@ -887,21 +971,56 @@
 
   function openLocationModal() {
     renderPresetLocationsList();
+    const curRad = APP_STATE.activeRadiusKm || 5;
+    const modalLabel = document.getElementById('modalActiveRadiusLabel');
+    if (modalLabel) {
+      modalLabel.textContent = curRad >= 1000 ? 'മുഴുവൻ കേരളം' : (curRad + ' km');
+    }
+    document.querySelectorAll('.modal-rad-chip').forEach(c => {
+      const cRad = parseFloat(c.getAttribute('data-rad') || '0');
+      if (cRad === curRad) {
+        c.style.background = '#0E7043';
+        c.style.color = '#fff';
+        c.style.borderColor = '#0E7043';
+      } else {
+        c.style.background = '#fff';
+        c.style.color = '#064E3B';
+        c.style.borderColor = '#BBF7D0';
+      }
+    });
     openModal('modal-location');
   }
   window.openLocationModal = openLocationModal;
 
-  function renderPresetLocationsList() {
+  function renderPresetLocationsList(itemsToRender = null) {
     const list = document.getElementById('presetLocationsList');
     if (!list) return;
-    list.innerHTML = KERALA_PRESETS.map(p => `
+    const items = itemsToRender || KERALA_PRESETS;
+    if (items.length === 0) {
+      list.innerHTML = `<div style="text-align:center;padding:16px;color:#64748B;font-size:13px">ഫലങ്ങളൊന്നും കണ്ടെത്തിയില്ല.</div>`;
+      return;
+    }
+    list.innerHTML = items.map(p => `
       <div onclick="selectPresetLocation('${p.name.replace(/'/g, "\\'")}', '${p.district}', ${p.lat}, ${p.lon})" 
-           style="padding:12px 14px;border-radius:12px;background:#F9FAFB;border:1px solid #E5E7EB;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background 0.2s">
-        <span style="font-weight:700;font-size:14px;color:#111827">📍 ${p.name}</span>
-        <span style="font-size:11px;background:#ECFDF5;color:#0E7043;padding:3px 8px;border-radius:8px;font-weight:800">${p.district}</span>
+           style="padding:10px 14px;border-radius:12px;background:#F9FAFB;border:1px solid #E5E7EB;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background 0.2s">
+        <span style="font-weight:700;font-size:13.5px;color:#111827">📍 ${p.name}</span>
+        <span style="font-size:11px;background:#ECFDF5;color:#0E7043;padding:2px 8px;border-radius:8px;font-weight:800">${p.district}</span>
       </div>
     `).join('');
   }
+
+  function filterPresetLocations(query) {
+    const q = (query || '').toLowerCase().trim();
+    if (!q) {
+      renderPresetLocationsList(KERALA_PRESETS);
+      return;
+    }
+    const filtered = KERALA_PRESETS.filter(p => {
+      return p.name.toLowerCase().includes(q) || p.district.toLowerCase().includes(q);
+    });
+    renderPresetLocationsList(filtered);
+  }
+  window.filterPresetLocations = filterPresetLocations;
 
   function selectPresetLocation(name, district, lat, lon) {
     updateLocationDisplay(name, district, lat, lon);
@@ -911,21 +1030,63 @@
   window.selectPresetLocation = selectPresetLocation;
 
   // ==============================================================
-  // 7. RADIUS FILTER CHIP HANDLERS
+  // 7. USER-DEFINED SEARCH RADIUS HANDLERS (നിശ്ചയിച്ച km പരിധി)
   // ==============================================================
-  function setRadiusFilter(module, radiusKm, clickedChip) {
-    APP_STATE.radiusFilters[module] = parseFloat(radiusKm);
-    const container = clickedChip.parentElement;
-    if (container) {
-      container.querySelectorAll('.radius-chip').forEach(c => c.classList.remove('active'));
-      clickedChip.classList.add('active');
+  function setGlobalRadius(radiusKm, clickedChip) {
+    const r = parseFloat(radiusKm);
+    APP_STATE.activeRadiusKm = r;
+    APP_STATE.radiusFilters = {
+      nearby: r,
+      services: r,
+      jobs: r,
+      rentals: r,
+      blood: r
+    };
+    try {
+      localStorage.setItem('nn_user_chosen_radius', String(r));
+    } catch (_) {}
+
+    // Update single compact location button badge
+    const badge = document.getElementById('homeLiveRadiusBadge');
+    if (badge) {
+      badge.textContent = r >= 1000 ? 'മുഴുവൻ' : (r + ' km');
     }
 
-    if (module === 'nearby') renderNearbyScreen();
-    if (module === 'services') renderServicesScreen();
-    if (module === 'jobs') renderJobsScreen();
-    const radiusLabel = radiusKm >= 1000 ? 'മുഴുവൻ കേരളം (All Kerala)' : (radiusKm >= 1 ? radiusKm + ' km' : (radiusKm * 1000) + ' m');
+    // Update modal active indicator
+    const modalLabel = document.getElementById('modalActiveRadiusLabel');
+    if (modalLabel) {
+      modalLabel.textContent = r >= 1000 ? 'മുഴുവൻ കേരളം' : (r + ' km');
+    }
+
+    // Highlight active chip in modal
+    document.querySelectorAll('.modal-rad-chip').forEach(c => {
+      const cRad = parseFloat(c.getAttribute('data-rad') || '0');
+      if (cRad === r) {
+        c.style.background = '#0E7043';
+        c.style.color = '#fff';
+        c.style.borderColor = '#0E7043';
+      } else {
+        c.style.background = '#fff';
+        c.style.color = '#064E3B';
+        c.style.borderColor = '#BBF7D0';
+      }
+    });
+
+    // Re-render all views with strict radius filter
+    if (typeof renderServicesScreen === 'function') renderServicesScreen();
+    if (typeof renderBloodDonorsList === 'function') renderBloodDonorsList();
+    if (typeof renderNearbyScreen === 'function') renderNearbyScreen();
+    if (typeof renderJobsScreen === 'function') renderJobsScreen();
+    if (typeof renderRentalsScreen === 'function') renderRentalsScreen();
+    if (typeof renderHomeScreen === 'function') renderHomeScreen();
+
+    const radiusLabel = r >= 1000 ? 'മുഴുവൻ കേരളം (All Kerala)' : (r + ' km');
     toast(`🎯 തിരച്ചിൽ പരിധി: ${radiusLabel}`);
+  }
+  window.setGlobalRadius = setGlobalRadius;
+
+  function setRadiusFilter(module, radiusKm, clickedChip) {
+    setGlobalRadius(radiusKm, clickedChip);
   }
   window.setRadiusFilter = setRadiusFilter;
 
@@ -1460,7 +1621,13 @@
     return 'chat_' + [clean1, clean2].sort().join('_');
   }
 
-  function openChatModal(recipientName, recipientPhone, recipientAvatar, initialContext, recipientId, explicitChatKey) {
+  function goToAllChatsInbox() {
+    closeModal('modal-chat');
+    navTo('chat');
+  }
+  window.goToAllChatsInbox = goToAllChatsInbox;
+
+  function openChatModal(recipientName, recipientPhone, recipientAvatar, initialContext, recipientId, explicitChatKey, chatType) {
     const safeName = recipientName || 'പ്രാദേശിക സുഹൃത്ത്';
     const safePhone = recipientPhone || '';
     const safeAvatar = recipientAvatar || DEFAULT_USER_AVATAR;
@@ -1488,7 +1655,10 @@
       name: safeName,
       phone: safePhone,
       avatar: safeAvatar,
-      recipientId: recipientId || ''
+      recipientId: recipientId || '',
+      type: chatType || (APP_STATE.chatMeta[chatKey]?.type) || 'other',
+      category: initialContext || (APP_STATE.chatMeta[chatKey]?.category) || '',
+      updatedAt: Date.now()
     };
 
     const headerName = document.getElementById('chatRecipientName');
@@ -1537,12 +1707,31 @@
           time: 'ഇപ്പോൾ',
           timestamp: Date.now()
         });
-        saveChats();
+      }
+    }
+
+    saveChats();
+    updateChatBadgeCounter();
+    if (typeof renderChatListScreen === 'function') {
+      renderChatListScreen();
+    }
+
+    const input = document.getElementById('chatInputMessage');
+    if (input) {
+      if (initialContext && !input.value) {
+        input.value = 'ഹലോ, എനിക്ക് ഈ സേവനം ആവശ്യമുണ്ട്.';
       }
     }
 
     renderChatMessages();
     openModal('modal-chat');
+
+    setTimeout(() => {
+      const box = document.getElementById('chatMessagesBox');
+      if (box) box.scrollTop = box.scrollHeight;
+      const inp = document.getElementById('chatInputMessage');
+      if (inp) inp.focus();
+    }, 200);
 
     // Subscribe to live Supabase Cloud messages for this thread
     if (typeof window._activeChatUnsubscribe === 'function') {
@@ -1662,7 +1851,14 @@
     });
 
     if (input) input.value = '';
+    if (APP_STATE.chatMeta && APP_STATE.chatMeta[chatKey]) {
+      APP_STATE.chatMeta[chatKey].updatedAt = Date.now();
+    }
     saveChats();
+    updateChatBadgeCounter();
+    if (typeof renderChatListScreen === 'function') {
+      renderChatListScreen();
+    }
     renderChatMessages();
 
     // Broadcast to Supabase Realtime Cloud (Instant cross-device delivery)
@@ -1679,70 +1875,6 @@
 
     if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.sendChatMessage === 'function') {
       window.NN_SUPABASE_SERVICES.sendChatMessage(chatKey, msgObj, metaObj);
-    }
-
-    // Realistic responsive service provider handling for catalog listings
-    const recipient = APP_STATE.activeChatRecipient;
-    const isCatalogService = recipient && (
-      (APP_STATE.services || []).some(s => (s.phone && recipient.phone && s.phone === recipient.phone) || (s.id && recipient.id && s.id === recipient.id)) ||
-      (APP_STATE.bloodDonors || []).some(d => (d.phone && recipient.phone && d.phone === recipient.phone))
-    );
-
-    if (isCatalogService) {
-      setTimeout(() => {
-        if (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.key === chatKey) {
-          let reply = 'ശരി, തീർച്ചയായും! ഉടൻ തന്നെ കൂടുതൽ വിവരങ്ങൾ അറിയിക്കാം.';
-          const lower = text.toLowerCase();
-          if (lower.includes('ലഭ്യമാണോ') || lower.includes('free') || lower.includes('ഒഴിവ്')) {
-            reply = 'അതെ, ഇപ്പോൾ ഒഴിവുണ്ട്. എന്താണ് ചെയ്യേണ്ടത് എന്ന് പറയാമോ?';
-          } else if (lower.includes('റേറ്റ്') || lower.includes('കൂലി') || lower.includes('ചാർജ്') || lower.includes('രൂപ') || lower.includes('എത്ര')) {
-            reply = 'സാധാരണ ₹200 വിസിറ്റിംഗ് ചാർജ് ആണ്. പണി കണ്ട ശേഷം ന്യായമായ കൂലി പറയാം.';
-          } else if (lower.includes('സ്ഥലം') || lower.includes('എവിടെ') || lower.includes('ലൊക്കേഷൻ')) {
-            reply = `ഞാൻ ${recipient.location || 'സമീപത്ത്'} ഉണ്ട്. നിങ്ങളുടെ ലൊക്കേഷൻ പറയാമോ?`;
-          } else if (lower.includes('നാളെ') || lower.includes('സമയം') || lower.includes('ഇന്ന്')) {
-            reply = 'ശരി, കൃത്യസമയത്ത് വരാൻ സാധിക്കും. വിലാസം അയച്ചു തരൂ.';
-          } else if (lower.includes('ഫോൺ') || lower.includes('നമ്പർ') || lower.includes('വിളിക്ക')) {
-            reply = recipient.phone ? `എന്റെ നമ്പർ: ${recipient.phone} ആണ്. നേരിട്ട് വിളിക്കാം 📞` : 'തീർച്ചയായും, ഉടൻ ബന്ധപ്പെടാം!';
-          } else {
-            const generalReplies = [
-              'ശരി, തീർച്ചയായും സഹായിക്കാം!',
-              'നന്ദി, ഉടൻ തന്നെ വിശദാംശങ്ങൾ അയക്കാം.',
-              'തീർച്ചയായും! ഇതിനായി ഞാൻ തയ്യാറാണ്.',
-              'ശരി സുഹൃത്തേ, ഉടൻ ബന്ധപ്പെടാം.'
-            ];
-            reply = generalReplies[Math.floor(Math.random() * generalReplies.length)];
-          }
-
-          const replyId = 'msg_reply_' + Date.now();
-          const replyObj = {
-            id: replyId,
-            senderId: recipient.id || recipient.phone,
-            senderName: recipient.name,
-            senderPhone: recipient.phone,
-            senderAvatar: recipient.avatar,
-            text: reply,
-            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            timestamp: Date.now()
-          };
-
-          APP_STATE.chats[chatKey].push({
-            id: replyId,
-            sender: 'them',
-            senderName: recipient.name,
-            text: reply,
-            time: replyObj.time,
-            timestamp: Date.now()
-          });
-
-          saveChats();
-          renderChatMessages();
-
-          const svc = window.NN_SUPABASE_SERVICES || window.NN_FIREBASE_SERVICES;
-          if (typeof window !== 'undefined' && svc && typeof svc.sendChatMessage === 'function') {
-            svc.sendChatMessage(chatKey, replyObj, null);
-          }
-        }
-      }, 900);
     }
   }
   window.sendChatMessage = sendChatMessage;
@@ -1780,7 +1912,7 @@
       return;
     }
     const snippet = (post.content || '').substring(0, 35);
-    openChatModal(post.authorName, post.authorPhone, post.authorAvatar, `പോസ്റ്റ്: "${snippet}..."`, post.authorId);
+    openChatModal(post.authorName, post.authorPhone, post.authorAvatar, `പോസ്റ്റ്: "${snippet}..."`, post.authorId, null, 'post');
   }
   window.openChatForPost = openChatForPost;
 
@@ -1793,31 +1925,31 @@
       toast('ℹ️ ഇത് നിങ്ങളുടെ സർവീസ് ലിസ്റ്റിംഗ് ആണ്.');
       return;
     }
-    openChatModal(srv.name, srv.phone, srv.avatar, `സേവന അന്വേഷണം: ${srv.trade} (${srv.location})`, srv.id);
+    openChatModal(srv.name, srv.phone, srv.avatar, `സേവന അന്വേഷണം: ${srv.trade} (${srv.location})`, srv.id, null, 'service');
   }
   window.openChatForService = openChatForService;
 
   function openChatForJob(jobId) {
     const j = (APP_STATE.jobs || []).find(item => item.id === jobId);
     if (!j) return;
-    openChatModal(j.employer, j.employerPhone, DEFAULT_USER_AVATAR, `തൊഴിൽ അന്വേഷണം: ${j.title} (${j.salary})`, j.id);
+    openChatModal(j.employer, j.employerPhone, DEFAULT_USER_AVATAR, `തൊഴിൽ അന്വേഷണം: ${j.title} (${j.salary})`, j.id, null, 'job');
   }
   window.openChatForJob = openChatForJob;
 
   function openChatForRental(rentId) {
     const r = (APP_STATE.rentals || []).find(item => item.id === rentId);
     if (!r) return;
-    openChatModal(r.owner, r.ownerPhone, r.image || DEFAULT_USER_AVATAR, `വാടക അന്വേഷണം: ${r.title} (${r.rate})`, r.id);
+    openChatModal(r.owner, r.ownerPhone, r.image || DEFAULT_USER_AVATAR, `വാടക അന്വേഷണം: ${r.title} (${r.rate})`, r.id, null, 'rental');
   }
   window.openChatForRental = openChatForRental;
 
   function openChatForDonor(name, phone, group) {
-    openChatModal(name, phone, DEFAULT_USER_AVATAR, `രക്തദാന അന്വേഷണം: ${group}`, 'donor_' + (phone ? phone.replace(/\D/g, '') : name));
+    openChatModal(name, phone, DEFAULT_USER_AVATAR, `രക്തദാന അന്വേഷണം: ${group}`, 'donor_' + (phone ? phone.replace(/\D/g, '') : name), null, 'blood');
   }
   window.openChatForDonor = openChatForDonor;
 
   function openChatForAmbulance(name, phone) {
-    openChatModal(name, phone, DEFAULT_USER_AVATAR, `അടിയന്തിര ആംബുലൻസ് ആവശ്യം`, 'amb_' + (phone ? phone.replace(/\D/g, '') : name));
+    openChatModal(name, phone, DEFAULT_USER_AVATAR, `അടിയന്തിര ആംബുലൻസ് ആവശ്യം`, 'amb_' + (phone ? phone.replace(/\D/g, '') : name), null, 'ambulance');
   }
   window.openChatForAmbulance = openChatForAmbulance;
 
@@ -1894,11 +2026,10 @@
           name: s.name,
           phone: s.phone || '',
           avatar: s.avatar || DEFAULT_USER_AVATAR,
-          sub: `🛠️ ${s.trade} • 📍 ${s.location || 'കണ്ണൂർ'}`
+          sub: `🛠️ ${s.trade} • 📍 ${resolveItemLocation(s) || 'തത്സമയ ലൊക്കേഷൻ'}`
         });
       }
     });
-
     // 3. Blood Donors (രക്തദാതാക്കൾ)
     (APP_STATE.bloodDonors || []).forEach(d => {
       const dPhone = normalizePhone(d.phone);
@@ -1911,11 +2042,10 @@
           name: d.name,
           phone: d.phone || '',
           avatar: DEFAULT_USER_AVATAR,
-          sub: `🩸 ${d.group || 'O+'} രക്തദാതാവ് • 📍 ${d.location || 'കണ്ണൂർ'}`
+          sub: `🩸 ${d.group || 'O+'} രക്തദാതാവ് • 📍 ${resolveItemLocation(d) || 'തത്സമയ ലൊക്കേഷൻ'}`
         });
       }
     });
-
     // 4. Job Employers (തൊഴിൽ ദാതാക്കൾ)
     (APP_STATE.jobs || []).forEach(j => {
       const jPhone = normalizePhone(j.employerPhone);
@@ -1928,11 +2058,10 @@
           name: j.employer || 'തൊഴിൽ ദാതാവ്',
           phone: j.employerPhone || '',
           avatar: DEFAULT_USER_AVATAR,
-          sub: `💼 ${j.title} • 📍 ${j.location || 'കണ്ണൂർ'}`
+          sub: `💼 ${j.title} • 📍 ${resolveItemLocation(j) || 'തത്സമയ ലൊക്കേഷൻ'}`
         });
       }
     });
-
     // 5. Rentals Owners (വാടക & വസ്തു)
     (APP_STATE.rentals || []).forEach(r => {
       const rPhone = normalizePhone(r.ownerPhone);
@@ -1945,7 +2074,7 @@
           name: r.owner || 'കെട്ടിട ഉടമ',
           phone: r.ownerPhone || '',
           avatar: DEFAULT_USER_AVATAR,
-          sub: `🏠 ${r.title} • 📍 ${r.location || 'കണ്ണൂർ'}`
+          sub: `🏠 ${r.title} • 📍 ${resolveItemLocation(r) || 'തത്സമയ ലൊക്കേഷൻ'}`
         });
       }
     });
@@ -2031,50 +2160,269 @@
   }
   window.startDirectChatFromForm = startDirectChatFromForm;
 
+  let activeChatCategoryFilter = 'all';
+  let activeChatSearchQuery = '';
+
+  function filterChatCategory(cat, btn) {
+    activeChatCategoryFilter = cat;
+    document.querySelectorAll('.chat-filter-chip').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderChatListScreen();
+  }
+  window.filterChatCategory = filterChatCategory;
+
+  function filterChatList(q) {
+    activeChatSearchQuery = (q || '').toLowerCase().trim();
+    renderChatListScreen();
+  }
+  window.filterChatList = filterChatList;
+
   function renderChatListScreen() {
     const container = document.getElementById('chatThreadsList');
     if (!container) return;
 
-    const keys = Object.keys(APP_STATE.chats).filter(k => APP_STATE.chats[k] && APP_STATE.chats[k].length > 0);
-    if (keys.length === 0) {
-      container.innerHTML = `
-        <div style="text-align:center;padding:40px 20px;background:#fff;border-radius:18px;border:1px solid #E2E8F0">
-          <div style="font-size:42px;margin-bottom:10px">💬</div>
-          <h3 style="margin:0 0 6px;color:#1E293B">സന്ദേശങ്ങളൊന്നുമില്ല</h3>
-          <p style="font-size:13px;color:#64748B;margin:0 0 16px">നാട്ടുകാരുമായോ വർക്കർമാരുമായോ ഉടൻ ലൈവ് ചാറ്റ് ആരംഭിക്കൂ.</p>
-          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-            <button onclick="openNewChatModal()" style="padding:10px 18px;background:#0E7043;color:#fff;border:none;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer">➕ പുതിയ ചാറ്റ് ആരംഭിക്കാം</button>
-            <button onclick="navTo('services')" style="padding:10px 18px;background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer">സേവനങ്ങൾ കാണുക</button>
+    // Gather all chat keys from APP_STATE.chats and APP_STATE.chatMeta
+    const allKeys = Array.from(new Set([
+      ...Object.keys(APP_STATE.chats || {}),
+      ...Object.keys(APP_STATE.chatMeta || {})
+    ])).filter(k => {
+      const msgs = (APP_STATE.chats && APP_STATE.chats[k]) || [];
+      const meta = (APP_STATE.chatMeta && APP_STATE.chatMeta[k]);
+      return msgs.length > 0 || meta;
+    });
+
+    // Sort active threads by latest message / timestamp descending
+    allKeys.sort((a, b) => {
+      const threadA = (APP_STATE.chats && APP_STATE.chats[a]) || [];
+      const threadB = (APP_STATE.chats && APP_STATE.chats[b]) || [];
+      const timeA = threadA.length ? (threadA[threadA.length - 1].timestamp || 0) : ((APP_STATE.chatMeta && APP_STATE.chatMeta[a]?.updatedAt) || 0);
+      const timeB = threadB.length ? (threadB[threadB.length - 1].timestamp || 0) : ((APP_STATE.chatMeta && APP_STATE.chatMeta[b]?.updatedAt) || 0);
+      return timeB - timeA;
+    });
+
+    // Apply category & search filtering for active threads
+    const filteredKeys = allKeys.filter(k => {
+      const meta = (APP_STATE.chatMeta && APP_STATE.chatMeta[k]) || {};
+      const thread = (APP_STATE.chats && APP_STATE.chats[k]) || [];
+      const name = (meta.name || k.replace('chat_', '')).toLowerCase();
+      const cat = (meta.type || meta.category || '').toLowerCase();
+      const lastMsg = thread.length ? (thread[thread.length - 1].text || '').toLowerCase() : '';
+
+      if (activeChatCategoryFilter !== 'all') {
+        if (activeChatCategoryFilter === 'service' && !cat.includes('സേവന') && !cat.includes('service') && !cat.includes('അന്വേഷണം')) return false;
+        if (activeChatCategoryFilter === 'blood' && !cat.includes('രക്ത') && !cat.includes('blood') && !cat.includes('donor')) return false;
+        if (activeChatCategoryFilter === 'rental' && !cat.includes('വാടക') && !cat.includes('rent')) return false;
+        if (activeChatCategoryFilter === 'job' && !cat.includes('തൊഴിൽ') && !cat.includes('job') && !cat.includes('ജോലി')) return false;
+        if (activeChatCategoryFilter === 'other' && (cat.includes('സേവന') || cat.includes('രക്ത') || cat.includes('വാടക') || cat.includes('തൊഴിൽ'))) return false;
+      }
+
+      if (activeChatSearchQuery) {
+        if (!name.includes(activeChatSearchQuery) && !lastMsg.includes(activeChatSearchQuery) && !cat.includes(activeChatSearchQuery)) {
+          return false;
+        }
+      }
+      return true;
+    });
+
+    let html = `
+      <div style="display:flex;gap:8px;margin-bottom:6px">
+        <button onclick="openNewChatModal()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;background:linear-gradient(135deg, #0E7043, #059669);color:#fff;border:none;border-radius:14px;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(14,112,67,0.22);transition:transform 0.1s">
+          <span>➕</span>
+          <span>പുതിയ സന്ദേശം അയക്കാം (New Chat)</span>
+        </button>
+      </div>
+    `;
+
+    // 1. IF SEARCH QUERY IS ACTIVE
+    if (activeChatSearchQuery) {
+      const q = activeChatSearchQuery.toLowerCase();
+      const allCommunity = typeof getAllCommunityContacts === 'function' ? getAllCommunityContacts('all') : [];
+      const matchedCommunity = allCommunity.filter(c => {
+        return (c.name && c.name.toLowerCase().includes(q)) ||
+               (c.phone && c.phone.includes(q)) ||
+               (c.sub && c.sub.toLowerCase().includes(q));
+      });
+
+      // Render matching active threads first
+      if (filteredKeys.length > 0) {
+        html += `<div style="font-size:12px;font-weight:800;color:#64748B;margin:8px 0 4px">💬 മുൻ സംഭാഷണങ്ങൾ (${filteredKeys.length})</div>`;
+        html += filteredKeys.map(k => renderChatThreadCard(k)).join('');
+      }
+
+      // Render matching community contacts with direct chat button
+      if (matchedCommunity.length > 0) {
+        html += `
+          <div style="font-size:12.5px;font-weight:800;color:#0F172A;margin:12px 0 6px;display:flex;align-items:center;gap:6px">
+            <span>👥 നാട്ടുകാരും സർവീസുകളും</span>
+            <span style="background:#E2E8F0;color:#334155;padding:1px 8px;border-radius:10px;font-size:11px">${matchedCommunity.length}</span>
+          </div>
+        `;
+        html += matchedCommunity.slice(0, 15).map(c => `
+          <div onclick="openChatModal('${escapeHtml(c.name).replace(/'/g, "\\'")}', '${c.phone || ''}', '${c.avatar || DEFAULT_USER_AVATAR}', '', '${c.id}')"
+               style="display:flex;align-items:center;gap:12px;padding:11px 14px;background:#fff;border-radius:14px;border:1px solid #E2E8F0;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.02)">
+            <div style="position:relative;flex-shrink:0">
+              <img src="${c.avatar || DEFAULT_USER_AVATAR}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:1.5px solid #E2E8F0" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
+              <span style="position:absolute;bottom:0;right:0;width:11px;height:11px;border-radius:50%;background:#10B981;border:2px solid #fff"></span>
+            </div>
+            <div style="flex:1;min-width:0">
+              <div style="font-weight:800;font-size:14px;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(c.name)}</div>
+              <div style="font-size:11.5px;color:#64748B;margin-top:2px">${escapeHtml(c.sub || '')}</div>
+            </div>
+            <button style="background:#ECFDF5;border:1px solid #A7F3D0;color:#065F46;border-radius:10px;padding:6px 12px;font-size:12px;font-weight:800;cursor:pointer;flex-shrink:0">
+              💬 ചാറ്റ്
+            </button>
+          </div>
+        `).join('');
+      }
+
+      // Direct message action for the typed query
+      const cleanDigits = activeChatSearchQuery.replace(/\D/g, '');
+      const directTargetName = cleanDigits.length >= 10 ? `മൊബൈൽ (${cleanDigits.slice(-10)})` : activeChatSearchQuery;
+      const directPhone = cleanDigits.length >= 10 ? cleanDigits.slice(-10) : '';
+      html += `
+        <div onclick="openChatModal('${escapeHtml(directTargetName).replace(/'/g, "\\'")}', '${directPhone}', window.DEFAULT_USER_AVATAR||'', '', 'usr_${Date.now()}')"
+             style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#F0FDF4;border:1.5px dashed #86EFAC;border-radius:14px;cursor:pointer;margin-top:10px">
+          <span style="font-size:22px">✉️</span>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:800;color:#166534">"${escapeHtml(activeChatSearchQuery)}" എന്ന പേരിലേക്ക് / നമ്പറിലേക്ക് സന്ദേശം അയക്കാം</div>
+            <div style="font-size:11px;color:#15803D;margin-top:2px">നേരിട്ട് ചാറ്റ് വിൻഡോ തുറക്കാൻ ഇവിടെ ക്ലിക്ക് ചെയ്യുക ➔</div>
           </div>
         </div>
       `;
+      container.innerHTML = html;
       return;
     }
 
-    container.innerHTML = keys.map(k => {
-      const thread = APP_STATE.chats[k] || [];
-      const meta = (APP_STATE.chatMeta && APP_STATE.chatMeta[k]) || {
-        name: k.replace('chat_', ''),
-        phone: '',
-        avatar: DEFAULT_USER_AVATAR
-      };
-      const lastMsg = thread[thread.length - 1] || { text: 'No messages', time: '' };
-      return `
-        <div onclick="openChatModal('${escapeHtml(meta.name).replace(/'/g, "\\'")}', '${meta.phone || ''}', '${meta.avatar || DEFAULT_USER_AVATAR}', '', '${meta.recipientId || ''}', '${k}')"
-             style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#fff;border-radius:16px;border:1px solid #E2E8F0;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.03);margin-bottom:8px;transition:background 0.15s ease">
-          <img src="${meta.avatar || DEFAULT_USER_AVATAR}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #E2E8F0;flex-shrink:0" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
-          <div style="flex:1;min-width:0">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
-              <span style="font-weight:800;font-size:14px;color:#0F172A">${escapeHtml(meta.name)}</span>
-              <span style="font-size:11px;color:#64748B">${lastMsg.time}</span>
+    // 2. IF NO PAST CONVERSATIONS EXIST
+    if (allKeys.length === 0) {
+      const allCommunity = typeof getAllCommunityContacts === 'function' ? getAllCommunityContacts('all') : [];
+      html += `
+        <div style="background:#F0FDF4;border:1.5px dashed #86EFAC;border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <span style="font-size:24px">⚡</span>
+          <div style="font-size:12.5px;color:#166534;font-weight:700">താഴെ കാണുന്നവരിൽ ആർക്കും ഇപ്പോൾ നേരിട്ട് സന്ദേശം അയക്കാം (ഒരു സെക്കൻഡിൽ അപ്‌ഡേറ്റ്):</div>
+        </div>
+        <div style="font-size:13px;font-weight:800;color:#0F172A;margin:6px 0 8px">⚡ സന്ദേശം അയക്കാൻ ലഭ്യമായവർ (Available to Chat)</div>
+      `;
+
+      if (allCommunity.length > 0) {
+        html += allCommunity.slice(0, 12).map(c => `
+          <div onclick="openChatModal('${escapeHtml(c.name).replace(/'/g, "\\'")}', '${c.phone || ''}', '${c.avatar || DEFAULT_USER_AVATAR}', '', '${c.id}')"
+               style="display:flex;align-items:center;gap:12px;padding:11px 14px;background:#fff;border-radius:14px;border:1px solid #E2E8F0;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.02);transition:all 0.15s">
+            <div style="position:relative;flex-shrink:0">
+              <img src="${c.avatar || DEFAULT_USER_AVATAR}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:1.5px solid #CBD5E1" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
+              <span style="position:absolute;bottom:0;right:0;width:11px;height:11px;border-radius:50%;background:#10B981;border:2px solid #fff"></span>
             </div>
-            <div style="font-size:12px;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(lastMsg.text)}</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-weight:800;font-size:14px;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(c.name)}</div>
+              <div style="font-size:11.5px;color:#64748B;margin-top:2px">${escapeHtml(c.sub || '')}</div>
+            </div>
+            <button style="background:#ECFDF5;border:1px solid #A7F3D0;color:#065F46;border-radius:10px;padding:7px 14px;font-size:12px;font-weight:800;cursor:pointer;flex-shrink:0">
+              💬 ചാറ്റ്
+            </button>
           </div>
+        `).join('');
+      }
+      container.innerHTML = html;
+      return;
+    }
+
+    // 3. IF CONVERSATIONS EXIST
+    if (filteredKeys.length === 0) {
+      html += `
+        <div style="text-align:center;padding:32px 16px;background:#fff;border-radius:16px;border:1px solid #E2E8F0;color:#64748B;font-size:13px">
+          ഈ ഫിൽട്ടറിൽ സന്ദേശങ്ങളൊന്നും കണ്ടെത്തിയില്ല.
         </div>
       `;
-    }).join('');
+    } else {
+      html += filteredKeys.map(k => renderChatThreadCard(k)).join('');
+    }
+
+    // Quick contacts below active threads so user can always chat with new people
+    const allCommunity = typeof getAllCommunityContacts === 'function' ? getAllCommunityContacts('all') : [];
+    if (allCommunity.length > 0) {
+      html += `
+        <div style="margin-top:16px;padding-top:12px;border-top:1px solid #E2E8F0">
+          <div style="font-size:13px;font-weight:800;color:#0F172A;margin-bottom:8px">⚡ കൂടുതൽ ആളുകളുമായി ചാറ്റ് ചെയ്യാം</div>
+          ${allCommunity.slice(0, 6).map(c => `
+            <div onclick="openChatModal('${escapeHtml(c.name).replace(/'/g, "\\'")}', '${c.phone || ''}', '${c.avatar || DEFAULT_USER_AVATAR}', '', '${c.id}')"
+                 style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:#fff;border-radius:12px;border:1px solid #E2E8F0;cursor:pointer;margin-bottom:6px">
+              <img src="${c.avatar || DEFAULT_USER_AVATAR}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:1.5px solid #CBD5E1" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
+              <div style="flex:1;min-width:0">
+                <div style="font-weight:800;font-size:13.5px;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(c.name)}</div>
+                <div style="font-size:11px;color:#64748B">${escapeHtml(c.sub || '')}</div>
+              </div>
+              <button style="background:#ECFDF5;border:1px solid #A7F3D0;color:#065F46;border-radius:8px;padding:5px 10px;font-size:11.5px;font-weight:800;cursor:pointer">
+                💬 ചാറ്റ്
+              </button>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+    container.innerHTML = html;
   }
   window.renderChatListScreen = renderChatListScreen;
+
+  function renderChatThreadCard(k) {
+    const thread = (APP_STATE.chats && APP_STATE.chats[k]) || [];
+    const meta = (APP_STATE.chatMeta && APP_STATE.chatMeta[k]) || {
+      name: k.replace('chat_', ''),
+      phone: '',
+      avatar: DEFAULT_USER_AVATAR
+    };
+    const lastMsg = thread[thread.length - 1] || { text: 'സംഭാഷണം ആരംഭിച്ചു...', time: 'ഇപ്പോൾ' };
+
+    let badgeLabel = '💬 ചാറ്റ്';
+    let badgeBg = '#F3F4F6';
+    let badgeColor = '#4B5563';
+    const catText = (meta.category || meta.type || '').toLowerCase();
+    if (catText.includes('സേവന') || catText.includes('service') || (meta.recipientId && meta.recipientId.startsWith('srv_'))) {
+      badgeLabel = '🛠️ സർവീസ്';
+      badgeBg = '#ECFDF5';
+      badgeColor = '#059669';
+    } else if (catText.includes('രക്ത') || catText.includes('blood') || (meta.recipientId && meta.recipientId.startsWith('donor_'))) {
+      badgeLabel = '🩸 രക്തദാനം';
+      badgeBg = '#FEF2F2';
+      badgeColor = '#DC2626';
+    } else if (catText.includes('വാടക') || catText.includes('rent') || (meta.recipientId && meta.recipientId.startsWith('rent_'))) {
+      badgeLabel = '🏠 വാടക';
+      badgeBg = '#FFFBEB';
+      badgeColor = '#D97706';
+    } else if (catText.includes('തൊഴിൽ') || catText.includes('job') || (meta.recipientId && meta.recipientId.startsWith('job_'))) {
+      badgeLabel = '💼 തൊഴിൽ';
+      badgeBg = '#EFF6FF';
+      badgeColor = '#2563EB';
+    } else if (catText.includes('പോസ്റ്റ്') || (meta.recipientId && meta.recipientId.startsWith('post_'))) {
+      badgeLabel = '📢 പോസ്റ്റ്';
+      badgeBg = '#F5F3FF';
+      badgeColor = '#7C3AED';
+    } else {
+      badgeLabel = '👥 നാട്ടുകാരൻ';
+      badgeBg = '#F1F5F9';
+      badgeColor = '#475569';
+    }
+
+    return `
+      <div onclick="openChatModal('${escapeHtml(meta.name).replace(/'/g, "\\'")}', '${meta.phone || ''}', '${meta.avatar || DEFAULT_USER_AVATAR}', '', '${meta.recipientId || ''}', '${k}')"
+           style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#fff;border-radius:16px;border:1px solid #E2E8F0;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.03);transition:all 0.15s ease;margin-bottom:6px">
+        <div style="position:relative;flex-shrink:0">
+          <img src="${meta.avatar || DEFAULT_USER_AVATAR}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #E2E8F0" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
+          <span style="position:absolute;bottom:1px;right:1px;width:12px;height:12px;border-radius:50%;background:#10B981;border:2px solid #fff"></span>
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px">
+            <span style="font-weight:800;font-size:14.5px;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(meta.name)}</span>
+            <span style="font-size:11px;color:#64748B;font-weight:600;flex-shrink:0">${lastMsg.time}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+            <span style="font-size:10px;font-weight:800;background:${badgeBg};color:${badgeColor};padding:1px 6px;border-radius:6px">${badgeLabel}</span>
+            ${meta.phone ? `<span style="font-size:11px;color:#94A3B8">📞 ${meta.phone}</span>` : ''}
+          </div>
+          <div style="font-size:12px;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(lastMsg.text)}</div>
+        </div>
+      </div>
+    `;
+  }
 
   // ==============================================================
   // 11. LOCAL SERVICES DIRECTORY (16+ CATEGORIES)
@@ -2086,10 +2434,10 @@
     { id: 'driver', name: 'ഡ്രൈവർ / ടാക്സി', icon: '🛺' },
     { id: 'carpenter', name: 'ആശാരി', icon: '🪚' },
     { id: 'painter', name: 'പെയിന്റർ', icon: '🎨' },
-    { id: 'acrepair', name: 'എസി റിപ്പയർ', icon: '❄️' },
+    { id: 'acrepair', name: 'എസി & ഫ്രിഡ്ജ്', icon: '❄️' },
     { id: 'cleaning', name: 'ക്ലീനിംഗ്', icon: '🧹' },
     { id: 'mason', name: 'മേസൺ & വാർപ്പ്', icon: '🧱' },
-    { id: 'welding', name: 'വെൽഡിങ്ങ്', icon: '🔥' },
+    { id: 'welding', name: 'വെൽഡിങ് & ഗ്രിൽ', icon: '🔥' },
     { id: 'gardening', name: 'കൃഷി & തോട്ടം', icon: '🌴' },
     { id: 'beautician', name: 'ബ്യൂട്ടീഷ്യൻ', icon: '💄' },
     { id: 'cctv', name: 'സിസിടിവി', icon: '📹' },
@@ -2097,7 +2445,21 @@
     { id: 'tailoring', name: 'ടൈലറിംഗ്', icon: '🧵' },
     { id: 'nursing', name: 'ഹോം നഴ്സിംഗ്', icon: '🩺' },
     { id: 'tuition', name: 'ട്യൂഷൻ', icon: '📚' },
-    { id: 'water', name: 'വാട്ടർ സപ്ലൈ', icon: '💧' }
+    { id: 'water', name: 'വാട്ടർ സപ്ലൈ', icon: '💧' },
+    { id: 'thekku', name: 'തെങ്ങ് കയറ്റം', icon: '🥥' },
+    { id: 'kinar', name: 'കിണർ പണി', icon: '🪣' },
+    { id: 'mechanic', name: 'മെക്കാനിക്', icon: '🔧' },
+    { id: 'electronics', name: 'ടിവി & മെഷീൻ', icon: '📺' },
+    { id: 'tiles', name: 'ടൈൽ & ഗ്രാനൈറ്റ്', icon: '📐' },
+    { id: 'roofing', name: 'റൂഫിംഗ് ട്രസ്സ്', icon: '🏠' },
+    { id: 'aluminium', name: 'അലുമിനിയം വർക്ക്', icon: '🪟' },
+    { id: 'waste', name: 'സെപ്റ്റിക് ടാങ്ക്', icon: '🚛' },
+    { id: 'packers', name: 'പാക്കേഴ്സ് മൂവേഴ്സ്', icon: '📦' },
+    { id: 'solar', name: 'സോളാർ സിസ്റ്റം', icon: '☀️' },
+    { id: 'photography', name: 'ഫോട്ടോഗ്രാഫി', icon: '📷' },
+    { id: 'sound', name: 'സൗണ്ട് & ലൈറ്റ്', icon: '🔊' },
+    { id: 'gas', name: 'ഗ്യാസ് സ്റ്റൗ', icon: '🍳' },
+    { id: 'pestcontrol', name: 'പെസ്റ്റ് കൺട്രോൾ', icon: '🐜' }
   ];
 
   function renderServicesCategoriesGrid() {
@@ -2206,7 +2568,7 @@
                 <span>${srv.trade}</span>
               </div>
               <div class="service-prov-loc">
-                <span>📍 ${srv.location}</span>
+                <span>📍 ${resolveItemLocation(srv)}</span>
                 <span>•</span>
                 <span style="color:#0E7043;font-weight:800">${srv._calculatedDist} km അകലെ</span>
               </div>
@@ -2265,7 +2627,7 @@
               <span style="background:rgba(255,255,255,0.25);padding:2px 8px;border-radius:8px;font-size:14px">${srv.icon || '🛠️'}</span>
               <span>${srv.trade}</span>
             </div>
-            <div style="font-size:0.78rem;opacity:0.9;margin-top:3px">📍 ${srv.location} • <b style="color:#A7F3D0">${dist} km അകലെ</b></div>
+            <div style="font-size:0.78rem;opacity:0.9;margin-top:3px">📍 ${resolveItemLocation(srv)} • <b style="color:#A7F3D0">${dist} km അകലെ</b></div>
           </div>
         </div>
       </div>
@@ -2848,15 +3210,19 @@
     const rawSpecs = (document.getElementById('regServiceSpecs') ? document.getElementById('regServiceSpecs').value.trim() : '');
     const avail = (document.getElementById('regServiceAvail') ? document.getElementById('regServiceAvail').value : 'available');
     const exp = document.getElementById('regServiceExp').value.trim() || 'പരിചയസമ്പന്നൻ';
-    const loc = document.getElementById('regServiceLoc').value.trim() || APP_STATE.location.name;
-
+    let loc = (document.getElementById('regServiceLoc') ? document.getElementById('regServiceLoc').value.trim() : '');
+    if (!loc || loc === 'തത്സമയ ലൊക്കേഷൻ' || loc.includes('കണ്ണൂർ')) {
+      loc = (APP_STATE.location.name && !APP_STATE.location.name.includes('കണ്ണൂർ') && APP_STATE.location.name !== 'തത്സമയ ലൊക്കേഷൻ')
+        ? APP_STATE.location.name
+        : getNearestKeralaPreset(APP_STATE.location.lat, APP_STATE.location.lon).name;
+    }
+    if (!loc) loc = APP_STATE.location.name || 'തത്സമയ ലൊക്കേഷൻ';
+    const resolvedDistrict = APP_STATE.location.district || getNearestKeralaPreset(APP_STATE.location.lat, APP_STATE.location.lon).district || '';
     if (!name || !typedTrade || !phone) {
       toast('⚠️ ദയവായി പേര്, തൊഴിൽ, ഫോൺ നമ്പർ എന്നിവ നൽകുക.');
       return;
     }
-
     const specsList = rawSpecs ? rawSpecs.split(',').map(s => s.trim()).filter(Boolean) : ['ജനറൽ സർവീസ്', 'ദ്രുത സഹായം'];
-
     const newService = {
       id: 'srv_' + Date.now(),
       name: name,
@@ -2872,6 +3238,7 @@
       rating: '5.0 (New)',
       experience: exp,
       location: loc,
+      district: resolvedDistrict,
       lat: APP_STATE.location.lat,
       lon: APP_STATE.location.lon,
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
@@ -2883,24 +3250,20 @@
         { user: 'സ്വാഗതം', rating: 5, date: 'ഇപ്പോൾ', text: 'നമ്മുടെ നാട് ആപ്പിലേക്ക് സ്വാഗതം!' }
       ]
     };
-
     APP_STATE.services.unshift(newService);
     try {
       localStorage.setItem('nn_services', JSON.stringify(APP_STATE.services));
     } catch (_) {}
-
     // Save to Supabase Cloud Database
     if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveService === 'function') {
       window.NN_SUPABASE_SERVICES.saveService(newService);
     }
-
     closeModal('modal-add-service');
     renderServicesScreen();
     renderHomeScreen();
     toast(`🎉 ${selectedIcon} ${typedTrade} സേവനം വിജയകരമായി രജിസ്റ്റർ ചെയ്തു!`);
   }
   window.submitServiceRegistration = submitServiceRegistration;
-
   // Dismiss dropdowns on outside click
   document.addEventListener('click', function(e) {
     const sDropdown = document.getElementById('servicesSearchSuggestions');
@@ -2912,7 +3275,6 @@
       tDropdown.style.display = 'none';
     }
   });
-
   // ==============================================================
   // 11B. 1-TAP QUICK SERVICE REQUEST & BROADCAST ENGINE
   // ==============================================================
@@ -2926,27 +3288,21 @@
     painter: { name: 'പെയിന്റർ', icon: '🎨' },
     other: { name: 'മറ്റുള്ളവ', icon: '🛠️' }
   };
-
   window._quickReqPhotoBase64 = null;
   window._quickReqUrgency = 'urgent';
-
   function openQuickServiceModal(preferredCat) {
     const locInput = document.getElementById('quickReqLocation');
     const phoneInput = document.getElementById('quickReqPhone');
     const descInput = document.getElementById('quickReqDescription');
-
-    if (locInput) locInput.value = APP_STATE.location.name || 'കണ്ണൂർ, കേരളം';
-    if (phoneInput) phoneInput.value = APP_STATE.currentUser.phone || '+91 98470 00000';
+    if (locInput) locInput.value = (APP_STATE.location.name && !APP_STATE.location.name.includes('കണ്ണൂർ') && APP_STATE.location.name !== 'തത്സമയ ലൊക്കേഷൻ') ? APP_STATE.location.name : '';
+    if (phoneInput) phoneInput.value = APP_STATE.currentUser.phone || '';
     if (descInput) descInput.value = '';
-
     removeQuickReqPhoto();
-
     if (preferredCat) {
       selectQuickReqCat(preferredCat);
     } else {
       selectQuickReqCat('plumber');
     }
-
     openModal('modal-quick-service-request');
   }
   window.openQuickServiceModal = openQuickServiceModal;
@@ -3191,12 +3547,36 @@
     const container = document.getElementById('bloodDonorsListContainer');
     if (!container) return;
 
-    let list = APP_STATE.bloodDonors;
+    const maxRadius = APP_STATE.radiusFilters.blood || APP_STATE.activeRadiusKm || 5;
+
+    let list = [...(APP_STATE.bloodDonors || [])];
+    // Calculate distance for each donor
+    list.forEach(d => {
+      d._calculatedDist = getItemDistanceKm(d, APP_STATE.location.lat, APP_STATE.location.lon);
+    });
+    list.sort((a, b) => a._calculatedDist - b._calculatedDist);
+
+    // Filter by blood group
     if (APP_STATE.activeBloodGroup !== 'all') {
       list = list.filter(d => d.group === APP_STATE.activeBloodGroup);
     }
 
-    if (!list || list.length === 0) {
+    // Apply radius filter
+    let inRadius = list.filter(d => maxRadius >= 1000 || d._calculatedDist <= maxRadius);
+    let bloodExtendedNotice = '';
+
+    // Adaptive fallback: if strict radius yielded 0, show nearest with notice
+    if (inRadius.length === 0 && list.length > 0) {
+      inRadius = list.slice(0, 10);
+      bloodExtendedNotice = `
+        <div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:8px 12px;font-size:12px;color:#991B1B;font-weight:700;display:flex;align-items:center;gap:6px;margin-bottom:8px">
+          <span>📍</span>
+          <span>${maxRadius} km പരിധിക്ക് പുറത്തുള്ള അടുത്തുള്ള രക്തദാതാക്കൾ:</span>
+        </div>
+      `;
+    }
+
+    if (inRadius.length === 0) {
       container.innerHTML = `
         <div style="text-align:center;padding:32px 16px;background:#fff;border-radius:16px;border:1px dashed #FECACA">
           <div style="font-size:32px;margin-bottom:6px">🩸</div>
@@ -3208,7 +3588,7 @@
       return;
     }
 
-    container.innerHTML = list.map(d => `
+    container.innerHTML = bloodExtendedNotice + inRadius.map(d => `
       <div style="background:#fff;border-radius:16px;padding:14px;border:1px solid #FECACA;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
         <div style="display:flex;align-items:center;gap:12px">
           <div style="width:44px;height:44px;border-radius:50%;background:#FEF2F2;color:#DC2626;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;border:2px solid #FCA5A5">
@@ -3216,7 +3596,7 @@
           </div>
           <div>
             <div style="font-weight:800;font-size:14px;color:#111827">${d.name}</div>
-            <div style="font-size:11px;color:#6B7280">📍 ${d.location} • <span style="color:#10B981;font-weight:700">${d.status}</span></div>
+            <div style="font-size:11px;color:#6B7280">📍 ${d.location} • <span style="color:#059669;font-weight:800">${d._calculatedDist} km അകലെ</span> • <span style="color:#10B981;font-weight:700">${d.status}</span></div>
           </div>
         </div>
 
@@ -4073,12 +4453,11 @@
       name: s.name,
       vehicle: s.visitingFee || 'വാഹനം ലഭ്യമാണ്',
       type: '🟢 ഓക്സിജൻ സപ്പോർട്ട് (Verified)',
-      location: s.location || 'കണ്ണൂർ',
+      location: resolveItemLocation(s) || 'തത്സമയ ലൊക്കേഷൻ',
       phone: s.phone,
       whatsapp: s.phone,
       availability: s.workHours || '24x7 മുഴുവൻ സമയവും ലഭ്യമാണ്'
     }));
-
     const seenPhones = new Set();
     const merged = [];
     [...custom, ...srvDrivers, ...DEFAULT_AMBULANCES].forEach(item => {
@@ -4092,11 +4471,9 @@
     });
     return merged;
   }
-
   function renderAmbulanceDrivers(query = '') {
     const listEl = document.getElementById('ambulanceDriversList');
     if (!listEl) return;
-
     let drivers = getAmbulanceDriversList();
     const q = (query || '').toLowerCase().trim();
     if (q) {
@@ -4108,12 +4485,10 @@
         (d.phone && d.phone.includes(q))
       );
     }
-
     const badgeEl = document.getElementById('ambDriversCountBadge');
     if (badgeEl) {
       badgeEl.textContent = `${drivers.length} എണ്ണം ലഭ്യമാണ്`;
     }
-
     if (drivers.length === 0) {
       listEl.innerHTML = `
         <div style="text-align:center;padding:24px 14px;background:#F8FAFC;border-radius:12px;border:1px dashed #CBD5E1">
@@ -4127,12 +4502,10 @@
       `;
       return;
     }
-
     listEl.innerHTML = drivers.map(d => {
       const cleanPhone = (d.phone || '').replace(/\D/g, '');
       const waPhone = (d.whatsapp || d.phone || '').replace(/\D/g, '');
       const waUrl = waPhone ? `https://wa.me/91${waPhone.slice(-10)}?text=${encodeURIComponent('ഹലോ, അടിയന്തിര ആവശ്യത്തിന് ആംബുലൻസ് ലഭ്യമാണോ?')}` : '#';
-
       return `
         <div style="background:#FFFFFF;border:1px solid #CBD5E1;border-radius:14px;padding:12px;box-shadow:0 1px 4px rgba(0,0,0,0.03);display:flex;flex-direction:column;gap:8px">
           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
@@ -4156,13 +4529,11 @@
               🟢 24x7
             </span>
           </div>
-
           <div style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:#64748B">
             <span>📍</span>
-            <span>${escapeHtml(d.location || 'കണ്ണൂർ')}</span>
+            <span>${escapeHtml(resolveItemLocation(d) || 'തത്സമയ ലൊക്കേഷൻ')}</span>
             ${d.availability ? `<span>• ⏰ ${escapeHtml(d.availability)}</span>` : ''}
           </div>
-
           <div style="display:flex;align-items:center;gap:8px;margin-top:2px">
             ${cleanPhone === '108' ? `
               <a href="tel:108" style="flex:1;background:linear-gradient(135deg, #E11D48 0%, #BE123C 100%);color:#fff;text-decoration:none;padding:10px;border-radius:10px;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 6px rgba(225,29,72,0.25)">
@@ -4178,25 +4549,21 @@
       `;
     }).join('');
   }
-
   function filterAmbulances(query) {
     renderAmbulanceDrivers(query);
   }
   window.filterAmbulances = filterAmbulances;
-
   function openAmbulanceModal() {
     renderAmbulanceDrivers();
     openModal('modal-ambulance');
   }
   window.openAmbulanceModal = openAmbulanceModal;
-
   function openAmbulanceDriverRegister() {
     closeModal('modal-ambulance');
     const nameInput = document.getElementById('ambDriverName');
     const phoneInput = document.getElementById('ambDriverPhone');
     const waInput = document.getElementById('ambDriverWhatsApp');
     const locInput = document.getElementById('ambDriverLocation');
-
     if (nameInput && !nameInput.value) {
       nameInput.value = (APP_STATE.currentUser.name && APP_STATE.currentUser.name !== 'നാട്ടുകാരൻ') ? APP_STATE.currentUser.name : '';
     }
@@ -4207,7 +4574,9 @@
       waInput.value = APP_STATE.currentUser.phone || '';
     }
     if (locInput && !locInput.value) {
-      locInput.value = (APP_STATE.currentUser.location || APP_STATE.location.name || 'കണ്ണൂർ');
+      locInput.value = (APP_STATE.currentUser.location && !APP_STATE.currentUser.location.includes('കണ്ണൂർ'))
+        ? APP_STATE.currentUser.location
+        : ((APP_STATE.location.name && !APP_STATE.location.name.includes('കണ്ണൂർ') && APP_STATE.location.name !== 'തത്സമയ ലൊക്കേഷൻ') ? APP_STATE.location.name : '');
     }
     openModal('modal-ambulance-driver');
   }
@@ -4522,9 +4891,9 @@
       salary: salary,
       type: 'ഫുൾ ടൈം',
       location: location,
-      district: APP_STATE.location?.district || 'കണ്ണൂർ',
-      lat: APP_STATE.location?.lat || 11.8745,
-      lon: APP_STATE.location?.lon || 75.3704,
+      district: APP_STATE.location?.district || getNearestKeralaPreset(APP_STATE.location?.lat, APP_STATE.location?.lon).district || '',
+      lat: APP_STATE.location?.lat || 10.8505,
+      lon: APP_STATE.location?.lon || 76.2711,
       description: desc,
       createdAt: Date.now(),
       isCloud: true
@@ -4658,7 +5027,7 @@
         icon: s.icon || '🛠️',
         avatar: s.avatar || DEFAULT_USER_AVATAR,
         phone: s.phone || '',
-        location: s.location || (userTown + ' പരിസരം'),
+        location: resolveItemLocation(s),
         badge: s.rating ? `★ ${s.rating}` : 'വെരിഫൈഡ്',
         dist: dist
       });
@@ -4681,7 +5050,7 @@
           icon: '👥',
           avatar: p.authorAvatar || DEFAULT_USER_AVATAR,
           phone: p.authorPhone || '',
-          location: p.authorLocation || (userTown + ' പരിസരം'),
+          location: resolveItemLocation(p),
           badge: 'നാട്ടുകാരൻ',
           dist: dist
         });
@@ -4701,7 +5070,7 @@
         icon: '🩸',
         avatar: DEFAULT_USER_AVATAR,
         phone: d.phone || '',
-        location: d.location || (userTown + ' പരിസരം'),
+        location: resolveItemLocation(d),
         badge: d.group || 'O+',
         dist: dist
       });
@@ -4720,7 +5089,7 @@
         icon: '🏠',
         avatar: r.image || DEFAULT_USER_AVATAR,
         phone: r.ownerPhone || '',
-        location: r.location || (userTown + ' പരിസരം'),
+        location: resolveItemLocation(r),
         badge: r.rate || 'വാടകയ്ക്ക്',
         dist: dist
       });
@@ -4894,7 +5263,7 @@
                   <img src="${APP_STATE.currentUser.avatar || DEFAULT_USER_AVATAR}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:1px solid #E2E8F0">
                   <div>
                     <div style="font-weight:800;font-size:13px;color:#0F172A">${escapeHtml(APP_STATE.currentUser.name || 'നാട്ടുകാരൻ')}</div>
-                    <div style="font-size:11px;color:#94A3B8">${escapeHtml(p.timestamp || 'ഇപ്പോൾ')} • 📍 ${escapeHtml(p.location || APP_STATE.currentUser.location || 'കണ്ണൂർ')}</div>
+                    <div style="font-size:11px;color:#94A3B8">${escapeHtml(p.timestamp || 'ഇപ്പോൾ')} • 📍 ${escapeHtml(p.location || APP_STATE.currentUser.location || APP_STATE.location.name || 'തത്സമയ ലൊക്കേഷൻ')}</div>
                   </div>
                 </div>
                 <div style="display:flex;gap:6px">
@@ -4943,7 +5312,6 @@
       container.innerHTML = `
         <div class="fb-about-card">
           <div class="fb-about-section-title">📌 പ്രൊഫൈൽ വിവരങ്ങൾ (About Info)</div>
-          
           <div class="fb-about-item">
             <span class="fb-about-icon">👤</span>
             <div>
@@ -4951,7 +5319,6 @@
               <div class="fb-about-val">${escapeHtml(APP_STATE.currentUser.name || 'നാട്ടുകാരൻ')}</div>
             </div>
           </div>
-
           <div class="fb-about-item">
             <span class="fb-about-icon">📞</span>
             <div>
@@ -4959,7 +5326,6 @@
               <div class="fb-about-val">${APP_STATE.currentUser.phone ? escapeHtml(APP_STATE.currentUser.phone) : 'ഫോൺ ചേർത്തിട്ടില്ല'}</div>
             </div>
           </div>
-
           <div class="fb-about-item">
             <span class="fb-about-icon">🆔</span>
             <div>
@@ -4967,12 +5333,11 @@
               <div class="fb-about-val" style="font-family:monospace;color:#1877F2;font-weight:800">${escapeHtml(APP_STATE.currentUser.id || ('usr_' + cleanId) || 'usr_citizen')}</div>
             </div>
           </div>
-
           <div class="fb-about-item">
             <span class="fb-about-icon">📍</span>
             <div>
               <div class="fb-about-label">വാസസ്ഥലം / ഗ്രാമം</div>
-              <div class="fb-about-val">${escapeHtml(APP_STATE.currentUser.location || APP_STATE.location.name || 'കണ്ണൂർ, കേരളം')}</div>
+              <div class="fb-about-val">${escapeHtml(APP_STATE.currentUser.location || APP_STATE.location.name || 'തത്സമയ ലൊക്കേഷൻ')}</div>
             </div>
           </div>
 
@@ -5141,7 +5506,7 @@
     }
 
     if (bioEl) {
-      bioEl.textContent = APP_STATE.currentUser.bio || 'കണ്ണൂർ • നമ്മുടെ നാട് കൂട്ടായ്മ 🌿';
+      bioEl.textContent = APP_STATE.currentUser.bio || 'നമ്മുടെ നാട് കൂട്ടായ്മ 🌿';
     }
 
     if (locEl) {
@@ -5521,7 +5886,7 @@
     if (locEl) locEl.value = APP_STATE.currentUser.location || APP_STATE.location.name || '';
     if (bloodEl) bloodEl.value = APP_STATE.currentUser.bloodGroup || localStorage.getItem('nn_user_blood') || 'O+';
     const bioEl = document.getElementById('editProfBio');
-    if (bioEl) bioEl.value = (APP_STATE.currentUser.bio && APP_STATE.currentUser.bio !== 'കണ്ണൂർ • നമ്മുടെ നാട് കൂട്ടായ്മ 🌿') ? APP_STATE.currentUser.bio : '';
+    if (bioEl) bioEl.value = (APP_STATE.currentUser.bio && APP_STATE.currentUser.bio !== 'നമ്മുടെ നാട് കൂട്ടായ്മ 🌿' && !APP_STATE.currentUser.bio.includes('കണ്ണൂർ')) ? APP_STATE.currentUser.bio : '';
     if (previewEl) previewEl.src = APP_STATE.currentUser.avatar || DEFAULT_USER_AVATAR;
 
     openModal('modal-edit-profile');
@@ -5592,7 +5957,7 @@
     const phone = (document.getElementById('editProfPhone').value || '').trim();
     const loc = (document.getElementById('editProfLoc').value || '').trim() || APP_STATE.location.name || 'കേരളം';
     const blood = document.getElementById('editProfBlood').value;
-    const bio = (document.getElementById('editProfBio')?.value || '').trim() || 'കണ്ണൂർ • നമ്മുടെ നാട് കൂട്ടായ്മ 🌿';
+    const bio = (document.getElementById('editProfBio')?.value || '').trim() || 'നമ്മുടെ നാട് കൂട്ടായ്മ 🌿';
     const isDonor = document.getElementById('editProfIsDonor')?.checked !== false;
 
     if (!name) {
@@ -5688,7 +6053,7 @@
         id: 'usr_me_' + Math.random().toString(36).substring(2, 9),
         name: 'നാട്ടുകാരൻ',
         phone: '',
-        location: 'കണ്ണൂർ, കേരളം',
+        location: 'തത്സമയ ലൊക്കേഷൻ',
         bloodGroup: 'O+',
         avatar: DEFAULT_USER_AVATAR,
         isDonor: false,
@@ -6002,6 +6367,8 @@
     const homeList = document.getElementById('homeTopProvidersList');
     if (!homeList) return;
 
+    const maxRadius = APP_STATE.activeRadiusKm || 5;
+
     // Calculate distances
     const list = [...(APP_STATE.services || [])];
     list.forEach(srv => {
@@ -6009,13 +6376,28 @@
     });
     list.sort((a, b) => a._calculatedDist - b._calculatedDist);
 
-    const topProviders = list.slice(0, 4);
+    // Apply user's chosen radius filter
+    let inRadius = list.filter(srv => maxRadius >= 1000 || srv._calculatedDist <= maxRadius);
+    let homeExtendedNotice = '';
+
+    // Adaptive fallback: if strict radius yielded 0, show nearest with notice
+    if (inRadius.length === 0 && list.length > 0) {
+      inRadius = list.slice(0, 4);
+      homeExtendedNotice = `
+        <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:8px 12px;font-size:12px;color:#166534;font-weight:700;display:flex;align-items:center;gap:6px;margin-bottom:8px">
+          <span>📍</span>
+          <span>${maxRadius} km പരിധിക്ക് പുറത്തുള്ള അടുത്തുള്ള സേവനദാതാക്കൾ:</span>
+        </div>
+      `;
+    }
+
+    const topProviders = inRadius.slice(0, 4);
     if (topProviders.length === 0) {
       homeList.innerHTML = `<div style="text-align:center;padding:16px;color:#64748B;font-size:0.85rem">സേവനദാതാക്കളെ കണ്ടെത്താനായില്ല</div>`;
       return;
     }
 
-    homeList.innerHTML = topProviders.map(srv => {
+    homeList.innerHTML = homeExtendedNotice + topProviders.map(srv => {
       const isAvail = srv.availability !== 'busy';
       const availLabel = isAvail ? '🟢 ഇപ്പോൾ ലഭ്യമാണ്' : '🟡 ബുക്കിംഗ് അനുസരിച്ച്';
       const availClass = isAvail ? 'avail' : 'busy';
@@ -6066,6 +6448,7 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     initData();
+    updateChatBadgeCounter();
     renderHomeScreen();
     renderCommunityFeed();
 

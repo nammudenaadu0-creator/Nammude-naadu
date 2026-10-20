@@ -336,7 +336,7 @@
     const title = isDirectEnquiry 
       ? '🛠️ നിങ്ങളുടെ സർവീസിന് പുതിയ നേരിട്ടുള്ള അന്വേഷണം!'
       : (`🛠️ പുതിയ ${row.trade || 'സർവീസ്'} ആവശ്യം എത്തിയിട്ടുണ്ട്!`);
-    const body = `📍 ${row.location || 'കണ്ണൂർ'}: "${row.description || row.title || 'സഹായം വേണം'}". കസ്റ്റമർ: ${row.phone}`;
+    const body = `📍 ${row.location || 'തത്സമയ ലൊക്കേഷൻ'}: "${row.description || row.title || 'സഹായം വേണം'}". കസ്റ്റമർ: ${row.phone}`;
 
     sendNativePhoneNotification(title, body, {
       type: 'service',
@@ -678,7 +678,10 @@
     const senderPhone = (msgObj.senderPhone ? String(msgObj.senderPhone).replace(/\D/g, '').slice(-10) : '');
 
     // Ignore duplicate of own message
-    if (msgObj.senderId === myId || (myPhone && senderPhone && myPhone === senderPhone)) {
+    if (myId && msgObj.senderId && msgObj.senderId === myId) {
+      return;
+    }
+    if (myPhone && senderPhone && myPhone === senderPhone && myPhone !== '9847012345' && myPhone !== '9847000000') {
       return;
     }
 
@@ -690,12 +693,16 @@
     const recName = (metaObj && metaObj.recipientName ? String(metaObj.recipientName).trim().toLowerCase() : '');
     const cleanMyId = myId ? myId.replace(/[^a-zA-Z0-9]/g, '') : '';
     const isForMe = (!metaObj) ||
+      (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.key === chatKey) ||
       (myPhone && recPhone && myPhone === recPhone) ||
       (myId && recId && myId === recId) ||
       (myPhone && chatKey.includes(myPhone)) ||
       (cleanMyId && chatKey.includes(cleanMyId)) ||
       (myName && recName && myName === recName) ||
-      (myName && chatKey.toLowerCase().includes(myName));
+      (myName && chatKey.toLowerCase().includes(myName)) ||
+      (APP_STATE.chats && APP_STATE.chats[chatKey]) ||
+      (APP_STATE.chatMeta && APP_STATE.chatMeta[chatKey]) ||
+      ((APP_STATE.services || []).some(s => s.id === recId && s.isCloud));
 
     if (!isForMe) {
       return;
@@ -741,8 +748,11 @@
             try { renderChatMessages(); } catch (_) {}
           }
         } else {
-          // Update chat list if on chat screen
-          if (typeof renderChatListScreen === 'function' && APP_STATE.currentScreen === 'chat') {
+          // Update chat badge and central inbox list
+          if (typeof updateChatBadgeCounter === 'function') {
+            try { updateChatBadgeCounter(); } catch (_) {}
+          }
+          if (typeof renderChatListScreen === 'function') {
             try { renderChatListScreen(); } catch (_) {}
           }
           // Prominent Toast Notification with sender details
@@ -831,7 +841,7 @@
       salary: j.salary || 'ശമ്പളം സംസാരിക്കാം',
       type: 'ഫുൾ ടൈം',
       location: j.location || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.name : 'കേരളം'),
-      district: j.district || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.district : 'കണ്ണൂർ'),
+      district: j.district || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.district : '') || '',
       lat: j.latitude || j.lat || 11.8745,
       lon: j.longitude || j.lon || 75.3704,
       description: j.description || '',
@@ -869,7 +879,7 @@
       deposit: r.deposit || '',
       phone: r.phone || '',
       location: r.location || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.name : 'കേരളം'),
-      district: r.district || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.district : 'കണ്ണൂർ'),
+      district: r.district || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.district : '') || '',
       lat: r.latitude || r.lat || 11.8745,
       lon: r.longitude || r.lon || 75.3704,
       imageUrl: r.image_url || r.imageUrl || '',
@@ -943,7 +953,7 @@
       icon: c.icon || '📞',
       badge: c.badge || 'സഹായം',
       location: c.location || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.name : 'കേരളം'),
-      district: c.district || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.district : 'കണ്ണൂർ'),
+      district: c.district || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.district : '') || '',
       description: c.description || '',
       createdAt: Number(c.created_at) || Date.now(),
       isCloud: true
@@ -1054,7 +1064,41 @@
         }).catch(() => {});
     }
 
+    const pollInterval = setInterval(() => {
+      if (client && chatSubscribers.has(chatKey) && chatSubscribers.get(chatKey).size > 0) {
+        client.from('messages')
+          .select('*')
+          .eq('chat_key', chatKey)
+          .order('created_at', { ascending: true })
+          .then(({ data, error }) => {
+            if (!error && Array.isArray(data) && data.length > 0) {
+              const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser.id : '';
+              const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone) 
+                ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
+
+              const mapped = data.map(m => {
+                const mPhone = (m.sender_phone ? String(m.sender_phone).replace(/\D/g, '').slice(-10) : '');
+                const isMe = (m.sender_id === myId) || (myPhone && mPhone && mPhone === myPhone);
+                return {
+                  id: m.id,
+                  sender: isMe ? 'me' : 'them',
+                  senderId: m.sender_id,
+                  senderPhone: m.sender_phone,
+                  senderName: m.sender_name,
+                  senderAvatar: m.sender_avatar,
+                  text: m.text,
+                  time: m.time || 'ഇപ്പോൾ',
+                  timestamp: Number(m.created_at) || Date.now()
+                };
+              });
+              onMessagesUpdate(mapped);
+            }
+          }).catch(() => {});
+      }
+    }, 1200);
+
     return () => {
+      if (pollInterval) clearInterval(pollInterval);
       if (chatSubscribers.has(chatKey)) {
         chatSubscribers.get(chatKey).delete(onMessagesUpdate);
       }
@@ -1246,6 +1290,10 @@
   async function saveService(serviceObj) {
     if (!serviceObj) return;
     initSupabase();
+
+    if (typeof window !== 'undefined' && typeof window.resolveItemLocation === 'function') {
+      serviceObj.location = window.resolveItemLocation(serviceObj);
+    }
 
     if (servicesChannel) {
       try {
@@ -1487,7 +1535,7 @@
           salary: jobObj.salary || 'ശമ്പളം സംസാരിക്കാം',
           phone: jobObj.phone || jobObj.employerPhone || (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser ? APP_STATE.currentUser.phone : '') || '9447000000',
           location: jobObj.location || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.name : 'കേരളം'),
-          district: jobObj.district || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.district : 'കണ്ണൂർ'),
+          district: jobObj.district || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.district : '') || '',
           latitude: jobObj.lat || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.lat : null),
           longitude: jobObj.lon || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.lon : null),
           description: jobObj.description || '',
@@ -1687,7 +1735,7 @@
           icon: contactObj.icon || '📞',
           badge: contactObj.badge || 'സഹായം',
           location: contactObj.location || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.name : 'കേരളം'),
-          district: contactObj.district || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.district : 'കണ്ണൂർ'),
+          district: contactObj.district || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.district : '') || '',
           description: contactObj.description || '',
           created_at: Number(contactObj.createdAt) || Date.now()
         };
