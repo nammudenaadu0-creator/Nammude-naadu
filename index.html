@@ -590,15 +590,18 @@
                     <input type="file" id="profilePhotoDirectInput" accept="image/*" style="display:none" onchange="handleProfilePhotoUpload(event)">
                 </div>
                 <h3 id="profDisplayNameText" style="margin:0 0 4px;font-size:18px">നാട്ടുകാരൻ</h3>
-                <div style="font-size:12px;color:#64748B"><span id="profDisplayPhoneText"></span> • <span
-                        class="user-live-city-name">കണ്ണൂർ, കേരളം</span></div>
-                <div style="margin-top:10px;display:flex;justify-content:center;gap:6px">
-                    <span
-                        style="background:#DCFCE7;color:#15803D;padding:4px 12px;border-radius:12px;font-size:11px;font-weight:700">🩸
-                        രക്തഗ്രൂപ്പ്: O+</span>
-                    <span
-                        style="background:#E0F2FE;color:#0284C7;padding:4px 12px;border-radius:12px;font-size:11px;font-weight:700">തദ്ദേശവാസി
-                        (Verified)</span>
+                <div style="font-size:12px;color:#64748B;display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap">
+                    <span id="profDisplayPhoneText"></span>
+                    <span id="profDisplayIdBadge" style="background:#F1F5F9;color:#334155;padding:2px 8px;border-radius:8px;font-weight:700;font-size:11px"></span>
+                </div>
+                <div style="font-size:12px;color:#64748B;margin-top:4px">
+                    <span id="profDisplayLocText">📍 കണ്ണൂർ, കേരളം</span>
+                </div>
+                <div style="margin-top:10px;display:flex;justify-content:center;gap:6px;flex-wrap:wrap">
+                    <span id="profDisplayBloodText"
+                        style="background:#DCFCE7;color:#15803D;padding:4px 12px;border-radius:12px;font-size:11px;font-weight:700">🩸 രക്തഗ്രൂപ്പ്: O+</span>
+                    <span id="profDisplayVerifiedBadge"
+                        style="background:#E0F2FE;color:#0284C7;padding:4px 12px;border-radius:12px;font-size:11px;font-weight:700">തദ്ദേശവാസി (Verified)</span>
                 </div>
             </div>
 
@@ -626,7 +629,7 @@
                 <div id="profileTabContentContainer" style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px"></div>
 
                 <div class="profile-menu-row" onclick="openBloodModal()" style="background:#fff;padding:14px;border-radius:12px;border:1px solid #E5E7EB;margin-bottom:8px;cursor:pointer;font-weight:700">🩸 ബ്ലഡ് ഡോണർ നെറ്റ്‌വർക്ക്</div>
-                <div class="profile-menu-row" onclick="toast('ലോഗ് ഔട്ട് ചെയ്തു')" style="background:#fff;padding:14px;border-radius:12px;border:1px solid #E5E7EB;cursor:pointer;font-weight:700;color:#DC2626">🚪 ലോഗ് ഔട്ട്</div>
+                <div class="profile-menu-row" onclick="handleProfileLogout()" style="background:#fff;padding:14px;border-radius:12px;border:1px solid #E5E7EB;cursor:pointer;font-weight:700;color:#DC2626">🚪 ലോഗ് ഔട്ട് / അക്കൗണ്ട് മാറ്റാം</div>
             </div>
         </section>
 
@@ -1242,8 +1245,10 @@
                     <input type="text" id="editProfName" required placeholder="നിങ്ങളുടെ പേര് നൽകുക..." style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
                 </div>
                 <div>
-                    <label style="font-size:12px;font-weight:700">ഫോൺ നമ്പർ (Phone Number)</label>
-                    <input type="tel" id="editProfPhone" placeholder="മൊബൈൽ നമ്പർ..." style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                    <label style="font-size:12px;font-weight:700">ഫോൺ നമ്പർ (Phone Number - Unique ID)</label>
+                    <input type="tel" id="editProfPhone" oninput="checkPhoneProfileLookup(this.value)" placeholder="10 അക്ക മൊബൈൽ നമ്പർ..." style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                    <div id="phoneLookupStatus" style="font-size:11px;color:#0E7043;font-weight:700;margin-top:3px;display:none"></div>
+                    <div style="font-size:10.5px;color:#64748B;margin-top:2px">💡 ഈ നമ്പർ വെച്ചാണ് നിങ്ങളുടെ അക്കൗണ്ട് ഐഡി രൂപീകരിക്കപ്പെടുന്നത്.</div>
                 </div>
                 <div>
                     <label style="font-size:12px;font-weight:700">നാട് / പ്രദേശം (Your Place / Location)</label>

@@ -48,11 +48,23 @@
     try { localStorage.removeItem('nn_user_phone'); } catch (_) {}
   }
 
+  function generateUserIdFromPhone(rawPhone) {
+    if (!rawPhone) return null;
+    const digits = String(rawPhone).replace(/\D/g, '').slice(-10);
+    return (digits && digits.length >= 10) ? ('usr_' + digits) : null;
+  }
+  window.generateUserIdFromPhone = generateUserIdFromPhone;
+
+  const phoneBasedId = generateUserIdFromPhone(savedUserPhone);
+  if (phoneBasedId && !localStorage.getItem('nn_user_id')) {
+    try { localStorage.setItem('nn_user_id', phoneBasedId.replace('usr_', '')); } catch (_) {}
+  }
+
   const APP_STATE = {
     currentScreen: 'splash',
     previousScreen: 'home',
     currentUser: {
-      id: 'usr_me_' + (localStorage.getItem('nn_user_id') || Math.random().toString(36).substring(2, 9)),
+      id: phoneBasedId || (localStorage.getItem('nn_user_id') ? ('usr_' + localStorage.getItem('nn_user_id')) : ('usr_me_' + Math.random().toString(36).substring(2, 9))),
       name: savedUserName || 'നാട്ടുകാരൻ',
       phone: savedUserPhone || '',
       location: localStorage.getItem('nn_user_loc') || 'കണ്ണൂർ, കേരളം',
@@ -1950,8 +1962,9 @@
           saveChats();
           renderChatMessages();
 
-          if (typeof window !== 'undefined' && window.NN_FIREBASE_SERVICES && typeof window.NN_FIREBASE_SERVICES.sendChatMessage === 'function') {
-            window.NN_FIREBASE_SERVICES.sendChatMessage(chatKey, replyObj, null);
+          const svc = window.NN_SUPABASE_SERVICES || window.NN_FIREBASE_SERVICES;
+          if (typeof window !== 'undefined' && svc && typeof svc.sendChatMessage === 'function') {
+            svc.sendChatMessage(chatKey, replyObj, null);
           }
         }
       }, 900);
@@ -3930,11 +3943,15 @@
   function renderProfileScreen() {
     const nameEl = document.getElementById('profDisplayNameText');
     const phoneEl = document.getElementById('profDisplayPhoneText');
+    const idBadgeEl = document.getElementById('profDisplayIdBadge');
+    const locEl = document.getElementById('profDisplayLocText');
+    const bloodEl = document.getElementById('profDisplayBloodText');
+    const verifiedBadge = document.getElementById('profDisplayVerifiedBadge');
     const avatarEl = document.getElementById('profileAvatarImg');
     const homeAvatar = document.getElementById('homeHeaderAvatar');
 
     const displayName = APP_STATE.currentUser.name || 'നാട്ടുകാരൻ';
-    const displayPhone = APP_STATE.currentUser.phone ? `📞 ${APP_STATE.currentUser.phone}` : 'ഫോൺ നമ്പർ നൽകിയിട്ടില്ല';
+    const displayPhone = APP_STATE.currentUser.phone ? `📞 ${APP_STATE.currentUser.phone}` : 'ഫോൺ നൽകിയിട്ടില്ല';
     const currentAvatar = APP_STATE.currentUser.avatar || DEFAULT_USER_AVATAR;
 
     if (nameEl) {
@@ -3945,6 +3962,39 @@
       }
     }
     if (phoneEl) phoneEl.textContent = displayPhone;
+
+    if (idBadgeEl) {
+      const cleanId = (APP_STATE.currentUser.id || '').replace(/^usr_me_/, '').replace(/^usr_/, '');
+      if (cleanId) {
+        idBadgeEl.textContent = `ID: ${cleanId}`;
+        idBadgeEl.style.display = 'inline-block';
+      } else {
+        idBadgeEl.style.display = 'none';
+      }
+    }
+
+    if (locEl) {
+      const myLoc = APP_STATE.currentUser.location || APP_STATE.location.name || 'കേരളം';
+      locEl.textContent = `📍 ${myLoc}`;
+    }
+
+    if (bloodEl) {
+      bloodEl.textContent = `🩸 രക്തഗ്രൂപ്പ്: ${APP_STATE.currentUser.bloodGroup || 'O+'}`;
+    }
+
+    if (verifiedBadge) {
+      const isVerified = !!(APP_STATE.currentUser.phone && APP_STATE.currentUser.name && APP_STATE.currentUser.name !== 'നാട്ടുകാരൻ');
+      if (isVerified) {
+        verifiedBadge.textContent = 'തദ്ദേശവാസി (Verified ✓)';
+        verifiedBadge.style.background = '#E0F2FE';
+        verifiedBadge.style.color = '#0284C7';
+      } else {
+        verifiedBadge.textContent = 'അതിഥി (Guest)';
+        verifiedBadge.style.background = '#F3F4F6';
+        verifiedBadge.style.color = '#6B7280';
+      }
+    }
+
     if (avatarEl) avatarEl.src = currentAvatar;
     if (homeAvatar) homeAvatar.src = currentAvatar;
 
@@ -3989,6 +4039,11 @@
         if (profAvatar) profAvatar.src = compressedBase64;
         if (homeHeaderAvatar) homeHeaderAvatar.src = compressedBase64;
         if (editPreview) editPreview.src = compressedBase64;
+
+        // Sync photo to Supabase Cloud profile
+        if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveUserProfile === 'function') {
+          window.NN_SUPABASE_SERVICES.saveUserProfile(APP_STATE.currentUser);
+        }
 
         toast('📸 നിങ്ങളുടെ പ്രൊഫൈൽ ഫോട്ടോ വിജയകരമായി മാറ്റം വരുത്തി!');
       };
@@ -4183,6 +4238,8 @@
     const locEl = document.getElementById('editProfLoc');
     const bloodEl = document.getElementById('editProfBlood');
     const previewEl = document.getElementById('editProfAvatarPreview');
+    const statusEl = document.getElementById('phoneLookupStatus');
+    if (statusEl) statusEl.style.display = 'none';
 
     if (nameEl) nameEl.value = (APP_STATE.currentUser.name && APP_STATE.currentUser.name !== 'നാട്ടുകാരൻ') ? APP_STATE.currentUser.name : '';
     if (phoneEl) phoneEl.value = APP_STATE.currentUser.phone || '';
@@ -4194,6 +4251,58 @@
   }
   window.openEditProfileModal = openEditProfileModal;
 
+  let phoneLookupDebounce = null;
+  async function checkPhoneProfileLookup(rawPhone) {
+    if (phoneLookupDebounce) clearTimeout(phoneLookupDebounce);
+    const statusEl = document.getElementById('phoneLookupStatus');
+
+    const digits = String(rawPhone || '').replace(/\D/g, '').slice(-10);
+    if (!digits || digits.length < 10) {
+      if (statusEl) statusEl.style.display = 'none';
+      return;
+    }
+
+    phoneLookupDebounce = setTimeout(async () => {
+      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.fetchUserProfile === 'function') {
+        if (statusEl) {
+          statusEl.textContent = '🔍 ക്ലൗഡ് പ്രൊഫൈൽ പരിശോധിക്കുന്നു...';
+          statusEl.style.color = '#64748B';
+          statusEl.style.display = 'block';
+        }
+
+        const cloud = await window.NN_SUPABASE_SERVICES.fetchUserProfile(digits);
+        if (cloud) {
+          const nameEl = document.getElementById('editProfName');
+          const locEl = document.getElementById('editProfLoc');
+          const bloodEl = document.getElementById('editProfBlood');
+          const previewEl = document.getElementById('editProfAvatarPreview');
+
+          if (nameEl && (!nameEl.value || nameEl.value === 'നാട്ടുകാരൻ') && cloud.name) nameEl.value = cloud.name;
+          if (locEl && !locEl.value && cloud.place) locEl.value = cloud.place;
+          if (bloodEl && cloud.blood_group) bloodEl.value = cloud.blood_group;
+          if (previewEl && cloud.avatar) {
+            previewEl.src = cloud.avatar;
+            APP_STATE.currentUser.avatar = cloud.avatar;
+            try { localStorage.setItem('nn_user_avatar', cloud.avatar); } catch (_) {}
+          }
+
+          if (statusEl) {
+            statusEl.textContent = `✨ "${cloud.name || 'സുഹൃത്ത്'}" എന്ന പേരിലുള്ള പ്രൊഫൈൽ കണ്ടെത്തി!`;
+            statusEl.style.color = '#0E7043';
+            statusEl.style.display = 'block';
+          }
+        } else {
+          if (statusEl) {
+            statusEl.textContent = '🆕 പുതിയ പ്രൊഫൈൽ ID: usr_' + digits;
+            statusEl.style.color = '#0284C7';
+            statusEl.style.display = 'block';
+          }
+        }
+      }
+    }, 450);
+  }
+  window.checkPhoneProfileLookup = checkPhoneProfileLookup;
+
   function submitProfileUpdate(e) {
     if (e) e.preventDefault();
     const name = (document.getElementById('editProfName').value || '').trim();
@@ -4204,6 +4313,15 @@
     if (!name) {
       toast('⚠️ ദയവായി നിങ്ങളുടെ പേര് നൽകുക.');
       return;
+    }
+
+    // Generate deterministic User ID based on 10-digit phone number
+    const phoneDigits = phone ? phone.replace(/\D/g, '').slice(-10) : '';
+    if (phoneDigits && phoneDigits.length >= 10) {
+      APP_STATE.currentUser.id = 'usr_' + phoneDigits;
+      try {
+        localStorage.setItem('nn_user_id', phoneDigits);
+      } catch (_) {}
     }
 
     APP_STATE.currentUser.name = name;
@@ -4219,13 +4337,50 @@
       localStorage.setItem('nn_user_blood', blood);
     } catch (_) {}
 
+    // Synchronize to Supabase Cloud Profiles
+    if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveUserProfile === 'function') {
+      window.NN_SUPABASE_SERVICES.saveUserProfile(APP_STATE.currentUser);
+    }
+
     closeModal('modal-edit-profile');
     renderProfileScreen();
     updatePostingProfileBar();
     renderHomeScreen();
-    toast(`🎉 സ്വാഗതം ${name}! നിങ്ങളുടെ പ്രൊഫൈൽ വിജയകരമായി സേവ് ചെയ്തു.`);
+    toast(`🎉 സ്വാഗതം ${name}! നിങ്ങളുടെ പ്രൊഫൈൽ സേവ് ചെയ്തു.`);
   }
   window.submitProfileUpdate = submitProfileUpdate;
+
+  function handleProfileLogout() {
+    if (confirm('നിങ്ങളുടെ പ്രൊഫൈലിൽ നിന്ന് ലോഗ് ഔട്ട് ചെയ്യണോ? (പുതിയ ഫോൺ നമ്പർ നൽകി ഏതുസമയത്തും തിരികെ ലോഗിൻ ചെയ്യാം)')) {
+      try {
+        localStorage.removeItem('nn_user_name');
+        localStorage.removeItem('nn_user_phone');
+        localStorage.removeItem('nn_user_id');
+        localStorage.removeItem('nn_user_avatar');
+        localStorage.removeItem('nn_user_loc');
+        localStorage.removeItem('nn_user_blood');
+        localStorage.removeItem('nn_user_is_donor');
+      } catch (_) {}
+
+      APP_STATE.currentUser = {
+        id: 'usr_me_' + Math.random().toString(36).substring(2, 9),
+        name: 'നാട്ടുകാരൻ',
+        phone: '',
+        location: 'കണ്ണൂർ, കേരളം',
+        bloodGroup: 'O+',
+        avatar: DEFAULT_USER_AVATAR,
+        isDonor: false,
+        isCustomized: false
+      };
+
+      renderProfileScreen();
+      updatePostingProfileBar();
+      renderHomeScreen();
+      toast('🚪 വിജയകരമായി ലോഗ് ഔട്ട് ചെയ്തു.');
+      openEditProfileModal();
+    }
+  }
+  window.handleProfileLogout = handleProfileLogout;
 
   // ==============================================================
   // 16. MODAL UTILITIES (OPEN & CLOSE)
@@ -4594,6 +4749,46 @@
         renderRentalsScreen();
       });
     }
+
+    // Background cloud profile sync on boot
+    setTimeout(async () => {
+      try {
+        if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.fetchUserProfile === 'function') {
+          const phone = APP_STATE.currentUser && APP_STATE.currentUser.phone;
+          if (phone) {
+            const cloud = await window.NN_SUPABASE_SERVICES.fetchUserProfile(phone);
+            if (cloud) {
+              let changed = false;
+              if (cloud.name && (!APP_STATE.currentUser.name || APP_STATE.currentUser.name === 'നാട്ടുകാരൻ')) {
+                APP_STATE.currentUser.name = cloud.name;
+                localStorage.setItem('nn_user_name', cloud.name);
+                changed = true;
+              }
+              if (cloud.avatar && (!APP_STATE.currentUser.avatar || APP_STATE.currentUser.avatar === DEFAULT_USER_AVATAR)) {
+                APP_STATE.currentUser.avatar = cloud.avatar;
+                localStorage.setItem('nn_user_avatar', cloud.avatar);
+                changed = true;
+              }
+              if (cloud.blood_group && !localStorage.getItem('nn_user_blood')) {
+                APP_STATE.currentUser.bloodGroup = cloud.blood_group;
+                localStorage.setItem('nn_user_blood', cloud.blood_group);
+                changed = true;
+              }
+              if (cloud.place && !localStorage.getItem('nn_user_loc')) {
+                APP_STATE.currentUser.location = cloud.place;
+                localStorage.setItem('nn_user_loc', cloud.place);
+                changed = true;
+              }
+              if (changed) {
+                renderProfileScreen();
+                updatePostingProfileBar();
+                renderHomeScreen();
+              }
+            }
+          }
+        }
+      } catch (_) {}
+    }, 1500);
 
     // Auto-dismiss splash screen after 2.5 seconds if user didn't tap
     setTimeout(() => {

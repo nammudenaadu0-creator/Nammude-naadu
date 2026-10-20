@@ -734,10 +734,90 @@
     }
   }
 
+  // 9. USER PROFILES CLOUD SYNC (Phone-based deterministic ID)
+  async function saveUserProfile(userObj) {
+    if (!userObj) return false;
+    const client = initSupabase();
+    if (!client) return false;
+
+    try {
+      const rawPhone = userObj.phone || '';
+      const cleanPhone = rawPhone.replace(/\D/g, '').slice(-10);
+      const userId = userObj.id || (cleanPhone ? ('usr_' + cleanPhone) : ('usr_me_' + Date.now()));
+
+      const payload = {
+        id: userId,
+        name: userObj.name || 'നാട്ടുകാരൻ',
+        phone: rawPhone,
+        place: userObj.location || '',
+        avatar: userObj.avatar || '',
+        blood_group: userObj.bloodGroup || 'O+',
+        is_donor: !!userObj.isDonor,
+        updated_at: Date.now()
+      };
+
+      const { data, error } = await client
+        .from('profiles')
+        .upsert(payload, { onConflict: 'id' });
+
+      if (error) {
+        console.warn('⚠️ [Supabase] Profile upsert warning:', error.message);
+        return false;
+      }
+      console.info('✅ [Supabase] User profile synced to cloud with ID:', userId);
+      return true;
+    } catch (err) {
+      console.error('❌ [Supabase] Profile save error:', err);
+      return false;
+    }
+  }
+
+  async function fetchUserProfile(phoneOrId) {
+    if (!phoneOrId) return null;
+    const client = initSupabase();
+    if (!client) return null;
+
+    try {
+      const cleanDigits = String(phoneOrId).replace(/\D/g, '').slice(-10);
+      const targetId = String(phoneOrId).startsWith('usr_') ? String(phoneOrId) : (cleanDigits ? ('usr_' + cleanDigits) : phoneOrId);
+
+      // Search by ID first
+      let { data, error } = await client
+        .from('profiles')
+        .select('*')
+        .eq('id', targetId)
+        .maybeSingle();
+
+      // If not found and we have 10 digits, search by phone number substring
+      if (!data && cleanDigits && cleanDigits.length >= 10) {
+        const res = await client
+          .from('profiles')
+          .select('*')
+          .ilike('phone', `%${cleanDigits}%`)
+          .limit(1);
+        if (res.data && res.data.length > 0) {
+          data = res.data[0];
+        }
+      }
+
+      if (data) {
+        console.info('👤 [Supabase] Found user profile in cloud:', data.name, data.id);
+        return data;
+      }
+      return null;
+    } catch (err) {
+      console.warn('⚠️ [Supabase] Fetch profile error:', err);
+      return null;
+    }
+  }
+
   // EXPORT GLOBALLY & PROVIDE TRANSPARENT BACKWARDS COMPATIBILITY
   const api = {
     init: initSupabase,
     get client() { return client; },
+    // Profile
+    saveUserProfile,
+    fetchUserProfile,
     // Chat
     sendChatMessage,
     subscribeChatThread,

@@ -264,3 +264,4 @@ alter publication supabase_realtime add table public.blood_requests;
 alter publication supabase_realtime add table public.jobs;
 alter publication supabase_realtime add table public.rentals;
 alter publication supabase_realtime add table public.service_requests;
+alter publication supabase_realtime add table public.profiles;
