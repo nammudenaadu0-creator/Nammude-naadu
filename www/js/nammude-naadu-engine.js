@@ -3094,6 +3094,21 @@
       localStorage.setItem('nn_service_requests', JSON.stringify(APP_STATE.serviceRequests));
     } catch (_) {}
 
+    // Broadcast to Supabase so matching registered service providers get alerted
+    if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveServiceRequest === 'function') {
+      window.NN_SUPABASE_SERVICES.saveServiceRequest({
+        id: newReq.id,
+        userId: APP_STATE.currentUser.id,
+        trade: catInfo.name,
+        category: cat,
+        description: desc,
+        location: loc,
+        phone: phone,
+        urgency: urgency,
+        photo: window._quickReqPhotoBase64 || ''
+      });
+    }
+
     closeModal('modal-quick-service-request');
     removeQuickReqPhoto();
     renderActiveServiceTracker();
@@ -3343,12 +3358,14 @@
     // Broadcast blood request to Supabase
     if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveBloodRequest === 'function') {
       window.NN_SUPABASE_SERVICES.saveBloodRequest({
+        id: 'breq_' + Date.now(),
         patientName: patient,
-        group: grp,
+        group: group,
+        bloodGroup: group,
         units: units,
         hospital: hospital,
         phone: phone,
-        neededBy: date,
+        neededBy: 'അടിയന്തിരം',
         lat: APP_STATE.location.lat,
         lon: APP_STATE.location.lon,
         location: APP_STATE.location.name
@@ -4672,6 +4689,13 @@
   document.addEventListener('DOMContentLoaded', () => {
     initData();
     renderHomeScreen();
+
+    // Auto-prompt notification permission for real-time service enquiries & blood alerts
+    setTimeout(() => {
+      if (typeof requestNotificationPermission === 'function') {
+        requestNotificationPermission();
+      }
+    }, 1200);
 
     // Register service worker if available
     if ('serviceWorker' in navigator) {

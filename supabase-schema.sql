@@ -229,10 +229,17 @@ create table if not exists public.service_requests (
 );
 
 alter table public.service_requests enable row level security;
+alter table public.service_requests add column if not exists category text;
+alter table public.service_requests add column if not exists provider_phone text;
+alter table public.service_requests add column if not exists provider_name text;
+alter table public.service_requests add column if not exists description text;
+
 drop policy if exists "Allow public select svc_reqs" on public.service_requests;
 drop policy if exists "Allow public insert svc_reqs" on public.service_requests;
+drop policy if exists "Allow public update svc_reqs" on public.service_requests;
 create policy "Allow public select svc_reqs" on public.service_requests for select using (true);
 create policy "Allow public insert svc_reqs" on public.service_requests for insert with check (true);
+create policy "Allow public update svc_reqs" on public.service_requests for update using (true);
 
 -- 10. PROFILES TABLE (User Profiles)
 create table if not exists public.profiles (

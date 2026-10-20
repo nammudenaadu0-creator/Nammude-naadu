@@ -89,6 +89,268 @@
     });
   }
 
+  // Request Android / Browser notification permissions
+  async function requestNotificationPermission() {
+    try {
+      if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) {
+        const check = await window.Capacitor.Plugins.LocalNotifications.checkPermissions();
+        if (check.display !== 'granted') {
+          await window.Capacitor.Plugins.LocalNotifications.requestPermissions();
+        }
+      } else if (typeof Notification !== 'undefined' && Notification.permission !== 'granted') {
+        await Notification.requestPermission();
+      }
+    } catch (e) {
+      console.warn('Notification permission note:', e.message);
+    }
+  }
+  window.requestNotificationPermission = requestNotificationPermission;
+
+  // Synthesized audio chimes for phone alerts
+  function playNotificationSound(type) {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      if (ctx.state === 'suspended') ctx.resume();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      if (type === 'blood') {
+        // High priority alarm tone
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(880, ctx.currentTime);
+        osc.frequency.setValueAtTime(700, ctx.currentTime + 0.15);
+        osc.frequency.setValueAtTime(880, ctx.currentTime + 0.3);
+        gain.gain.setValueAtTime(0.35, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.65);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.65);
+      } else if (type === 'service') {
+        // Pleasant bell chime for service request
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+        osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.12);
+        osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.24);
+        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.55);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.55);
+      } else {
+        // Chat chime
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+        osc.frequency.setValueAtTime(880, ctx.currentTime + 0.12);
+        gain.gain.setValueAtTime(0.25, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.45);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.45);
+      }
+    } catch (_) {}
+  }
+
+  // Native phone notification, audio chime, vibration & in-app banner
+  async function sendNativePhoneNotification(title, body, extraData = {}) {
+    const type = extraData.type || 'info';
+
+    // 1. Android Native Status-Bar Notification (Capacitor LocalNotifications)
+    try {
+      if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) {
+        await window.Capacitor.Plugins.LocalNotifications.schedule({
+          notifications: [
+            {
+              title: title,
+              body: body,
+              id: Math.floor(Math.random() * 900000) + 100000,
+              schedule: { at: new Date(Date.now() + 50) },
+              smallIcon: 'ic_launcher',
+              sound: 'res://raw/beep.wav',
+              extra: extraData
+            }
+          ]
+        });
+      } else if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+        new Notification(title, { body: body, icon: 'img/kerala-splash.jpg' });
+      }
+    } catch (e) {
+      console.warn('Native notification trigger note:', e.message);
+    }
+
+    // 2. Phone Vibration
+    try {
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        if (type === 'blood') {
+          navigator.vibrate([400, 200, 400, 200, 400]);
+        } else if (type === 'service') {
+          navigator.vibrate([300, 150, 300]);
+        } else {
+          navigator.vibrate([200, 100, 200]);
+        }
+      }
+    } catch (_) {}
+
+    // 3. Audio Chime
+    playNotificationSound(type);
+
+    // 4. In-App Heads-Up Banner
+    showInAppAlertBanner(title, body, extraData);
+  }
+  window.sendNativePhoneNotification = sendNativePhoneNotification;
+
+  function showInAppAlertBanner(title, body, extraData = {}) {
+    const existing = document.getElementById('activeInAppAlertBanner');
+    if (existing) existing.remove();
+
+    const banner = document.createElement('div');
+    banner.id = 'activeInAppAlertBanner';
+    banner.className = 'inapp-notification-banner ' + (extraData.type || '');
+
+    let icon = '🔔';
+    if (extraData.type === 'blood') icon = '🩸';
+    else if (extraData.type === 'service') icon = '🛠️';
+    else if (extraData.type === 'chat') icon = '💬';
+
+    const phoneLink = extraData.phone ? ('<a href="tel:' + extraData.phone + '" class="inapp-banner-call-btn" onclick="event.stopPropagation()">📞 വിളിക്കുക</a>') : '';
+
+    banner.innerHTML = `
+      <div class="inapp-banner-icon">${icon}</div>
+      <div class="inapp-banner-content">
+        <div class="inapp-banner-title">${escapeHtml(title)}</div>
+        <div class="inapp-banner-body">${escapeHtml(body)}</div>
+      </div>
+      <div class="inapp-banner-actions">
+        ${phoneLink}
+        <button class="inapp-banner-close-btn" onclick="event.stopPropagation(); this.closest('.inapp-notification-banner').remove();">✕</button>
+      </div>
+    `;
+
+    banner.onclick = () => {
+      if (extraData.type === 'blood') {
+        if (typeof navTo === 'function') navTo('blood');
+      } else if (extraData.type === 'chat') {
+        if (typeof navTo === 'function') navTo('chat');
+      } else if (extraData.type === 'service') {
+        if (typeof navTo === 'function') navTo('services');
+      }
+      banner.remove();
+    };
+
+    document.body.appendChild(banner);
+
+    setTimeout(() => {
+      if (banner && banner.parentNode) {
+        banner.style.animation = 'bannerSlideOut 0.3s ease forwards';
+        setTimeout(() => banner.remove(), 300);
+      }
+    }, 8500);
+  }
+  window.showInAppAlertBanner = showInAppAlertBanner;
+
+  function handleIncomingServiceRequest(row) {
+    if (!row) return;
+    const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone)
+      ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
+    const reqPhone = (row.phone ? String(row.phone).replace(/\D/g, '').slice(-10) : '');
+
+    // Don't notify self
+    if (reqPhone && myPhone && reqPhone === myPhone) return;
+
+    const provPhone = (row.provider_phone ? String(row.provider_phone).replace(/\D/g, '').slice(-10) : '');
+    const isDirectEnquiry = provPhone && myPhone && provPhone === myPhone;
+
+    const myServices = (typeof APP_STATE !== 'undefined' && APP_STATE.services) ? APP_STATE.services.filter(s => {
+      const sp = (s.phone ? String(s.phone).replace(/\D/g, '').slice(-10) : '');
+      return (sp && myPhone && sp === myPhone) || s.isUserCreated;
+    }) : [];
+
+    const isMatchingService = myServices.some(s => {
+      const catMatch = s.category && row.category && (s.category === row.category);
+      const tradeMatch = s.trade && row.trade && (
+        s.trade.toLowerCase().includes(row.trade.toLowerCase()) ||
+        row.trade.toLowerCase().includes(s.trade.toLowerCase())
+      );
+      return catMatch || tradeMatch;
+    });
+
+    // Notify registered service provider
+    if (isDirectEnquiry || isMatchingService || myServices.length > 0) {
+      const title = isDirectEnquiry 
+        ? '🛠️ നിങ്ങളുടെ സർവീസിന് പുതിയ അന്വേഷണം!'
+        : ('🛠️ പുതിയ സർവീസ് ആവശ്യം: ' + (row.trade || 'സേവനം'));
+      const body = '📍 ' + (row.location || 'കണ്ണൂർ') + ': "' + (row.description || row.title || 'സഹായം വേണം') + '". കസ്റ്റമർ: ' + row.phone;
+
+      sendNativePhoneNotification(title, body, {
+        type: 'service',
+        phone: row.phone,
+        trade: row.trade,
+        serviceId: row.id
+      });
+    }
+
+    if (typeof APP_STATE !== 'undefined') {
+      if (!APP_STATE.serviceRequests) APP_STATE.serviceRequests = [];
+      const exists = APP_STATE.serviceRequests.some(r => r.id === row.id);
+      if (!exists) {
+        APP_STATE.serviceRequests.unshift({
+          id: row.id,
+          category: row.category || 'other',
+          categoryName: row.trade,
+          description: row.description || row.title,
+          location: row.location,
+          phone: row.phone,
+          urgency: row.urgency || 'urgent',
+          photo: row.image_url,
+          status: row.status || 'broadcasting',
+          timestamp: Number(row.created_at) || Date.now()
+        });
+      }
+    }
+  }
+
+  function handleIncomingBloodRequest(row) {
+    if (!row) return;
+    const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone)
+      ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
+    const reqPhone = (row.contact_phone ? String(row.contact_phone).replace(/\D/g, '').slice(-10) : '');
+
+    // Don't notify requester self
+    if (reqPhone && myPhone && reqPhone === myPhone) return;
+
+    const title = '🚨 അടിയന്തര രക്ത ആവശ്യം! (' + (row.blood_group || 'Emergency') + ')';
+    const body = '🏥 ' + (row.hospital || 'ആശുപത്രി') + ' (' + (row.location || 'കേരളം') + ') - രോഗിക്ക് ' + (row.blood_group || '') + ' രക്തം അടിയന്തിരമായി വേണം! വിളിക്കുക: ' + row.contact_phone;
+
+    sendNativePhoneNotification(title, body, {
+      type: 'blood',
+      phone: row.contact_phone,
+      patient: row.patient_name,
+      group: row.blood_group,
+      hospital: row.hospital
+    });
+
+    if (typeof APP_STATE !== 'undefined') {
+      if (!APP_STATE.bloodRequests) APP_STATE.bloodRequests = [];
+      const exists = APP_STATE.bloodRequests.some(r => r.id === row.id);
+      if (!exists) {
+        APP_STATE.bloodRequests.unshift({
+          id: row.id,
+          patient: row.patient_name,
+          hospital: row.hospital,
+          group: row.blood_group,
+          units: row.units || '1',
+          phone: row.contact_phone,
+          location: row.location,
+          status: row.status || 'urgent',
+          timestamp: Number(row.created_at) || Date.now()
+        });
+      }
+      if (typeof renderBloodScreen === 'function' && APP_STATE.currentScreen === 'blood') {
+        renderBloodScreen();
+      }
+    }
+  }
+
   // Database Row-Level Realtime Subscriptions (PostgreSQL CDC)
   function setupDatabaseListeners() {
     if (!client) return;
@@ -148,6 +410,24 @@
               createdAt: Number(row.created_at) || Date.now()
             };
             handleIncomingService({ service: mappedService });
+          }
+        })
+        .subscribe();
+
+      // Realtime listener for new service requests / provider enquiries
+      client.channel('public:service_requests')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'service_requests' }, payload => {
+          if (payload && payload.new) {
+            handleIncomingServiceRequest(payload.new);
+          }
+        })
+        .subscribe();
+
+      // Realtime listener for emergency blood requests
+      client.channel('public:blood_requests')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'blood_requests' }, payload => {
+          if (payload && payload.new) {
+            handleIncomingBloodRequest(payload.new);
           }
         })
         .subscribe();
@@ -249,6 +529,19 @@
             const shortMsg = String(msgObj.text || '').substring(0, 32);
             toast(`💬 ${senderDisplayName}: "${shortMsg}" (Chat തുറന്ന് മറുപടി നൽകാം)`);
           }
+
+          // Trigger native phone notification, vibration and chime
+          const isServiceEnquiry = msgObj.text && (msgObj.text.includes('സേവന') || msgObj.text.includes('അന്വേഷണം') || msgObj.text.includes('സർവീസ്'));
+          const notifTitle = isServiceEnquiry
+            ? `🛠️ പുതിയ സർവീസ് അന്വേഷണം! (${msgObj.senderName || 'നാട്ടുകാരൻ'})`
+            : `💬 സന്ദേശം: ${msgObj.senderName || 'നാട്ടുകാരൻ'}`;
+          const notifBody = msgObj.text;
+
+          sendNativePhoneNotification(notifTitle, notifBody, {
+            type: isServiceEnquiry ? 'service' : 'chat',
+            phone: msgObj.senderPhone,
+            chatKey: chatKey
+          });
         }
       }
     }
@@ -743,6 +1036,35 @@
     }
   }
 
+  // 5B. SERVICE REQUESTS (BROADCAST & PROVIDER ENQUIRIES)
+  async function saveServiceRequest(reqObj) {
+    if (!reqObj) return;
+    initSupabase();
+    if (client) {
+      try {
+        await client.from('service_requests').upsert({
+          id: reqObj.id || ('sreq_' + Date.now()),
+          user_id: reqObj.userId || (typeof APP_STATE !== 'undefined' ? APP_STATE.currentUser.id : ''),
+          title: reqObj.title || reqObj.trade || 'സേവന ആവശ്യം',
+          trade: reqObj.trade || reqObj.categoryName || 'സർവീസ്',
+          category: reqObj.category || 'other',
+          description: reqObj.description || '',
+          urgency: reqObj.urgency || 'urgent',
+          location: reqObj.location || '',
+          phone: reqObj.phone || '',
+          provider_phone: reqObj.providerPhone || '',
+          provider_name: reqObj.providerName || '',
+          image_url: reqObj.photo || reqObj.imageUrl || '',
+          status: reqObj.status || 'pending',
+          created_at: Date.now()
+        });
+        console.info('💾 [Supabase] Service request saved successfully');
+      } catch (e) {
+        console.warn('⚠️ [Supabase] saveServiceRequest error:', e.message);
+      }
+    }
+  }
+
   // 6. JOBS & RENTALS
   async function saveJob(jobObj) {
     if (!jobObj) return;
@@ -939,6 +1261,10 @@
     saveBloodDonor,
     syncBloodDonors,
     saveBloodRequest,
+    // Service Requests & Notifications
+    saveServiceRequest,
+    sendNativePhoneNotification,
+    requestNotificationPermission,
     // Jobs & Rentals
     saveJob,
     saveRental
