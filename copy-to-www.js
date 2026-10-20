@@ -13,6 +13,7 @@ fs.mkdirSync(destDir, { recursive: true });
 const filesToCopy = [
     'index.html',
     'admin.html',
+    'privacy-policy.html',
     'manifest.json',
     'sw.js',
     'location-service.js'
