@@ -5133,42 +5133,165 @@
   }
   window.closeModal = closeModal;
 
-  function renderHomeVillageBanner() {
+  // ==============================================================
+  // AUTO-ROTATING HOME ADS CAROUSEL (4 SECONDS ROTATION)
+  // ==============================================================
+  const DEFAULT_HOME_ADS = [
+    {
+      id: 'ad_1',
+      title: 'നമ്മുടെ നാട് • പ്രാദേശിക വിപണി',
+      sub: '🤝 നാടിനൊപ്പം നാം • പുതിയ സേവനങ്ങൾ കണ്ടെത്താം',
+      desc: 'നിങ്ങളുടെ നാട്ടിലെ പ്ലംബർ, ഇലക്ട്രീഷ്യൻ, ഡ്രൈവർ, ആശാരി തുടങ്ങിയ എല്ലാ വിദഗ്ദ്ധ തൊഴിലാളികളെയും മിനിറ്റുകൾക്കകം കണ്ടെത്താം. സേവനങ്ങൾ ആവശ്യമുള്ളവർക്ക് നേരിട്ട് വിളിക്കാനും ചാറ്റ് ചെയ്യാനും സാധിക്കും.',
+      art: 'img/kerala-splash.jpg',
+      badge: '✨ പ്രധാന അറിയിപ്പ്',
+      phone: '',
+      link: ''
+    },
+    {
+      id: 'ad_2',
+      title: '🌾 ഓണക്കാല പ്രത്യേക ഓഫറുകൾ & വിപണി',
+      sub: '🛍️ അടുത്തുള്ള കടകളിലെ ഓഫറുകൾ ഇപ്പോൾ ആപ്പിൽ',
+      desc: 'നിങ്ങളുടെ പ്രദേശത്തെ പ്രധാന കടകളിലും സൂപ്പർമാർക്കറ്റുകളിലും ലഭ്യമായ ഓഫറുകളും ഡിസ്കൗണ്ടുകളും അറിയാം. പ്രാദേശിക കച്ചവടക്കാരെ പിന്തുണയ്ക്കൂ, നാട്ടിലെ വിപണി സജീവമാക്കൂ!',
+      art: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80',
+      badge: '🛍️ സ്പെഷ്യൽ ഓഫർ',
+      phone: '9847123456',
+      link: ''
+    },
+    {
+      id: 'ad_3',
+      title: '🩸 ജീവൻ രക്ഷിക്കാൻ രക്തദാനം ചെയ്യാം',
+      sub: '🚨 അടിയന്തര രക്ത ആവശ്യങ്ങൾക്ക് ആപ്പ് ഉപയോഗിക്കൂ',
+      desc: 'നിങ്ങളുടെ നാട്ടിൽ അടിയന്തിരമായി രക്തം ആവശ്യമുള്ളവർക്ക് സഹായമേകാൻ ബ്ലഡ് ഡോണർ നെറ്റ്‌വർക്കിൽ രജിസ്റ്റർ ചെയ്യാം. ആപ്പ് വഴി നേരിട്ട് ദാതാക്കളെ ബന്ധപ്പെടാം.',
+      art: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=1200&q=80',
+      badge: '🚨 അടിയന്തരം',
+      phone: '108',
+      link: ''
+    },
+    {
+      id: 'ad_4',
+      title: '🌴 കേരള ടൂറിസം & പ്രാദേശിക യാത്രകൾ',
+      sub: '⛵ കായലുകളും പ്രകൃതിഭംഗിയും അടുത്തറിയാം',
+      desc: 'നാട്ടിലെ പ്രകൃതിഭംഗി തുളുമ്പുന്ന വിനോദസഞ്ചാര കേന്ദ്രങ്ങളും ഹൗസ്ബോട്ട് യാത്രകളും കുടുംബത്തോടൊപ്പം ആസ്വദിക്കൂ. വാടക വാഹനങ്ങൾക്കും ടാക്സികൾക്കും ആപ്പിൽ അന്വേഷിക്കാം.',
+      art: 'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=1200&q=80',
+      badge: '🌴 യാത്ര & ടൂറിസം',
+      phone: '',
+      link: 'https://www.keralatourism.org'
+    }
+  ];
+
+  let currentAdIndex = 0;
+  let adRotateInterval = null;
+
+  function getActiveAdsList() {
+    const list = [...DEFAULT_HOME_ADS];
+    const customArt = localStorage.getItem('thuna_custom_village_banner_art') || localStorage.getItem('thuna_custom_hero_banner');
+    const customTitle = localStorage.getItem('thuna_custom_village_banner_title');
+    const customSub = localStorage.getItem('thuna_custom_village_banner_sub');
+    const customDesc = localStorage.getItem('thuna_custom_village_banner_desc');
+    const customPhone = localStorage.getItem('thuna_custom_village_banner_phone');
+    const customLink = localStorage.getItem('thuna_custom_village_banner_link');
+
+    if (customArt || customTitle || customDesc) {
+      list[0] = {
+        id: 'ad_admin_custom',
+        title: customTitle || list[0].title,
+        sub: customSub || list[0].sub,
+        desc: customDesc || list[0].desc,
+        art: customArt || list[0].art,
+        badge: '✨ അഡ്മിൻ പരസ്യം',
+        phone: customPhone || '',
+        link: customLink || ''
+      };
+    }
+    return list;
+  }
+
+  function renderAdByIndex(index) {
+    const ads = getActiveAdsList();
+    if (!ads || ads.length === 0) return;
+    currentAdIndex = (index + ads.length) % ads.length;
+    const ad = ads[currentAdIndex];
+
     const banner = document.getElementById('homeVillagePromoBanner') || document.querySelector('.yg-village-promo-banner');
     if (!banner) return;
     const fullImg = document.getElementById('homeVillageBannerFullImg');
     const titleEl = document.getElementById('homeVillageBannerTitle');
     const subEl = document.getElementById('homeVillageBannerSub');
+    const badgeEl = banner.querySelector('.admin-ad-badge');
     const overlay = document.getElementById('homeVillageBannerOverlay');
     const artWrap = document.getElementById('homeVillageBannerArtWrap');
 
-    const customArt = localStorage.getItem('thuna_custom_village_banner_art') || localStorage.getItem('thuna_custom_hero_banner');
-    const customTitle = localStorage.getItem('thuna_custom_village_banner_title');
-    const customSub = localStorage.getItem('thuna_custom_village_banner_sub');
-
-    if (titleEl && customTitle) titleEl.textContent = customTitle;
-    if (subEl && customSub) subEl.textContent = customSub;
-
-    const displayArt = customArt || 'img/kerala-splash.jpg';
-
-    if (fullImg) {
-      fullImg.src = displayArt;
-      fullImg.style.display = 'block';
-    }
-    banner.style.setProperty('background-image', `url("${displayArt}")`, 'important');
     if (overlay) overlay.style.display = 'block';
     if (artWrap) artWrap.style.display = 'none';
+
+    if (fullImg) {
+      fullImg.style.transition = 'opacity 0.35s ease';
+      fullImg.style.opacity = '0.4';
+      setTimeout(() => {
+        fullImg.src = ad.art;
+        fullImg.style.opacity = '1';
+      }, 120);
+    }
+    banner.style.setProperty('background-image', `url("${ad.art}")`, 'important');
+
+    if (titleEl) {
+      titleEl.style.transition = 'all 0.25s ease';
+      titleEl.style.opacity = '0.3';
+      setTimeout(() => {
+        titleEl.textContent = ad.title;
+        titleEl.style.opacity = '1';
+      }, 100);
+    }
+
+    if (subEl) {
+      subEl.style.transition = 'all 0.25s ease';
+      subEl.style.opacity = '0.3';
+      setTimeout(() => {
+        subEl.textContent = ad.sub;
+        subEl.style.opacity = '1';
+      }, 100);
+    }
+
+    if (badgeEl && ad.badge) {
+      badgeEl.textContent = ad.badge;
+    }
+
+    renderAdCarouselDots(ads.length, currentAdIndex);
+  }
+
+  function renderAdCarouselDots(total, activeIdx) {
+    const dotsContainer = document.getElementById('homeAdCarouselDots');
+    if (!dotsContainer) return;
+    let html = '';
+    for (let i = 0; i < total; i++) {
+      const isActive = i === activeIdx;
+      html += `
+        <span onclick="event.stopPropagation(); renderAdByIndex(${i}); startAdRotation();" 
+              style="width:${isActive ? '18px' : '6px'};height:6px;border-radius:999px;background:${isActive ? '#ffffff' : 'rgba(255,255,255,0.45)'};display:inline-block;transition:all 0.3s ease;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.3)"></span>
+      `;
+    }
+    dotsContainer.innerHTML = html;
+  }
+
+  function startAdRotation() {
+    if (adRotateInterval) clearInterval(adRotateInterval);
+    // Every 4 seconds, rotate smoothly to next ad
+    adRotateInterval = setInterval(() => {
+      renderAdByIndex(currentAdIndex + 1);
+    }, 4000);
+  }
+
+  function renderHomeVillageBanner() {
+    renderAdByIndex(currentAdIndex);
+    startAdRotation();
   }
   window.renderHomeVillageBanner = renderHomeVillageBanner;
+  window.renderAdByIndex = renderAdByIndex;
+  window.startAdRotation = startAdRotation;
 
   function openAdDetailModal() {
-    const customArt = localStorage.getItem('thuna_custom_village_banner_art') || localStorage.getItem('thuna_custom_hero_banner');
-    const customTitle = localStorage.getItem('thuna_custom_village_banner_title') || 'നമ്മുടെ നാട്';
-    const customSub = localStorage.getItem('thuna_custom_village_banner_sub') || '🤝 നാടിനൊപ്പം നാം';
-    const customDesc = localStorage.getItem('thuna_custom_village_banner_desc') || 
-      'നമ്മുടെ നാട്ടിലെ പ്രാദേശിക സേവനങ്ങൾ, അടിയന്തര സഹായം, തൊഴിലുകൾ, വാടക വിൽപന തുടങ്ങിയവയെല്ലാം ഒരു കുടക്കീഴിൽ ലഭ്യമാക്കാൻ രൂപകൽപ്പന ചെയ്ത ആപ്പാണ് നമ്മുടെ നാട്.\n\nനാട്ടിലെ എല്ലാ തത്സമയ വാർത്തകളും അറിയിപ്പുകളും ഇവിടെ ലഭ്യമാണ്. പരസ്യങ്ങൾക്കും സ്പോൺസർഷിപ്പുകൾക്കും അഡ്മിനുമായി ബന്ധപ്പെടാം.';
-    const customPhone = localStorage.getItem('thuna_custom_village_banner_phone') || '';
-    const customLink = localStorage.getItem('thuna_custom_village_banner_link') || '';
+    const ads = getActiveAdsList();
+    const ad = ads[currentAdIndex] || ads[0];
 
     const imgEl = document.getElementById('adDetailImage');
     const titleEl = document.getElementById('adDetailTitle');
@@ -5180,25 +5303,25 @@
     const linkRow = document.getElementById('adDetailLinkRow');
     const linkBtn = document.getElementById('adDetailLinkBtn');
 
-    if (imgEl) imgEl.src = customArt || 'img/kerala-splash.jpg';
-    if (titleEl) titleEl.textContent = customTitle;
-    if (subEl) subEl.textContent = customSub;
-    if (descEl) descEl.textContent = customDesc;
+    if (imgEl) imgEl.src = ad.art;
+    if (titleEl) titleEl.textContent = ad.title;
+    if (subEl) subEl.textContent = ad.sub;
+    if (descEl) descEl.textContent = ad.desc;
 
     if (callRow && callBtn) {
-      if (customPhone && customPhone.trim()) {
+      if (ad.phone && ad.phone.trim()) {
         callRow.style.display = 'block';
-        callBtn.href = `tel:${customPhone.trim()}`;
-        if (callText) callText.textContent = `വിളിക്കുക: ${customPhone.trim()}`;
+        callBtn.href = `tel:${ad.phone.trim()}`;
+        if (callText) callText.textContent = `വിളിക്കുക: ${ad.phone.trim()}`;
       } else {
         callRow.style.display = 'none';
       }
     }
 
     if (linkRow && linkBtn) {
-      if (customLink && customLink.trim()) {
+      if (ad.link && ad.link.trim()) {
         linkRow.style.display = 'block';
-        linkBtn.href = customLink.trim();
+        linkBtn.href = ad.link.trim();
       } else {
         linkRow.style.display = 'none';
       }
@@ -5209,19 +5332,19 @@
   window.openAdDetailModal = openAdDetailModal;
 
   function shareAdDetail() {
-    const title = localStorage.getItem('thuna_custom_village_banner_title') || 'നമ്മുടെ നാട്';
-    const sub = localStorage.getItem('thuna_custom_village_banner_sub') || 'നാടിനൊപ്പം നാം';
-    const desc = localStorage.getItem('thuna_custom_village_banner_desc') || '';
-    const text = `📢 *${title}*\n${sub}\n\n${desc ? desc.slice(0, 150) + '...' : ''}\n\n'നമ്മുടെ നാട്' ആപ്പിൽ കൂടുതൽ വിവരങ്ങൾ കാണാം.`;
+    const ads = getActiveAdsList();
+    const ad = ads[currentAdIndex] || ads[0];
+    const text = `📢 *${ad.title}*\n${ad.sub}\n\n${ad.desc ? ad.desc.slice(0, 150) + '...' : ''}\n\n'നമ്മുടെ നാട്' ആപ്പിൽ കൂടുതൽ വിവരങ്ങൾ കാണാം.`;
     
     if (navigator.share) {
-      navigator.share({ title, text, url: window.location.href }).catch(() => {});
+      navigator.share({ title: ad.title, text, url: window.location.href }).catch(() => {});
     } else {
       const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
       window.open(waUrl, '_blank');
     }
   }
   window.shareAdDetail = shareAdDetail;
+
 
   let quickRequestAutoCloseTimer = null;
   function startQuickRequestAutoClose() {
