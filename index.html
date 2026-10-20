@@ -37,14 +37,29 @@
         <!-- SCREEN 0: SPLASH SCREEN                                        -->
         <!-- ============================================================== -->
         <section id="screen-splash" class="screen active" onclick="enterAppFromSplash()" style="cursor:pointer">
-            <div class="splash-fullscreen-wrapper" style="text-align:center;padding:40px 24px">
-                <div style="font-size:72px;margin-bottom:14px;animation:pulse 2s infinite">🌴</div>
-                <h1 style="color:#0E7043;font-size:36px;font-weight:900;margin:0 0 8px;font-family:'Manjari', sans-serif">നമ്മുടെ നാട്</h1>
-                <p style="color:#065F46;font-weight:700;font-size:16px;margin:0 0 30px">ഒരുമിച്ചാണ് നാം · local community network</p>
-                <button class="splash-launch-btn" onclick="enterAppFromSplash()"
-                    style="background:#0E7043;color:#fff;border:none;padding:14px 32px;border-radius:24px;font-weight:800;font-size:16px;box-shadow:0 6px 20px rgba(14,112,67,0.35);cursor:pointer">
-                    തുടങ്ങുക (Enter App) →
-                </button>
+            <div class="splash-fullscreen-wrapper">
+                <!-- Gorgeous Kerala Theme Background Image -->
+                <img src="img/kerala-splash.jpg" alt="നമ്മുടെ നാട് - കേരളം" class="splash-full-img">
+
+                <!-- Dark-to-Transparent Artistic Gradient Overlay for Contrast -->
+                <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(6,78,59,0.3) 0%, rgba(5,46,22,0.15) 30%, rgba(6,20,14,0.7) 70%, rgba(3,15,10,0.96) 100%);z-index:2;pointer-events:none"></div>
+
+                <!-- Floating Branding & Launch Action -->
+                <div class="splash-floating-bar" style="z-index:10;width:100%;text-align:center;padding:0 24px 44px;display:flex;flex-direction:column;align-items:center;gap:12px">
+                    <div style="background:rgba(255,255,255,0.18);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,0.3);display:inline-flex;align-items:center;gap:6px;margin-bottom:2px">
+                        <span style="font-size:16px">🌴</span>
+                        <span style="color:#FFFFFF;font-weight:800;font-size:12px;letter-spacing:0.5px">കേരളത്തിന്റെ സ്വന്തം കമ്മ്യൂണിറ്റി ആപ്പ്</span>
+                    </div>
+
+                    <h1 style="color:#FFFFFF;font-size:38px;font-weight:900;margin:0;font-family:'Manjari', sans-serif;text-shadow:0 3px 14px rgba(0,0,0,0.75);letter-spacing:-0.5px">നമ്മുടെ നാട്</h1>
+                    <p style="color:#E2E8F0;font-weight:700;font-size:15px;margin:0 0 10px;text-shadow:0 2px 8px rgba(0,0,0,0.75)">ഒരുമിച്ചാണ് നാം · local community network</p>
+
+                    <button class="splash-launch-btn" onclick="enterAppFromSplash()">
+                        <span>തുടങ്ങാം (Enter App)</span>
+                        <span style="font-size:18px">→</span>
+                    </button>
+                    <div class="splash-launch-hint">തുടങ്ങാൻ സ്ക്രീനിൽ എവിടെയും തൊടാം (Tap anywhere to start)</div>
+                </div>
             </div>
         </section>
 

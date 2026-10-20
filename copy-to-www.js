@@ -20,7 +20,8 @@ const filesToCopy = [
 
 const dirsToCopy = [
     'css',
-    'js'
+    'js',
+    'img'
 ];
 
 filesToCopy.forEach(file => {
