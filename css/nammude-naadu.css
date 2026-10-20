@@ -114,6 +114,35 @@
   box-shadow: 0 2px 6px rgba(14, 112, 67, 0.3);
 }
 
+.nearby-cat-chip {
+  padding: 6px 14px;
+  border-radius: var(--nn-radius-full);
+  border: 1px solid var(--nn-border);
+  background: #F9FAFB;
+  color: var(--nn-ink-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.nearby-cat-chip:hover {
+  border-color: var(--nn-primary);
+  color: var(--nn-primary);
+}
+
+.nearby-cat-chip.active {
+  background: var(--nn-primary);
+  color: #FFFFFF;
+  border-color: var(--nn-primary);
+  box-shadow: 0 2px 6px rgba(14, 112, 67, 0.3);
+}
+
 /* ==============================================================
    FACEBOOK-STYLE COMMUNITY FEED CARDS
    ============================================================== */
