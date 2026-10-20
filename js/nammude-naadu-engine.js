@@ -4200,11 +4200,37 @@
     const query = APP_STATE.nearbySearchQuery || '';
     const userTown = String(APP_STATE.location.name || 'കേരളം').split(',')[0].trim();
 
+    const myId = (APP_STATE.currentUser && APP_STATE.currentUser.id) ? String(APP_STATE.currentUser.id) : '';
+    const myPhone = (APP_STATE.currentUser && APP_STATE.currentUser.phone)
+      ? String(APP_STATE.currentUser.phone).replace(/\D/g, '').slice(-10) : '';
+    const myName = (APP_STATE.currentUser && APP_STATE.currentUser.name)
+      ? String(APP_STATE.currentUser.name).trim().toLowerCase() : '';
+
+    // Strictly exclude the current user so they only discover other people nearby
+    function isCurrentUserEntity(id, phone, name, isCurrentUserFlag) {
+      if (isCurrentUserFlag) return true;
+      if (id) {
+        const strId = String(id);
+        if (strId.startsWith('usr_me_') || (myId && strId === myId)) return true;
+      }
+      if (myPhone && phone) {
+        const cleanP = String(phone).replace(/\D/g, '').slice(-10);
+        if (cleanP && cleanP === myPhone) return true;
+      }
+      if (myName && name) {
+        const cleanN = String(name).trim().toLowerCase();
+        if (cleanN === myName && cleanN !== 'നാട്ടുകാരൻ' && cleanN !== 'friend') return true;
+      }
+      if (name && (name.includes('നിങ്ങൾ') || name.includes('(You)'))) return true;
+      return false;
+    }
+
     // Aggregate ALL community entities within the region with complete null-safety
     let rawItems = [];
 
-    // 1. SERVICES & WORKERS
+    // 1. SERVICES & WORKERS (Exclude own service)
     (APP_STATE.services || []).forEach(s => {
+      if (isCurrentUserEntity(s.userId || s.id, s.phone, s.name, s.isCurrentUser)) return;
       const dist = getItemDistanceKm(s, APP_STATE.location.lat, APP_STATE.location.lon);
       s._calculatedDist = dist;
       rawItems.push({
@@ -4221,9 +4247,10 @@
       });
     });
 
-    // 2. CITIZENS & POST AUTHORS (COMMUNITY MEMBERS)
+    // 2. CITIZENS & POST AUTHORS (Exclude self)
     const seenAuthors = new Set();
     (APP_STATE.posts || []).forEach(p => {
+      if (isCurrentUserEntity(p.authorId, p.authorPhone, p.authorName, p.isCurrentUser)) return;
       const authorKey = p.authorName || p.authorId;
       if (authorKey && !seenAuthors.has(authorKey)) {
         seenAuthors.add(authorKey);
@@ -4244,8 +4271,9 @@
       }
     });
 
-    // 3. BLOOD DONORS
+    // 3. BLOOD DONORS (Exclude self)
     (APP_STATE.bloodDonors || []).forEach(d => {
+      if (isCurrentUserEntity(d.id, d.phone, d.name, false)) return;
       const dist = getItemDistanceKm(d, APP_STATE.location.lat, APP_STATE.location.lon);
       d._calculatedDist = dist;
       rawItems.push({
@@ -4262,8 +4290,9 @@
       });
     });
 
-    // 4. RENTALS & LOCAL BUSINESSES
+    // 4. RENTALS & LOCAL BUSINESSES (Exclude self)
     (APP_STATE.rentals || []).forEach(r => {
+      if (isCurrentUserEntity(r.userId || r.id, r.ownerPhone, r.owner, false)) return;
       const dist = getItemDistanceKm(r, APP_STATE.location.lat, APP_STATE.location.lon);
       r._calculatedDist = dist;
       rawItems.push({
