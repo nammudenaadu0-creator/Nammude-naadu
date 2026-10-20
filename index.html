@@ -589,62 +589,101 @@
         <!-- ============================================================== -->
         <!-- SCREEN 9: PROFILE                                              -->
         <!-- ============================================================== -->
-        <section id="screen-profile" class="screen">
-            <div class="profile-hero-card-pro"
-                style="padding:24px 20px;text-align:center;background:#fff;border-bottom:1px solid #E2E8F0">
-                <div style="position:relative;width:80px;height:80px;margin:0 auto 10px">
-                    <img id="profileAvatarImg"
-                        src=""
-                        alt="Profile Avatar"
-                        style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid #10B981;box-shadow:0 4px 12px rgba(16,185,129,0.25)">
-                    <button type="button" onclick="document.getElementById('profilePhotoDirectInput').click()"
-                        style="position:absolute;bottom:0;right:0;background:#0E7043;color:#fff;border:2px solid #fff;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;box-shadow:0 2px 6px rgba(0,0,0,0.2)"
-                        title="ഫോട്ടോ ചേർക്കാം / മാറ്റാം">
-                        📷
-                    </button>
-                    <input type="file" id="profilePhotoDirectInput" accept="image/*" style="display:none" onchange="handleProfilePhotoUpload(event)">
+        <section id="screen-profile" class="screen fb-profile-page">
+            <!-- 1. FACEBOOK COVER PHOTO -->
+            <div class="fb-cover-container">
+                <img id="profCoverImg" src="img/kerala-splash.jpg" alt="Cover Photo" class="fb-cover-image">
+                <button type="button" class="fb-cover-edit-btn" onclick="document.getElementById('profileCoverDirectInput').click()" title="കവർ ഫോട്ടോ മാറ്റാം">
+                    <span>📷</span>
+                    <span>കവർ മാറ്റാം</span>
+                </button>
+                <input type="file" id="profileCoverDirectInput" accept="image/*" style="display:none" onchange="handleCoverPhotoUpload(event)">
+            </div>
+
+            <!-- 2. FACEBOOK PROFILE HEADER CARD (AVATAR & INFO) -->
+            <div class="fb-profile-main-card">
+                <div class="fb-avatar-overlap-row">
+                    <div class="fb-avatar-wrapper">
+                        <img id="profileAvatarImg" src="" alt="Profile Avatar" class="fb-avatar-main-img">
+                        <button type="button" class="fb-avatar-upload-btn" onclick="document.getElementById('profilePhotoDirectInput').click()" title="പ്രൊഫൈൽ ഫോട്ടോ മാറ്റാം">📷</button>
+                        <input type="file" id="profilePhotoDirectInput" accept="image/*" style="display:none" onchange="handleProfilePhotoUpload(event)">
+                    </div>
+                    <div style="display:flex;gap:6px">
+                        <span id="profDisplayVerifiedBadge" style="background:#E0F2FE;color:#0284C7;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:800;display:inline-flex;align-items:center;gap:4px">✓ തദ്ദേശവാസി</span>
+                        <span id="profDisplayIdBadge" style="background:#F1F5F9;color:#334155;padding:4px 10px;border-radius:12px;font-weight:800;font-size:11px"></span>
+                    </div>
                 </div>
-                <h3 id="profDisplayNameText" style="margin:0 0 4px;font-size:18px">നാട്ടുകാരൻ</h3>
-                <div style="font-size:12px;color:#64748B;display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap">
+
+                <h2 id="profDisplayNameText" style="margin:0 0 4px;font-size:22px;font-weight:900;color:#0F172A">നാട്ടുകാരൻ</h2>
+                <div id="profBioText" style="font-size:13px;color:#475569;margin-bottom:8px;line-height:1.4">കണ്ണൂർ • നമ്മുടെ നാട് പ്രാദേശിക കൂട്ടായ്മ 🌿</div>
+
+                <div style="display:flex;align-items:center;gap:12px;font-size:12px;color:#64748B;flex-wrap:wrap">
                     <span id="profDisplayPhoneText"></span>
-                    <span id="profDisplayIdBadge" style="background:#F1F5F9;color:#334155;padding:2px 8px;border-radius:8px;font-weight:700;font-size:11px"></span>
-                </div>
-                <div style="font-size:12px;color:#64748B;margin-top:4px">
+                    <span>•</span>
                     <span id="profDisplayLocText">📍 കണ്ണൂർ, കേരളം</span>
+                    <span>•</span>
+                    <span id="profDisplayBloodText" style="color:#DC2626;font-weight:700">🩸 O+</span>
                 </div>
-                <div style="margin-top:10px;display:flex;justify-content:center;gap:6px;flex-wrap:wrap">
-                    <span id="profDisplayBloodText"
-                        style="background:#DCFCE7;color:#15803D;padding:4px 12px;border-radius:12px;font-size:11px;font-weight:700">🩸 രക്തഗ്രൂപ്പ്: O+</span>
-                    <span id="profDisplayVerifiedBadge"
-                        style="background:#E0F2FE;color:#0284C7;padding:4px 12px;border-radius:12px;font-size:11px;font-weight:700">തദ്ദേശവാസി (Verified)</span>
+
+                <!-- 3. FACEBOOK STATS STRIP -->
+                <div class="fb-stats-bar">
+                    <div class="fb-stat-box">
+                        <div class="fb-stat-number" id="profStatPosts">0</div>
+                        <div class="fb-stat-text">പോസ്റ്റുകൾ</div>
+                    </div>
+                    <div class="fb-stat-box">
+                        <div class="fb-stat-number" id="profStatLikes">0</div>
+                        <div class="fb-stat-text">ലൈക്കുകൾ</div>
+                    </div>
+                    <div class="fb-stat-box">
+                        <div class="fb-stat-number" id="profStatNetwork">120+</div>
+                        <div class="fb-stat-text">നാട്ടുകാർ</div>
+                    </div>
+                </div>
+
+                <!-- 4. FACEBOOK QUICK ACTION BUTTONS -->
+                <div class="fb-profile-action-btns">
+                    <button class="fb-action-btn-primary" onclick="navTo('add')">
+                        <span>➕</span>
+                        <span>പോസ്റ്റ് ചെയ്യാം</span>
+                    </button>
+                    <button class="fb-action-btn-secondary" onclick="openEditProfileModal()">
+                        <span>✏️</span>
+                        <span>എഡിറ്റ്</span>
+                    </button>
+                    <button class="fb-action-btn-secondary" onclick="openLocationModal()" title="സ്ഥലം മാറ്റാം">
+                        <span>📍</span>
+                    </button>
                 </div>
             </div>
 
-            <div style="padding:16px">
-                <!-- PROFILE ACTIONS -->
-                <div style="display:flex;gap:8px;margin-bottom:14px">
-                    <button onclick="openEditProfileModal()" style="flex:1;background:#0E7043;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
-                        <span>✏️</span>
-                        <span>എന്റെ പ്രൊഫൈൽ എഡിറ്റ് ചെയ്യാം</span>
-                    </button>
-                    <button onclick="openLocationModal()" style="background:#F0FDF4;color:#0E7043;border:1px solid #BBF7D0;padding:12px 14px;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer">
-                        📍 സ്ഥലം
-                    </button>
+            <!-- 5. FACEBOOK "WHAT'S ON YOUR MIND?" COMPOSER BOX -->
+            <div class="fb-composer-box" onclick="navTo('add')">
+                <img id="profComposerMiniAvatar" src="" style="width:38px;height:38px;border-radius:50%;object-fit:cover" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
+                <div class="fb-composer-input-fake">നിങ്ങളുടെ മനസ്സിൽ എന്താണ്? ഇവിടെ പോസ്റ്റ് ചെയ്യാം...</div>
+                <span style="font-size:20px">🖼️</span>
+            </div>
+
+            <!-- 6. FACEBOOK TIMELINE SUB-TABS -->
+            <div style="padding:0 16px">
+                <div style="display:flex;gap:4px;background:#E4E6EB;padding:4px;border-radius:12px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none">
+                    <button class="profile-subtab-btn active" data-tab="posts" onclick="switchProfileSubTab('posts', this)" style="flex:1;padding:8px;border-radius:8px;border:none;background:#fff;font-weight:800;font-size:12px;color:#1877F2;cursor:pointer;white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,0.05)">📝 ടൈംലൈൻ</button>
+                    <button class="profile-subtab-btn" data-tab="photos" onclick="switchProfileSubTab('photos', this)" style="flex:1;padding:8px;border-radius:8px;border:none;background:none;font-weight:700;font-size:12px;color:#65676B;cursor:pointer;white-space:nowrap">🖼️ ഫോട്ടോകൾ</button>
+                    <button class="profile-subtab-btn" data-tab="about" onclick="switchProfileSubTab('about', this)" style="flex:1;padding:8px;border-radius:8px;border:none;background:none;font-weight:700;font-size:12px;color:#65676B;cursor:pointer;white-space:nowrap">ℹ️ വിവരങ്ങൾ</button>
+                    <button class="profile-subtab-btn" data-tab="services" onclick="switchProfileSubTab('services', this)" style="flex:1;padding:8px;border-radius:8px;border:none;background:none;font-weight:700;font-size:12px;color:#65676B;cursor:pointer;white-space:nowrap">🛠️ ലിസ്റ്റിംഗുകൾ</button>
                 </div>
 
-                <!-- PROFILE DASHBOARD SUB-TABS -->
-                <div style="display:flex;gap:4px;background:#F3F4F6;padding:4px;border-radius:14px;margin-bottom:14px;overflow-x:auto;scrollbar-width:none">
-                    <button class="profile-subtab-btn active" data-tab="posts" onclick="switchProfileSubTab('posts', this)" style="flex:1;padding:8px 8px;border-radius:10px;border:none;background:#fff;font-weight:800;font-size:11.5px;color:#111827;cursor:pointer;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.05)">📝 പോസ്റ്റുകൾ</button>
-                    <button class="profile-subtab-btn" data-tab="services" onclick="switchProfileSubTab('services', this)" style="flex:1;padding:8px 8px;border-radius:10px;border:none;background:none;font-weight:700;font-size:11.5px;color:#6B7280;cursor:pointer;white-space:nowrap">🛠️ സേവനങ്ങൾ</button>
-                    <button class="profile-subtab-btn" data-tab="jobs" onclick="switchProfileSubTab('jobs', this)" style="flex:1;padding:8px 8px;border-radius:10px;border:none;background:none;font-weight:700;font-size:11.5px;color:#6B7280;cursor:pointer;white-space:nowrap">💼 തൊഴിലുകൾ</button>
-                    <button class="profile-subtab-btn" data-tab="rentals" onclick="switchProfileSubTab('rentals', this)" style="flex:1;padding:8px 8px;border-radius:10px;border:none;background:none;font-weight:700;font-size:11.5px;color:#6B7280;cursor:pointer;white-space:nowrap">🏠 വാടകകൾ</button>
+                <!-- SUB-TAB CONTENT CONTAINER -->
+                <div id="profileTabContentContainer" style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px"></div>
+
+                <div class="profile-menu-row" onclick="openBloodModal()" style="background:#fff;padding:14px;border-radius:14px;border:1px solid #E5E7EB;margin-bottom:8px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:space-between">
+                    <span>🩸 ബ്ലഡ് ഡോണർ നെറ്റ്‌വർക്ക്</span>
+                    <span>→</span>
                 </div>
-
-                <!-- PROFILE CONTENT CONTAINER -->
-                <div id="profileTabContentContainer" style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px"></div>
-
-                <div class="profile-menu-row" onclick="openBloodModal()" style="background:#fff;padding:14px;border-radius:12px;border:1px solid #E5E7EB;margin-bottom:8px;cursor:pointer;font-weight:700">🩸 ബ്ലഡ് ഡോണർ നെറ്റ്‌വർക്ക്</div>
-                <div class="profile-menu-row" onclick="handleProfileLogout()" style="background:#fff;padding:14px;border-radius:12px;border:1px solid #E5E7EB;cursor:pointer;font-weight:700;color:#DC2626">🚪 ലോഗ് ഔട്ട് / അക്കൗണ്ട് മാറ്റാം</div>
+                <div class="profile-menu-row" onclick="handleProfileLogout()" style="background:#fff;padding:14px;border-radius:14px;border:1px solid #FECACA;cursor:pointer;font-weight:700;color:#DC2626;display:flex;align-items:center;justify-content:space-between">
+                    <span>🚪 ലോഗ് ഔട്ട് / അക്കൗണ്ട് മാറ്റാം</span>
+                    <span>→</span>
+                </div>
             </div>
         </section>
 
@@ -1268,6 +1307,10 @@
                 <div>
                     <label style="font-size:12px;font-weight:700">നാട് / പ്രദേശം (Your Place / Location)</label>
                     <input type="text" id="editProfLoc" placeholder="നിങ്ങളുടെ സ്ഥലം..." style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+                <div>
+                    <label style="font-size:12px;font-weight:700">ബയോ / സ്റ്റാറ്റസ് (Bio / About)</label>
+                    <input type="text" id="editProfBio" placeholder="നിങ്ങളെക്കുറിച്ച് ചെറുതായി എഴുതാം (ഉദാ: കണ്ണൂർ • സാമൂഹിക പ്രവർത്തകൻ)..." style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
                 </div>
                 <div>
                     <label style="font-size:12px;font-weight:700">രക്തഗ്രൂപ്പ് (Blood Group)</label>

@@ -70,6 +70,8 @@
       location: localStorage.getItem('nn_user_loc') || 'കണ്ണൂർ, കേരളം',
       bloodGroup: localStorage.getItem('nn_user_blood') || 'O+',
       avatar: savedUserAvatar || DEFAULT_USER_AVATAR,
+      cover: localStorage.getItem('nn_user_cover') || 'img/kerala-splash.jpg',
+      bio: localStorage.getItem('nn_user_bio') || 'കണ്ണൂർ • നമ്മുടെ നാട് കൂട്ടായ്മ 🌿',
       isDonor: localStorage.getItem('nn_user_is_donor') === 'true',
       isCustomized: !!savedUserName
     },
@@ -3756,7 +3758,7 @@
   }
 
   // ==============================================================
-  // 15. PROFILE SCREEN & PERSONAL DASHBOARD (POSTS, SERVICES, JOBS, RENTALS)
+  // 15. PROFILE SCREEN & PERSONAL DASHBOARD (FACEBOOK STYLE)
   // ==============================================================
   function switchProfileSubTab(tabName, btn) {
     APP_STATE.activeProfileSubTab = tabName;
@@ -3764,19 +3766,37 @@
       b.classList.remove('active');
       b.style.background = 'none';
       b.style.fontWeight = '700';
-      b.style.color = '#6B7280';
+      b.style.color = '#65676B';
       b.style.boxShadow = 'none';
     });
     if (btn) {
       btn.classList.add('active');
       btn.style.background = '#FFFFFF';
       btn.style.fontWeight = '800';
-      btn.style.color = '#111827';
-      btn.style.boxShadow = '0 1px 3px rgba(0,0,0,0.05)';
+      btn.style.color = '#1877F2';
+      btn.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
     }
     renderProfileDashboard(tabName);
   }
   window.switchProfileSubTab = switchProfileSubTab;
+
+  function viewFullImage(src) {
+    if (!src) return;
+    const existing = document.getElementById('fullImageOverlay');
+    if (existing) existing.remove();
+    const overlay = document.createElement('div');
+    overlay.id = 'fullImageOverlay';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;cursor:pointer;animation:fadeIn 0.2s ease';
+    overlay.onclick = () => overlay.remove();
+    overlay.innerHTML = `
+      <div style="position:relative;max-width:100%;max-height:100%">
+        <img src="${src}" style="max-width:100%;max-height:88vh;object-fit:contain;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.6)">
+        <button style="position:absolute;top:-14px;right:-14px;width:36px;height:36px;border-radius:50%;background:#fff;border:none;color:#000;font-size:18px;font-weight:bold;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3)">✕</button>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  }
+  window.viewFullImage = viewFullImage;
 
   function renderProfileDashboard(tabName) {
     const container = document.getElementById('profileTabContentContainer');
@@ -3787,119 +3807,195 @@
       const myPosts = APP_STATE.posts.filter(p => p.isCurrentUser || p.authorId === APP_STATE.currentUser.id || p.authorName === APP_STATE.currentUser.name);
       if (myPosts.length === 0) {
         container.innerHTML = `
-          <div style="text-align:center;padding:24px 16px;background:#fff;border-radius:14px;border:1px solid #E5E7EB">
-            <div style="font-size:32px;margin-bottom:6px">📝</div>
-            <div style="font-size:13px;color:#6B7280;margin-bottom:12px">നിങ്ങൾ ഇതുവരെ പോസ്റ്റുകളൊന്നും പങ്കുവെച്ചിട്ടില്ല.</div>
-            <button onclick="navTo('add')" style="background:#0E7043;color:#fff;border:none;padding:8px 16px;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer">➕ പുതിയ പോസ്റ്റ് ഇടാം</button>
+          <div style="text-align:center;padding:32px 16px;background:#fff;border-radius:16px;border:1px solid #E5E7EB;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
+            <div style="font-size:38px;margin-bottom:8px">📝</div>
+            <div style="font-size:14px;font-weight:800;color:#1E293B;margin-bottom:4px">പോസ്റ്റുകളൊന്നും ഇല്ല</div>
+            <div style="font-size:12px;color:#64748B;margin-bottom:14px">നിങ്ങളുടെ നാട്ടിലെ വാർത്തകളും വിശേഷങ്ങളും ആദ്യമായി പങ്കുവെക്കൂ!</div>
+            <button onclick="navTo('add')" style="background:#1877F2;color:#fff;border:none;padding:10px 20px;border-radius:12px;font-weight:800;font-size:12.5px;cursor:pointer;box-shadow:0 2px 8px rgba(24,119,242,0.3)">➕ പുതിയ പോസ്റ്റ് ഇടാം</button>
           </div>
         `;
       } else {
         container.innerHTML = `
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-            <span style="font-size:12px;font-weight:800;color:#374151">എന്റെ പോസ്റ്റുകൾ (${myPosts.length})</span>
-            <button onclick="navTo('add')" style="background:#F0FDF4;color:#0E7043;border:1px solid #BBF7D0;padding:4px 10px;border-radius:8px;font-weight:800;font-size:11px;cursor:pointer">➕ പുതിയ പോസ്റ്റ്</button>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <span style="font-size:13px;font-weight:800;color:#1E293B">എന്റെ പോസ്റ്റുകൾ (${myPosts.length})</span>
+            <button onclick="navTo('add')" style="background:#EFF6FF;color:#1877F2;border:1px solid #BFDBFE;padding:5px 12px;border-radius:10px;font-weight:800;font-size:11.5px;cursor:pointer">➕ പുതിയ പോസ്റ്റ്</button>
           </div>
           ${myPosts.map(p => `
-            <div style="background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
+            <div style="background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 4px rgba(0,0,0,0.04)">
               <div style="display:flex;justify-content:space-between;align-items:center">
-                <span style="font-size:11px;color:#6B7280">${p.timestamp} • ❤️ ${p.likes || 0} ലൈക്കുകൾ</span>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <img src="${APP_STATE.currentUser.avatar || DEFAULT_USER_AVATAR}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:1px solid #E2E8F0">
+                  <div>
+                    <div style="font-weight:800;font-size:13px;color:#0F172A">${escapeHtml(APP_STATE.currentUser.name || 'നാട്ടുകാരൻ')}</div>
+                    <div style="font-size:11px;color:#94A3B8">${escapeHtml(p.timestamp || 'ഇപ്പോൾ')} • 📍 ${escapeHtml(p.location || APP_STATE.currentUser.location || 'കണ്ണൂർ')}</div>
+                  </div>
+                </div>
                 <div style="display:flex;gap:6px">
-                  <button onclick="openEditPostModal('${p.id}')" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;border-radius:8px;padding:4px 10px;font-size:11.5px;font-weight:800;cursor:pointer">✏️ എഡിറ്റ്</button>
-                  <button onclick="deletePost('${p.id}', event)" style="background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;border-radius:8px;padding:4px 10px;font-size:11.5px;font-weight:800;cursor:pointer">🗑️ ഡിലീറ്റ്</button>
+                  <button onclick="openEditPostModal('${p.id}')" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;border-radius:8px;padding:4px 9px;font-size:11px;font-weight:800;cursor:pointer">✏️ എഡിറ്റ്</button>
+                  <button onclick="deletePost('${p.id}', event)" style="background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;border-radius:8px;padding:4px 9px;font-size:11px;font-weight:800;cursor:pointer">🗑️</button>
                 </div>
               </div>
-              <div style="font-size:13px;color:#111827;line-height:1.5">${p.content}</div>
-              ${p.image ? `<img src="${p.image}" style="width:100%;max-height:160px;object-fit:cover;border-radius:10px">` : ''}
+              <div style="font-size:13.5px;color:#1E293B;line-height:1.55;word-break:break-word">${escapeHtml(p.content)}</div>
+              ${p.image ? `<img src="${p.image}" alt="Post image" onclick="viewFullImage('${p.image}')" style="width:100%;max-height:260px;object-fit:cover;border-radius:12px;border:1px solid #F1F5F9;cursor:pointer">` : ''}
+              <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid #F1F5F9;font-size:12px;color:#64748B">
+                <span>❤️ ${p.likes || 0} ലൈക്കുകൾ</span>
+                <span>💬 ${p.comments ? p.comments.length : 0} അഭിപ്രായങ്ങൾ</span>
+              </div>
             </div>
           `).join('')}
         `;
       }
+    } else if (tab === 'photos') {
+      const myPostsWithPhotos = APP_STATE.posts.filter(p => (p.isCurrentUser || p.authorId === APP_STATE.currentUser.id || p.authorName === APP_STATE.currentUser.name) && p.image);
+      if (myPostsWithPhotos.length === 0) {
+        container.innerHTML = `
+          <div style="text-align:center;padding:32px 16px;background:#fff;border-radius:16px;border:1px solid #E5E7EB;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
+            <div style="font-size:38px;margin-bottom:8px">🖼️</div>
+            <div style="font-size:14px;font-weight:800;color:#1E293B;margin-bottom:4px">ഫോട്ടോകളൊന്നും ഇല്ല</div>
+            <div style="font-size:12px;color:#64748B;margin-bottom:14px">നിങ്ങളുടെ മനോഹരമായ നാട്ടുകാഴ്ചകൾ ഫോട്ടോകളോടെ പോസ്റ്റ് ചെയ്യൂ!</div>
+            <button onclick="navTo('add')" style="background:#1877F2;color:#fff;border:none;padding:10px 20px;border-radius:12px;font-weight:800;font-size:12.5px;cursor:pointer">📷 ഫോട്ടോ പോസ്റ്റ് ചെയ്യാം</button>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="font-size:13px;font-weight:800;color:#1E293B">ഫോട്ടോ ഗാലറി (${myPostsWithPhotos.length})</span>
+            <button onclick="navTo('add')" style="background:#EFF6FF;color:#1877F2;border:1px solid #BFDBFE;padding:5px 12px;border-radius:10px;font-weight:800;font-size:11.5px;cursor:pointer">➕ ഫോട്ടോ ചേർക്കാം</button>
+          </div>
+          <div class="fb-photos-grid">
+            ${myPostsWithPhotos.map(p => `
+              <div class="fb-photo-item" onclick="viewFullImage('${p.image}')" title="${escapeHtml(p.content.substring(0, 40))}">
+                <img src="${p.image}" alt="Photo">
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+    } else if (tab === 'about') {
+      const cleanId = (APP_STATE.currentUser.id || '').replace(/^usr_me_/, '').replace(/^usr_/, '');
+      container.innerHTML = `
+        <div class="fb-about-card">
+          <div class="fb-about-section-title">📌 പ്രൊഫൈൽ വിവരങ്ങൾ (About Info)</div>
+          
+          <div class="fb-about-item">
+            <span class="fb-about-icon">👤</span>
+            <div>
+              <div class="fb-about-label">പൂർണ്ണ നാമം</div>
+              <div class="fb-about-val">${escapeHtml(APP_STATE.currentUser.name || 'നാട്ടുകാരൻ')}</div>
+            </div>
+          </div>
+
+          <div class="fb-about-item">
+            <span class="fb-about-icon">📞</span>
+            <div>
+              <div class="fb-about-label">മൊബൈൽ നമ്പർ (Unique ID)</div>
+              <div class="fb-about-val">${APP_STATE.currentUser.phone ? escapeHtml(APP_STATE.currentUser.phone) : 'ഫോൺ ചേർത്തിട്ടില്ല'}</div>
+            </div>
+          </div>
+
+          <div class="fb-about-item">
+            <span class="fb-about-icon">🆔</span>
+            <div>
+              <div class="fb-about-label">നമ്മുടെ നാട് സിറ്റിസൺ ID</div>
+              <div class="fb-about-val" style="font-family:monospace;color:#1877F2;font-weight:800">${escapeHtml(APP_STATE.currentUser.id || ('usr_' + cleanId) || 'usr_citizen')}</div>
+            </div>
+          </div>
+
+          <div class="fb-about-item">
+            <span class="fb-about-icon">📍</span>
+            <div>
+              <div class="fb-about-label">വാസസ്ഥലം / ഗ്രാമം</div>
+              <div class="fb-about-val">${escapeHtml(APP_STATE.currentUser.location || APP_STATE.location.name || 'കണ്ണൂർ, കേരളം')}</div>
+            </div>
+          </div>
+
+          <div class="fb-about-item">
+            <span class="fb-about-icon">🩸</span>
+            <div>
+              <div class="fb-about-label">രക്തഗ്രൂപ്പ് (Blood Group)</div>
+              <div class="fb-about-val" style="color:#DC2626;font-weight:800">${escapeHtml(APP_STATE.currentUser.bloodGroup || 'O+')}</div>
+            </div>
+          </div>
+
+          <div class="fb-about-item">
+            <span class="fb-about-icon">🛡️</span>
+            <div>
+              <div class="fb-about-label">അക്കൗണ്ട് പദവി (Status)</div>
+              <div class="fb-about-val" style="color:#059669;font-weight:800">✓ അംഗീകൃത തദ്ദേശവാസി (Verified Citizen)</div>
+            </div>
+          </div>
+
+          <div style="margin-top:14px;padding-top:12px;border-top:1px solid #E2E8F0;display:flex;justify-content:flex-end">
+            <button onclick="openEditProfileModal()" style="background:#1877F2;color:#fff;border:none;padding:8px 16px;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer">✏️ വിവരങ്ങൾ തിരുത്താം</button>
+          </div>
+        </div>
+      `;
     } else if (tab === 'services') {
       const myServices = APP_STATE.services.filter(s => s.phone === APP_STATE.currentUser.phone || s.name === APP_STATE.currentUser.name || s.isUserCreated);
-      if (myServices.length === 0) {
-        container.innerHTML = `
-          <div style="text-align:center;padding:24px 16px;background:#fff;border-radius:14px;border:1px solid #E5E7EB">
-            <div style="font-size:32px;margin-bottom:6px">🛠️</div>
-            <div style="font-size:13px;color:#6B7280;margin-bottom:12px">താങ്കൾ ഇതുവരെ സർവീസ് പ്രൊവൈഡറായി രജിസ്റ്റർ ചെയ്തിട്ടില്ല.</div>
-            <button onclick="openAddServiceModal()" style="background:#0E7043;color:#fff;border:none;padding:8px 16px;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer">➕ സർവീസ് രജിസ്റ്റർ ചെയ്യാം</button>
-          </div>
-        `;
-      } else {
-        container.innerHTML = `
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-            <span style="font-size:12px;font-weight:800;color:#374151">എന്റെ സർവീസുകൾ (${myServices.length})</span>
-            <button onclick="openAddServiceModal()" style="background:#F0FDF4;color:#0E7043;border:1px solid #BBF7D0;padding:4px 10px;border-radius:8px;font-weight:800;font-size:11px;cursor:pointer">➕ പുതിയത് ചേർക്കാം</button>
-          </div>
-          ${myServices.map(s => `
-            <div style="background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
-              <div>
-                <div style="font-weight:800;font-size:14px;color:#111827">${s.trade}</div>
-                <div style="font-size:11.5px;color:#6B7280">📍 ${s.location} • 📞 ${s.phone}</div>
-                <div style="font-size:11px;color:#0E7043;font-weight:700;margin-top:2px">★ ${s.rating} • ${s.badge || 'വെരിഫൈഡ്'}</div>
-              </div>
-              <button onclick="deleteMyService('${s.id}')" style="background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;border-radius:8px;padding:6px 10px;font-size:11.5px;font-weight:800;cursor:pointer">🗑️ ഡിലീറ്റ്</button>
-            </div>
-          `).join('')}
-        `;
-      }
-    } else if (tab === 'jobs') {
       const myJobs = APP_STATE.jobs.filter(j => j.employerPhone === APP_STATE.currentUser.phone || j.employer === APP_STATE.currentUser.name || j.isUserCreated);
-      if (myJobs.length === 0) {
-        container.innerHTML = `
-          <div style="text-align:center;padding:24px 16px;background:#fff;border-radius:14px;border:1px solid #E5E7EB">
-            <div style="font-size:32px;margin-bottom:6px">💼</div>
-            <div style="font-size:13px;color:#6B7280;margin-bottom:12px">നിങ്ങൾ ഇതുവരെ തൊഴിൽ അവസരങ്ങളൊന്നും നൽകിയിട്ടില്ല.</div>
-            <button onclick="openPostJobModal()" style="background:#0878D1;color:#fff;border:none;padding:8px 16px;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer">➕ തൊഴിൽ നൽകാം</button>
-          </div>
-        `;
-      } else {
-        container.innerHTML = `
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-            <span style="font-size:12px;font-weight:800;color:#374151">ഞാൻ നൽകിയ തൊഴിലുകൾ (${myJobs.length})</span>
-            <button onclick="openPostJobModal()" style="background:#EFF6FF;color:#0878D1;border:1px solid #BFDBFE;padding:4px 10px;border-radius:8px;font-weight:800;font-size:11px;cursor:pointer">➕ പുതിയത് നൽകാം</button>
-          </div>
-          ${myJobs.map(j => `
-            <div style="background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:6px;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
-              <div style="display:flex;justify-content:space-between;align-items:flex-start">
-                <div>
-                  <div style="font-weight:800;font-size:14px;color:#111827">${j.title}</div>
-                  <div style="font-size:11.5px;color:#6B7280">📍 ${j.location} • ശമ്പളം: ${j.salary}</div>
-                </div>
-                <button onclick="deleteMyJob('${j.id}')" style="background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;border-radius:8px;padding:4px 10px;font-size:11.5px;font-weight:800;cursor:pointer">🗑️ ഡിലീറ്റ്</button>
-              </div>
-            </div>
-          `).join('')}
-        `;
-      }
-    } else if (tab === 'rentals') {
       const myRentals = APP_STATE.rentals.filter(r => r.ownerPhone === APP_STATE.currentUser.phone || r.owner === APP_STATE.currentUser.name || r.isUserCreated);
-      if (myRentals.length === 0) {
-        container.innerHTML = `
-          <div style="text-align:center;padding:24px 16px;background:#fff;border-radius:14px;border:1px solid #E5E7EB">
-            <div style="font-size:32px;margin-bottom:6px">🏠</div>
-            <div style="font-size:13px;color:#6B7280;margin-bottom:12px">നിങ്ങൾ ഇതുവരെ വാടക ഇനങ്ങളൊന്നും ലിസ്റ്റ് ചെയ്തിട്ടില്ല.</div>
-            <button onclick="openAddRentalModal()" style="background:#0E7043;color:#fff;border:none;padding:8px 16px;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer">➕ വാടകയ്ക്ക് ലിസ്റ്റ് ചെയ്യാം</button>
-          </div>
-        `;
-      } else {
-        container.innerHTML = `
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-            <span style="font-size:12px;font-weight:800;color:#374151">എന്റെ വാടക ലിസ്റ്റിംഗുകൾ (${myRentals.length})</span>
-            <button onclick="openAddRentalModal()" style="background:#F0FDF4;color:#0E7043;border:1px solid #BBF7D0;padding:4px 10px;border-radius:8px;font-weight:800;font-size:11px;cursor:pointer">➕ പുതിയത് ലിസ്റ്റ് ചെയ്യാം</button>
-          </div>
-          ${myRentals.map(r => `
-            <div style="background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
-              ${r.image ? `<img src="${r.image}" style="width:54px;height:54px;border-radius:10px;object-fit:cover">` : ''}
-              <div style="flex:1;min-width:0">
-                <div style="font-weight:800;font-size:13.5px;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.title}</div>
-                <div style="font-size:11.5px;color:#0E7043;font-weight:700">${r.rate} • ${r.type || 'വാടക'}</div>
-                <div style="font-size:11px;color:#6B7280">📍 ${r.location}</div>
-              </div>
-              <button onclick="deleteMyRental('${r.id}')" style="background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;border-radius:8px;padding:6px 10px;font-size:11.5px;font-weight:800;cursor:pointer">🗑️</button>
+
+      container.innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <!-- MY SERVICES -->
+          <div style="background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <span style="font-size:13px;font-weight:800;color:#1E293B">🛠️ എന്റെ സർവീസുകൾ (${myServices.length})</span>
+              <button onclick="openAddServiceModal()" style="background:#EFF6FF;color:#1877F2;border:1px solid #BFDBFE;padding:4px 10px;border-radius:8px;font-weight:800;font-size:11px;cursor:pointer">➕ ചേർക്കാം</button>
             </div>
-          `).join('')}
-        `;
-      }
+            ${myServices.length === 0 ? '<div style="font-size:12px;color:#94A3B8;text-align:center;padding:12px">സർവീസുകളൊന്നും ലിസ്റ്റ് ചെയ്തിട്ടില്ല</div>' :
+              myServices.map(s => `
+                <div style="border-top:1px solid #F1F5F9;padding:10px 0;display:flex;justify-content:space-between;align-items:center">
+                  <div>
+                    <div style="font-weight:800;font-size:13px;color:#0F172A">${escapeHtml(s.trade)}</div>
+                    <div style="font-size:11px;color:#64748B">📍 ${escapeHtml(s.location)} • 📞 ${escapeHtml(s.phone)}</div>
+                  </div>
+                  <button onclick="deleteMyService('${s.id}')" style="background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;border-radius:8px;padding:4px 8px;font-size:11px;cursor:pointer">🗑️</button>
+                </div>
+              `).join('')
+            }
+          </div>
+
+          <!-- MY JOBS -->
+          <div style="background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <span style="font-size:13px;font-weight:800;color:#1E293B">💼 ഞാൻ നൽകിയ തൊഴിലുകൾ (${myJobs.length})</span>
+              <button onclick="openPostJobModal()" style="background:#EFF6FF;color:#1877F2;border:1px solid #BFDBFE;padding:4px 10px;border-radius:8px;font-weight:800;font-size:11px;cursor:pointer">➕ തൊഴിൽ നൽകാം</button>
+            </div>
+            ${myJobs.length === 0 ? '<div style="font-size:12px;color:#94A3B8;text-align:center;padding:12px">തൊഴിൽ അവസരങ്ങളൊന്നും നൽകിയിട്ടില്ല</div>' :
+              myJobs.map(j => `
+                <div style="border-top:1px solid #F1F5F9;padding:10px 0;display:flex;justify-content:space-between;align-items:center">
+                  <div>
+                    <div style="font-weight:800;font-size:13px;color:#0F172A">${escapeHtml(j.title)}</div>
+                    <div style="font-size:11px;color:#64748B">📍 ${escapeHtml(j.location)} • ശമ്പളം: ${escapeHtml(j.salary)}</div>
+                  </div>
+                  <button onclick="deleteMyJob('${j.id}')" style="background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;border-radius:8px;padding:4px 8px;font-size:11px;cursor:pointer">🗑️</button>
+                </div>
+              `).join('')
+            }
+          </div>
+
+          <!-- MY RENTALS -->
+          <div style="background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <span style="font-size:13px;font-weight:800;color:#1E293B">🏠 എന്റെ വാടക ലിസ്റ്റിംഗുകൾ (${myRentals.length})</span>
+              <button onclick="openAddRentalModal()" style="background:#EFF6FF;color:#1877F2;border:1px solid #BFDBFE;padding:4px 10px;border-radius:8px;font-weight:800;font-size:11px;cursor:pointer">➕ ലിസ്റ്റ് ചെയ്യാം</button>
+            </div>
+            ${myRentals.length === 0 ? '<div style="font-size:12px;color:#94A3B8;text-align:center;padding:12px">വാടക ഇനങ്ങളൊന്നും ലിസ്റ്റ് ചെയ്തിട്ടില്ല</div>' :
+              myRentals.map(r => `
+                <div style="border-top:1px solid #F1F5F9;padding:10px 0;display:flex;align-items:center;gap:10px">
+                  ${r.image ? `<img src="${r.image}" style="width:44px;height:44px;border-radius:8px;object-fit:cover">` : ''}
+                  <div style="flex:1;min-width:0">
+                    <div style="font-weight:800;font-size:13px;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(r.title)}</div>
+                    <div style="font-size:11px;color:#059669;font-weight:700">${escapeHtml(r.rate)} • ${escapeHtml(r.type || 'വാടക')}</div>
+                  </div>
+                  <button onclick="deleteMyRental('${r.id}')" style="background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;border-radius:8px;padding:4px 8px;font-size:11px;cursor:pointer">🗑️</button>
+                </div>
+              `).join('')
+            }
+          </div>
+        </div>
+      `;
     }
   }
   window.renderProfileDashboard = renderProfileDashboard;
@@ -3923,7 +4019,7 @@
       localStorage.setItem('nn_jobs', JSON.stringify(APP_STATE.jobs));
     } catch (_) {}
     renderJobsScreen();
-    renderProfileDashboard('jobs');
+    renderProfileDashboard('services');
     toast('🗑️ തൊഴിൽ പോസ്റ്റ് ഒഴിവാക്കി.');
   }
   window.deleteMyJob = deleteMyJob;
@@ -3935,7 +4031,7 @@
       localStorage.setItem('nn_rentals', JSON.stringify(APP_STATE.rentals));
     } catch (_) {}
     renderRentalsScreen();
-    renderProfileDashboard('rentals');
+    renderProfileDashboard('services');
     toast('🗑️ വാടക ഇനം ഒഴിവാക്കി.');
   }
   window.deleteMyRental = deleteMyRental;
@@ -3948,11 +4044,15 @@
     const bloodEl = document.getElementById('profDisplayBloodText');
     const verifiedBadge = document.getElementById('profDisplayVerifiedBadge');
     const avatarEl = document.getElementById('profileAvatarImg');
+    const coverEl = document.getElementById('profCoverImg');
+    const composerAvatar = document.getElementById('profComposerMiniAvatar');
+    const bioEl = document.getElementById('profBioText');
     const homeAvatar = document.getElementById('homeHeaderAvatar');
 
     const displayName = APP_STATE.currentUser.name || 'നാട്ടുകാരൻ';
-    const displayPhone = APP_STATE.currentUser.phone ? `📞 ${APP_STATE.currentUser.phone}` : 'ഫോൺ നൽകിയിട്ടില്ല';
+    const displayPhone = APP_STATE.currentUser.phone ? `📞 ${APP_STATE.currentUser.phone}` : 'ഫോൺ ചേർത്തിട്ടില്ല';
     const currentAvatar = APP_STATE.currentUser.avatar || DEFAULT_USER_AVATAR;
+    const currentCover = APP_STATE.currentUser.cover || 'img/kerala-splash.jpg';
 
     if (nameEl) {
       if (APP_STATE.currentUser.name && APP_STATE.currentUser.name !== 'നാട്ടുകാരൻ') {
@@ -3971,6 +4071,10 @@
       } else {
         idBadgeEl.style.display = 'none';
       }
+    }
+
+    if (bioEl) {
+      bioEl.textContent = APP_STATE.currentUser.bio || 'കണ്ണൂർ • നമ്മുടെ നാട് കൂട്ടായ്മ 🌿';
     }
 
     if (locEl) {
@@ -3996,11 +4100,71 @@
     }
 
     if (avatarEl) avatarEl.src = currentAvatar;
+    if (coverEl) coverEl.src = currentCover;
+    if (composerAvatar) composerAvatar.src = currentAvatar;
     if (homeAvatar) homeAvatar.src = currentAvatar;
+
+    // Calculate Facebook-style Stats: Posts count, Total likes, Citizens count
+    const myPosts = APP_STATE.posts.filter(p => p.isCurrentUser || p.authorId === APP_STATE.currentUser.id || p.authorName === APP_STATE.currentUser.name);
+    const postCountEl = document.getElementById('profStatPosts');
+    const likesCountEl = document.getElementById('profStatLikes');
+    const networkCountEl = document.getElementById('profStatNetwork');
+
+    if (postCountEl) postCountEl.textContent = myPosts.length;
+    if (likesCountEl) {
+      const totalLikes = myPosts.reduce((acc, p) => acc + (p.likes || 0), 0);
+      likesCountEl.textContent = totalLikes;
+    }
+    if (networkCountEl) {
+      const cloudCount = (APP_STATE.cloudProfiles && APP_STATE.cloudProfiles.length) ? APP_STATE.cloudProfiles.length + 80 : 120;
+      networkCountEl.textContent = `${cloudCount}+`;
+    }
 
     renderProfileDashboard(APP_STATE.activeProfileSubTab || 'posts');
   }
   window.renderProfileScreen = renderProfileScreen;
+
+  function handleCoverPhotoUpload(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const maxW = 900;
+        let w = img.width;
+        let h = img.height;
+        if (w > maxW) {
+          h = Math.round((h * maxW) / w);
+          w = maxW;
+        }
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
+
+        APP_STATE.currentUser.cover = compressedBase64;
+        try {
+          localStorage.setItem('nn_user_cover', compressedBase64);
+        } catch (_) {}
+
+        const coverImg = document.getElementById('profCoverImg');
+        if (coverImg) coverImg.src = compressedBase64;
+
+        if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveUserProfile === 'function') {
+          window.NN_SUPABASE_SERVICES.saveUserProfile(APP_STATE.currentUser);
+        }
+
+        toast('📸 നിങ്ങളുടെ കവർ ഫോട്ടോ വിജയകരമായി മാറ്റി!');
+      };
+      img.src = evt.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+  window.handleCoverPhotoUpload = handleCoverPhotoUpload;
 
   function handleProfilePhotoUpload(e) {
     const file = e.target.files && e.target.files[0];
@@ -4014,7 +4178,7 @@
         const maxDim = 400;
         let w = img.width;
         let h = img.height;
-        if (w > h && w > maxDim) {
+        if (w > maxDim) {
           h = Math.round((h * maxDim) / w);
           w = maxDim;
         } else if (h > maxDim) {
@@ -4036,9 +4200,11 @@
         const profAvatar = document.getElementById('profileAvatarImg');
         const homeHeaderAvatar = document.getElementById('homeHeaderAvatar');
         const editPreview = document.getElementById('editProfAvatarPreview');
+        const composerAvatar = document.getElementById('profComposerMiniAvatar');
         if (profAvatar) profAvatar.src = compressedBase64;
         if (homeHeaderAvatar) homeHeaderAvatar.src = compressedBase64;
         if (editPreview) editPreview.src = compressedBase64;
+        if (composerAvatar) composerAvatar.src = compressedBase64;
 
         // Sync photo to Supabase Cloud profile
         if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveUserProfile === 'function') {
@@ -4053,7 +4219,6 @@
   }
   window.handleProfilePhotoUpload = handleProfilePhotoUpload;
 
-  // ==============================================================
   // 15B. ADDITIONAL FORM HANDLERS (DONOR, RENTAL PHOTO UPLOAD, PROFILE EDIT)
   // ==============================================================
   function handleRentalPhotoUpload(e) {
@@ -4245,6 +4410,8 @@
     if (phoneEl) phoneEl.value = APP_STATE.currentUser.phone || '';
     if (locEl) locEl.value = APP_STATE.currentUser.location || APP_STATE.location.name || '';
     if (bloodEl) bloodEl.value = APP_STATE.currentUser.bloodGroup || 'O+';
+    const bioEl = document.getElementById('editProfBio');
+    if (bioEl) bioEl.value = (APP_STATE.currentUser.bio && APP_STATE.currentUser.bio !== 'കണ്ണൂർ • നമ്മുടെ നാട് കൂട്ടായ്മ 🌿') ? APP_STATE.currentUser.bio : '';
     if (previewEl) previewEl.src = APP_STATE.currentUser.avatar || DEFAULT_USER_AVATAR;
 
     openModal('modal-edit-profile');
@@ -4280,6 +4447,12 @@
           if (nameEl && (!nameEl.value || nameEl.value === 'നാട്ടുകാരൻ') && cloud.name) nameEl.value = cloud.name;
           if (locEl && !locEl.value && cloud.place) locEl.value = cloud.place;
           if (bloodEl && cloud.blood_group) bloodEl.value = cloud.blood_group;
+          const bioEl = document.getElementById('editProfBio');
+          if (bioEl && !bioEl.value && cloud.bio) bioEl.value = cloud.bio;
+          if (cloud.bio) {
+            APP_STATE.currentUser.bio = cloud.bio;
+            try { localStorage.setItem('nn_user_bio', cloud.bio); } catch (_) {}
+          }
           if (previewEl && cloud.avatar) {
             previewEl.src = cloud.avatar;
             APP_STATE.currentUser.avatar = cloud.avatar;
@@ -4309,6 +4482,7 @@
     const phone = (document.getElementById('editProfPhone').value || '').trim();
     const loc = (document.getElementById('editProfLoc').value || '').trim() || APP_STATE.location.name || 'കേരളം';
     const blood = document.getElementById('editProfBlood').value;
+    const bio = (document.getElementById('editProfBio')?.value || '').trim() || 'കണ്ണൂർ • നമ്മുടെ നാട് കൂട്ടായ്മ 🌿';
 
     if (!name) {
       toast('⚠️ ദയവായി നിങ്ങളുടെ പേര് നൽകുക.');
@@ -4328,6 +4502,7 @@
     APP_STATE.currentUser.phone = phone;
     APP_STATE.currentUser.location = loc;
     APP_STATE.currentUser.bloodGroup = blood;
+    APP_STATE.currentUser.bio = bio;
     APP_STATE.currentUser.isCustomized = true;
 
     try {
@@ -4335,6 +4510,7 @@
       localStorage.setItem('nn_user_phone', phone);
       localStorage.setItem('nn_user_loc', loc);
       localStorage.setItem('nn_user_blood', blood);
+      localStorage.setItem('nn_user_bio', bio);
     } catch (_) {}
 
     // Synchronize to Supabase Cloud Profiles
@@ -4360,6 +4536,8 @@
         localStorage.removeItem('nn_user_loc');
         localStorage.removeItem('nn_user_blood');
         localStorage.removeItem('nn_user_is_donor');
+        localStorage.removeItem('nn_user_cover');
+        localStorage.removeItem('nn_user_bio');
       } catch (_) {}
 
       APP_STATE.currentUser = {

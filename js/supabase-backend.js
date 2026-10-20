@@ -151,6 +151,36 @@
           }
         })
         .subscribe();
+
+      // Realtime listener for new chat messages inserted into messages table
+      client.channel('public:messages')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
+          if (payload && payload.new) {
+            const row = payload.new;
+            const chatKey = row.chat_key;
+            const msgObj = {
+              id: row.id,
+              senderId: row.sender_id,
+              senderName: row.sender_name || 'സുഹൃത്ത്',
+              senderPhone: row.sender_phone || '',
+              senderAvatar: row.sender_avatar || '',
+              text: row.text,
+              time: row.time || new Date(Number(row.created_at) || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              timestamp: Number(row.created_at) || Date.now()
+            };
+            const metaObj = {
+              recipientId: row.recipient_id || '',
+              recipientName: row.recipient_name || '',
+              recipientPhone: row.recipient_phone || '',
+              senderId: row.sender_id,
+              senderName: row.sender_name || 'സുഹൃത്ത്',
+              senderPhone: row.sender_phone || '',
+              senderAvatar: row.sender_avatar || ''
+            };
+            handleIncomingChatMessage({ chatKey, msgObj, metaObj });
+          }
+        })
+        .subscribe();
     } catch (e) {
       console.warn('ℹ️ [Supabase Realtime DB Listeners note]:', e.message);
     }
@@ -161,8 +191,14 @@
     if (!payload || !payload.chatKey || !payload.msgObj) return;
     const { chatKey, msgObj, metaObj } = payload;
 
-    if (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && msgObj.senderId === APP_STATE.currentUser.id) {
-      return; // Ignore duplicate of own message
+    const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser.id : '';
+    const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone)
+      ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
+    const senderPhone = (msgObj.senderPhone ? msgObj.senderPhone.replace(/\D/g, '').slice(-10) : '');
+
+    // Ignore duplicate of own message
+    if (msgObj.senderId === myId || (myPhone && senderPhone && myPhone === senderPhone)) {
+      return;
     }
 
     console.info('📩 [Supabase] Incoming message for chat:', chatKey, msgObj.text);
@@ -197,16 +233,21 @@
           try { saveChats(); } catch (_) {}
         }
 
+        // Active chat thread update
         if (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.key === chatKey) {
           if (typeof renderChatMessages === 'function') {
             try { renderChatMessages(); } catch (_) {}
           }
         } else {
-          if (typeof showToastNotice === 'function') {
-            showToastNotice(`💬 ${msgObj.senderName}: ${String(msgObj.text).substring(0, 35)}...`);
+          // Update chat list if on chat screen
+          if (typeof renderChatListScreen === 'function' && APP_STATE.currentScreen === 'chat') {
+            try { renderChatListScreen(); } catch (_) {}
           }
-          if (typeof renderChatsScreen === 'function') {
-            try { renderChatsScreen(); } catch (_) {}
+          // Prominent Toast Notification with sender details
+          if (typeof toast === 'function') {
+            const senderDisplayName = msgObj.senderName || 'സുഹൃത്ത്';
+            const shortMsg = String(msgObj.text || '').substring(0, 32);
+            toast(`💬 ${senderDisplayName}: "${shortMsg}" (Chat തുറന്ന് മറുപടി നൽകാം)`);
           }
         }
       }
@@ -387,11 +428,26 @@
                 timestamp: Number(row.created_at) || Date.now()
               });
             }
+
+            // Populate metadata so user can tap and reply immediately
+            if (!APP_STATE.chatMeta) APP_STATE.chatMeta = {};
+            if (!APP_STATE.chatMeta[key]) {
+              const mPhone = (row.sender_phone ? row.sender_phone.replace(/\D/g, '') : '');
+              const isMe = (row.sender_id === myId) || (myPhone && mPhone && mPhone === myPhone);
+              APP_STATE.chatMeta[key] = {
+                name: isMe ? (row.recipient_name || 'സുഹൃത്ത്') : (row.sender_name || 'സുഹൃത്ത്'),
+                phone: isMe ? (row.recipient_phone || '') : (row.sender_phone || ''),
+                avatar: isMe ? (row.recipient_avatar || '') : (row.sender_avatar || ''),
+                recipientId: isMe ? (row.recipient_id || '') : (row.sender_id || '')
+              };
+            }
           }
         });
         if (typeof saveChats === 'function') saveChats();
-        if (typeof renderChatsScreen === 'function' && APP_STATE.currentScreen === 'chats') {
-          renderChatsScreen();
+        if (typeof renderChatListScreen === 'function' && APP_STATE.currentScreen === 'chat') {
+          renderChatListScreen();
+        }
+      }
         }
       }
     } catch (_) {}
@@ -744,6 +800,8 @@
       const rawPhone = userObj.phone || '';
       const cleanPhone = rawPhone.replace(/\D/g, '').slice(-10);
       const userId = userObj.id || (cleanPhone ? ('usr_' + cleanPhone) : ('usr_me_' + Date.now()));
+      const lat = (userObj.lat != null) ? userObj.lat : (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.lat : null);
+      const lon = (userObj.lon != null) ? userObj.lon : (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.lon : null);
 
       const payload = {
         id: userId,
@@ -753,6 +811,8 @@
         avatar: userObj.avatar || '',
         blood_group: userObj.bloodGroup || 'O+',
         is_donor: !!userObj.isDonor,
+        latitude: lat,
+        longitude: lon,
         updated_at: Date.now()
       };
 
@@ -764,7 +824,7 @@
         console.warn('⚠️ [Supabase] Profile upsert warning:', error.message);
         return false;
       }
-      console.info('✅ [Supabase] User profile synced to cloud with ID:', userId);
+      console.info('✅ [Supabase] User profile synced to cloud with ID and coordinates:', userId, lat, lon);
       return true;
     } catch (err) {
       console.error('❌ [Supabase] Profile save error:', err);
@@ -811,6 +871,48 @@
     }
   }
 
+  async function syncProfiles() {
+    const client = initSupabase();
+    if (!client) return [];
+
+    try {
+      const { data, error } = await client
+        .from('profiles')
+        .select('*')
+        .order('updated_at', { ascending: false })
+        .limit(60);
+
+      if (error) {
+        console.warn('⚠️ [Supabase] Sync profiles error:', error.message);
+        return [];
+      }
+
+      if (Array.isArray(data) && typeof APP_STATE !== 'undefined') {
+        APP_STATE.cloudProfiles = data.map(p => ({
+          id: p.id,
+          name: p.name || 'നാട്ടുകാരൻ',
+          phone: p.phone || '',
+          location: p.place || 'കേരളം',
+          avatar: p.avatar || '',
+          bloodGroup: p.blood_group || 'O+',
+          lat: p.latitude,
+          lon: p.longitude,
+          latitude: p.latitude,
+          longitude: p.longitude,
+          isDonor: p.is_donor
+        }));
+
+        if (APP_STATE.currentScreen === 'nearby' && typeof renderNearbyScreen === 'function') {
+          renderNearbyScreen();
+        }
+      }
+      return data || [];
+    } catch (err) {
+      console.warn('⚠️ [Supabase] syncProfiles caught error:', err);
+      return [];
+    }
+  }
+
   // EXPORT GLOBALLY & PROVIDE TRANSPARENT BACKWARDS COMPATIBILITY
   const api = {
     init: initSupabase,
@@ -818,6 +920,7 @@
     // Profile
     saveUserProfile,
     fetchUserProfile,
+    syncProfiles,
     // Chat
     sendChatMessage,
     subscribeChatThread,

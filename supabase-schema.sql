@@ -243,9 +243,14 @@ create table if not exists public.profiles (
   avatar text,
   blood_group text,
   is_donor boolean default false,
+  latitude double precision,
+  longitude double precision,
   created_at bigint,
   updated_at bigint
 );
+
+alter table public.profiles add column if not exists latitude double precision;
+alter table public.profiles add column if not exists longitude double precision;
 
 alter table public.profiles enable row level security;
 drop policy if exists "Allow public select profiles" on public.profiles;
