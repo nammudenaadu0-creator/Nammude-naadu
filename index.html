@@ -998,31 +998,41 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- MODAL: START NEW CHAT (DIRECT PHONE / CITIZEN SELECTOR)        -->
+    <!-- MODAL: START NEW CHAT (DIRECT SEARCH / CITIZEN SELECTOR)       -->
     <!-- ============================================================== -->
     <div id="modal-new-chat" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-new-chat')">
-        <div class="modal-sheet" style="max-height:85vh;display:flex;flex-direction:column">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div class="modal-sheet" style="max-height:88vh;display:flex;flex-direction:column">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
                 <div style="display:flex;align-items:center;gap:8px">
                     <span style="font-size:22px">💬</span>
-                    <h3 style="margin:0;color:#0E7043;font-size:17px;font-weight:800">പുതിയ ചാറ്റ് ആരംഭിക്കാം</h3>
+                    <div>
+                        <h3 style="margin:0;color:#0E7043;font-size:16px;font-weight:800">ആരുമായും ചാറ്റ് ചെയ്യാം</h3>
+                        <div style="font-size:11px;color:#64748B">നാട്ടുകാരും സേവനദാതാക്കളുമായി നേരിട്ട് സംസാരിക്കാം</div>
+                    </div>
                 </div>
                 <button onclick="closeModal('modal-new-chat')" style="background:none;border:none;font-size:20px;cursor:pointer">✕</button>
             </div>
 
-            <!-- Direct Phone Number Input -->
-            <form onsubmit="startDirectChatFromForm(event)" style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;background:#F8FAFC;padding:12px;border-radius:14px;border:1px solid #E2E8F0">
-                <label style="font-size:12px;font-weight:800;color:#334155">ഫോൺ നമ്പർ നൽകി ചാറ്റ് ചെയ്യാം (Enter Phone):</label>
+            <!-- Instant Search by Name or Phone -->
+            <form onsubmit="startDirectChatFromForm(event)" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;background:#F8FAFC;padding:10px 12px;border-radius:14px;border:1px solid #E2E8F0">
                 <div style="display:flex;gap:8px">
-                    <input type="tel" id="newChatPhoneInput" placeholder="Eg: 94471 00000" required style="flex:1;padding:10px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13.5px;outline:none;background:#fff">
+                    <input type="text" id="newChatSearchInput" placeholder="പേരോ മൊബൈൽ നമ്പറോ തിരയുക..." 
+                           oninput="renderNewChatContacts(null, this.value)"
+                           style="flex:1;padding:10px 14px;border:1px solid #CBD5E1;border-radius:10px;font-size:13.5px;outline:none;background:#fff">
                     <button type="submit" style="background:#0E7043;color:#fff;border:none;border-radius:10px;padding:0 16px;font-weight:800;font-size:13px;cursor:pointer">തുടങ്ങാം ➔</button>
                 </div>
-                <input type="text" id="newChatNameInput" placeholder="പേര് (Optional Name)" style="padding:8px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:12px;outline:none;background:#fff">
             </form>
 
-            <div style="font-size:12px;font-weight:800;color:#64748B;margin-bottom:8px">അല്ലെങ്കിൽ അടുത്തുള്ളവരെ തിരഞ്ഞെടുക്കൂ:</div>
-            <!-- Quick contacts list from active services / blood donors / neighbors -->
-            <div id="newChatContactsList" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;max-height:300px"></div>
+            <!-- Quick Filter Chips: All, Citizens, Services, Donors -->
+            <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:8px">
+                <button type="button" class="new-chat-filter-chip active" onclick="filterNewChatCategory('all', this)" style="padding:5px 12px;border-radius:20px;border:1px solid #CBD5E1;background:#fff;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap">👥 എല്ലാവരും</button>
+                <button type="button" class="new-chat-filter-chip" onclick="filterNewChatCategory('citizen', this)" style="padding:5px 12px;border-radius:20px;border:1px solid #CBD5E1;background:#fff;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap">📢 നാട്ടുകാർ</button>
+                <button type="button" class="new-chat-filter-chip" onclick="filterNewChatCategory('service', this)" style="padding:5px 12px;border-radius:20px;border:1px solid #CBD5E1;background:#fff;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap">🛠️ സേവനങ്ങൾ</button>
+                <button type="button" class="new-chat-filter-chip" onclick="filterNewChatCategory('donor', this)" style="padding:5px 12px;border-radius:20px;border:1px solid #CBD5E1;background:#fff;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap">🩸 രക്തദാതാക്കൾ</button>
+            </div>
+
+            <!-- Community Contacts List -->
+            <div id="newChatContactsList" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;max-height:360px"></div>
         </div>
     </div>
 

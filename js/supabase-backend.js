@@ -496,12 +496,17 @@
     // Verify recipient so 1-on-1 chats only go to the intended participant
     const recPhone = (metaObj && metaObj.recipientPhone ? String(metaObj.recipientPhone).replace(/\D/g, '').slice(-10) : '');
     const recId = (metaObj && metaObj.recipientId ? metaObj.recipientId : '');
+    const myName = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.name)
+      ? APP_STATE.currentUser.name.trim().toLowerCase() : '';
+    const recName = (metaObj && metaObj.recipientName ? String(metaObj.recipientName).trim().toLowerCase() : '');
     const cleanMyId = myId ? myId.replace(/[^a-zA-Z0-9]/g, '') : '';
     const isForMe = (!metaObj) ||
       (myPhone && recPhone && myPhone === recPhone) ||
       (myId && recId && myId === recId) ||
       (myPhone && chatKey.includes(myPhone)) ||
-      (cleanMyId && chatKey.includes(cleanMyId));
+      (cleanMyId && chatKey.includes(cleanMyId)) ||
+      (myName && recName && myName === recName) ||
+      (myName && chatKey.toLowerCase().includes(myName));
 
     if (!isForMe) {
       return;
@@ -739,8 +744,14 @@
           const rowSenderPhone = row.sender_phone ? String(row.sender_phone).replace(/\D/g, '').slice(-10) : '';
           const rowRecipientPhone = row.recipient_phone ? String(row.recipient_phone).replace(/\D/g, '').slice(-10) : '';
 
+          const myName = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.name)
+            ? APP_STATE.currentUser.name.trim().toLowerCase() : '';
+          const rowRecipientName = row.recipient_name ? String(row.recipient_name).trim().toLowerCase() : '';
+          const rowSenderName = row.sender_name ? String(row.sender_name).trim().toLowerCase() : '';
+
           const isForMe = (myId && (row.sender_id === myId || row.recipient_id === myId)) ||
-                          (myPhone && (rowSenderPhone === myPhone || rowRecipientPhone === myPhone || key.includes(myPhone)));
+                          (myPhone && (rowSenderPhone === myPhone || rowRecipientPhone === myPhone || key.includes(myPhone))) ||
+                          (myName && (rowSenderName === myName || rowRecipientName === myName || key.toLowerCase().includes(myName)));
 
           if (!isForMe) return;
 

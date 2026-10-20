@@ -2265,62 +2265,158 @@
   }
   window.syncUserChatsLive = syncUserChatsLive;
 
+  let activeNewChatFilter = 'all';
+
   function openNewChatModal() {
-    renderNewChatContacts();
+    activeNewChatFilter = 'all';
+    const sInput = document.getElementById('newChatSearchInput');
+    if (sInput) sInput.value = '';
+    document.querySelectorAll('.new-chat-filter-chip').forEach(c => {
+      c.classList.toggle('active', c.getAttribute('onclick') && c.getAttribute('onclick').includes("'all'"));
+    });
+    renderNewChatContacts('all');
     openModal('modal-new-chat');
   }
   window.openNewChatModal = openNewChatModal;
 
-  function renderNewChatContacts() {
+  function filterNewChatCategory(cat, btn) {
+    activeNewChatFilter = cat;
+    document.querySelectorAll('.new-chat-filter-chip').forEach(c => c.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    const searchVal = document.getElementById('newChatSearchInput') ? document.getElementById('newChatSearchInput').value : '';
+    renderNewChatContacts(cat, searchVal);
+  }
+  window.filterNewChatCategory = filterNewChatCategory;
+
+  function getAllCommunityContacts(filterCategory) {
+    const list = [];
+    const seen = new Set();
+    const myPhone = normalizePhone(APP_STATE.currentUser.phone);
+    const myId = APP_STATE.currentUser.id;
+
+    // 1. Community Post Authors (നാട്ടുകാർ & പോസ്റ്റ് ചെയ്തവർ)
+    (APP_STATE.posts || []).forEach(p => {
+      const pPhone = normalizePhone(p.authorPhone);
+      const pKey = pPhone || p.authorId || p.authorName;
+      if (pKey && pKey !== myPhone && pKey !== myId && !seen.has(pKey)) {
+        seen.add(pKey);
+        list.push({
+          type: 'citizen',
+          id: p.authorId || ('usr_' + (pPhone || p.authorName)),
+          name: p.authorName || 'നാട്ടുകാരൻ',
+          phone: p.authorPhone || '',
+          avatar: p.authorAvatar || DEFAULT_USER_AVATAR,
+          sub: `📢 കമ്മ്യൂണിറ്റി പോസ്റ്റ് • 📍 ${p.authorLocation || 'കേരളം'}`
+        });
+      }
+    });
+
+    // 2. Service Providers (സേവനദാതാക്കൾ)
+    (APP_STATE.services || []).forEach(s => {
+      const sPhone = normalizePhone(s.phone);
+      const sKey = sPhone || s.id;
+      if (sKey && sKey !== myPhone && sKey !== myId && !seen.has(sKey)) {
+        seen.add(sKey);
+        list.push({
+          type: 'service',
+          id: s.id,
+          name: s.name,
+          phone: s.phone || '',
+          avatar: s.avatar || DEFAULT_USER_AVATAR,
+          sub: `🛠️ ${s.trade} • 📍 ${s.location || 'കണ്ണൂർ'}`
+        });
+      }
+    });
+
+    // 3. Blood Donors (രക്തദാതാക്കൾ)
+    (APP_STATE.bloodDonors || []).forEach(d => {
+      const dPhone = normalizePhone(d.phone);
+      const dKey = dPhone || d.name;
+      if (dKey && dKey !== myPhone && !seen.has(dKey)) {
+        seen.add(dKey);
+        list.push({
+          type: 'donor',
+          id: 'donor_' + (dPhone || d.name),
+          name: d.name,
+          phone: d.phone || '',
+          avatar: DEFAULT_USER_AVATAR,
+          sub: `🩸 ${d.group || 'O+'} രക്തദാതാവ് • 📍 ${d.location || 'കണ്ണൂർ'}`
+        });
+      }
+    });
+
+    // 4. Job Employers (തൊഴിൽ ദാതാക്കൾ)
+    (APP_STATE.jobs || []).forEach(j => {
+      const jPhone = normalizePhone(j.employerPhone);
+      const jKey = jPhone || j.employer;
+      if (jKey && jKey !== myPhone && !seen.has(jKey)) {
+        seen.add(jKey);
+        list.push({
+          type: 'citizen',
+          id: j.id,
+          name: j.employer || 'തൊഴിൽ ദാതാവ്',
+          phone: j.employerPhone || '',
+          avatar: DEFAULT_USER_AVATAR,
+          sub: `💼 ${j.title} • 📍 ${j.location || 'കണ്ണൂർ'}`
+        });
+      }
+    });
+
+    // 5. Rentals Owners (വാടക & വസ്തു)
+    (APP_STATE.rentals || []).forEach(r => {
+      const rPhone = normalizePhone(r.ownerPhone);
+      const rKey = rPhone || r.owner;
+      if (rKey && rKey !== myPhone && !seen.has(rKey)) {
+        seen.add(rKey);
+        list.push({
+          type: 'citizen',
+          id: r.id,
+          name: r.owner || 'കെട്ടിട ഉടമ',
+          phone: r.ownerPhone || '',
+          avatar: DEFAULT_USER_AVATAR,
+          sub: `🏠 ${r.title} • 📍 ${r.location || 'കണ്ണൂർ'}`
+        });
+      }
+    });
+
+    if (filterCategory && filterCategory !== 'all') {
+      return list.filter(item => item.type === filterCategory);
+    }
+    return list;
+  }
+  window.getAllCommunityContacts = getAllCommunityContacts;
+
+  function renderNewChatContacts(filter, query) {
     const list = document.getElementById('newChatContactsList');
     if (!list) return;
 
-    const contacts = [];
-    const seenPhones = new Set();
-    const myPhone = normalizePhone(APP_STATE.currentUser.phone);
+    const all = getAllCommunityContacts(filter || activeNewChatFilter || 'all');
+    const q = (query !== undefined ? query : (document.getElementById('newChatSearchInput') ? document.getElementById('newChatSearchInput').value : '')).trim().toLowerCase();
 
-    (APP_STATE.services || []).forEach(s => {
-      const p = normalizePhone(s.phone);
-      if (p && p !== myPhone && !seenPhones.has(p)) {
-        seenPhones.add(p);
-        contacts.push({
-          name: s.name,
-          phone: s.phone,
-          sub: `${s.trade} • 📍 ${s.location || 'കണ്ണൂർ'}`,
-          avatar: s.avatar || DEFAULT_USER_AVATAR,
-          id: s.id
-        });
-      }
-    });
+    const filtered = q ? all.filter(c => c.name.toLowerCase().includes(q) || (c.phone && c.phone.includes(q)) || (c.sub && c.sub.toLowerCase().includes(q))) : all;
 
-    (APP_STATE.bloodDonors || []).forEach(d => {
-      const p = normalizePhone(d.phone);
-      if (p && p !== myPhone && !seenPhones.has(p)) {
-        seenPhones.add(p);
-        contacts.push({
-          name: d.name,
-          phone: d.phone,
-          sub: `🩸 ${d.group || 'O+'} രക്തദാതാവ് • 📍 ${d.location || 'കണ്ണൂർ'}`,
-          avatar: DEFAULT_USER_AVATAR,
-          id: 'donor_' + p
-        });
-      }
-    });
-
-    if (contacts.length === 0) {
-      list.innerHTML = `<div style="text-align:center;padding:20px;color:#94A3B8;font-size:12px">കോൺടാക്റ്റുകൾ ലഭ്യമല്ല. മുകളിൽ ഫോൺ നമ്പർ നൽകി ചാറ്റ് ചെയ്യാം.</div>`;
+    if (filtered.length === 0) {
+      list.innerHTML = `
+        <div style="text-align:center;padding:24px 16px;background:#F8FAFC;border-radius:14px;border:1px solid #E2E8F0">
+          <div style="font-size:24px;margin-bottom:6px">🔍</div>
+          <div style="font-size:12.5px;font-weight:700;color:#475569">ആരെയും കണ്ടെത്താനായില്ല</div>
+          <div style="font-size:11px;color:#94A3B8;margin-top:2px">മുകളിൽ നേരിട്ട് പേരോ ഫോൺ നമ്പറോ നൽകി ചാറ്റ് തുടങ്ങാം.</div>
+        </div>
+      `;
       return;
     }
 
-    list.innerHTML = contacts.slice(0, 15).map(c => `
+    list.innerHTML = filtered.slice(0, 30).map(c => `
       <div onclick="closeModal('modal-new-chat'); openChatModal('${escapeHtml(c.name).replace(/'/g, "\\'")}', '${c.phone}', '${c.avatar}', 'ഹലോ ${escapeHtml(c.name).replace(/'/g, "\\'")}', '${c.id}')"
-           style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;cursor:pointer;transition:background 0.15s">
-        <img src="${c.avatar}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:1.5px solid #CBD5E1">
+           style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;cursor:pointer;transition:all 0.15s;box-shadow:0 1px 2px rgba(0,0,0,0.02)">
+        <img src="${c.avatar}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:1.5px solid #CBD5E1;flex-shrink:0" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
         <div style="flex:1;min-width:0">
-          <div style="font-size:13px;font-weight:800;color:#1E293B">${escapeHtml(c.name)}</div>
-          <div style="font-size:11px;color:#64748B">${escapeHtml(c.sub)}</div>
+          <div style="font-size:13.5px;font-weight:800;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(c.name)}</div>
+          <div style="font-size:11.5px;color:#64748B;margin-top:1px">${escapeHtml(c.sub)}</div>
         </div>
-        <button style="background:#0E7043;color:#fff;border:none;border-radius:8px;padding:4px 10px;font-size:11px;font-weight:800;cursor:pointer">ചാറ്റ് 💬</button>
+        <button style="background:#ECFDF5;border:1px solid #A7F3D0;color:#065F46;border-radius:10px;padding:6px 12px;font-size:12px;font-weight:800;cursor:pointer;flex-shrink:0">
+          💬 ചാറ്റ്
+        </button>
       </div>
     `).join('');
   }
@@ -2328,33 +2424,39 @@
 
   function startDirectChatFromForm(e) {
     if (e && e.preventDefault) e.preventDefault();
-    const phoneInput = document.getElementById('newChatPhoneInput');
-    const nameInput = document.getElementById('newChatNameInput');
-    const rawPhone = (phoneInput ? phoneInput.value : '').trim();
-    const rawName = (nameInput ? nameInput.value : '').trim();
-
-    if (!rawPhone) {
-      toast('⚠️ ദയവായി ഫോൺ നമ്പർ നൽകുക.');
+    const queryInput = document.getElementById('newChatSearchInput');
+    const rawVal = (queryInput ? queryInput.value : '').trim();
+    if (!rawVal) {
+      toast('⚠️ ദയവായി പേരോ ഫോൺ നമ്പറോ നൽകുക.');
       return;
     }
 
-    const cleanPhone = normalizePhone(rawPhone);
-    if (cleanPhone.length < 10) {
-      toast('⚠️ സാധുവായ 10 അക്ക മൊബൈൽ നമ്പർ നൽകുക.');
+    // 1. If 10-digit phone number
+    const cleanDigits = rawVal.replace(/\D/g, '');
+    if (cleanDigits.length >= 10) {
+      const cleanPhone = cleanDigits.slice(-10);
+      const myPhone = normalizePhone(APP_STATE.currentUser.phone);
+      if (myPhone && cleanPhone === myPhone) {
+        toast('ℹ️ ഇത് നിങ്ങളുടെ സ്വന്തം നമ്പറാണ്.');
+        return;
+      }
+      closeModal('modal-new-chat');
+      openChatModal(`സുഹൃത്ത് (${cleanPhone})`, cleanPhone, DEFAULT_USER_AVATAR, '', 'usr_' + cleanPhone);
       return;
     }
 
-    const myPhone = normalizePhone(APP_STATE.currentUser.phone);
-    if (myPhone && cleanPhone === myPhone) {
-      toast('ℹ️ ഇത് നിങ്ങളുടെ സ്വന്തം നമ്പറാണ്.');
+    // 2. Search by Name
+    const allContacts = getAllCommunityContacts('all');
+    const matched = allContacts.find(c => c.name.toLowerCase().includes(rawVal.toLowerCase()));
+    if (matched) {
+      closeModal('modal-new-chat');
+      openChatModal(matched.name, matched.phone, matched.avatar, '', matched.id);
       return;
     }
 
-    const displayName = rawName || `സുഹൃത്ത് (${cleanPhone})`;
+    // 3. Open chat directly with this person's name
     closeModal('modal-new-chat');
-    if (phoneInput) phoneInput.value = '';
-    if (nameInput) nameInput.value = '';
-    openChatModal(displayName, cleanPhone, DEFAULT_USER_AVATAR, '', 'usr_' + cleanPhone);
+    openChatModal(rawVal, '', DEFAULT_USER_AVATAR, '', 'usr_' + Date.now());
   }
   window.startDirectChatFromForm = startDirectChatFromForm;
 
