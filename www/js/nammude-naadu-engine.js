@@ -3454,7 +3454,61 @@
     const container = document.getElementById('homeActiveServiceTracker');
     if (!container) return;
 
-    const activeReq = (APP_STATE.serviceRequests || []).find(r => r.status === 'broadcasting' || r.status === 'accepted');
+    const myPhone = (APP_STATE.currentUser && APP_STATE.currentUser.phone ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '');
+    const myId = APP_STATE.currentUser && APP_STATE.currentUser.id;
+
+    // Check if current user is a registered provider
+    const myServices = (APP_STATE.services || []).filter(s => {
+      const sp = (s.phone ? String(s.phone).replace(/\D/g, '').slice(-10) : '');
+      const sId = s.userId || s.authorId;
+      return (sp && myPhone && sp === myPhone) || (myId && sId && myId === sId) || s.isUserCreated;
+    });
+
+    // 1. If user is a registered provider, check for enquiries matching their registered trade
+    const receivedEnquiry = (APP_STATE.serviceRequests || []).find(r => {
+      if (!r.isReceivedEnquiry) return false;
+      return myServices.some(s => {
+        const catMatch = s.category && r.category && (s.category === r.category);
+        const sTrade = (s.trade || '').toLowerCase();
+        const rTrade = (r.categoryName || r.trade || '').toLowerCase();
+        return catMatch || (sTrade && rTrade && (sTrade.includes(rTrade) || rTrade.includes(sTrade)));
+      });
+    });
+
+    if (receivedEnquiry) {
+      container.innerHTML = `
+        <div class="home-service-tracker-card" style="border-color:#10B981;background:#F0FDF4;box-shadow:0 4px 14px rgba(16,185,129,0.12)">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="tracker-status-badge accepted" style="background:#DCFCE7;color:#15803D;font-weight:800">
+              <span>🔔</span>
+              <span>നിങ്ങളുടെ സർവീസിന് പുതിയ അന്വേഷണം!</span>
+            </span>
+            <button onclick="dismissReceivedEnquiry('${receivedEnquiry.id}')" style="background:none;border:none;color:#059669;font-size:0.75rem;font-weight:700;cursor:pointer">
+              ✕ ക്ലോസ്
+            </button>
+          </div>
+          <div style="margin:8px 0 4px">
+            <div style="font-size:0.95rem;font-weight:800;color:#064E3B">🛠️ ${escapeHtml(receivedEnquiry.categoryName || 'സർവീസ്')} ആവശ്യം</div>
+            <div style="font-size:0.85rem;color:#166534;margin-top:2px;line-height:1.4">"${escapeHtml(receivedEnquiry.description)}"</div>
+            <div style="font-size:0.74rem;color:#047857;margin-top:4px">📍 ${escapeHtml(receivedEnquiry.location || 'കേരളം')} • കസ്റ്റമർ: ${escapeHtml(receivedEnquiry.phone || '')}</div>
+          </div>
+          <div class="service-actions-row" style="margin-top:10px">
+            <a href="tel:${receivedEnquiry.phone}" class="prov-btn-call" style="background:#059669;color:#fff;font-weight:800" title="വിളിക്കുക">
+              <span>📞</span>
+              <span>കസ്റ്റമറെ വിളിക്കുക</span>
+            </a>
+            <button class="prov-btn-chat" onclick="openChatModal('കസ്റ്റമർ', '${receivedEnquiry.phone}', '', 'സർവീസ് അന്വേഷണം: ${escapeHtml(receivedEnquiry.description)}')" style="font-weight:800">
+              <span>💬</span>
+              <span>ആപ്പ് ചാറ്റ്</span>
+            </button>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    // 2. Otherwise check for active enquiry submitted by current user (Requester Tracker)
+    const activeReq = (APP_STATE.serviceRequests || []).find(r => !r.isReceivedEnquiry && (r.status === 'broadcasting' || r.status === 'accepted'));
 
     if (!activeReq) {
       container.innerHTML = '';
@@ -3555,6 +3609,16 @@
     }
   }
   window.completeServiceRequest = completeServiceRequest;
+
+  function dismissReceivedEnquiry(reqId) {
+    if (!APP_STATE.serviceRequests) return;
+    APP_STATE.serviceRequests = APP_STATE.serviceRequests.filter(r => r.id !== reqId);
+    try {
+      localStorage.setItem('nn_service_requests', JSON.stringify(APP_STATE.serviceRequests));
+    } catch (_) {}
+    renderActiveServiceTracker();
+  }
+  window.dismissReceivedEnquiry = dismissReceivedEnquiry;
   // 12. EMERGENCY & BLOOD DONATION NETWORK
   // ==============================================================
   const BLOOD_GROUPS = ['all', 'A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];

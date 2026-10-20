@@ -265,34 +265,37 @@
     const provPhone = (row.provider_phone ? String(row.provider_phone).replace(/\D/g, '').slice(-10) : '');
     const isDirectEnquiry = provPhone && myPhone && provPhone === myPhone;
 
-    const myServices = (typeof APP_STATE !== 'undefined' && APP_STATE.services) ? APP_STATE.services.filter(s => {
+    const myServices = (typeof APP_STATE !== 'undefined' && Array.isArray(APP_STATE.services)) ? APP_STATE.services.filter(s => {
       const sp = (s.phone ? String(s.phone).replace(/\D/g, '').slice(-10) : '');
-      return (sp && myPhone && sp === myPhone) || s.isUserCreated;
+      const sId = s.userId || s.authorId;
+      const myId = APP_STATE.currentUser && APP_STATE.currentUser.id;
+      return (sp && myPhone && sp === myPhone) || (myId && sId && myId === sId) || s.isUserCreated;
     }) : [];
 
     const isMatchingService = myServices.some(s => {
       const catMatch = s.category && row.category && (s.category === row.category);
-      const tradeMatch = s.trade && row.trade && (
-        s.trade.toLowerCase().includes(row.trade.toLowerCase()) ||
-        row.trade.toLowerCase().includes(s.trade.toLowerCase())
-      );
+      const sTrade = (s.trade || '').toLowerCase();
+      const rTrade = (row.trade || '').toLowerCase();
+      const tradeMatch = sTrade && rTrade && (sTrade.includes(rTrade) || rTrade.includes(sTrade));
       return catMatch || tradeMatch;
     });
 
-    // Notify registered service provider
-    if (isDirectEnquiry || isMatchingService || myServices.length > 0) {
-      const title = isDirectEnquiry 
-        ? '🛠️ നിങ്ങളുടെ സർവീസിന് പുതിയ അന്വേഷണം!'
-        : ('🛠️ പുതിയ സർവീസ് ആവശ്യം: ' + (row.trade || 'സേവനം'));
-      const body = '📍 ' + (row.location || 'കണ്ണൂർ') + ': "' + (row.description || row.title || 'സഹായം വേണം') + '". കസ്റ്റമർ: ' + row.phone;
-
-      sendNativePhoneNotification(title, body, {
-        type: 'service',
-        phone: row.phone,
-        trade: row.trade,
-        serviceId: row.id
-      });
+    // STRICT: Only notify if direct enquiry to current user OR matching registered service!
+    if (!isDirectEnquiry && !isMatchingService) {
+      return;
     }
+
+    const title = isDirectEnquiry 
+      ? '🛠️ നിങ്ങളുടെ സർവീസിന് പുതിയ നേരിട്ടുള്ള അന്വേഷണം!'
+      : (`🛠️ പുതിയ ${row.trade || 'സർവീസ്'} ആവശ്യം എത്തിയിട്ടുണ്ട്!`);
+    const body = `📍 ${row.location || 'കണ്ണൂർ'}: "${row.description || row.title || 'സഹായം വേണം'}". കസ്റ്റമർ: ${row.phone}`;
+
+    sendNativePhoneNotification(title, body, {
+      type: 'service',
+      phone: row.phone,
+      trade: row.trade,
+      serviceId: row.id
+    });
 
     if (typeof APP_STATE !== 'undefined') {
       if (!APP_STATE.serviceRequests) APP_STATE.serviceRequests = [];
@@ -308,8 +311,12 @@
           urgency: row.urgency || 'urgent',
           photo: row.image_url,
           status: row.status || 'broadcasting',
+          isReceivedEnquiry: true,
           timestamp: Number(row.created_at) || Date.now()
         });
+        if (typeof renderActiveServiceTracker === 'function') {
+          renderActiveServiceTracker();
+        }
       }
     }
   }
