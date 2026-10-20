@@ -408,6 +408,27 @@
                 </div>
                 <div id="homeTopProvidersList" style="display:flex;flex-direction:column;gap:12px"></div>
             </div>
+
+            <!-- 7. LIVE COMMUNITY FEED SECTION ON HOME SCREEN -->
+            <div style="margin: 20px 16px 28px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                    <div style="display:flex;align-items:center;gap:8px">
+                        <span style="font-size:1.15rem">📢</span>
+                        <div>
+                            <h3 style="margin:0;font-size:1.02rem;font-weight:800;color:#0F172A">നാട്ടിലെ പുതിയ പോസ്റ്റുകൾ (Live Posts)</h3>
+                            <div style="font-size:0.75rem;color:#64748B">നാട്ടുകാർ പങ്കുവെച്ച വിശേഷങ്ങളും അറിയിപ്പുകളും</div>
+                        </div>
+                    </div>
+                    <button onclick="navTo('community')" style="background:#ECFDF5;border:1px solid #A7F3D0;color:#047857;padding:5px 12px;border-radius:20px;font-size:0.75rem;font-weight:800;cursor:pointer">
+                        എല്ലാം കാണുക &rsaquo;
+                    </button>
+                </div>
+                <div id="homeCommunityFeedContainer" class="community-feed fb-feed-stream" style="padding:0"></div>
+                <button onclick="navTo('add')" style="width:100%;margin-top:10px;padding:12px;background:#F0FDF4;border:1.5px dashed #86EFAC;color:#15803D;border-radius:14px;font-weight:800;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+                    <span>➕</span>
+                    <span>പുതിയ പോസ്റ്റ് ഇടാം (Create Post)</span>
+                </button>
+            </div>
         </section>
 
         <!-- ============================================================== -->
@@ -894,23 +915,23 @@
         <nav class="bottom-nav" id="bottomNav" style="display:none">
             <button class="nav-item active" data-page="home" onclick="navTo('home')">
                 <span style="font-size:20px">🏠</span>
-                <span>Home</span>
+                <span>ഹോം</span>
             </button>
-            <button class="nav-item" data-page="nearby" onclick="navTo('nearby')">
-                <span style="font-size:20px">📍</span>
-                <span>Nearby</span>
+            <button class="nav-item" data-page="community" onclick="navTo('community')">
+                <span style="font-size:20px">📢</span>
+                <span>പോസ്റ്റുകൾ</span>
             </button>
             <div class="nav-add-btn-wrap" onclick="navTo('add')">
                 <div class="nav-add-circle" style="background:#0E7043;color:#fff;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 12px rgba(14,112,67,0.35)">➕</div>
-                <div class="nav-add-label" style="font-size:10px;font-weight:800;color:#0E7043;margin-top:2px">Post</div>
+                <div class="nav-add-label" style="font-size:10px;font-weight:800;color:#0E7043;margin-top:2px">പോസ്റ്റ്</div>
             </div>
             <button class="nav-item" data-page="chat" onclick="navTo('chat')">
                 <span style="font-size:20px">💬</span>
-                <span>Chat</span>
+                <span>ചാറ്റ്</span>
             </button>
             <button class="nav-item" data-page="profile" onclick="navTo('profile')">
                 <span style="font-size:20px">👤</span>
-                <span>Profile</span>
+                <span>പ്രൊഫൈൽ</span>
             </button>
         </nav>
 

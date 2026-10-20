@@ -244,16 +244,17 @@
     {
       id: 'post_101',
       authorId: 'usr_me_' + (localStorage.getItem('nn_user_id') || 'local'),
-      authorName: APP_STATE.currentUser.name,
-      authorPhone: APP_STATE.currentUser.phone,
-      authorAvatar: APP_STATE.currentUser.avatar,
+      authorName: (APP_STATE.currentUser && APP_STATE.currentUser.name && APP_STATE.currentUser.name !== 'നാട്ടുകാരൻ') ? APP_STATE.currentUser.name : 'നിങ്ങൾ (You)',
+      authorPhone: APP_STATE.currentUser.phone || '',
+      authorAvatar: APP_STATE.currentUser.avatar || DEFAULT_USER_AVATAR,
       authorLocation: 'കണ്ണൂർ ടൗൺ, കണ്ണൂർ',
       authorBlood: 'O+',
       type: 'announcement',
-      content: 'നമ്മുടെ നാട്ടിലെ എല്ലാ സുഹൃത്തുക്കൾക്കും നമസ്കാരം! കമ്മ്യൂണിറ്റി ക്ലീനിംഗ് ഡ്രൈവ് അടുത്ത ഞായറാഴ്ച രാവിലെ 7 മണിക്ക് സംഘടിപ്പിക്കുന്നു. എല്ലാവരും പങ്കെടുക്കുമല്ലോ 🌿',
+      content: 'നമ്മുടെ നാട്ടിലെ എല്ലാ സുഹൃത്തുക്കൾക്കും നമസ്കാരം! കമ്മ്യൂണിറ്റി ശുചീകരണ ഡ്രൈവ് അടുത്ത ഞായറാഴ്ച രാവിലെ 7 മണിക്ക് സംഘടിപ്പിക്കുന്നു. എല്ലാവരും പങ്കുചേരുമല്ലോ 🌿🧹',
       image: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80',
       timestamp: '5 മിനിറ്റ് മുൻപ്',
-      likes: 12,
+      createdAt: Date.now() - 300000,
+      likes: 18,
       isLiked: false,
       isCurrentUser: true,
       lat: 11.8745,
@@ -271,7 +272,8 @@
       content: 'ഇന്നത്തെ പയ്യാമ്പലം ബീച്ചിലെ അതിമനോഹരമായ സൂര്യാസ്തമയം. നമ്മുടെ കേരളത്തിന്റെ പ്രകൃതിഭംഗി അവാച്യമാണ്! 🌅🌊',
       image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
       timestamp: '25 മിനിറ്റ് മുൻപ്',
-      likes: 28,
+      createdAt: Date.now() - 1500000,
+      likes: 34,
       isLiked: true,
       isCurrentUser: false,
       lat: 11.8720,
@@ -286,14 +288,91 @@
       authorLocation: 'തോട്ടട, കണ്ണൂർ',
       authorBlood: 'B+',
       type: 'offer',
-      content: 'വീട്ടിൽ ഉണ്ടാക്കിയ നല്ല നാടൻ മാങ്ങയച്ചാറും പായസവും ഓർഡർ അനുസരിച്ച് ലഭിക്കുന്നതാണ്. ആവശ്യമുള്ളവർ ബന്ധപ്പെടുക 🥭🍯',
+      content: 'വീട്ടിൽ തയ്യാറാക്കിയ നല്ല നാടൻ മാങ്ങയച്ചാറും പായസവും ഓർഡർ അനുസരിച്ച് ലഭ്യമാണ്. ആവശ്യമുള്ളവർ ബന്ധപ്പെടുക 🥭🍯',
       image: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=80',
       timestamp: '1 മണിക്കൂർ മുൻപ്',
-      likes: 19,
+      createdAt: Date.now() - 3600000,
+      likes: 21,
       isLiked: false,
       isCurrentUser: false,
       lat: 11.8340,
       lon: 75.4050
+    },
+    {
+      id: 'post_104',
+      authorId: 'usr_suresh_taliparamba',
+      authorName: 'സുരേഷ് കുമാർ',
+      authorPhone: '+91 94471 99882',
+      authorAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
+      authorLocation: 'തളിപ്പറമ്പ്, കണ്ണൂർ',
+      authorBlood: 'B+',
+      type: 'announcement',
+      content: '🚨 അടിയന്തര ആവശ്യം: തളിപ്പറമ്പ് താലൂക്ക് ആശുപത്രിയിൽ ചികിത്സയിലുള്ള രോഗിക്ക് B+ (B Positive) രക്തം 2 യൂണിറ്റ് അടിയന്തിരമായി ആവശ്യമുണ്ട്. സന്മനസ്സുള്ളവർ ഉടൻ വിളിക്കുക!',
+      image: '',
+      timestamp: '2 മണിക്കൂർ മുൻപ്',
+      createdAt: Date.now() - 7200000,
+      likes: 45,
+      isLiked: false,
+      isCurrentUser: false,
+      lat: 12.0437,
+      lon: 75.3585
+    },
+    {
+      id: 'post_105',
+      authorId: 'usr_vinod_farmer',
+      authorName: 'വിനോദ് മാത്യു',
+      authorPhone: '+91 94952 11223',
+      authorAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80',
+      authorLocation: 'മാനന്തവാടി, വയനാട്',
+      authorBlood: 'O+',
+      type: 'offer',
+      content: 'വയനാടൻ തോട്ടത്തിൽ നിന്ന് ജൈവരീതിയിൽ വിളവെടുത്ത ശുദ്ധമായ കുരുമുളകും റോബസ്റ്റ കാപ്പിപ്പൊടിയും ലഭ്യമാണ്. താല്പര്യമുള്ളവർക്ക് നേരിട്ട് കൊറിയർ ചെയ്തു നൽകും ☕🌿',
+      image: 'https://images.unsplash.com/photo-1610632380989-680fe40816c6?auto=format&fit=crop&w=800&q=80',
+      timestamp: '3 മണിക്കൂർ മുൻപ്',
+      createdAt: Date.now() - 10800000,
+      likes: 29,
+      isLiked: false,
+      isCurrentUser: false,
+      lat: 11.8026,
+      lon: 76.0033
+    },
+    {
+      id: 'post_106',
+      authorId: 'usr_kannur_association',
+      authorName: 'റസിഡന്റ്സ് അസോസിയേഷൻ കണ്ണൂർ',
+      authorPhone: '+91 98460 55443',
+      authorAvatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=200&q=80',
+      authorLocation: 'കണ്ണൂർ സിറ്റി',
+      authorBlood: 'AB+',
+      type: 'announcement',
+      content: '🏥 സൗജന്യ മെഡിക്കൽ & നേത്ര പരിശോധനാ ക്യാമ്പ് അടുത്ത ഞായറാഴ്ച രാവിലെ 9 മുതൽ 1 മണി വരെ കമ്മ്യൂണിറ്റി ഹാളിൽ നടക്കുന്നു. പ്രമുഖ ഡോക്ടർമാരുടെ സേവനവും മരുന്നുകളും സൗജന്യമാണ്.',
+      image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80',
+      timestamp: '5 മണിക്കൂർ മുൻപ്',
+      createdAt: Date.now() - 18000000,
+      likes: 52,
+      isLiked: true,
+      isCurrentUser: false,
+      lat: 11.8745,
+      lon: 75.3704
+    },
+    {
+      id: 'post_107',
+      authorId: 'usr_shafi_sports',
+      authorName: 'മുഹമ്മദ് ഷാഫി',
+      authorPhone: '+91 97471 88776',
+      authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+      authorLocation: 'തലശ്ശേരി, കണ്ണൂർ',
+      authorBlood: 'O+',
+      type: 'photo',
+      content: 'ഗ്രാമീണ ഫുട്ബോൾ ടൂർണമെന്റ് ആവേശകരമായ ഫൈനൽ മത്സരം ഇന്ന് വൈകുന്നേരം 4:30 ന് മുനിസിപ്പൽ ഗ്രൗണ്ടിൽ നടക്കും. കായിക പ്രേമികളെ ഏവരെയും സ്നേഹപൂർവ്വം ക്ഷണിക്കുന്നു ⚽🏆',
+      image: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80',
+      timestamp: 'ഇന്നലെ',
+      createdAt: Date.now() - 86400000,
+      likes: 67,
+      isLiked: false,
+      isCurrentUser: false,
+      lat: 11.7480,
+      lon: 75.4894
     }
   ];
 
@@ -710,8 +789,30 @@
   // Load from LocalStorage or seed
   function initData() {
     try {
-      const storedPosts = localStorage.getItem('nn_posts');
-      APP_STATE.posts = storedPosts ? JSON.parse(storedPosts) : SEED_POSTS;
+      let loadedPosts = null;
+      try {
+        const storedPosts = localStorage.getItem('nn_posts');
+        if (storedPosts) {
+          loadedPosts = JSON.parse(storedPosts);
+        }
+      } catch (_) {
+        loadedPosts = null;
+      }
+
+      if (!Array.isArray(loadedPosts) || loadedPosts.length === 0) {
+        loadedPosts = [...SEED_POSTS];
+        try {
+          localStorage.setItem('nn_posts', JSON.stringify(loadedPosts));
+        } catch (_) {}
+      } else {
+        // Guarantee seed posts are present so feed is always lively
+        SEED_POSTS.forEach(seed => {
+          if (!loadedPosts.some(p => p.id === seed.id)) {
+            loadedPosts.push(seed);
+          }
+        });
+      }
+      APP_STATE.posts = loadedPosts;
 
       // Sync community posts from Supabase Cloud (Unlimited posts)
       if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncPosts === 'function') {
@@ -1371,6 +1472,8 @@
     // Unlimited posts: directly unshift new post into feed
     APP_STATE.posts.unshift(newPost);
     savePosts();
+    renderCommunityFeed();
+    if (typeof renderHomeCommunityFeed === 'function') renderHomeCommunityFeed();
 
     // Sync to Supabase Cloud (unlimited posts per citizen)
     if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.savePost === 'function') {
@@ -1401,6 +1504,7 @@
     }
 
     renderCommunityFeed();
+    if (typeof renderHomeCommunityFeed === 'function') renderHomeCommunityFeed();
     if (APP_STATE.currentScreen === 'profile') renderProfileScreen();
     toast('🗑️ പോസ്റ്റ് ഡിലീറ്റ് ചെയ്തു.');
   }
@@ -1506,15 +1610,125 @@
   }
   window.saveEditedPost = saveEditedPost;
 
+  function formatMalayalamTime(timestamp) {
+    if (!timestamp) return 'ഇപ്പോൾ';
+    if (typeof timestamp === 'string' && isNaN(Number(timestamp))) {
+      return timestamp;
+    }
+    const ms = Number(timestamp);
+    if (isNaN(ms) || ms <= 0) return 'ഇപ്പോൾ';
+    const now = Date.now();
+    const diff = Math.max(0, now - ms);
+    const secs = Math.floor(diff / 1000);
+    const mins = Math.floor(secs / 60);
+    const hours = Math.floor(mins / 60);
+    const days = Math.floor(hours / 24);
+
+    if (mins < 1) return 'ഇപ്പോൾ';
+    if (mins < 60) return `${mins} മിനിറ്റ് മുൻപ്`;
+    if (hours < 24) return `${hours} മണിക്കൂർ മുൻപ്`;
+    if (days === 1) return 'ഇന്നലെ';
+    if (days < 7) return `${days} ദിവസം മുൻപ്`;
+    if (days < 30) return `${Math.floor(days / 7)} ആഴ്ച മുൻപ്`;
+    const d = new Date(ms);
+    return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+  }
+  window.formatMalayalamTime = formatMalayalamTime;
+
+  function renderSinglePostCard(post) {
+    if (!post) return '';
+    const myId = APP_STATE.currentUser && APP_STATE.currentUser.id;
+    const myPhone = (APP_STATE.currentUser && APP_STATE.currentUser.phone ? APP_STATE.currentUser.phone.replace(/\D/g, '') : '');
+    const postPhone = (post.authorPhone ? post.authorPhone.replace(/\D/g, '') : '');
+    const isMine = (myId && post.authorId === myId) || 
+                   (myPhone && postPhone && myPhone === postPhone) ||
+                   (!post.isCloud && post.isCurrentUser);
+
+    const postSnippet = (post.content || '').replace(/'/g, "\\'").replace(/"/g, '&quot;').substring(0, 35);
+    const authorNameSafe = (post.authorName || 'നാട്ടുകാരൻ').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    const timeFormatted = formatMalayalamTime(post.timestamp || post.createdAt);
+    const locationSafe = post.authorLocation || post.locationName || 'കേരളം';
+    const avatarSafe = post.authorAvatar || window.DEFAULT_USER_AVATAR || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80';
+
+    return `
+      <article class="fb-card" id="${post.id}" style="margin-bottom:14px">
+        <div class="fb-card-header">
+          <div class="fb-author-row" onclick="openAuthorProfile('${encodeURIComponent(post.authorName || 'നാട്ടുകാരൻ')}', '${encodeURIComponent(post.authorPhone || '')}', '${encodeURIComponent(avatarSafe)}', '${encodeURIComponent(locationSafe)}', '${encodeURIComponent(post.authorBlood || 'O+')}', '${post.authorId || ''}')">
+            <div class="fb-author-avatar-wrap">
+              <img src="${avatarSafe}" alt="${authorNameSafe}" class="fb-author-avatar" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
+              <span class="fb-author-online"></span>
+            </div>
+            <div class="fb-author-meta">
+              <div class="fb-author-name">
+                ${authorNameSafe}
+                <span class="fb-verified-badge" title="വെരിഫൈഡ് അംഗം">✓</span>
+              </div>
+              <div class="fb-sub-meta">
+                <span>${timeFormatted}</span>
+                <span>•</span>
+                <span class="fb-loc-tag">📍 ${locationSafe}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="fb-header-actions">
+            ${isMine ? `
+              <div style="display:flex;gap:4px">
+                <button onclick="openEditPostModal('${post.id}')" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;padding:5px 8px;border-radius:10px;font-size:11.5px;font-weight:800;cursor:pointer">
+                  ✏️ എഡിറ്റ്
+                </button>
+                <button class="fb-delete-btn" onclick="deletePost('${post.id}', event)" title="പോസ്റ്റ് ഡിലീറ്റ് ചെയ്യുക">
+                  <span>🗑️</span>
+                </button>
+              </div>
+            ` : `
+              <button onclick="openChatForPost('${post.id}')" 
+                      style="background:#ECFDF5;border:1px solid #A7F3D0;color:#0E7043;padding:5px 10px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer">
+                💬 ചാറ്റ്
+              </button>
+            `}
+          </div>
+        </div>
+
+        <div class="fb-post-text" style="font-size:14px;line-height:1.55;color:#1E293B;margin-bottom:10px;white-space:pre-line">${post.content || ''}</div>
+
+        ${post.image ? `
+          <div class="fb-post-image-box" style="margin-bottom:10px">
+            <img src="${post.image}" alt="Post attachment" class="fb-post-image" loading="lazy" style="width:100%;border-radius:12px;max-height:360px;object-fit:cover" onerror="this.parentElement.style.display='none'">
+          </div>
+        ` : ''}
+
+        <div class="fb-action-bar">
+          <button class="fb-action-btn ${post.isLiked ? 'liked' : ''}" onclick="togglePostLike('${post.id}', event)">
+            <span>${post.isLiked ? '❤️' : '🤍'}</span>
+            <span>${post.likes || 0} ലൈക്ക്</span>
+          </button>
+
+          <button class="fb-action-btn" onclick="openChatForPost('${post.id}')">
+            <span>💬</span>
+            <span>ചാറ്റ് ചെയ്യാം</span>
+          </button>
+
+          <button class="fb-action-btn" onclick="shareCommunityPost('${authorNameSafe}', '${postSnippet}')">
+            <span>🔗</span>
+            <span>ഷെയർ</span>
+          </button>
+        </div>
+      </article>
+    `;
+  }
+  window.renderSinglePostCard = renderSinglePostCard;
+
   function togglePostLike(postId, e) {
     if (e) e.stopPropagation();
-    const post = APP_STATE.posts.find(p => p.id === postId);
+    const post = (APP_STATE.posts || []).find(p => p.id === postId);
     if (!post) return;
 
     post.isLiked = !post.isLiked;
-    post.likes += post.isLiked ? 1 : -1;
+    post.likes = Math.max(0, (post.likes || 0) + (post.isLiked ? 1 : -1));
     savePosts();
     renderCommunityFeed();
+    if (typeof renderHomeCommunityFeed === 'function') renderHomeCommunityFeed();
   }
   window.togglePostLike = togglePostLike;
 
@@ -1522,7 +1736,7 @@
     const container = document.getElementById('communityFeedContainer');
     if (!container) return;
 
-    if (APP_STATE.posts.length === 0) {
+    if (!APP_STATE.posts || APP_STATE.posts.length === 0) {
       container.innerHTML = `
         <div style="text-align:center;padding:40px 20px;background:#fff;border-radius:18px;">
           <div style="font-size:36px;margin-bottom:10px">📣</div>
@@ -1534,84 +1748,32 @@
       return;
     }
 
-    container.innerHTML = APP_STATE.posts.map(post => {
-      const myId = APP_STATE.currentUser && APP_STATE.currentUser.id;
-      const myPhone = (APP_STATE.currentUser && APP_STATE.currentUser.phone ? APP_STATE.currentUser.phone.replace(/\D/g, '') : '');
-      const postPhone = (post.authorPhone ? post.authorPhone.replace(/\D/g, '') : '');
-      const isMine = (myId && post.authorId === myId) || 
-                     (myPhone && postPhone && myPhone === postPhone) ||
-                     (!post.isCloud && post.isCurrentUser);
-
-      const postSnippet = (post.content || '').replace(/'/g, "\\'").replace(/"/g, '&quot;').substring(0, 35);
-      return `
-        <article class="fb-card" id="${post.id}">
-          <div class="fb-card-header">
-            <div class="fb-author-row" onclick="openAuthorProfile('${encodeURIComponent(post.authorName)}', '${encodeURIComponent(post.authorPhone)}', '${encodeURIComponent(post.authorAvatar)}', '${encodeURIComponent(post.authorLocation)}', '${encodeURIComponent(post.authorBlood || 'O+')}', '${post.authorId}')">
-              <div class="fb-author-avatar-wrap">
-                <img src="${post.authorAvatar || window.DEFAULT_USER_AVATAR}" alt="${post.authorName}" class="fb-author-avatar" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
-                <span class="fb-author-online"></span>
-              </div>
-              <div class="fb-author-meta">
-                <div class="fb-author-name">
-                  ${post.authorName}
-                  <span class="fb-verified-badge" title="വെരിഫൈഡ് അംഗം">✓</span>
-                </div>
-                <div class="fb-sub-meta">
-                  <span>${post.timestamp}</span>
-                  <span>•</span>
-                  <span class="fb-loc-tag">📍 ${post.authorLocation}</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="fb-header-actions">
-              ${isMine ? `
-                <div style="display:flex;gap:4px">
-                  <button onclick="openEditPostModal('${post.id}')" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;padding:5px 8px;border-radius:10px;font-size:11.5px;font-weight:800;cursor:pointer">
-                    ✏️ എഡിറ്റ്
-                  </button>
-                  <button class="fb-delete-btn" onclick="deletePost('${post.id}', event)" title="പോസ്റ്റ് ഡിലീറ്റ് ചെയ്യുക">
-                    <span>🗑️</span>
-                  </button>
-                </div>
-              ` : `
-                <button onclick="openChatForPost('${post.id}')" 
-                        style="background:#ECFDF5;border:1px solid #A7F3D0;color:#0E7043;padding:5px 10px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer">
-                  💬 ചാറ്റ്
-                </button>
-              `}
-            </div>
-          </div>
-
-          <div class="fb-post-text">${post.content}</div>
-
-          ${post.image ? `
-            <div class="fb-post-image-box">
-              <img src="${post.image}" alt="Post attachment" class="fb-post-image" loading="lazy">
-            </div>
-          ` : ''}
-
-          <div class="fb-action-bar">
-            <button class="fb-action-btn ${post.isLiked ? 'liked' : ''}" onclick="togglePostLike('${post.id}', event)">
-              <span>${post.isLiked ? '❤️' : '🤍'}</span>
-              <span>${post.likes || 0} ലൈക്ക്</span>
-            </button>
-
-            <button class="fb-action-btn" onclick="openChatForPost('${post.id}')">
-              <span>💬</span>
-              <span>ചാറ്റ് ചെയ്യാം</span>
-            </button>
-
-            <button class="fb-action-btn" onclick="shareCommunityPost('${post.authorName.replace(/'/g, "\\'")}', '${postSnippet}')">
-              <span>🔗</span>
-              <span>ഷെയർ</span>
-            </button>
-          </div>
-        </article>
-      `;
-    }).join('');
+    container.innerHTML = APP_STATE.posts.map(post => renderSinglePostCard(post)).join('');
   }
   window.renderCommunityFeed = renderCommunityFeed;
+  window.renderCommunityScreen = renderCommunityFeed;
+
+  function renderHomeCommunityFeed() {
+    const container = document.getElementById('homeCommunityFeedContainer');
+    if (!container) return;
+
+    if (!APP_STATE.posts || APP_STATE.posts.length === 0) {
+      container.innerHTML = `
+        <div style="text-align:center;padding:24px 16px;background:#fff;border-radius:16px;border:1px solid #E2E8F0">
+          <div style="font-size:28px;margin-bottom:6px">📣</div>
+          <div style="font-weight:700;font-size:13px;color:#334151">ഇതുവരെ പോസ്റ്റുകളൊന്നുമില്ല</div>
+          <div style="font-size:11.5px;color:#64748B;margin:4px 0 12px">നിങ്ങളുടെ നാട്ടിലെ വിശേഷങ്ങൾ ആദ്യമായി ഇവിടെ പങ്കുവെക്കാം.</div>
+          <button onclick="navTo('add')" style="padding:8px 16px;background:#0E7043;color:#fff;border:none;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer">➕ പുതിയ പോസ്റ്റ് ഇടാം</button>
+        </div>
+      `;
+      return;
+    }
+
+    // Show top 3 recent posts on home screen
+    const recentPosts = APP_STATE.posts.slice(0, 3);
+    container.innerHTML = recentPosts.map(post => renderSinglePostCard(post)).join('');
+  }
+  window.renderHomeCommunityFeed = renderHomeCommunityFeed;
 
   function refreshCommunityFeedLive() {
     toast('🔄 പുതിയ പോസ്റ്റുകൾ Supabase ക്ലൗഡിൽ നിന്ന് പരിശോധിക്കുന്നു...');
@@ -4839,12 +5001,15 @@
         </div>
       `;
     }).join('');
+
+    renderHomeCommunityFeed();
   }
   window.renderHomeScreen = renderHomeScreen;
 
   document.addEventListener('DOMContentLoaded', () => {
     initData();
     renderHomeScreen();
+    renderCommunityFeed();
 
     // Auto-prompt notification permission for real-time service enquiries & blood alerts
     setTimeout(() => {

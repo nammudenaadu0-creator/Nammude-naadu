@@ -589,9 +589,9 @@
     if (!exists) {
       APP_STATE.posts.unshift(post);
       if (typeof savePosts === 'function') savePosts();
-      if (typeof renderCommunityScreen === 'function' && APP_STATE.currentScreen === 'community') {
-        renderCommunityScreen();
-      }
+      if (typeof renderCommunityFeed === 'function') renderCommunityFeed();
+      if (typeof renderHomeCommunityFeed === 'function') renderHomeCommunityFeed();
+      if (typeof renderCommunityScreen === 'function') renderCommunityScreen();
     }
   }
 
@@ -794,6 +794,10 @@
 
     if (client) {
       try {
+        const createdAtNum = (Number(postObj.createdAt) && !isNaN(Number(postObj.createdAt)))
+          ? Number(postObj.createdAt)
+          : (typeof postObj.timestamp === 'number' ? postObj.timestamp : Date.now());
+
         await client.from('posts').upsert({
           id: postObj.id,
           user_id: postObj.authorId || postObj.userId || '',
@@ -808,7 +812,7 @@
           latitude: postObj.lat != null ? postObj.lat : (postObj.latitude || null),
           longitude: postObj.lon != null ? postObj.lon : (postObj.longitude || null),
           likes: postObj.likes || 0,
-          created_at: postObj.createdAt || postObj.timestamp || Date.now()
+          created_at: createdAtNum
         });
         console.info('💾 [Supabase] Post synced to cloud database');
       } catch (err) {
@@ -834,28 +838,32 @@
     try {
       const { data, error } = await client.from('posts').select('*').order('created_at', { ascending: false }).limit(100);
       if (!error && Array.isArray(data) && data.length > 0) {
-        const mapped = data.map(p => ({
-          id: p.id,
-          authorName: p.author_name,
-          authorPhone: p.author_phone,
-          authorAvatar: p.author_avatar,
-          authorId: p.user_id,
-          content: p.content,
-          category: p.category,
-          type: p.category || 'announcement',
-          image: p.image_url,
-          imageUrl: p.image_url,
-          locationName: p.location_name,
-          authorLocation: p.location_name || 'കേരളം',
-          district: p.district,
-          lat: p.latitude,
-          lon: p.longitude,
-          latitude: p.latitude,
-          longitude: p.longitude,
-          likes: p.likes || 0,
-          timestamp: Number(p.created_at) || Date.now(),
-          time: 'ക്ലൗഡ്'
-        }));
+        const mapped = data.map(p => {
+          const createdAtNum = Number(p.created_at) || (p.created_at_iso ? new Date(p.created_at_iso).getTime() : Date.now());
+          return {
+            id: p.id,
+            authorName: p.author_name || 'നാട്ടുകാരൻ',
+            authorPhone: p.author_phone || '',
+            authorAvatar: p.author_avatar || '',
+            authorId: p.user_id,
+            content: p.content || '',
+            category: p.category,
+            type: p.category || 'announcement',
+            image: p.image_url || '',
+            imageUrl: p.image_url || '',
+            locationName: p.location_name,
+            authorLocation: p.location_name || 'കേരളം',
+            district: p.district || '',
+            lat: p.latitude,
+            lon: p.longitude,
+            latitude: p.latitude,
+            longitude: p.longitude,
+            likes: p.likes || 0,
+            timestamp: createdAtNum,
+            createdAt: createdAtNum,
+            time: 'ക്ലൗഡ്'
+          };
+        });
 
         if (typeof APP_STATE !== 'undefined' && Array.isArray(APP_STATE.posts)) {
           mapped.forEach(cloudPost => {
@@ -867,9 +875,9 @@
             }
           });
           if (typeof savePosts === 'function') savePosts();
-          if (typeof renderCommunityScreen === 'function' && APP_STATE.currentScreen === 'community') {
-            renderCommunityScreen();
-          }
+          if (typeof renderCommunityFeed === 'function') renderCommunityFeed();
+          if (typeof renderHomeCommunityFeed === 'function') renderHomeCommunityFeed();
+          if (typeof renderCommunityScreen === 'function') renderCommunityScreen();
         }
 
         if (typeof callback === 'function') callback(mapped);
