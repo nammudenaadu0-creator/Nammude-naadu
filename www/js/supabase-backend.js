@@ -109,6 +109,19 @@
     rentalsChannel.subscribe((status) => {
       console.info('🏠 [Supabase Realtime Rentals] Status:', status);
     });
+
+    // 6. EMERGENCY BLOOD CHANNEL (sub-50ms peer-to-peer broadcast across phones)
+    const bloodChannel = client.channel('nn_community_blood', {
+      config: { broadcast: { self: false } }
+    });
+    bloodChannel.on('broadcast', { event: 'emergency_blood' }, ({ payload }) => {
+      if (payload && payload.bloodRequest) {
+        handleIncomingBloodRequest(payload.bloodRequest);
+      }
+    });
+    bloodChannel.subscribe((status) => {
+      console.info('🩸 [Supabase Realtime Blood] Status:', status);
+    });
   }
 
   // Request Android / Browser notification permissions
@@ -178,26 +191,28 @@
     const type = extraData.type || 'info';
 
     // 1. Android Native Status-Bar Notification (Capacitor LocalNotifications)
-    try {
-      if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) {
-        await window.Capacitor.Plugins.LocalNotifications.schedule({
-          notifications: [
-            {
-              title: title,
-              body: body,
-              id: Math.floor(Math.random() * 900000) + 100000,
-              schedule: { at: new Date(Date.now() + 50) },
-              smallIcon: 'ic_launcher',
-              sound: 'res://raw/beep.wav',
-              extra: extraData
-            }
-          ]
-        });
-      } else if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
-        new Notification(title, { body: body, icon: 'img/kerala-splash.jpg' });
+    if (!extraData.skipNativeSchedule) {
+      try {
+        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) {
+          await window.Capacitor.Plugins.LocalNotifications.schedule({
+            notifications: [
+              {
+                title: title,
+                body: body,
+                id: Math.floor(Math.random() * 900000) + 100000,
+                schedule: { at: new Date(Date.now() + 50) },
+                smallIcon: 'ic_launcher',
+                sound: 'res://raw/beep.wav',
+                extra: extraData
+              }
+            ]
+          });
+        } else if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+          new Notification(title, { body: body, icon: 'img/kerala-splash.jpg' });
+        }
+      } catch (e) {
+        console.warn('Native notification trigger note:', e.message);
       }
-    } catch (e) {
-      console.warn('Native notification trigger note:', e.message);
     }
 
     // 2. Phone Vibration
@@ -343,46 +358,160 @@
     }
   }
 
+  // Normalize blood group string (e.g. "O +ve", "O+", "O Positive" -> "O+")
+  function normalizeBloodGroup(bg) {
+    if (!bg) return '';
+    let s = String(bg).toUpperCase().trim();
+    s = s.replace(/POSITIVE|POS|\+VE/g, '+');
+    s = s.replace(/NEGATIVE|NEG|\-VE/g, '-');
+    s = s.replace(/\s+/g, '');
+    return s;
+  }
+
+  // Get current logged-in user's blood group
+  function getUserBloodGroup() {
+    if (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) {
+      if (APP_STATE.currentUser.bloodGroup) return APP_STATE.currentUser.bloodGroup;
+      if (APP_STATE.currentUser.blood) return APP_STATE.currentUser.blood;
+      const userPhone = APP_STATE.currentUser.phone ? String(APP_STATE.currentUser.phone).replace(/\D/g, '').slice(-10) : '';
+      if (userPhone && Array.isArray(APP_STATE.bloodDonors)) {
+        const donor = APP_STATE.bloodDonors.find(d => d.phone && String(d.phone).replace(/\D/g, '').slice(-10) === userPhone);
+        if (donor && donor.group) return donor.group;
+      }
+    }
+    try {
+      const stored = localStorage.getItem('nn_user_blood');
+      if (stored) return stored;
+    } catch (_) {}
+    return '';
+  }
+
+  // Strict check: Only notify users who have THAT exact matching blood group
+  function isMatchingBloodGroup(requestedGroup, userGroup) {
+    const req = normalizeBloodGroup(requestedGroup);
+    const user = normalizeBloodGroup(userGroup);
+    if (!req || !user) return false;
+    return req === user;
+  }
+
   function handleIncomingBloodRequest(row) {
     if (!row) return;
-    const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone)
-      ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
-    const reqPhone = (row.contact_phone ? String(row.contact_phone).replace(/\D/g, '').slice(-10) : '');
 
-    // Don't notify requester self
-    if (reqPhone && myPhone && reqPhone === myPhone) return;
+    const reqId = row.id || ('breq_' + Date.now());
+    const reqBloodGroup = row.blood_group || row.bloodGroup || row.group || '';
+    const reqPhone = (row.contact_phone || row.phone ? String(row.contact_phone || row.phone).replace(/\D/g, '').slice(-10) : '');
+    const hospital = row.hospital || 'ആശുപത്രി';
+    const location = row.location || 'കേരളം';
+    const patient = row.patient_name || row.patientName || 'രോഗി';
+    const units = row.units || '1';
 
-    const title = '🚨 അടിയന്തര രക്ത ആവശ്യം! (' + (row.blood_group || 'Emergency') + ')';
-    const body = '🏥 ' + (row.hospital || 'ആശുപത്രി') + ' (' + (row.location || 'കേരളം') + ') - രോഗിക്ക് ' + (row.blood_group || '') + ' രക്തം അടിയന്തിരമായി വേണം! വിളിക്കുക: ' + row.contact_phone;
-
-    sendNativePhoneNotification(title, body, {
-      type: 'blood',
-      phone: row.contact_phone,
-      patient: row.patient_name,
-      group: row.blood_group,
-      hospital: row.hospital
-    });
-
+    // 1. Always record in local bloodRequests store so it appears in Blood Requests list
     if (typeof APP_STATE !== 'undefined') {
       if (!APP_STATE.bloodRequests) APP_STATE.bloodRequests = [];
-      const exists = APP_STATE.bloodRequests.some(r => r.id === row.id);
+      const exists = APP_STATE.bloodRequests.some(r => r.id === reqId);
       if (!exists) {
         APP_STATE.bloodRequests.unshift({
-          id: row.id,
-          patient: row.patient_name,
-          hospital: row.hospital,
-          group: row.blood_group,
-          units: row.units || '1',
-          phone: row.contact_phone,
-          location: row.location,
+          id: reqId,
+          patient: patient,
+          hospital: hospital,
+          group: reqBloodGroup,
+          units: units,
+          phone: row.contact_phone || row.phone || '',
+          location: location,
           status: row.status || 'urgent',
           timestamp: Number(row.created_at) || Date.now()
         });
+        try {
+          localStorage.setItem('nn_blood_requests', JSON.stringify(APP_STATE.bloodRequests));
+        } catch (_) {}
       }
       if (typeof renderBloodScreen === 'function' && APP_STATE.currentScreen === 'blood') {
         renderBloodScreen();
       }
     }
+
+    // 2. Don't notify requester self
+    const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone)
+      ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
+    if (reqPhone && myPhone && reqPhone === myPhone) return;
+
+    // 3. TARGETED NOTIFICATION: Only users who have THIS exact matching blood group!
+    const userBlood = getUserBloodGroup();
+    if (!isMatchingBloodGroup(reqBloodGroup, userBlood)) {
+      console.info(`ℹ️ [Blood Alert Filtered]: Request is for ${reqBloodGroup}, but current user blood group is '${userBlood || "not set"}'. Notification skipped.`);
+      return;
+    }
+
+    // 4. PREVENT DUPLICATE SCHEDULING for the same blood request
+    const notifDedupeKey = 'nn_blood_notif_done_' + reqId;
+    if (sessionStorage.getItem(notifDedupeKey)) return;
+    sessionStorage.setItem(notifDedupeKey, String(Date.now()));
+
+    // 5. FIRST NOTIFICATION (Immediate - 1/2)
+    const title1 = `🚨 അടിയന്തര ${reqBloodGroup} രക്ത ആവശ്യം! (1/2)`;
+    const body1 = `🏥 ${hospital} (${location}) - രോഗി ${patient}ക്ക് ${reqBloodGroup} രക്തം അടിയന്തിരമായി വേണം! വിളിക്കുക: ${row.contact_phone || row.phone}`;
+
+    sendNativePhoneNotification(title1, body1, {
+      type: 'blood',
+      phone: row.contact_phone || row.phone,
+      patient: patient,
+      group: reqBloodGroup,
+      hospital: hospital,
+      attempt: 1
+    });
+
+    // 6. SECOND NOTIFICATION (5 Minutes Interval Reminder - 2/2 - 2 തവണ 5 മിനിറ്റ് ഇടവിട്ട്)
+    const FIVE_MINUTES_MS = 5 * 60 * 1000;
+    const title2 = `🚨 അടിയന്തര ${reqBloodGroup} രക്ത ആവശ്യം (ഓർമ്മപ്പെടുത്തൽ 2/2)!`;
+    const body2 = `🏥 ${hospital} - ${reqBloodGroup} രക്തം അടിയന്തിരമായി ആവശ്യമുണ്ട്. ദയവായി രോഗിയെ സഹായിക്കാൻ സാധിക്കുമെങ്കിൽ വിളിക്കുക: ${row.contact_phone || row.phone}`;
+    const secondNotifTime = new Date(Date.now() + FIVE_MINUTES_MS);
+
+    // Schedule 2nd notification on Android Native Notification Manager (fires even if app closed)
+    try {
+      if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) {
+        const notifId2 = Math.floor(Math.random() * 800000) + 200000;
+        window.Capacitor.Plugins.LocalNotifications.schedule({
+          notifications: [
+            {
+              title: title2,
+              body: body2,
+              id: notifId2,
+              schedule: { at: secondNotifTime },
+              smallIcon: 'ic_launcher',
+              sound: 'res://raw/beep.wav',
+              extra: {
+                type: 'blood',
+                phone: row.contact_phone || row.phone,
+                group: reqBloodGroup,
+                hospital: hospital,
+                attempt: 2,
+                isReminder: true
+              }
+            }
+          ]
+        });
+        console.info(`⏰ [Supabase Blood] 2nd reminder scheduled in 5 mins at ${secondNotifTime.toLocaleTimeString()}`);
+      }
+    } catch (schedErr) {
+      console.warn('Capacitor schedule 2nd reminder error:', schedErr);
+    }
+
+    // In-app fallback timer: if app is open after 5 mins, ring sound & vibrate & show banner
+    setTimeout(() => {
+      const currentBg = getUserBloodGroup();
+      if (!isMatchingBloodGroup(reqBloodGroup, currentBg)) return;
+
+      sendNativePhoneNotification(title2, body2, {
+        type: 'blood',
+        phone: row.contact_phone || row.phone,
+        patient: patient,
+        group: reqBloodGroup,
+        hospital: hospital,
+        attempt: 2,
+        isReminder: true,
+        skipNativeSchedule: true
+      });
+    }, FIVE_MINUTES_MS);
   }
 
   // Database Row-Level Realtime Subscriptions (PostgreSQL CDC)
@@ -1191,22 +1320,34 @@
     initSupabase();
     if (client) {
       try {
-        await client.from('blood_requests').upsert({
+        const payload = {
           id: reqObj.id || ('breq_' + Date.now()),
-          patient_name: reqObj.patientName || '',
-          blood_group: reqObj.group || reqObj.bloodGroup,
+          patient_name: reqObj.patientName || reqObj.patient || '',
+          blood_group: reqObj.group || reqObj.bloodGroup || '',
           units: reqObj.units || '1 Unit',
           hospital: reqObj.hospital || '',
           contact_phone: reqObj.phone || '',
           location: reqObj.location || '',
           latitude: reqObj.lat || null,
           longitude: reqObj.lon || null,
-          needed_by: reqObj.neededBy || '',
+          needed_by: reqObj.neededBy || 'അടിയന്തിരം',
           status: 'urgent',
           created_at: Date.now()
-        });
-        console.info('💾 [Supabase] Blood request broadcasted');
-      } catch (_) {}
+        };
+
+        await client.from('blood_requests').upsert(payload);
+        console.info('💾 [Supabase] Blood request saved to Cloud:', payload.id);
+
+        // Sub-50ms peer-to-peer realtime broadcast to all online phones
+        const channel = client.channel('nn_community_blood');
+        channel.send({
+          type: 'broadcast',
+          event: 'emergency_blood',
+          payload: { bloodRequest: payload }
+        }).catch(() => {});
+      } catch (err) {
+        console.warn('Save blood request error:', err);
+      }
     }
   }
 

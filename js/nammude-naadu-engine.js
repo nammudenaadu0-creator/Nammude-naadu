@@ -5167,6 +5167,13 @@
       status: status
     };
 
+    APP_STATE.currentUser.bloodGroup = group;
+    APP_STATE.currentUser.isDonor = true;
+    try {
+      localStorage.setItem('nn_user_blood', group);
+      localStorage.setItem('nn_user_is_donor', 'true');
+    } catch (_) {}
+
     APP_STATE.bloodDonors.unshift(newDonor);
     try {
       localStorage.setItem('nn_blood_donors', JSON.stringify(APP_STATE.bloodDonors));
