@@ -7,6 +7,14 @@
 (function () {
   'use strict';
 
+  if (typeof window !== 'undefined' && !window.escapeHtml) {
+    window.escapeHtml = function(text) {
+      if (text == null) return '';
+      const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+      return String(text).replace(/[&<>"']/g, function (m) { return map[m]; });
+    };
+  }
+
   const SUPABASE_URL = 'https://ocnbtiwrepnnlwbtbzca.supabase.co';
   const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_Jw6BWENMoesmYzgvKif2Ow_wF1vnuq0';
 

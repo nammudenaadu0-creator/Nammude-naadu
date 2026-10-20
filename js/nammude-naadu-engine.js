@@ -15,6 +15,20 @@
   const DEFAULT_USER_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Cdefs%3E%3ClinearGradient id='avatarGrad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2310B981'/%3E%3Cstop offset='100%25' stop-color='%23047857'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='64' cy='64' r='64' fill='url(%23avatarGrad)'/%3E%3Ccircle cx='64' cy='48' r='24' fill='%23ffffff'/%3E%3Cpath d='M24 108c0-22.1 17.9-40 40-40s40 17.9 40 40v4H24v-4z' fill='%23ffffff'/%3E%3C/svg%3E";
   window.DEFAULT_USER_AVATAR = DEFAULT_USER_AVATAR;
 
+  // Safe HTML Escaping Helper (protects against XSS, null/undefined, and non-string values)
+  function escapeHtml(text) {
+    if (text == null) return '';
+    const map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;'
+    };
+    return String(text).replace(/[&<>"']/g, function (m) { return map[m]; });
+  }
+  window.escapeHtml = escapeHtml;
+
   // Purge legacy dummy placeholders if previously stored
   let savedUserName = localStorage.getItem('nn_user_name') || '';
   if (savedUserName === 'അജിത് കുമാർ' || savedUserName === 'അജയകുമാർ' || savedUserName.toLowerCase() === 'ajith kumar') {
