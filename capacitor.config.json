@@ -1,0 +1,12 @@
+{
+  "appId": "com.nammudenaadu.app",
+  "appName": "നമ്മുടെ നാട്",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true
+  },
+  "android": {
+    "allowMixedContent": true
+  }
+}

@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="ml">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+    <meta name="theme-color" content="#0E7043">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="നമ്മുടെ നാട്">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="assets/kerala_houseboat_banner.jpg">
+    <meta name="description"
+        content="നമ്മുടെ നാട് — എല്ലാം ഒരിടത്ത്. Local Services, Community Network, Emergency Ambulance, Blood & Jobs Network for Kerala.">
+    <title>നമ്മുടെ നാട് — എല്ലാം ഒരിടത്ത് (Nammude Naadu)</title>
+
+    <!-- Google Fonts & Malayalam Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manjari:wght@400;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/main.css?v=2.3">
+    <link rel="stylesheet" href="css/jobs.css?v=2.3">
+    <link rel="stylesheet" href="css/nammude-naadu.css?v=2.3">
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <!-- ============================================================== -->
+        <!-- SCREEN 0: SPLASH SCREEN                                        -->
+        <!-- ============================================================== -->
+        <section id="screen-splash" class="screen active" onclick="enterAppFromSplash()" style="cursor:pointer">
+            <div class="splash-fullscreen-wrapper" style="text-align:center;padding:40px 24px">
+                <div style="font-size:72px;margin-bottom:14px;animation:pulse 2s infinite">🌴</div>
+                <h1 style="color:#0E7043;font-size:36px;font-weight:900;margin:0 0 8px;font-family:'Manjari', sans-serif">നമ്മുടെ നാട്</h1>
+                <p style="color:#065F46;font-weight:700;font-size:16px;margin:0 0 30px">ഒരുമിച്ചാണ് നാം · local community network</p>
+                <button class="splash-launch-btn" onclick="enterAppFromSplash()"
+                    style="background:#0E7043;color:#fff;border:none;padding:14px 32px;border-radius:24px;font-weight:800;font-size:16px;box-shadow:0 6px 20px rgba(14,112,67,0.35);cursor:pointer">
+                    തുടങ്ങുക (Enter App) →
+                </button>
+            </div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- SCREEN 1: HOME                                                 -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- SCREEN 1: HOME (MODERN 3D APP DESIGN & PROPER LOCATION/SEARCH) -->
+        <!-- ============================================================== -->
+        <section id="screen-home" class="screen home-3d-root">
+            <!-- 3D TOP NAVBAR (BRAND & PROFILE) -->
+            <header class="home-top-navbar">
+                <div class="brand-3d-badge">
+                    <span class="brand-3d-icon">🌴</span>
+                    <span class="brand-3d-name">നമ്മുടെ നാട്</span>
+                    <span class="brand-3d-dot"></span>
+                </div>
+
+                <div class="top-navbar-right-actions">
+                    <button type="button" class="action-3d-pill-btn"
+                        onclick="shareCommunityPost('നമ്മുടെ നാട്', 'കേരളത്തിലെ പ്രാദേശിക സേവനങ്ങളും വാർത്തകളും');"
+                        title="ആപ്പ് ഷെയർ ചെയ്യാം">
+                        <span>🔗</span>
+                        <span>ഷെയർ</span>
+                    </button>
+
+                    <div class="home-avatar-3d-wrap" onclick="navTo('profile')" title="എന്റെ പ്രൊഫൈൽ">
+                        <img id="homeHeaderAvatar"
+                            src=""
+                            alt="Profile" class="home-avatar-3d-img">
+                        <span class="home-avatar-3d-dot"></span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 1. 3D LOCATION BAR (PROPER PLACE — RIGHT AT THE TOP!) -->
+            <div class="home-3d-location-card" onclick="openLocationModal()" title="ലൊക്കേഷൻ മാറ്റാൻ ടാപ്പ് ചെയ്യുക">
+                <div class="loc-card-left">
+                    <div class="loc-3d-icon-circle">
+                        <span>📍</span>
+                    </div>
+                    <div class="loc-card-info">
+                        <div class="loc-card-tag">നിങ്ങളുടെ പ്രദേശം (Live Location)</div>
+                        <div class="loc-card-city">
+                            <span class="user-live-city-name" id="homeLiveLocText">കണ്ണൂർ, കേരളം</span>
+                            <span class="loc-card-arrow">▾</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="loc-3d-refresh-btn" onclick="event.stopPropagation(); detectLiveGpsLocation(true);" title="GPS തത്സമയം പുതുക്കുക">
+                    <span id="homeLocRefreshIcon" class="loc-spin-icon">🔄</span>
+                    <span style="margin-left:2px">GPS</span>
+                </button>
+            </div>
+
+            <!-- 2. 3D FLOATING SEARCH BAR (PROPER PLACE — RIGHT UNDER LOCATION!) -->
+            <div class="home-3d-search-container">
+                <div class="home-3d-search-box">
+                    <span class="search-3d-glass-icon">🔍</span>
+                    <input type="text" id="homeSearchInput" placeholder="സേവനങ്ങൾ, രക്തം, തൊഴിൽ, വാടക തിരയുക..." autocomplete="off">
+                    <button class="search-3d-action-btn" onclick="triggerHomeSearch()" title="തിരയുക">
+                        <span>തിരയുക</span>
+                        <span>➔</span>
+                    </button>
+                </div>
+                <!-- Interactive Real-time Search Dropdown -->
+                <div id="homeSearchResultsDropdown" class="home-search-dropdown" style="display:none"></div>
+            </div>
+
+            <!-- LIVE SERVICE REQUEST TRACKER (IF ACTIVE) -->
+            <div id="homeActiveServiceTracker"></div>
+
+            <!-- 1-TAP QUICK SERVICE REQUEST (EASY WORKFLOW CTA) -->
+            <div class="home-quick-request-card" onclick="openQuickServiceModal()">
+                <div class="quick-req-left">
+                    <div class="quick-req-icon-pulse">⚡</div>
+                    <div>
+                        <div class="quick-req-badge">1 മിനിറ്റ് വർക്ക്‌ഫ്ലോ</div>
+                        <h3 class="quick-req-title">സേവനം ആവശ്യമുണ്ടോ?</h3>
+                        <p class="quick-req-sub">ആവശ്യം പോസ്റ്റ് ചെയ്യൂ, അടുത്തുള്ള വർക്കർമാർ ഉടൻ ബന്ധപ്പെടും</p>
+                    </div>
+                </div>
+                <button class="quick-req-btn">ആവശ്യപ്പെടാം ➔</button>
+            </div>
+
+            <!-- 4. 3D MAIN CATEGORIES (6 ISOMETRIC ELEVATED CARDS) -->
+            <div class="home-sec-3d-header">
+                <div class="sec-title-with-pill">
+                    <span class="sec-3d-pill-badge">പ്രധാനം</span>
+                    <h2 class="sec-3d-heading">വിഭാഗങ്ങൾ (Categories)</h2>
+                </div>
+                <a class="sec-3d-viewall" onclick="navTo('services')">എല്ലാം കാണുക &rsaquo;</a>
+            </div>
+            <div class="home-3d-cat-grid">
+                <!-- BLOOD NETWORK -->
+                <div class="cat-card-3d" onclick="openBloodModal()">
+                    <div class="cat-3d-icon-box" style="background:linear-gradient(135deg, #FF334B 0%, #D90429 100%);color:#fff">🩸</div>
+                    <div class="cat-3d-title">രക്തദാനം</div>
+                    <div class="cat-3d-sub">അടിയന്തര സഹായം</div>
+                </div>
+
+                <!-- EMERGENCY SERVICES -->
+                <div class="cat-card-3d" onclick="openEmergencyModal()">
+                    <div class="cat-3d-icon-box" style="background:linear-gradient(135deg, #FF7A00 0%, #EA580C 100%);color:#fff">🚨</div>
+                    <div class="cat-3d-title">അടിയന്തിരം</div>
+                    <div class="cat-3d-sub">പോലീസ് & ഫയർ</div>
+                </div>
+
+                <!-- SERVICES -->
+                <div class="cat-card-3d" onclick="navTo('services')">
+                    <div class="cat-3d-icon-box" style="background:linear-gradient(135deg, #00B4D8 0%, #0077B6 100%);color:#fff">🛠️</div>
+                    <div class="cat-3d-title">സേവനങ്ങൾ</div>
+                    <div class="cat-3d-sub">18+ പ്രൊവൈഡർമാർ</div>
+                </div>
+
+                <!-- JOBS -->
+                <div class="cat-card-3d" onclick="navTo('jobs')">
+                    <div class="cat-3d-icon-box" style="background:linear-gradient(135deg, #FBBF24 0%, #D97706 100%);color:#fff">💼</div>
+                    <div class="cat-3d-title">തൊഴിലുകൾ</div>
+                    <div class="cat-3d-sub">തൊഴിൽ അവസരങ്ങൾ</div>
+                </div>
+
+                <!-- RENTALS & MARKETPLACE -->
+                <div class="cat-card-3d" onclick="navTo('rentals')">
+                    <div class="cat-3d-icon-box" style="background:linear-gradient(135deg, #34D399 0%, #059669 100%);color:#fff">🏠</div>
+                    <div class="cat-3d-title">വാടക & വിൽപന</div>
+                    <div class="cat-3d-sub">വീട്, വാഹനം, ടൂൾസ്</div>
+                </div>
+
+                <!-- AMBULANCE -->
+                <div class="cat-card-3d" onclick="openAmbulanceModal()">
+                    <div class="cat-3d-icon-box" style="background:linear-gradient(135deg, #FF1E42 0%, #BE123C 100%);color:#fff">🚑</div>
+                    <div class="cat-3d-title" style="color:#BE123C">ആംബുലൻസ്</div>
+                    <div class="cat-3d-sub" style="color:#E11D48;font-weight:800">24x7 സൗജന്യം</div>
+                </div>
+            </div>
+
+            <!-- 5. 3D COMMUNITY FEED SHORTCUT BANNER -->
+            <div class="home-3d-community-card" onclick="navTo('community')">
+                <div style="display:flex;align-items:center;gap:12px">
+                    <div style="width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:22px">
+                        📢
+                    </div>
+                    <div>
+                        <div style="font-size:15px;font-weight:900;letter-spacing:-0.2px">കമ്മ്യൂണിറ്റി വിശേഷങ്ങൾ</div>
+                        <div style="font-size:11.5px;opacity:0.9">നാട്ടുകാർ പങ്കുവെച്ച പുതിയ പോസ്റ്റുകൾ കാണാം</div>
+                    </div>
+                </div>
+                <span style="font-size:20px;font-weight:900">➔</span>
+            </div>
+
+            <!-- 6. 3D POPULAR SERVICES GRID -->
+            <div class="home-sec-3d-header">
+                <div class="sec-title-with-pill">
+                    <span class="sec-3d-pill-badge" style="background:#EFF6FF;color:#2563EB">തത്സമയം</span>
+                    <h2 class="sec-3d-heading">ജനപ്രിയ സേവനങ്ങൾ</h2>
+                </div>
+                <a class="sec-3d-viewall" onclick="navTo('services')">എല്ലാം കാണുക &rsaquo;</a>
+            </div>
+            <div class="home-3d-services-grid">
+                <div class="service-squircle-3d" onclick="filterServiceAndOpen('driver')">
+                    <div class="squircle-3d-icon-wrap">🛺</div>
+                    <div class="squircle-3d-label">ഡ്രൈവർ</div>
+                </div>
+                <div class="service-squircle-3d" onclick="filterServiceAndOpen('electrician')">
+                    <div class="squircle-3d-icon-wrap">⚡</div>
+                    <div class="squircle-3d-label">ഇലക്ട്രീഷ്യൻ</div>
+                </div>
+                <div class="service-squircle-3d" onclick="filterServiceAndOpen('plumber')">
+                    <div class="squircle-3d-icon-wrap">🚰</div>
+                    <div class="squircle-3d-label">പ്ലംബർ</div>
+                </div>
+                <div class="service-squircle-3d" onclick="filterServiceAndOpen('acrepair')">
+                    <div class="squircle-3d-icon-wrap">❄️</div>
+                    <div class="squircle-3d-label">എസി റിപ്പയർ</div>
+                </div>
+                <div class="service-squircle-3d" onclick="filterServiceAndOpen('cleaning')">
+                    <div class="squircle-3d-icon-wrap">🧹</div>
+                    <div class="squircle-3d-label">ക്ലീനിംഗ്</div>
+                </div>
+                <div class="service-squircle-3d" onclick="filterServiceAndOpen('carpenter')">
+                    <div class="squircle-3d-icon-wrap">🪚</div>
+                    <div class="squircle-3d-label">ആശാരി</div>
+                </div>
+                <div class="service-squircle-3d" onclick="filterServiceAndOpen('painter')">
+                    <div class="squircle-3d-icon-wrap">🎨</div>
+                    <div class="squircle-3d-label">പെയിന്റർ</div>
+                </div>
+                <div class="service-squircle-3d" onclick="filterServiceAndOpen('all')">
+                    <div class="squircle-3d-icon-wrap">➕</div>
+                    <div class="squircle-3d-label">എല്ലാ സേവനങ്ങളും</div>
+                </div>
+            </div>
+
+            <!-- TOP RATED PROVIDERS NEARBY (DIRECT CALL & IN-APP CHAT) -->
+            <div style="margin: 16px 16px 20px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                    <div>
+                        <div style="font-size:0.75rem;font-weight:800;color:#059669;letter-spacing:0.5px">🔥 അടുത്തുള്ളവർ</div>
+                        <h3 style="margin:2px 0 0;font-size:1.02rem;font-weight:800;color:#0F172A">പ്രമുഖ സേവനദാതാക്കൾ</h3>
+                    </div>
+                    <span style="font-size:0.75rem;font-weight:700;color:#059669;cursor:pointer;background:#ECFDF5;padding:5px 12px;border-radius:20px;border:1px solid #A7F3D0" onclick="navTo('services')">
+                        18+ സർവീസുകൾ &rsaquo;
+                    </span>
+                </div>
+                <div id="homeTopProvidersList" style="display:flex;flex-direction:column;gap:12px"></div>
+            </div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- SCREEN 2: NEARBY (സമീപത്തുള്ളവർ & സേവനങ്ങൾ)                      -->
+        <!-- ============================================================== -->
+        <section id="screen-nearby" class="screen">
+            <div class="nearby-header" style="background:#fff;padding:14px 16px;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between">
+                <button class="round-back-btn" onclick="navTo('home')" aria-label="Back">❮</button>
+                <div class="nearby-header-center" style="text-align:center">
+                    <h2 class="nearby-header-title" style="margin:0;font-size:16px;font-weight:800">സമീപത്തുള്ളവർ (Nearby)</h2>
+                    <div class="nearby-header-sub" style="font-size:12px;color:#0E7043;font-weight:700">
+                        📍 <span class="user-live-city-name">കണ്ണൂർ, കേരളം</span>
+                    </div>
+                </div>
+                <button class="round-gear-btn" onclick="detectLiveGpsLocation(true)" title="GPS പുതുക്കുക">🔄</button>
+            </div>
+
+            <!-- RADIUS FILTER CHIPS (1km, 5km, 15km, 50km, All) -->
+            <div class="radius-filter-container">
+                <span class="radius-filter-label">🎯 പരിധി:</span>
+                <button class="radius-chip" onclick="setRadiusFilter('nearby', 1, this)">1 km</button>
+                <button class="radius-chip active" onclick="setRadiusFilter('nearby', 5, this)">5 km</button>
+                <button class="radius-chip" onclick="setRadiusFilter('nearby', 15, this)">15 km</button>
+                <button class="radius-chip" onclick="setRadiusFilter('nearby', 50, this)">50 km</button>
+                <button class="radius-chip" onclick="setRadiusFilter('nearby', 99999, this)">എല്ലാം (All)</button>
+            </div>
+
+            <div id="nearbyPeopleListContainer" style="display:flex;flex-direction:column;gap:10px;padding:14px 16px;"></div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- SCREEN 3: CREATE POST                                          -->
+        <!-- ============================================================== -->
+        <section id="screen-add" class="screen">
+            <header class="app-header" style="background:#fff;padding:14px 16px;border-bottom:1px solid #E5E7EB">
+                <div class="subpage-header" style="display:flex;align-items:center;gap:12px">
+                    <button class="header-back-btn" onclick="navTo('home')">❮</button>
+                    <div class="header-title-box">
+                        <h1 style="margin:0;font-size:17px;font-weight:800">വിശേഷങ്ങൾ പങ്കുവെക്കാം (Create Post)</h1>
+                        <p style="margin:0;font-size:11px;color:#6B7280">നിങ്ങളുടെ നാടിനായി അറിയിപ്പുകൾ നൽകാം</p>
+                    </div>
+                </div>
+            </header>
+
+            <div style="padding:16px">
+                <!-- ACTIVE USER PROFILE POSTING BAR -->
+                <div class="posting-profile-identity-bar" style="display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:10px 14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
+                    <div style="display:flex;align-items:center;gap:10px">
+                        <img id="postingAsAvatar" src="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #10B981" alt="Profile">
+                        <div>
+                            <div style="font-size:11px;color:#64748B;font-weight:700">പോസ്റ്റ് ചെയ്യുന്നത് (Posting as):</div>
+                            <div id="postingAsName" style="font-size:14px;font-weight:800;color:#0F172A">നാട്ടുകാരൻ</div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="openEditProfileModal()" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;padding:6px 12px;border-radius:10px;font-size:11.5px;font-weight:800;cursor:pointer">✏️ പ്രൊഫൈൽ</button>
+                </div>
+
+                <div class="post-type-selector" style="display:flex;gap:8px;margin-bottom:14px">
+                    <button class="post-type-chip active" onclick="selectPostType('announcement', this)">📣 അറിയിപ്പ്</button>
+                    <button class="post-type-chip" onclick="selectPostType('photo', this)">🖼️ ഫോട്ടോ</button>
+                    <button class="post-type-chip" onclick="selectPostType('offer', this)">🏷️ ഓഫർ</button>
+                </div>
+
+                <div class="create-post-box" style="background:#fff;border-radius:16px;padding:14px;border:1px solid #E5E7EB">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                        <span style="font-size:12px;font-weight:700;color:#374151">📝 നിങ്ങളുടെ പോസ്റ്റ്</span>
+                        <span style="font-size:11px;color:#059669;font-weight:700;background:#ECFDF5;padding:2px 8px;border-radius:10px">♾️ പരിധിയില്ലാതെ എത്ര പോസ്റ്റും ഇടാം</span>
+                    </div>
+                    <textarea id="postContentInput" class="post-textarea"
+                        placeholder="നാട്ടുകാരുമായി പങ്കുവെക്കാൻ ആഗ്രഹിക്കുന്ന വിവരങ്ങൾ ഇവിടെ എഴുതുക..." maxlength="10000"
+                        oninput="document.getElementById('charCount').textContent = this.value.length;"
+                        style="width:100%;height:120px;border:none;outline:none;font-size:14px;resize:none"></textarea>
+                    
+                    <div class="char-counter" style="text-align:right;font-size:11px;color:#9CA3AF"><span id="charCount">0</span> അക്ഷരങ്ങൾ</div>
+
+                    <!-- PHOTO UPLOAD -->
+                    <div class="media-upload-dropzone" onclick="document.getElementById('postFileInput').click()"
+                        style="border:2px dashed #A7F3D0;background:#F0FDF4;border-radius:12px;padding:14px;text-align:center;cursor:pointer;margin-top:10px">
+                        <div class="upload-icon-box" style="font-size:24px">📸</div>
+                        <div class="upload-title" style="font-size:12px;font-weight:700;color:#0E7043">ഫോട്ടോ ചേർക്കാം (Add Photo)</div>
+                        <input type="file" id="postFileInput" accept="image/*" style="display:none"
+                            onchange="handlePostPhotoUpload(event)">
+                    </div>
+
+                    <div id="mediaPreviewBox" class="media-preview-box" style="display:none;position:relative;margin-top:10px">
+                        <img id="mediaPreviewImg" src="" alt="Post Preview"
+                            style="width:100%;border-radius:12px;max-height:220px;object-fit:cover">
+                        <button class="remove-preview-btn" onclick="removePostPhoto(event)"
+                            style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer">✕</button>
+                    </div>
+                </div>
+
+                <div style="background:#F9FAFB;padding:12px;border-radius:12px;margin:14px 0;display:flex;align-items:center;gap:10px;border:1px solid #E5E7EB">
+                    <span style="font-size:18px">📍</span>
+                    <div>
+                        <div style="font-size:11px;color:#6B7280;font-weight:700">ലൊക്കേഷൻ</div>
+                        <div class="user-live-city-name" style="font-size:13px;font-weight:800;color:#111827">കണ്ണൂർ, കേരളം</div>
+                    </div>
+                </div>
+
+                <button class="primary-action-btn" onclick="publishPost()"
+                    style="width:100%;padding:14px;background:#0E7043;color:#fff;border:none;border-radius:14px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 4px 12px rgba(14,112,67,0.3)">
+                    ✈ പോസ്റ്റ് പബ്ലിഷ് ചെയ്യുക
+                </button>
+            </div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- SCREEN 4: COMMUNITY FEED                                       -->
+        <!-- ============================================================== -->
+        <section id="screen-community" class="screen" style="background:#F3F4F6">
+            <div style="background:#ffffff;border-bottom:1px solid #E5E7EB;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:30">
+                <div style="display:flex;align-items:center;gap:12px">
+                    <button onclick="navTo('home')" style="background:none;border:none;cursor:pointer;font-size:18px">❮</button>
+                    <div>
+                        <h2 style="font-size:16px;font-weight:800;margin:0">കമ്മ്യൂണിറ്റി വിശേഷങ്ങൾ</h2>
+                        <div style="font-size:11px;color:#6B7280">നാടിന്റെ പുതിയ വാർത്തകൾ</div>
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px">
+                    <button onclick="refreshCommunityFeedLive()" title="പുതിയ പോസ്റ്റുകൾ കാണുക"
+                        style="background:#ECFDF5;border:1px solid #A7F3D0;color:#065F46;border-radius:20px;padding:7px 12px;font-weight:800;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:4px">
+                        <span>🔄</span>
+                        <span>പുതുക്കുക</span>
+                    </button>
+                    <button onclick="navTo('add')"
+                        style="background:#0E7043;color:#fff;border:none;border-radius:20px;padding:7px 16px;font-weight:800;font-size:12px;cursor:pointer">
+                        ➕ പുതിയ പോസ്റ്റ്
+                    </button>
+                </div>
+            </div>
+
+            <div class="community-feed fb-feed-stream" id="communityFeedContainer"></div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- SCREEN 5: SERVICES (16+ CATEGORIES)                            -->
+        <!-- ============================================================== -->
+        <section id="screen-services" class="screen">
+            <div class="yw-services-header"
+                style="background:#FFFFFF;padding:12px 16px;border-bottom:1px solid #E5EAF0;display:flex;align-items:center;justify-content:space-between">
+                <button onclick="navTo('home')" style="background:none;border:none;font-size:18px;cursor:pointer">❮</button>
+                <button onclick="openLocationModal()"
+                    style="border-radius:20px;padding:6px 14px;background:#E6F5F2;border:1px solid #99F6E4;color:#0F766E;font-weight:700;font-size:12px">
+                    📍 <span class="user-live-city-name">കണ്ണൂർ, കേരളം</span>
+                </button>
+                <button onclick="openAddServiceModal()"
+                    style="background:#0F766E;color:#fff;border:none;border-radius:12px;padding:7px 12px;font-size:12px;font-weight:800;cursor:pointer">
+                    ➕ രജിസ്റ്റർ
+                </button>
+            </div>
+
+            <!-- QUICK SERVICE BROADCAST BANNER (EASY WORKFLOW) -->
+            <div class="services-quick-broadcast-banner" onclick="openQuickServiceModal()">
+                <div style="display:flex;align-items:center;gap:10px">
+                    <span style="font-size:22px">⚡</span>
+                    <div>
+                        <div style="font-weight:800;font-size:12.5px;color:#0F172A">ആളെ കിട്ടിയില്ലേ? നിങ്ങളുടെ ആവശ്യം പോസ്റ്റ് ചെയ്യാം</div>
+                        <div style="font-size:11px;color:#475569">അടുത്തുള്ള ലഭ്യമായ വർക്കർമാർ നേരിട്ട് തിരിച്ചുവിളിക്കും</div>
+                    </div>
+                </div>
+                <span class="broadcast-pill-btn">ആവശ്യപ്പെടാം &rsaquo;</span>
+            </div>
+
+            <!-- RADIUS FILTER CHIPS (200m, 500m, 1km, 5km, 10km) -->
+            <div class="radius-filter-container">
+                <span class="radius-filter-label">🎯 പരിധി:</span>
+                <button class="radius-chip" onclick="setRadiusFilter('services', 0.2, this)">200m</button>
+                <button class="radius-chip" onclick="setRadiusFilter('services', 0.5, this)">500m</button>
+                <button class="radius-chip" onclick="setRadiusFilter('services', 1, this)">1 km</button>
+                <button class="radius-chip active" onclick="setRadiusFilter('services', 5, this)">5 km</button>
+                <button class="radius-chip" onclick="setRadiusFilter('services', 10, this)">10 km</button>
+            </div>
+
+            <!-- SEARCH BAR WITH AUTO-SUGGESTIONS -->
+            <div style="padding:10px 16px;background:#fff;position:relative">
+                <input type="text" id="serviceSearchInput" placeholder="സേവനദാതാക്കളെ തിരയുക (Eg: Plumber, Driver...)"
+                    autocomplete="off"
+                    oninput="handleServicesSearchInput(this.value)"
+                    onfocus="handleServicesSearchInput(this.value)"
+                    style="width:100%;padding:10px 14px;border:1px solid #E5E7EB;border-radius:12px;outline:none;font-size:13px;background:#F9FAFB">
+                <div id="servicesSearchSuggestions" class="trade-suggestions-dropdown" style="display:none"></div>
+            </div>
+
+            <!-- 16+ CATEGORIES GRID -->
+            <div class="services-category-grid" id="servicesCategoryGrid"></div>
+
+            <div class="service-list" id="servicesListContainer"
+                style="padding:16px;display:flex;flex-direction:column;gap:12px"></div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- SCREEN 6: JOBS (തൊഴിൽ അവസരങ്ങൾ)                              -->
+        <!-- ============================================================== -->
+        <section id="screen-jobs" class="screen">
+            <div style="background:#0878D1;color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between">
+                <button onclick="navTo('home')" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer">❮</button>
+                <div style="text-align:center">
+                    <h2 style="margin:0;font-size:16px;font-weight:800">💼 തൊഴിൽ അവസരങ്ങൾ</h2>
+                    <div style="font-size:11px;opacity:0.9">Jobs Portal & Vacancies</div>
+                </div>
+                <button onclick="openPostJobModal()"
+                    style="background:#fff;color:#0878D1;border:none;border-radius:10px;padding:6px 12px;font-weight:800;font-size:12px;cursor:pointer">
+                    ➕ തൊഴിൽ നൽകാം
+                </button>
+            </div>
+
+            <!-- RADIUS FILTER CHIPS -->
+            <div class="radius-filter-container">
+                <span class="radius-filter-label">🎯 പരിധി:</span>
+                <button class="radius-chip" onclick="setRadiusFilter('jobs', 0.5, this)">500m</button>
+                <button class="radius-chip" onclick="setRadiusFilter('jobs', 1, this)">1 km</button>
+                <button class="radius-chip" onclick="setRadiusFilter('jobs', 5, this)">5 km</button>
+                <button class="radius-chip active" onclick="setRadiusFilter('jobs', 10, this)">10 km</button>
+            </div>
+
+            <!-- SEARCH INPUT -->
+            <div style="padding:10px 16px;background:#fff">
+                <input type="text" id="jobSearchInput" placeholder="തൊഴിലുകൾ തിരയുക (Eg: Driver, Sales...)"
+                    style="width:100%;padding:10px 14px;border:1px solid #E5E7EB;border-radius:12px;outline:none;font-size:13px;background:#F9FAFB">
+            </div>
+
+            <!-- JOB CATEGORY FILTER CHIPS -->
+            <div style="display:flex;gap:6px;padding:10px 16px;background:#fff;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid #E5E7EB">
+                <button class="job-cat-chip radius-chip active" data-cat="all" onclick="filterJobCategory('all')">എല്ലാം</button>
+                <button class="job-cat-chip radius-chip" data-cat="driver" onclick="filterJobCategory('driver')">ഡ്രൈവർ</button>
+                <button class="job-cat-chip radius-chip" data-cat="sales" onclick="filterJobCategory('sales')">സെയിൽസ്</button>
+                <button class="job-cat-chip radius-chip" data-cat="office" onclick="filterJobCategory('office')">ഓഫീസ്</button>
+                <button class="job-cat-chip radius-chip" data-cat="hotel" onclick="filterJobCategory('hotel')">ഹോട്ടൽ & കുക്ക്</button>
+                <button class="job-cat-chip radius-chip" data-cat="delivery" onclick="filterJobCategory('delivery')">ഡെലിവറി</button>
+            </div>
+
+            <div id="jobsListContainer" style="padding:14px 16px;display:flex;flex-direction:column;gap:12px"></div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- SCREEN 7: RENTALS & MARKETPLACE (വാടക & വിൽപന)                 -->
+        <!-- ============================================================== -->
+        <section id="screen-rentals" class="screen">
+            <div style="background:#0E7043;color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between">
+                <button onclick="navTo('home')" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer">❮</button>
+                <div style="text-align:center">
+                    <h2 style="margin:0;font-size:16px;font-weight:800">🏠 വാടക & വീടുകൾ</h2>
+                    <div style="font-size:11px;opacity:0.9">Rentals, Vehicles & Marketplace</div>
+                </div>
+                <button onclick="openAddRentalModal()"
+                    style="background:#fff;color:#0E7043;border:none;border-radius:10px;padding:6px 12px;font-weight:800;font-size:12px;cursor:pointer">
+                    ➕ ലിസ്റ്റ് ചെയ്യാം
+                </button>
+            </div>
+
+            <!-- RADIUS FILTER CHIPS -->
+            <div class="radius-filter-container">
+                <span class="radius-filter-label">🎯 പരിധി:</span>
+                <button class="radius-chip" onclick="setRadiusFilter('rentals', 0.5, this)">500m</button>
+                <button class="radius-chip" onclick="setRadiusFilter('rentals', 1, this)">1 km</button>
+                <button class="radius-chip" onclick="setRadiusFilter('rentals', 5, this)">5 km</button>
+                <button class="radius-chip active" onclick="setRadiusFilter('rentals', 10, this)">10 km</button>
+            </div>
+
+            <!-- SEARCH INPUT -->
+            <div style="padding:10px 16px;background:#fff">
+                <input type="text" id="rentalSearchInput" placeholder="വാടക വീട്, വാഹനം, ഉപകരണങ്ങൾ തിരയുക..."
+                    style="width:100%;padding:10px 14px;border:1px solid #E5E7EB;border-radius:12px;outline:none;font-size:13px;background:#F9FAFB">
+            </div>
+
+            <!-- RENTAL CATEGORY FILTER CHIPS -->
+            <div style="display:flex;gap:6px;padding:10px 16px;background:#fff;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid #E5E7EB">
+                <button class="rental-cat-chip radius-chip active" data-cat="all" onclick="filterRentalCategory('all', this)">എല്ലാം</button>
+                <button class="rental-cat-chip radius-chip" data-cat="house" onclick="filterRentalCategory('house', this)">വാടക വീട് / മുറി</button>
+                <button class="rental-cat-chip radius-chip" data-cat="vehicle" onclick="filterRentalCategory('vehicle', this)">വാഹനങ്ങൾ</button>
+                <button class="rental-cat-chip radius-chip" data-cat="tool" onclick="filterRentalCategory('tool', this)">ടൂളുകൾ & യന്ത്രങ്ങൾ</button>
+                <button class="rental-cat-chip radius-chip" data-cat="buysell" onclick="filterRentalCategory('buysell', this)">വിൽപനയ്ക്ക്</button>
+            </div>
+
+            <div id="rentalsListContainer" style="padding:14px 16px;display:flex;flex-direction:column;gap:12px"></div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- SCREEN 7: BLOOD DONATION NETWORK                               -->
+        <!-- ============================================================== -->
+        <section id="screen-blood" class="screen">
+            <div style="background:#DC2626;color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between">
+                <button onclick="navTo('home')" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer">❮</button>
+                <h2 style="margin:0;font-size:17px;font-weight:800">🩸 രക്തദാന നെറ്റ്‌വർക്ക്</h2>
+                <div style="display:flex;gap:6px">
+                    <button onclick="openRegisterDonorModal()"
+                        style="background:#0E7043;color:#fff;border:none;border-radius:10px;padding:6px 10px;font-weight:800;font-size:11px;cursor:pointer">
+                        ➕ ദാതാവാകാം
+                    </button>
+                    <button onclick="openBloodRequestModal()"
+                        style="background:#fff;color:#DC2626;border:none;border-radius:10px;padding:6px 10px;font-weight:800;font-size:11px;cursor:pointer">
+                        🚨 റിക്വസ്റ്റ്
+                    </button>
+                </div>
+            </div>
+
+            <!-- 8 BLOOD GROUP FILTER CHIPS -->
+            <div class="blood-groups-bar" id="bloodGroupsChipsBar"></div>
+
+            <div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px" id="bloodDonorsListContainer"></div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- SCREEN 8: CHAT & MESSAGES                                      -->
+        <!-- ============================================================== -->
+        <section id="screen-chat" class="screen">
+            <div style="background:#fff;padding:14px 16px;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between">
+                <button class="round-back-btn" onclick="navTo('home')">❮</button>
+                <div style="text-align:center">
+                    <h2 style="margin:0;font-size:17px;font-weight:800">സന്ദേശങ്ങൾ (Messages)</h2>
+                    <div style="font-size:11px;color:#059669;font-weight:700">⚡ തത്സമയ ക്ലൗഡ് ചാറ്റ് (Live Cloud)</div>
+                </div>
+                <button class="round-gear-btn" onclick="syncUserChatsLive()" title="സന്ദേശങ്ങൾ പുതുക്കുക">🔄</button>
+            </div>
+            <div id="chatThreadsList" style="display:flex;flex-direction:column;gap:10px;padding:16px"></div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- SCREEN 9: PROFILE                                              -->
+        <!-- ============================================================== -->
+        <section id="screen-profile" class="screen">
+            <div class="profile-hero-card-pro"
+                style="padding:24px 20px;text-align:center;background:#fff;border-bottom:1px solid #E2E8F0">
+                <div style="position:relative;width:80px;height:80px;margin:0 auto 10px">
+                    <img id="profileAvatarImg"
+                        src=""
+                        alt="Profile Avatar"
+                        style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid #10B981;box-shadow:0 4px 12px rgba(16,185,129,0.25)">
+                    <button type="button" onclick="document.getElementById('profilePhotoDirectInput').click()"
+                        style="position:absolute;bottom:0;right:0;background:#0E7043;color:#fff;border:2px solid #fff;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;box-shadow:0 2px 6px rgba(0,0,0,0.2)"
+                        title="ഫോട്ടോ ചേർക്കാം / മാറ്റാം">
+                        📷
+                    </button>
+                    <input type="file" id="profilePhotoDirectInput" accept="image/*" style="display:none" onchange="handleProfilePhotoUpload(event)">
+                </div>
+                <h3 id="profDisplayNameText" style="margin:0 0 4px;font-size:18px">നാട്ടുകാരൻ</h3>
+                <div style="font-size:12px;color:#64748B"><span id="profDisplayPhoneText"></span> • <span
+                        class="user-live-city-name">കണ്ണൂർ, കേരളം</span></div>
+                <div style="margin-top:10px;display:flex;justify-content:center;gap:6px">
+                    <span
+                        style="background:#DCFCE7;color:#15803D;padding:4px 12px;border-radius:12px;font-size:11px;font-weight:700">🩸
+                        രക്തഗ്രൂപ്പ്: O+</span>
+                    <span
+                        style="background:#E0F2FE;color:#0284C7;padding:4px 12px;border-radius:12px;font-size:11px;font-weight:700">തദ്ദേശവാസി
+                        (Verified)</span>
+                </div>
+            </div>
+
+            <div style="padding:16px">
+                <!-- PROFILE ACTIONS -->
+                <div style="display:flex;gap:8px;margin-bottom:14px">
+                    <button onclick="openEditProfileModal()" style="flex:1;background:#0E7043;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+                        <span>✏️</span>
+                        <span>എന്റെ പ്രൊഫൈൽ എഡിറ്റ് ചെയ്യാം</span>
+                    </button>
+                    <button onclick="openLocationModal()" style="background:#F0FDF4;color:#0E7043;border:1px solid #BBF7D0;padding:12px 14px;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer">
+                        📍 സ്ഥലം
+                    </button>
+                </div>
+
+                <!-- PROFILE DASHBOARD SUB-TABS -->
+                <div style="display:flex;gap:4px;background:#F3F4F6;padding:4px;border-radius:14px;margin-bottom:14px;overflow-x:auto;scrollbar-width:none">
+                    <button class="profile-subtab-btn active" data-tab="posts" onclick="switchProfileSubTab('posts', this)" style="flex:1;padding:8px 8px;border-radius:10px;border:none;background:#fff;font-weight:800;font-size:11.5px;color:#111827;cursor:pointer;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.05)">📝 പോസ്റ്റുകൾ</button>
+                    <button class="profile-subtab-btn" data-tab="services" onclick="switchProfileSubTab('services', this)" style="flex:1;padding:8px 8px;border-radius:10px;border:none;background:none;font-weight:700;font-size:11.5px;color:#6B7280;cursor:pointer;white-space:nowrap">🛠️ സേവനങ്ങൾ</button>
+                    <button class="profile-subtab-btn" data-tab="jobs" onclick="switchProfileSubTab('jobs', this)" style="flex:1;padding:8px 8px;border-radius:10px;border:none;background:none;font-weight:700;font-size:11.5px;color:#6B7280;cursor:pointer;white-space:nowrap">💼 തൊഴിലുകൾ</button>
+                    <button class="profile-subtab-btn" data-tab="rentals" onclick="switchProfileSubTab('rentals', this)" style="flex:1;padding:8px 8px;border-radius:10px;border:none;background:none;font-weight:700;font-size:11.5px;color:#6B7280;cursor:pointer;white-space:nowrap">🏠 വാടകകൾ</button>
+                </div>
+
+                <!-- PROFILE CONTENT CONTAINER -->
+                <div id="profileTabContentContainer" style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px"></div>
+
+                <div class="profile-menu-row" onclick="openBloodModal()" style="background:#fff;padding:14px;border-radius:12px;border:1px solid #E5E7EB;margin-bottom:8px;cursor:pointer;font-weight:700">🩸 ബ്ലഡ് ഡോണർ നെറ്റ്‌വർക്ക്</div>
+                <div class="profile-menu-row" onclick="toast('ലോഗ് ഔട്ട് ചെയ്തു')" style="background:#fff;padding:14px;border-radius:12px;border:1px solid #E5E7EB;cursor:pointer;font-weight:700;color:#DC2626">🚪 ലോഗ് ഔട്ട്</div>
+            </div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- BOTTOM NAVIGATION BAR                                          -->
+        <!-- ============================================================== -->
+        <nav class="bottom-nav" id="bottomNav" style="display:none">
+            <button class="nav-item active" data-page="home" onclick="navTo('home')">
+                <span style="font-size:20px">🏠</span>
+                <span>Home</span>
+            </button>
+            <button class="nav-item" data-page="nearby" onclick="navTo('nearby')">
+                <span style="font-size:20px">📍</span>
+                <span>Nearby</span>
+            </button>
+            <div class="nav-add-btn-wrap" onclick="navTo('add')">
+                <div class="nav-add-circle" style="background:#0E7043;color:#fff;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 12px rgba(14,112,67,0.35)">➕</div>
+                <div class="nav-add-label" style="font-size:10px;font-weight:800;color:#0E7043;margin-top:2px">Post</div>
+            </div>
+            <button class="nav-item" data-page="chat" onclick="navTo('chat')">
+                <span style="font-size:20px">💬</span>
+                <span>Chat</span>
+            </button>
+            <button class="nav-item" data-page="profile" onclick="navTo('profile')">
+                <span style="font-size:20px">👤</span>
+                <span>Profile</span>
+            </button>
+        </nav>
+
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: REALTIME 1-ON-1 IN-APP CHAT                             -->
+    <!-- ============================================================== -->
+    <div id="modal-chat" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-chat')">
+        <div class="chat-modal-sheet">
+            <div class="chat-modal-header">
+                <div class="chat-recipient-info">
+                    <img id="chatRecipientAvatar" src="" class="chat-recipient-avatar">
+                    <div>
+                        <div class="chat-recipient-name" id="chatRecipientName">Chat</div>
+                        <div class="chat-recipient-status">● ഓൺലൈൻ (Online)</div>
+                    </div>
+                </div>
+
+                <div class="chat-header-actions" style="display:flex;align-items:center;gap:6px">
+                    <a id="chatRecipientCallBtn" href="tel:" class="chat-call-btn" style="background:#10B981;color:#fff;border-radius:10px;padding:6px 10px;text-decoration:none;font-size:12px;font-weight:800;display:flex;align-items:center;gap:4px" title="വിളിക്കുക">
+                        <span>📞</span>
+                        <span>വിളിക്കാം</span>
+                    </a>
+                    <button class="chat-clear-btn" onclick="clearCurrentChat()" title="ഈ ചാറ്റ് ക്ലിയർ ചെയ്യുക">
+                        <span>🗑️</span>
+                    </button>
+                    <button class="chat-close-btn" onclick="closeModal('modal-chat')">✕</button>
+                </div>
+            </div>
+
+            <!-- INQUIRY CONTEXT BANNER -->
+            <div id="chatInquiryBanner" class="chat-inquiry-banner" style="display:none;background:#F0FDF4;border-left:4px solid #0E7043;padding:9px 14px;border-bottom:1px solid #DCFCE7;align-items:center;gap:10px">
+                <span style="font-size:18px">📌</span>
+                <div style="flex:1;min-width:0">
+                    <div style="font-size:10px;text-transform:uppercase;font-weight:800;color:#0E7043;letter-spacing:0.5px">അന്വേഷണം / റഫറൻസ് (Inquiry Topic)</div>
+                    <div id="chatInquiryTopic" style="font-size:12.5px;font-weight:700;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">...</div>
+                </div>
+            </div>
+
+            <!-- CHAT THREAD -->
+            <div class="chat-thread-box" id="chatMessagesBox"></div>
+
+            <!-- QUICK REPLY CHIPS -->
+            <div class="quick-reply-bar">
+                <button class="quick-chip" onclick="sendQuickReply('ലഭ്യമാണോ?')">ലഭ്യമാണോ?</button>
+                <button class="quick-chip" onclick="sendQuickReply('സ്ഥലം എവിടെയാണ്?')">സ്ഥലം എവിടെയാണ്?</button>
+                <button class="quick-chip" onclick="sendQuickReply('റേറ്റ് എത്രയാണ്?')">റേറ്റ് എത്രയാണ്?</button>
+                <button class="quick-chip" onclick="sendQuickReply('നാളെ വരാമോ?')">നാളെ വരാമോ?</button>
+                <button class="quick-chip" onclick="sendQuickReply('ഫോൺ നമ്പർ തരാമോ?')">ഫോൺ നമ്പർ തരാമോ?</button>
+            </div>
+
+            <!-- INPUT BAR -->
+            <div class="chat-input-bar">
+                <input type="text" id="chatInputMessage" class="chat-text-input" placeholder="സന്ദേശം ടൈപ്പ് ചെയ്യുക..."
+                    onkeydown="if(event.key==='Enter')sendChatMessage()">
+                <button class="chat-send-btn" onclick="sendChatMessage()">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: DEDICATED USER PROFILE PREVIEW MODAL                    -->
+    <!-- ============================================================== -->
+    <div id="modal-author-profile" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-author-profile')">
+        <div class="profile-preview-sheet" id="authorProfileSheetContent"></div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: LOCATION SELECTOR & GPS                                 -->
+    <!-- ============================================================== -->
+    <div id="modal-location" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-location')">
+        <div class="modal-sheet">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <h3 style="margin:0;font-size:17px;font-weight:800">📍 സ്ഥലം തിരഞ്ഞെടുക്കുക (Select Town)</h3>
+                <button onclick="closeModal('modal-location')" style="background:none;border:none;font-size:20px;cursor:pointer">✕</button>
+            </div>
+            <button onclick="detectLiveGpsLocation(true);"
+                style="width:100%;padding:14px;background:#0E7043;color:#fff;border:none;border-radius:14px;font-weight:800;font-size:14px;margin-bottom:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
+                <span>🎯</span>
+                <span>നിലവിലെ GPS ലൊക്കേഷൻ എടുക്കുക</span>
+            </button>
+            <div style="font-size:12px;font-weight:700;color:#6B7280;margin-bottom:8px">അല്ലെങ്കിൽ ലിസ്റ്റിൽ നിന്ന് തിരഞ്ഞെടുക്കുക:</div>
+            <div id="presetLocationsList" style="display:flex;flex-direction:column;gap:8px;max-height:360px;overflow-y:auto"></div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: REGISTER NEW SERVICE (AUTO-SUGGESTIONS & MINI-ICON STUDIO)-->
+    <!-- ============================================================== -->
+    <div id="modal-add-service" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-add-service')">
+        <div class="modal-sheet">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                <div>
+                    <h3 style="margin:0;font-size:17px;font-weight:800;color:#0F172A">🛠️ പ്രാദേശിക സേവനം രജിസ്റ്റർ ചെയ്യാം</h3>
+                    <div style="font-size:11.5px;color:#64748B;margin-top:2px">സ്വന്തം തൊഴിൽ ടൈപ്പ് ചെയ്യാം, മിനി ഐക്കൺ സെറ്റ് ചെയ്യാം</div>
+                </div>
+                <button onclick="closeModal('modal-add-service')" style="background:none;border:none;font-size:20px;cursor:pointer">✕</button>
+            </div>
+            <form onsubmit="submitServiceRegistration(event)" style="display:flex;flex-direction:column;gap:13px">
+                <!-- NAME -->
+                <div>
+                    <label style="font-size:12px;font-weight:700;color:#374151">പൂർണ്ണ നാമം (Full Name)</label>
+                    <input type="text" id="regServiceName" required placeholder="Eg: മനോജ് കുമാർ" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+
+                <!-- SERVICE / TRADE (TYPE WITH AUTO-SUGGESTION) -->
+                <div style="position:relative">
+                    <div style="display:flex;justify-content:space-between;align-items:center">
+                        <label style="font-size:12px;font-weight:700;color:#374151">സേവന നാമം / തൊഴിൽ (Trade / Service)</label>
+                        <span style="font-size:10.5px;color:#059669;font-weight:700;background:#ECFDF5;padding:2px 6px;border-radius:6px">✏️ സ്വതന്ത്രമായി ടൈപ്പ് ചെയ്യാം</span>
+                    </div>
+                    <input type="text" id="regServiceTrade" required autocomplete="off"
+                           placeholder="Eg: പ്ലംബർ, ഇലക്ട്രീഷ്യൻ, CCTV, അലുമിനിയം ഫാബ്രിക്കേഷൻ..." 
+                           oninput="handleServiceTradeInput(this.value)" 
+                           onfocus="handleServiceTradeInput(this.value)"
+                           style="width:100%;padding:10px;border:1.5px solid #10B981;border-radius:10px;font-size:13px;outline:none;margin-top:4px;background:#F0FDF4;font-weight:600">
+                    
+                    <!-- Floating Auto-suggestions Dropdown -->
+                    <div id="regTradeSuggestionsDropdown" class="trade-suggestions-dropdown" style="display:none"></div>
+                </div>
+
+                <!-- 1-TAP POPULAR TRADE CHIPS (500 SERVICES CATALOG) -->
+                <div style="background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:14px;padding:12px;margin-bottom:12px">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                        <div style="font-size:12px;color:#1E293B;font-weight:800;display:flex;align-items:center;gap:6px">
+                            <span>⚡ ജനപ്രിയ സേവനങ്ങൾ</span>
+                            <span style="background:#ECFDF5;color:#059669;border:1px solid #A7F3D0;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700" id="quickChipsCountBadge">500 ലഭ്യമാണ്</span>
+                        </div>
+                        <span style="font-size:10.5px;color:#64748B">തൊട്ടാൽ തിരഞ്ഞെടുക്കാം 👇</span>
+                    </div>
+
+                    <!-- Quick Filter Input inside 500 Services -->
+                    <div style="position:relative;margin-bottom:8px">
+                        <input type="text" id="chipFilterInput" 
+                               placeholder="🔍 500+ സേവനങ്ങളിൽ പെട്ടെന്ന് തിരയുക (Eg: വയറിങ്, പ്ലംബർ, ടാക്സി...)" 
+                               oninput="filterQuickTradeChips(this.value)" 
+                               style="width:100%;padding:7px 28px 7px 30px;border:1px solid #CBD5E1;border-radius:8px;font-size:11.5px;outline:none;background:#fff">
+                        <span style="position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:12px;color:#94A3B8;pointer-events:none">🔍</span>
+                        <button type="button" id="clearChipFilterBtn" onclick="clearQuickTradeFilter()" 
+                                style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:#94A3B8;font-size:13px;cursor:pointer">✕</button>
+                    </div>
+
+                    <!-- Category Tabs (Top 25, Electrician, Plumber, AC, Driver, etc.) -->
+                    <div class="quick-trade-chips-scroll" id="regCategoryChipsTabs" style="margin-bottom:8px;gap:5px;padding-bottom:2px">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+
+                    <!-- Dynamic Chips Container (Scrollable Grid) -->
+                    <div id="regQuickTradeChips" style="display:flex;flex-wrap:wrap;gap:6px;max-height:160px;overflow-y:auto;padding:2px 2px 4px 0">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </div>
+
+                <!-- MINI ICON STUDIO (സ്വന്തം മിനി ഐക്കൺ ഉണ്ടാക്കി ഇടാം) -->
+                <div class="mini-icon-studio">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                        <div>
+                            <div style="font-size:12.5px;font-weight:800;color:#065F46">🏷️ സേവന മിനി ഐക്കൺ (Service Mini Icon)</div>
+                            <div style="font-size:10.5px;color:#64748B">കാർഡിലും ലിസ്റ്റിലും സ്വന്തം ഐക്കൺ കാണിക്കും</div>
+                        </div>
+                        <input type="hidden" id="regSelectedIcon" value="🛠️">
+                    </div>
+
+                    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+                        <!-- Live Mini Icon Preview -->
+                        <div id="regIconPreview" class="reg-icon-preview" title="തിരഞ്ഞെടുത്ത മിനി ഐക്കൺ">
+                            <span id="regIconPreviewEmoji">🛠️</span>
+                        </div>
+                        <div style="flex:1">
+                            <div style="font-size:11px;font-weight:700;color:#374151;margin-bottom:4px">സ്വന്തം ചിഹ്നം / ഇമോജി ടൈപ്പ് ചെയ്യാം:</div>
+                            <div style="display:flex;align-items:center;gap:6px">
+                                <input type="text" id="regCustomEmojiInput" maxlength="3" placeholder="Eg: ⚡"
+                                       oninput="setCustomServiceEmoji(this.value)"
+                                       style="width:75px;padding:8px;border:1.5px solid #CBD5E1;border-radius:8px;font-size:18px;text-align:center;outline:none;background:#fff">
+                                <span style="font-size:10.5px;color:#64748B">അല്ലെങ്കിൽ താഴെയുള്ളതിൽ നിന്ന് ക്ലിക്ക് ചെയ്യാം 👇</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 32+ Mini Icon Palette -->
+                    <div class="mini-icon-palette" id="regMiniIconPalette">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- HIDDEN OR OPTIONAL CATEGORY KEY -->
+                <input type="hidden" id="regServiceCategoryKey" value="other">
+
+                <!-- PHONE -->
+                <div>
+                    <label style="font-size:12px;font-weight:700;color:#374151">ഫോൺ നമ്പർ (Phone - നേരിട്ട് വിളിക്കാനും ചാറ്റിനും)</label>
+                    <input type="tel" id="regServicePhone" required placeholder="+91 98470 00000" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+
+                <!-- VISITING FEE -->
+                <div>
+                    <label style="font-size:12px;font-weight:700;color:#374151">വിസിറ്റിംഗ് നിരക്ക് / ഫീസ് (Visiting Fee / Rate)</label>
+                    <input type="text" id="regServiceFee" placeholder="Eg: ₹200 വിസിറ്റിംഗ് നിരക്ക് അല്ലെങ്കിൽ ചർച്ച ചെയ്യാം" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+
+                <!-- WORKING HOURS -->
+                <div>
+                    <label style="font-size:12px;font-weight:700;color:#374151">പ്രവൃത്തി സമയം (Working Hours)</label>
+                    <input type="text" id="regServiceHours" placeholder="Eg: രാവിലെ 8:00 AM - 7:00 PM" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+
+                <!-- SPECIALIZATIONS (WITH DYNAMIC SUGGESTIONS) -->
+                <div>
+                    <label style="font-size:12px;font-weight:700;color:#374151">പ്രത്യേക പണികൾ / സ്പെഷ്യലൈസേഷൻ (Skills & Specialization)</label>
+                    <input type="text" id="regServiceSpecs" placeholder="Eg: ഇൻവെർട്ടർ, വയറിങ്, ഫാൻ ഫിറ്റിംഗ് (കോമയിട്ട് നൽകുക)" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                    <div id="regSkillSuggestionsChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px"></div>
+                </div>
+
+                <!-- AVAILABILITY -->
+                <div>
+                    <label style="font-size:12px;font-weight:700;color:#374151">നിലവിലെ ലഭ്യത (Availability)</label>
+                    <select id="regServiceAvail" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                        <option value="available">🟢 ഇപ്പോൾ ലഭ്യമാണ് (Available Now)</option>
+                        <option value="busy">🟡 ബുക്കിംഗ് അനുസരിച്ച് (On Prior Booking)</option>
+                    </select>
+                </div>
+
+                <!-- EXPERIENCE -->
+                <div>
+                    <label style="font-size:12px;font-weight:700;color:#374151">പ്രവൃത്തിപരിചയം (Experience)</label>
+                    <input type="text" id="regServiceExp" placeholder="Eg: 8 വർഷം പരിചയം" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+
+                <!-- LOCATION -->
+                <div>
+                    <label style="font-size:12px;font-weight:700;color:#374151">സ്ഥലം (Location)</label>
+                    <input type="text" id="regServiceLoc" placeholder="Eg: കണ്ണൂർ ടൗൺ" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+
+                <button type="submit" style="background:#0E7043;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;margin-top:6px;box-shadow:0 4px 12px rgba(14,112,67,0.25)">🚀 സേവനം രജിസ്റ്റർ ചെയ്യാം</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: SERVICE PROVIDER DETAILS & REVIEWS                      -->
+    <!-- ============================================================== -->
+    <div id="modal-service-detail" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-service-detail')">
+        <div class="service-detail-sheet" id="serviceDetailSheetContent">
+            <!-- Dynamically populated via openServiceDetailModal(srvId) -->
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: APPLY FOR JOB                                           -->
+    <!-- ============================================================== -->
+    <div id="modal-apply-job" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-apply-job')">
+        <div class="modal-sheet">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                <h3 style="margin:0;font-size:17px;font-weight:800">📝 തൊഴിലിനായി അപേക്ഷിക്കാം</h3>
+                <button onclick="closeModal('modal-apply-job')" style="background:none;border:none;font-size:20px;cursor:pointer">✕</button>
+            </div>
+            <div style="background:#F0FDF4;padding:10px 12px;border-radius:10px;border:1px solid #BBF7D0;margin-bottom:12px">
+                <div id="applyJobModalTitle" style="font-weight:800;font-size:14px;color:#065F46">Job Title</div>
+                <div id="applyJobEmployer" style="font-size:11px;color:#047857">Employer</div>
+            </div>
+            <form onsubmit="submitJobApplication(event)" style="display:flex;flex-direction:column;gap:10px">
+                <div>
+                    <label style="font-size:12px;font-weight:700">താങ്കളുടെ പേര് (Your Name)</label>
+                    <input type="text" id="applyName" required placeholder="താങ്കളുടെ പേര് നൽകുക..." style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+                <div>
+                    <label style="font-size:12px;font-weight:700">ഫോൺ നമ്പർ (Phone)</label>
+                    <input type="tel" id="applyPhone" required placeholder="മൊബൈൽ നമ്പർ നൽകുക..." style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+                <div>
+                    <label style="font-size:12px;font-weight:700">പരിചയ വിവരണം / കുറിപ്പ് (Experience/Note)</label>
+                    <textarea id="applyNote" placeholder="താങ്കളുടെ പ്രവൃത്തിപരിചയം..." style="width:100%;height:80px;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px;resize:none"></textarea>
+                </div>
+                <button type="submit" style="background:#0878D1;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer">അപേക്ഷ സമർപ്പിക്കുക</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: POST A JOB / VACANCY                                    -->
+    <!-- ============================================================== -->
+    <div id="modal-post-job" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-post-job')">
+        <div class="modal-sheet">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                <h3 style="margin:0;font-size:17px;font-weight:800">💼 തൊഴിൽ അവസരം നൽകാം</h3>
+                <button onclick="closeModal('modal-post-job')" style="background:none;border:none;font-size:20px;cursor:pointer">✕</button>
+            </div>
+            <form onsubmit="submitJobPosting(event)" style="display:flex;flex-direction:column;gap:10px">
+                <div>
+                    <label style="font-size:12px;font-weight:700">ജോലി തലക്കെട്ട് (Job Title)</label>
+                    <input type="text" id="postJobTitle" required placeholder="Eg: ഡ്രൈവർ ആവശ്യം" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+                <div>
+                    <label style="font-size:12px;font-weight:700">സ്ഥാപനം / തൊഴിൽദാതാവ് (Company/Employer)</label>
+                    <input type="text" id="postJobEmployer" placeholder="Eg: ഗ്രീൻവാലി ട്രേഡേഴ്സ്" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+                <div>
+                    <label style="font-size:12px;font-weight:700">ഫോൺ നമ്പർ (Phone)</label>
+                    <input type="tel" id="postJobPhone" required placeholder="+91 94471 00000" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+                <div>
+                    <label style="font-size:12px;font-weight:700">ശമ്പളം (Salary Range)</label>
+                    <input type="text" id="postJobSalary" placeholder="Eg: ₹18,000 - ₹22,000" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+                <div>
+                    <label style="font-size:12px;font-weight:700">വിവരണം (Description)</label>
+                    <textarea id="postJobDesc" placeholder="ജോലി സംബന്ധിച്ച കൂടുതൽ വിവരങ്ങൾ..." style="width:100%;height:70px;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px;resize:none"></textarea>
+                </div>
+                <button type="submit" style="background:#0878D1;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer">പോസ്റ്റ് ചെയ്യുക</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: EMERGENCY BLOOD REQUEST BROADCAST                       -->
+    <!-- ============================================================== -->
+    <div id="modal-blood-request" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-blood-request')">
+        <div class="modal-sheet">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                <h3 style="margin:0;color:#DC2626;font-size:17px;font-weight:800">🚨 അടിയന്തര രക്ത ആവശ്യം</h3>
+                <button onclick="closeModal('modal-blood-request')" style="background:none;border:none;font-size:20px;cursor:pointer">✕</button>
+            </div>
+            <form onsubmit="submitBloodRequest(event)" style="display:flex;flex-direction:column;gap:10px">
+                <div>
+                    <label style="font-size:12px;font-weight:700">രോഗിയുടെ പേര് (Patient Name)</label>
+                    <input type="text" id="bReqPatient" required placeholder="രോഗിയുടെ പേര്..." style="width:100%;padding:10px;border:1px solid #FECACA;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+                <div style="display:flex;gap:10px">
+                    <div style="flex:1">
+                        <label style="font-size:12px;font-weight:700">രക്തഗ്രൂപ്പ് (Group)</label>
+                        <select id="bReqGroup" style="width:100%;padding:10px;border:1px solid #FECACA;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                        </select>
+                    </div>
+                    <div style="flex:1">
+                        <label style="font-size:12px;font-weight:700">യൂണിറ്റ് (Units)</label>
+                        <input type="number" id="bReqUnits" value="1" min="1" max="10" style="width:100%;padding:10px;border:1px solid #FECACA;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                    </div>
+                </div>
+                <div>
+                    <label style="font-size:12px;font-weight:700">ആശുപത്രി (Hospital & Place)</label>
+                    <input type="text" id="bReqHospital" required placeholder="Eg: ജില്ലാ ആശുപത്രി, കണ്ണൂർ" style="width:100%;padding:10px;border:1px solid #FECACA;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+                <div>
+                    <label style="font-size:12px;font-weight:700">ബന്ധപ്പെടേണ്ട നമ്പർ (Contact Phone)</label>
+                    <input type="tel" id="bReqPhone" required placeholder="+91 94470 00000" style="width:100%;padding:10px;border:1px solid #FECACA;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+                <button type="submit" style="background:#DC2626;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;margin-top:6px">
+                    📢 നാട്ടുകാരിലേക്ക് ബ്രോഡ്കാസ്റ്റ് ചെയ്യാം
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: EMERGENCY HELP NUMBERS                                  -->
+    <!-- ============================================================== -->
+    <div id="modal-emergency" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-emergency')">
+        <div class="modal-sheet">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <h3 style="margin:0;color:#DC2626;font-size:17px;font-weight:800">🚨 അടിയന്തര സഹായം (Emergency Help)</h3>
+                <button onclick="closeModal('modal-emergency')" style="background:none;border:none;font-size:20px;cursor:pointer">✕</button>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+                <a href="tel:112"
+                    style="padding:14px;background:#FEF2F2;border:1px solid #FECACA;border-radius:14px;text-decoration:none;color:#991B1B;font-weight:800;display:flex;justify-content:space-between;align-items:center">
+                    <span style="font-size:15px">🛡️ പോലീസ് കൺട്രോൾ റൂം</span>
+                    <span style="background:#DC2626;color:#fff;padding:4px 12px;border-radius:8px">112</span>
+                </a>
+                <a href="tel:101"
+                    style="padding:14px;background:#FEF2F2;border:1px solid #FECACA;border-radius:14px;text-decoration:none;color:#991B1B;font-weight:800;display:flex;justify-content:space-between;align-items:center">
+                    <span style="font-size:15px">🚒 ഫയർ & റെസ്ക്യൂ ഫോഴ്സ്</span>
+                    <span style="background:#DC2626;color:#fff;padding:4px 12px;border-radius:8px">101</span>
+                </a>
+                <a href="tel:108"
+                    style="padding:14px;background:#FEF2F2;border:1px solid #FECACA;border-radius:14px;text-decoration:none;color:#991B1B;font-weight:800;display:flex;justify-content:space-between;align-items:center">
+                    <span style="font-size:15px">🚑 ആംബുലൻസ് സർവീസ് (24x7)</span>
+                    <span style="background:#DC2626;color:#fff;padding:4px 12px;border-radius:8px">108</span>
+                </a>
+                <a href="tel:1091"
+                    style="padding:14px;background:#FDF2F8;border:1px solid #FBCFE8;border-radius:14px;text-decoration:none;color:#9D174D;font-weight:800;display:flex;justify-content:space-between;align-items:center">
+                    <span style="font-size:15px">👩 വനിതാ ഹെൽപ്പ് ലൈൻ</span>
+                    <span style="background:#BE185D;color:#fff;padding:4px 12px;border-radius:8px">1091</span>
+                </a>
+                <a href="tel:1098"
+                    style="padding:14px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:14px;text-decoration:none;color:#166534;font-weight:800;display:flex;justify-content:space-between;align-items:center">
+                    <span style="font-size:15px">👶 ചൈൽഡ് ലൈൻ ഹെൽപ്പ്</span>
+                    <span style="background:#15803D;color:#fff;padding:4px 12px;border-radius:8px">1098</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: REGISTER AS BLOOD DONOR                                 -->
+    <!-- ============================================================== -->
+    <div id="modal-register-donor" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-register-donor')">
+        <div class="modal-sheet">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                <h3 style="margin:0;color:#DC2626;font-size:17px;font-weight:800">🩸 രക്തദാതാവായി രജിസ്റ്റർ ചെയ്യാം</h3>
+                <button onclick="closeModal('modal-register-donor')" style="background:none;border:none;font-size:20px;cursor:pointer">✕</button>
+            </div>
+            <p style="font-size:12px;color:#6B7280;margin:0 0 12px">നിങ്ങളുടെ ഒരു തുള്ളി ചോര മറ്റൊരാൾക്ക് ജീവനേകും. സന്നദ്ധ രക്തദാതാക്കളുടെ ലിസ്റ്റിലേക്ക് പേര് ചേർക്കൂ.</p>
+            <form onsubmit="submitDonorRegistration(event)" style="display:flex;flex-direction:column;gap:10px">
+                <div>
+                    <label style="font-size:12px;font-weight:700">പൂർണ്ണ നാമം (Full Name)</label>
+                    <input type="text" id="regDonorName" required placeholder="Eg: അരുൺ കൃഷ്ണൻ" style="width:100%;padding:10px;border:1px solid #FECACA;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+                <div style="display:flex;gap:10px">
+                    <div style="flex:1">
+                        <label style="font-size:12px;font-weight:700">രക്തഗ്രൂപ്പ് (Blood Group)</label>
+                        <select id="regDonorGroup" style="width:100%;padding:10px;border:1px solid #FECACA;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                            <option value="O+">O+</option>
+                            <option value="A+">A+</option>
+                            <option value="B+">B+</option>
+                            <option value="AB+">AB+</option>
+                            <option value="O-">O-</option>
+                            <option value="A-">A-</option>
+                            <option value="B-">B-</option>
+                            <option value="AB-">AB-</option>
+                        </select>
+                    </div>
+                    <div style="flex:1">
+                        <label style="font-size:12px;font-weight:700">ലഭ്യത (Availability)</label>
+                        <select id="regDonorStatus" style="width:100%;padding:10px;border:1px solid #FECACA;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                            <option value="ലഭ്യമാണ്">ലഭ്യമാണ്</option>
+                            <option value="അടിയന്തരം">അടിയന്തരം മാത്രം</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label style="font-size:12px;font-weight:700">ഫോൺ നമ്പർ (Phone)</label>
+                    <input type="tel" id="regDonorPhone" required placeholder="+91 94470 00000" style="width:100%;padding:10px;border:1px solid #FECACA;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+                <div>
+                    <label style="font-size:12px;font-weight:700">സ്ഥലം (Location / Town)</label>
+                    <input type="text" id="regDonorLoc" placeholder="Eg: കണ്ണൂർ ടൗൺ" style="width:100%;padding:10px;border:1px solid #FECACA;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+                <button type="submit" style="background:#DC2626;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;margin-top:6px">രജിസ്റ്റർ ചെയ്യാം</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: ADD RENTAL / MARKETPLACE ITEM (RENT ANYTHING WITH PIC)  -->
+    <!-- ============================================================== -->
+    <div id="modal-add-rental" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-add-rental')">
+        <div class="modal-sheet">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                <h3 style="margin:0;color:#0E7043;font-size:17px;font-weight:800">🏠 വാടകയ്ക്ക് നൽകാം / ലിസ്റ്റ് ചെയ്യാം</h3>
+                <button onclick="closeModal('modal-add-rental')" style="background:none;border:none;font-size:20px;cursor:pointer">✕</button>
+            </div>
+            <p style="font-size:12px;color:#6B7280;margin:0 0 12px">വീടുകൾ, വാഹനങ്ങൾ, യന്ത്രങ്ങൾ, പന്തൽ, മറ്റ് ഏത് സാധനങ്ങളും വാടകയ്ക്ക് ഇവിടെ നൽകാം.</p>
+            <form onsubmit="submitRentalPosting(event)" style="display:flex;flex-direction:column;gap:10px">
+                <div>
+                    <label style="font-size:12px;font-weight:700">ഇനത്തിന്റെ പേര് / വിവരണം (Title)</label>
+                    <input type="text" id="rentTitle" required placeholder="Eg: 2 BHK വീട് / മഹീന്ദ്ര ജീപ്പ് / ജെസിബി / മിക്സർ മെഷീൻ" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+                <div>
+                    <label style="font-size:12px;font-weight:700">വിഭാഗം (Category)</label>
+                    <select id="rentType" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                        <option value="വാടക വീട് / മുറി">🏠 വാടക വീട് / മുറി / ഹോസ്റ്റൽ</option>
+                        <option value="വാഹനങ്ങൾ">🚗 വാഹനം (കാർ, ജീപ്പ്, ബൈക്ക്, പിക്കപ്പ്)</option>
+                        <option value="ടൂളുകൾ & യന്ത്രങ്ങൾ">🚜 ട്രാക്ടർ, മിക്സർ & യന്ത്രങ്ങൾ</option>
+                        <option value="സ്റ്റേജ് & പന്തൽ">🎪 സ്റ്റേജ്, പന്തൽ, സൗണ്ട് & ലൈറ്റ്സ്</option>
+                        <option value="കാറ്ററിംഗ് പാത്രങ്ങൾ">🍲 കാറ്ററിംഗ് പാത്രങ്ങൾ & അടുപ്പ്</option>
+                        <option value="ഇലക്ട്രോണിക്സ്">📷 ക്യാമറ, പ്രൊജക്ടർ & ഇലക്ട്രോണിക്സ്</option>
+                        <option value="വിൽപനയ്ക്ക്">🏷️ വിൽപനയ്ക്ക് (Buy & Sell)</option>
+                        <option value="മറ്റ് ഏത് സാധനങ്ങളും">📦 മറ്റ് ഏത് സാധനങ്ങളും വാടകയ്ക്ക്</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size:12px;font-weight:700">വാടക തുക / വില (Rent Rate or Price)</label>
+                    <input type="text" id="rentRate" required placeholder="Eg: ₹8,000 / മാസം or ₹500 / ദിവസം or ₹1,200 / ട്രിപ്പ്" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+                <div>
+                    <label style="font-size:12px;font-weight:700">ഫോട്ടോ ചേർക്കാം (Add Photo - Optional)</label>
+                    <div class="file-dropzone" onclick="document.getElementById('rentPhotoInput').click()" style="margin-top:4px;border:2px dashed #86EFAC;background:#F0FDF4;border-radius:12px;padding:12px;text-align:center;cursor:pointer">
+                        <input type="file" id="rentPhotoInput" accept="image/*" style="display:none" onchange="handleRentalPhotoUpload(event)">
+                        <div id="rentPhotoPlaceholder">
+                            <span style="font-size:24px">📷</span>
+                            <div style="font-size:12px;color:#0E7043;font-weight:700;margin-top:2px">ഫോട്ടോ ചേർക്കാൻ ടാപ്പ് ചെയ്യുക</div>
+                            <div style="font-size:10.5px;color:#6B7280">(ഗാലറിയിൽ നിന്നോ ക്യാമറയിൽ നിന്നോ തിരഞ്ഞെടുക്കാം)</div>
+                        </div>
+                        <div id="rentPhotoPreviewWrap" style="display:none;position:relative;margin-top:6px">
+                            <img id="rentPhotoPreviewImg" src="" style="width:100%;max-height:160px;object-fit:cover;border-radius:10px;border:1px solid #D1D5DB">
+                            <button type="button" onclick="event.stopPropagation(); removeRentalPhoto();" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.7);color:#fff;border:none;border-radius:50%;width:26px;height:26px;font-size:14px;cursor:pointer">✕</button>
+                        </div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:10px">
+                    <div style="flex:1">
+                        <label style="font-size:12px;font-weight:700">ഉടമസ്ഥന്റെ പേര്</label>
+                        <input type="text" id="rentOwner" placeholder="Eg: സുധീർ" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                    </div>
+                    <div style="flex:1">
+                        <label style="font-size:12px;font-weight:700">ഫോൺ നമ്പർ</label>
+                        <input type="tel" id="rentPhone" required placeholder="+91 94471 00000" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                    </div>
+                </div>
+                <div>
+                    <label style="font-size:12px;font-weight:700">സ്ഥലം (Location / Town)</label>
+                    <input type="text" id="rentLoc" placeholder="Eg: കണ്ണൂർ" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+                <button type="submit" style="background:#0E7043;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;margin-top:4px">ലിസ്റ്റ് ചെയ്യാം (Post Rental)</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: EDIT POST (MY PROFILE DASHBOARD)                         -->
+    <!-- ============================================================== -->
+    <div id="modal-edit-post" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-edit-post')">
+        <div class="modal-sheet">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                <h3 style="margin:0;color:#0E7043;font-size:17px;font-weight:800">✏️ പോസ്റ്റ് മാറ്റങ്ങൾ വരുത്താം</h3>
+                <button onclick="closeModal('modal-edit-post')" style="background:none;border:none;font-size:20px;cursor:pointer">✕</button>
+            </div>
+            <form onsubmit="saveEditedPost(event)" style="display:flex;flex-direction:column;gap:12px">
+                <input type="hidden" id="editPostId">
+                <div>
+                    <label style="font-size:12px;font-weight:700">പോസ്റ്റ് വിവരണം (Content)</label>
+                    <textarea id="editPostContent" required rows="4" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px;resize:vertical;font-family:inherit"></textarea>
+                </div>
+                <div>
+                    <label style="font-size:12px;font-weight:700">ഫോട്ടോ മാറ്റുക (Optional Photo)</label>
+                    <div class="file-dropzone" onclick="document.getElementById('editPostPhotoInput').click()" style="margin-top:4px;border:2px dashed #86EFAC;background:#F0FDF4;border-radius:12px;padding:12px;text-align:center;cursor:pointer">
+                        <input type="file" id="editPostPhotoInput" accept="image/*" style="display:none" onchange="handleEditPostPhotoUpload(event)">
+                        <div id="editPostPhotoPlaceholder">
+                            <span style="font-size:20px">📷</span>
+                            <div style="font-size:11.5px;color:#0E7043;font-weight:700">പുതിയ ഫോട്ടോ നൽകാൻ ടാപ്പ് ചെയ്യുക</div>
+                        </div>
+                        <div id="editPostPhotoPreviewWrap" style="display:none;position:relative;margin-top:6px">
+                            <img id="editPostPhotoPreviewImg" src="" style="width:100%;max-height:140px;object-fit:cover;border-radius:8px">
+                            <button type="button" onclick="event.stopPropagation(); removeEditPostPhoto();" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.7);color:#fff;border:none;border-radius:50%;width:22px;height:22px;font-size:12px;cursor:pointer">✕</button>
+                        </div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:8px;margin-top:4px">
+                    <button type="button" onclick="closeModal('modal-edit-post')" style="flex:1;background:#F3F4F6;color:#374151;border:none;padding:12px;border-radius:12px;font-weight:700;cursor:pointer">റദ്ദാക്കുക</button>
+                    <button type="submit" style="flex:2;background:#0E7043;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;cursor:pointer">സേവ് ചെയ്യാം</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: EDIT USER PROFILE                                       -->
+    <!-- ============================================================== -->
+    <div id="modal-edit-profile" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-edit-profile')">
+        <div class="modal-sheet">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                <h3 style="margin:0;color:#0E7043;font-size:17px;font-weight:800">👤 എന്റെ പ്രൊഫൈൽ എഡിറ്റ് ചെയ്യാം</h3>
+                <button onclick="closeModal('modal-edit-profile')" style="background:none;border:none;font-size:20px;cursor:pointer">✕</button>
+            </div>
+
+            <!-- PROFILE PHOTO CHANGER -->
+            <div style="text-align:center;margin-bottom:14px;background:#F9FAFB;padding:12px;border-radius:14px;border:1px solid #E5E7EB">
+                <div style="position:relative;width:72px;height:72px;margin:0 auto 8px">
+                    <img id="editProfAvatarPreview" src="" alt="Profile Preview"
+                        style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid #10B981">
+                    <button type="button" onclick="document.getElementById('editProfPhotoInput').click()"
+                        style="position:absolute;bottom:0;right:0;background:#0E7043;color:#fff;border:2px solid #fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;box-shadow:0 2px 5px rgba(0,0,0,0.2)"
+                        title="ഫോട്ടോ മാറ്റാം">
+                        📷
+                    </button>
+                </div>
+                <button type="button" onclick="document.getElementById('editProfPhotoInput').click()"
+                    style="background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0;padding:6px 14px;border-radius:12px;font-size:11.5px;font-weight:700;cursor:pointer">
+                    📸 നിങ്ങളുടെ ഫോട്ടോ തിരഞ്ഞെടുക്കാം
+                </button>
+                <input type="file" id="editProfPhotoInput" accept="image/*" style="display:none" onchange="handleProfilePhotoUpload(event)">
+            </div>
+
+            <form onsubmit="submitProfileUpdate(event)" style="display:flex;flex-direction:column;gap:10px">
+                <div>
+                    <label style="font-size:12px;font-weight:700">പൂർണ്ണ നാമം (Your Full Name)</label>
+                    <input type="text" id="editProfName" required placeholder="നിങ്ങളുടെ പേര് നൽകുക..." style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+                <div>
+                    <label style="font-size:12px;font-weight:700">ഫോൺ നമ്പർ (Phone Number)</label>
+                    <input type="tel" id="editProfPhone" placeholder="മൊബൈൽ നമ്പർ..." style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+                <div>
+                    <label style="font-size:12px;font-weight:700">നാട് / പ്രദേശം (Your Place / Location)</label>
+                    <input type="text" id="editProfLoc" placeholder="നിങ്ങളുടെ സ്ഥലം..." style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+                <div>
+                    <label style="font-size:12px;font-weight:700">രക്തഗ്രൂപ്പ് (Blood Group)</label>
+                    <select id="editProfBlood" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                        <option value="O+">O+</option>
+                        <option value="A+">A+</option>
+                        <option value="B+">B+</option>
+                        <option value="AB+">AB+</option>
+                        <option value="O-">O-</option>
+                        <option value="A-">A-</option>
+                        <option value="B-">B-</option>
+                        <option value="AB-">AB-</option>
+                    </select>
+                </div>
+                <button type="submit" style="background:#0E7043;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;margin-top:6px">
+                    💾 പ്രൊഫൈൽ സേവ് ചെയ്യാം
+                </button>
+            </form>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- MODAL: 1-TAP QUICK SERVICE REQUEST (BROADCAST WORKFLOW)        -->
+    <!-- ============================================================== -->
+    <div id="modal-quick-service-request" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-quick-service-request')">
+        <div class="modal-sheet" style="max-height:90vh;overflow-y:auto">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                <div>
+                    <span style="font-size:11px;background:#ECFDF5;color:#065F46;padding:3px 8px;border-radius:12px;font-weight:800">⚡ ഈസി വർക്ക്‌ഫ്ലോ</span>
+                    <h3 style="margin:4px 0 0;font-size:17px;font-weight:800;color:#0F172A">സേവനം ആവശ്യപ്പെടാം</h3>
+                </div>
+                <button onclick="closeModal('modal-quick-service-request')" style="background:none;border:none;font-size:20px;cursor:pointer">✕</button>
+            </div>
+            <p style="font-size:12px;color:#64748B;margin:0 0 14px">നിങ്ങളുടെ ആവശ്യം അടുത്തുള്ള ലഭ്യമായ വെരിഫൈഡ് വർക്കർമാർക്ക് ഉടൻ അയക്കുന്നു.</p>
+
+            <form onsubmit="submitQuickServiceRequest(event)" style="display:flex;flex-direction:column;gap:12px">
+                <!-- 1. SELECT CATEGORY -->
+                <div>
+                    <label style="font-size:12px;font-weight:800;color:#334155">1. ആരെയാണ് ആവശ്യം? (സേവനം തിരഞ്ഞെടുക്കുക)</label>
+                    <div class="quick-cat-chips-grid" id="quickRequestCatGrid" style="display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;margin-top:6px">
+                        <div class="quick-cat-chip-btn active" data-cat="plumber" onclick="selectQuickReqCat('plumber', this)">
+                            <span class="chip-icon">🚰</span>
+                            <span class="chip-name">പ്ലംബർ</span>
+                        </div>
+                        <div class="quick-cat-chip-btn" data-cat="electrician" onclick="selectQuickReqCat('electrician', this)">
+                            <span class="chip-icon">⚡</span>
+                            <span class="chip-name">ഇലക്ട്രീഷ്യൻ</span>
+                        </div>
+                        <div class="quick-cat-chip-btn" data-cat="driver" onclick="selectQuickReqCat('driver', this)">
+                            <span class="chip-icon">🛺</span>
+                            <span class="chip-name">ഡ്രൈവർ</span>
+                        </div>
+                        <div class="quick-cat-chip-btn" data-cat="acrepair" onclick="selectQuickReqCat('acrepair', this)">
+                            <span class="chip-icon">❄️</span>
+                            <span class="chip-name">എസി റിപ്പയർ</span>
+                        </div>
+                        <div class="quick-cat-chip-btn" data-cat="cleaning" onclick="selectQuickReqCat('cleaning', this)">
+                            <span class="chip-icon">🧹</span>
+                            <span class="chip-name">ക്ലീനിംഗ്</span>
+                        </div>
+                        <div class="quick-cat-chip-btn" data-cat="carpenter" onclick="selectQuickReqCat('carpenter', this)">
+                            <span class="chip-icon">🪚</span>
+                            <span class="chip-name">ആശാരി</span>
+                        </div>
+                        <div class="quick-cat-chip-btn" data-cat="painter" onclick="selectQuickReqCat('painter', this)">
+                            <span class="chip-icon">🎨</span>
+                            <span class="chip-name">പെയിന്റർ</span>
+                        </div>
+                        <div class="quick-cat-chip-btn" data-cat="other" onclick="selectQuickReqCat('other', this)">
+                            <span class="chip-icon">🛠️</span>
+                            <span class="chip-name">മറ്റുള്ളവ</span>
+                        </div>
+                    </div>
+                    <input type="hidden" id="quickReqSelectedCategory" value="plumber">
+                </div>
+
+                <!-- 2. PROBLEM DESCRIPTION -->
+                <div>
+                    <label style="font-size:12px;font-weight:800;color:#334155">2. എന്താണ് പ്രശ്നം? (Describe Problem)</label>
+                    <textarea id="quickReqDescription" required placeholder="ഉദാഹരണത്തിന്: ബാത്ത്റൂമിൽ പൈപ്പ് ലീക്ക്, പുതിയ സ്വിച്ച് ഇടണം, അല്ലെങ്കിൽ യാത്രയ്ക്ക് വാഹനം..." rows="2" style="width:100%;padding:10px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:4px;resize:none"></textarea>
+                </div>
+
+                <!-- 3. PHOTO UPLOAD (OPTIONAL) -->
+                <div>
+                    <label style="font-size:12px;font-weight:800;color:#334155">3. പണിയുടെ ഫോട്ടോ (Optional Photo)</label>
+                    <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
+                        <input type="file" id="quickReqPhotoInput" accept="image/*" style="display:none" onchange="handleQuickReqPhotoSelected(event)">
+                        <button type="button" onclick="document.getElementById('quickReqPhotoInput').click()" style="padding:8px 12px;background:#F1F5F9;border:1px dashed #94A3B8;border-radius:10px;font-size:12px;font-weight:700;color:#334155;cursor:pointer;display:flex;align-items:center;gap:6px">
+                            <span>📷</span>
+                            <span>ഫോട്ടോ ചേർക്കാം</span>
+                        </button>
+                        <div id="quickReqPhotoPreviewBox" style="display:none;position:relative">
+                            <img id="quickReqPhotoPreview" src="" style="width:42px;height:42px;border-radius:8px;object-fit:cover;border:1px solid #CBD5E1">
+                            <span onclick="removeQuickReqPhoto()" style="position:absolute;top:-6px;right:-6px;background:#EF4444;color:#fff;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;cursor:pointer">✕</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. URGENCY TIMING -->
+                <div>
+                    <label style="font-size:12px;font-weight:800;color:#334155">4. എപ്പോഴാണ് വേണ്ടത്? (Urgency)</label>
+                    <div style="display:flex;gap:8px;margin-top:6px">
+                        <label class="urgency-pill-radio active" onclick="setQuickReqUrgency('urgent', this)">
+                            <input type="radio" name="quickUrgency" value="urgent" checked style="display:none">
+                            <span>🚨 ഉടൻ തന്നെ</span>
+                        </label>
+                        <label class="urgency-pill-radio" onclick="setQuickReqUrgency('today', this)">
+                            <input type="radio" name="quickUrgency" value="today" style="display:none">
+                            <span>🕒 ഇന്ന് തന്നെ</span>
+                        </label>
+                        <label class="urgency-pill-radio" onclick="setQuickReqUrgency('later', this)">
+                            <input type="radio" name="quickUrgency" value="later" style="display:none">
+                            <span>📅 പിന്നീട്</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 5. LOCATION & PHONE (AUTO-FILLED) -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                    <div>
+                        <label style="font-size:11px;font-weight:700;color:#475569">നിങ്ങളുടെ സ്ഥലം</label>
+                        <input type="text" id="quickReqLocation" style="width:100%;padding:8px 10px;border:1px solid #CBD5E1;border-radius:10px;font-size:12px;outline:none;background:#F8FAFC">
+                    </div>
+                    <div>
+                        <label style="font-size:11px;font-weight:700;color:#475569">ഫോൺ നമ്പർ</label>
+                        <input type="tel" id="quickReqPhone" required style="width:100%;padding:8px 10px;border:1px solid #CBD5E1;border-radius:10px;font-size:12px;outline:none;background:#F8FAFC">
+                    </div>
+                </div>
+
+                <button type="submit" style="background:linear-gradient(135deg, #064E3B 0%, #0E7043 100%);color:#fff;border:none;padding:14px;border-radius:14px;font-weight:800;font-size:15px;cursor:pointer;margin-top:4px;box-shadow:0 4px 14px rgba(14,112,67,0.3)">
+                    🚀 അടുത്തുള്ള വർക്കർമാരെ അറിയിക്കാം
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Floating Toast Notification -->
+    <div id="toastNotice" class="toast-notice"></div>
+
+    <!-- CLOUD & REALTIME BACKEND (SUPABASE) -->
+    <script src="js/supabase-sdk.js"></script>
+    <script src="js/supabase-backend.js?v=3.0"></script>
+
+    <!-- APPLICATION ENGINES -->
+    <script src="js/trades-catalog-500.js?v=2.5"></script>
+    <script src="js/seed-services-data.js?v=2.5"></script>
+    <script src="js/nammude-naadu-engine.js?v=2.5"></script>
+</body>
+
+</html>

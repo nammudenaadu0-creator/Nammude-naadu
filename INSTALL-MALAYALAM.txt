@@ -1,0 +1,13 @@
+NAMMUDE NAADU — POST SHARING FIX
+
+1. community-posts-fix.js ഫയൽ index.html, firebase-backend.js ഉള്ള അതേ ഫോൾഡറിലേക്ക് കോപ്പി ചെയ്യുക.
+2. index.html ഫയലിന്റെ </body> ടാഗിന് തൊട്ടുമുമ്പ് ഈ വരി ചേർക്കുക:
+   <script src="./community-posts-fix.js"></script>
+3. Firebase Console → Authentication → Sign-in method → Anonymous enable ചെയ്തിട്ടുണ്ടെന്ന് ഉറപ്പാക്കുക.
+4. Realtime Database Rules authenticated users-ന് posts വായിക്കാനും പുതിയ post ചേർക്കാനും അനുമതി നൽകണം.
+5. index.html file:// വഴി തുറക്കാതെ VS Code Live Server വഴി പ്രവർത്തിപ്പിക്കുക.
+6. രണ്ട് വ്യത്യസ്ത ഫോണുകളിൽ പരീക്ഷിക്കുക.
+
+ഈ patch Publish button-ന് ആവശ്യമായ publishPost() ഫംഗ്ഷൻ നൽകുകയും, shared Realtime Database-ൽ പോസ്റ്റ് സേവ് ചെയ്യുകയും, live feed വഴി മറ്റ് ഉപയോക്താക്കൾക്ക് കാണിക്കുകയും ചെയ്യും.
+
+ശ്രദ്ധിക്കുക: Firebase Rules സുരക്ഷിതമായി ക്രമീകരിക്കണം. മുഴുവൻ database-നും public read/write അനുവദിക്കരുത്. നിലവിലുള്ള പഴയ local posts സ്വയം migrate ചെയ്യില്ല; പുതിയ പോസ്റ്റുകൾ community_posts path-ൽ സേവ് ചെയ്യും.

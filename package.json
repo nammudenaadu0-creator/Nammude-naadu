@@ -1,0 +1,22 @@
+{
+  "name": "nammude-naadu-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "firebase-backend.js",
+  "scripts": {
+    "sync": "node copy-to-www.js && npx cap sync android",
+    "build:apk": "node copy-to-www.js && npx cap sync android && cd android && ./gradlew assembleDebug && cd .. && cp android/app/build/outputs/apk/debug/app-debug.apk ./NammudeNaadu.apk",
+    "open:android": "npx cap open android",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/cli": "^8.5.3",
+    "@capacitor/core": "^8.5.3",
+    "@supabase/supabase-js": "^2.118.0"
+  }
+}
