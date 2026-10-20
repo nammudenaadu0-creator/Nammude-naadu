@@ -898,7 +898,7 @@
   // Handle incoming emergency contact from broadcast or postgres_changes
   function handleIncomingEmergencyContact(c) {
     if (!c) return;
-    if (c.id === 'app_setting_splash_bg' || c.name === 'Splash Background Image') {
+    if (c.id === 'app_setting_splash_bg' || c.name === 'Splash Background Image' || c.category === 'app_setting_splash_bg') {
       const splashUrl = c.description || c.location;
       if (splashUrl) {
         try {
@@ -906,6 +906,31 @@
         } catch (_) {}
         const splashEl = document.getElementById('splashMainBgImage');
         if (splashEl) splashEl.src = splashUrl;
+      }
+      return;
+    }
+    if (c.id === 'app_setting_home_banner' || c.category === 'app_setting_home_banner') {
+      const art = c.icon || c.description;
+      if (art) {
+        try { localStorage.setItem('thuna_custom_village_banner_art', art); } catch (_) {}
+      }
+      if (c.name || c.title) {
+        try { localStorage.setItem('thuna_custom_village_banner_title', c.name || c.title); } catch (_) {}
+      }
+      if (c.badge) {
+        try { localStorage.setItem('thuna_custom_village_banner_sub', c.badge); } catch (_) {}
+      }
+      if (c.phone) {
+        try { localStorage.setItem('thuna_custom_village_banner_phone', c.phone); } catch (_) {}
+      }
+      if (c.location) {
+        try { localStorage.setItem('thuna_custom_village_banner_link', c.location); } catch (_) {}
+      }
+      if (c.description && c.icon) {
+        try { localStorage.setItem('thuna_custom_village_banner_desc', c.description); } catch (_) {}
+      }
+      if (typeof renderAdByIndex === 'function') {
+        renderAdByIndex(0);
       }
       return;
     }
@@ -1692,9 +1717,41 @@
     try {
       const { data, error } = await client.from('emergency_contacts').select('*').order('created_at', { ascending: false });
       if (!error && Array.isArray(data) && data.length > 0) {
-        const mapped = data.map(c => ({
+        // Sync Home Banner if saved in cloud
+        const bannerItem = data.find(c => c.id === 'app_setting_home_banner' || c.category === 'app_setting_home_banner');
+        if (bannerItem) {
+          const art = bannerItem.icon || bannerItem.description;
+          if (art) {
+            try { localStorage.setItem('thuna_custom_village_banner_art', art); } catch (_) {}
+          }
+          if (bannerItem.title || bannerItem.name) {
+            try { localStorage.setItem('thuna_custom_village_banner_title', bannerItem.title || bannerItem.name); } catch (_) {}
+          }
+          if (bannerItem.badge) {
+            try { localStorage.setItem('thuna_custom_village_banner_sub', bannerItem.badge); } catch (_) {}
+          }
+          if (bannerItem.phone) {
+            try { localStorage.setItem('thuna_custom_village_banner_phone', bannerItem.phone); } catch (_) {}
+          }
+          if (bannerItem.location) {
+            try { localStorage.setItem('thuna_custom_village_banner_link', bannerItem.location); } catch (_) {}
+          }
+          if (bannerItem.description && bannerItem.icon) {
+            try { localStorage.setItem('thuna_custom_village_banner_desc', bannerItem.description); } catch (_) {}
+          }
+          if (typeof renderAdByIndex === 'function') {
+            renderAdByIndex(0);
+          }
+        }
+
+        const realContacts = data.filter(c => 
+          c.id !== 'app_setting_splash_bg' && c.category !== 'app_setting_splash_bg' && 
+          c.id !== 'app_setting_home_banner' && c.category !== 'app_setting_home_banner'
+        );
+
+        const mapped = realContacts.map(c => ({
           id: c.id,
-          title: c.title,
+          title: c.title || c.name,
           category: c.category || 'അടിയന്തിരം',
           phone: c.phone || '',
           icon: c.icon || '📞',

@@ -1008,104 +1008,105 @@
 
         <!-- SECTION: HOME BANNER MANAGEMENT (ഹോം ചിത്രം മാറ്റുക) -->
         <div id="tab-banner" class="tab-pane" style="display:none">
-          <div class="legal-banner">
+          <div class="legal-banner" style="background:linear-gradient(135deg, #ECFDF5 0%, #E0F2FE 100%);border-color:#86EFAC">
             <div class="ico">🖼️</div>
             <div>
-              <h3>Home Page Banner Customization (ഹോം പേജിലെ ചിത്രങ്ങൾ മാറ്റുക)</h3>
-              <p>Admin can change both the middle <strong>"നമ്മുടെ നാട്"</strong> card picture as well as the hero banner. Upload pictures from your device, choose from Kerala presets, or enter any web URL. Changes reflect immediately across all devices.
+              <h3 style="color:#064E3B">Home Page Hero Banner Management (ഹോം ചിത്രം മാറ്റുക)</h3>
+              <p>ആപ്പിന്റെ ഹോം പേജിലെ പ്രധാന <strong>"നമ്മുടെ നാട്"</strong> ഹീറോ ബാനർ ചിത്രം, ടൈറ്റിൽ, സബ്‌ടൈറ്റിൽ, പരസ്യ വിവരണം എന്നിവ ഇവിടെ മാറ്റാം. ഇവിടെ നൽകുന്ന മാറ്റങ്ങൾ എല്ലാ നാട്ടുകാരുടെയും ഫോണുകളിൽ തത്സമയം (Live Real-Time) അപ്‌ഡേറ്റ് ചെയ്യപ്പെടും.
               </p>
             </div>
           </div>
 
-          <!-- 1. "നമ്മുടെ നാട്" MIDDLE PROMO CARD PICTURE CUSTOMIZER -->
-          <div class="content-box" style="border: 2px solid #86EFAC;">
+          <div class="content-box" style="border: 2px solid #86EFAC;box-shadow:0 8px 30px rgba(6,78,59,0.08)">
             <div class="box-header">
               <div>
-                <h2 style="color:#064E3B">"നമ്മുടെ നാട്" കാർഡ് ചിത്രം മാറ്റുക (Village Promo Card Picture)</h2>
-                <div style="font-size:12px;color:var(--muted);margin-top:2px">Change the picture displayed on the green/yellow "നാടിനൊപ്പം നാം" card</div>
+                <h2 style="color:#064E3B;display:flex;align-items:center;gap:8px">
+                  <span>🏡</span>
+                  <span>ഹോം പേജ് ഹീറോ ബാനർ തത്സമയ രൂപകൽപ്പന (Live Card Preview)</span>
+                </h2>
+                <div style="font-size:12.5px;color:var(--muted);margin-top:2px">ആപ്പിൽ നാട്ടുകാർക്ക് കാണുന്ന അതേ പ്രീമിയം ലുക്കിൽ തത്സമയം പ്രിവ്യൂ ചെയ്യാം</div>
               </div>
-              <button class="btn-action outline" onclick="resetAdminVillageBanner()">↺ Reset to Default Art</button>
+              <button class="btn-action outline" onclick="resetAdminVillageBanner()">↺ റീസെറ്റ് (Default Theme)</button>
             </div>
 
-            <!-- Live Card Mockup Preview -->
-            <div style="margin-bottom:20px;max-width:440px">
-              <div style="font-size:11.5px;font-weight:700;color:#64748B;margin-bottom:6px">തത്സമയ പ്രിവ്യൂ (Live Card Preview):</div>
-              <div id="adminVillageCardMockup" style="border-radius:22px;background:linear-gradient(135deg, #ECFDF5 0%, #FEF9C3 100%);border:1.5px solid #A7F3D0;box-shadow:0 6px 18px rgba(21, 128, 61, 0.08);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;min-height:85px;transition:all 0.2s ease">
-                <img id="adminVillagePreviewFullImg" alt="Preview Full Cover" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;display:none;border-radius:22px;pointer-events:none;">
-                <div id="adminVillagePreviewOverlay" style="position:absolute;inset:0;background:linear-gradient(90deg, rgba(6,78,59,0.88) 0%, rgba(6,78,59,0.52) 50%, rgba(0,0,0,0.12) 100%);z-index:2;display:none;border-radius:22px;pointer-events:none;"></div>
-                <div id="adminVillagePreviewLeft" style="display:flex;align-items:center;gap:12px;position:relative;z-index:3">
-                  <div style="width:42px;height:42px;background:#ffffff;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.5px solid #86EFAC;box-shadow:0 2px 8px rgba(21,128,61,0.1);flex-shrink:0">
-                    <svg viewBox="0 0 48 44" width="30" height="28">
-                      <circle cx="14" cy="11" r="6" fill="#F59E0B" />
-                      <circle cx="34" cy="11" r="6" fill="#16A34A" />
-                      <path d="M 23,22 C 20,18 14,16 8,20 C 2,24 2,33 6,40 C 11,46 19,51 24,55 C 21,47 14,44 12,39 C 9,34 11,28 16,26 C 19,24 22,25 23,26 Z" fill="#F59E0B" />
-                      <path d="M 25,22 C 28,18 34,16 40,20 C 46,24 46,33 42,40 C 37,46 29,51 24,55 C 27,47 34,44 36,39 C 39,34 37,28 32,26 C 29,24 26,25 25,26 Z" fill="#16A34A" />
-                    </svg>
+            <!-- Live Card Mockup Preview (EXACT APP DESIGN) -->
+            <div style="margin-bottom:24px;max-width:480px">
+              <div style="font-size:11.5px;font-weight:800;color:#047857;margin-bottom:8px;display:flex;align-items:center;gap:6px">
+                <span>📱 ആപ്പിലെ തത്സമയ രൂപം (Live Mobile Preview):</span>
+              </div>
+              <div id="adminHeroBannerCardMockup" style="position:relative;overflow:hidden;border-radius:20px;box-shadow:0 8px 24px rgba(6,78,59,0.18);min-height:140px;background:#064E3B;display:flex;align-items:center">
+                <img id="adminVillagePreviewFullImg" alt="Preview Full Cover" src="img/kerala-splash.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;border-radius:20px;pointer-events:none;">
+                <div id="adminVillagePreviewOverlay" style="position:absolute;inset:0;background:linear-gradient(90deg, rgba(6,78,59,0.85) 0%, rgba(6,78,59,0.45) 55%, rgba(0,0,0,0.15) 100%);z-index:2;border-radius:20px;pointer-events:none;"></div>
+                <div style="position:relative;z-index:3;display:flex;align-items:center;gap:12px;padding:16px">
+                  <div style="width:44px;height:44px;background:rgba(255,255,255,0.95);border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.5px solid #86EFAC;box-shadow:0 4px 12px rgba(0,0,0,0.15);flex-shrink:0">
+                    <span style="font-size:22px">🌴</span>
                   </div>
                   <div>
-                    <div id="adminVillagePreviewTitle" style="font-size:16px;font-weight:800;color:#064E3B;font-family:'Manjari',sans-serif">നമ്മുടെ നാട്</div>
-                    <div id="adminVillagePreviewSub" style="font-size:11.5px;font-weight:700;color:#15803D;margin-top:2px">🤝 നാടിനൊപ്പം നാം</div>
+                    <div id="adminVillagePreviewTitle" style="font-size:18px;font-weight:900;color:#ffffff;text-shadow:0 2px 8px rgba(0,0,0,0.6);font-family:'Manjari',sans-serif">നമ്മുടെ നാട്</div>
+                    <div id="adminVillagePreviewSub" style="font-size:12.5px;font-weight:700;color:#A7F3D0;margin-top:2px;text-shadow:0 1px 4px rgba(0,0,0,0.5)">🤝 നാടിനൊപ്പം നാം</div>
                   </div>
                 </div>
-                <div id="adminVillagePreviewArtWrap" style="height:65px;width:130px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:12px;flex-shrink:0;position:relative;z-index:3">
-                  <!-- SVG or custom img -->
+                <div class="admin-ad-badge" style="position:absolute;top:10px;right:12px;background:rgba(0,0,0,0.55);color:#fff;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:800;z-index:4;backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.25)">
+                  ✨ പ്രധാന അറിയിപ്പ് / Ads
                 </div>
-              </div>
-
-              <!-- Layout Mode Toggle in Admin -->
-              <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
-                <button type="button" id="adminVillageModeFullBtn" class="btn-sm info" style="padding:6px 12px;font-size:11.5px;font-weight:700" onclick="setAdminVillageMode('full')">🖼️ Full Image Cover</button>
-                <button type="button" id="adminVillageModeSideBtn" class="btn-sm outline" style="padding:6px 12px;font-size:11.5px;font-weight:700" onclick="setAdminVillageMode('side')">📐 Side Image Box</button>
+                <!-- CAROUSEL INDICATOR DOTS -->
+                <div style="position:absolute;bottom:10px;right:14px;display:flex;gap:5px;z-index:5">
+                  <span style="width:7px;height:7px;border-radius:50%;background:#ffffff"></span>
+                  <span style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.4)"></span>
+                  <span style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.4)"></span>
+                </div>
               </div>
             </div>
 
             <!-- Upload & URL Controls Grid -->
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
               <!-- Upload from device -->
-              <div style="background:#f8fafc;border:2px dashed #cbd5e1;border-radius:16px;padding:20px;text-align:center">
-                <div style="font-size:32px;margin-bottom:6px">📁</div>
-                <h4 style="margin:0 0 4px;font-size:14px;font-weight:800">Upload Picture from Device</h4>
-                <p style="font-size:11.5px;color:var(--muted);margin:0 0 14px">Choose any photo, landscape or icon (JPG, PNG, WEBP)</p>
+              <div style="background:#f8fafc;border:2px dashed #86EFAC;border-radius:16px;padding:22px;text-align:center">
+                <div style="font-size:34px;margin-bottom:6px">📸</div>
+                <h4 style="margin:0 0 4px;font-size:14.5px;font-weight:800;color:#064E3B">കമ്പ്യൂട്ടറിൽ നിന്നോ ഫോണിൽ നിന്നോ ഫോട്ടോ തിരഞ്ഞെടുക്കാം</h4>
+                <p style="font-size:12px;color:var(--muted);margin:0 0 14px">ഹൈ-റെസൊലൂഷൻ ഫോട്ടോകൾ (JPG, PNG, WEBP) തിരഞ്ഞെടുക്കുക</p>
                 <input type="file" id="adminVillageFileInput" accept="image/*" style="display:none" onchange="handleAdminVillageFileUpload(event)">
-                <button type="button" class="btn-action green" onclick="document.getElementById('adminVillageFileInput').click()">Choose Image File...</button>
+                <button type="button" class="btn-action green" onclick="document.getElementById('adminVillageFileInput').click()" style="padding:10px 18px">
+                  📁 ഫോട്ടോ അപ്‌ലോഡ് ചെയ്യാം...
+                </button>
               </div>
 
               <!-- Paste URL -->
-              <div style="background:#f8fafc;border:1px solid var(--line);border-radius:16px;padding:20px">
-                <div style="font-size:32px;margin-bottom:6px">🔗</div>
-                <h4 style="margin:0 0 4px;font-size:14px;font-weight:800">Or Paste Image URL</h4>
-                <p style="font-size:11.5px;color:var(--muted);margin:0 0 10px">Direct web picture link</p>
-                <input type="url" id="adminVillageUrlInput" placeholder="https://images.unsplash.com/photo-..." style="width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-size:12.5px;margin-bottom:10px">
-                <button type="button" class="btn-action outline" style="width:100%;justify-content:center" onclick="applyAdminVillageUrl()">Preview URL</button>
+              <div style="background:#f8fafc;border:1px solid var(--line);border-radius:16px;padding:22px">
+                <div style="font-size:34px;margin-bottom:6px">🔗</div>
+                <h4 style="margin:0 0 4px;font-size:14.5px;font-weight:800;color:#0F172A">ഇന്റർനെറ്റിലെ ചിത്രത്തിന്റെ ലിങ്ക് നൽകാം</h4>
+                <p style="font-size:12px;color:var(--muted);margin:0 0 10px">നേരിട്ടുള്ള വെബ് ഇമേജ് URL ലിങ്ക്</p>
+                <input type="url" id="adminVillageUrlInput" placeholder="https://images.unsplash.com/photo-..." style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:12.5px;margin-bottom:10px;outline:none">
+                <button type="button" class="btn-action outline" style="width:100%;justify-content:center" onclick="applyAdminVillageUrl()">ലിങ്ക് പ്രിവ്യൂ ചെയ്യുക</button>
               </div>
             </div>
 
-            <!-- Presets -->
-            <div style="margin-bottom:20px">
-              <h4 style="margin:0 0 10px;font-size:13.5px;font-weight:800">Or Select Curated Kerala Presets:</h4>
+            <!-- Curated Kerala Presets -->
+            <div style="margin-bottom:22px">
+              <h4 style="margin:0 0 10px;font-size:13.5px;font-weight:800;color:#064E3B">🌴 അല്ലെങ്കിൽ മനോഹരമായ കേരള പ്രകൃതിഭംഗി പ്രീസെറ്റുകൾ തിരഞ്ഞെടുക്കാം:</h4>
               <div style="display:flex;gap:10px;flex-wrap:wrap">
-                <button type="button" class="btn-sm info" style="padding:8px 14px;font-size:12px;border-radius:10px" onclick="setAdminVillagePreset('https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=300&q=80', 'തോണിയും കായലും')">⛵ Backwaters Boat</button>
-                <button type="button" class="btn-sm info" style="padding:8px 14px;font-size:12px;border-radius:10px" onclick="setAdminVillagePreset('https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=300&q=80', 'തെങ്ങിൻതോപ്പും വീടും')">🌴 Village &amp; Coconut Palms</button>
-                <button type="button" class="btn-sm info" style="padding:8px 14px;font-size:12px;border-radius:10px" onclick="setAdminVillagePreset('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=300&q=80', 'പച്ചപ്പ് നിറഞ്ഞ പ്രകൃതി')">🌿 Lush Green Hills</button>
-                <button type="button" class="btn-sm info" style="padding:8px 14px;font-size:12px;border-radius:10px" onclick="resetAdminVillageBanner()">↺ Original Vector Illustration</button>
+                <button type="button" class="btn-sm info" style="padding:8px 14px;font-size:12px;border-radius:10px;background:#ECFDF5;border-color:#A7F3D0;color:#047857" onclick="setAdminVillagePreset('img/kerala-splash.jpg', 'ഔദ്യോഗിക പച്ചപ്പ് തീം')">🌿 കേരള തനിമ (Official Theme)</button>
+                <button type="button" class="btn-sm info" style="padding:8px 14px;font-size:12px;border-radius:10px;background:#F0F9FF;border-color:#BAE6FD;color:#0369A1" onclick="setAdminVillagePreset('https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80', 'തോണിയും കായലും')">⛵ ആലപ്പുഴ കായൽ & തോണി</button>
+                <button type="button" class="btn-sm info" style="padding:8px 14px;font-size:12px;border-radius:10px;background:#ECFDF5;border-color:#A7F3D0;color:#047857" onclick="setAdminVillagePreset('https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=1200&q=80', 'തെങ്ങിൻതോപ്പും നാട്ടിൻപുറവും')">🌴 നാട്ടിൻപുറവും തെങ്ങിൻതോപ്പും</button>
+                <button type="button" class="btn-sm info" style="padding:8px 14px;font-size:12px;border-radius:10px;background:#FEF3C7;border-color:#FDE68A;color:#B45309" onclick="setAdminVillagePreset('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80', 'പച്ചപ്പ് നിറഞ്ഞ മലനിരകൾ')">🏔️ മൂന്നാർ മലനിരകൾ</button>
               </div>
             </div>
 
             <!-- Edit Texts -->
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:var(--muted)">Banner Title / പരസ്യത്തിന്റെ പേര്:</label>
-                <input type="text" id="adminVillageTitleInput" value="നമ്മുടെ നാട്" style="width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-size:13px;font-weight:700;margin-top:4px" oninput="updateAdminVillageMockup()">
+                <label style="font-size:12px;font-weight:700;color:var(--muted)">ബാനർ പ്രധാന തലക്കെട്ട് (Title / പരസ്യത്തിന്റെ പേര്):</label>
+                <input type="text" id="adminVillageTitleInput" value="നമ്മുടെ നാട്" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:13.5px;font-weight:700;margin-top:4px" oninput="updateAdminVillageMockup()">
               </div>
               <div>
-                <label style="font-size:11.5px;font-weight:700;color:var(--muted)">Banner Subtitle / ടാഗ്‌ലൈൻ:</label>
-                <input type="text" id="adminVillageSubInput" value="🤝 നാടിനൊപ്പം നാം" style="width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-size:13px;font-weight:700;margin-top:4px" oninput="updateAdminVillageMockup()">
+                <label style="font-size:12px;font-weight:700;color:var(--muted)">ബാനർ ഉപതലക്കെട്ട് (Subtitle / ടാഗ്‌ലൈൻ):</label>
+                <input type="text" id="adminVillageSubInput" value="🤝 നാടിനൊപ്പം നാം" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:13.5px;font-weight:700;margin-top:4px" oninput="updateAdminVillageMockup()">
               </div>
             </div>
 
             <!-- Ad Details on Click -->
             <div style="background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:20px">
-              <div style="font-size:13px;font-weight:800;color:#0F172A;margin-bottom:8px">ℹ️ പരസ്യത്തെക്കുറിച്ചുള്ള വിശദ വിവരങ്ങൾ (Ad Detailed Info on Click):</div>
+              <div style="font-size:13px;font-weight:800;color:#0F172A;margin-bottom:8px">ℹ️ നാട്ടുകാർ ബാനറിൽ ക്ലിക്ക് ചെയ്യുമ്പോൾ കാണിക്കേണ്ട വിശദ വിവരങ്ങൾ:</div>
               <div style="margin-bottom:12px">
                 <label style="font-size:11.5px;font-weight:700;color:var(--muted)">വിശദ വിവരണം / സന്ദേശം (Full Description / Announcement Body):</label>
                 <textarea id="adminVillageDescInput" rows="3" placeholder="പരസ്യത്തെക്കുറിച്ചോ ഓഫറിനെക്കുറിച്ചോ അറിയിപ്പുകളെക്കുറിച്ചോ ഉള്ള പൂർണ്ണ വിവരങ്ങൾ ഇവിടെ എഴുതാം..." style="width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-size:13px;margin-top:4px;resize:vertical"></textarea>
@@ -1122,83 +1123,9 @@
               </div>
             </div>
 
-            <div style="display:flex;justify-content:flex-end">
-              <button type="button" class="btn-action green" style="padding:12px 26px;font-size:14px;font-weight:800" onclick="saveAdminVillageBanner()">
-                💾 Save &amp; Publish Card Picture (ഈ ചിത്രം സേവ് ചെയ്യുക)
-              </button>
-            </div>
-          </div>
-
-          <!-- 2. TOP HERO BANNER CUSTOMIZATION -->
-
-          <div class="content-box">
-            <div class="box-header">
-              <h2>Current Live Hero Banner Preview</h2>
-              <button class="btn-action outline" onclick="resetHeroBanner()">↺ Reset to Default Scenic Kerala
-                Image</button>
-            </div>
-
-            <div
-              style="border-radius:20px; overflow:hidden; border:2px solid var(--line); position:relative; max-width:552px; aspect-ratio:552/216; background:#03543f; margin-bottom:20px; box-shadow:0 4px 20px rgba(0,0,0,0.1)">
-              <img id="adminBannerPreview" src="assets/kerala_hero_clean.png"
-                style="width:100%; height:100%; object-fit:cover; display:block">
-              <div
-                style="position:absolute; bottom:12px; left:16px; background:rgba(0,0,0,0.65); color:#fff; font-size:11px; font-weight:700; padding:5px 12px; border-radius:12px; backdrop-filter:blur(4px)">
-                📍 Live Banner on Home Page
-              </div>
-            </div>
-
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:20px">
-              <!-- Option A: File Upload -->
-              <div
-                style="background:#f8fafc; border:2px dashed #cbd5e1; border-radius:18px; padding:22px; text-align:center">
-                <div style="font-size:36px; margin-bottom:8px">📁</div>
-                <h4 style="margin:0 0 6px; font-size:15px; font-weight:800">Upload New Photo from Computer</h4>
-                <p style="font-size:12px; color:var(--muted); margin:0 0 16px">Supports JPG, PNG, WEBP high-resolution
-                  pictures</p>
-                <input type="file" id="bannerFileInput" accept="image/*" style="display:none"
-                  onchange="handleBannerFileUpload(event)">
-                <button class="btn-action green" onclick="document.getElementById('bannerFileInput').click()">Choose
-                  Image File...</button>
-              </div>
-
-              <!-- Option B: Image URL -->
-              <div style="background:#f8fafc; border:1px solid var(--line); border-radius:18px; padding:22px">
-                <div style="font-size:36px; margin-bottom:8px">🔗</div>
-                <h4 style="margin:0 0 6px; font-size:15px; font-weight:800">Or Enter Web Image URL</h4>
-                <p style="font-size:12px; color:var(--muted); margin:0 0 10px">Paste any online picture link</p>
-                <input type="url" id="bannerUrlInput" placeholder="https://example.com/kerala_scenery.jpg"
-                  style="width:100%; padding:10px 14px; border:1px solid var(--line); border-radius:10px; font-size:13px; margin-bottom:12px">
-                <button class="btn-action outline" style="width:100%; justify-content:center"
-                  onclick="applyBannerFromUrl()">Preview from URL</button>
-              </div>
-            </div>
-
-            <!-- Presets -->
-            <div style="margin-top:26px">
-              <h4 style="margin:0 0 12px; font-size:14px; font-weight:800">Or Select a Kerala Theme Preset:</h4>
-              <div style="display:flex; gap:12px; flex-wrap:wrap">
-                <button class="btn-sm info"
-                  style="padding:10px 16px; font-size:12.5px; background:#fef2f2; color:#b91c1c; border:1.5px solid #f87171; font-weight:800; border-radius:12px"
-                  onclick="setPresetBanner('assets/nammude_naad_banner.png', 'നമ്മുടെ നാട് ഔദ്യോഗിക ഫെസ്റ്റിവൽ ബാനർ')">🌺
-                  നമ്മുടെ നാട് ഔദ്യോഗിക ബാനർ (Official Festive)</button>
-                <button class="btn-sm info" style="padding:9px 14px; font-size:12px"
-                  onclick="setPresetBanner('assets/river_sunset.jpg', 'Kerala River Sunset')">⛵ River Sunset
-                  Backwaters</button>
-                <button class="btn-sm info" style="padding:9px 14px; font-size:12px"
-                  onclick="setPresetBanner('assets/kerala_hero_clean.png', 'Kuttanad Sunrise')">🌅 Kuttanad
-                  Sunrise</button>
-                <button class="btn-sm info" style="padding:9px 14px; font-size:12px"
-                  onclick="setPresetBanner('assets/football_team.jpg', 'Youth & Sports')">⚽ Community Sports
-                  Theme</button>
-              </div>
-            </div>
-
-            <div
-              style="margin-top:28px; padding-top:18px; border-top:1px solid var(--line); display:flex; gap:12px; justify-content:flex-end">
-              <button class="btn-action green" style="padding:13px 28px; font-size:14.5px; font-weight:800"
-                onclick="saveBannerPermanently()">
-                💾 Save & Publish to Home Page (മാറ്റങ്ങൾ സേവ് ചെയ്യുക)
+            <div style="display:flex;justify-content:flex-end;gap:12px">
+              <button type="button" class="btn-action green" style="padding:13px 30px;font-size:14.5px;font-weight:800;background:linear-gradient(135deg, #064E3B 0%, #0E7043 100%)" onclick="saveAdminVillageBanner()">
+                💾 ഈ ഹോം ചിത്രം സേവ് ചെയ്ത് പബ്ലിഷ് ചെയ്യാം (Save & Publish)
               </button>
             </div>
           </div>
@@ -1524,6 +1451,8 @@
     </div>
   </div>
 
+  <script src="js/supabase-sdk.js"></script>
+  <script src="js/supabase-backend.js?v=3.0"></script>
   <script>
     function toast(msg) {
       const t = document.getElementById('toast');
@@ -1534,35 +1463,20 @@
     }
 
     // ==============================================================
-    // 1. VILLAGE PROMO CARD PICTURE ("നമ്മുടെ നാട്" ചിത്രം) MANAGEMENT
+    // HOME PAGE HERO BANNER ("നമ്മുടെ നാട്" ഹോം ചിത്രം) MANAGEMENT
     // ==============================================================
     let pendingAdminVillageArt = localStorage.getItem('thuna_custom_village_banner_art') || null;
-    let pendingAdminVillageMode = localStorage.getItem('thuna_custom_village_banner_mode') || 'full';
 
-    function setAdminVillageMode(mode) {
-      pendingAdminVillageMode = mode;
-      const fullBtn = document.getElementById('adminVillageModeFullBtn');
-      const sideBtn = document.getElementById('adminVillageModeSideBtn');
-      if (fullBtn && sideBtn) {
-        if (mode === 'full') {
-          fullBtn.className = 'btn-sm info';
-          sideBtn.className = 'btn-sm outline';
-        } else {
-          sideBtn.className = 'btn-sm info';
-          fullBtn.className = 'btn-sm outline';
-        }
-      }
-      updateAdminVillageMockup();
+    function initBannerAdmin() {
+      initAdminVillageBanner();
     }
 
     function initAdminVillageBanner() {
-      const savedArt = localStorage.getItem('thuna_custom_village_banner_art');
+      const savedArt = localStorage.getItem('thuna_custom_village_banner_art') || 'img/kerala-splash.jpg';
       const savedTitle = localStorage.getItem('thuna_custom_village_banner_title') || 'നമ്മുടെ നാട്';
       const savedSub = localStorage.getItem('thuna_custom_village_banner_sub') || '🤝 നാടിനൊപ്പം നാം';
-      const savedMode = localStorage.getItem('thuna_custom_village_banner_mode') || 'full';
 
       pendingAdminVillageArt = savedArt;
-      pendingAdminVillageMode = savedMode;
 
       const titleInput = document.getElementById('adminVillageTitleInput');
       const subInput = document.getElementById('adminVillageSubInput');
@@ -1576,7 +1490,7 @@
       if (phoneInput) phoneInput.value = localStorage.getItem('thuna_custom_village_banner_phone') || '';
       if (linkInput) linkInput.value = localStorage.getItem('thuna_custom_village_banner_link') || '';
 
-      setAdminVillageMode(savedMode);
+      updateAdminVillageMockup();
     }
 
     function compressAdminVillageBannerImage(file, maxWidth, quality, callback) {
@@ -1622,75 +1536,17 @@
     }
 
     function updateAdminVillageMockup() {
-      const cardMockup = document.getElementById('adminVillageCardMockup');
-      const artWrap = document.getElementById('adminVillagePreviewArtWrap');
       const fullImg = document.getElementById('adminVillagePreviewFullImg');
-      const overlay = document.getElementById('adminVillagePreviewOverlay');
       const titlePreview = document.getElementById('adminVillagePreviewTitle');
       const subPreview = document.getElementById('adminVillagePreviewSub');
       const titleInput = document.getElementById('adminVillageTitleInput');
       const subInput = document.getElementById('adminVillageSubInput');
 
-      if (titlePreview && titleInput) titlePreview.textContent = titleInput.value || 'നമ്മുടെ നാട്';
-      if (subPreview && subInput) subPreview.textContent = subInput.value || '🤝 നാടിനൊപ്പം നാം';
+      if (titlePreview && titleInput) titlePreview.textContent = titleInput.value.trim() || 'നമ്മുടെ നാട്';
+      if (subPreview && subInput) subPreview.textContent = subInput.value.trim() || '🤝 നാടിനൊപ്പം നാം';
 
-      if (cardMockup) {
-        if (pendingAdminVillageMode === 'full' && pendingAdminVillageArt) {
-          if (fullImg) {
-            fullImg.src = pendingAdminVillageArt;
-            fullImg.style.display = 'block';
-          }
-          if (overlay) overlay.style.display = 'block';
-          cardMockup.style.backgroundImage = `linear-gradient(90deg, rgba(6,78,59,0.85) 0%, rgba(6,78,59,0.48) 50%, rgba(0,0,0,0.1) 100%), url("${pendingAdminVillageArt}")`;
-          cardMockup.style.backgroundSize = 'cover';
-          cardMockup.style.backgroundPosition = 'center';
-          cardMockup.style.minHeight = '115px';
-          cardMockup.style.border = '1.5px solid #86EFAC';
-          if (titlePreview) {
-            titlePreview.style.color = '#FFFFFF';
-            titlePreview.style.textShadow = '0 2px 4px rgba(0,0,0,0.6)';
-          }
-          if (subPreview) {
-            subPreview.style.color = '#FACC15';
-            subPreview.style.textShadow = '0 1px 3px rgba(0,0,0,0.6)';
-          }
-          if (artWrap) artWrap.style.display = 'none';
-        } else {
-          if (fullImg) fullImg.style.display = 'none';
-          if (overlay) overlay.style.display = 'none';
-          cardMockup.style.backgroundImage = 'linear-gradient(135deg, #ECFDF5 0%, #FEF9C3 100%)';
-          cardMockup.style.minHeight = '85px';
-          cardMockup.style.border = '1.5px solid #A7F3D0';
-          if (titlePreview) {
-            titlePreview.style.color = '#064E3B';
-            titlePreview.style.textShadow = 'none';
-          }
-          if (subPreview) {
-            subPreview.style.color = '#15803D';
-            subPreview.style.textShadow = 'none';
-          }
-          if (artWrap) {
-            artWrap.style.display = 'flex';
-            if (pendingAdminVillageArt) {
-              artWrap.innerHTML = `<img src="${pendingAdminVillageArt}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;border:1px solid #86EFAC" alt="Preview">`;
-            } else {
-              artWrap.innerHTML = `
-                <svg viewBox="0 0 140 70" width="130" height="65" preserveAspectRatio="xMidYMid meet">
-                  <path d="M0 50 Q 40 30 90 42 Q 120 50 140 40 L140 70 L0 70 Z" fill="#22C55E" />
-                  <path d="M0 58 Q 50 48 100 56 L140 54 L140 70 L0 70 Z" fill="#15803D" />
-                  <rect x="75" y="40" width="26" height="18" fill="#FEF3C7" stroke="#78350F" stroke-width="1" />
-                  <rect x="85" y="46" width="6" height="12" fill="#78350F" />
-                  <polygon points="70,40 88,27 106,40" fill="#DC2626" stroke="#991B1B" stroke-width="1" />
-                  <path d="M30 65 Q 36 38 32 20" stroke="#78350F" stroke-width="3" fill="none" stroke-linecap="round" />
-                  <path d="M32 20 Q 18 10 12 24" stroke="#16A34A" stroke-width="2" fill="none" stroke-linecap="round" />
-                  <path d="M32 20 Q 24 4 16 8" stroke="#22C55E" stroke-width="2" fill="none" stroke-linecap="round" />
-                  <path d="M32 20 Q 42 4 48 12" stroke="#15803D" stroke-width="2" fill="none" stroke-linecap="round" />
-                  <path d="M32 20 Q 48 16 46 28" stroke="#16A34A" stroke-width="2" fill="none" stroke-linecap="round" />
-                </svg>
-              `;
-            }
-          }
-        }
+      if (fullImg) {
+        fullImg.src = pendingAdminVillageArt || 'img/kerala-splash.jpg';
       }
     }
 
@@ -1710,38 +1566,70 @@
       if (!url) { toast('Please enter a valid image URL'); return; }
       pendingAdminVillageArt = url;
       updateAdminVillageMockup();
-      toast('✅ ലിങ്ക് പ്രിവ്യൂ ചെയ്തു.');
+      toast('✅ ലിങ്ക് പ്രിവ്യൂ ചെയ്തു. "Save & Publish" ക്ലിക്ക് ചെയ്യുക.');
     }
 
     function setAdminVillagePreset(url, label) {
       pendingAdminVillageArt = url;
       updateAdminVillageMockup();
-      toast('Selected: ' + label);
+      toast('തിരഞ്ഞെടുത്തു: ' + label);
     }
 
     function resetAdminVillageBanner() {
-      pendingAdminVillageArt = null;
+      pendingAdminVillageArt = 'img/kerala-splash.jpg';
+      const titleInput = document.getElementById('adminVillageTitleInput');
+      const subInput = document.getElementById('adminVillageSubInput');
+      const descInput = document.getElementById('adminVillageDescInput');
+      const phoneInput = document.getElementById('adminVillagePhoneInput');
+      const linkInput = document.getElementById('adminVillageLinkInput');
+      const urlInput = document.getElementById('adminVillageUrlInput');
+
+      if (titleInput) titleInput.value = 'നമ്മുടെ നാട്';
+      if (subInput) subInput.value = '🤝 നാടിനൊപ്പം നാം';
+      if (descInput) descInput.value = '';
+      if (phoneInput) phoneInput.value = '';
+      if (linkInput) linkInput.value = '';
+      if (urlInput) urlInput.value = '';
+
+      try {
+        localStorage.removeItem('thuna_custom_village_banner_art');
+        localStorage.setItem('thuna_custom_village_banner_title', 'നമ്മുടെ നാട്');
+        localStorage.setItem('thuna_custom_village_banner_sub', '🤝 നാടിനൊപ്പം നാം');
+        localStorage.removeItem('thuna_custom_village_banner_desc');
+        localStorage.removeItem('thuna_custom_village_banner_phone');
+        localStorage.removeItem('thuna_custom_village_banner_link');
+      } catch (_) {}
+
+      if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveEmergencyContact === 'function') {
+        window.NN_SUPABASE_SERVICES.saveEmergencyContact({
+          id: 'app_setting_home_banner',
+          category: 'app_setting_home_banner',
+          title: 'നമ്മുടെ നാട്',
+          badge: '🤝 നാടിനൊപ്പം നാം',
+          icon: 'img/kerala-splash.jpg',
+          description: '',
+          phone: '',
+          location: '',
+          createdAt: Date.now()
+        }).catch(() => {});
+      }
+
       updateAdminVillageMockup();
-      toast('↺ Reset to Original Vector Illustration');
+      toast('↺ ഡിഫോൾട്ട് പച്ചപ്പ് തീമിലേക്ക് റീസെറ്റ് ചെയ്തു.');
     }
 
     function saveAdminVillageBanner() {
       const title = (document.getElementById('adminVillageTitleInput')?.value || '').trim() || 'നമ്മുടെ നാട്';
       const sub = (document.getElementById('adminVillageSubInput')?.value || '').trim() || '🤝 നാടിനൊപ്പം നാം';
+      const descVal = (document.getElementById('adminVillageDescInput')?.value || '').trim();
+      const phoneVal = (document.getElementById('adminVillagePhoneInput')?.value || '').trim();
+      const linkVal = (document.getElementById('adminVillageLinkInput')?.value || '').trim();
+      const bannerArt = pendingAdminVillageArt || 'img/kerala-splash.jpg';
 
       try {
-        if (pendingAdminVillageArt) {
-          localStorage.setItem('thuna_custom_village_banner_art', pendingAdminVillageArt);
-        } else {
-          localStorage.removeItem('thuna_custom_village_banner_art');
-        }
+        localStorage.setItem('thuna_custom_village_banner_art', bannerArt);
         localStorage.setItem('thuna_custom_village_banner_title', title);
         localStorage.setItem('thuna_custom_village_banner_sub', sub);
-        localStorage.setItem('thuna_custom_village_banner_mode', pendingAdminVillageMode);
-
-        const descVal = (document.getElementById('adminVillageDescInput')?.value || '').trim();
-        const phoneVal = (document.getElementById('adminVillagePhoneInput')?.value || '').trim();
-        const linkVal = (document.getElementById('adminVillageLinkInput')?.value || '').trim();
 
         if (descVal) localStorage.setItem('thuna_custom_village_banner_desc', descVal);
         else localStorage.removeItem('thuna_custom_village_banner_desc');
@@ -1752,112 +1640,40 @@
         if (linkVal) localStorage.setItem('thuna_custom_village_banner_link', linkVal);
         else localStorage.removeItem('thuna_custom_village_banner_link');
       } catch (err) {
-        console.warn('LocalStorage quota error in admin:', err);
+        console.warn('LocalStorage error in admin:', err);
       }
 
+      // Real-time Cloud Sync across ALL user devices via Supabase
+      if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveEmergencyContact === 'function') {
+        window.NN_SUPABASE_SERVICES.saveEmergencyContact({
+          id: 'app_setting_home_banner',
+          category: 'app_setting_home_banner',
+          title: title,
+          badge: sub,
+          icon: bannerArt,
+          description: descVal,
+          phone: phoneVal,
+          location: linkVal,
+          createdAt: Date.now()
+        }).then(() => {
+          console.info('✅ [Admin] Home Hero Banner synced to Supabase Cloud');
+        }).catch(e => console.warn('Supabase sync error:', e));
+      }
+
+      // Firebase fallback if configured
       if (window.FirebaseSync && typeof window.FirebaseSync.set === 'function') {
         window.FirebaseSync.set('config/villageBanner', {
-          art: pendingAdminVillageArt || '',
+          art: bannerArt,
           title: title,
           sub: sub,
-          mode: pendingAdminVillageMode,
+          description: descVal,
+          phone: phoneVal,
+          link: linkVal,
           updatedAt: Date.now()
         }).catch(() => {});
       }
 
-      toast('🎉 "നമ്മുടെ നാട്" കാർഡ് ചിത്രം വിജയകരമായി മാറ്റി! (Card Picture Updated Live!)');
-    }
-
-    // ==============================================================
-    // 2. TOP HERO BANNER MANAGEMENT IN ADMIN
-    // ==============================================================
-    let pendingBanner = localStorage.getItem('thuna_custom_hero_banner') || 'assets/nammude_naad_banner.png';
-
-    function initBannerAdmin() {
-      initAdminVillageBanner();
-      const preview = document.getElementById('adminBannerPreview');
-      if (preview) preview.src = pendingBanner;
-      fetch('/api/banner').then(r => r.json()).then(data => {
-        if (data && data.banner) {
-          pendingBanner = data.banner;
-          if (preview) preview.src = pendingBanner;
-          localStorage.setItem('thuna_custom_hero_banner', pendingBanner);
-        }
-      }).catch(() => { });
-    }
-
-    function handleBannerFileUpload(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      toast('⏳ ചിത്രം തയ്യാറാക്കുന്നു...');
-      const reader = new FileReader();
-      reader.onload = function (evt) {
-        const img = new Image();
-        img.onload = function () {
-          let w = img.width;
-          let h = img.height;
-          const maxW = 1200;
-          if (w > maxW) {
-            h = Math.round((h * maxW) / w);
-            w = maxW;
-          }
-          const canvas = document.createElement('canvas');
-          canvas.width = w;
-          canvas.height = h;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, w, h);
-          pendingBanner = canvas.toDataURL('image/jpeg', 0.82);
-          document.getElementById('adminBannerPreview').src = pendingBanner;
-          toast('✅ ചിത്രം പ്രിവ്യൂ ചെയ്തു. "Save & Publish" ക്ലിക്ക് ചെയ്യുക.');
-        };
-        img.src = evt.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function applyBannerFromUrl() {
-      const url = document.getElementById('bannerUrlInput').value.trim();
-      if (!url) { toast('Please enter a valid image URL'); return; }
-      pendingBanner = url;
-      document.getElementById('adminBannerPreview').src = pendingBanner;
-      toast('✅ ചിത്രം പ്രിവ്യൂ ചെയ്തു. "Save & Publish" ക്ലിക്ക് ചെയ്യുക.');
-    }
-
-    function setPresetBanner(url, label) {
-      pendingBanner = url;
-      document.getElementById('adminBannerPreview').src = pendingBanner;
-      toast('Selected: ' + label);
-    }
-
-    function saveBannerPermanently() {
-      localStorage.setItem('thuna_custom_hero_banner', pendingBanner);
-      if (window.FirebaseSync && typeof window.FirebaseSync.pushBanner === 'function') {
-        window.FirebaseSync.pushBanner(pendingBanner);
-      }
-      fetch('/api/banner', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ banner: pendingBanner })
-      }).then(r => r.json()).then(() => {
-        toast('🎉 ഹോം പേജ് ചിത്രം വിജയകരമായി മാറ്റി! (Hero Banner Updated Live!)');
-      }).catch(() => {
-        toast('🎉 സേവ് ചെയ്തു! (Saved)');
-      });
-    }
-
-    function resetHeroBanner() {
-      pendingBanner = 'assets/nammude_naad_banner.png';
-      document.getElementById('adminBannerPreview').src = pendingBanner;
-      localStorage.removeItem('thuna_custom_hero_banner');
-      if (window.FirebaseSync && typeof window.FirebaseSync.pushBanner === 'function') {
-        window.FirebaseSync.pushBanner('assets/nammude_naad_banner.png');
-      }
-      fetch('/api/banner', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ banner: '' })
-      });
-      toast('↺ Reset to Default Scenic Kerala Banner');
+      toast('🎉 ഹോം പേജ് ചിത്രം തത്സമയം പബ്ലിഷ് ചെയ്തു! (Live Real-Time Updated)');
     }
 
     // ==============================================================

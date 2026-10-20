@@ -3607,14 +3607,16 @@
   function switchAdminHubTab(tab) {
     const btnSrv = document.getElementById('adminTabBtnServices');
     const btnNum = document.getElementById('adminTabBtnNumbers') || document.getElementById('adminTabBtnEmergency');
+    const btnHome = document.getElementById('adminTabBtnHomeBanner');
     const btnSpl = document.getElementById('adminTabBtnSplash');
 
     const formSrv = document.getElementById('adminAddServiceForm') || document.getElementById('adminTabContentServices');
     const formNum = document.getElementById('adminAddNumberForm') || document.getElementById('adminTabContentEmergency');
+    const secHome = document.getElementById('adminHomeBannerSection');
     const secSpl = document.getElementById('adminSplashPhotoSection');
 
     // Reset buttons
-    [btnSrv, btnNum, btnSpl].forEach(b => {
+    [btnSrv, btnNum, btnHome, btnSpl].forEach(b => {
       if (b) {
         b.style.background = 'none';
         b.style.color = '#64748B';
@@ -3626,6 +3628,7 @@
     // Hide all
     if (formSrv) formSrv.style.display = 'none';
     if (formNum) formNum.style.display = 'none';
+    if (secHome) secHome.style.display = 'none';
     if (secSpl) secSpl.style.display = 'none';
 
     if (tab === 'services') {
@@ -3644,6 +3647,37 @@
         btnNum.style.fontWeight = '800';
       }
       if (formNum) formNum.style.display = 'flex';
+    } else if (tab === 'homeBanner') {
+      if (btnHome) {
+        btnHome.style.background = '#fff';
+        btnHome.style.color = '#0E7043';
+        btnHome.style.borderBottom = '2px solid #0E7043';
+        btnHome.style.fontWeight = '800';
+      }
+      if (secHome) secHome.style.display = 'flex';
+
+      const savedArt = localStorage.getItem('thuna_custom_village_banner_art') || 'img/kerala-splash.jpg';
+      const savedTitle = localStorage.getItem('thuna_custom_village_banner_title') || 'നമ്മുടെ നാട്';
+      const savedSub = localStorage.getItem('thuna_custom_village_banner_sub') || '🤝 നാടിനൊപ്പം നാം';
+      const savedDesc = localStorage.getItem('thuna_custom_village_banner_desc') || '';
+      const savedPhone = localStorage.getItem('thuna_custom_village_banner_phone') || '';
+      const savedLink = localStorage.getItem('thuna_custom_village_banner_link') || '';
+
+      const titleInput = document.getElementById('adminInAppBannerTitle');
+      const subInput = document.getElementById('adminInAppBannerSub');
+      const descInput = document.getElementById('adminInAppBannerDesc');
+      const phoneInput = document.getElementById('adminInAppBannerPhone');
+      const linkInput = document.getElementById('adminInAppBannerLink');
+      const previewImg = document.getElementById('adminInAppBannerPreviewImg');
+
+      if (titleInput) titleInput.value = savedTitle;
+      if (subInput) subInput.value = savedSub;
+      if (descInput) descInput.value = savedDesc;
+      if (phoneInput) phoneInput.value = savedPhone;
+      if (linkInput) linkInput.value = savedLink;
+      if (previewImg) previewImg.src = savedArt;
+
+      updateAdminInAppHomeBannerMockup();
     } else if (tab === 'splash') {
       if (btnSpl) {
         btnSpl.style.background = '#fff';
@@ -3658,6 +3692,199 @@
     }
   }
   window.switchAdminHubTab = switchAdminHubTab;
+
+  let tempAdminHomeBannerBase64 = null;
+
+  function compressImageToDataUrl(file, maxWidth, quality, callback) {
+    if (!file) return;
+    if (!file.type || !file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = ev => callback(ev.target.result);
+      reader.readAsDataURL(file);
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const img = new Image();
+      img.onload = () => {
+        let w = img.width;
+        let h = img.height;
+        const max = maxWidth || 1200;
+        if (w > max || h > max) {
+          if (w > h) {
+            h = Math.round((h * max) / w);
+            w = max;
+          } else {
+            w = Math.round((w * max) / h);
+            h = max;
+          }
+        }
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          const compressed = canvas.toDataURL('image/jpeg', quality || 0.85);
+          callback(compressed);
+        } catch (_) {
+          callback(ev.target.result);
+        }
+      };
+      img.onerror = () => callback(ev.target.result);
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function handleAdminHomeBannerPhotoSelected(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    toast('⏳ ചിത്രം തയ്യാറാക്കുന്നു...');
+    compressImageToDataUrl(file, 1200, 0.85, (compressed) => {
+      tempAdminHomeBannerBase64 = compressed;
+      const previewImg = document.getElementById('adminInAppBannerPreviewImg');
+      if (previewImg) previewImg.src = compressed;
+      toast('📸 ചിത്രം പ്രിവ്യൂവിൽ ചേർത്തു. "സേവ് ചെയ്ത് പബ്ലിഷ് ചെയ്യാം" ക്ലിക്ക് ചെയ്യുക.');
+    });
+  }
+  window.handleAdminHomeBannerPhotoSelected = handleAdminHomeBannerPhotoSelected;
+
+  function previewAdminHomeBannerUrl(url) {
+    const previewImg = document.getElementById('adminInAppBannerPreviewImg');
+    if (previewImg && url && url.startsWith('http')) {
+      tempAdminHomeBannerBase64 = url.trim();
+      previewImg.src = url.trim();
+    }
+  }
+  window.previewAdminHomeBannerUrl = previewAdminHomeBannerUrl;
+
+  function setAdminHomeBannerPreset(url, label) {
+    tempAdminHomeBannerBase64 = url;
+    const previewImg = document.getElementById('adminInAppBannerPreviewImg');
+    if (previewImg) previewImg.src = url;
+    toast('തിരഞ്ഞെടുത്തു: ' + label);
+  }
+  window.setAdminHomeBannerPreset = setAdminHomeBannerPreset;
+
+  function updateAdminInAppHomeBannerMockup() {
+    const titleVal = document.getElementById('adminInAppBannerTitle')?.value.trim() || 'നമ്മുടെ നാട്';
+    const subVal = document.getElementById('adminInAppBannerSub')?.value.trim() || '🤝 നാടിനൊപ്പം നാം';
+    const previewTitle = document.getElementById('adminInAppBannerPreviewTitle');
+    const previewSub = document.getElementById('adminInAppBannerPreviewSub');
+    if (previewTitle) previewTitle.textContent = titleVal;
+    if (previewSub) previewSub.textContent = subVal;
+  }
+  window.updateAdminInAppHomeBannerMockup = updateAdminInAppHomeBannerMockup;
+
+  function saveAdminHomeBannerFromApp() {
+    const title = (document.getElementById('adminInAppBannerTitle')?.value || '').trim() || 'നമ്മുടെ നാട്';
+    const sub = (document.getElementById('adminInAppBannerSub')?.value || '').trim() || '🤝 നാടിനൊപ്പം നാം';
+    const desc = (document.getElementById('adminInAppBannerDesc')?.value || '').trim();
+    const phone = (document.getElementById('adminInAppBannerPhone')?.value || '').trim();
+    const link = (document.getElementById('adminInAppBannerLink')?.value || '').trim();
+    const previewImg = document.getElementById('adminInAppBannerPreviewImg');
+    const bannerArt = tempAdminHomeBannerBase64 || (previewImg && previewImg.src) || 'img/kerala-splash.jpg';
+
+    try {
+      localStorage.setItem('thuna_custom_village_banner_art', bannerArt);
+      localStorage.setItem('thuna_custom_village_banner_title', title);
+      localStorage.setItem('thuna_custom_village_banner_sub', sub);
+
+      if (desc) localStorage.setItem('thuna_custom_village_banner_desc', desc);
+      else localStorage.removeItem('thuna_custom_village_banner_desc');
+
+      if (phone) localStorage.setItem('thuna_custom_village_banner_phone', phone);
+      else localStorage.removeItem('thuna_custom_village_banner_phone');
+
+      if (link) localStorage.setItem('thuna_custom_village_banner_link', link);
+      else localStorage.removeItem('thuna_custom_village_banner_link');
+    } catch (err) {
+      console.warn('LocalStorage error:', err);
+    }
+
+    // Real-time Cloud Sync across all phones via Supabase
+    if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveEmergencyContact === 'function') {
+      window.NN_SUPABASE_SERVICES.saveEmergencyContact({
+        id: 'app_setting_home_banner',
+        category: 'app_setting_home_banner',
+        title: title,
+        badge: sub,
+        icon: bannerArt,
+        description: desc,
+        phone: phone,
+        location: link,
+        createdAt: Date.now()
+      }).catch(e => console.warn('Supabase sync error:', e));
+    }
+
+    // Refresh active app home hero card immediately
+    if (typeof renderAdByIndex === 'function') {
+      renderAdByIndex(0);
+    } else {
+      const homeImg = document.getElementById('homeVillageBannerFullImg');
+      const homeTitle = document.getElementById('homeVillageBannerTitle');
+      const homeSub = document.getElementById('homeVillageBannerSub');
+      if (homeImg) homeImg.src = bannerArt;
+      if (homeTitle) homeTitle.textContent = title;
+      if (homeSub) homeSub.textContent = sub;
+    }
+
+    toast('🎉 ഹോം പേജ് ചിത്രം തത്സമയം പബ്ലിഷ് ചെയ്തു! (Live Real-Time Updated)');
+    closeModal('modal-admin-hub');
+  }
+  window.saveAdminHomeBannerFromApp = saveAdminHomeBannerFromApp;
+
+  function resetAdminHomeBannerFromApp() {
+    tempAdminHomeBannerBase64 = null;
+    try {
+      localStorage.removeItem('thuna_custom_village_banner_art');
+      localStorage.setItem('thuna_custom_village_banner_title', 'നമ്മുടെ നാട്');
+      localStorage.setItem('thuna_custom_village_banner_sub', '🤝 നാടിനൊപ്പം നാം');
+      localStorage.removeItem('thuna_custom_village_banner_desc');
+      localStorage.removeItem('thuna_custom_village_banner_phone');
+      localStorage.removeItem('thuna_custom_village_banner_link');
+    } catch (_) {}
+
+    const titleInput = document.getElementById('adminInAppBannerTitle');
+    const subInput = document.getElementById('adminInAppBannerSub');
+    const descInput = document.getElementById('adminInAppBannerDesc');
+    const phoneInput = document.getElementById('adminInAppBannerPhone');
+    const linkInput = document.getElementById('adminInAppBannerLink');
+    const urlInput = document.getElementById('adminInAppBannerUrlInput');
+    const previewImg = document.getElementById('adminInAppBannerPreviewImg');
+
+    if (titleInput) titleInput.value = 'നമ്മുടെ നാട്';
+    if (subInput) subInput.value = '🤝 നാടിനൊപ്പം നാം';
+    if (descInput) descInput.value = '';
+    if (phoneInput) phoneInput.value = '';
+    if (linkInput) linkInput.value = '';
+    if (urlInput) urlInput.value = '';
+    if (previewImg) previewImg.src = 'img/kerala-splash.jpg';
+
+    updateAdminInAppHomeBannerMockup();
+
+    if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveEmergencyContact === 'function') {
+      window.NN_SUPABASE_SERVICES.saveEmergencyContact({
+        id: 'app_setting_home_banner',
+        category: 'app_setting_home_banner',
+        title: 'നമ്മുടെ നാട്',
+        badge: '🤝 നാടിനൊപ്പം നാം',
+        icon: 'img/kerala-splash.jpg',
+        description: '',
+        phone: '',
+        location: '',
+        createdAt: Date.now()
+      }).catch(() => {});
+    }
+
+    if (typeof renderAdByIndex === 'function') {
+      renderAdByIndex(0);
+    }
+
+    toast('🔄 ഡിഫോൾട്ട് പച്ചപ്പ് തീമിലേക്ക് റീസെറ്റ് ചെയ്തു.');
+  }
+  window.resetAdminHomeBannerFromApp = resetAdminHomeBannerFromApp;
 
   let tempAdminSplashBase64 = null;
 

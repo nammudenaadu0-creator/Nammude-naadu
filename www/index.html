@@ -1536,14 +1536,17 @@
 
             <!-- TAB SWITCHER -->
             <div style="display:flex;border-bottom:1px solid #E2E8F0;background:#F8FAFC">
-                <button id="adminTabBtnServices" onclick="switchAdminHubTab('services')" style="flex:1;padding:12px;border:none;background:#fff;color:#0E7043;font-weight:800;font-size:12.5px;cursor:pointer;border-bottom:2px solid #0E7043">
+                <button id="adminTabBtnServices" onclick="switchAdminHubTab('services')" style="flex:1;padding:12px 6px;border:none;background:#fff;color:#0E7043;font-weight:800;font-size:12px;cursor:pointer;border-bottom:2px solid #0E7043">
                     🛠️ സർവീസ്
                 </button>
-                <button id="adminTabBtnNumbers" onclick="switchAdminHubTab('numbers')" style="flex:1;padding:12px;border:none;background:none;color:#64748B;font-weight:700;font-size:12.5px;cursor:pointer">
+                <button id="adminTabBtnNumbers" onclick="switchAdminHubTab('numbers')" style="flex:1;padding:12px 6px;border:none;background:none;color:#64748B;font-weight:700;font-size:12px;cursor:pointer">
                     🚨 നമ്പറുകൾ
                 </button>
-                <button id="adminTabBtnSplash" onclick="switchAdminHubTab('splash')" style="flex:1;padding:12px;border:none;background:none;color:#64748B;font-weight:700;font-size:12.5px;cursor:pointer">
-                    🖼️ ഓപ്പണിംഗ് ഫോട്ടോ
+                <button id="adminTabBtnHomeBanner" onclick="switchAdminHubTab('homeBanner')" style="flex:1;padding:12px 6px;border:none;background:none;color:#64748B;font-weight:700;font-size:12px;cursor:pointer">
+                    🏡 ഹോം ചിത്രം
+                </button>
+                <button id="adminTabBtnSplash" onclick="switchAdminHubTab('splash')" style="flex:1;padding:12px 6px;border:none;background:none;color:#64748B;font-weight:700;font-size:12px;cursor:pointer">
+                    🖼️ ഓപ്പണിംഗ്
                 </button>
             </div>
 
@@ -1677,7 +1680,99 @@
                     </button>
                 </form>
 
-                <!-- SECTION 3: CHANGE OPENING SPLASH PHOTO -->
+                <!-- SECTION 3: HOME PAGE HERO BANNER MANAGEMENT (ഹോം ചിത്രം മാറ്റുക) -->
+                <div id="adminHomeBannerSection" style="display:none;flex-direction:column;gap:13px">
+                    <div style="background:linear-gradient(135deg, #ECFDF5 0%, #E0F2FE 100%);border:1px solid #86EFAC;border-radius:14px;padding:12px;text-align:center">
+                        <div style="font-size:13px;font-weight:800;color:#064E3B">🏡 ഹോം പേജ് ഹീറോ ചിത്രം & അറിയിപ്പ് മാറ്റുക</div>
+                        <div style="font-size:11px;color:#047857;margin-top:2px">ഇവിടെ നൽകുന്ന ചിത്രം, ടൈറ്റിൽ, പരസ്യവിവരം എന്നിവ നാട്ടുകാരുടെ ഫോണുകളിൽ തത്സമയം അപ്‌ഡേറ്റ് ചെയ്യപ്പെടും.</div>
+                    </div>
+
+                    <!-- Live Mobile Preview Card -->
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">തത്സമയ പ്രിവ്യൂ (Live Card Preview):</label>
+                        <div style="position:relative;overflow:hidden;border-radius:18px;box-shadow:0 6px 20px rgba(6,78,59,0.18);min-height:120px;background:#064E3B;margin-top:6px;display:flex;align-items:center">
+                            <img id="adminInAppBannerPreviewImg" alt="Preview Full Cover" src="img/kerala-splash.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;border-radius:18px;pointer-events:none;">
+                            <div style="position:absolute;inset:0;background:linear-gradient(90deg, rgba(6,78,59,0.85) 0%, rgba(6,78,59,0.45) 55%, rgba(0,0,0,0.15) 100%);z-index:2;border-radius:18px;pointer-events:none;"></div>
+                            <div style="position:relative;z-index:3;display:flex;align-items:center;gap:10px;padding:14px">
+                                <div style="width:40px;height:40px;background:rgba(255,255,255,0.95);border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.5px solid #86EFAC;box-shadow:0 3px 10px rgba(0,0,0,0.15);flex-shrink:0">
+                                    <span style="font-size:20px">🌴</span>
+                                </div>
+                                <div>
+                                    <div id="adminInAppBannerPreviewTitle" style="font-size:16px;font-weight:900;color:#ffffff;text-shadow:0 2px 6px rgba(0,0,0,0.6)">നമ്മുടെ നാട്</div>
+                                    <div id="adminInAppBannerPreviewSub" style="font-size:11.5px;font-weight:700;color:#A7F3D0;margin-top:2px;text-shadow:0 1px 3px rgba(0,0,0,0.5)">🤝 നാടിനൊപ്പം നാം</div>
+                                </div>
+                            </div>
+                            <div style="position:absolute;top:8px;right:10px;background:rgba(0,0,0,0.55);color:#fff;padding:2px 8px;border-radius:10px;font-size:9.5px;font-weight:800;z-index:4;backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.25)">
+                                ✨ പ്രധാന അറിയിപ്പ് / Ads
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upload and URL -->
+                    <div style="display:flex;gap:8px">
+                        <button type="button" onclick="document.getElementById('adminInAppBannerFileInput').click()" style="flex:1;background:#0E7043;color:#fff;border:none;padding:11px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+                            <span>📸 ഫോണിൽ നിന്ന് ഫോട്ടോ</span>
+                        </button>
+                        <input type="file" id="adminInAppBannerFileInput" accept="image/*" style="display:none" onchange="handleAdminHomeBannerPhotoSelected(event)">
+                    </div>
+
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">അല്ലെങ്കിൽ ഇന്റർനെറ്റ് ഫോട്ടോ ലിങ്ക് (Image URL):</label>
+                        <input type="url" id="adminInAppBannerUrlInput" placeholder="https://images.unsplash.com/photo-..." oninput="previewAdminHomeBannerUrl(this.value)" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:12.5px;outline:none;margin-top:3px">
+                    </div>
+
+                    <!-- Presets -->
+                    <div>
+                        <div style="font-size:11.5px;font-weight:700;color:#374151;margin-bottom:5px">🌴 കേരള പ്രകൃതിഭംഗി പ്രീസെറ്റുകൾ:</div>
+                        <div style="display:flex;gap:6px;flex-wrap:wrap">
+                            <button type="button" onclick="setAdminHomeBannerPreset('img/kerala-splash.jpg', 'ഔദ്യോഗിക പച്ചപ്പ്')" style="background:#ECFDF5;border:1px solid #A7F3D0;color:#047857;padding:5px 9px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer">🌿 ഔദ്യോഗിക പച്ചപ്പ്</button>
+                            <button type="button" onclick="setAdminHomeBannerPreset('https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80', 'ആലപ്പുഴ കായൽ')" style="background:#F0F9FF;border:1px solid #BAE6FD;color:#0369A1;padding:5px 9px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer">⛵ ആലപ്പുഴ കായൽ</button>
+                            <button type="button" onclick="setAdminHomeBannerPreset('https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=1200&q=80', 'തെങ്ങിൻതോപ്പ്')" style="background:#ECFDF5;border:1px solid #A7F3D0;color:#047857;padding:5px 9px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer">🌴 തെങ്ങിൻതോപ്പ്</button>
+                            <button type="button" onclick="setAdminHomeBannerPreset('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80', 'മൂന്നാർ')" style="background:#FEF3C7;border:1px solid #FDE68A;color:#B45309;padding:5px 9px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer">🏔️ മൂന്നാർ</button>
+                        </div>
+                    </div>
+
+                    <!-- Title & Subtitle inputs -->
+                    <div style="display:flex;gap:8px">
+                        <div style="flex:1">
+                            <label style="font-size:12px;font-weight:700;color:#374151">പ്രധാന തലക്കെട്ട് (Title) *</label>
+                            <input type="text" id="adminInAppBannerTitle" value="നമ്മുടെ നാട്" oninput="updateAdminInAppHomeBannerMockup()" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;font-weight:700;outline:none;margin-top:3px">
+                        </div>
+                        <div style="flex:1">
+                            <label style="font-size:12px;font-weight:700;color:#374151">ഉപതലക്കെട്ട് (Subtitle) *</label>
+                            <input type="text" id="adminInAppBannerSub" value="🤝 നാടിനൊപ്പം നാം" oninput="updateAdminInAppHomeBannerMockup()" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;font-weight:700;outline:none;margin-top:3px">
+                        </div>
+                    </div>
+
+                    <!-- Ad details on click -->
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">പരസ്യ വിവരണം / അറിയിപ്പ് (Full Details):</label>
+                        <textarea id="adminInAppBannerDesc" rows="2" placeholder="ക്ലിക്ക് ചെയ്യുമ്പോൾ കാണിക്കേണ്ട വിശദവിവരങ്ങൾ..." style="width:100%;padding:8px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:12.5px;outline:none;margin-top:3px;resize:vertical"></textarea>
+                    </div>
+
+                    <div style="display:flex;gap:8px">
+                        <div style="flex:1">
+                            <label style="font-size:12px;font-weight:700;color:#374151">ഫോൺ നമ്പർ (Optional):</label>
+                            <input type="tel" id="adminInAppBannerPhone" placeholder="Eg: 9847123456" style="width:100%;padding:8px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:12.5px;outline:none;margin-top:3px">
+                        </div>
+                        <div style="flex:1">
+                            <label style="font-size:12px;font-weight:700;color:#374151">ലിങ്ക് (Website URL - Optional):</label>
+                            <input type="url" id="adminInAppBannerLink" placeholder="https://example.com" style="width:100%;padding:8px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:12.5px;outline:none;margin-top:3px">
+                        </div>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div style="display:flex;gap:8px;margin-top:4px">
+                        <button type="button" onclick="saveAdminHomeBannerFromApp()" style="flex:2;background:linear-gradient(135deg, #064E3B 0%, #0E7043 100%);color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:13.5px;cursor:pointer;box-shadow:0 3px 10px rgba(14,112,67,0.3)">
+                            💾 ഹോം ചിത്രം സേവ് ചെയ്ത് പബ്ലിഷ് ചെയ്യാം
+                        </button>
+                        <button type="button" onclick="resetAdminHomeBannerFromApp()" style="flex:1;background:#F1F5F9;color:#475569;border:1px solid #CBD5E1;padding:12px;border-radius:12px;font-weight:700;font-size:12px;cursor:pointer">
+                            🔄 ഡിഫോൾട്ട്
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SECTION 4: CHANGE OPENING SPLASH PHOTO -->
                 <div id="adminSplashPhotoSection" style="display:none;flex-direction:column;gap:12px">
                     <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:12px;text-align:center">
                         <div style="font-size:13px;font-weight:800;color:#166534">🖼️ ആപ്പ് ഓപ്പൺ ചെയ്യുമ്പോഴുള്ള ഫോട്ടോ മാറ്റുക</div>
