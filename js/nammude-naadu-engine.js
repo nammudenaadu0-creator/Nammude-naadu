@@ -5133,12 +5133,41 @@
   }
   window.closeModal = closeModal;
 
+  function renderHomeVillageBanner() {
+    const banner = document.getElementById('homeVillagePromoBanner') || document.querySelector('.yg-village-promo-banner');
+    if (!banner) return;
+    const fullImg = document.getElementById('homeVillageBannerFullImg');
+    const titleEl = document.getElementById('homeVillageBannerTitle');
+    const subEl = document.getElementById('homeVillageBannerSub');
+    const overlay = document.getElementById('homeVillageBannerOverlay');
+    const artWrap = document.getElementById('homeVillageBannerArtWrap');
+
+    const customArt = localStorage.getItem('thuna_custom_village_banner_art') || localStorage.getItem('thuna_custom_hero_banner');
+    const customTitle = localStorage.getItem('thuna_custom_village_banner_title');
+    const customSub = localStorage.getItem('thuna_custom_village_banner_sub');
+
+    if (titleEl && customTitle) titleEl.textContent = customTitle;
+    if (subEl && customSub) subEl.textContent = customSub;
+
+    const displayArt = customArt || 'img/kerala-splash.jpg';
+
+    if (fullImg) {
+      fullImg.src = displayArt;
+      fullImg.style.display = 'block';
+    }
+    banner.style.setProperty('background-image', `url("${displayArt}")`, 'important');
+    if (overlay) overlay.style.display = 'block';
+    if (artWrap) artWrap.style.display = 'none';
+  }
+  window.renderHomeVillageBanner = renderHomeVillageBanner;
+
   // ==============================================================
   // 17. INITIALIZATION ON DOM READY
   // ==============================================================
   function renderHomeScreen() {
     updateLocationDisplay(APP_STATE.location.name, APP_STATE.location.district, APP_STATE.location.lat, APP_STATE.location.lon);
     renderActiveServiceTracker();
+    renderHomeVillageBanner();
 
     const homeHeaderAvatar = document.getElementById('homeHeaderAvatar');
     if (homeHeaderAvatar) {

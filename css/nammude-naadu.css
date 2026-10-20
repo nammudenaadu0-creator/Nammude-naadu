@@ -963,8 +963,8 @@
    3D APP DESIGN SYSTEM — HOME SCREEN & LOCATION / SEARCH
    ============================================================== */
 .home-3d-root {
-  padding: 0 0 20px;
-  background: #F8FAFC;
+  padding: 0 0 24px;
+  background: linear-gradient(180deg, #ECFDF5 0%, #F8FAFC 220px, #F1F5F9 100%);
 }
 
 /* TOP NAVBAR */
