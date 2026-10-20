@@ -669,16 +669,22 @@
         <!-- SCREEN 6: JOBS (തൊഴിൽ അവസരങ്ങൾ)                              -->
         <!-- ============================================================== -->
         <section id="screen-jobs" class="screen">
-            <div style="background:#0878D1;color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between">
-                <button onclick="navTo('home')" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer">❮</button>
+            <div style="background:linear-gradient(135deg, #0369A1 0%, #0284C7 60%, #0878D1 100%);color:#fff;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 12px rgba(3,105,161,0.25)">
+                <button onclick="navTo('home')" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.18);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">❮</button>
                 <div style="text-align:center">
-                    <h2 style="margin:0;font-size:16px;font-weight:800">💼 തൊഴിൽ അവസരങ്ങൾ</h2>
-                    <div style="font-size:11px;opacity:0.9">Jobs Portal & Vacancies</div>
+                    <h2 style="margin:0;font-size:16px;font-weight:800;color:#fff">💼 തൊഴിൽ അവസരങ്ങൾ</h2>
+                    <div style="font-size:11px;color:rgba(255,255,255,0.85)">Jobs Portal & Vacancies</div>
                 </div>
-                <button onclick="openPostJobModal()"
-                    style="background:#fff;color:#0878D1;border:none;border-radius:10px;padding:6px 12px;font-weight:800;font-size:12px;cursor:pointer">
-                    ➕ തൊഴിൽ നൽകാം
-                </button>
+                <div style="display:flex;align-items:center;gap:6px">
+                    <button onclick="refreshJobsLive()" title="പുതുക്കുക"
+                        style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.18);color:#fff;border:none;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer">
+                        🔄
+                    </button>
+                    <button onclick="openPostJobModal()"
+                        style="background:#fff;color:#0284C7;border:none;border-radius:20px;padding:6px 12px;font-weight:800;font-size:11.5px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.1)">
+                        ➕ തൊഴിൽ നൽകാം
+                    </button>
+                </div>
             </div>
 
             <!-- RADIUS FILTER CHIPS -->
@@ -1315,28 +1321,50 @@
                 <h3 style="margin:0;font-size:17px;font-weight:800">💼 തൊഴിൽ അവസരം നൽകാം</h3>
                 <button onclick="closeModal('modal-post-job')" style="background:none;border:none;font-size:20px;cursor:pointer">✕</button>
             </div>
-            <form onsubmit="submitJobPosting(event)" style="display:flex;flex-direction:column;gap:10px">
+            <form onsubmit="submitJobPosting(event)" style="display:flex;flex-direction:column;gap:11px">
                 <div>
-                    <label style="font-size:12px;font-weight:700">ജോലി തലക്കെട്ട് (Job Title)</label>
-                    <input type="text" id="postJobTitle" required placeholder="Eg: ഡ്രൈവർ ആവശ്യം" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                    <label style="font-size:12px;font-weight:700;color:#374151">ജോലി തലക്കെട്ട് (Job Title) *</label>
+                    <input type="text" id="postJobTitle" required placeholder="Eg: ഡ്രൈവർ ആവശ്യം, സെയിൽസ്മാൻ, കുക്ക്..." style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                 </div>
                 <div>
-                    <label style="font-size:12px;font-weight:700">സ്ഥാപനം / തൊഴിൽദാതാവ് (Company/Employer)</label>
-                    <input type="text" id="postJobEmployer" placeholder="Eg: ഗ്രീൻവാലി ട്രേഡേഴ്സ്" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                    <label style="font-size:12px;font-weight:700;color:#374151">സ്ഥാപനം / തൊഴിൽദാതാവ് (Company/Employer) *</label>
+                    <input type="text" id="postJobEmployer" required placeholder="Eg: ഗ്രീൻവാലി ട്രേഡേഴ്സ് / വ്യക്തിഗത ആവശ്യം" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                 </div>
                 <div>
-                    <label style="font-size:12px;font-weight:700">ഫോൺ നമ്പർ (Phone)</label>
-                    <input type="tel" id="postJobPhone" required placeholder="+91 94471 00000" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                    <label style="font-size:12px;font-weight:700;color:#374151">തൊഴിൽ വിഭാഗം (Category)</label>
+                    <select id="postJobCategory" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px;background:#fff">
+                        <option value="all">എല്ലാ വിഭാഗങ്ങളും (General)</option>
+                        <option value="driver">🚗 ഡ്രൈവർ (Driver)</option>
+                        <option value="sales">🛍️ സെയിൽസ് / മാർക്കറ്റിംഗ് (Sales)</option>
+                        <option value="delivery">📦 ഡെലിവറി (Delivery)</option>
+                        <option value="office">💻 ഓഫീസ് / അക്കൗണ്ട്സ് (Office)</option>
+                        <option value="hotel">🍳 ഹോട്ടൽ / കുക്ക് (Hospitality)</option>
+                        <option value="teacher">📚 അധ്യാപകർ / ട്യൂഷൻ (Teaching)</option>
+                        <option value="tech">⚡ ടെക്നീഷ്യൻ / ഇലക്ട്രിക്കൽ (Technical)</option>
+                        <option value="other">💼 മറ്റ് തൊഴിലുകൾ (Other)</option>
+                    </select>
+                </div>
+                <div style="display:flex;gap:8px">
+                    <div style="flex:1">
+                        <label style="font-size:12px;font-weight:700;color:#374151">ഫോൺ നമ്പർ (Phone) *</label>
+                        <input type="tel" id="postJobPhone" required placeholder="Eg: 9447100000" style="width:100%;padding:9px 12px;border:1.5px solid #0284C7;border-radius:10px;font-size:13px;outline:none;margin-top:3px;background:#F0F9FF;font-weight:700">
+                    </div>
+                    <div style="flex:1">
+                        <label style="font-size:12px;font-weight:700;color:#374151">ശമ്പളം (Salary Range)</label>
+                        <input type="text" id="postJobSalary" placeholder="Eg: ₹18,000 - ₹22,000" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                    </div>
                 </div>
                 <div>
-                    <label style="font-size:12px;font-weight:700">ശമ്പളം (Salary Range)</label>
-                    <input type="text" id="postJobSalary" placeholder="Eg: ₹18,000 - ₹22,000" style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                    <label style="font-size:12px;font-weight:700;color:#374151">ജോലി സ്ഥലം (Location) *</label>
+                    <input type="text" id="postJobLocation" required placeholder="Eg: കണ്ണൂർ, തലശ്ശേരി" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                 </div>
                 <div>
-                    <label style="font-size:12px;font-weight:700">വിവരണം (Description)</label>
-                    <textarea id="postJobDesc" placeholder="ജോലി സംബന്ധിച്ച കൂടുതൽ വിവരങ്ങൾ..." style="width:100%;height:70px;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px;resize:none"></textarea>
+                    <label style="font-size:12px;font-weight:700;color:#374151">വിവരണം (Description)</label>
+                    <textarea id="postJobDesc" placeholder="ജോലി സമയം, യോഗ്യത, മറ്റ് ആനുകൂല്യങ്ങൾ..." style="width:100%;height:65px;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px;resize:none"></textarea>
                 </div>
-                <button type="submit" style="background:#0878D1;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer">പോസ്റ്റ് ചെയ്യുക</button>
+                <button type="submit" style="background:linear-gradient(135deg, #0284C7 0%, #0369A1 100%);color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;box-shadow:0 3px 10px rgba(2,132,199,0.3);margin-top:4px">
+                    🚀 തൊഴിൽ അവസരം പോസ്റ്റ് ചെയ്യുക
+                </button>
             </form>
         </div>
     </div>

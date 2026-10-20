@@ -181,9 +181,11 @@ create table if not exists public.jobs (
 alter table public.jobs enable row level security;
 drop policy if exists "Allow public select jobs" on public.jobs;
 drop policy if exists "Allow public insert jobs" on public.jobs;
+drop policy if exists "Allow public update jobs" on public.jobs;
 drop policy if exists "Allow public delete jobs" on public.jobs;
 create policy "Allow public select jobs" on public.jobs for select using (true);
 create policy "Allow public insert jobs" on public.jobs for insert with check (true);
+create policy "Allow public update jobs" on public.jobs for update using (true) with check (true);
 create policy "Allow public delete jobs" on public.jobs for delete using (true);
 
 -- 8. RENTALS & BUY/SELL TABLE
@@ -208,9 +210,11 @@ create table if not exists public.rentals (
 alter table public.rentals enable row level security;
 drop policy if exists "Allow public select rentals" on public.rentals;
 drop policy if exists "Allow public insert rentals" on public.rentals;
+drop policy if exists "Allow public update rentals" on public.rentals;
 drop policy if exists "Allow public delete rentals" on public.rentals;
 create policy "Allow public select rentals" on public.rentals for select using (true);
 create policy "Allow public insert rentals" on public.rentals for insert with check (true);
+create policy "Allow public update rentals" on public.rentals for update using (true) with check (true);
 create policy "Allow public delete rentals" on public.rentals for delete using (true);
 
 -- 9. SERVICE REQUESTS TABLE (Quick Worker Requests)

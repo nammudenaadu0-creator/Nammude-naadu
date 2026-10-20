@@ -880,6 +880,9 @@
 
       const storedJobs = localStorage.getItem('nn_jobs');
       APP_STATE.jobs = storedJobs ? JSON.parse(storedJobs) : SEED_JOBS;
+      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncJobs === 'function') {
+        window.NN_SUPABASE_SERVICES.syncJobs();
+      }
 
       const storedRentals = localStorage.getItem('nn_rentals');
       APP_STATE.rentals = storedRentals ? JSON.parse(storedRentals) : SEED_RENTALS;
@@ -1045,6 +1048,9 @@
       renderServicesScreen();
     } else if (screenId === 'jobs') {
       renderJobsScreen();
+      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncJobs === 'function') {
+        window.NN_SUPABASE_SERVICES.syncJobs();
+      }
     } else if (screenId === 'rentals') {
       renderRentalsScreen();
       if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncRentals === 'function') {
@@ -4242,17 +4248,39 @@
   window.submitJobApplication = submitJobApplication;
 
   function openPostJobModal() {
+    const employerEl = document.getElementById('postJobEmployer');
+    const phoneEl = document.getElementById('postJobPhone');
+    const locEl = document.getElementById('postJobLocation');
+    if (employerEl && !employerEl.value && APP_STATE.currentUser?.name) {
+      employerEl.value = APP_STATE.currentUser.name;
+    }
+    if (phoneEl && !phoneEl.value && APP_STATE.currentUser?.phone) {
+      phoneEl.value = APP_STATE.currentUser.phone;
+    }
+    if (locEl && !locEl.value && APP_STATE.location?.name) {
+      locEl.value = APP_STATE.location.name;
+    }
     openModal('modal-post-job');
   }
   window.openPostJobModal = openPostJobModal;
 
   function submitJobPosting(e) {
     if (e) e.preventDefault();
-    const title = document.getElementById('postJobTitle').value.trim();
-    const employer = document.getElementById('postJobEmployer').value.trim();
-    const phone = document.getElementById('postJobPhone').value.trim();
-    const salary = document.getElementById('postJobSalary').value.trim() || 'ശമ്പളം സംസാരിക്കാം';
-    const desc = document.getElementById('postJobDesc').value.trim() || '';
+    const titleEl = document.getElementById('postJobTitle');
+    const employerEl = document.getElementById('postJobEmployer');
+    const catEl = document.getElementById('postJobCategory');
+    const phoneEl = document.getElementById('postJobPhone');
+    const salaryEl = document.getElementById('postJobSalary');
+    const locEl = document.getElementById('postJobLocation');
+    const descEl = document.getElementById('postJobDesc');
+
+    const title = titleEl ? titleEl.value.trim() : '';
+    const employer = employerEl && employerEl.value.trim() ? employerEl.value.trim() : (APP_STATE.currentUser?.name || 'തൊഴിൽദാതാവ്');
+    const category = (catEl && catEl.value) ? catEl.value : 'other';
+    const phone = phoneEl ? phoneEl.value.trim() : (APP_STATE.currentUser?.phone || '');
+    const salary = salaryEl && salaryEl.value.trim() ? salaryEl.value.trim() : 'ശമ്പളം സംസാരിക്കാം';
+    const location = locEl && locEl.value.trim() ? locEl.value.trim() : (APP_STATE.location?.name || 'കേരളം');
+    const desc = descEl ? descEl.value.trim() : '';
 
     if (!title || !phone) {
       toast('⚠️ തലക്കെട്ടും ഫോൺ നമ്പറും നൽകുക.');
@@ -4262,15 +4290,19 @@
     const newJob = {
       id: 'job_' + Date.now(),
       title: title,
-      employer: employer || APP_STATE.currentUser.name,
+      employer: employer,
       employerPhone: phone,
-      category: 'other',
+      phone: phone,
+      category: category,
       salary: salary,
       type: 'ഫുൾ ടൈം',
-      location: APP_STATE.location.name,
-      lat: APP_STATE.location.lat,
-      lon: APP_STATE.location.lon,
-      description: desc
+      location: location,
+      district: APP_STATE.location?.district || 'കണ്ണൂർ',
+      lat: APP_STATE.location?.lat || 11.8745,
+      lon: APP_STATE.location?.lon || 75.3704,
+      description: desc,
+      createdAt: Date.now(),
+      isCloud: true
     };
 
     APP_STATE.jobs.unshift(newJob);
@@ -4283,11 +4315,35 @@
       window.NN_SUPABASE_SERVICES.saveJob(newJob);
     }
 
+    // Reset inputs
+    if (titleEl) titleEl.value = '';
+    if (salaryEl) salaryEl.value = '';
+    if (descEl) descEl.value = '';
+
+    // Switch active category filter to 'all' so new job is visible immediately
+    APP_STATE.activeJobCategory = 'all';
+    document.querySelectorAll('.job-cat-chip').forEach(c => {
+      c.classList.toggle('active', c.dataset.cat === 'all');
+    });
+
     closeModal('modal-post-job');
     renderJobsScreen();
-    toast('🎉 തൊഴിൽ അവസരം വിജയകരമായി പോസ്റ്റ് ചെയ്തു!');
+    toast('🎉 തൊഴിൽ അവസരം വിജയകരമായി പോസ്റ്റ് ചെയ്തു! ക്ലൗഡിലേക്ക് അപ്‌ലോഡ് ആയി.');
   }
   window.submitJobPosting = submitJobPosting;
+
+  function refreshJobsLive() {
+    toast('🔄 പുതിയ തൊഴിലുകൾ ക്ലൗഡിൽ നിന്ന് പരിശോധിക്കുന്നു...');
+    if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncJobs === 'function') {
+      window.NN_SUPABASE_SERVICES.syncJobs(() => {
+        renderJobsScreen();
+        toast('✅ പുതിയ തൊഴിൽ വിവരങ്ങൾ ലഭ്യമാക്കി!');
+      });
+    } else {
+      renderJobsScreen();
+    }
+  }
+  window.refreshJobsLive = refreshJobsLive;
 
   function openRentalBuySellSection() {
     navTo('jobs');

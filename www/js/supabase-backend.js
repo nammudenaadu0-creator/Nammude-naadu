@@ -87,6 +87,28 @@
     servicesChannel.subscribe((status) => {
       console.info('🛠️ [Supabase Realtime Services] Status:', status);
     });
+
+    // 4. JOBS CHANNEL (Realtime broadcast across phones)
+    const jobsChannel = client.channel('nn_community_jobs', {
+      config: { broadcast: { self: false } }
+    });
+    jobsChannel.on('broadcast', { event: 'new_job' }, ({ payload }) => {
+      if (payload && payload.job) handleIncomingJob(payload.job);
+    });
+    jobsChannel.subscribe((status) => {
+      console.info('💼 [Supabase Realtime Jobs] Status:', status);
+    });
+
+    // 5. RENTALS CHANNEL (Realtime broadcast across phones)
+    const rentalsChannel = client.channel('nn_community_rentals', {
+      config: { broadcast: { self: false } }
+    });
+    rentalsChannel.on('broadcast', { event: 'new_rental' }, ({ payload }) => {
+      if (payload && payload.rental) handleIncomingRental(payload.rental);
+    });
+    rentalsChannel.subscribe((status) => {
+      console.info('🏠 [Supabase Realtime Rentals] Status:', status);
+    });
   }
 
   // Request Android / Browser notification permissions
@@ -473,6 +495,24 @@
           }
         })
         .subscribe();
+
+      // Realtime listener for jobs inserted/updated into jobs table
+      client.channel('public:jobs')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'jobs' }, payload => {
+          if (payload && payload.new) {
+            handleIncomingJob(payload.new);
+          }
+        })
+        .subscribe();
+
+      // Realtime listener for rentals inserted/updated into rentals table
+      client.channel('public:rentals')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'rentals' }, payload => {
+          if (payload && payload.new) {
+            handleIncomingRental(payload.new);
+          }
+        })
+        .subscribe();
     } catch (e) {
       console.warn('ℹ️ [Supabase Realtime DB Listeners note]:', e.message);
     }
@@ -625,6 +665,83 @@
       }
       if (typeof renderHomeScreen === 'function' && APP_STATE.currentScreen === 'home') {
         renderHomeScreen();
+      }
+    }
+  }
+
+  // Handle incoming job from broadcast or postgres_changes
+  function handleIncomingJob(j) {
+    if (!j || !j.title) return;
+    const mapped = {
+      id: j.id || ('job_' + Date.now()),
+      title: j.title,
+      employer: j.employer || 'തൊഴിൽദാതാവ്',
+      employerPhone: j.phone || j.employerPhone || '',
+      phone: j.phone || j.employerPhone || '',
+      category: j.category || 'other',
+      salary: j.salary || 'ശമ്പളം സംസാരിക്കാം',
+      type: 'ഫുൾ ടൈം',
+      location: j.location || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.name : 'കേരളം'),
+      district: j.district || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.district : 'കണ്ണൂർ'),
+      lat: j.latitude || j.lat || 11.8745,
+      lon: j.longitude || j.lon || 75.3704,
+      description: j.description || '',
+      createdAt: Number(j.created_at) || Date.now(),
+      isCloud: true
+    };
+
+    if (typeof APP_STATE !== 'undefined' && Array.isArray(APP_STATE.jobs)) {
+      const idx = APP_STATE.jobs.findIndex(jb => jb.id === mapped.id || (jb.title === mapped.title && jb.employerPhone === mapped.employerPhone));
+      if (idx >= 0) {
+        APP_STATE.jobs[idx] = { ...APP_STATE.jobs[idx], ...mapped };
+      } else {
+        APP_STATE.jobs.unshift(mapped);
+      }
+      try {
+        localStorage.setItem('nn_jobs', JSON.stringify(APP_STATE.jobs));
+      } catch (_) {}
+      if (typeof renderJobsScreen === 'function' && APP_STATE.currentScreen === 'jobs') {
+        renderJobsScreen();
+      }
+    }
+  }
+
+  // Handle incoming rental from broadcast or postgres_changes
+  function handleIncomingRental(r) {
+    if (!r || !r.title) return;
+    const mapped = {
+      id: r.id || ('rent_' + Date.now()),
+      title: r.title,
+      owner: r.owner || r.authorName || 'നാട്ടുകാരൻ',
+      authorName: r.owner || r.authorName || 'നാട്ടുകാരൻ',
+      type: r.type || 'house',
+      category: r.category || 'rent',
+      price: r.price || '',
+      deposit: r.deposit || '',
+      phone: r.phone || '',
+      location: r.location || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.name : 'കേരളം'),
+      district: r.district || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.district : 'കണ്ണൂർ'),
+      lat: r.latitude || r.lat || 11.8745,
+      lon: r.longitude || r.lon || 75.3704,
+      imageUrl: r.image_url || r.imageUrl || '',
+      image: r.image_url || r.imageUrl || '',
+      description: r.description || '',
+      createdAt: Number(r.created_at) || Date.now(),
+      isCloud: true
+    };
+
+    if (typeof APP_STATE !== 'undefined' && Array.isArray(APP_STATE.rentals)) {
+      const idx = APP_STATE.rentals.findIndex(item => item.id === mapped.id || (item.title === mapped.title && item.phone === mapped.phone));
+      if (idx >= 0) {
+        APP_STATE.rentals[idx] = { ...APP_STATE.rentals[idx], ...mapped };
+      } else {
+        APP_STATE.rentals.unshift(mapped);
+      }
+      try {
+        localStorage.setItem('nn_rentals', JSON.stringify(APP_STATE.rentals));
+      } catch (_) {}
+      if (typeof renderRentalsScreen === 'function' && APP_STATE.currentScreen === 'rentals') {
+        renderRentalsScreen();
       }
     }
   }
@@ -1128,20 +1245,84 @@
     initSupabase();
     if (client) {
       try {
-        await client.from('jobs').upsert({
+        const payload = {
           id: jobObj.id || ('job_' + Date.now()),
-          employer: jobObj.employer || '',
+          employer: jobObj.employer || (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser ? APP_STATE.currentUser.name : 'തൊഴിൽദാതാവ്'),
           title: jobObj.title || '',
           category: jobObj.category || 'other',
-          salary: jobObj.salary || '',
-          phone: jobObj.phone || '',
-          location: jobObj.location || '',
-          latitude: jobObj.lat || null,
-          longitude: jobObj.lon || null,
+          salary: jobObj.salary || 'ശമ്പളം സംസാരിക്കാം',
+          phone: jobObj.phone || jobObj.employerPhone || (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser ? APP_STATE.currentUser.phone : '') || '9447000000',
+          location: jobObj.location || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.name : 'കേരളം'),
+          district: jobObj.district || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.district : 'കണ്ണൂർ'),
+          latitude: jobObj.lat || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.lat : null),
+          longitude: jobObj.lon || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.lon : null),
           description: jobObj.description || '',
-          created_at: Date.now()
-        });
-      } catch (_) {}
+          created_at: Number(jobObj.createdAt) || Date.now()
+        };
+
+        const { error } = await client.from('jobs').upsert(payload);
+        if (error) {
+          console.warn('⚠️ [Supabase Jobs Upsert Error]:', error.message);
+        } else {
+          console.info('✅ [Supabase] Job saved successfully to Cloud:', payload.id);
+        }
+
+        // Realtime broadcast to other devices
+        const channel = client.channel('nn_community_jobs');
+        channel.send({
+          type: 'broadcast',
+          event: 'new_job',
+          payload: { job: payload }
+        }).catch(() => {});
+      } catch (err) {
+        console.warn('Save job exception:', err);
+      }
+    }
+  }
+
+  async function syncJobs(callback) {
+    initSupabase();
+    if (!client) return;
+    try {
+      const { data, error } = await client.from('jobs').select('*').order('created_at', { ascending: false }).limit(200);
+      if (!error && Array.isArray(data) && data.length > 0) {
+        const mapped = data.map(j => ({
+          id: j.id,
+          title: j.title,
+          employer: j.employer || 'തൊഴിൽദാതാവ്',
+          employerPhone: j.phone || '',
+          phone: j.phone || '',
+          category: j.category || 'other',
+          salary: j.salary || 'ശമ്പളം സംസാരിക്കാം',
+          type: 'ഫുൾ ടൈം',
+          location: j.location || '',
+          district: j.district || '',
+          lat: j.latitude,
+          lon: j.longitude,
+          description: j.description || '',
+          createdAt: Number(j.created_at) || Date.now(),
+          isCloud: true
+        }));
+
+        if (typeof APP_STATE !== 'undefined' && Array.isArray(APP_STATE.jobs)) {
+          mapped.forEach(cloudJob => {
+            const idx = APP_STATE.jobs.findIndex(jb => jb.id === cloudJob.id || (jb.title === cloudJob.title && jb.employerPhone === cloudJob.employerPhone));
+            if (idx >= 0) {
+              APP_STATE.jobs[idx] = { ...APP_STATE.jobs[idx], ...cloudJob };
+            } else {
+              APP_STATE.jobs.unshift(cloudJob);
+            }
+          });
+          try {
+            localStorage.setItem('nn_jobs', JSON.stringify(APP_STATE.jobs));
+          } catch (_) {}
+          if (typeof renderJobsScreen === 'function') renderJobsScreen();
+        }
+
+        if (typeof callback === 'function') callback(mapped);
+      }
+    } catch (err) {
+      console.warn('Sync jobs exception:', err);
     }
   }
 
@@ -1413,6 +1594,7 @@
     requestNotificationPermission,
     // Jobs & Rentals
     saveJob,
+    syncJobs,
     saveRental,
     syncRentals,
     saveAmbulanceDriver
