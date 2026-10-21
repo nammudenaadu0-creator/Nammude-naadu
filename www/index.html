@@ -1272,19 +1272,25 @@
                     <span>❮</span>
                     <span>ചാറ്റ് ലിസ്റ്റ്</span>
                 </button>
-                <div class="chat-recipient-info">
+                <div class="chat-recipient-info" onclick="openChatRecipientProfile()" style="cursor:pointer" title="ഇവരുടെ പ്രൊഫൈൽ കാണാം">
                     <div style="position:relative;flex-shrink:0;display:inline-block">
                         <img id="chatRecipientAvatar" src="" class="chat-recipient-avatar"
                             onerror="this.src=window.DEFAULT_USER_AVATAR||''" alt="Avatar">
                         <span class="chat-online-dot"></span>
                     </div>
                     <div style="min-width:0">
-                        <div class="chat-recipient-name" id="chatRecipientName">Chat</div>
-                        <div class="chat-recipient-status">● ഓൺലൈൻ (Online)</div>
+                        <div style="display:flex;align-items:center;gap:6px">
+                            <div class="chat-recipient-name" id="chatRecipientName">Chat</div>
+                            <span style="font-size:10px;background:rgba(255,255,255,0.22);color:#fff;padding:1px 6px;border-radius:10px;font-weight:700">പ്രൊഫൈൽ ➔</span>
+                        </div>
+                        <div class="chat-recipient-status">● ഓൺലൈൻ • പ്രൊഫൈൽ കാണാൻ തൊടുക</div>
                     </div>
                 </div>
 
                 <div class="chat-header-actions">
+                    <button class="chat-call-btn" onclick="openChatRecipientProfile()" style="background:rgba(255,255,255,0.18);border:none;color:#fff;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer" title="പ്രൊഫൈൽ കാണാം">
+                        <span style="font-size:16px">👤</span>
+                    </button>
                     <a id="chatRecipientCallBtn" href="tel:" class="chat-call-btn" title="വിളിക്കുക">
                         <span>📞</span>
                     </a>
@@ -1386,7 +1392,7 @@
     <!-- ============================================================== -->
     <!-- MODAL: DEDICATED USER PROFILE PREVIEW MODAL                    -->
     <!-- ============================================================== -->
-    <div id="modal-author-profile" class="modal-overlay"
+    <div id="modal-author-profile" class="modal-overlay" style="z-index:10005"
         onclick="if(event.target===this)closeModal('modal-author-profile')">
         <div class="profile-preview-sheet" id="authorProfileSheetContent"></div>
     </div>
@@ -1728,7 +1734,7 @@
     <!-- ============================================================== -->
     <!-- MODAL: SERVICE PROVIDER DETAILS & REVIEWS                      -->
     <!-- ============================================================== -->
-    <div id="modal-service-detail" class="modal-overlay"
+    <div id="modal-service-detail" class="modal-overlay" style="z-index:10006"
         onclick="if(event.target===this)closeModal('modal-service-detail')">
         <div class="service-detail-sheet" id="serviceDetailSheetContent">
             <!-- Dynamically populated via openServiceDetailModal(srvId) -->
