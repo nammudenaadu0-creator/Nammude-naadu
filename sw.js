@@ -65,3 +65,48 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
+
+// Background Push Notification Listener (Triggers even when app / browser tab is completely closed)
+self.addEventListener('push', (event) => {
+  let payload = {};
+  try {
+    payload = event.data ? event.data.json() : {};
+  } catch (_) {
+    payload = { body: event.data ? event.data.text() : 'പുതിയ അറിയിപ്പ് എത്തിയിട്ടുണ്ട്' };
+  }
+
+  const title = payload.title || 'നമ്മുടെ നാട്';
+  const options = {
+    body: payload.body || 'നിങ്ങളുടെ നാട്ടിൽ പുതിയ അടിയന്തിര അറിയിപ്പ് / സർവീസ് റിക്വസ്റ്റ് എത്തിയിട്ടുണ്ട്.',
+    icon: './img/kerala-splash.jpg',
+    badge: './img/kerala-splash.jpg',
+    vibrate: [300, 150, 300],
+    data: payload.data || {},
+    tag: payload.tag || 'nammude-naadu-alert',
+    renotify: true,
+    actions: [
+      { action: 'open', title: 'ആപ്പ് തുറക്കുക' }
+    ]
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(title, options)
+  );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const urlToOpen = './index.html';
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
+      for (let client of windowClients) {
+        if (client.url.includes('index.html') && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow(urlToOpen);
+      }
+    })
+  );
+});

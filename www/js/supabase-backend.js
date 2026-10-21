@@ -135,7 +135,7 @@
     });
   }
 
-  // Request Android / Browser notification permissions
+  // Request Android / Browser notification permissions & initialize Web Push
   async function requestNotificationPermission() {
     try {
       if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) {
@@ -143,8 +143,13 @@
         if (check.display !== 'granted') {
           await window.Capacitor.Plugins.LocalNotifications.requestPermissions();
         }
-      } else if (typeof Notification !== 'undefined' && Notification.permission !== 'granted') {
-        await Notification.requestPermission();
+      } else if (typeof Notification !== 'undefined') {
+        const perm = await Notification.requestPermission();
+        if (perm === 'granted' && 'serviceWorker' in navigator) {
+          navigator.serviceWorker.ready.then(reg => {
+            console.info('🔔 Web Push & Background Notifications active with ServiceWorker:', reg);
+          });
+        }
       }
     } catch (e) {
       console.warn('Notification permission note:', e.message);
@@ -201,7 +206,7 @@
   async function sendNativePhoneNotification(title, body, extraData = {}) {
     const type = extraData.type || 'info';
 
-    // 1. Android Native Status-Bar Notification (Capacitor LocalNotifications)
+    // 1. Android Native Status-Bar / Web Push Notification
     if (!extraData.skipNativeSchedule) {
       try {
         if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) {
@@ -218,6 +223,22 @@
               }
             ]
           });
+        } else if ('serviceWorker' in navigator && typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+          // Standard Web Push via ServiceWorker registration (Required for Chrome mobile status bar)
+          const reg = await navigator.serviceWorker.ready;
+          if (reg && typeof reg.showNotification === 'function') {
+            await reg.showNotification(title, {
+              body: body,
+              icon: 'img/kerala-splash.jpg',
+              badge: 'img/kerala-splash.jpg',
+              vibrate: type === 'blood' ? [400, 200, 400, 200, 400] : [300, 150, 300],
+              data: extraData,
+              tag: extraData.tag || ('nn_' + Date.now()),
+              renotify: true
+            });
+          } else {
+            new Notification(title, { body: body, icon: 'img/kerala-splash.jpg' });
+          }
         } else if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
           new Notification(title, { body: body, icon: 'img/kerala-splash.jpg' });
         }
