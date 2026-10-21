@@ -369,27 +369,16 @@
         localStorage.setItem('nn_posts', JSON.stringify(loadedPosts));
       } catch (_) {}
 
-      // Sync community posts from Supabase Cloud (Unlimited posts)
-      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncPosts === 'function') {
-        window.NN_SUPABASE_SERVICES.syncPosts();
-      }
-
       const storedServices = localStorage.getItem('nn_services');
       let loadedServices = storedServices ? JSON.parse(storedServices) : [];
       // REAL ACCOUNTS ONLY: Purge all mock/dummy services (srv_\d+, srv_kerala_, etc.)
       loadedServices = (Array.isArray(loadedServices) ? loadedServices : []).filter(s => 
         s && !s.id?.match(/^srv_\d+$/) && !s.id?.startsWith('srv_kerala_') && !s.isKeralaDirectory && (s.isUserCreated || s.isCloud || s.userId || (s.id && s.id.startsWith('srv_adm_')))
       );
-
       try {
         localStorage.setItem('nn_services', JSON.stringify(loadedServices));
       } catch (_) {}
       APP_STATE.services = loadedServices;
-
-      // Sync community registered services from Supabase Cloud
-      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncServices === 'function') {
-        window.NN_SUPABASE_SERVICES.syncServices();
-      }
 
       // REAL ACCOUNTS ONLY: Purge mock jobs
       const mockJobIds = new Set(['job_1', 'job_2', 'job_3', 'job_4', 'job_5']);
@@ -402,9 +391,6 @@
       try {
         localStorage.setItem('nn_jobs', JSON.stringify(loadedJobs));
       } catch (_) {}
-      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncJobs === 'function') {
-        window.NN_SUPABASE_SERVICES.syncJobs();
-      }
 
       // REAL ACCOUNTS ONLY: Purge mock rentals
       const mockRentIds = new Set(['rent_1', 'rent_2', 'rent_3', 'rent_4', 'rent_5', 'rent_6']);
@@ -417,9 +403,6 @@
       try {
         localStorage.setItem('nn_rentals', JSON.stringify(loadedRentals));
       } catch (_) {}
-      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncRentals === 'function') {
-        window.NN_SUPABASE_SERVICES.syncRentals();
-      }
 
       // REAL ACCOUNTS ONLY: Purge mock blood donors
       const mockDonorNames = new Set(['മുഹമ്മദ് ഷാഫി', 'വിജീഷ് പത്മനാഭൻ', 'അഞ്ജലി പ്രസാദ്', 'രഞ്ജിത്ത് വർമ്മ', 'സുരേഷ് കുമാർ', 'ദിവ്യാ മനോജ്', 'അബ്ദുൾ സമദ്', 'പ്രവീൺ കൃഷ്ണ']);
@@ -433,10 +416,24 @@
         localStorage.setItem('nn_blood_donors', JSON.stringify(loadedDonors));
       } catch (_) {}
 
-      // Sync blood donors from Supabase Cloud
-      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncBloodDonors === 'function') {
-        window.NN_SUPABASE_SERVICES.syncBloodDonors();
-      }
+      // Background non-blocking sync from Supabase Cloud (instant UI first, smooth background fetch)
+      setTimeout(() => {
+        if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES) {
+          if (typeof window.NN_SUPABASE_SERVICES.syncPosts === 'function') window.NN_SUPABASE_SERVICES.syncPosts();
+          setTimeout(() => {
+            if (typeof window.NN_SUPABASE_SERVICES.syncServices === 'function') window.NN_SUPABASE_SERVICES.syncServices();
+          }, 350);
+          setTimeout(() => {
+            if (typeof window.NN_SUPABASE_SERVICES.syncJobs === 'function') window.NN_SUPABASE_SERVICES.syncJobs();
+          }, 700);
+          setTimeout(() => {
+            if (typeof window.NN_SUPABASE_SERVICES.syncRentals === 'function') window.NN_SUPABASE_SERVICES.syncRentals();
+          }, 1050);
+          setTimeout(() => {
+            if (typeof window.NN_SUPABASE_SERVICES.syncBloodDonors === 'function') window.NN_SUPABASE_SERVICES.syncBloodDonors();
+          }, 1400);
+        }
+      }, 500);
 
       const storedRequests = localStorage.getItem('nn_blood_requests');
       APP_STATE.bloodRequests = storedRequests ? JSON.parse(storedRequests) : [];
@@ -679,8 +676,11 @@
           }, 350);
         }
 
-        // Auto-detect GPS non-blockingly upon first launch
-        setTimeout(() => detectLiveGpsLocation(false), 500);
+        // Auto-detect GPS non-blockingly upon first launch ONLY if no saved location exists
+        const hasSavedLoc = localStorage.getItem('nn_curr_loc_name');
+        if (!hasSavedLoc || hasSavedLoc === 'തത്സമയ ലൊക്കേഷൻ') {
+          setTimeout(() => detectLiveGpsLocation(false), 800);
+        }
       }, 300);
     } else {
       navTo('home');
@@ -777,37 +777,22 @@
     if (typeof renderHomeScreen === 'function') renderHomeScreen();
   }
 
+  const GEO_CACHE = new Map();
+
   async function reverseGeocode(lat, lon) {
     const validLat = Number.isFinite(Number(lat)) ? Number(lat) : 11.8745;
     const validLon = Number.isFinite(Number(lon)) ? Number(lon) : 75.3704;
+    const cacheKey = `${validLat.toFixed(3)}_${validLon.toFixed(3)}`;
 
-    // 1. First priority: OpenStreetMap Nominatim with zoom 18 (Exact village/panchayath level precision)
-    try {
-      const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 4500);
-      const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${validLat}&lon=${validLon}&zoom=18&addressdetails=1`;
-      const res = await fetch(url, { headers: { 'Accept-Language': 'ml,en' }, signal: ctrl.signal });
-      clearTimeout(timer);
-      if (res.ok) {
-        const data = await res.json();
-        const addr = data.address || {};
-        const exactPlace = addr.village || addr.suburb || addr.hamlet || addr.neighbourhood || addr.residential || addr.quarter || addr.borough || addr.town || addr.municipality || addr.city;
-        const district = (addr.state_district || addr.district || addr.county || '').replace(/\s*District$/i, '').trim();
-        if (exactPlace) {
-          const formatted = (district && district.toLowerCase() !== exactPlace.toLowerCase())
-            ? `${exactPlace}, ${district}`
-            : exactPlace;
-          return { formatted, district: district || exactPlace };
-        }
-      }
-    } catch (err) {
-      console.warn('[Nominatim Geocode Error]:', err.message);
+    // Instant return if cached (0ms)
+    if (GEO_CACHE.has(cacheKey)) {
+      return GEO_CACHE.get(cacheKey);
     }
 
-    // 2. Second priority: Photon OSM reverse geocoder (Fast, CORS friendly)
+    // 1. Fast Edge Geocoder: Photon (sub-200ms latency)
     try {
       const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 3500);
+      const timer = setTimeout(() => ctrl.abort(), 2000);
       const url = `https://photon.komoot.io/reverse?lat=${validLat}&lon=${validLon}`;
       const res = await fetch(url, { signal: ctrl.signal });
       clearTimeout(timer);
@@ -821,18 +806,41 @@
             const formatted = (district && district.toLowerCase() !== exactPlace.toLowerCase())
               ? `${exactPlace}, ${district}`
               : exactPlace;
-            return { formatted, district: district || exactPlace };
+            const result = { formatted, district: district || exactPlace };
+            GEO_CACHE.set(cacheKey, result);
+            return result;
           }
         }
       }
-    } catch (err) {
-      console.warn('[Photon Geocode Error]:', err.message);
-    }
+    } catch (_) {}
 
-    // 3. Third priority: BigDataCloud client reverse geocoding with admin level check
+    // 2. OpenStreetMap Nominatim zoom 18 (fallback with tight 2.5s timeout)
     try {
       const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 3500);
+      const timer = setTimeout(() => ctrl.abort(), 2500);
+      const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${validLat}&lon=${validLon}&zoom=18&addressdetails=1`;
+      const res = await fetch(url, { headers: { 'Accept-Language': 'ml,en' }, signal: ctrl.signal });
+      clearTimeout(timer);
+      if (res.ok) {
+        const data = await res.json();
+        const addr = data.address || {};
+        const exactPlace = addr.village || addr.suburb || addr.hamlet || addr.neighbourhood || addr.residential || addr.quarter || addr.borough || addr.town || addr.municipality || addr.city;
+        const district = (addr.state_district || addr.district || addr.county || '').replace(/\s*District$/i, '').trim();
+        if (exactPlace) {
+          const formatted = (district && district.toLowerCase() !== exactPlace.toLowerCase())
+            ? `${exactPlace}, ${district}`
+            : exactPlace;
+          const result = { formatted, district: district || exactPlace };
+          GEO_CACHE.set(cacheKey, result);
+          return result;
+        }
+      }
+    } catch (_) {}
+
+    // 3. BigDataCloud client reverse geocoding
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 2000);
       const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${validLat}&longitude=${validLon}&localityLanguage=ml`;
       const res = await fetch(url, { signal: ctrl.signal });
       clearTimeout(timer);
@@ -844,15 +852,15 @@
           const localAdmin = adminLevels.find(a => a.order >= 7 && a.name) || adminLevels.find(a => a.order >= 5 && a.name);
           if (localAdmin) exactPlace = localAdmin.name;
         }
-        if (!exactPlace) {
-          exactPlace = data.city || data.principalSubdivision;
-        }
+        if (!exactPlace) exactPlace = data.city || data.principalSubdivision;
         const district = (data.principalSubdivision || '').trim();
         if (exactPlace) {
           const formatted = (district && district.toLowerCase() !== exactPlace.toLowerCase())
             ? `${exactPlace}, ${district}`
             : exactPlace;
-          return { formatted, district: district || exactPlace };
+          const result = { formatted, district: district || exactPlace };
+          GEO_CACHE.set(cacheKey, result);
+          return result;
         }
       }
     } catch (_) {}
