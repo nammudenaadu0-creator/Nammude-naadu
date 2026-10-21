@@ -764,7 +764,12 @@
         }
 
         // Active chat thread update
-        if (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.key === chatKey) {
+        const activeKey = APP_STATE.activeChatRecipient?.key;
+        const activePhone = APP_STATE.activeChatRecipient?.phone ? String(APP_STATE.activeChatRecipient.phone).replace(/\D/g, '').slice(-10) : '';
+        const incomingSenderPhone = msgObj.senderPhone ? String(msgObj.senderPhone).replace(/\D/g, '').slice(-10) : '';
+        const isCurrentChatActive = activeKey === chatKey || (activePhone && incomingSenderPhone && activePhone === incomingSenderPhone);
+
+        if (APP_STATE.activeChatRecipient && isCurrentChatActive) {
           if (typeof renderChatMessages === 'function') {
             try { renderChatMessages(); } catch (_) {}
           }

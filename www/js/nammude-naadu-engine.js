@@ -462,6 +462,9 @@
           APP_STATE.chats[k] = APP_STATE.chats[k].filter(m => !m.id || !String(m.id).startsWith('msg_ctx_'));
         }
       });
+      if (typeof reconcileChatThreads === 'function') {
+        reconcileChatThreads();
+      }
       try {
         localStorage.setItem('nn_chats_store', JSON.stringify(APP_STATE.chats));
         localStorage.setItem('nn_chats_meta', JSON.stringify(APP_STATE.chatMeta));
@@ -525,6 +528,9 @@
 
   function saveChats() {
     try {
+      if (typeof reconcileChatThreads === 'function') {
+        reconcileChatThreads();
+      }
       localStorage.setItem('nn_chats_store', JSON.stringify(APP_STATE.chats));
       if (APP_STATE.chatMeta) {
         localStorage.setItem('nn_chats_meta', JSON.stringify(APP_STATE.chatMeta));
@@ -1769,20 +1775,239 @@
   }
   window.goToAllChatsInbox = goToAllChatsInbox;
 
+  function extractContactInfoFromKeyAndMeta(k, meta, myPhone) {
+    let phone = normalizePhone(meta?.phone);
+    if (!phone) {
+      const matches = String(k || '').match(/\d{10}/g);
+      if (matches && matches.length > 0) {
+        if (myPhone) {
+          const other = matches.find(p => p !== myPhone);
+          phone = other || matches[0];
+        } else {
+          phone = matches[0];
+        }
+      }
+    }
+    const recipientId = (meta?.recipientId && !meta.recipientId.startsWith('usr_me_')) ? meta.recipientId : '';
+    const name = (meta?.name && meta.name !== 'സുഹൃത്ത്' && !meta.name.startsWith('chat_')) ? meta.name.trim() : '';
+
+    let groupKey = '';
+    if (phone) {
+      groupKey = 'phone_' + phone;
+    } else if (recipientId) {
+      groupKey = 'id_' + recipientId;
+    } else if (name) {
+      groupKey = 'name_' + name.toLowerCase();
+    } else {
+      groupKey = 'key_' + k;
+    }
+    return { phone, recipientId, name, groupKey };
+  }
+
+  function reconcileChatThreads() {
+    if (!APP_STATE.chats) APP_STATE.chats = {};
+    if (!APP_STATE.chatMeta) APP_STATE.chatMeta = {};
+
+    const myPhone = normalizePhone(APP_STATE.currentUser?.phone);
+    const myId = APP_STATE.currentUser?.id;
+
+    // 1. Gather all existing keys
+    const allKeys = Array.from(new Set([
+      ...Object.keys(APP_STATE.chats),
+      ...Object.keys(APP_STATE.chatMeta)
+    ]));
+
+    if (allKeys.length === 0) return;
+
+    // 2. Group keys by contact identity
+    const groups = {};
+    const contactInfoMap = {};
+
+    allKeys.forEach(k => {
+      const meta = APP_STATE.chatMeta[k];
+      const info = extractContactInfoFromKeyAndMeta(k, meta, myPhone);
+      contactInfoMap[k] = info;
+      if (!groups[info.groupKey]) {
+        groups[info.groupKey] = [];
+      }
+      groups[info.groupKey].push(k);
+    });
+
+    let stateChanged = false;
+
+    // 3. For each group, merge duplicate threads and normalize to canonical symmetric key
+    Object.keys(groups).forEach(groupKey => {
+      const keys = groups[groupKey];
+      let contactPhone = '';
+      let contactId = '';
+      let contactName = '';
+
+      keys.forEach(k => {
+        const inf = contactInfoMap[k];
+        if (inf.phone && !contactPhone) contactPhone = inf.phone;
+        if (inf.recipientId && !contactId) contactId = inf.recipientId;
+        if (inf.name && !contactName) contactName = inf.name;
+      });
+
+      // Compute canonical key for this contact
+      let canonicalKey = '';
+      if (contactPhone) {
+        if (myPhone && contactPhone !== myPhone) {
+          canonicalKey = 'chat_' + [contactPhone, myPhone].sort().join('_');
+        } else {
+          // If my phone not configured yet, check if any existing key already has 2 phones
+          const keyWithTwoPhones = keys.find(k => (String(k).match(/\d{10}/g) || []).length >= 2);
+          if (keyWithTwoPhones) {
+            canonicalKey = keyWithTwoPhones;
+          } else {
+            canonicalKey = 'chat_' + contactPhone;
+          }
+        }
+      } else if (contactId) {
+        canonicalKey = computeChatKey(myId, myPhone, APP_STATE.currentUser?.name, contactId, '', contactName);
+      } else {
+        canonicalKey = keys.find(k => k.startsWith('chat_')) || keys[0];
+      }
+
+      const needsMigration = keys.length > 1 || (keys[0] !== canonicalKey);
+
+      if (needsMigration) {
+        stateChanged = true;
+
+        const mergedMsgs = [];
+        const seenSignatures = new Set();
+
+        let bestMeta = {
+          name: '',
+          phone: contactPhone || '',
+          avatar: '',
+          recipientId: contactId || '',
+          type: 'other',
+          category: '',
+          updatedAt: 0
+        };
+
+        const keysToProcess = Array.from(new Set([...keys, canonicalKey]));
+        keysToProcess.forEach(k => {
+          const msgs = APP_STATE.chats[k] || [];
+          msgs.forEach(m => {
+            const cleanText = (m.text || '').trim();
+            const sig = (m.id && !String(m.id).startsWith('msg_ctx_'))
+              ? m.id
+              : (cleanText + '_' + (m.timestamp || m.time || '') + '_' + (m.sender || ''));
+            if (!seenSignatures.has(sig)) {
+              seenSignatures.add(sig);
+              mergedMsgs.push(m);
+            }
+          });
+
+          const mMeta = APP_STATE.chatMeta[k];
+          if (mMeta) {
+            if (mMeta.name && (!bestMeta.name || bestMeta.name === 'സുഹൃത്ത്' || bestMeta.name.startsWith('chat_'))) {
+              bestMeta.name = mMeta.name;
+            }
+            if (mMeta.phone && !bestMeta.phone) {
+              bestMeta.phone = mMeta.phone;
+            }
+            if (mMeta.avatar && (!bestMeta.avatar || bestMeta.avatar === DEFAULT_USER_AVATAR)) {
+              bestMeta.avatar = mMeta.avatar;
+            }
+            if (mMeta.recipientId && !bestMeta.recipientId) {
+              bestMeta.recipientId = mMeta.recipientId;
+            }
+            if (mMeta.type && mMeta.type !== 'other') {
+              bestMeta.type = mMeta.type;
+            }
+            if (mMeta.category && !bestMeta.category) {
+              bestMeta.category = mMeta.category;
+            }
+            if ((mMeta.updatedAt || 0) > bestMeta.updatedAt) {
+              bestMeta.updatedAt = mMeta.updatedAt;
+            }
+          }
+        });
+
+        if (!bestMeta.name) {
+          bestMeta.name = bestMeta.phone ? ('മൊബൈൽ ' + bestMeta.phone) : (contactName || 'സുഹൃത്ത്');
+        }
+        if (!bestMeta.avatar) {
+          bestMeta.avatar = DEFAULT_USER_AVATAR;
+        }
+
+        mergedMsgs.sort((a, b) => (Number(a.timestamp) || 0) - (Number(b.timestamp) || 0));
+
+        if (mergedMsgs.length > 0) {
+          const latestTime = mergedMsgs[mergedMsgs.length - 1].timestamp || 0;
+          if (latestTime > bestMeta.updatedAt) {
+            bestMeta.updatedAt = latestTime;
+          }
+        }
+
+        APP_STATE.chats[canonicalKey] = mergedMsgs;
+        APP_STATE.chatMeta[canonicalKey] = bestMeta;
+
+        keysToProcess.forEach(k => {
+          if (k !== canonicalKey) {
+            delete APP_STATE.chats[k];
+            delete APP_STATE.chatMeta[k];
+          }
+        });
+
+        if (APP_STATE.activeChatRecipient && keysToProcess.includes(APP_STATE.activeChatRecipient.key)) {
+          APP_STATE.activeChatRecipient.key = canonicalKey;
+          APP_STATE.activeChatRecipient.name = bestMeta.name;
+          APP_STATE.activeChatRecipient.phone = bestMeta.phone;
+          APP_STATE.activeChatRecipient.avatar = bestMeta.avatar;
+        }
+      }
+    });
+
+    if (stateChanged) {
+      try {
+        localStorage.setItem('nn_chats_store', JSON.stringify(APP_STATE.chats));
+        localStorage.setItem('nn_chats_meta', JSON.stringify(APP_STATE.chatMeta));
+      } catch (_) {}
+    }
+  }
+  window.reconcileChatThreads = reconcileChatThreads;
+
   function openChatModal(recipientName, recipientPhone, recipientAvatar, initialContext, recipientId, explicitChatKey, chatType) {
     const safeName = recipientName || 'പ്രാദേശിക സുഹൃത്ത്';
     const safePhone = recipientPhone || '';
     const safeAvatar = recipientAvatar || DEFAULT_USER_AVATAR;
 
-    // Use explicit chat key if passed directly from chat list, or compute symmetric key
-    const chatKey = explicitChatKey || computeChatKey(
-      APP_STATE.currentUser.id,
-      APP_STATE.currentUser.phone,
-      APP_STATE.currentUser.name,
-      recipientId,
-      safePhone,
-      safeName
-    );
+    // Run reconciliation first to eliminate duplicate/fragmented threads
+    reconcileChatThreads();
+
+    // Check if an existing thread already exists for this contact phone or explicitChatKey
+    let chatKey = explicitChatKey;
+    if (chatKey && !APP_STATE.chats[chatKey] && !APP_STATE.chatMeta[chatKey]) {
+      chatKey = null;
+    }
+
+    if (!chatKey && safePhone) {
+      const cleanPhone = normalizePhone(safePhone);
+      if (cleanPhone) {
+        const existingKey = Object.keys(APP_STATE.chats || {}).find(k => {
+          const meta = APP_STATE.chatMeta && APP_STATE.chatMeta[k];
+          return (meta && normalizePhone(meta.phone) === cleanPhone) || (k.includes(cleanPhone));
+        });
+        if (existingKey) {
+          chatKey = existingKey;
+        }
+      }
+    }
+
+    if (!chatKey) {
+      chatKey = computeChatKey(
+        APP_STATE.currentUser.id,
+        APP_STATE.currentUser.phone,
+        APP_STATE.currentUser.name,
+        recipientId,
+        safePhone,
+        safeName
+      );
+    }
 
     APP_STATE.activeChatRecipient = {
       name: safeName,
@@ -1793,13 +2018,14 @@
     };
 
     if (!APP_STATE.chatMeta) APP_STATE.chatMeta = {};
+    const existingMeta = APP_STATE.chatMeta[chatKey] || {};
     APP_STATE.chatMeta[chatKey] = {
-      name: safeName,
-      phone: safePhone,
-      avatar: safeAvatar,
-      recipientId: recipientId || '',
-      type: chatType || (APP_STATE.chatMeta[chatKey]?.type) || 'other',
-      category: initialContext || (APP_STATE.chatMeta[chatKey]?.category) || '',
+      name: (safeName && safeName !== 'പ്രാദേശിക സുഹൃത്ത്') ? safeName : (existingMeta.name || safeName),
+      phone: safePhone || existingMeta.phone || '',
+      avatar: (safeAvatar && safeAvatar !== DEFAULT_USER_AVATAR) ? safeAvatar : (existingMeta.avatar || DEFAULT_USER_AVATAR),
+      recipientId: recipientId || existingMeta.recipientId || '',
+      type: chatType || (existingMeta.type) || 'other',
+      category: initialContext || (existingMeta.category) || '',
       updatedAt: Date.now()
     };
 
@@ -2339,6 +2565,10 @@
   function renderChatListScreen() {
     const container = document.getElementById('chatThreadsList');
     if (!container) return;
+
+    if (typeof reconcileChatThreads === 'function') {
+      reconcileChatThreads();
+    }
 
     // Gather all chat keys from APP_STATE.chats and APP_STATE.chatMeta
     const allKeys = Array.from(new Set([
