@@ -1528,10 +1528,14 @@
                    (!post.isCloud && post.isCurrentUser);
 
     const postSnippet = (post.content || '').replace(/'/g, "\\'").replace(/"/g, '&quot;').substring(0, 35);
-    const authorNameSafe = (post.authorName || 'നാട്ടുകാരൻ').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    const authorNameSafe = (isMine && APP_STATE.currentUser && APP_STATE.currentUser.name && APP_STATE.currentUser.name !== 'നാട്ടുകാരൻ')
+      ? APP_STATE.currentUser.name.replace(/'/g, "\\'").replace(/"/g, '&quot;')
+      : (post.authorName || 'നാട്ടുകാരൻ').replace(/'/g, "\\'").replace(/"/g, '&quot;');
     const timeFormatted = formatMalayalamTime(post.timestamp || post.createdAt);
     const locationSafe = post.authorLocation || post.locationName || 'കേരളം';
-    const avatarSafe = post.authorAvatar || window.DEFAULT_USER_AVATAR || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80';
+    const avatarSafe = (isMine && APP_STATE.currentUser && APP_STATE.currentUser.avatar)
+      ? APP_STATE.currentUser.avatar
+      : (post.authorAvatar || window.DEFAULT_USER_AVATAR || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80');
 
     const typeBadge = post.type === 'offer' ? '<span style="background:#FEF3C7;color:#92400E;font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px">🏷️ ഓഫർ</span>' :
                       post.type === 'photo' ? '<span style="background:#EFF6FF;color:#1E40AF;font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px">🖼️ ചിത്രം</span>' :
@@ -6001,14 +6005,32 @@
       } catch (_) {}
 
       // Update all profile avatars in UI immediately
-      const profAvatar = document.getElementById('profileAvatarImg');
-      const homeHeaderAvatar = document.getElementById('homeHeaderAvatar');
-      const editPreview = document.getElementById('editProfAvatarPreview');
-      const composerAvatar = document.getElementById('profComposerMiniAvatar');
-      if (profAvatar) profAvatar.src = compressedBase64;
-      if (homeHeaderAvatar) homeHeaderAvatar.src = compressedBase64;
-      if (editPreview) editPreview.src = compressedBase64;
-      if (composerAvatar) composerAvatar.src = compressedBase64;
+      const avatarSelectors = [
+        '#profileAvatarImg',
+        '#homeHeaderAvatar',
+        '#editProfAvatarPreview',
+        '#profComposerMiniAvatar',
+        '#postingAsAvatar',
+        '#desktopUserAvatar',
+        '#desktopSidebarAvatar'
+      ];
+      avatarSelectors.forEach(sel => {
+        const el = document.querySelector(sel);
+        if (el) el.src = compressedBase64;
+      });
+
+      // Update author avatar on all current user posts immediately
+      if (Array.isArray(APP_STATE.posts)) {
+        const myDigits = (APP_STATE.currentUser.phone ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '');
+        APP_STATE.posts.forEach(p => {
+          if (p.isCurrentUser || p.authorId === APP_STATE.currentUser.id || (myDigits && p.authorPhone && p.authorPhone.replace(/\D/g, '').slice(-10) === myDigits)) {
+            p.authorAvatar = compressedBase64;
+          }
+        });
+        savePosts();
+        if (typeof renderCommunityFeed === 'function') renderCommunityFeed();
+        if (typeof renderHomeCommunityFeed === 'function') renderHomeCommunityFeed();
+      }
 
       // Sync photo to Supabase Cloud profile
       if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveUserProfile === 'function') {
@@ -6439,6 +6461,43 @@
       }
     }
 
+    // Check if avatar was previewed or updated
+    const previewEl = document.getElementById('editProfAvatarPreview');
+    if (previewEl && previewEl.src && previewEl.src.length > 50 && !previewEl.src.includes('data:image/svg+xml')) {
+      APP_STATE.currentUser.avatar = previewEl.src;
+      try {
+        localStorage.setItem('nn_user_avatar', previewEl.src);
+      } catch (_) {}
+    }
+
+    const targetAvatar = APP_STATE.currentUser.avatar || DEFAULT_USER_AVATAR;
+
+    // Instantly update all avatar images in DOM
+    ['#profileAvatarImg', '#homeHeaderAvatar', '#postingAsAvatar', '#profComposerMiniAvatar', '#desktopUserAvatar', '#desktopSidebarAvatar'].forEach(sel => {
+      const el = document.querySelector(sel);
+      if (el) el.src = targetAvatar;
+    });
+
+    // Instantly update name displays in DOM
+    ['#postingAsName', '#desktopUserName', '#desktopSidebarName'].forEach(sel => {
+      const el = document.querySelector(sel);
+      if (el) el.textContent = name;
+    });
+
+    // Update author name & avatar on all current user posts in feed
+    if (Array.isArray(APP_STATE.posts)) {
+      APP_STATE.posts.forEach(p => {
+        if (p.isCurrentUser || p.authorId === APP_STATE.currentUser.id || (p.authorPhone && p.authorPhone.replace(/\D/g, '').slice(-10) === cleanDigits)) {
+          p.authorName = name;
+          p.authorPhone = phone;
+          p.authorAvatar = targetAvatar;
+          p.authorLocation = loc;
+          p.authorBlood = blood;
+        }
+      });
+      savePosts();
+    }
+
     // Synchronize to Supabase Cloud Profiles
     if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveUserProfile === 'function') {
       window.NN_SUPABASE_SERVICES.saveUserProfile(APP_STATE.currentUser);
@@ -6447,8 +6506,10 @@
     closeModal('modal-edit-profile');
     renderProfileScreen();
     updatePostingProfileBar();
+    if (typeof renderCommunityFeed === 'function') renderCommunityFeed();
+    if (typeof renderHomeCommunityFeed === 'function') renderHomeCommunityFeed();
     renderHomeScreen();
-    toast(`🎉 സ്വാഗതം ${name}! നിങ്ങളുടെ പ്രൊഫൈൽ വിജയകരമായി സേവ് ചെയ്തു.`);
+    toast(`🎉 സ്വാഗതം ${name}! നിങ്ങളുടെ പ്രൊഫൈൽ വിവരങ്ങളും ഫോട്ടോയും അക്കൗണ്ടിൽ വിജയകരമായി ചേർത്തു.`);
   }
   window.submitProfileUpdate = submitProfileUpdate;
 
@@ -7353,22 +7414,22 @@
             const cloud = await window.NN_SUPABASE_SERVICES.fetchUserProfile(phone);
             if (cloud) {
               let changed = false;
-              if (cloud.name && (!APP_STATE.currentUser.name || APP_STATE.currentUser.name === 'നാട്ടുകാരൻ')) {
+              if (cloud.name && cloud.name !== APP_STATE.currentUser.name) {
                 APP_STATE.currentUser.name = cloud.name;
                 localStorage.setItem('nn_user_name', cloud.name);
                 changed = true;
               }
-              if (cloud.avatar && (!APP_STATE.currentUser.avatar || APP_STATE.currentUser.avatar === DEFAULT_USER_AVATAR)) {
+              if (cloud.avatar && cloud.avatar !== APP_STATE.currentUser.avatar) {
                 APP_STATE.currentUser.avatar = cloud.avatar;
                 localStorage.setItem('nn_user_avatar', cloud.avatar);
                 changed = true;
               }
-              if (cloud.blood_group && !localStorage.getItem('nn_user_blood')) {
+              if (cloud.blood_group) {
                 APP_STATE.currentUser.bloodGroup = cloud.blood_group;
                 localStorage.setItem('nn_user_blood', cloud.blood_group);
                 changed = true;
               }
-              if (cloud.place && !localStorage.getItem('nn_user_loc')) {
+              if (cloud.place) {
                 APP_STATE.currentUser.location = cloud.place;
                 localStorage.setItem('nn_user_loc', cloud.place);
                 changed = true;
@@ -7377,6 +7438,8 @@
                 renderProfileScreen();
                 updatePostingProfileBar();
                 renderHomeScreen();
+                if (typeof renderCommunityFeed === 'function') renderCommunityFeed();
+                if (typeof renderHomeCommunityFeed === 'function') renderHomeCommunityFeed();
               }
             }
           }
