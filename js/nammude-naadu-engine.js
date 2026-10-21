@@ -1199,45 +1199,121 @@
   // ==============================================================
   let pendingPostPhotoBase64 = '';
 
+  // ==============================================================
+  // SMART CLIENT-SIDE IMAGE COMPRESSOR (Instagram / WhatsApp Standard)
+  // Auto-downscales, applies high-smoothing canvas rendering, and exports
+  // WebP (with JPEG fallback) at optimal quality (~80-120KB for 10MB originals)
+  // ==============================================================
+  function smartCompressImage(file, options, callback) {
+    if (typeof options === 'function') {
+      callback = options;
+      options = {};
+    }
+    options = options || {};
+    const maxDim = options.maxDim || options.maxWidth || 1080;
+    const quality = typeof options.quality === 'number' ? options.quality : 0.80;
+    const preferWebP = options.preferWebP !== false;
+
+    if (!file) {
+      if (typeof callback === 'function') callback(null);
+      return Promise.resolve(null);
+    }
+
+    return new Promise(function(resolve) {
+      function finish(result) {
+        if (typeof callback === 'function') callback(result);
+        resolve(result);
+      }
+
+      if (!file.type || !file.type.startsWith('image/')) {
+        const r = new FileReader();
+        r.onload = function(ev) { finish(ev.target.result); };
+        r.onerror = function() { finish(null); };
+        r.readAsDataURL(file);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        const rawData = ev.target.result;
+        const img = new Image();
+        img.onload = function() {
+          let w = img.naturalWidth || img.width;
+          let h = img.naturalHeight || img.height;
+
+          if (!w || !h) {
+            finish(rawData);
+            return;
+          }
+
+          if (w > maxDim || h > maxDim) {
+            if (w >= h) {
+              h = Math.round((h * maxDim) / w);
+              w = maxDim;
+            } else {
+              w = Math.round((w * maxDim) / h);
+              h = maxDim;
+            }
+          }
+
+          try {
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+              ctx.imageSmoothingEnabled = true;
+              ctx.imageSmoothingQuality = 'high';
+              ctx.drawImage(img, 0, 0, w, h);
+            }
+
+            let result = null;
+            if (preferWebP) {
+              try {
+                const webpData = canvas.toDataURL('image/webp', quality);
+                if (webpData && webpData.startsWith('data:image/webp')) {
+                  result = webpData;
+                }
+              } catch (_) {}
+            }
+            if (!result) {
+              result = canvas.toDataURL('image/jpeg', quality);
+            }
+            finish(result);
+          } catch (err) {
+            console.warn('[SmartCompress] Canvas compression fallback:', err);
+            finish(rawData);
+          }
+        };
+        img.onerror = function() {
+          finish(rawData);
+        };
+        img.src = rawData;
+      };
+      reader.onerror = function() {
+        finish(null);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+  window.smartCompressImage = smartCompressImage;
+
   function handlePostPhotoUpload(e) {
     const file = e.target.files && e.target.files[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = function (evt) {
-      // Compress with canvas
-      const img = new Image();
-      img.onload = function () {
-        const canvas = document.createElement('canvas');
-        const maxW = 900;
-        const maxH = 900;
-        let w = img.width;
-        let h = img.height;
-        if (w > maxW || h > maxH) {
-          if (w > h) {
-            h = Math.round((h * maxW) / w);
-            w = maxW;
-          } else {
-            w = Math.round((w * maxH) / h);
-            h = maxH;
-          }
-        }
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, w, h);
-        pendingPostPhotoBase64 = canvas.toDataURL('image/jpeg', 0.8);
+    if (typeof toast === 'function') toast('⏳ ചിത്രം ഒപ്റ്റിമൈസ് ചെയ്യുന്നു...');
+    smartCompressImage(file, { maxDim: 1080, quality: 0.80 }, function(compressed) {
+      if (!compressed) return;
+      pendingPostPhotoBase64 = compressed;
 
-        const previewBox = document.getElementById('mediaPreviewBox');
-        const previewImg = document.getElementById('mediaPreviewImg');
-        if (previewBox && previewImg) {
-          previewImg.src = pendingPostPhotoBase64;
-          previewBox.style.display = 'block';
-        }
-      };
-      img.src = evt.target.result;
-    };
-    reader.readAsDataURL(file);
+      const previewBox = document.getElementById('mediaPreviewBox');
+      const previewImg = document.getElementById('mediaPreviewImg');
+      if (previewBox && previewImg) {
+        previewImg.src = pendingPostPhotoBase64;
+        previewBox.style.display = 'block';
+      }
+    });
   }
   window.handlePostPhotoUpload = handlePostPhotoUpload;
 
@@ -1369,38 +1445,17 @@
     const file = e.target.files && e.target.files[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-      const img = new Image();
-      img.onload = function() {
-        const canvas = document.createElement('canvas');
-        const maxDim = 800;
-        let w = img.width;
-        let h = img.height;
-        if (w > h && w > maxDim) {
-          h = Math.round((h * maxDim) / w);
-          w = maxDim;
-        } else if (h > maxDim) {
-          w = Math.round((w * maxDim) / h);
-          h = maxDim;
-        }
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, w, h);
-        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.75);
-
-        APP_STATE.tempEditPostImage = compressedBase64;
-        const previewImg = document.getElementById('editPostPhotoPreviewImg');
-        const previewWrap = document.getElementById('editPostPhotoPreviewWrap');
-        const placeholder = document.getElementById('editPostPhotoPlaceholder');
-        if (previewImg) previewImg.src = compressedBase64;
-        if (previewWrap) previewWrap.style.display = 'block';
-        if (placeholder) placeholder.style.display = 'none';
-      };
-      img.src = evt.target.result;
-    };
-    reader.readAsDataURL(file);
+    if (typeof toast === 'function') toast('⏳ ചിത്രം ഒപ്റ്റിമൈസ് ചെയ്യുന്നു...');
+    smartCompressImage(file, { maxDim: 1080, quality: 0.80 }, function(compressed) {
+      if (!compressed) return;
+      APP_STATE.tempEditPostImage = compressed;
+      const previewImg = document.getElementById('editPostPhotoPreviewImg');
+      const previewWrap = document.getElementById('editPostPhotoPreviewWrap');
+      const placeholder = document.getElementById('editPostPhotoPlaceholder');
+      if (previewImg) previewImg.src = compressed;
+      if (previewWrap) previewWrap.style.display = 'block';
+      if (placeholder) placeholder.style.display = 'none';
+    });
   }
   window.handleEditPostPhotoUpload = handleEditPostPhotoUpload;
 
@@ -1526,7 +1581,7 @@
 
         ${post.image ? `
           <div class="fb-post-image-box" style="margin-bottom:8px;border-radius:10px;overflow:hidden;border:1px solid #CBD5E1">
-            <img src="${post.image}" alt="Post attachment" class="fb-post-image" loading="lazy" style="width:100%;border-radius:10px;max-height:240px;object-fit:cover;display:block" onerror="this.parentElement.style.display='none'">
+            <img src="${post.image}" alt="Post attachment" class="fb-post-image" loading="lazy" decoding="async" style="width:100%;border-radius:10px;max-height:240px;object-fit:cover;display:block" onerror="this.parentElement.style.display='none'">
           </div>
         ` : ''}
 
@@ -3741,40 +3796,18 @@
     const file = event.target.files && event.target.files[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const img = new Image();
-      img.onload = function() {
-        const canvas = document.createElement('canvas');
-        const maxDim = 800;
-        let w = img.width;
-        let h = img.height;
-        if (w > maxDim || h > maxDim) {
-          if (w > h) {
-            h = Math.round((h * maxDim) / w);
-            w = maxDim;
-          } else {
-            w = Math.round((w * maxDim) / h);
-            h = maxDim;
-          }
-        }
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, w, h);
-        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
-        window._quickReqPhotoBase64 = compressedBase64;
+    if (typeof toast === 'function') toast('⏳ ചിത്രം ഒപ്റ്റിമൈസ് ചെയ്യുന്നു...');
+    smartCompressImage(file, { maxDim: 800, quality: 0.80 }, function(compressedBase64) {
+      if (!compressedBase64) return;
+      window._quickReqPhotoBase64 = compressedBase64;
 
-        const previewBox = document.getElementById('quickReqPhotoPreviewBox');
-        const previewImg = document.getElementById('quickReqPhotoPreview');
-        if (previewBox && previewImg) {
-          previewImg.src = compressedBase64;
-          previewBox.style.display = 'block';
-        }
-      };
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
+      const previewBox = document.getElementById('quickReqPhotoPreviewBox');
+      const previewImg = document.getElementById('quickReqPhotoPreview');
+      if (previewBox && previewImg) {
+        previewImg.src = compressedBase64;
+        previewBox.style.display = 'block';
+      }
+    });
   }
   window.handleQuickReqPhotoSelected = handleQuickReqPhotoSelected;
 
@@ -4475,44 +4508,12 @@
   let tempAdminHomeBannerBase64 = null;
 
   function compressImageToDataUrl(file, maxWidth, quality, callback) {
-    if (!file) return;
-    if (!file.type || !file.type.startsWith('image/')) {
-      const reader = new FileReader();
-      reader.onload = ev => callback(ev.target.result);
-      reader.readAsDataURL(file);
-      return;
+    if (typeof smartCompressImage === 'function') {
+      return smartCompressImage(file, { maxDim: maxWidth || 1200, quality: quality || 0.82 }, callback);
     }
+    if (!file) return;
     const reader = new FileReader();
-    reader.onload = ev => {
-      const img = new Image();
-      img.onload = () => {
-        let w = img.width;
-        let h = img.height;
-        const max = maxWidth || 1200;
-        if (w > max || h > max) {
-          if (w > h) {
-            h = Math.round((h * max) / w);
-            w = max;
-          } else {
-            w = Math.round((w * max) / h);
-            h = max;
-          }
-        }
-        try {
-          const canvas = document.createElement('canvas');
-          canvas.width = w;
-          canvas.height = h;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, w, h);
-          const compressed = canvas.toDataURL('image/jpeg', quality || 0.85);
-          callback(compressed);
-        } catch (_) {
-          callback(ev.target.result);
-        }
-      };
-      img.onerror = () => callback(ev.target.result);
-      img.src = ev.target.result;
-    };
+    reader.onload = ev => callback(ev.target.result);
     reader.readAsDataURL(file);
   }
 
@@ -4670,14 +4671,14 @@
   function handleAdminSplashPhotoSelected(event) {
     const file = event.target.files && event.target.files[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      tempAdminSplashBase64 = e.target.result;
+    if (typeof toast === 'function') toast('⏳ ചിത്രം ഒപ്റ്റിമൈസ് ചെയ്യുന്നു...');
+    smartCompressImage(file, { maxDim: 1080, quality: 0.82 }, function(compressed) {
+      if (!compressed) return;
+      tempAdminSplashBase64 = compressed;
       const preview = document.getElementById('adminSplashPreview');
       if (preview) preview.src = tempAdminSplashBase64;
-      toast('📸 ഫോട്ടോ തിരഞ്ഞെടുത്തു! സേവ് ചെയ്യാൻ താഴെയുള്ള ബട്ടൺ അമർത്തുക.');
-    };
-    reader.readAsDataURL(file);
+      toast('📸 ഫോട്ടോ ഒപ്റ്റിമൈസ് ചെയ്തു തയ്യാറാക്കി! സേവ് ചെയ്യാൻ താഴെയുള്ള ബട്ടൺ അമർത്തുക.');
+    });
   }
   window.handleAdminSplashPhotoSelected = handleAdminSplashPhotoSelected;
 
@@ -5646,7 +5647,7 @@
                 </div>
               </div>
               <div style="font-size:13.5px;color:#1E293B;line-height:1.55;word-break:break-word">${escapeHtml(p.content)}</div>
-              ${p.image ? `<img src="${p.image}" alt="Post image" onclick="viewFullImage('${p.image}')" style="width:100%;max-height:260px;object-fit:cover;border-radius:12px;border:1px solid #F1F5F9;cursor:pointer">` : ''}
+              ${p.image ? `<img src="${p.image}" alt="Post image" loading="lazy" decoding="async" onclick="viewFullImage('${p.image}')" style="width:100%;max-height:260px;object-fit:cover;border-radius:12px;border:1px solid #F1F5F9;cursor:pointer">` : ''}
               <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid #F1F5F9;font-size:12px;color:#64748B">
                 <span>❤️ ${p.likes || 0} ലൈക്കുകൾ</span>
                 <span>💬 ${p.comments ? p.comments.length : 0} അഭിപ്രായങ്ങൾ</span>
@@ -5949,41 +5950,23 @@
     const file = e.target.files && e.target.files[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-      const img = new Image();
-      img.onload = function() {
-        const canvas = document.createElement('canvas');
-        const maxW = 900;
-        let w = img.width;
-        let h = img.height;
-        if (w > maxW) {
-          h = Math.round((h * maxW) / w);
-          w = maxW;
-        }
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, w, h);
-        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
+    if (typeof toast === 'function') toast('⏳ കവർ ഫോട്ടോ ഒപ്റ്റിമൈസ് ചെയ്യുന്നു...');
+    smartCompressImage(file, { maxDim: 1080, quality: 0.82 }, function(compressedBase64) {
+      if (!compressedBase64) return;
+      APP_STATE.currentUser.cover = compressedBase64;
+      try {
+        localStorage.setItem('nn_user_cover', compressedBase64);
+      } catch (_) {}
 
-        APP_STATE.currentUser.cover = compressedBase64;
-        try {
-          localStorage.setItem('nn_user_cover', compressedBase64);
-        } catch (_) {}
+      const coverImg = document.getElementById('profCoverImg');
+      if (coverImg) coverImg.src = compressedBase64;
 
-        const coverImg = document.getElementById('profCoverImg');
-        if (coverImg) coverImg.src = compressedBase64;
+      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveUserProfile === 'function') {
+        window.NN_SUPABASE_SERVICES.saveUserProfile(APP_STATE.currentUser);
+      }
 
-        if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveUserProfile === 'function') {
-          window.NN_SUPABASE_SERVICES.saveUserProfile(APP_STATE.currentUser);
-        }
-
-        toast('📸 നിങ്ങളുടെ കവർ ഫോട്ടോ വിജയകരമായി മാറ്റി!');
-      };
-      img.src = evt.target.result;
-    };
-    reader.readAsDataURL(file);
+      toast('📸 നിങ്ങളുടെ കവർ ഫോട്ടോ വിജയകരമായി മാറ്റി!');
+    });
   }
   window.handleCoverPhotoUpload = handleCoverPhotoUpload;
 
@@ -5991,52 +5974,31 @@
     const file = e.target.files && e.target.files[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-      const img = new Image();
-      img.onload = function() {
-        const canvas = document.createElement('canvas');
-        const maxDim = 400;
-        let w = img.width;
-        let h = img.height;
-        if (w > maxDim) {
-          h = Math.round((h * maxDim) / w);
-          w = maxDim;
-        } else if (h > maxDim) {
-          w = Math.round((w * maxDim) / h);
-          h = maxDim;
-        }
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, w, h);
-        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.82);
+    if (typeof toast === 'function') toast('⏳ പ്രൊഫൈൽ ഫോട്ടോ ഒപ്റ്റിമൈസ് ചെയ്യുന്നു...');
+    smartCompressImage(file, { maxDim: 400, quality: 0.82 }, function(compressedBase64) {
+      if (!compressedBase64) return;
+      APP_STATE.currentUser.avatar = compressedBase64;
+      try {
+        localStorage.setItem('nn_user_avatar', compressedBase64);
+      } catch (_) {}
 
-        APP_STATE.currentUser.avatar = compressedBase64;
-        try {
-          localStorage.setItem('nn_user_avatar', compressedBase64);
-        } catch (_) {}
+      // Update all profile avatars in UI immediately
+      const profAvatar = document.getElementById('profileAvatarImg');
+      const homeHeaderAvatar = document.getElementById('homeHeaderAvatar');
+      const editPreview = document.getElementById('editProfAvatarPreview');
+      const composerAvatar = document.getElementById('profComposerMiniAvatar');
+      if (profAvatar) profAvatar.src = compressedBase64;
+      if (homeHeaderAvatar) homeHeaderAvatar.src = compressedBase64;
+      if (editPreview) editPreview.src = compressedBase64;
+      if (composerAvatar) composerAvatar.src = compressedBase64;
 
-        // Update all profile avatars in UI immediately
-        const profAvatar = document.getElementById('profileAvatarImg');
-        const homeHeaderAvatar = document.getElementById('homeHeaderAvatar');
-        const editPreview = document.getElementById('editProfAvatarPreview');
-        const composerAvatar = document.getElementById('profComposerMiniAvatar');
-        if (profAvatar) profAvatar.src = compressedBase64;
-        if (homeHeaderAvatar) homeHeaderAvatar.src = compressedBase64;
-        if (editPreview) editPreview.src = compressedBase64;
-        if (composerAvatar) composerAvatar.src = compressedBase64;
+      // Sync photo to Supabase Cloud profile
+      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveUserProfile === 'function') {
+        window.NN_SUPABASE_SERVICES.saveUserProfile(APP_STATE.currentUser);
+      }
 
-        // Sync photo to Supabase Cloud profile
-        if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveUserProfile === 'function') {
-          window.NN_SUPABASE_SERVICES.saveUserProfile(APP_STATE.currentUser);
-        }
-
-        toast('📸 നിങ്ങളുടെ പ്രൊഫൈൽ ഫോട്ടോ വിജയകരമായി മാറ്റം വരുത്തി!');
-      };
-      img.src = evt.target.result;
-    };
-    reader.readAsDataURL(file);
+      toast('📸 നിങ്ങളുടെ പ്രൊഫൈൽ ഫോട്ടോ വിജയകരമായി മാറ്റം വരുത്തി!');
+    });
   }
   window.handleProfilePhotoUpload = handleProfilePhotoUpload;
 
@@ -6046,38 +6008,17 @@
     const file = e.target.files && e.target.files[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-      const img = new Image();
-      img.onload = function() {
-        const canvas = document.createElement('canvas');
-        const maxDim = 800;
-        let w = img.width;
-        let h = img.height;
-        if (w > h && w > maxDim) {
-          h = Math.round((h * maxDim) / w);
-          w = maxDim;
-        } else if (h > maxDim) {
-          w = Math.round((w * maxDim) / h);
-          h = maxDim;
-        }
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, w, h);
-        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.75);
-
-        APP_STATE.tempRentalImage = compressedBase64;
-        const previewImg = document.getElementById('rentPhotoPreviewImg');
-        const previewWrap = document.getElementById('rentPhotoPreviewWrap');
-        const placeholder = document.getElementById('rentPhotoPlaceholder');
-        if (previewImg) previewImg.src = compressedBase64;
-        if (previewWrap) previewWrap.style.display = 'block';
-        if (placeholder) placeholder.style.display = 'none';
-      };
-      img.src = evt.target.result;
-    };
-    reader.readAsDataURL(file);
+    if (typeof toast === 'function') toast('⏳ ചിത്രം ഒപ്റ്റിമൈസ് ചെയ്യുന്നു...');
+    smartCompressImage(file, { maxDim: 800, quality: 0.80 }, function(compressedBase64) {
+      if (!compressedBase64) return;
+      APP_STATE.tempRentalImage = compressedBase64;
+      const previewImg = document.getElementById('rentPhotoPreviewImg');
+      const previewWrap = document.getElementById('rentPhotoPreviewWrap');
+      const placeholder = document.getElementById('rentPhotoPlaceholder');
+      if (previewImg) previewImg.src = compressedBase64;
+      if (previewWrap) previewWrap.style.display = 'block';
+      if (placeholder) placeholder.style.display = 'none';
+    });
   }
   window.handleRentalPhotoUpload = handleRentalPhotoUpload;
 
