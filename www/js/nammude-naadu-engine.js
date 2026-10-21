@@ -1900,6 +1900,17 @@
   }
   window.openChatModal = openChatModal;
 
+  function formatChatDatePill(timestamp) {
+    if (!timestamp) return 'ഇന്ന്';
+    const d = new Date(timestamp);
+    const now = new Date();
+    if (d.toDateString() === now.toDateString()) return 'ഇന്ന്';
+    const yest = new Date(now);
+    yest.setDate(now.getDate() - 1);
+    if (d.toDateString() === yest.toDateString()) return 'ഇന്നലെ';
+    return d.toLocaleDateString('ml-IN', { day: 'numeric', month: 'short' });
+  }
+
   function renderChatMessages() {
     const box = document.getElementById('chatMessagesBox');
     if (!box || !APP_STATE.activeChatRecipient) return;
@@ -1909,22 +1920,52 @@
 
     if (thread.length === 0) {
       box.innerHTML = `
-        <div style="text-align:center;padding:30px 16px;background:#F9FAFB;border-radius:14px;margin:12px 0">
-          <div style="font-size:32px;margin-bottom:8px">🌿</div>
-          <div style="font-weight:800;font-size:14px;color:#111827">${escapeHtml(APP_STATE.activeChatRecipient.name)}</div>
-          <p style="font-size:12px;color:#6B7280;margin:6px 0 0">നേരിട്ടുള്ള തത്സമയ സംഭാഷണം ആരംഭിക്കൂ. സന്ദേശങ്ങൾ ഫയർബേസ് ക്ലൗഡിലൂടെ കൈമാറുന്നു.</p>
+        <div style="text-align:center;padding:26px 18px;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);border-radius:20px;margin:24px auto;max-width:320px;box-shadow:0 4px 16px rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.04)">
+          <div style="width:58px;height:58px;border-radius:50%;background:#DCF8C6;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:28px;box-shadow:0 3px 8px rgba(0,0,0,0.08)">💬</div>
+          <div style="font-weight:800;font-size:15px;color:#111B21">${escapeHtml(APP_STATE.activeChatRecipient.name)}</div>
+          <p style="font-size:12px;color:#667781;margin:6px 0 0;line-height:1.5">നേരിട്ടുള്ള തത്സമയ സംഭാഷണം ആരംഭിക്കൂ. സന്ദേശങ്ങൾ ഇൻസ്റ്റന്റായി കൈമാറുന്നു.</p>
+          <div style="margin-top:14px;font-size:11px;font-weight:700;color:#075E54;background:#DCF8C6;display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:12px">
+            <span>🔒 എൻഡ്-ടു-എൻഡ് സുരക്ഷിത ചാറ്റ്</span>
+          </div>
         </div>
       `;
       return;
     }
 
-    box.innerHTML = thread.map(msg => `
-      <div class="chat-bubble ${msg.sender === 'me' ? 'outgoing' : 'incoming'}">
-        <div style="word-break:break-word">${escapeHtml(msg.text)}</div>
-        <span class="chat-time-text">${msg.time}</span>
-      </div>
-    `).join('');
+    let lastDateStr = '';
+    const messagesHtml = thread.map(msg => {
+      const isMe = msg.sender === 'me';
+      const dateStr = formatChatDatePill(msg.timestamp);
+      let dateDivider = '';
+      if (dateStr !== lastDateStr) {
+        lastDateStr = dateStr;
+        dateDivider = `
+          <div class="chat-date-divider">
+            <span>${escapeHtml(dateStr)}</span>
+          </div>
+        `;
+      }
 
+      const recipientAvatar = (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.avatar) || DEFAULT_USER_AVATAR;
+
+      return `
+        ${dateDivider}
+        <div class="chat-message-row ${isMe ? 'outgoing-row' : 'incoming-row'}">
+          ${!isMe ? `
+            <img src="${escapeHtml(recipientAvatar)}" class="chat-bubble-avatar" alt="Avatar" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
+          ` : ''}
+          <div class="chat-bubble ${isMe ? 'outgoing' : 'incoming'}">
+            <div class="chat-bubble-content">${escapeHtml(msg.text)}</div>
+            <div class="chat-bubble-meta">
+              <span class="chat-time-text">${escapeHtml(msg.time || '')}</span>
+              ${isMe ? '<span class="chat-ticks">✓✓</span>' : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    box.innerHTML = messagesHtml;
     box.scrollTop = box.scrollHeight;
   }
 
@@ -2536,7 +2577,10 @@
             <span style="font-size:10px;font-weight:800;background:${badgeBg};color:${badgeColor};padding:1px 6px;border-radius:6px">${badgeLabel}</span>
             ${meta.phone ? `<span style="font-size:11px;color:#94A3B8">📞 ${meta.phone}</span>` : ''}
           </div>
-          <div style="font-size:12px;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(lastMsg.text)}</div>
+          <div style="font-size:12.5px;color:#64748B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">
+            ${lastMsg.sender === 'me' ? '<span style="color:#53BDEB;font-weight:900;margin-right:4px;letter-spacing:-1.5px;font-size:11px">✓✓</span>' : ''}
+            <span style="overflow:hidden;text-overflow:ellipsis">${escapeHtml(lastMsg.text)}</span>
+          </div>
         </div>
       </div>
     `;
