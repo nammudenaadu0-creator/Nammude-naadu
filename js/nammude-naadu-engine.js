@@ -10,10 +10,30 @@
   // ==============================================================
   // 1. APPLICATION STATE & PERSISTENCE
   // ==============================================================
-  // Clean Default Kerala Citizen Avatar (SVG gradient)
-  // Clean Default Kerala Citizen Avatar (SVG gradient)
-  const DEFAULT_USER_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Cdefs%3E%3ClinearGradient id='avatarGrad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2310B981'/%3E%3Cstop offset='100%25' stop-color='%23047857'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='64' cy='64' r='64' fill='url(%23avatarGrad)'/%3E%3Ccircle cx='64' cy='48' r='24' fill='%23ffffff'/%3E%3Cpath d='M24 108c0-22.1 17.9-40 40-40s40 17.9 40 40v4H24v-4z' fill='%23ffffff'/%3E%3C/svg%3E";
+  // Clean Default Kerala Citizen Avatar (SVG gradient, safe with double quotes for inline HTML)
+  const DEFAULT_USER_AVATAR = "data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22%3E%3Cdefs%3E%3ClinearGradient id=%22avatarGrad%22 x1=%220%25%22 y1=%220%25%22 x2=%22100%25%22 y2=%22100%25%22%3E%3Cstop offset=%220%25%22 stop-color=%22%2310B981%22/%3E%3Cstop offset=%22100%25%22 stop-color=%22%23047857%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx=%2264%22 cy=%2264%22 r=%2264%22 fill=%22url(%23avatarGrad)%22/%3E%3Ccircle cx=%2264%22 cy=%2248%22 r=%2224%22 fill=%22%23ffffff%22/%3E%3Cpath d=%22M24 108c0-22.1 17.9-40 40-40s40 17.9 40 40v4H24v-4z%22 fill=%22%23ffffff%22/%3E%3C/svg%3E";
   window.DEFAULT_USER_AVATAR = DEFAULT_USER_AVATAR;
+
+  // Safe Currency & Rate Formatter (Guarantees ₹ symbol on prices, rates, visiting fees & salaries)
+  function formatPrice(val) {
+    if (!val) return '';
+    let s = String(val).trim();
+    if (!s) return '';
+    if (s.includes('₹')) {
+      return s.replace(/₹\s*₹+/g, '₹');
+    }
+    s = s.replace(/^(rs\.?|inr)\s*/i, '₹');
+    if (s.includes('₹')) return s;
+
+    if (/^\d/.test(s)) {
+      if (/^(\d+[\d,]*)\s*-\s*(\d+[\d,]*)/.test(s)) {
+        return s.replace(/^(\d+[\d,]*)\s*-\s*(\d+[\d,]*)/, '₹$1 - ₹$2');
+      }
+      return '₹' + s;
+    }
+    return s;
+  }
+  window.formatPrice = formatPrice;
 
   // Safe HTML Escaping Helper (protects against XSS, null/undefined, and non-string values)
   function escapeHtml(text) {
@@ -42,11 +62,16 @@
     try { localStorage.removeItem('nn_user_avatar'); } catch (_) {}
   }
 
-  let savedUserPhone = localStorage.getItem('nn_user_phone') || '';
+  // Permanent Phone Number Persistence: Never lost once saved
+  let savedUserPhone = localStorage.getItem('nn_user_phone') || localStorage.getItem('nn_permanent_phone') || '';
   if (savedUserPhone === '+91 94471 98765') {
     savedUserPhone = '';
-    try { localStorage.removeItem('nn_user_phone'); } catch (_) {}
+    try {
+      localStorage.removeItem('nn_user_phone');
+      localStorage.removeItem('nn_permanent_phone');
+    } catch (_) {}
   }
+
   try {
     const storedLocName = localStorage.getItem('nn_curr_loc_name');
     if (storedLocName && (storedLocName.includes('കണ്ണൂർ') || storedLocName.toLowerCase().includes('kannur'))) {
@@ -62,21 +87,32 @@
       localStorage.setItem('nn_user_bio', 'നമ്മുടെ നാട് കൂട്ടായ്മ 🌿');
     }
   } catch (_) {}
+
+  // Deterministic, Permanent User ID tied directly to Citizen Phone Number
   function generateUserIdFromPhone(rawPhone) {
     if (!rawPhone) return null;
     const digits = String(rawPhone).replace(/\D/g, '').slice(-10);
     return (digits && digits.length >= 10) ? ('usr_' + digits) : null;
   }
   window.generateUserIdFromPhone = generateUserIdFromPhone;
+
   const phoneBasedId = generateUserIdFromPhone(savedUserPhone);
-  if (phoneBasedId && !localStorage.getItem('nn_user_id')) {
-    try { localStorage.setItem('nn_user_id', phoneBasedId.replace('usr_', '')); } catch (_) {}
+  const permanentSavedId = localStorage.getItem('nn_permanent_id') || localStorage.getItem('nn_user_id') || '';
+  const currentCitizenId = phoneBasedId || (permanentSavedId ? (permanentSavedId.startsWith('usr_') ? permanentSavedId : ('usr_' + permanentSavedId)) : ('usr_me_' + Math.random().toString(36).substring(2, 9)));
+
+  if (phoneBasedId) {
+    try {
+      localStorage.setItem('nn_user_id', phoneBasedId.replace('usr_', ''));
+      localStorage.setItem('nn_permanent_id', phoneBasedId);
+      localStorage.setItem('nn_permanent_phone', savedUserPhone);
+    } catch (_) {}
   }
+
   const APP_STATE = {
     currentScreen: 'splash',
     previousScreen: 'home',
     currentUser: {
-      id: phoneBasedId || (localStorage.getItem('nn_user_id') ? ('usr_' + localStorage.getItem('nn_user_id')) : ('usr_me_' + Math.random().toString(36).substring(2, 9))),
+      id: currentCitizenId,
       name: savedUserName || 'നാട്ടുകാരൻ',
       phone: savedUserPhone || '',
       location: localStorage.getItem('nn_user_loc') || 'തത്സമയ ലൊക്കേഷൻ',
@@ -2030,19 +2066,62 @@
   }
   window.reconcileChatThreads = reconcileChatThreads;
 
+  function openChatModalByKey(chatKey) {
+    if (!chatKey) return;
+    if (typeof reconcileChatThreads === 'function') {
+      reconcileChatThreads();
+    }
+    let resolvedKey = chatKey;
+    if ((!APP_STATE.chats || !APP_STATE.chats[resolvedKey]) && (!APP_STATE.chatMeta || !APP_STATE.chatMeta[resolvedKey])) {
+      const phones = String(chatKey).match(/\d{10}/g) || [];
+      if (phones.length > 0 && APP_STATE.chats) {
+        const matchKey = Object.keys(APP_STATE.chats).find(k => phones.some(p => k.includes(p)));
+        if (matchKey) resolvedKey = matchKey;
+      }
+    }
+    const meta = (APP_STATE.chatMeta && APP_STATE.chatMeta[resolvedKey]) || (APP_STATE.chatMeta && APP_STATE.chatMeta[chatKey]) || {};
+    const msgs = (APP_STATE.chats && APP_STATE.chats[resolvedKey]) || (APP_STATE.chats && APP_STATE.chats[chatKey]) || [];
+    let name = meta.name;
+    let phone = meta.phone || '';
+    let avatar = meta.avatar || '';
+    let recipientId = meta.recipientId || '';
+    let initialContext = meta.category || '';
+    let type = meta.type || 'other';
+
+    if (!phone) {
+      const phones = String(resolvedKey).match(/\d{10}/g) || String(chatKey).match(/\d{10}/g) || [];
+      const myCleanPhone = normalizePhone(APP_STATE.currentUser?.phone);
+      if (phones.length > 0) {
+        phone = phones.find(p => p !== myCleanPhone) || phones[0];
+      }
+    }
+
+    if (!name || name === 'സുഹൃത്ത്' || name.startsWith('chat_')) {
+      const themMsg = msgs.slice().reverse().find(m => m.sender !== 'me' && m.senderName);
+      if (themMsg && themMsg.senderName) {
+        name = themMsg.senderName;
+      }
+    }
+    if (!name) {
+      name = phone ? ('സുഹൃത്ത് ' + phone) : 'പ്രാദേശിക സുഹൃത്ത്';
+    }
+
+    openChatModal(name, phone, avatar, initialContext, recipientId, resolvedKey, type);
+  }
+  window.openChatModalByKey = openChatModalByKey;
+
   function openChatModal(recipientName, recipientPhone, recipientAvatar, initialContext, recipientId, explicitChatKey, chatType) {
     const safeName = recipientName || 'പ്രാദേശിക സുഹൃത്ത്';
     const safePhone = recipientPhone || '';
-    const safeAvatar = recipientAvatar || DEFAULT_USER_AVATAR;
+    const safeAvatar = (recipientAvatar && recipientAvatar !== DEFAULT_USER_AVATAR) ? recipientAvatar : '';
 
     // Run reconciliation first to eliminate duplicate/fragmented threads
-    reconcileChatThreads();
-
-    // Check if an existing thread already exists for this contact phone or explicitChatKey
-    let chatKey = explicitChatKey;
-    if (chatKey && !APP_STATE.chats[chatKey] && !APP_STATE.chatMeta[chatKey]) {
-      chatKey = null;
+    if (typeof reconcileChatThreads === 'function') {
+      reconcileChatThreads();
     }
+
+    // Retain explicit chat key if given
+    let chatKey = explicitChatKey;
 
     if (!chatKey && safePhone) {
       const cleanPhone = normalizePhone(safePhone);
@@ -2068,21 +2147,23 @@
       );
     }
 
+    if (!APP_STATE.chatMeta) APP_STATE.chatMeta = {};
+    const existingMeta = APP_STATE.chatMeta[chatKey] || {};
+    const resolvedAvatar = safeAvatar || existingMeta.avatar || DEFAULT_USER_AVATAR;
+
     APP_STATE.activeChatRecipient = {
-      name: safeName,
-      phone: safePhone,
-      avatar: safeAvatar,
-      id: recipientId || '',
+      name: (safeName && safeName !== 'പ്രാദേശിക സുഹൃത്ത്') ? safeName : (existingMeta.name || safeName),
+      phone: safePhone || existingMeta.phone || '',
+      avatar: resolvedAvatar,
+      id: recipientId || existingMeta.recipientId || '',
       key: chatKey
     };
 
-    if (!APP_STATE.chatMeta) APP_STATE.chatMeta = {};
-    const existingMeta = APP_STATE.chatMeta[chatKey] || {};
     APP_STATE.chatMeta[chatKey] = {
-      name: (safeName && safeName !== 'പ്രാദേശിക സുഹൃത്ത്') ? safeName : (existingMeta.name || safeName),
-      phone: safePhone || existingMeta.phone || '',
-      avatar: (safeAvatar && safeAvatar !== DEFAULT_USER_AVATAR) ? safeAvatar : (existingMeta.avatar || DEFAULT_USER_AVATAR),
-      recipientId: recipientId || existingMeta.recipientId || '',
+      name: APP_STATE.activeChatRecipient.name,
+      phone: APP_STATE.activeChatRecipient.phone,
+      avatar: resolvedAvatar,
+      recipientId: APP_STATE.activeChatRecipient.id,
       type: chatType || (existingMeta.type) || 'other',
       category: initialContext || (existingMeta.category) || '',
       updatedAt: Date.now()
@@ -2091,9 +2172,9 @@
     const headerName = document.getElementById('chatRecipientName');
     const headerAvatar = document.getElementById('chatRecipientAvatar');
     const callBtn = document.getElementById('chatRecipientCallBtn');
-    if (headerName) headerName.textContent = safeName;
+    if (headerName) headerName.textContent = APP_STATE.activeChatRecipient.name;
     if (headerAvatar) {
-      headerAvatar.src = safeAvatar;
+      headerAvatar.src = resolvedAvatar;
       headerAvatar.onerror = function () { this.src = DEFAULT_USER_AVATAR; };
     }
     if (callBtn) {
@@ -2725,7 +2806,7 @@
           </div>
         `;
         html += matchedCommunity.slice(0, 15).map(c => `
-          <div onclick="openChatModal('${escapeHtml(c.name).replace(/'/g, "\\'")}', '${c.phone || ''}', '${c.avatar || DEFAULT_USER_AVATAR}', '', '${c.id}')"
+          <div onclick="openChatModal('${escapeHtml(c.name).replace(/'/g, "\\'")}', '${c.phone || ''}', '${c.avatar && c.avatar.startsWith('http') ? c.avatar : ''}', '', '${c.id}')"
                style="display:flex;align-items:center;gap:12px;padding:11px 14px;background:#fff;border-radius:14px;border:1px solid #E2E8F0;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.02)">
             <div style="position:relative;flex-shrink:0">
               <img src="${c.avatar || DEFAULT_USER_AVATAR}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:1.5px solid #E2E8F0" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
@@ -2747,7 +2828,7 @@
       const directTargetName = cleanDigits.length >= 10 ? `മൊബൈൽ (${cleanDigits.slice(-10)})` : activeChatSearchQuery;
       const directPhone = cleanDigits.length >= 10 ? cleanDigits.slice(-10) : '';
       html += `
-        <div onclick="openChatModal('${escapeHtml(directTargetName).replace(/'/g, "\\'")}', '${directPhone}', window.DEFAULT_USER_AVATAR||'', '', 'usr_${Date.now()}')"
+        <div onclick="openChatModal('${escapeHtml(directTargetName).replace(/'/g, "\\'")}', '${directPhone}', '', '', 'usr_${Date.now()}')"
              style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#F0FDF4;border:1.5px dashed #86EFAC;border-radius:14px;cursor:pointer;margin-top:10px">
           <span style="font-size:22px">✉️</span>
           <div style="flex:1">
@@ -2773,7 +2854,7 @@
 
       if (allCommunity.length > 0) {
         html += allCommunity.slice(0, 12).map(c => `
-          <div onclick="openChatModal('${escapeHtml(c.name).replace(/'/g, "\\'")}', '${c.phone || ''}', '${c.avatar || DEFAULT_USER_AVATAR}', '', '${c.id}')"
+          <div onclick="openChatModal('${escapeHtml(c.name).replace(/'/g, "\\'")}', '${c.phone || ''}', '${c.avatar && c.avatar.startsWith('http') ? c.avatar : ''}', '', '${c.id}')"
                style="display:flex;align-items:center;gap:12px;padding:11px 14px;background:#fff;border-radius:14px;border:1px solid #E2E8F0;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.02);transition:all 0.15s">
             <div style="position:relative;flex-shrink:0">
               <img src="${c.avatar || DEFAULT_USER_AVATAR}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:1.5px solid #CBD5E1" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
@@ -2811,7 +2892,7 @@
         <div style="margin-top:16px;padding-top:12px;border-top:1px solid #E2E8F0">
           <div style="font-size:13px;font-weight:800;color:#0F172A;margin-bottom:8px">⚡ കൂടുതൽ ആളുകളുമായി ചാറ്റ് ചെയ്യാം</div>
           ${allCommunity.slice(0, 6).map(c => `
-            <div onclick="openChatModal('${escapeHtml(c.name).replace(/'/g, "\\'")}', '${c.phone || ''}', '${c.avatar || DEFAULT_USER_AVATAR}', '', '${c.id}')"
+            <div onclick="openChatModal('${escapeHtml(c.name).replace(/'/g, "\\'")}', '${c.phone || ''}', '${c.avatar && c.avatar.startsWith('http') ? c.avatar : ''}', '', '${c.id}')"
                  style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:#fff;border-radius:12px;border:1px solid #E2E8F0;cursor:pointer;margin-bottom:6px">
               <img src="${c.avatar || DEFAULT_USER_AVATAR}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:1.5px solid #CBD5E1" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
               <div style="flex:1;min-width:0">
@@ -2870,7 +2951,7 @@
     }
 
     return `
-      <div onclick="openChatModal('${escapeHtml(meta.name).replace(/'/g, "\\'")}', '${meta.phone || ''}', '${meta.avatar || DEFAULT_USER_AVATAR}', '', '${meta.recipientId || ''}', '${k}')"
+      <div onclick="openChatModalByKey('${k}')"
            style="display:flex;align-items:center;gap:12px;padding:12px 15px;background:#fff;border-radius:20px;border:1px solid #E2E8F0;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.03);transition:all 0.15s ease;margin-bottom:8px">
         <div style="position:relative;flex-shrink:0">
           <img src="${meta.avatar || DEFAULT_USER_AVATAR}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #E2E8F0" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
@@ -2899,9 +2980,20 @@
   // ==============================================================
   const SERVICE_CATEGORIES = [
     { id: 'all', name: 'എല്ലാം', icon: '🛠️' },
+    { id: 'auto', name: 'ഓട്ടോറിക്ഷ', icon: '🛺' },
+    { id: 'taxi', name: 'ടാക്സി കാർ', icon: '🚕' },
+    { id: 'traveller', name: 'ട്രാവലർ/വാൻ', icon: '🚐' },
+    { id: 'bus', name: 'ടൂറിസ്റ്റ് ബസ്', icon: '🚌' },
+    { id: 'pickup', name: 'പിക്കപ്പ് വാൻ', icon: '🛻' },
+    { id: 'goodsauto', name: 'ഗുഡ്സ് ഓട്ടോ', icon: '🛺📦' },
+    { id: 'jeep', name: 'ജീപ്പ് 4x4', icon: '🚙' },
+    { id: 'lorry', name: 'ലോറി / ടിപ്പർ', icon: '🚛' },
+    { id: 'jcb', name: 'ജെസിബി / ഹിറ്റാച്ചി', icon: '🚜' },
+    { id: 'crane', name: 'ക്രെയിൻ / റിക്കവറി', icon: '🏗️' },
+    { id: 'ambulance', name: 'ആംബുലൻസ്', icon: '🚑' },
+    { id: 'driver', name: 'ഡ്രൈവർമാർ', icon: '🛺' },
     { id: 'plumber', name: 'പ്ലംബർ', icon: '🚰' },
     { id: 'electrician', name: 'ഇലക്ട്രീഷ്യൻ', icon: '⚡' },
-    { id: 'driver', name: 'ഡ്രൈവർ / ടാക്സി', icon: '🛺' },
     { id: 'carpenter', name: 'ആശാരി', icon: '🪚' },
     { id: 'painter', name: 'പെയിന്റർ', icon: '🎨' },
     { id: 'acrepair', name: 'എസി & ഫ്രിഡ്ജ്', icon: '❄️' },
@@ -2977,10 +3069,25 @@
     const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
     const maxRadius = APP_STATE.radiusFilters.services;
 
+    const vehicleCats = ['auto', 'taxi', 'traveller', 'bus', 'pickup', 'goodsauto', 'jeep', 'lorry', 'jcb', 'crane', 'ambulance'];
+
     // Filter services by category and query
     let allMatching = APP_STATE.services.filter(srv => {
-      const matchesCategory = (APP_STATE.activeServiceCategory === 'all') || (srv.category === APP_STATE.activeServiceCategory);
-      const matchesQuery = !query || srv.name.toLowerCase().includes(query) || srv.trade.toLowerCase().includes(query) || (srv.category && srv.category.toLowerCase().includes(query));
+      const srvCat = srv.category || '';
+      let matchesCategory = false;
+      if (APP_STATE.activeServiceCategory === 'all') {
+        matchesCategory = true;
+      } else if (APP_STATE.activeServiceCategory === 'driver') {
+        matchesCategory = (srvCat === 'driver') || vehicleCats.includes(srvCat);
+      } else {
+        matchesCategory = (srvCat === APP_STATE.activeServiceCategory);
+      }
+      const vDetailsStr = srv.vehicleDetails ? JSON.stringify(srv.vehicleDetails).toLowerCase() : '';
+      const matchesQuery = !query || 
+        srv.name.toLowerCase().includes(query) || 
+        srv.trade.toLowerCase().includes(query) || 
+        (srv.category && srv.category.toLowerCase().includes(query)) ||
+        vDetailsStr.includes(query);
       const dist = getItemDistanceKm(srv, APP_STATE.location.lat, APP_STATE.location.lon);
       srv._calculatedDist = dist;
       return matchesCategory && matchesQuery;
@@ -3041,8 +3148,17 @@
             </div>
           </div>
 
+          <!-- VEHICLE HIGHLIGHT BADGES -->
+          ${srv.vehicleDetails ? `
+            <div style="display:flex;flex-wrap:wrap;gap:5px;margin:4px 0">
+              ${srv.vehicleDetails.stand ? `<span style="font-size:10px;background:#F1F5F9;color:#334155;padding:2px 8px;border-radius:6px;font-weight:700">🚏 സ്റ്റാൻഡ്: ${escapeHtml(srv.vehicleDetails.stand)}</span>` : ''}
+              ${srv.vehicleDetails.model ? `<span style="font-size:10px;background:#EFF6FF;color:#1D4ED8;padding:2px 8px;border-radius:6px;font-weight:700">🚗 ${escapeHtml(srv.vehicleDetails.model)}</span>` : ''}
+              ${srv.vehicleDetails.route ? `<span style="font-size:10px;background:#FDF2F8;color:#BE185D;padding:2px 8px;border-radius:6px;font-weight:700">🛣️ ${escapeHtml(srv.vehicleDetails.route)}</span>` : ''}
+            </div>
+          ` : ''}
+
           <div style="display:flex;flex-wrap:wrap;gap:6px;margin:2px 0">
-            <span class="provider-fee-pill">💰 ${srv.visitingFee || '₹200 വിസിറ്റിംഗ് നിരക്ക്'}</span>
+            <span class="provider-fee-pill">💰 ${formatPrice(srv.visitingFee || '₹200 വിസിറ്റിംഗ് നിരക്ക്')}</span>
             ${(srv.specializations || []).slice(0, 3).map(sp => `<span class="provider-spec-tag">${sp}</span>`).join('')}
           </div>
 
@@ -3103,7 +3219,7 @@
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
           <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:14px;padding:10px 12px">
             <div style="font-size:0.7rem;color:#64748B;font-weight:700">💰 വിസിറ്റിംഗ് നിരക്ക്</div>
-            <div style="font-size:0.86rem;font-weight:800;color:#0F766E;margin-top:2px">${srv.visitingFee || '₹200 വിസിറ്റിംഗ് നിരക്ക്'}</div>
+            <div style="font-size:0.86rem;font-weight:800;color:#0F766E;margin-top:2px">${formatPrice(srv.visitingFee || '₹200 വിസിറ്റിംഗ് നിരക്ക്')}</div>
           </div>
           <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:14px;padding:10px 12px">
             <div style="font-size:0.7rem;color:#64748B;font-weight:700">⏰ പ്രവൃത്തി സമയം</div>
@@ -3115,6 +3231,19 @@
           <span style="font-size:0.82rem;font-weight:700;color:#166534">ലഭ്യതാ സ്റ്റാറ്റസ്:</span>
           <span class="provider-live-pill ${availClass}">${availLabel}</span>
         </div>
+
+        <!-- VEHICLE SPECIFICATIONS (IF VEHICLE SERVICE) -->
+        ${srv.vehicleDetails ? `
+          <div style="background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:14px;padding:12px;margin-top:2px">
+            <div style="font-size:0.82rem;font-weight:900;color:#065F46;margin-bottom:8px">🚗 വാഹന വിവരങ്ങൾ (Vehicle Specifications):</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:0.78rem">
+              ${srv.vehicleDetails.model ? `<div><span style="color:#64748B">മോഡൽ/സീറ്റിംഗ്:</span> <b style="color:#0F172A">${escapeHtml(srv.vehicleDetails.model)}</b></div>` : ''}
+              ${srv.vehicleDetails.number ? `<div><span style="color:#64748B">നമ്പർ:</span> <b style="color:#0F172A">${escapeHtml(srv.vehicleDetails.number)}</b></div>` : ''}
+              ${srv.vehicleDetails.stand ? `<div style="grid-column:span 2"><span style="color:#64748B">പ്രധാന സ്റ്റാൻഡ്:</span> <b style="color:#0F172A">🚏 ${escapeHtml(srv.vehicleDetails.stand)}</b></div>` : ''}
+              ${srv.vehicleDetails.route ? `<div style="grid-column:span 2"><span style="color:#64748B">റൂട്ടുകൾ:</span> <b style="color:#0F172A">🛣️ ${escapeHtml(srv.vehicleDetails.route)}</b></div>` : ''}
+            </div>
+          </div>
+        ` : ''}
 
         <!-- SPECIALIZATION CHIPS -->
         <div>
@@ -3232,6 +3361,17 @@
   const TRADES_CATALOG = (typeof window !== 'undefined' && window.TRADES_CATALOG_500 && window.TRADES_CATALOG_500.length)
     ? window.TRADES_CATALOG_500
     : [
+    { id: 'auto', name: 'ഓട്ടോറിക്ഷ സർവീസ്', en: 'Auto Rickshaw', icon: '🛺', category: 'auto', specs: ['ലോക്കൽ ഓട്ടം', 'സ്കൂൾ ട്രിപ്പ്', 'ഹോസ്പിറ്റൽ എമർജൻസി', 'റെയിൽവേ സ്റ്റേഷൻ', 'രാത്രി സർവീസ്'] },
+    { id: 'taxi', name: 'ടാക്സി കാർ & ട്രാവൽസ്', en: 'Taxi & Cab Service', icon: '🚕', category: 'taxi', specs: ['എയർപോർട്ട് ഡ്രോപ്പ്', 'ടൂർ പാക്കേജ്', 'ഇന്നോവ / എർട്ടിഗ', '24x7 ലഭ്യമാണ്', 'ഹോസ്പിറ്റൽ ട്രിപ്പ്'] },
+    { id: 'traveller', name: 'വാൻ & ടെമ്പോ ട്രാവലർ', en: 'Van & Tempo Traveller', icon: '🚐', category: 'traveller', specs: ['17/26 സീറ്റർ ട്രാവലർ', 'ടൂർ & തീർത്ഥാടനം', 'വിവാഹ പാക്കേജ്', 'ഫാമിലി ട്രിപ്പ്', 'AC പുഷ്ബാക്ക് സീറ്റ്'] },
+    { id: 'bus', name: 'ടൂറിസ്റ്റ് ബസ് സർവീസ്', en: 'Tourist Bus Service', icon: '🚌', category: 'bus', specs: ['32/49 സീറ്റർ ബസ്', 'വിവാഹ ഓട്ടം', 'കോളേജ്/സ്കൂൾ ടൂർ', 'എയർ സസ്പെൻഷൻ', 'ഡിജെ & ലൈറ്റ്സ്'] },
+    { id: 'pickup', name: 'പിക്കപ്പ് വാൻ & ഗുഡ്സ്', en: 'Pickup Van & Goods', icon: '🛻', category: 'pickup', specs: ['വീട് മാറ്റൽ', 'സാധനങ്ങൾ കൊണ്ടുപോകൽ', 'പച്ചക്കറി & മാർക്കറ്റ്', 'ഫർണിച്ചർ ഷിഫ്റ്റിംഗ്', 'ഇന്റർലോക്ക് / മെറ്റീരിയൽ'] },
+    { id: 'goodsauto', name: 'ഗുഡ്സ് ഓട്ടോ', en: 'Goods Auto / Ape', icon: '🛺📦', category: 'goodsauto', specs: ['ചെറിയ ലോഡുകൾ', 'ഫ്രിഡ്ജ് & വാഷിംഗ് മെഷീൻ', 'ടൗൺ ഡെലിവറി', 'തടി & കമ്പി', 'ചെലവ് കുറഞ്ഞ ഓട്ടം'] },
+    { id: 'jeep', name: 'ജീപ്പ് 4x4 / സഫാരി', en: 'Jeep 4x4 Safari', icon: '🚙', category: 'jeep', specs: ['ഓഫ്രോഡ് സഫാരി', 'മലയോര റൂട്ടുകൾ', '4x4 ജീപ്പ്', 'എസ്റ്റേറ്റ് ഓട്ടം', 'മൺസൂൺ ഡ്രൈവ്'] },
+    { id: 'lorry', name: 'ലോറി & ടിപ്പർ സർവീസ്', en: 'Lorry & Tipper Truck', icon: '🚛', category: 'lorry', specs: ['മണ്ണ് & മെറ്റൽ സപ്ലൈ', '10/16 ടൺ ടിപ്പർ', 'ഹെവി ലോഡ് ട്രാൻസ്പോർട്ട്', 'സൈറ്റ് ക്ലിയറൻസ്', 'ഇന്റർസ്റ്റേറ്റ് ലോഡ്'] },
+    { id: 'jcb', name: 'ജെസിബി & ഹിറ്റാച്ചി എക്സ്കവേറ്റർ', en: 'JCB & Excavator', icon: '🚜', category: 'jcb', specs: ['തറ വെട്ടൽ', 'കിണർ കുഴിക്കൽ', 'റോഡ് പണി', 'മണ്ണ് നിരപ്പാക്കൽ', 'ബ്രേക്കർ വർക്ക്'] },
+    { id: 'crane', name: 'ക്രെയിൻ & ബ്രേക്ക്ഡൗൺ റിക്കവറി', en: 'Crane & Recovery Service', icon: '🏗️', category: 'crane', specs: ['വാഹനം ടോവിങ് (Towing)', 'ഹെവി ലിഫ്റ്റിംഗ്', 'ബ്രേക്ക്ഡൗൺ റിക്കവറി', 'ഹൈഡ്രോളിക് ക്രെയിൻ', '24x7 ആക്സിഡന്റ് റിക്കവറി'] },
+    { id: 'ambulance', name: 'ആംബുലൻസ് 24x7 സർവീസ്', en: 'Ambulance 24x7', icon: '🚑', category: 'ambulance', specs: ['24 മണിക്കൂർ എമർജൻസി', 'ഓക്സിജൻ സപ്പോർട്ട്', 'ICU ആംബുലൻസ്', 'സ്ട്രെച്ചർ സൗകര്യം', 'ദീർഘദൂര പേഷ്യന്റ് ട്രാൻസ്ഫർ'] },
     { id: 'electrician', name: 'ഇലക്ട്രീഷ്യൻ', en: 'Electrician', icon: '⚡', category: 'electrician', specs: ['വീട് വയറിങ്', 'ഇൻവെർട്ടർ', 'ഫാൻ & മോട്ടോർ', 'ഷോർട്ട് സർക്യൂട്ട്', 'സ്വിച്ച് ബോർഡ്'] },
     { id: 'plumber', name: 'പ്ലംബർ', en: 'Plumber', icon: '🚰', category: 'plumber', specs: ['പൈപ്പ് ലീക്ക്', 'ടാങ്ക് ക്ലീനിംഗ്', 'മോട്ടോർ ഫിറ്റിംഗ്', 'സാനിറ്ററി', 'ടാപ്പ് മാറ്റൽ'] },
     { id: 'acrepair', name: 'എസി & ഫ്രിഡ്ജ് ടെക്നീഷ്യൻ', en: 'AC & Fridge Repair', icon: '❄️', category: 'acrepair', specs: ['ഗ്യാസ് ചാർജിംഗ്', 'എസി സർവീസിങ്', 'ഫ്രിഡ്ജ് കംപ്ലയിന്റ്', 'വാഷിംഗ് മെഷീൻ', 'ഇൻസ്റ്റാളേഷൻ'] },
@@ -3260,6 +3400,7 @@
 
   const QUICK_TRADE_CATEGORIES = [
     { key: 'popular', label: '🌟 ജനപ്രിയം (Top 25)' },
+    { key: 'vehicles', label: '🚗 വാഹനങ്ങൾ (ഓട്ടോ, ടാക്സി, ലോറി, JCB...)' },
     { key: 'all', label: '🌐 എല്ലാം (500)' },
     { key: 'electrician', label: '⚡ ഇലക്ട്രിക് (25)' },
     { key: 'plumber', label: '🚰 പ്ലംബർ (25)' },
@@ -3289,10 +3430,11 @@
       customIcons = JSON.parse(localStorage.getItem('nn_admin_mini_icons') || '[]');
     } catch (_) {}
     const base = [
-      '⚡', '🚰', '🛺', '❄️', '🪚', '🎨', '🧹', '🧱', '🔥', '🌴',
+      '🛺', '🚕', '🚐', '🚌', '🛻', '🚙', '🚛', '🚜', '🏗️', '🚑', '🛵',
+      '⚡', '🚰', '❄️', '🪚', '🎨', '🧹', '🧱', '🔥', '🌴',
       '💄', '📹', '🍲', '🧵', '🩺', '📚', '💧', '📱', '🚗', '🚲',
       '🍳', '🌿', '✂️', '🚚', '📸', '🪟', '🔑', '🛠️', '💻', '🧺',
-      '🪓', '🌾', '🔋', '🛵', '🏛️', '🚪'
+      '🪓', '🌾', '🔋', '🏛️', '🚪'
     ];
     const combined = [...base];
     customIcons.forEach(item => {
@@ -3302,6 +3444,111 @@
     return combined;
   }
   window.getMiniIconsList = getMiniIconsList;
+
+  // VEHICLE REGISTRATION MODE & TYPE SELECTOR HELPERS
+  function setRegServiceMode(mode) {
+    window._currentRegServiceMode = mode;
+    const isVehicle = (mode === 'vehicle');
+    const sBtn = document.getElementById('regModeServiceBtn');
+    const vBtn = document.getElementById('regModeVehicleBtn');
+    const vPicker = document.getElementById('regVehiclePickerSection');
+    const vFields = document.getElementById('regVehicleSpecificFields');
+    const gChips = document.getElementById('regGeneralTradeChipsContainer');
+    const titleEl = document.getElementById('modalServiceTitle');
+    const nameLabel = document.getElementById('regServiceNameLabel');
+    const tradeLabel = document.getElementById('regServiceTradeLabel');
+
+    if (sBtn && vBtn) {
+      if (isVehicle) {
+        vBtn.style.background = '#0F172A';
+        vBtn.style.color = '#fff';
+        vBtn.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+        sBtn.style.background = 'transparent';
+        sBtn.style.color = '#64748B';
+        sBtn.style.boxShadow = 'none';
+      } else {
+        sBtn.style.background = '#fff';
+        sBtn.style.color = '#0F172A';
+        sBtn.style.boxShadow = '0 1px 3px rgba(0,0,0,0.08)';
+        vBtn.style.background = 'transparent';
+        vBtn.style.color = '#64748B';
+        vBtn.style.boxShadow = 'none';
+      }
+    }
+
+    if (vPicker) vPicker.style.display = isVehicle ? 'block' : 'none';
+    if (vFields) vFields.style.display = isVehicle ? 'flex' : 'none';
+    if (gChips) gChips.style.display = isVehicle ? 'none' : 'block';
+
+    if (titleEl) titleEl.textContent = isVehicle ? '🚗 വാഹനം / ട്രാൻസ്പോർട്ട് രജിസ്റ്റർ ചെയ്യാം' : '🛠️ സേവനം രജിസ്റ്റർ ചെയ്യാം';
+    if (nameLabel) nameLabel.textContent = isVehicle ? 'ഡ്രൈവർ / വാഹന ഉടമയുടെ പേര്' : 'പൂർണ്ണ നാമം';
+    if (tradeLabel) tradeLabel.textContent = isVehicle ? 'വാഹന സർവീസ് ഇനം' : 'തൊഴിൽ / സേവനം';
+
+    if (isVehicle) {
+      selectVehicleTypeInForm('auto', 'ഓട്ടോറിക്ഷ', '🛺');
+    }
+  }
+  window.setRegServiceMode = setRegServiceMode;
+
+  function selectVehicleTypeInForm(typeKey, typeName, typeIcon) {
+    const tradeInput = document.getElementById('regServiceTrade');
+    const catInput = document.getElementById('regServiceCategoryKey');
+    const modelInput = document.getElementById('regVehicleModel');
+
+    if (tradeInput) tradeInput.value = `${typeName} സർവീസ്`;
+    if (catInput) catInput.value = typeKey;
+    selectMiniIcon(typeIcon);
+
+    const modelPlaceholders = {
+      auto: 'Eg: ബജാജ് RE കോംപാക്ട് 3-സീറ്റർ',
+      taxi: 'Eg: ഇന്നോവ / എർട്ടിഗ / ഡിസയർ (AC)',
+      traveller: 'Eg: 17 / 26 സീറ്റർ ട്രാവലർ (AC പുഷ്ബാക്ക്)',
+      bus: 'Eg: 32 / 49 സീറ്റർ എയർ സസ്പെൻഷൻ ടൂറിസ്റ്റ് ബസ്',
+      pickup: 'Eg: ബൊലേറോ പിക്കപ്പ് / ദോസ്ത് (1.5 ടൺ)',
+      goodsauto: 'Eg: ആപ്പെ / പിയാജിയോ ഗുഡ്സ് ഓട്ടോ',
+      jeep: 'Eg: മഹീന്ദ്ര 4x4 ജീപ്പ് / സഫാരി ജീപ്പ്',
+      lorry: 'Eg: 10 / 16 ടൺ ടിപ്പർ ലോറി / ടോറസ്',
+      jcb: 'Eg: JCB 3DX സൂപ്പർ / ഹിറ്റാച്ചി എക്സ്കവേറ്റർ',
+      crane: 'Eg: ഹൈഡ്രോളിക് റിക്കവറി ക്രെയിൻ & ടോവിങ്',
+      ambulance: 'Eg: ഒക്സിജൻ സപ്പോർട്ട് ഉള്ള ICU ആംബുലൻസ്'
+    };
+    if (modelInput && modelPlaceholders[typeKey]) {
+      modelInput.placeholder = modelPlaceholders[typeKey];
+    }
+
+    const chips = document.querySelectorAll('#regVehiclePickerSection .vehicle-type-chip');
+    chips.forEach(btn => {
+      const match = btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${typeKey}'`);
+      btn.style.border = match ? '1.5px solid #10B981' : '1px solid #CBD5E1';
+      btn.style.color = match ? '#065F46' : '#334155';
+      btn.style.background = match ? '#ECFDF5' : '#fff';
+    });
+  }
+  window.selectVehicleTypeInForm = selectVehicleTypeInForm;
+
+  function openAddVehicleModal(preferredType) {
+    openAddServiceModal();
+    setRegServiceMode('vehicle');
+    if (preferredType) {
+      const names = {
+        auto: ['ഓട്ടോറിക്ഷ', '🛺'],
+        taxi: ['ടാക്സി കാർ', '🚕'],
+        traveller: ['വാൻ & ട്രാവലർ', '🚐'],
+        bus: ['ടൂറിസ്റ്റ് ബസ്', '🚌'],
+        pickup: ['പിക്കപ്പ് വാൻ', '🛻'],
+        goodsauto: ['ഗുഡ്സ് ഓട്ടോ', '🛺📦'],
+        jeep: ['ജീപ്പ് 4x4', '🚙'],
+        lorry: ['ലോറി / ടിപ്പർ', '🚛'],
+        jcb: ['ജെസിബി / ഹിറ്റാച്ചി', '🚜'],
+        crane: ['ക്രെയിൻ / റിക്കവറി', '🏗️'],
+        ambulance: ['ആംബുലൻസ് 24x7', '🚑']
+      };
+      if (names[preferredType]) {
+        selectVehicleTypeInForm(preferredType, names[preferredType][0], names[preferredType][1]);
+      }
+    }
+  }
+  window.openAddVehicleModal = openAddVehicleModal;
 
   function openAddServiceModal() {
     openModal('modal-add-service');
@@ -3688,7 +3935,31 @@
       toast('⚠️ ദയവായി പേര്, തൊഴിൽ, ഫോൺ നമ്പർ എന്നിവ നൽകുക.');
       return;
     }
-    const specsList = rawSpecs ? rawSpecs.split(',').map(s => s.trim()).filter(Boolean) : ['ജനറൽ സർവീസ്', 'ദ്രുത സഹായം'];
+    const vModel = (document.getElementById('regVehicleModel') ? document.getElementById('regVehicleModel').value.trim() : '');
+    const vNumber = (document.getElementById('regVehicleNumber') ? document.getElementById('regVehicleNumber').value.trim() : '');
+    const vStand = (document.getElementById('regVehicleStand') ? document.getElementById('regVehicleStand').value.trim() : '');
+    const vRoute = (document.getElementById('regVehicleRoute') ? document.getElementById('regVehicleRoute').value.trim() : '');
+
+    let vehicleDetails = null;
+    if (vModel || vStand || vNumber || vRoute || window._currentRegServiceMode === 'vehicle') {
+      vehicleDetails = {
+        model: vModel,
+        number: vNumber,
+        stand: vStand,
+        route: vRoute
+      };
+    }
+
+    const specsList = rawSpecs ? rawSpecs.split(',').map(s => s.trim()).filter(Boolean) : [];
+    if (vehicleDetails) {
+      if (vStand) specsList.unshift(`🚏 ${vStand}`);
+      if (vModel) specsList.unshift(vModel);
+      if (vRoute) specsList.push(`🛣️ ${vRoute}`);
+    }
+    if (specsList.length === 0) {
+      specsList.push('ജനറൽ സർവീസ്', 'ദ്രുത സഹായം');
+    }
+
     const newService = {
       id: 'srv_' + Date.now(),
       name: name,
@@ -3700,6 +3971,7 @@
       visitingFee: fee,
       workingHours: hours,
       specializations: specsList,
+      vehicleDetails: vehicleDetails,
       availability: avail,
       rating: '5.0 (New)',
       experience: exp,
@@ -3708,7 +3980,7 @@
       lat: APP_STATE.location.lat,
       lon: APP_STATE.location.lon,
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
-      badge: 'തദ്ദേശവാസി രജിസ്ട്രേഷൻ',
+      badge: vehicleDetails ? 'വാഹന സർവീസ് രജിസ്ട്രേഷൻ' : 'തദ്ദേശവാസി രജിസ്ട്രേഷൻ',
       isCloud: true,
       createdAt: Date.now(),
       updatedAt: Date.now(),
@@ -5114,7 +5386,7 @@
               <h3 style="margin:0 0 4px;font-size:15px;color:#111827">${j.title}</h3>
               <div style="font-size:12px;color:#0284C7;font-weight:700">${j.employer}</div>
             </div>
-            <span class="job-salary-badge">${j.salary}</span>
+            <span class="job-salary-badge">💰 ${formatPrice(j.salary)}</span>
           </div>
 
           <div style="font-size:12.5px;color:#4B5563;line-height:1.5">${j.description}</div>
@@ -5197,7 +5469,7 @@
           ${r.image ? `<img src="${r.image}" style="width:100%;height:160px;object-fit:cover;border-radius:12px;margin-bottom:8px">` : ''}
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <h3 style="margin:0 0 4px;font-size:15px;color:#111827">${r.title}</h3>
-            <span style="background:#FEF3C7;color:#B45309;padding:4px 8px;border-radius:8px;font-size:12px;font-weight:800">${r.rate}</span>
+            <span style="background:#FEF3C7;color:#B45309;padding:4px 8px;border-radius:8px;font-size:12px;font-weight:800">${formatPrice(r.rate)}</span>
           </div>
           <div style="font-size:11px;background:#F0FDF4;color:#166534;padding:3px 8px;border-radius:6px;align-self:flex-start;font-weight:700">${r.type || 'വാടക & വിൽപന'}</div>
           <div style="font-size:12px;color:#6B7280">ഉടമസ്ഥൻ: ${r.owner} • 📍 ${r.location} • <span style="color:#0E7043;font-weight:700">${r._calculatedDist || 1.2} km അകലെ</span></div>
@@ -5264,7 +5536,8 @@
     const employer = employerEl && employerEl.value.trim() ? employerEl.value.trim() : (APP_STATE.currentUser?.name || 'തൊഴിൽദാതാവ്');
     const category = (catEl && catEl.value) ? catEl.value : 'other';
     const phone = phoneEl ? phoneEl.value.trim() : (APP_STATE.currentUser?.phone || '');
-    const salary = salaryEl && salaryEl.value.trim() ? salaryEl.value.trim() : 'ശമ്പളം സംസാരിക്കാം';
+    const salaryRaw = salaryEl && salaryEl.value.trim() ? salaryEl.value.trim() : '';
+    const salary = salaryRaw ? formatPrice(salaryRaw) : 'ശമ്പളം സംസാരിക്കാം';
     const location = locEl && locEl.value.trim() ? locEl.value.trim() : (APP_STATE.location?.name || 'കേരളം');
     const desc = descEl ? descEl.value.trim() : '';
 
@@ -6304,8 +6577,7 @@
     }
 
     if (idBadge) {
-      const cleanPhone = curPhone.replace(/\D/g, '').slice(-10);
-      idBadge.textContent = cleanPhone ? `Citizen ID: usr_${cleanPhone}` : `Citizen ID: usr_citizen`;
+      idBadge.textContent = '✓ വെരിഫൈഡ് സിറ്റിസൺ പ്രൊഫൈൽ';
     }
 
     if (previewEl) previewEl.src = APP_STATE.currentUser.avatar || DEFAULT_USER_AVATAR;
@@ -6330,7 +6602,7 @@
 
     const digits = String(rawPhone || '').replace(/\D/g, '').slice(-10);
     if (idBadge) {
-      idBadge.textContent = digits ? `Citizen ID: usr_${digits}` : `Citizen ID: usr_citizen`;
+      idBadge.textContent = '✓ വെരിഫൈഡ് സിറ്റിസൺ പ്രൊഫൈൽ';
     }
 
     if (!digits || digits.length < 10) {
