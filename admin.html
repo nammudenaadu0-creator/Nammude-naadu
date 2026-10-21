@@ -2667,8 +2667,8 @@
     }
 
     async function sendOneSignalAdminTestPush() {
-      const appId = localStorage.getItem('nn_onesignal_app_id');
-      const restKey = localStorage.getItem('nn_onesignal_rest_key');
+      const appId = localStorage.getItem('nn_onesignal_app_id') || 'ba99bc43-e77b-4db1-90ac-d3cab11c8e3b';
+      const restKey = localStorage.getItem('nn_onesignal_rest_key') || (document.getElementById('oneSignalRestKeyInput')?.value || '').trim();
 
       if (!appId || !restKey) {
         showToast('⚠️ ടെസ്റ്റ് ചെയ്യാൻ App ID യും REST API Key യും ആവശ്യമാണ്');
@@ -2685,11 +2685,12 @@
           priority: 10
         };
 
+        const authPrefix = restKey.startsWith('os_') ? 'Key ' : 'Basic ';
         const res = await fetch('https://onesignal.com/api/v1/notifications', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + restKey
+            'Authorization': authPrefix + restKey
           },
           body: JSON.stringify(payload)
         });
@@ -2710,16 +2711,17 @@
       const message = document.getElementById('pushMessage')?.value || 'Urgent Blood Needed';
 
       showToast('🚨 അടിയന്തിര ബ്ലഡ് പുഷ് അയക്കുന്നു...');
-      const restKey = localStorage.getItem('nn_onesignal_rest_key');
-      const appId = localStorage.getItem('nn_onesignal_app_id');
+      const restKey = localStorage.getItem('nn_onesignal_rest_key') || (document.getElementById('oneSignalRestKeyInput')?.value || '').trim();
+      const appId = localStorage.getItem('nn_onesignal_app_id') || 'ba99bc43-e77b-4db1-90ac-d3cab11c8e3b';
 
       if (appId && restKey) {
         try {
+          const authPrefix = restKey.startsWith('os_') ? 'Key ' : 'Basic ';
           await fetch('https://onesignal.com/api/v1/notifications', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Basic ' + restKey
+              'Authorization': authPrefix + restKey
             },
             body: JSON.stringify({
               app_id: appId,

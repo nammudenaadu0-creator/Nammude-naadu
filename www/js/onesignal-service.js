@@ -164,11 +164,12 @@
           priority: 10
         };
 
+        const authPrefix = activeRestKey.startsWith('os_') ? 'Key ' : 'Basic ';
         const res = await fetch('https://onesignal.com/api/v1/notifications', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + activeRestKey
+            'Authorization': authPrefix + activeRestKey
           },
           body: JSON.stringify(payload)
         });
@@ -204,11 +205,12 @@
           ];
         }
 
+        const authPrefix = activeRestKey.startsWith('os_') ? 'Key ' : 'Basic ';
         const res = await fetch('https://onesignal.com/api/v1/notifications', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + activeRestKey
+            'Authorization': authPrefix + activeRestKey
           },
           body: JSON.stringify(payload)
         });
