@@ -1473,7 +1473,7 @@
   box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.18), 0 4px 12px rgba(0, 0, 0, 0.06);
   border: 1px solid #E2E8F0;
   border-bottom: 3.5px solid #CBD5E1;
-  max-height: 280px;
+  max-height: 340px;
   overflow-y: auto;
   z-index: 1000;
 }
@@ -1551,6 +1551,11 @@
   color: #166534;
 }
 
+.search-drop-badge.badge-trade {
+  background: #CCFBF1;
+  color: #0F766E;
+}
+
 .search-drop-badge.badge-job {
   background: #FEF3C7;
   color: #92400E;
@@ -1559,6 +1564,26 @@
 .search-drop-badge.badge-rental {
   background: #E0E7FF;
   color: #3730A3;
+}
+
+.search-drop-badge.badge-blood {
+  background: #FEE2E2;
+  color: #DC2626;
+}
+
+.search-drop-badge.badge-emergency {
+  background: #FFE4E6;
+  color: #BE123C;
+}
+
+.search-drop-badge.badge-post {
+  background: #F3E8FF;
+  color: #7E22CE;
+}
+
+.search-drop-badge.badge-nearby {
+  background: #E0F2FE;
+  color: #0284C7;
 }
 
 /* 3D HERO GREETING CARD */

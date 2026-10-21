@@ -376,21 +376,10 @@
 
       const storedServices = localStorage.getItem('nn_services');
       let loadedServices = storedServices ? JSON.parse(storedServices) : [];
-      // Keep real user-created, cloud, and verified Kerala directory services
+      // REAL ACCOUNTS ONLY: Purge all mock/dummy services (srv_\d+, srv_kerala_, etc.)
       loadedServices = (Array.isArray(loadedServices) ? loadedServices : []).filter(s => 
-        s && !s.id?.match(/^srv_\d+$/) && (s.isUserCreated || s.isCloud || s.userId || (s.id && s.id.startsWith('srv_adm_')) || (s.id && s.id.startsWith('srv_kerala_')) || s.isKeralaDirectory || s.verified)
+        s && !s.id?.match(/^srv_\d+$/) && !s.id?.startsWith('srv_kerala_') && !s.isKeralaDirectory && (s.isUserCreated || s.isCloud || s.userId || (s.id && s.id.startsWith('srv_adm_')))
       );
-
-      // Load 200 verified Kerala Directory services from window.KERALA_200_SERVICES
-      if (typeof window !== 'undefined' && Array.isArray(window.KERALA_200_SERVICES) && window.KERALA_200_SERVICES.length > 0) {
-        const existingIds = new Set(loadedServices.map(s => s.id));
-        window.KERALA_200_SERVICES.forEach(ks => {
-          if (!existingIds.has(ks.id)) {
-            loadedServices.push(ks);
-            existingIds.add(ks.id);
-          }
-        });
-      }
 
       try {
         localStorage.setItem('nn_services', JSON.stringify(loadedServices));
@@ -6199,8 +6188,8 @@
   const DEFAULT_HOME_ADS = [
     {
       id: 'ad_1',
-      title: 'നമ്മുടെ നാട് • പ്രാദേശിക വിപണി',
-      sub: '🤝 നാടിനൊപ്പം നാം • പുതിയ സേവനങ്ങൾ കണ്ടെത്താം',
+      title: 'നമ്മുടെ നാട്',
+      sub: '',
       desc: 'നിങ്ങളുടെ നാട്ടിലെ പ്ലംബർ, ഇലക്ട്രീഷ്യൻ, ഡ്രൈവർ, ആശാരി തുടങ്ങിയ എല്ലാ വിദഗ്ദ്ധ തൊഴിലാളികളെയും മിനിറ്റുകൾക്കകം കണ്ടെത്താം. സേവനങ്ങൾ ആവശ്യമുള്ളവർക്ക് നേരിട്ട് വിളിക്കാനും ചാറ്റ് ചെയ്യാനും സാധിക്കും.',
       art: 'img/kerala-splash.jpg',
       badge: '✨ പ്രധാന അറിയിപ്പ്',
@@ -6307,8 +6296,14 @@
       subEl.style.transition = 'all 0.25s ease';
       subEl.style.opacity = '0.3';
       setTimeout(() => {
-        subEl.textContent = ad.sub;
-        subEl.style.opacity = '1';
+        if (ad.sub) {
+          subEl.style.display = 'block';
+          subEl.textContent = ad.sub;
+          subEl.style.opacity = '1';
+        } else {
+          subEl.style.display = 'none';
+          subEl.textContent = '';
+        }
       }, 100);
     }
 
@@ -6556,7 +6551,7 @@
       });
     }
 
-    // 3D Home Search Bar & Realtime Suggestions Engine
+    // 3D Home Search Bar & Comprehensive Universal Search Engine
     function triggerHomeSearch() {
       const homeSearch = document.getElementById('homeSearchInput');
       const dropdown = document.getElementById('homeSearchResultsDropdown');
@@ -6568,15 +6563,28 @@
         return;
       }
       const qLower = q.toLowerCase();
-      if (qLower.includes('രക്ത') || qLower.includes('blood') || qLower.includes('donor')) {
-        openBloodModal();
-        return;
-      }
-      if (qLower.includes('അടിയന്തിര') || qLower.includes('emergency') || qLower.includes('പോലീസ്') || qLower.includes('ആംബുലൻസ്') || qLower.includes('police') || qLower.includes('ambulance') || qLower.includes('fire')) {
+
+      // 1. Emergency keywords & numbers
+      if (qLower.includes('അടിയന്തിര') || qLower.includes('emergency') || qLower.includes('പോലീസ്') || qLower.includes('ആംബുലൻസ്') || qLower.includes('police') || qLower.includes('ambulance') || qLower.includes('fire') || qLower.includes('ഫയർ') || qLower.includes('kseb') || qLower.includes('കരണ്ട്') || qLower.includes('വൈദ്യുതി') || qLower.includes('snake') || qLower.includes('പാമ്പ്') || qLower.includes('ഹെൽപ്പ്')) {
         openEmergencyModal();
         return;
       }
-      if (qLower.includes('വാടക') || qLower.includes('rent') || qLower.includes('room') || qLower.includes('വീട്') || qLower.includes('ഷോപ്പ്')) {
+
+      // 2. Blood groups & donation
+      const bloodGroups = ['a+', 'a-', 'b+', 'b-', 'o+', 'o-', 'ab+', 'ab-'];
+      const matchedBg = bloodGroups.find(bg => qLower === bg || qLower === bg.replace('+', ' positive') || qLower === bg.replace('-', ' negative') || qLower.includes(bg));
+      if (matchedBg) {
+        filterBloodGroup(matchedBg.toUpperCase());
+        navTo('blood');
+        return;
+      }
+      if (qLower.includes('രക്ത') || qLower.includes('blood') || qLower.includes('donor') || qLower.includes('ദാതാവ്')) {
+        openBloodModal();
+        return;
+      }
+
+      // 3. Rentals & Real Estate
+      if (qLower.includes('വാടക') || qLower.includes('rent') || qLower.includes('room') || qLower.includes('വീട്') || qLower.includes('ഷോപ്പ്') || qLower.includes('hostel') || qLower.includes('ഹോസ്റ്റൽ') || qLower.includes('ഫ്ലാറ്റ്') || qLower.includes('സ്ഥലം') || qLower.includes('ഭൂമി')) {
         navTo('rentals');
         const rInput = document.getElementById('rentalSearchInput');
         if (rInput) {
@@ -6585,7 +6593,9 @@
         }
         return;
       }
-      if (qLower.includes('തൊഴിൽ') || qLower.includes('job') || qLower.includes('vacancy') || qLower.includes('ജോലി')) {
+
+      // 4. Jobs & Vacancies
+      if (qLower.includes('തൊഴിൽ') || qLower.includes('job') || qLower.includes('vacancy') || qLower.includes('ജോലി') || qLower.includes('വേക്കൻസി') || qLower.includes('റിക്രൂട്ട്') || qLower.includes('സ്റ്റാഫ്')) {
         navTo('jobs');
         const jInput = document.getElementById('jobSearchInput');
         if (jInput) {
@@ -6595,7 +6605,42 @@
         return;
       }
 
-      // Default to services
+      // 5. Nearby Places & Public Utilities
+      if (qLower.includes('പെട്രോൾ') || qLower.includes('petrol') || qLower.includes('atm') || qLower.includes('ബാങ്ക്') || qLower.includes('bank') || qLower.includes('പഞ്ചായത്ത്') || qLower.includes('panchayath') || qLower.includes('അക്ഷയ') || qLower.includes('akshaya') || qLower.includes('വില്ലേജ്') || qLower.includes('village') || qLower.includes('ഹോട്ടൽ') || qLower.includes('hotel')) {
+        APP_STATE.nearbySearchQuery = q;
+        navTo('nearby');
+        const nInput = document.getElementById('nearbySearchInput');
+        if (nInput) nInput.value = q;
+        renderNearbyScreen();
+        return;
+      }
+
+      // 6. Community / News
+      if (qLower.includes('വാർത്ത') || qLower.includes('പോസ്റ്റ്') || qLower.includes('വിശേഷം') || qLower.includes('news') || qLower.includes('post') || qLower.includes('അറിയിപ്പ്')) {
+        navTo('community');
+        return;
+      }
+
+      // 7. Check 500+ Trades Catalog
+      if (window.TRADES_CATALOG_500 && window.TRADES_CATALOG_500.length) {
+        const matchedTrade = window.TRADES_CATALOG_500.find(t => 
+          (t.name && t.name.toLowerCase().includes(qLower)) || 
+          (t.en && t.en.toLowerCase().includes(qLower)) ||
+          (t.specs && t.specs.some(s => s.toLowerCase().includes(qLower)))
+        );
+        if (matchedTrade) {
+          APP_STATE.activeServiceCategory = matchedTrade.category || 'all';
+          navTo('services');
+          const sInput = document.getElementById('serviceSearchInput');
+          if (sInput) {
+            sInput.value = matchedTrade.name;
+            renderServicesScreen();
+          }
+          return;
+        }
+      }
+
+      // 8. Default to Services screen with query
       navTo('services');
       const sInput = document.getElementById('serviceSearchInput');
       if (sInput) {
@@ -6637,30 +6682,133 @@
 
         const matches = [];
 
-        // Check emergency keywords
-        if ('രക്തദാനം blood donation'.includes(query)) {
+        // 1. Emergency Helplines & Numbers
+        const emergencyList = [
+          { name: 'പോലീസ് എമർജൻസി (Police)', phone: '112', icon: '🚨', cat: 'police' },
+          { name: 'ആംബുലൻസ് (Ambulance 108)', phone: '108', icon: '🚑', cat: 'ambulance' },
+          { name: 'ഫയർ ഫോഴ്സ് (Fire Force 101)', phone: '101', icon: '🚒', cat: 'fire' },
+          { name: 'കെ.എസ്.ഇ.ബി ഇലക്ട്രിസിറ്റി (KSEB)', phone: '1912', icon: '⚡', cat: 'kseb' },
+          { name: 'വനിതാ ഹെൽപ്പ്‌ലൈൻ (Women Helpline)', phone: '1091', icon: '👩', cat: 'women' },
+          { name: 'ചൈൽഡ്‌ലൈൻ (Childline)', phone: '1098', icon: '👶', cat: 'child' },
+          { name: 'SARPA പാമ്പ് റെസ്ക്യൂ (Forest Dept)', phone: '18004254733', icon: '🐍', cat: 'snake' }
+        ];
+
+        emergencyList.forEach(em => {
+          if (matches.length >= 12) return;
+          if (em.name.toLowerCase().includes(query) || em.cat.includes(query) || em.phone.includes(query) ||
+              ('അടിയന്തിരം emergency സഹായം പോലീസ് ambulance fire kseb കരണ്ട്'.includes(query) && query.length >= 3)) {
+            matches.push({
+              icon: em.icon,
+              title: em.name,
+              sub: `അടിയന്തിര നമ്പർ: ${em.phone}`,
+              badge: 'അടിയന്തിരം',
+              badgeCls: 'badge-emergency',
+              action: () => {
+                window.location.href = `tel:${em.phone}`;
+              }
+            });
+          }
+        });
+
+        // Check custom emergency contacts
+        (APP_STATE.emergencyContacts || []).forEach(ec => {
+          if (matches.length >= 12) return;
+          if ((ec.name && ec.name.toLowerCase().includes(query)) ||
+              (ec.category && ec.category.toLowerCase().includes(query)) ||
+              (ec.phone && ec.phone.includes(query))) {
+            matches.push({
+              icon: '🚨',
+              title: ec.name,
+              sub: `${ec.category || 'അടിയന്തിര സഹായം'} • ${ec.phone || ''}`,
+              badge: 'അടിയന്തിരം',
+              badgeCls: 'badge-emergency',
+              action: () => {
+                if (ec.phone) window.location.href = `tel:${ec.phone}`;
+                else openEmergencyModal();
+              }
+            });
+          }
+        });
+
+        // 2. Blood Groups & Donors
+        const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
+        const matchedBg = bloodGroups.find(bg => query === bg.toLowerCase() || query === bg.toLowerCase().replace('+', ' positive') || query === bg.toLowerCase().replace('-', ' negative') || query === (bg.toLowerCase() + ' blood'));
+        if (matchedBg) {
+          matches.push({
+            icon: '🩸',
+            title: `${matchedBg} രക്തദാതാക്കൾ (${matchedBg} Blood Donors)`,
+            sub: `${matchedBg} രക്തഗ്രൂപ്പിലുള്ള നാട്ടുകാരെ കാണുക`,
+            badge: 'രക്തം',
+            badgeCls: 'badge-blood',
+            action: () => {
+              filterBloodGroup(matchedBg);
+              navTo('blood');
+            }
+          });
+        } else if ('രക്തദാനം blood donation donor രക്തം ദാതാവ്'.includes(query)) {
           matches.push({
             icon: '🩸',
             title: 'രക്തദാനം (Blood Donor Directory)',
             sub: 'അടിയന്തിര രക്തദാതാക്കളെ കണ്ടെത്തുക',
-            badge: 'അടിയന്തിരം',
-            badgeCls: 'badge-service',
+            badge: 'രക്തം',
+            badgeCls: 'badge-blood',
             action: () => openBloodModal()
           });
         }
-        if ('അടിയന്തിരം emergency police ആംബുലൻസ് ambulance fire ഫയർഫോഴ്സ്'.includes(query)) {
-          matches.push({
-            icon: '🚨',
-            title: 'അടിയന്തിര സഹായം (24x7 Emergency)',
-            sub: 'പോലീസ്, ആംബുലൻസ്, ഫയർഫോഴ്സ് നമ്പറുകൾ',
-            badge: 'സഹായം',
-            badgeCls: 'badge-service',
-            action: () => openEmergencyModal()
-          });
+
+        // Search in registered blood donors
+        (APP_STATE.bloodDonors || []).forEach(d => {
+          if (matches.length >= 12) return;
+          if ((d.name && d.name.toLowerCase().includes(query)) ||
+              (d.group && d.group.toLowerCase() === query) ||
+              (d.location && d.location.toLowerCase().includes(query))) {
+            matches.push({
+              icon: '🩸',
+              title: `${d.name || 'രക്തദാതാവ്'} (${d.group || 'O+'})`,
+              sub: `📍 ${resolveItemLocation(d) || APP_STATE.location.name}`,
+              badge: 'രക്തദാതാവ്',
+              badgeCls: 'badge-blood',
+              action: () => {
+                filterBloodGroup(d.group || 'all');
+                navTo('blood');
+              }
+            });
+          }
+        });
+
+        // 3. 500+ Local Trades & Services Catalog (window.TRADES_CATALOG_500)
+        if (window.TRADES_CATALOG_500 && Array.isArray(window.TRADES_CATALOG_500)) {
+          let tradeCount = 0;
+          for (const tr of window.TRADES_CATALOG_500) {
+            if (matches.length >= 12 || tradeCount >= 4) break;
+            const nameMatch = tr.name && tr.name.toLowerCase().includes(query);
+            const enMatch = tr.en && tr.en.toLowerCase().includes(query);
+            const specMatch = tr.specs && tr.specs.some(s => s.toLowerCase().includes(query));
+            if (nameMatch || enMatch || specMatch) {
+              tradeCount++;
+              matches.push({
+                icon: tr.icon || '🛠️',
+                title: `${tr.name}${tr.en ? ' (' + tr.en + ')' : ''}`,
+                sub: tr.specs ? tr.specs.slice(0, 3).join(', ') : 'പ്രാദേശിക സേവനം',
+                badge: 'തൊഴിൽ സേവനം',
+                badgeCls: 'badge-trade',
+                action: () => {
+                  APP_STATE.activeServiceCategory = tr.category || 'all';
+                  navTo('services');
+                  const sInput = document.getElementById('serviceSearchInput');
+                  if (sInput) {
+                    sInput.value = tr.name;
+                    renderServicesScreen();
+                  }
+                }
+              });
+            }
+          }
         }
 
-        // Check service categories
+        // 4. Service Categories
         SERVICE_CATEGORIES.forEach(cat => {
+          if (matches.length >= 12) return;
           if (cat.id !== 'all' && (cat.name.toLowerCase().includes(query) || cat.id.toLowerCase().includes(query))) {
             matches.push({
               icon: cat.icon || '🛠️',
@@ -6673,40 +6821,46 @@
           }
         });
 
-        // Check services listings
+        // 5. Registered Local Services (APP_STATE.services)
         (APP_STATE.services || []).forEach(s => {
-          if (matches.length >= 7) return;
+          if (matches.length >= 12) return;
           if ((s.title && s.title.toLowerCase().includes(query)) ||
               (s.name && s.name.toLowerCase().includes(query)) ||
+              (s.trade && s.trade.toLowerCase().includes(query)) ||
               (s.location && s.location.toLowerCase().includes(query))) {
             matches.push({
               icon: '🛠️',
-              title: s.title || s.name,
-              sub: `${s.name} • ${s.location || ''}`,
+              title: s.name,
+              sub: `${s.trade || 'സേവനം'} • 📍 ${resolveItemLocation(s) || ''}`,
               badge: 'സേവനം',
               badgeCls: 'badge-service',
               action: () => {
-                navTo('services');
-                const sInput = document.getElementById('serviceSearchInput');
-                if (sInput) {
-                  sInput.value = s.title || s.name;
-                  renderServicesScreen();
+                if (typeof openServiceDetailModal === 'function' && s.id) {
+                  openServiceDetailModal(s.id);
+                } else {
+                  navTo('services');
+                  const sInput = document.getElementById('serviceSearchInput');
+                  if (sInput) {
+                    sInput.value = s.trade || s.name;
+                    renderServicesScreen();
+                  }
                 }
               }
             });
           }
         });
 
-        // Check jobs listings
+        // 6. Jobs listings (APP_STATE.jobs)
         (APP_STATE.jobs || []).forEach(j => {
-          if (matches.length >= 7) return;
+          if (matches.length >= 12) return;
           if ((j.title && j.title.toLowerCase().includes(query)) ||
-              (j.company && j.company.toLowerCase().includes(query)) ||
+              (j.employer && j.employer.toLowerCase().includes(query)) ||
+              (j.description && j.description.toLowerCase().includes(query)) ||
               (j.location && j.location.toLowerCase().includes(query))) {
             matches.push({
               icon: '💼',
               title: j.title,
-              sub: `${j.company || 'കമ്പനി'} • ${j.location || ''}`,
+              sub: `${j.employer || 'സ്ഥാപനം'} • 📍 ${resolveItemLocation(j) || ''}${j.salary ? ' • ₹' + j.salary : ''}`,
               badge: 'തൊഴിൽ',
               badgeCls: 'badge-job',
               action: () => {
@@ -6721,16 +6875,18 @@
           }
         });
 
-        // Check rentals listings
+        // 7. Rentals listings (APP_STATE.rentals)
         (APP_STATE.rentals || []).forEach(r => {
-          if (matches.length >= 7) return;
+          if (matches.length >= 12) return;
           if ((r.title && r.title.toLowerCase().includes(query)) ||
-              (r.propertyType && r.propertyType.toLowerCase().includes(query)) ||
+              (r.type && r.type.toLowerCase().includes(query)) ||
+              (r.owner && r.owner.toLowerCase().includes(query)) ||
+              (r.description && r.description.toLowerCase().includes(query)) ||
               (r.location && r.location.toLowerCase().includes(query))) {
             matches.push({
               icon: '🏠',
               title: r.title,
-              sub: `${r.rentAmount ? '₹' + r.rentAmount + '/മാസം' : 'വാടക'} • ${r.location || ''}`,
+              sub: `${r.type || 'വാടക'}${r.rate ? ' • ₹' + r.rate : ''} • 📍 ${resolveItemLocation(r) || ''}`,
               badge: 'വാടക',
               badgeCls: 'badge-rental',
               action: () => {
@@ -6745,17 +6901,63 @@
           }
         });
 
+        // 8. Nearby Public Places & Facilities
+        const nearbyKeywords = ['പെട്രോൾ', 'petrol', 'atm', 'ബാങ്ക്', 'bank', 'മെഡിക്കൽ', 'pharmacy', 'റേഷൻ', 'ration', 'അക്ഷയ', 'akshaya', 'പഞ്ചായത്ത്', 'panchayath', 'വില്ലേജ്', 'village', 'ഹോട്ടൽ', 'hotel', 'ബസ്', 'bus'];
+        if (nearbyKeywords.some(kw => query.includes(kw))) {
+          matches.push({
+            icon: '📍',
+            title: `സമീപസ്ഥലങ്ങൾ: '${homeSearch.value}'`,
+            sub: `${APP_STATE.location.name} പരിസരത്തെ സൗകര്യങ്ങൾ കാണുക`,
+            badge: 'സമീപം',
+            badgeCls: 'badge-nearby',
+            action: () => {
+              APP_STATE.nearbySearchQuery = homeSearch.value.trim();
+              navTo('nearby');
+              const nInput = document.getElementById('nearbySearchInput');
+              if (nInput) nInput.value = homeSearch.value.trim();
+              renderNearbyScreen();
+            }
+          });
+        }
+
+        // 9. Community Posts & News (APP_STATE.posts)
+        (APP_STATE.posts || []).forEach(p => {
+          if (matches.length >= 12) return;
+          if ((p.content && p.content.toLowerCase().includes(query)) ||
+              (p.authorName && p.authorName.toLowerCase().includes(query))) {
+            const shortText = (p.content || '').substring(0, 35) + '...';
+            matches.push({
+              icon: '📢',
+              title: shortText,
+              sub: `${p.authorName || 'നാട്ടുകാരൻ'} • നാട്ടുവിശേഷങ്ങൾ`,
+              badge: 'നാട്ടുവാർത്ത',
+              badgeCls: 'badge-post',
+              action: () => {
+                navTo('community');
+              }
+            });
+          }
+        });
+
         if (matches.length === 0) {
           homeDropdown.innerHTML = `
             <div style="padding:14px;text-align:center;color:#64748B;font-size:0.86rem">
               ഫലങ്ങളൊന്നും കണ്ടെത്തിയില്ല.<br>
-              <button onclick="triggerHomeSearch()" style="margin-top:8px;padding:6px 14px;background:#059669;color:#fff;border:none;border-radius:10px;font-size:0.8rem;font-weight:700;cursor:pointer">
-                🔍 '${escapeHtml(homeSearch.value)}' സർവീസുകളിൽ തിരയുക
-              </button>
+              <div style="margin-top:10px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap">
+                <button onclick="navTo('services'); const s=document.getElementById('serviceSearchInput'); if(s) {s.value='${escapeHtml(homeSearch.value)}'; renderServicesScreen();}" style="padding:6px 12px;background:#ECFDF5;color:#0E7043;border:1px solid #A7F3D0;border-radius:10px;font-size:0.78rem;font-weight:700;cursor:pointer">
+                  🛠️ സർവീസിൽ തിരയുക
+                </button>
+                <button onclick="navTo('jobs'); const j=document.getElementById('jobSearchInput'); if(j) {j.value='${escapeHtml(homeSearch.value)}'; renderJobsScreen();}" style="padding:6px 12px;background:#FEF3C7;color:#92400E;border:1px solid #FDE68A;border-radius:10px;font-size:0.78rem;font-weight:700;cursor:pointer">
+                  💼 തൊഴിലിൽ തിരയുക
+                </button>
+                <button onclick="navTo('rentals'); const r=document.getElementById('rentalSearchInput'); if(r) {r.value='${escapeHtml(homeSearch.value)}'; renderRentalsScreen();}" style="padding:6px 12px;background:#E0E7FF;color:#3730A3;border:1px solid #C7D2FE;border-radius:10px;font-size:0.78rem;font-weight:700;cursor:pointer">
+                  🏠 വാടകയിൽ തിരയുക
+                </button>
+              </div>
             </div>
           `;
         } else {
-          homeDropdown.innerHTML = matches.slice(0, 6).map((m, idx) => `
+          homeDropdown.innerHTML = matches.slice(0, 8).map((m, idx) => `
             <div class="search-drop-item" data-idx="${idx}">
               <div class="search-drop-left">
                 <div class="search-drop-icon">${m.icon}</div>
