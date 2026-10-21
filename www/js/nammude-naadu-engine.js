@@ -2793,7 +2793,7 @@
 
     return `
       <div onclick="openChatModal('${escapeHtml(meta.name).replace(/'/g, "\\'")}', '${meta.phone || ''}', '${meta.avatar || DEFAULT_USER_AVATAR}', '', '${meta.recipientId || ''}', '${k}')"
-           style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#fff;border-radius:16px;border:1px solid #E2E8F0;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.03);transition:all 0.15s ease;margin-bottom:6px">
+           style="display:flex;align-items:center;gap:12px;padding:12px 15px;background:#fff;border-radius:20px;border:1px solid #E2E8F0;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.03);transition:all 0.15s ease;margin-bottom:8px">
         <div style="position:relative;flex-shrink:0">
           <img src="${meta.avatar || DEFAULT_USER_AVATAR}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #E2E8F0" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
           <span style="position:absolute;bottom:1px;right:1px;width:12px;height:12px;border-radius:50%;background:#10B981;border:2px solid #fff"></span>
@@ -2804,7 +2804,7 @@
             <span style="font-size:11px;color:#64748B;font-weight:600;flex-shrink:0">${lastMsg.time}</span>
           </div>
           <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
-            <span style="font-size:10px;font-weight:800;background:${badgeBg};color:${badgeColor};padding:1px 6px;border-radius:6px">${badgeLabel}</span>
+            <span style="font-size:10px;font-weight:800;background:${badgeBg};color:${badgeColor};padding:2px 8px;border-radius:12px">${badgeLabel}</span>
             ${meta.phone ? `<span style="font-size:11px;color:#94A3B8">📞 ${meta.phone}</span>` : ''}
           </div>
           <div style="font-size:12.5px;color:#64748B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">
