@@ -782,53 +782,99 @@
     if (APP_STATE.currentScreen === 'services') renderServicesScreen();
     if (APP_STATE.currentScreen === 'jobs') renderJobsScreen();
     if (APP_STATE.currentScreen === 'rentals') renderRentalsScreen();
+    if (APP_STATE.currentScreen === 'blood' && typeof renderBloodDonorsList === 'function') renderBloodDonorsList();
+    if (typeof renderHomeCommunityFeed === 'function') renderHomeCommunityFeed();
+    if (typeof renderCommunityFeed === 'function') renderCommunityFeed();
+    if (typeof renderHomeScreen === 'function') renderHomeScreen();
   }
 
   async function reverseGeocode(lat, lon) {
     const validLat = Number.isFinite(Number(lat)) ? Number(lat) : 11.8745;
     const validLon = Number.isFinite(Number(lon)) ? Number(lon) : 75.3704;
 
-    // 1. Try BigDataCloud reverse geocode (fast, CORS-friendly)
+    // 1. First priority: OpenStreetMap Nominatim with zoom 18 (Exact village/panchayath level precision)
     try {
       const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 3200);
-      const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${validLat}&longitude=${validLon}&localityLanguage=ml`;
-      const res = await fetch(url, { signal: ctrl.signal });
-      clearTimeout(timer);
-      if (res.ok) {
-        const data = await res.json();
-        const town = data.locality || data.city || data.principalSubdivision;
-        const district = data.principalSubdivision || data.countryName || 'Kerala';
-        if (town) {
-          const formatted = district && district !== town ? `${town}, ${district}` : town;
-          return { formatted, district };
-        }
-      }
-    } catch (_) {}
-
-    // 2. Try OpenStreetMap Nominatim with timeout
-    try {
-      const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 3500);
-      const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${validLat}&lon=${validLon}&addressdetails=1`;
+      const timer = setTimeout(() => ctrl.abort(), 4500);
+      const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${validLat}&lon=${validLon}&zoom=18&addressdetails=1`;
       const res = await fetch(url, { headers: { 'Accept-Language': 'ml,en' }, signal: ctrl.signal });
       clearTimeout(timer);
       if (res.ok) {
         const data = await res.json();
         const addr = data.address || {};
-        const fallbackPreset = getNearestKeralaPreset(validLat, validLon);
-        const town = addr.suburb || addr.town || addr.village || addr.municipality || addr.city || addr.county || fallbackPreset.name.split(',')[0].trim();
-        const district = (addr.state_district || addr.district || fallbackPreset.district || 'Kerala').replace(' District', '');
-        const formatted = `${town}, ${district}`;
-        return { formatted, district };
+        const exactPlace = addr.village || addr.suburb || addr.hamlet || addr.neighbourhood || addr.residential || addr.quarter || addr.borough || addr.town || addr.municipality || addr.city;
+        const district = (addr.state_district || addr.district || addr.county || '').replace(/\s*District$/i, '').trim();
+        if (exactPlace) {
+          const formatted = (district && district.toLowerCase() !== exactPlace.toLowerCase())
+            ? `${exactPlace}, ${district}`
+            : exactPlace;
+          return { formatted, district: district || exactPlace };
+        }
       }
     } catch (err) {
-      console.warn('[Nominatim Geocode Error] fallback to nearest Kerala preset:', err.message);
+      console.warn('[Nominatim Geocode Error]:', err.message);
     }
 
-    // 3. Fallback: Find closest Kerala preset by lat/lon
+    // 2. Second priority: Photon OSM reverse geocoder (Fast, CORS friendly)
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 3500);
+      const url = `https://photon.komoot.io/reverse?lat=${validLat}&lon=${validLon}`;
+      const res = await fetch(url, { signal: ctrl.signal });
+      clearTimeout(timer);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.features && data.features.length > 0) {
+          const props = data.features[0].properties || {};
+          const exactPlace = props.name || props.district || props.locality || props.city || props.county;
+          const district = (props.district || props.city || props.state || '').replace(/\s*District$/i, '').trim();
+          if (exactPlace) {
+            const formatted = (district && district.toLowerCase() !== exactPlace.toLowerCase())
+              ? `${exactPlace}, ${district}`
+              : exactPlace;
+            return { formatted, district: district || exactPlace };
+          }
+        }
+      }
+    } catch (err) {
+      console.warn('[Photon Geocode Error]:', err.message);
+    }
+
+    // 3. Third priority: BigDataCloud client reverse geocoding with admin level check
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 3500);
+      const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${validLat}&longitude=${validLon}&localityLanguage=ml`;
+      const res = await fetch(url, { signal: ctrl.signal });
+      clearTimeout(timer);
+      if (res.ok) {
+        const data = await res.json();
+        let exactPlace = data.locality;
+        if (!exactPlace && data.localityInfo && Array.isArray(data.localityInfo.administrative)) {
+          const adminLevels = data.localityInfo.administrative;
+          const localAdmin = adminLevels.find(a => a.order >= 7 && a.name) || adminLevels.find(a => a.order >= 5 && a.name);
+          if (localAdmin) exactPlace = localAdmin.name;
+        }
+        if (!exactPlace) {
+          exactPlace = data.city || data.principalSubdivision;
+        }
+        const district = (data.principalSubdivision || '').trim();
+        if (exactPlace) {
+          const formatted = (district && district.toLowerCase() !== exactPlace.toLowerCase())
+            ? `${exactPlace}, ${district}`
+            : exactPlace;
+          return { formatted, district: district || exactPlace };
+        }
+      }
+    } catch (_) {}
+
+    // 4. Fallback: Only if completely offline or geocoders unavailable
     const closest = getNearestKeralaPreset(validLat, validLon);
-    return { formatted: closest.name, district: closest.district };
+    const dist = calculateDistanceKm(validLat, validLon, closest.lat, closest.lon);
+    if (dist <= 15) {
+      return { formatted: closest.name, district: closest.district };
+    }
+    return { formatted: 'തത്സമയ ലൊക്കേഷൻ (GPS)', district: closest.district };
   }
 
   function checkGeolocationEnvironment() {
@@ -996,11 +1042,26 @@
     const list = document.getElementById('presetLocationsList');
     if (!list) return;
     const items = itemsToRender || KERALA_PRESETS;
-    if (items.length === 0) {
+    let customOptionHtml = '';
+    const qClean = (searchQuery || '').trim();
+    if (qClean) {
+      customOptionHtml = `
+        <div onclick="searchAndSetCustomLocation('${qClean.replace(/'/g, "\\'")}')" 
+             style="padding:10px 14px;border-radius:12px;background:#ECFDF5;border:1.5px dashed #059669;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background 0.2s;margin-bottom:6px">
+          <div>
+            <div style="font-weight:800;font-size:13px;color:#065F46">📍 '${qClean}' ലൊക്കേഷനായി എടുക്കുക</div>
+            <div style="font-size:11px;color:#047857">ഈ കൃത്യമായ സ്ഥലം മാപ്പിൽ നേരിട്ട് സജ്ജീകരിക്കാം</div>
+          </div>
+          <span style="font-size:11px;background:#059669;color:#fff;padding:3px 10px;border-radius:8px;font-weight:800">സെറ്റ് ചെയ്യുക ➔</span>
+        </div>
+      `;
+    }
+
+    if (items.length === 0 && !customOptionHtml) {
       list.innerHTML = `<div style="text-align:center;padding:16px;color:#64748B;font-size:13px">ഫലങ്ങളൊന്നും കണ്ടെത്തിയില്ല.</div>`;
       return;
     }
-    list.innerHTML = items.map(p => `
+    list.innerHTML = customOptionHtml + items.map(p => `
       <div onclick="selectPresetLocation('${p.name.replace(/'/g, "\\'")}', '${p.district}', ${p.lat}, ${p.lon})" 
            style="padding:10px 14px;border-radius:12px;background:#F9FAFB;border:1px solid #E5E7EB;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background 0.2s">
         <span style="font-weight:700;font-size:13.5px;color:#111827">📍 ${p.name}</span>
@@ -1018,9 +1079,33 @@
     const filtered = KERALA_PRESETS.filter(p => {
       return p.name.toLowerCase().includes(q) || p.district.toLowerCase().includes(q);
     });
-    renderPresetLocationsList(filtered);
+    renderPresetLocationsList(filtered, query);
   }
   window.filterPresetLocations = filterPresetLocations;
+
+  async function searchAndSetCustomLocation(placeName) {
+    const clean = (placeName || '').trim();
+    if (!clean) return;
+    toast(`🔍 '${clean}' ലൊക്കേഷൻ കണ്ടെത്തുന്നു...`);
+    try {
+      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(clean + ', Kerala')}&limit=1`;
+      const res = await fetch(url, { headers: { 'Accept-Language': 'ml,en' } });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.length > 0) {
+          const item = data[0];
+          const lat = parseFloat(item.lat);
+          const lon = parseFloat(item.lon);
+          const name = item.display_name.split(',')[0].trim() || clean;
+          selectPresetLocation(name, 'Kerala', lat, lon);
+          return;
+        }
+      }
+    } catch (_) {}
+    // Fallback: use user's current lat/lon with custom place name
+    selectPresetLocation(clean, 'Kerala', APP_STATE.location.lat, APP_STATE.location.lon);
+  }
+  window.searchAndSetCustomLocation = searchAndSetCustomLocation;
 
   function selectPresetLocation(name, district, lat, lon) {
     updateLocationDisplay(name, district, lat, lon);
@@ -1078,6 +1163,8 @@
     if (typeof renderNearbyScreen === 'function') renderNearbyScreen();
     if (typeof renderJobsScreen === 'function') renderJobsScreen();
     if (typeof renderRentalsScreen === 'function') renderRentalsScreen();
+    if (typeof renderHomeCommunityFeed === 'function') renderHomeCommunityFeed();
+    if (typeof renderCommunityFeed === 'function') renderCommunityFeed();
     if (typeof renderHomeScreen === 'function') renderHomeScreen();
 
     const radiusLabel = r >= 1000 ? 'മുഴുവൻ കേരളം (All Kerala)' : (r + ' km');
@@ -1463,23 +1550,65 @@
   }
   window.togglePostLike = togglePostLike;
 
+  function getFilteredPostsForLocation() {
+    const maxRadius = APP_STATE.activeRadiusKm || 25;
+    const userLat = APP_STATE.location.lat;
+    const userLon = APP_STATE.location.lon;
+    const userTown = String(APP_STATE.location.name || '').toLowerCase().split(',')[0].trim();
+    const userDist = String(APP_STATE.location.district || '').toLowerCase().trim();
+
+    const all = (APP_STATE.posts || []).map(p => {
+      p._calculatedDist = getItemDistanceKm(p, userLat, userLon);
+      return p;
+    });
+
+    if (maxRadius >= 1000) {
+      return all;
+    }
+
+    const filtered = all.filter(p => {
+      if (p.isCurrentUser) return true;
+      if (p._calculatedDist <= maxRadius) return true;
+      const pLoc = String(p.authorLocation || p.locationName || '').toLowerCase();
+      if (userTown && pLoc && (pLoc.includes(userTown) || userTown.includes(pLoc))) return true;
+      return false;
+    });
+
+    filtered.sort((a, b) => {
+      if (a.isCurrentUser && !b.isCurrentUser) return -1;
+      if (!a.isCurrentUser && b.isCurrentUser) return 1;
+      return (b.createdAt || b.timestamp || 0) - (a.createdAt || a.timestamp || 0);
+    });
+
+    return filtered;
+  }
+
   function renderCommunityFeed() {
     const container = document.getElementById('communityFeedContainer');
     if (!container) return;
 
-    if (!APP_STATE.posts || APP_STATE.posts.length === 0) {
+    const postsToShow = getFilteredPostsForLocation();
+    const maxRadius = APP_STATE.activeRadiusKm || 25;
+
+    if (!postsToShow || postsToShow.length === 0) {
+      const radiusLabel = maxRadius >= 1000 ? '' : ` (${maxRadius} km)`;
       container.innerHTML = `
-        <div style="text-align:center;padding:40px 20px;background:#fff;border-radius:18px;">
-          <div style="font-size:36px;margin-bottom:10px">📣</div>
-          <h3 style="margin:0 0 6px">ഇതുവരെ പോസ്റ്റുകളൊന്നുമില്ല</h3>
-          <p style="font-size:13px;color:#6B7280;margin-bottom:16px">നിങ്ങളുടെ നാട്ടിലെ വിശേഷങ്ങൾ ആദ്യമായി ഇവിടെ പങ്കുവെക്കാം.</p>
-          <button onclick="navTo('add')" style="padding:10px 20px;background:#0E7043;color:#fff;border:none;border-radius:12px;font-weight:800;cursor:pointer">➕ പുതിയ പോസ്റ്റ് ഇടാം</button>
+        <div style="text-align:center;padding:36px 16px;background:#fff;border-radius:18px;border:1px solid #E2E8F0">
+          <div style="font-size:36px;margin-bottom:8px">📍</div>
+          <h3 style="margin:0 0 6px;color:#111827;font-size:16px">ഈ പ്രദേശത്ത് പോസ്റ്റുകളൊന്നുമില്ല</h3>
+          <p style="font-size:13px;color:#6B7280;margin:0 0 16px;line-height:1.5">
+            <b>${escapeHtml(APP_STATE.location.name)}</b> പരിസരത്ത്${radiusLabel} പോസ്റ്റുകൾ ലഭ്യമല്ല.<br>നിങ്ങളുടെ നാട്ടിലെ വിശേഷങ്ങൾ ആദ്യമായി ഇവിടെ പങ്കുവെക്കാം.
+          </p>
+          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+            <button onclick="navTo('add')" style="padding:9px 16px;background:#0E7043;color:#fff;border:none;border-radius:12px;font-weight:800;font-size:12.5px;cursor:pointer">➕ പുതിയ പോസ്റ്റ് ഇടാം</button>
+            <button onclick="setGlobalRadius(1000, null)" style="padding:9px 16px;background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;border-radius:12px;font-weight:800;font-size:12.5px;cursor:pointer">മുഴുവൻ പോസ്റ്റുകൾ കാണുക</button>
+          </div>
         </div>
       `;
       return;
     }
 
-    container.innerHTML = APP_STATE.posts.map(post => renderSinglePostCard(post)).join('');
+    container.innerHTML = postsToShow.map(post => renderSinglePostCard(post)).join('');
   }
   window.renderCommunityFeed = renderCommunityFeed;
   window.renderCommunityScreen = renderCommunityFeed;
@@ -1488,20 +1617,22 @@
     const container = document.getElementById('homeCommunityFeedContainer');
     if (!container) return;
 
-    if (!APP_STATE.posts || APP_STATE.posts.length === 0) {
+    const postsToShow = getFilteredPostsForLocation();
+
+    if (!postsToShow || postsToShow.length === 0) {
       container.innerHTML = `
         <div style="text-align:center;padding:24px 16px;background:#fff;border-radius:16px;border:1px solid #E2E8F0">
-          <div style="font-size:28px;margin-bottom:6px">📣</div>
-          <div style="font-weight:700;font-size:13px;color:#334151">ഇതുവരെ പോസ്റ്റുകളൊന്നുമില്ല</div>
-          <div style="font-size:11.5px;color:#64748B;margin:4px 0 12px">നിങ്ങളുടെ നാട്ടിലെ വിശേഷങ്ങൾ ആദ്യമായി ഇവിടെ പങ്കുവെക്കാം.</div>
+          <div style="font-size:28px;margin-bottom:6px">📍</div>
+          <div style="font-weight:700;font-size:13px;color:#334151">സമീപത്ത് പോസ്റ്റുകളൊന്നുമില്ല</div>
+          <div style="font-size:11.5px;color:#64748B;margin:4px 0 12px"><b>${escapeHtml(APP_STATE.location.name)}</b> പരിസരത്തെ വിശേഷങ്ങൾ പങ്കുവെക്കാം.</div>
           <button onclick="navTo('add')" style="padding:8px 16px;background:#0E7043;color:#fff;border:none;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer">➕ പുതിയ പോസ്റ്റ് ഇടാം</button>
         </div>
       `;
       return;
     }
 
-    // Show top 3 recent posts on home screen
-    const recentPosts = APP_STATE.posts.slice(0, 3);
+    // Show top 3 recent posts within user's location on home screen
+    const recentPosts = postsToShow.slice(0, 3);
     container.innerHTML = recentPosts.map(post => renderSinglePostCard(post)).join('');
   }
   window.renderHomeCommunityFeed = renderHomeCommunityFeed;
@@ -2518,34 +2649,30 @@
 
     allMatching.sort((a, b) => a._calculatedDist - b._calculatedDist);
 
-    // Try within active radius
-    let list = allMatching.filter(srv => srv._calculatedDist <= maxRadius);
-    let extendedNotice = '';
-
-    // If active category or query has results but outside strict radius, display them nearest-first so icons never break!
-    if (list.length === 0 && allMatching.length > 0) {
-      list = allMatching;
-      extendedNotice = `
-        <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:8px 12px;font-size:12px;color:#166534;font-weight:700;display:flex;align-items:center;gap:6px;margin-bottom:6px">
-          <span>📍</span>
-          <span>നിങ്ങളുടെ നിലവിലെ ${maxRadius}km പരിധിക്ക് പുറത്തുള്ള ലഭ്യമായ പ്രൊവൈഡർമാരെ താഴെ കാണിക്കുന്നു:</span>
-        </div>
-      `;
-    }
+    // Strict radius filter: only show services within maxRadius (unless user explicitly picked All Kerala >= 1000)
+    let list = (maxRadius >= 1000) ? allMatching : allMatching.filter(srv => srv._calculatedDist <= maxRadius);
 
     if (list.length === 0) {
+      const radiusLabel = (maxRadius >= 1000) ? '' : ` (${maxRadius} km)`;
       container.innerHTML = `
-        <div style="text-align:center;padding:40px 20px;background:#fff;border-radius:18px;">
-          <div style="font-size:36px;margin-bottom:10px">🔍</div>
-          <h3 style="margin:0 0 6px">ഈ വിഭാഗത്തിൽ സേവനങ്ങളൊന്നും കണ്ടെത്തിയില്ല</h3>
-          <p style="font-size:13px;color:#6B7280;margin-bottom:16px">പുതിയ സർവീസ് പ്രൊവൈഡറായി ഇപ്പോൾ തന്നെ രജിസ്റ്റർ ചെയ്യാം.</p>
-          <button onclick="openAddServiceModal()" style="padding:10px 20px;background:#0E7043;color:#fff;border:none;border-radius:12px;font-weight:800;cursor:pointer">➕ പുതിയ സേവനം രജിസ്റ്റർ ചെയ്യാം</button>
+        <div style="text-align:center;padding:36px 16px;background:#fff;border-radius:18px;border:1px solid #E2E8F0">
+          <div style="font-size:36px;margin-bottom:8px">📍</div>
+          <h3 style="margin:0 0 6px;color:#111827;font-size:16px">ഈ പ്രദേശത്ത് സേവനങ്ങളൊന്നും കണ്ടെത്തിയില്ല</h3>
+          <p style="font-size:13px;color:#64748B;margin:0 0 16px;line-height:1.5">
+            <b>${escapeHtml(APP_STATE.location.name)}</b> പരിസരത്ത്${radiusLabel} ലഭ്യമായ സർവീസുകൾ കണ്ടെത്തിയില്ല.<br>പരിധി വർദ്ധിപ്പിക്കുകയോ പുതിയ സേവനം രജിസ്റ്റർ ചെയ്യുകയോ ചെയ്യാം.
+          </p>
+          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+            <button onclick="setGlobalRadius(25, null)" style="padding:8px 14px;background:#ECFDF5;color:#0E7043;border:1px solid #A7F3D0;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">25 km പരിധി</button>
+            <button onclick="setGlobalRadius(50, null)" style="padding:8px 14px;background:#ECFDF5;color:#0E7043;border:1px solid #A7F3D0;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">50 km പരിധി</button>
+            <button onclick="setGlobalRadius(1000, null)" style="padding:8px 14px;background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">മുഴുവൻ കാണുക</button>
+            <button onclick="openAddServiceModal()" style="padding:8px 14px;background:#0E7043;color:#fff;border:none;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer">➕ പുതിയ സേവനം രജിസ്റ്റർ ചെയ്യാം</button>
+          </div>
         </div>
       `;
       return;
     }
 
-    container.innerHTML = extendedNotice + list.map(srv => {
+    container.innerHTML = list.map(srv => {
       const isAvail = srv.availability !== 'busy';
       const availLabel = isAvail ? '🟢 ഇപ്പോൾ ലഭ്യമാണ്' : '🟡 ബുക്കിംഗ് അനുസരിച്ച്';
       const availClass = isAvail ? 'avail' : 'busy';
@@ -3561,28 +3688,21 @@
       list = list.filter(d => d.group === APP_STATE.activeBloodGroup);
     }
 
-    // Apply radius filter
-    let inRadius = list.filter(d => maxRadius >= 1000 || d._calculatedDist <= maxRadius);
-    let bloodExtendedNotice = '';
-
-    // Adaptive fallback: if strict radius yielded 0, show nearest with notice
-    if (inRadius.length === 0 && list.length > 0) {
-      inRadius = list.slice(0, 10);
-      bloodExtendedNotice = `
-        <div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:8px 12px;font-size:12px;color:#991B1B;font-weight:700;display:flex;align-items:center;gap:6px;margin-bottom:8px">
-          <span>📍</span>
-          <span>${maxRadius} km പരിധിക്ക് പുറത്തുള്ള അടുത്തുള്ള രക്തദാതാക്കൾ:</span>
-        </div>
-      `;
-    }
+    // Apply radius filter strictly
+    let inRadius = (maxRadius >= 1000) ? list : list.filter(d => d._calculatedDist <= maxRadius);
 
     if (inRadius.length === 0) {
+      const radiusLabel = (maxRadius >= 1000) ? '' : ` (${maxRadius} km)`;
       container.innerHTML = `
         <div style="text-align:center;padding:32px 16px;background:#fff;border-radius:16px;border:1px dashed #FECACA">
           <div style="font-size:32px;margin-bottom:6px">🩸</div>
-          <div style="font-weight:800;font-size:14px;color:#1E293B">രക്തദാതാക്കൾ ലഭ്യമല്ല</div>
-          <div style="font-size:12px;color:#64748B;margin:4px 0 14px">നിങ്ങൾക്ക് രക്തദാതാവായി രജിസ്റ്റർ ചെയ്യാം.</div>
-          <button onclick="openModal('modal-edit-profile')" style="padding:8px 16px;background:#DC2626;color:#fff;border:none;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer">🩸 രക്തദാതാവാകാം</button>
+          <div style="font-weight:800;font-size:14px;color:#1E293B">ഈ പ്രദേശത്ത് രക്തദാതാക്കൾ ലഭ്യമല്ല</div>
+          <div style="font-size:12px;color:#64748B;margin:4px 0 14px"><b>${escapeHtml(APP_STATE.location.name)}</b> പരിസരത്ത്${radiusLabel} രക്തദാതാക്കളെ കണ്ടെത്തിയില്ല. പരിധി കൂട്ടുകയോ രക്തദാതാവായി രജിസ്റ്റർ ചെയ്യുകയോ ചെയ്യാം.</div>
+          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+            <button onclick="setGlobalRadius(25, null)" style="padding:7px 12px;background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;border-radius:10px;font-weight:700;font-size:11.5px;cursor:pointer">25 km</button>
+            <button onclick="setGlobalRadius(1000, null)" style="padding:7px 12px;background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;border-radius:10px;font-weight:700;font-size:11.5px;cursor:pointer">മുഴുവൻ കാണുക</button>
+            <button onclick="openModal('modal-edit-profile')" style="padding:7px 14px;background:#DC2626;color:#fff;border:none;border-radius:10px;font-weight:800;font-size:11.5px;cursor:pointer">🩸 രക്തദാതാവാകാം</button>
+          </div>
         </div>
       `;
       return;
@@ -4685,30 +4805,24 @@
 
     allMatchingJobs.sort((a, b) => a._calculatedDist - b._calculatedDist);
 
-    let filteredJobs = allMatchingJobs.filter(j => j._calculatedDist <= maxRadius);
-    let extendedNotice = '';
-
-    if (filteredJobs.length === 0 && allMatchingJobs.length > 0) {
-      filteredJobs = allMatchingJobs;
-      extendedNotice = `
-        <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:12px;padding:8px 12px;font-size:12px;color:#1E40AF;font-weight:700;display:flex;align-items:center;gap:6px">
-          <span>📍</span>
-          <span>നിങ്ങളുടെ ${maxRadius}km പരിധിക്ക് പുറത്തുള്ള ലഭ്യമായ തൊഴിലുകൾ താഴെ കാണിക്കുന്നു:</span>
-        </div>
-      `;
-    }
+    let filteredJobs = (maxRadius >= 1000) ? allMatchingJobs : allMatchingJobs.filter(j => j._calculatedDist <= maxRadius);
 
     if (filteredJobs.length === 0) {
+      const radiusLabel = (maxRadius >= 1000) ? '' : ` (${maxRadius} km)`;
       jobsListEl.innerHTML = `
-        <div style="text-align:center;padding:36px 16px;background:#fff;border-radius:16px;">
+        <div style="text-align:center;padding:36px 16px;background:#fff;border-radius:16px;border:1px solid #E2E8F0">
           <div style="font-size:36px;margin-bottom:8px">💼</div>
-          <h3 style="margin:0 0 6px;color:#111827">തൊഴിൽ അവസരങ്ങളൊന്നും കണ്ടെത്തിയില്ല</h3>
-          <p style="color:#6B7280;margin:0 0 14px;font-size:13px">പുതിയ തൊഴിൽ പോസ്റ്റ് ചെയ്യുകയോ വിഭാഗം മാറ്റി നോക്കുകയോ ചെയ്യാം.</p>
-          <button onclick="openPostJobModal()" style="background:#0878D1;color:#fff;border:none;border-radius:10px;padding:8px 16px;font-weight:800;font-size:12px;cursor:pointer">➕ തൊഴിൽ നൽകാം</button>
+          <h3 style="margin:0 0 6px;color:#111827">ഈ പ്രദേശത്ത് തൊഴിലുകൾ ലഭ്യമല്ല</h3>
+          <p style="color:#6B7280;margin:0 0 14px;font-size:13px"><b>${escapeHtml(APP_STATE.location.name)}</b> പരിസരത്ത്${radiusLabel} തൊഴിൽ അവസരങ്ങളൊന്നും കണ്ടെത്തിയില്ല.</p>
+          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+            <button onclick="setGlobalRadius(25, null)" style="background:#EFF6FF;color:#0284C7;border:1px solid #BAE6FD;border-radius:10px;padding:8px 14px;font-weight:700;font-size:12px;cursor:pointer">25 km പരിധി</button>
+            <button onclick="setGlobalRadius(1000, null)" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;border-radius:10px;padding:8px 14px;font-weight:700;font-size:12px;cursor:pointer">മുഴുവൻ കാണുക</button>
+            <button onclick="openPostJobModal()" style="background:#0878D1;color:#fff;border:none;border-radius:10px;padding:8px 16px;font-weight:800;font-size:12px;cursor:pointer">➕ തൊഴിൽ നൽകാം</button>
+          </div>
         </div>
       `;
     } else {
-      jobsListEl.innerHTML = extendedNotice + filteredJobs.map(j => `
+      jobsListEl.innerHTML = filteredJobs.map(j => `
         <div class="job-card">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
@@ -4776,30 +4890,24 @@
 
     allMatchingRentals.sort((a, b) => a._calculatedDist - b._calculatedDist);
 
-    let filteredRentals = allMatchingRentals.filter(r => r._calculatedDist <= maxRadius);
-    let extendedNotice = '';
-
-    if (filteredRentals.length === 0 && allMatchingRentals.length > 0) {
-      filteredRentals = allMatchingRentals;
-      extendedNotice = `
-        <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:8px 12px;font-size:12px;color:#166534;font-weight:700;display:flex;align-items:center;gap:6px">
-          <span>📍</span>
-          <span>നിങ്ങളുടെ ${maxRadius}km പരിധിക്ക് പുറത്തുള്ള ലഭ്യമായ വാടക ഇനങ്ങൾ താഴെ കാണിക്കുന്നു:</span>
-        </div>
-      `;
-    }
+    let filteredRentals = (maxRadius >= 1000) ? allMatchingRentals : allMatchingRentals.filter(r => r._calculatedDist <= maxRadius);
 
     if (filteredRentals.length === 0) {
+      const radiusLabel = (maxRadius >= 1000) ? '' : ` (${maxRadius} km)`;
       rentalsListEl.innerHTML = `
-        <div style="text-align:center;padding:36px 16px;background:#fff;border-radius:16px;">
+        <div style="text-align:center;padding:36px 16px;background:#fff;border-radius:16px;border:1px solid #E2E8F0">
           <div style="font-size:36px;margin-bottom:8px">🏠</div>
-          <h3 style="margin:0 0 6px;color:#111827">വാടക / വിൽപന ഇനങ്ങൾ കണ്ടെത്തിയില്ല</h3>
-          <p style="color:#6B7280;margin:0 0 14px;font-size:13px">റേഡിയസ് ഫിൽട്ടർ കൂട്ടി നോക്കുകയോ നിങ്ങളുടെ വസ്തുക്കൾ ഇവിടെ ലിസ്റ്റ് ചെയ്യുകയോ ചെയ്യാം.</p>
-          <button onclick="openAddRentalModal()" style="background:#0E7043;color:#fff;border:none;border-radius:10px;padding:8px 16px;font-weight:800;font-size:12px;cursor:pointer">➕ ലിസ്റ്റ് ചെയ്യാം</button>
+          <h3 style="margin:0 0 6px;color:#111827">ഈ പ്രദേശത്ത് വാടക ഇനങ്ങൾ ലഭ്യമല്ല</h3>
+          <p style="color:#6B7280;margin:0 0 14px;font-size:13px"><b>${escapeHtml(APP_STATE.location.name)}</b> പരിസരത്ത്${radiusLabel} വാടക ഇനങ്ങൾ കണ്ടെത്തിയില്ല.</p>
+          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+            <button onclick="setGlobalRadius(25, null)" style="background:#ECFDF5;color:#0E7043;border:1px solid #A7F3D0;border-radius:10px;padding:8px 14px;font-weight:700;font-size:12px;cursor:pointer">25 km പരിധി</button>
+            <button onclick="setGlobalRadius(1000, null)" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;border-radius:10px;padding:8px 14px;font-weight:700;font-size:12px;cursor:pointer">മുഴുവൻ കാണുക</button>
+            <button onclick="openAddRentalModal()" style="background:#0E7043;color:#fff;border:none;border-radius:10px;padding:8px 16px;font-weight:800;font-size:12px;cursor:pointer">➕ ലിസ്റ്റ് ചെയ്യാം</button>
+          </div>
         </div>
       `;
     } else {
-      rentalsListEl.innerHTML = extendedNotice + filteredRentals.map(r => `
+      rentalsListEl.innerHTML = filteredRentals.map(r => `
         <div class="job-card">
           ${r.image ? `<img src="${r.image}" style="width:100%;height:160px;object-fit:cover;border-radius:12px;margin-bottom:8px">` : ''}
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
@@ -5112,23 +5220,8 @@
     // Step C: Sort by Distance Ascending
     filtered.sort((a, b) => a.dist - b.dist);
 
-    // Step D: Apply Radius Filter
-    let inRadiusItems = filtered.filter(item => maxRadius >= 1000 || item.dist <= maxRadius);
-
-    let adaptiveNotice = '';
-    // If strict radius yielded 0 matches, adaptively provide closest community members
-    if (inRadiusItems.length === 0 && filtered.length > 0) {
-      inRadiusItems = filtered.slice(0, 20);
-      adaptiveNotice = `
-        <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:14px;padding:12px 14px;margin-bottom:8px">
-          <div style="font-weight:800;font-size:12.5px;color:#92400E;display:flex;align-items:center;gap:6px">
-            <span>📍</span>
-            <span>${escapeHtml(userTown)} പരിസരത്തെ അടുത്തുള്ളവർ:</span>
-          </div>
-          <div style="font-size:11.5px;color:#B45309;margin-top:2px">തിരഞ്ഞെടുത്ത ${maxRadius} km പരിധിക്ക് ഏറ്റവും അടുത്തുള്ള ലഭ്യമായവരെ താഴെ നൽകുന്നു:</div>
-        </div>
-      `;
-    }
+    // Step D: Apply Strict Radius Filter
+    let inRadiusItems = (maxRadius >= 1000) ? filtered : filtered.filter(item => item.dist <= maxRadius);
 
     // Update Counter Stat Pill
     const countBadge = document.getElementById('nearbyFoundCountText');
@@ -5138,21 +5231,23 @@
     }
 
     if (inRadiusItems.length === 0) {
+      const radiusLabel = maxRadius >= 1000 ? '' : ` (${maxRadius} km)`;
       container.innerHTML = `
         <div style="text-align:center;padding:40px 16px;background:#fff;border-radius:16px;border:1px solid #E2E8F0">
           <div style="font-size:42px;margin-bottom:10px">📍</div>
-          <h3 style="margin:0 0 6px;font-size:16px;font-weight:800;color:#0F172A">സമീപത്ത് ആരെയും കണ്ടെത്തിയില്ല</h3>
-          <p style="color:#64748B;margin:0 0 16px;font-size:12.5px">മുകളിലെ "എല്ലാം (All)" ചിപ്പ് തിരഞ്ഞെടുക്കുകയോ തിരച്ചിൽ വാക്ക് മാറ്റി നോക്കുകയോ ചെയ്യാം.</p>
-          <div style="display:flex;gap:8px;justify-content:center">
-            <button onclick="setRadiusFilter('nearby', 99999, document.querySelector('.radius-chip:last-child'))" style="background:#0E7043;color:#fff;border:none;padding:10px 18px;border-radius:12px;font-weight:800;font-size:12.5px;cursor:pointer">മുഴുവൻ കാണുക</button>
-            <button onclick="setNearbyCategory('all', document.querySelector('.nearby-cat-chip:first-child'))" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;padding:10px 18px;border-radius:12px;font-weight:800;font-size:12.5px;cursor:pointer">എല്ലാ വിഭാഗങ്ങളും</button>
+          <h3 style="margin:0 0 6px;font-size:16px;font-weight:800;color:#0F172A">ഈ പ്രദേശത്ത് ആരെയും കണ്ടെത്തിയില്ല</h3>
+          <p style="color:#64748B;margin:0 0 16px;font-size:12.5px"><b>${escapeHtml(userTown)}</b> പരിസരത്ത്${radiusLabel} ആരെയും കണ്ടെത്തിയില്ല.</p>
+          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+            <button onclick="setGlobalRadius(25, null)" style="background:#ECFDF5;color:#0E7043;border:1px solid #A7F3D0;padding:9px 14px;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">25 km പരിധി</button>
+            <button onclick="setGlobalRadius(1000, null)" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;padding:9px 14px;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">മുഴുവൻ കാണുക</button>
+            <button onclick="setNearbyCategory('all', document.querySelector('.nearby-cat-chip:first-child'))" style="background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;padding:9px 14px;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">എല്ലാ വിഭാഗങ്ങളും</button>
           </div>
         </div>
       `;
       return;
     }
 
-    container.innerHTML = adaptiveNotice + inRadiusItems.map(item => {
+    container.innerHTML = inRadiusItems.map(item => {
       const isOnline = true;
       const typeBadgeColor = item.type === 'service' ? '#059669' : (item.type === 'donor' ? '#DC2626' : (item.type === 'citizen' ? '#2563EB' : '#D97706'));
       const typeBadgeBg = item.type === 'service' ? '#ECFDF5' : (item.type === 'donor' ? '#FEF2F2' : (item.type === 'citizen' ? '#EFF6FF' : '#FFFBEB'));
@@ -6375,28 +6470,24 @@
     });
     list.sort((a, b) => a._calculatedDist - b._calculatedDist);
 
-    // Apply user's chosen radius filter
-    let inRadius = list.filter(srv => maxRadius >= 1000 || srv._calculatedDist <= maxRadius);
-    let homeExtendedNotice = '';
-
-    // Adaptive fallback: if strict radius yielded 0, show nearest with notice
-    if (inRadius.length === 0 && list.length > 0) {
-      inRadius = list.slice(0, 4);
-      homeExtendedNotice = `
-        <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:8px 12px;font-size:12px;color:#166534;font-weight:700;display:flex;align-items:center;gap:6px;margin-bottom:8px">
-          <span>📍</span>
-          <span>${maxRadius} km പരിധിക്ക് പുറത്തുള്ള അടുത്തുള്ള സേവനദാതാക്കൾ:</span>
-        </div>
-      `;
-    }
+    // Apply user's chosen radius filter strictly
+    let inRadius = (maxRadius >= 1000) ? list : list.filter(srv => srv._calculatedDist <= maxRadius);
 
     const topProviders = inRadius.slice(0, 4);
     if (topProviders.length === 0) {
-      homeList.innerHTML = `<div style="text-align:center;padding:16px;color:#64748B;font-size:0.85rem">സേവനദാതാക്കളെ കണ്ടെത്താനായില്ല</div>`;
+      const radiusLabel = (maxRadius >= 1000) ? '' : ` (${maxRadius} km)`;
+      homeList.innerHTML = `
+        <div style="text-align:center;padding:24px 14px;background:#F8FAFC;border-radius:14px;border:1px dashed #CBD5E1">
+          <div style="font-size:24px;margin-bottom:4px">📍</div>
+          <div style="font-weight:700;font-size:12.5px;color:#334155">ഈ പ്രദേശത്ത് സേവനദാതാക്കൾ ലഭ്യമല്ല</div>
+          <div style="font-size:11px;color:#64748B;margin:3px 0 10px">${escapeHtml(APP_STATE.location.name)} പരിസരത്ത്${radiusLabel} സർവീസുകൾ കണ്ടെത്തിയില്ല.</div>
+          <button onclick="openLocationModal()" style="padding:6px 14px;background:#0E7043;color:#fff;border:none;border-radius:8px;font-weight:700;font-size:11px;cursor:pointer">പരിധി മാറ്റുക / സ്ഥലം മാറ്റുക</button>
+        </div>
+      `;
       return;
     }
 
-    homeList.innerHTML = homeExtendedNotice + topProviders.map(srv => {
+    homeList.innerHTML = topProviders.map(srv => {
       const isAvail = srv.availability !== 'busy';
       const availLabel = isAvail ? '🟢 ഇപ്പോൾ ലഭ്യമാണ്' : '🟡 ബുക്കിംഗ് അനുസരിച്ച്';
       const availClass = isAvail ? 'avail' : 'busy';
