@@ -5715,6 +5715,24 @@
               <div class="fb-about-val">${escapeHtml(APP_STATE.currentUser.location || APP_STATE.location.name || 'തത്സമയ ലൊക്കേഷൻ')}</div>
             </div>
           </div>
+          ${(APP_STATE.currentUser.district || localStorage.getItem('nn_user_district')) ? `
+          <div class="fb-about-item">
+            <span class="fb-about-icon">🗺️</span>
+            <div>
+              <div class="fb-about-label">ജില്ല (District)</div>
+              <div class="fb-about-val">${escapeHtml(APP_STATE.currentUser.district || localStorage.getItem('nn_user_district') || '')}</div>
+            </div>
+          </div>
+          ` : ''}
+          ${(APP_STATE.currentUser.trade || localStorage.getItem('nn_user_trade')) ? `
+          <div class="fb-about-item">
+            <span class="fb-about-icon">💼</span>
+            <div>
+              <div class="fb-about-label">തൊഴിൽ / ജോലി (Profession)</div>
+              <div class="fb-about-val" style="color:#0E7043;font-weight:800">${escapeHtml(APP_STATE.currentUser.trade || localStorage.getItem('nn_user_trade') || '')}</div>
+            </div>
+          </div>
+          ` : ''}
 
           <div class="fb-about-item">
             <span class="fb-about-icon">🩸</span>
@@ -6182,27 +6200,101 @@
   }
   window.refreshRentalsLive = refreshRentalsLive;
 
+  function selectProfBloodGroup(grp) {
+    const input = document.getElementById('editProfBlood');
+    if (input) input.value = grp;
+    renderProfBloodChips(grp);
+  }
+  window.selectProfBloodGroup = selectProfBloodGroup;
+
+  function renderProfBloodChips(selectedGrp) {
+    const container = document.getElementById('profBloodChipsGrid');
+    if (!container) return;
+    const groups = ['O+', 'A+', 'B+', 'AB+', 'O-', 'A-', 'B-', 'AB-'];
+    const active = selectedGrp || document.getElementById('editProfBlood')?.value || 'O+';
+    container.innerHTML = groups.map(g => {
+      const isSel = (g === active);
+      return `<button type="button" onclick="selectProfBloodGroup('${g}')" style="padding:8px 4px;border-radius:10px;font-size:12px;cursor:pointer;transition:all 0.15s;${isSel ? 'background:#DC2626;color:#fff;border:1.5px solid #DC2626;font-weight:900;box-shadow:0 2px 6px rgba(220,38,38,0.3)' : 'background:#FFFFFF;color:#7F1D1D;border:1px solid #FECACA;font-weight:700'}">${g}</button>`;
+    }).join('');
+  }
+  window.renderProfBloodChips = renderProfBloodChips;
+
+  function autoFillCurrentLocationToProfile() {
+    const locInput = document.getElementById('editProfLoc');
+    const distSelect = document.getElementById('editProfDistrict');
+    if (locInput && APP_STATE.location.name && APP_STATE.location.name !== 'തത്സമയ ലൊക്കേഷൻ') {
+      locInput.value = APP_STATE.location.name;
+    }
+    if (distSelect && APP_STATE.location.district) {
+      for (let i = 0; i < distSelect.options.length; i++) {
+        if (distSelect.options[i].value.includes(APP_STATE.location.district)) {
+          distSelect.selectedIndex = i;
+          break;
+        }
+      }
+    }
+    if (typeof toast === 'function') toast('📍 തത്സമയ ലൊക്കേഷൻ ചേർത്തു!');
+  }
+  window.autoFillCurrentLocationToProfile = autoFillCurrentLocationToProfile;
+
   function openEditProfileModal(isOnboarding = false) {
     const nameEl = document.getElementById('editProfName');
     const phoneEl = document.getElementById('editProfPhone');
     const locEl = document.getElementById('editProfLoc');
+    const distEl = document.getElementById('editProfDistrict');
+    const tradeEl = document.getElementById('editProfTrade');
     const bloodEl = document.getElementById('editProfBlood');
+    const bioEl = document.getElementById('editProfBio');
+    const donorEl = document.getElementById('editProfIsDonor');
     const previewEl = document.getElementById('editProfAvatarPreview');
     const statusEl = document.getElementById('phoneLookupStatus');
     const noticeEl = document.getElementById('profileOnboardingNotice');
+    const idBadge = document.getElementById('profFormIdBadge');
 
     if (noticeEl) {
       noticeEl.style.display = isOnboarding ? 'block' : 'none';
     }
     if (statusEl) statusEl.style.display = 'none';
 
-    if (nameEl) nameEl.value = (APP_STATE.currentUser.name && APP_STATE.currentUser.name !== 'നാട്ടുകാരൻ') ? APP_STATE.currentUser.name : '';
-    if (phoneEl) phoneEl.value = APP_STATE.currentUser.phone || '';
-    if (locEl) locEl.value = APP_STATE.currentUser.location || APP_STATE.location.name || '';
-    if (bloodEl) bloodEl.value = APP_STATE.currentUser.bloodGroup || localStorage.getItem('nn_user_blood') || 'O+';
-    const bioEl = document.getElementById('editProfBio');
-    if (bioEl) bioEl.value = (APP_STATE.currentUser.bio && APP_STATE.currentUser.bio !== 'നമ്മുടെ നാട് കൂട്ടായ്മ 🌿' && !APP_STATE.currentUser.bio.includes('കണ്ണൂർ')) ? APP_STATE.currentUser.bio : '';
+    const curName = (APP_STATE.currentUser.name && APP_STATE.currentUser.name !== 'നാട്ടുകാരൻ') ? APP_STATE.currentUser.name : '';
+    const curPhone = APP_STATE.currentUser.phone || '';
+    const curBlood = APP_STATE.currentUser.bloodGroup || localStorage.getItem('nn_user_blood') || 'O+';
+    const curLoc = (APP_STATE.currentUser.location && APP_STATE.currentUser.location !== 'തത്സമയ ലൊക്കേഷൻ') ? APP_STATE.currentUser.location : (APP_STATE.location.name && APP_STATE.location.name !== 'തത്സമയ ലൊക്കേഷൻ' ? APP_STATE.location.name : '');
+    const curDistrict = APP_STATE.currentUser.district || localStorage.getItem('nn_user_district') || APP_STATE.location.district || 'കണ്ണൂർ';
+    const curTrade = APP_STATE.currentUser.trade || localStorage.getItem('nn_user_trade') || '';
+    const curBio = (APP_STATE.currentUser.bio && APP_STATE.currentUser.bio !== 'നമ്മുടെ നാട് കൂട്ടായ്മ 🌿' && !APP_STATE.currentUser.bio.includes('കണ്ണൂർ')) ? APP_STATE.currentUser.bio : '';
+
+    if (nameEl) nameEl.value = curName;
+    if (phoneEl) phoneEl.value = curPhone;
+    if (locEl) locEl.value = curLoc;
+    if (tradeEl) tradeEl.value = curTrade;
+    if (bioEl) bioEl.value = curBio;
+    if (bloodEl) bloodEl.value = curBlood;
+    if (donorEl) donorEl.checked = (APP_STATE.currentUser.isDonor !== false);
+
+    if (distEl) {
+      for (let i = 0; i < distEl.options.length; i++) {
+        if (distEl.options[i].value.includes(curDistrict)) {
+          distEl.selectedIndex = i;
+          break;
+        }
+      }
+    }
+
+    if (idBadge) {
+      const cleanPhone = curPhone.replace(/\D/g, '').slice(-10);
+      idBadge.textContent = cleanPhone ? `Citizen ID: usr_${cleanPhone}` : `Citizen ID: usr_citizen`;
+    }
+
     if (previewEl) previewEl.src = APP_STATE.currentUser.avatar || DEFAULT_USER_AVATAR;
+
+    renderProfBloodChips(curBlood);
+
+    // Sync active language chip
+    const activeLang = localStorage.getItem('nn_app_language') || 'ml';
+    if (typeof window.setAppLanguage === 'function') {
+      window.setAppLanguage(activeLang, true);
+    }
 
     openModal('modal-edit-profile');
   }
@@ -6212,8 +6304,13 @@
   async function checkPhoneProfileLookup(rawPhone) {
     if (phoneLookupDebounce) clearTimeout(phoneLookupDebounce);
     const statusEl = document.getElementById('phoneLookupStatus');
+    const idBadge = document.getElementById('profFormIdBadge');
 
     const digits = String(rawPhone || '').replace(/\D/g, '').slice(-10);
+    if (idBadge) {
+      idBadge.textContent = digits ? `Citizen ID: usr_${digits}` : `Citizen ID: usr_citizen`;
+    }
+
     if (!digits || digits.length < 10) {
       if (statusEl) statusEl.style.display = 'none';
       return;
@@ -6236,27 +6333,30 @@
 
           if (nameEl && (!nameEl.value || nameEl.value === 'നാട്ടുകാരൻ') && cloud.name) nameEl.value = cloud.name;
           if (locEl && !locEl.value && cloud.place) locEl.value = cloud.place;
-          if (bloodEl && cloud.blood_group) bloodEl.value = cloud.blood_group;
+          if (bloodEl && cloud.blood_group) {
+            bloodEl.value = cloud.blood_group;
+            renderProfBloodChips(cloud.blood_group);
+          }
           const bioEl = document.getElementById('editProfBio');
           if (bioEl && !bioEl.value && cloud.bio) bioEl.value = cloud.bio;
           if (cloud.bio) {
             APP_STATE.currentUser.bio = cloud.bio;
             try { localStorage.setItem('nn_user_bio', cloud.bio); } catch (_) {}
           }
-          if (previewEl && cloud.avatar) {
+          if (previewEl && cloud.avatar && !APP_STATE.currentUser.avatar) {
             previewEl.src = cloud.avatar;
             APP_STATE.currentUser.avatar = cloud.avatar;
             try { localStorage.setItem('nn_user_avatar', cloud.avatar); } catch (_) {}
           }
 
           if (statusEl) {
-            statusEl.textContent = `✨ "${cloud.name || 'സുഹൃത്ത്'}" എന്ന പേരിലുള്ള പ്രൊഫൈൽ കണ്ടെത്തി!`;
+            statusEl.textContent = `✨ "${cloud.name || 'സുഹൃത്ത്'}" എന്ന പേരിലുള്ള ക്ലൗഡ് പ്രൊഫൈൽ കണ്ടെത്തി!`;
             statusEl.style.color = '#0E7043';
             statusEl.style.display = 'block';
           }
         } else {
           if (statusEl) {
-            statusEl.textContent = '🆕 പുതിയ പ്രൊഫൈൽ ID: usr_' + digits;
+            statusEl.textContent = '🆕 പുതിയ സിറ്റിസൺ ID: usr_' + digits;
             statusEl.style.color = '#0284C7';
             statusEl.style.display = 'block';
           }
@@ -6271,7 +6371,9 @@
     const name = (document.getElementById('editProfName').value || '').trim();
     const phone = (document.getElementById('editProfPhone').value || '').trim();
     const loc = (document.getElementById('editProfLoc').value || '').trim() || APP_STATE.location.name || 'കേരളം';
-    const blood = document.getElementById('editProfBlood').value;
+    const district = document.getElementById('editProfDistrict')?.value || 'കണ്ണൂർ';
+    const trade = (document.getElementById('editProfTrade')?.value || '').trim();
+    const blood = document.getElementById('editProfBlood')?.value || 'O+';
     const bio = (document.getElementById('editProfBio')?.value || '').trim() || 'നമ്മുടെ നാട് കൂട്ടായ്മ 🌿';
     const isDonor = document.getElementById('editProfIsDonor')?.checked !== false;
 
@@ -6279,43 +6381,43 @@
       toast('⚠️ ദയവായി നിങ്ങളുടെ പേര് നൽകുക.');
       return;
     }
-    if (!phone) {
-      toast('⚠️ ദയവായി നിങ്ങളുടെ ഫോൺ നമ്പർ നൽകുക.');
+    const cleanDigits = phone.replace(/\D/g, '').slice(-10);
+    if (!cleanDigits || cleanDigits.length < 10) {
+      toast('⚠️ ദയവായി 10 അക്ക മൊബൈൽ നമ്പർ നൽകുക.');
       return;
     }
 
-    // Generate deterministic User ID based on 10-digit phone number
-    const phoneDigits = phone ? phone.replace(/\D/g, '').slice(-10) : '';
-    if (phoneDigits && phoneDigits.length >= 10) {
-      APP_STATE.currentUser.id = 'usr_' + phoneDigits;
-      try {
-        localStorage.setItem('nn_user_id', phoneDigits);
-      } catch (_) {}
-    }
-
+    APP_STATE.currentUser.id = 'usr_' + cleanDigits;
     APP_STATE.currentUser.name = name;
     APP_STATE.currentUser.phone = phone;
     APP_STATE.currentUser.location = loc;
+    APP_STATE.currentUser.district = district;
+    APP_STATE.currentUser.trade = trade;
     APP_STATE.currentUser.bloodGroup = blood;
     APP_STATE.currentUser.bio = bio;
+    APP_STATE.currentUser.isDonor = isDonor;
     APP_STATE.currentUser.isCustomized = true;
 
     try {
+      localStorage.setItem('nn_user_id', cleanDigits);
       localStorage.setItem('nn_user_name', name);
       localStorage.setItem('nn_user_phone', phone);
       localStorage.setItem('nn_user_loc', loc);
+      localStorage.setItem('nn_user_district', district);
+      if (trade) localStorage.setItem('nn_user_trade', trade);
       localStorage.setItem('nn_user_blood', blood);
       localStorage.setItem('nn_user_bio', bio);
+      localStorage.setItem('nn_user_is_donor', isDonor ? 'true' : 'false');
       localStorage.setItem('nn_profile_completed', 'true');
     } catch (_) {}
 
     // Register user as Blood Donor if opted in
     if (isDonor && blood) {
       if (!Array.isArray(APP_STATE.bloodDonors)) APP_STATE.bloodDonors = [];
-      const cleanP = phone.replace(/\D/g, '');
-      const existingIdx = APP_STATE.bloodDonors.findIndex(d => (d.phone && d.phone.replace(/\D/g, '') === cleanP) || d.name === name);
+      const cleanP = cleanDigits;
+      const existingIdx = APP_STATE.bloodDonors.findIndex(d => (d.phone && d.phone.replace(/\D/g, '').slice(-10) === cleanP) || d.name === name);
       const donorObj = {
-        id: 'donor_' + (cleanP || Date.now()),
+        id: 'donor_' + cleanP,
         name: name,
         group: blood,
         phone: phone,
@@ -6346,7 +6448,7 @@
     renderProfileScreen();
     updatePostingProfileBar();
     renderHomeScreen();
-    toast(`🎉 സ്വാഗതം ${name}! നിങ്ങളുടെ പ്രൊഫൈലും രക്തഗ്രൂപ്പും (${blood}) വിജയകരമായി സേവ് ചെയ്തു.`);
+    toast(`🎉 സ്വാഗതം ${name}! നിങ്ങളുടെ പ്രൊഫൈൽ വിജയകരമായി സേവ് ചെയ്തു.`);
   }
   window.submitProfileUpdate = submitProfileUpdate;
 
