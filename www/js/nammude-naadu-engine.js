@@ -1800,6 +1800,11 @@
   // 9. DEDICATED USER PROFILE PREVIEW MODAL (FULL CAPABILITIES)
   // ==============================================================
   function renderUserProfileSheet(userData) {
+    const isEmergencyOrAmbulance = Boolean(
+      (userData.category === 'ambulance') ||
+      (userData.name && (userData.name.includes('ആംബുലൻസ്') || userData.name.includes('അടിയന്തിരം') || userData.name.includes('Emergency') || userData.name.includes('Ambulance'))) ||
+      (userData.authorId && String(userData.authorId).includes('ambulance'))
+    );
     const sheet = document.getElementById('authorProfileSheetContent');
     if (!sheet) return;
 
@@ -1913,7 +1918,7 @@
         <div class="profile-preview-name" style="font-size:21px;font-weight:900;margin-bottom:4px;color:#fff">${escapeHtml(name)}</div>
         <div style="font-size:13px;color:#D1FAE5;display:flex;align-items:center;justify-content:center;gap:6px">
           <span>📍 ${escapeHtml(loc)}</span>
-          ${phone ? `<span style="opacity:0.85">• 📞 ${escapeHtml(phone)}</span>` : ''}
+          ${(isEmergencyOrAmbulance && phone) ? `<span style="opacity:0.85">• 📞 ${escapeHtml(phone)}</span>` : '<span style="opacity:0.85">• 🔒 സ്വകാര്യ നമ്പർ</span>'}
         </div>
         <div class="profile-preview-badges" style="display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:10px">
           ${badges.join('')}
@@ -1921,24 +1926,31 @@
       </div>
 
       <!-- ACTION BUTTONS -->
-      <div style="padding:14px 18px;display:flex;gap:10px;background:#F8FAFC;border-bottom:1px solid #E2E8F0">
-        ${fromChat ? `
-          <button onclick="closeModal('modal-author-profile'); setTimeout(() => { const inp = document.getElementById('chatInputMessage'); if(inp) inp.focus(); }, 150);" class="profile-action-cta chat" style="flex:1;background:linear-gradient(135deg, #0E7043 0%, #10B981 100%);color:#fff;padding:12px;border:none;border-radius:14px;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 8px rgba(14,112,67,0.25)">
-            <span>💬</span>
-            <span>ചാറ്റിലേക്ക് മടങ്ങാം</span>
-          </button>
-        ` : `
-          <button onclick="closeModal('modal-author-profile'); ${chatKey ? `openChatModalByKey('${chatKey}')` : `openChatModal('${safeEscapedName}', '${safeEscapedPhone}', '${avatar}', 'ഹലോ ${safeEscapedName}', '${authorId}')`}" class="profile-action-cta chat" style="flex:1;background:linear-gradient(135deg, #0E7043 0%, #10B981 100%);color:#fff;padding:12px;border:none;border-radius:14px;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 8px rgba(14,112,67,0.25)">
-            <span>💬</span>
-            <span>ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം</span>
-          </button>
-        `}
-        ${phone ? `
-          <a href="tel:${phone}" style="flex:1;background:#fff;border:1.5px solid #10B981;color:#065F46;padding:12px;border-radius:14px;font-weight:800;font-size:14px;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 1px 3px rgba(0,0,0,0.05)">
-            <span>📞</span>
-            <span>ഫോൺ വിളിക്കാം</span>
-          </a>
-        ` : ''}
+      <div style="padding:14px 18px;display:flex;flex-direction:column;gap:10px;background:#F8FAFC;border-bottom:1px solid #E2E8F0">
+        <div style="display:flex;gap:10px">
+          ${fromChat ? `
+            <button onclick="closeModal('modal-author-profile'); setTimeout(() => { const inp = document.getElementById('chatInputMessage'); if(inp) inp.focus(); }, 150);" class="profile-action-cta chat" style="flex:1;background:linear-gradient(135deg, #0E7043 0%, #10B981 100%);color:#fff;padding:12px;border:none;border-radius:14px;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 8px rgba(14,112,67,0.25)">
+              <span>💬</span>
+              <span>ചാറ്റിലേക്ക് മടങ്ങാം</span>
+            </button>
+          ` : `
+            <button onclick="closeModal('modal-author-profile'); ${chatKey ? `openChatModalByKey('${chatKey}')` : `openChatModal('${safeEscapedName}', '${safeEscapedPhone}', '${avatar}', 'ഹലോ ${safeEscapedName}', '${authorId}')`}" class="profile-action-cta chat" style="flex:1;background:linear-gradient(135deg, #0E7043 0%, #10B981 100%);color:#fff;padding:12px;border:none;border-radius:14px;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 8px rgba(14,112,67,0.25)">
+              <span>💬</span>
+              <span>ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം</span>
+            </button>
+          `}
+          ${(isEmergencyOrAmbulance && phone) ? `
+            <a href="tel:${phone}" style="flex:1;background:#fff;border:1.5px solid #10B981;color:#065F46;padding:12px;border-radius:14px;font-weight:800;font-size:14px;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 1px 3px rgba(0,0,0,0.05)">
+              <span>📞</span>
+              <span>ഫോൺ വിളിക്കാം</span>
+            </a>
+          ` : ''}
+        </div>
+        <button onclick="closeModal('modal-author-profile'); viewUserProfile({ id: '${authorId || ''}', name: '${safeEscapedName}', phone: '${safeEscapedPhone}', avatar: '${avatar}', location: '${(loc || '').replace(/'/g, "\\'")}', bloodGroup: '${(blood || '').replace(/'/g, "\\'")}', chatKey: '${chatKey || ''}' }, '${fromChat ? 'chat' : 'community'}')" style="width:100%;background:linear-gradient(135deg, #1877F2 0%, #2563EB 100%);color:#fff;padding:12px;border:none;border-radius:14px;font-weight:800;font-size:13.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 8px rgba(37,99,235,0.25)">
+          <span>👤</span>
+          <span>മുഴുവൻ പ്രൊഫൈൽ പേജിലേക്ക് പോകാം</span>
+          <span>➔</span>
+        </button>
       </div>
 
       <div style="padding:16px 18px 24px;display:flex;flex-direction:column;gap:14px">
@@ -2101,6 +2113,140 @@
   window.openChatRecipientProfileByKey = function (chatKey) {
     openChatRecipientProfile(chatKey);
   };
+
+  // FULL PROFILE PAGE ROUTING STATE & HANDLERS FOR OTHER USERS (CITIZENS, DRIVERS, PROVIDERS)
+  let _viewingOtherUser = null;
+  let _profileOrigin = 'chat';
+  let _activeChatReturnKey = null;
+  window._viewingOtherUser = null;
+
+  function viewUserProfile(targetUser, fromWhere) {
+    if (!targetUser) return;
+    _viewingOtherUser = { ...targetUser };
+    window._viewingOtherUser = _viewingOtherUser;
+    _profileOrigin = fromWhere || 'chat';
+
+    if (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.key) {
+      _activeChatReturnKey = APP_STATE.activeChatRecipient.key;
+    } else if (targetUser.chatKey) {
+      _activeChatReturnKey = targetUser.chatKey;
+    }
+
+    if (typeof closeModal === 'function') {
+      closeModal('modal-chat');
+      closeModal('modal-author-profile');
+    }
+
+    navTo('profile');
+    renderProfileScreen();
+  }
+  window.viewUserProfile = viewUserProfile;
+
+  function viewChatRecipientFullProfile(chatKey) {
+    let key = chatKey || (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.key) || _activeChatReturnKey;
+    let name = '';
+    let phone = '';
+    let avatar = '';
+    let recipientId = '';
+
+    if (APP_STATE.activeChatRecipient && (!chatKey || chatKey === APP_STATE.activeChatRecipient.key)) {
+      name = APP_STATE.activeChatRecipient.name;
+      phone = APP_STATE.activeChatRecipient.phone;
+      avatar = APP_STATE.activeChatRecipient.avatar;
+      recipientId = APP_STATE.activeChatRecipient.id;
+    }
+
+    if ((!name || name === 'Chat') && key && APP_STATE.chatMeta && APP_STATE.chatMeta[key]) {
+      const meta = APP_STATE.chatMeta[key];
+      name = meta.name || name;
+      phone = meta.phone || phone;
+      avatar = meta.avatar || avatar;
+      recipientId = meta.recipientId || recipientId;
+    }
+
+    if (!phone && key) {
+      const phones = String(key).match(/\d{10}/g) || [];
+      const myCleanPhone = normalizePhone(APP_STATE.currentUser?.phone);
+      if (phones.length > 0) {
+        phone = phones.find(p => p !== myCleanPhone) || phones[0];
+      }
+    }
+
+    const cleanPhone = normalizePhone(phone);
+    let matchedService = null;
+    let matchedDonor = null;
+
+    if (cleanPhone) {
+      matchedService = (APP_STATE.services || []).find(s => normalizePhone(s.phone) === cleanPhone);
+      matchedDonor = (APP_STATE.bloodDonors || []).find(d => normalizePhone(d.phone) === cleanPhone);
+    }
+    if (name && name !== 'Chat' && name !== 'പ്രാദേശിക സുഹൃത്ത്') {
+      if (!matchedService) matchedService = (APP_STATE.services || []).find(s => s.name === name);
+      if (!matchedDonor) matchedDonor = (APP_STATE.bloodDonors || []).find(d => d.name === name);
+    }
+    if (!name || name === 'Chat' || name === 'പ്രാദേശിക സുഹൃത്ത്') {
+      if (matchedService && matchedService.name) name = matchedService.name;
+      else if (matchedDonor && matchedDonor.name) name = matchedDonor.name;
+    }
+
+    const targetUser = {
+      id: recipientId || (matchedService ? matchedService.id : (cleanPhone ? ('usr_' + cleanPhone) : 'usr_other')),
+      name: name || 'പ്രാദേശിക സുഹൃത്ത്',
+      phone: phone || '',
+      avatar: avatar || (matchedService?.avatar) || (matchedDonor?.avatar) || DEFAULT_USER_AVATAR,
+      location: (matchedService?.location) || (matchedDonor?.location) || APP_STATE.location?.name || 'കേരളം',
+      bloodGroup: (matchedDonor?.bloodGroup) || '',
+      trade: (matchedService?.trade) || '',
+      chatKey: key
+    };
+
+    viewUserProfile(targetUser, 'chat');
+  }
+  window.viewChatRecipientFullProfile = viewChatRecipientFullProfile;
+
+  function exitOtherUserProfile() {
+    const origin = _profileOrigin || 'chat';
+    const returnKey = _activeChatReturnKey;
+    const otherUser = _viewingOtherUser;
+    _viewingOtherUser = null;
+    window._viewingOtherUser = null;
+    _profileOrigin = 'chat';
+
+    if (origin === 'chat') {
+      navTo('chat');
+      if (returnKey) {
+        setTimeout(() => {
+          openChatModalByKey(returnKey);
+        }, 120);
+      } else if (otherUser && (otherUser.phone || otherUser.name)) {
+        setTimeout(() => {
+          openChatModal(otherUser.name, otherUser.phone, otherUser.avatar, '', otherUser.id);
+        }, 120);
+      }
+    } else if (origin === 'community') {
+      navTo('community');
+    } else if (origin === 'services') {
+      navTo('services');
+    } else {
+      navTo('home');
+    }
+  }
+  window.exitOtherUserProfile = exitOtherUserProfile;
+
+  function openChatFromProfile() {
+    if (!_viewingOtherUser) {
+      navTo('chat');
+      return;
+    }
+    const u = _viewingOtherUser;
+    const key = u.chatKey || _activeChatReturnKey;
+    if (key) {
+      openChatModalByKey(key);
+    } else {
+      openChatModal(u.name, u.phone, u.avatar, '', u.id);
+    }
+  }
+  window.openChatFromProfile = openChatFromProfile;
 
   // ==============================================================
   // 10. REALTIME 1-ON-1 IN-APP CLOUD CHAT ENGINE (SUPABASE REALTIME)
@@ -2286,7 +2432,8 @@
         });
 
         if (!bestMeta.name) {
-          bestMeta.name = bestMeta.phone ? ('മൊബൈൽ ' + bestMeta.phone) : (contactName || 'സുഹൃത്ത്');
+          const isAmb = (bestMeta.type === 'ambulance' || (bestMeta.category && bestMeta.category.includes('ആംബുലൻസ്')));
+          bestMeta.name = isAmb ? ('ആംബുലൻസ് ' + (bestMeta.phone || '')) : (contactName || 'ഗ്രാമവാസി / സുഹൃത്ത്');
         }
         if (!bestMeta.avatar) {
           bestMeta.avatar = DEFAULT_USER_AVATAR;
@@ -2441,7 +2588,8 @@
       headerAvatar.onerror = function () { this.src = DEFAULT_USER_AVATAR; };
     }
     if (callBtn) {
-      if (safePhone) {
+      const isEmergencyOrAmbulance = (chatType === 'ambulance' || (initialContext && (initialContext.includes('ആംബുലൻസ്') || initialContext.includes('അടിയന്തിരം') || initialContext.includes('Emergency'))));
+      if (isEmergencyOrAmbulance && safePhone) {
         callBtn.href = 'tel:' + safePhone;
         callBtn.style.display = 'flex';
       } else {
@@ -3216,8 +3364,8 @@
     return `
       <div onclick="openChatModalByKey('${k}')"
            style="display:flex;align-items:center;gap:12px;padding:12px 15px;background:#fff;border-radius:20px;border:1px solid #E2E8F0;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.03);transition:all 0.15s ease;margin-bottom:8px">
-        <div onclick="event.stopPropagation(); openChatRecipientProfileByKey('${k}')"
-             title="പ്രൊഫൈൽ കാണാം"
+        <div onclick="event.stopPropagation(); viewChatRecipientFullProfile('${k}')"
+             title="മുഴുവൻ പ്രൊഫൈൽ പേജ് കാണാം"
              style="position:relative;flex-shrink:0;cursor:pointer">
           <img src="${meta.avatar || DEFAULT_USER_AVATAR}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #E2E8F0" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
           <span style="position:absolute;bottom:1px;right:1px;width:12px;height:12px;border-radius:50%;background:#10B981;border:2px solid #fff"></span>
@@ -3229,7 +3377,7 @@
           </div>
           <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
             <span style="font-size:10px;font-weight:800;background:${badgeBg};color:${badgeColor};padding:2px 8px;border-radius:12px">${badgeLabel}</span>
-            ${meta.phone ? `<span style="font-size:11px;color:#94A3B8">📞 ${meta.phone}</span>` : ''}
+            ${(meta.type === 'ambulance' || meta.category?.includes('ആംബുലൻസ്')) && meta.phone ? `<span style="font-size:11px;color:#94A3B8">📞 ${meta.phone}</span>` : ''}
           </div>
           <div style="font-size:12.5px;color:#64748B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">
             ${lastMsg.sender === 'me' ? '<span style="color:#53BDEB;font-weight:900;margin-right:4px;letter-spacing:-1.5px;font-size:11px">✓✓</span>' : ''}
@@ -5485,8 +5633,13 @@
                 <span>📞 108 വിളിക്കുക (സൗജന്യ സർക്കാർ ആംബുലൻസ്)</span>
               </a>
             ` : `
-              <button onclick="openChatForAmbulance('${(d.name || 'ആംബുലൻസ്').replace(/'/g, "\\'")}', '${d.phone || ''}')" style="flex:1;background:#0E7043;color:#fff;border:none;padding:10px;border-radius:10px;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer">
-                <span>💬 ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം</span>
+              ${cleanPhone ? `
+                <a href="tel:${cleanPhone}" style="flex:1;background:linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);color:#fff;text-decoration:none;padding:10px;border-radius:10px;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 6px rgba(220,38,38,0.25)">
+                  <span>📞 വിളിക്കാം: ${escapeHtml(d.phone || cleanPhone)}</span>
+                </a>
+              ` : ''}
+              <button onclick="openChatForAmbulance('${(d.name || 'ആംബുലൻസ്').replace(/'/g, "\\'")}', '${d.phone || ''}')" style="background:#0E7043;color:#fff;border:none;padding:10px 14px;border-radius:10px;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer">
+                <span>💬 ചാറ്റ്</span>
               </button>
             `}
           </div>
@@ -6159,6 +6312,253 @@
     const container = document.getElementById('profileTabContentContainer');
     if (!container) return;
     const tab = tabName || APP_STATE.activeProfileSubTab || 'posts';
+    const isOther = !!_viewingOtherUser;
+    const user = isOther ? _viewingOtherUser : APP_STATE.currentUser;
+
+    if (isOther) {
+      const targetCleanPhone = normalizePhone(user.phone);
+      const userPosts = (APP_STATE.posts || []).filter(p => {
+        if (user.id && p.authorId === user.id) return true;
+        if (targetCleanPhone && normalizePhone(p.authorPhone) === targetCleanPhone) return true;
+        if (user.name && p.authorName === user.name) return true;
+        return false;
+      });
+
+      if (tab === 'posts') {
+        if (userPosts.length === 0) {
+          container.innerHTML = `
+            <div style="text-align:center;padding:32px 16px;background:#fff;border-radius:16px;border:1px solid #E5E7EB;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
+              <div style="font-size:38px;margin-bottom:8px">📝</div>
+              <div style="font-size:14px;font-weight:800;color:#1E293B;margin-bottom:4px">പോസ്റ്റുകളൊന്നും ഇല്ല</div>
+              <div style="font-size:12px;color:#64748B">ഈ അംഗം ഇതുവരെ പോസ്റ്റുകളൊന്നും പബ്ലിഷ് ചെയ്തിട്ടില്ല.</div>
+            </div>
+          `;
+        } else {
+          container.innerHTML = `
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+              <span style="font-size:13px;font-weight:800;color:#1E293B">പോസ്റ്റുകൾ (${userPosts.length})</span>
+            </div>
+            ${userPosts.map(p => `
+              <div style="background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 4px rgba(0,0,0,0.04)">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <img src="${user.avatar || DEFAULT_USER_AVATAR}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:1px solid #E2E8F0" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
+                    <div>
+                      <div style="font-weight:800;font-size:13px;color:#0F172A">${escapeHtml(user.name || 'പ്രാദേശിക സുഹൃത്ത്')}</div>
+                      <div style="font-size:11px;color:#94A3B8">${escapeHtml(p.timestamp || 'ഇപ്പോൾ')} • 📍 ${escapeHtml(p.location || user.location || 'കേരളം')}</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="font-size:13.5px;color:#1E293B;line-height:1.55;word-break:break-word">${escapeHtml(p.content || '')}</div>
+                ${p.image ? `<img src="${p.image}" alt="Post image" loading="lazy" decoding="async" onclick="viewFullImage('${p.image}')" style="width:100%;max-height:260px;object-fit:cover;border-radius:12px;border:1px solid #F1F5F9;cursor:pointer">` : ''}
+                <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid #F1F5F9;font-size:12px;color:#64748B">
+                  <span onclick="togglePostLike('${p.id}', event)" style="cursor:pointer">❤️ ${p.likes || 0} ലൈക്കുകൾ</span>
+                  <span>💬 ${p.comments ? p.comments.length : 0} അഭിപ്രായങ്ങൾ</span>
+                </div>
+              </div>
+            `).join('')}
+          `;
+        }
+      } else if (tab === 'photos') {
+        const userPhotos = userPosts.filter(p => p.image);
+        if (userPhotos.length === 0) {
+          container.innerHTML = `
+            <div style="text-align:center;padding:32px 16px;background:#fff;border-radius:16px;border:1px solid #E5E7EB;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
+              <div style="font-size:38px;margin-bottom:8px">🖼️</div>
+              <div style="font-size:14px;font-weight:800;color:#1E293B;margin-bottom:4px">ഫോട്ടോകളൊന്നും ഇല്ല</div>
+              <div style="font-size:12px;color:#64748B">ഈ അംഗം ഇതുവരെ ചിത്രങ്ങളൊന്നും പങ്കുവെച്ചിട്ടില്ല.</div>
+            </div>
+          `;
+        } else {
+          container.innerHTML = `
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+              <span style="font-size:13px;font-weight:800;color:#1E293B">ഫോട്ടോ ഗാലറി (${userPhotos.length})</span>
+            </div>
+            <div class="fb-photos-grid">
+              ${userPhotos.map(p => `
+                <div class="fb-photo-item" onclick="viewFullImage('${p.image}')" title="${escapeHtml((p.content || '').substring(0, 40))}">
+                  <img src="${p.image}" alt="Photo">
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }
+      } else if (tab === 'about') {
+        const cleanId = (user.id || '').replace(/^usr_me_/, '').replace(/^usr_/, '');
+        container.innerHTML = `
+          <div class="fb-about-card">
+            <div class="fb-about-section-title">📌 പ്രൊഫൈൽ വിവരങ്ങൾ (About Info)</div>
+            <div class="fb-about-item">
+              <span class="fb-about-icon">👤</span>
+              <div>
+                <div class="fb-about-label">പൂർണ്ണ നാമം</div>
+                <div class="fb-about-val">${escapeHtml(user.name || 'പ്രാദേശിക സുഹൃത്ത്')}</div>
+              </div>
+            </div>
+            ${(!window._viewingOtherUser && user.phone) ? `
+            <div class="fb-about-item">
+              <span class="fb-about-icon">📞</span>
+              <div>
+                <div class="fb-about-label">മൊബൈൽ നമ്പർ</div>
+                <div class="fb-about-val"><a href="tel:${escapeHtml(user.phone)}" style="color:#047857;text-decoration:none;font-weight:800">${escapeHtml(user.phone)} 📞</a></div>
+              </div>
+            </div>
+            ` : (window._viewingOtherUser ? `
+            <div class="fb-about-item">
+              <span class="fb-about-icon">📞</span>
+              <div>
+                <div class="fb-about-label">മൊബൈൽ നമ്പർ</div>
+                <div class="fb-about-val" style="color:#64748B;font-weight:700">🔒 സ്വകാര്യ നമ്പർ (ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം)</div>
+              </div>
+            </div>
+            ` : '')}
+            <div class="fb-about-item">
+              <span class="fb-about-icon">🆔</span>
+              <div>
+                <div class="fb-about-label">നമ്മുടെ നാട് സിറ്റിസൺ ID</div>
+                <div class="fb-about-val" style="font-family:monospace;color:#1877F2;font-weight:800">${escapeHtml(user.id || ('usr_' + cleanId) || 'usr_citizen')}</div>
+              </div>
+            </div>
+            <div class="fb-about-item">
+              <span class="fb-about-icon">📍</span>
+              <div>
+                <div class="fb-about-label">വാസസ്ഥലം / ലൊക്കേഷൻ</div>
+                <div class="fb-about-val">${escapeHtml(user.location || APP_STATE.location.name || 'കേരളം')}</div>
+              </div>
+            </div>
+            ${user.district ? `
+            <div class="fb-about-item">
+              <span class="fb-about-icon">🗺️</span>
+            <div>
+              <div class="fb-about-label">ജില്ല (District)</div>
+              <div class="fb-about-val">${escapeHtml(user.district)}</div>
+            </div>
+          </div>
+          ` : ''}
+          ${user.trade ? `
+          <div class="fb-about-item">
+            <span class="fb-about-icon">💼</span>
+            <div>
+              <div class="fb-about-label">തൊഴിൽ / സർവീസ് (Profession)</div>
+              <div class="fb-about-val" style="color:#0E7043;font-weight:800">${escapeHtml(user.trade)}</div>
+            </div>
+          </div>
+          ` : ''}
+          ${user.bloodGroup ? `
+          <div class="fb-about-item">
+            <span class="fb-about-icon">🩸</span>
+            <div>
+              <div class="fb-about-label">രക്തഗ്രൂപ്പ് (Blood Group)</div>
+              <div class="fb-about-val" style="color:#DC2626;font-weight:800">${escapeHtml(user.bloodGroup)}</div>
+            </div>
+          </div>
+          ` : ''}
+          <div class="fb-about-item">
+            <span class="fb-about-icon">🛡️</span>
+            <div>
+              <div class="fb-about-label">അക്കൗണ്ട് പദവി (Status)</div>
+              <div class="fb-about-val" style="color:#059669;font-weight:800">✓ അംഗീകൃത തദ്ദേശവാസി (Verified Citizen)</div>
+            </div>
+          </div>
+        </div>
+        `;
+      } else if (tab === 'services') {
+        const userServices = (APP_STATE.services || []).filter(s => {
+          if (targetCleanPhone && normalizePhone(s.phone) === targetCleanPhone) return true;
+          if (user.name && s.name === user.name) return true;
+          if (user.id && s.id === user.id) return true;
+          return false;
+        });
+        const userJobs = (APP_STATE.jobs || []).filter(j => {
+          if (targetCleanPhone && normalizePhone(j.employerPhone) === targetCleanPhone) return true;
+          if (user.name && j.employer === user.name) return true;
+          return false;
+        });
+        const userRentals = (APP_STATE.rentals || []).filter(r => {
+          if (targetCleanPhone && normalizePhone(r.ownerPhone) === targetCleanPhone) return true;
+          if (user.name && r.owner === user.name) return true;
+          return false;
+        });
+
+        if (userServices.length === 0 && userJobs.length === 0 && userRentals.length === 0) {
+          container.innerHTML = `
+            <div style="text-align:center;padding:32px 16px;background:#fff;border-radius:16px;border:1px solid #E5E7EB;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
+              <div style="font-size:38px;margin-bottom:8px">🛠️</div>
+              <div style="font-size:14px;font-weight:800;color:#1E293B;margin-bottom:4px">പ്രത്യേക ലിസ്റ്റിംഗുകൾ ഇല്ല</div>
+              <div style="font-size:12px;color:#64748B">ഈ അംഗം നിലവിൽ പ്രത്യേക സർവീസുകളോ വാടക ഇനങ്ങളോ ലിസ്റ്റ് ചെയ്തിട്ടില്ല.</div>
+            </div>
+          `;
+        } else {
+          container.innerHTML = `
+            <div style="display:flex;flex-direction:column;gap:12px">
+              ${userServices.length > 0 ? `
+                <div style="background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
+                  <div style="font-size:13.5px;font-weight:800;color:#1E293B;margin-bottom:10px">🛠️ രജിസ്റ്റർ ചെയ്ത സർവീസുകൾ (${userServices.length})</div>
+                  <div style="display:flex;flex-direction:column;gap:10px">
+                    ${userServices.map(s => `
+                      <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:14px;padding:12px">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                          <span style="font-weight:800;font-size:14px;color:#064E3B">${s.icon || '🛠️'} ${escapeHtml(s.trade)}</span>
+                          <span style="font-size:11px;font-weight:800;background:#DCFCE7;color:#166534;padding:2px 8px;border-radius:10px">🟢 ലഭ്യമാണ്</span>
+                        </div>
+                        <div style="font-size:12px;color:#047857;margin-bottom:6px">💰 ${formatPrice(s.visitingFee || 'വിസിറ്റിംഗ് നിരക്ക്')} • ⏰ ${escapeHtml(s.workingHours || 'ലഭ്യം')} • 📍 ${escapeHtml(s.location || 'കേരളം')}</div>
+                        ${s.vehicleDetails ? `
+                          <div style="background:#fff;border:1px solid #BBF7D0;border-radius:10px;padding:8px 10px;font-size:11.5px;color:#1F2937;margin-bottom:8px;display:grid;grid-template-columns:1fr 1fr;gap:4px">
+                            ${s.vehicleDetails.model ? `<div>🚗 <b>മോഡൽ:</b> ${escapeHtml(s.vehicleDetails.model)}</div>` : ''}
+                            ${s.vehicleDetails.capacity ? `<div>👥 <b>സീറ്റിംഗ്:</b> ${escapeHtml(s.vehicleDetails.capacity)}</div>` : ''}
+                            ${s.vehicleDetails.stand ? `<div>📍 <b>സ്റ്റാൻഡ്:</b> ${escapeHtml(s.vehicleDetails.stand)}</div>` : ''}
+                            ${s.vehicleDetails.vehicleNumber ? `<div>🔢 <b>നമ്പർ:</b> ${escapeHtml(s.vehicleDetails.vehicleNumber)}</div>` : ''}
+                            ${s.vehicleDetails.baseRate ? `<div style="grid-column:span 2">💵 <b>നിരക്ക്:</b> ${formatPrice(s.vehicleDetails.baseRate)}</div>` : ''}
+                          </div>
+                        ` : ''}
+                        <div style="display:flex;gap:8px">
+                          <button onclick="openChatFromProfile()" style="flex:1;background:#0E7043;color:#fff;border:none;border-radius:10px;padding:8px;font-weight:800;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+                            <span>💬 ചാറ്റ് ചെയ്യാം</span>
+                          </button>
+                          ${((s.category === 'ambulance' || s.trade?.includes('ആംബുലൻസ്')) && s.phone) ? `<a href="tel:${s.phone}" style="background:#fff;border:1.5px solid #10B981;color:#065F46;border-radius:10px;padding:8px 12px;font-weight:800;font-size:12px;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:4px">📞 വിളിക്കാം</a>` : ''}
+                        </div>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              ` : ''}
+
+              ${userJobs.length > 0 ? `
+                <div style="background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
+                  <div style="font-size:13.5px;font-weight:800;color:#1E293B;margin-bottom:10px">💼 നൽകിയ തൊഴിൽ അവസരങ്ങൾ (${userJobs.length})</div>
+                  <div style="display:flex;flex-direction:column;gap:8px">
+                    ${userJobs.map(j => `
+                      <div style="border:1px solid #EFF6FF;background:#F8FAFC;border-radius:12px;padding:10px">
+                        <div style="font-weight:800;font-size:13.5px;color:#0F172A">${escapeHtml(j.title)}</div>
+                        <div style="font-size:11.5px;color:#2563EB;font-weight:700">💰 ${formatPrice(j.salary)} • 📍 ${escapeHtml(j.location)}</div>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              ` : ''}
+
+              ${userRentals.length > 0 ? `
+                <div style="background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
+                  <div style="font-size:13.5px;font-weight:800;color:#1E293B;margin-bottom:10px">🏠 വാടക ലിസ്റ്റിംഗുകൾ (${userRentals.length})</div>
+                  <div style="display:flex;flex-direction:column;gap:8px">
+                    ${userRentals.map(r => `
+                      <div style="border:1px solid #FEF3C7;background:#FFFBEB;border-radius:12px;padding:10px;display:flex;align-items:center;gap:10px">
+                        ${r.image ? `<img src="${r.image}" style="width:40px;height:40px;border-radius:8px;object-fit:cover">` : ''}
+                        <div style="flex:1">
+                          <div style="font-weight:800;font-size:13px;color:#0F172A">${escapeHtml(r.title)}</div>
+                          <div style="font-size:11px;color:#B45309;font-weight:700">${formatPrice(r.rate)} • ${escapeHtml(r.type || 'വാടക')}</div>
+                        </div>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }
+      }
+      return;
+    }
 
     if (tab === 'posts') {
       const myPosts = APP_STATE.posts.filter(p => p.isCurrentUser || p.authorId === APP_STATE.currentUser.id || p.authorName === APP_STATE.currentUser.name);
@@ -6408,6 +6808,42 @@
   window.deleteMyRental = deleteMyRental;
 
   function renderProfileScreen() {
+    const isOther = !!_viewingOtherUser;
+    const user = isOther ? _viewingOtherUser : APP_STATE.currentUser;
+
+    const otherHeader = document.getElementById('profOtherUserHeader');
+    const otherBackLabel = document.getElementById('profOtherUserBackLabel');
+    const otherActionBtns = document.getElementById('profOtherActionBtns');
+    const otherCallBtn = document.getElementById('profOtherCallActionBtn');
+    const myActionBtns = document.getElementById('profMyActionBtns');
+    const composerBox = document.getElementById('profComposerBox');
+    const coverEditBtn = document.getElementById('profCoverEditBtn');
+    const avatarEditBtn = document.getElementById('profAvatarEditBtn');
+    const mySettingsMenu = document.getElementById('profMySettingsMenu');
+
+    if (otherHeader) {
+      otherHeader.style.display = isOther ? 'flex' : 'none';
+      if (otherBackLabel) {
+        otherBackLabel.textContent = (_profileOrigin === 'chat') ? 'ചാറ്റിലേക്ക് മടങ്ങാം' : 'മടങ്ങാം';
+      }
+    }
+    if (otherActionBtns) {
+      otherActionBtns.style.display = isOther ? 'flex' : 'none';
+      if (otherCallBtn) {
+        if (isEmergencyOrAmbulance && user.phone) {
+          otherCallBtn.href = 'tel:' + user.phone;
+          otherCallBtn.style.display = 'flex';
+        } else {
+          otherCallBtn.style.display = 'none';
+        }
+      }
+    }
+    if (myActionBtns) myActionBtns.style.display = isOther ? 'none' : 'flex';
+    if (composerBox) composerBox.style.display = isOther ? 'none' : 'flex';
+    if (coverEditBtn) coverEditBtn.style.display = isOther ? 'none' : 'inline-flex';
+    if (avatarEditBtn) avatarEditBtn.style.display = isOther ? 'none' : 'inline-flex';
+    if (mySettingsMenu) mySettingsMenu.style.display = isOther ? 'none' : 'block';
+
     const nameEl = document.getElementById('profDisplayNameText');
     const phoneEl = document.getElementById('profDisplayPhoneText');
     const idBadgeEl = document.getElementById('profDisplayIdBadge');
@@ -6418,24 +6854,29 @@
     const coverEl = document.getElementById('profCoverImg');
     const composerAvatar = document.getElementById('profComposerMiniAvatar');
     const bioEl = document.getElementById('profBioText');
-    const homeAvatar = document.getElementById('homeHeaderAvatar');
 
-    const displayName = APP_STATE.currentUser.name || 'നാട്ടുകാരൻ';
-    const displayPhone = APP_STATE.currentUser.phone ? `📞 ${APP_STATE.currentUser.phone}` : 'ഫോൺ ചേർത്തിട്ടില്ല';
-    const currentAvatar = APP_STATE.currentUser.avatar || DEFAULT_USER_AVATAR;
-    const currentCover = APP_STATE.currentUser.cover || 'img/kerala-splash.jpg';
+    const displayName = user.name || (isOther ? 'പ്രാദേശിക സുഹൃത്ത്' : 'നാട്ടുകാരൻ');
+    const isEmergencyOrAmbulance = Boolean(isOther && (user.trade?.includes('ആംബുലൻസ്') || user.name?.includes('ആംബുലൻസ്') || user.isEmergency));
+    const displayPhone = isOther ? (isEmergencyOrAmbulance && user.phone ? `📞 ${user.phone}` : '🔒 സ്വകാര്യ നമ്പർ (സുരക്ഷിതം)') : (user.phone ? `📞 ${user.phone}` : 'ഫോൺ ചേർത്തിട്ടില്ല');
+    const currentAvatar = user.avatar || DEFAULT_USER_AVATAR;
+    const currentCover = user.cover || 'img/kerala-splash.jpg';
 
     if (nameEl) {
-      if (APP_STATE.currentUser.name && APP_STATE.currentUser.name !== 'നാട്ടുകാരൻ') {
-        nameEl.innerHTML = `${escapeHtml(displayName)} <span style="font-size:11px;background:#ECFDF5;color:#047857;padding:2px 8px;border-radius:10px;font-weight:700">✓ അംഗം</span>`;
+      if (isOther) {
+        const badgeLabel = user.trade ? `✓ ${escapeHtml(user.trade)}` : '✓ അംഗം';
+        nameEl.innerHTML = `${escapeHtml(displayName)} <span style="font-size:11px;background:#ECFDF5;color:#047857;padding:2px 8px;border-radius:10px;font-weight:700">${badgeLabel}</span>`;
       } else {
-        nameEl.innerHTML = `${escapeHtml(displayName)} <span onclick="openEditProfileModal()" style="font-size:11px;background:#FEF3C7;color:#B45309;padding:2px 8px;border-radius:10px;font-weight:700;cursor:pointer">✏️ പേര് നൽകുക</span>`;
+        if (APP_STATE.currentUser.name && APP_STATE.currentUser.name !== 'നാട്ടുകാരൻ') {
+          nameEl.innerHTML = `${escapeHtml(displayName)} <span style="font-size:11px;background:#ECFDF5;color:#047857;padding:2px 8px;border-radius:10px;font-weight:700">✓ അംഗം</span>`;
+        } else {
+          nameEl.innerHTML = `${escapeHtml(displayName)} <span onclick="openEditProfileModal()" style="font-size:11px;background:#FEF3C7;color:#B45309;padding:2px 8px;border-radius:10px;font-weight:700;cursor:pointer">✏️ പേര് നൽകുക</span>`;
+        }
       }
     }
     if (phoneEl) phoneEl.textContent = displayPhone;
 
     if (idBadgeEl) {
-      const cleanId = (APP_STATE.currentUser.id || '').replace(/^usr_me_/, '').replace(/^usr_/, '');
+      const cleanId = (user.id || '').replace(/^usr_me_/, '').replace(/^usr_/, '');
       if (cleanId) {
         idBadgeEl.textContent = `ID: ${cleanId}`;
         idBadgeEl.style.display = 'inline-block';
@@ -6445,60 +6886,73 @@
     }
 
     if (bioEl) {
-      bioEl.textContent = APP_STATE.currentUser.bio || 'നമ്മുടെ നാട് കൂട്ടായ്മ 🌿';
+      bioEl.textContent = user.bio || (isOther ? 'നമ്മുടെ നാട് പ്രാദേശിക കൂട്ടായ്മ 🌿' : (APP_STATE.currentUser.bio || 'നമ്മുടെ നാട് കൂട്ടായ്മ 🌿'));
     }
 
     if (locEl) {
-      const myLoc = APP_STATE.currentUser.location || APP_STATE.location.name || 'കേരളം';
-      locEl.textContent = `📍 ${myLoc}`;
+      const uLoc = user.location || APP_STATE.location.name || 'കേരളം';
+      locEl.textContent = `📍 ${uLoc}`;
     }
 
     if (bloodEl) {
-      bloodEl.textContent = `🩸 രക്തഗ്രൂപ്പ്: ${APP_STATE.currentUser.bloodGroup || 'O+'}`;
+      if (user.bloodGroup) {
+        bloodEl.textContent = `🩸 രക്തഗ്രൂപ്പ്: ${user.bloodGroup}`;
+        bloodEl.style.display = 'inline';
+      } else {
+        bloodEl.style.display = isOther ? 'none' : 'inline';
+        if (!isOther) bloodEl.textContent = `🩸 രക്തഗ്രൂപ്പ്: ${APP_STATE.currentUser.bloodGroup || 'O+'}`;
+      }
     }
 
     if (verifiedBadge) {
-      const isVerified = !!(APP_STATE.currentUser.phone && APP_STATE.currentUser.name && APP_STATE.currentUser.name !== 'നാട്ടുകാരൻ');
-      if (isVerified) {
-        verifiedBadge.textContent = 'തദ്ദേശവാസി (Verified ✓)';
-        verifiedBadge.style.background = '#E0F2FE';
-        verifiedBadge.style.color = '#0284C7';
-      } else {
-        verifiedBadge.textContent = 'അതിഥി (Guest)';
-        verifiedBadge.style.background = '#F3F4F6';
-        verifiedBadge.style.color = '#6B7280';
-      }
+      verifiedBadge.textContent = 'തദ്ദേശവാസി (Verified ✓)';
+      verifiedBadge.style.background = '#E0F2FE';
+      verifiedBadge.style.color = '#0284C7';
     }
 
     if (avatarEl) avatarEl.src = currentAvatar;
     if (coverEl) coverEl.src = currentCover;
-    if (composerAvatar) composerAvatar.src = currentAvatar;
-    if (homeAvatar) homeAvatar.src = currentAvatar;
+    if (composerAvatar && !isOther) composerAvatar.src = currentAvatar;
 
-    // Synchronize Desktop Topbar and Sidebar Profile Elements
-    const desktopAvatar = document.getElementById('desktopUserAvatar');
-    if (desktopAvatar) desktopAvatar.src = currentAvatar;
-    const desktopName = document.getElementById('desktopUserName');
-    if (desktopName) desktopName.textContent = displayName;
-    const sidebarAvatar = document.getElementById('desktopSidebarAvatar');
-    if (sidebarAvatar) sidebarAvatar.src = currentAvatar;
-    const sidebarName = document.getElementById('desktopSidebarName');
-    if (sidebarName) sidebarName.textContent = displayName;
-    const sidebarSub = document.getElementById('desktopSidebarSub');
-    if (sidebarSub) {
-      const myLoc = APP_STATE.currentUser.location || APP_STATE.location.name || 'കേരളം';
-      sidebarSub.textContent = `📍 ${myLoc} · പ്രൊഫൈൽ`;
+    if (!isOther) {
+      const homeAvatar = document.getElementById('homeHeaderAvatar');
+      if (homeAvatar) homeAvatar.src = currentAvatar;
+      const desktopAvatar = document.getElementById('desktopUserAvatar');
+      if (desktopAvatar) desktopAvatar.src = currentAvatar;
+      const desktopName = document.getElementById('desktopUserName');
+      if (desktopName) desktopName.textContent = displayName;
+      const sidebarAvatar = document.getElementById('desktopSidebarAvatar');
+      if (sidebarAvatar) sidebarAvatar.src = currentAvatar;
+      const sidebarName = document.getElementById('desktopSidebarName');
+      if (sidebarName) sidebarName.textContent = displayName;
+      const sidebarSub = document.getElementById('desktopSidebarSub');
+      if (sidebarSub) {
+        const myLoc = APP_STATE.currentUser.location || APP_STATE.location.name || 'കേരളം';
+        sidebarSub.textContent = `📍 ${myLoc} · പ്രൊഫൈൽ`;
+      }
     }
 
     // Calculate Facebook-style Stats: Posts count, Total likes, Citizens count
-    const myPosts = APP_STATE.posts.filter(p => p.isCurrentUser || p.authorId === APP_STATE.currentUser.id || p.authorName === APP_STATE.currentUser.name);
+    let userPosts = [];
+    if (isOther) {
+      const targetCleanPhone = normalizePhone(user.phone);
+      userPosts = APP_STATE.posts.filter(p => {
+        if (user.id && p.authorId === user.id) return true;
+        if (targetCleanPhone && normalizePhone(p.authorPhone) === targetCleanPhone) return true;
+        if (user.name && p.authorName === user.name) return true;
+        return false;
+      });
+    } else {
+      userPosts = APP_STATE.posts.filter(p => p.isCurrentUser || p.authorId === APP_STATE.currentUser.id || p.authorName === APP_STATE.currentUser.name);
+    }
+
     const postCountEl = document.getElementById('profStatPosts');
     const likesCountEl = document.getElementById('profStatLikes');
     const networkCountEl = document.getElementById('profStatNetwork');
 
-    if (postCountEl) postCountEl.textContent = myPosts.length;
+    if (postCountEl) postCountEl.textContent = userPosts.length;
     if (likesCountEl) {
-      const totalLikes = myPosts.reduce((acc, p) => acc + (p.likes || 0), 0);
+      const totalLikes = userPosts.reduce((acc, p) => acc + (p.likes || 0), 0);
       likesCountEl.textContent = totalLikes;
     }
     if (networkCountEl) {

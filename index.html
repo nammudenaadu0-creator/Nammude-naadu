@@ -1014,10 +1014,26 @@
                 <!-- SCREEN 9: PROFILE                                              -->
                 <!-- ============================================================== -->
                 <section id="screen-profile" class="screen fb-profile-page">
+                    <!-- OTHER USER PROFILE TOP BAR (VISIBLE WHEN VIEWING ANOTHER CITIZEN / DRIVER) -->
+                    <div id="profOtherUserHeader"
+                        style="display:none;background:linear-gradient(135deg, #064E3B 0%, #0E7043 100%);color:#fff;padding:12px 16px;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.15)">
+                        <button type="button" onclick="exitOtherUserProfile()"
+                            style="background:rgba(255,255,255,0.22);border:none;color:#fff;padding:7px 14px;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px">
+                            <span>❮</span>
+                            <span id="profOtherUserBackLabel">ചാറ്റിലേക്ക് മടങ്ങാം</span>
+                        </button>
+                        <span style="font-weight:800;font-size:15px;color:#fff">നാട്ടുകാരൻ പ്രൊഫൈൽ</span>
+                        <button type="button" id="profOtherUserChatBtn" onclick="openChatFromProfile()"
+                            style="background:#fff;border:none;color:#0E7043;padding:7px 14px;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(0,0,0,0.1)">
+                            <span>💬</span>
+                            <span>ചാറ്റ്</span>
+                        </button>
+                    </div>
+
                     <!-- 1. FACEBOOK COVER PHOTO -->
                     <div class="fb-cover-container">
                         <img id="profCoverImg" src="img/kerala-splash.jpg" alt="Cover Photo" class="fb-cover-image">
-                        <button type="button" class="fb-cover-edit-btn"
+                        <button type="button" class="fb-cover-edit-btn" id="profCoverEditBtn"
                             onclick="document.getElementById('profileCoverDirectInput').click()"
                             title="കവർ ഫോട്ടോ മാറ്റാം">
                             <span>📷</span>
@@ -1032,7 +1048,7 @@
                         <div class="fb-avatar-overlap-row">
                             <div class="fb-avatar-wrapper">
                                 <img id="profileAvatarImg" src="" alt="Profile Avatar" class="fb-avatar-main-img">
-                                <button type="button" class="fb-avatar-upload-btn"
+                                <button type="button" class="fb-avatar-upload-btn" id="profAvatarEditBtn"
                                     onclick="document.getElementById('profilePhotoDirectInput').click()"
                                     title="പ്രൊഫൈൽ ഫോട്ടോ മാറ്റാം">📷</button>
                                 <input type="file" id="profilePhotoDirectInput" accept="image/*" style="display:none"
@@ -1078,7 +1094,7 @@
                         </div>
 
                         <!-- 4. FACEBOOK QUICK ACTION BUTTONS -->
-                        <div class="fb-profile-action-btns">
+                        <div id="profMyActionBtns" class="fb-profile-action-btns">
                             <button class="fb-action-btn-primary" onclick="navTo('add')">
                                 <span>➕</span>
                                 <span>പോസ്റ്റ് ചെയ്യാം</span>
@@ -1091,10 +1107,20 @@
                                 <span>📍</span>
                             </button>
                         </div>
+                        <div id="profOtherActionBtns" class="fb-profile-action-btns" style="display:none;gap:10px">
+                            <button class="fb-action-btn-primary" id="profOtherChatActionBtn" onclick="openChatFromProfile()" style="flex:1;justify-content:center;padding:12px;font-size:13.5px">
+                                <span>💬</span>
+                                <span>ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം</span>
+                            </button>
+                            <a id="profOtherCallActionBtn" href="tel:" class="fb-action-btn-secondary" style="flex:1;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;background:#F0FDF4;color:#047857;border-color:#86EFAC;font-weight:800;font-size:13.5px;padding:12px">
+                                <span>📞</span>
+                                <span>വിളിക്കാം</span>
+                            </a>
+                        </div>
                     </div>
 
                     <!-- 5. FACEBOOK "WHAT'S ON YOUR MIND?" COMPOSER BOX -->
-                    <div class="fb-composer-box" onclick="navTo('add')">
+                    <div id="profComposerBox" class="fb-composer-box" onclick="navTo('add')">
                         <img id="profComposerMiniAvatar" src=""
                             style="width:38px;height:38px;border-radius:50%;object-fit:cover"
                             onerror="this.src=window.DEFAULT_USER_AVATAR||''">
@@ -1128,37 +1154,39 @@
                         <div id="profileTabContentContainer"
                             style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px"></div>
 
-                        <div class="profile-menu-row" onclick="openBloodModal()"
-                            style="background:#fff;padding:14px;border-radius:14px;border:1px solid #E5E7EB;margin-bottom:8px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:space-between">
-                            <span>🩸 ബ്ലഡ് ഡോണർ നെറ്റ്‌വർക്ക്</span>
-                            <span>→</span>
-                        </div>
-                        <!-- ADMIN PORTAL TRIGGER (SERVICES & NUMBERS) -->
-                        <div class="profile-menu-row" onclick="openAdminPortal()"
-                            style="background:linear-gradient(135deg, #064E3B 0%, #0E7043 100%);color:#fff;padding:14px;border-radius:14px;margin-bottom:8px;cursor:pointer;font-weight:800;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 12px rgba(6,78,59,0.25)">
-                            <span style="display:flex;align-items:center;gap:10px">
-                                <span style="font-size:20px">⚙️</span>
-                                <div>
-                                    <div style="font-size:14px;font-weight:800">അഡ്മിൻ കൺസോൾ (Admin Hub)</div>
-                                    <div style="font-size:11px;color:#A7F3D0;font-weight:600">പുതിയ സർവീസുകളും
-                                        നമ്പറുകളും ചേർക്കാം</div>
-                                </div>
-                            </span>
-                            <span
-                                style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:12px;font-size:11px;font-weight:800">തുറക്കുക
-                                &rsaquo;</span>
-                        </div>
+                        <div id="profMySettingsMenu">
+                            <div class="profile-menu-row" onclick="openBloodModal()"
+                                style="background:#fff;padding:14px;border-radius:14px;border:1px solid #E5E7EB;margin-bottom:8px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:space-between">
+                                <span>🩸 ബ്ലഡ് ഡോണർ നെറ്റ്‌വർക്ക്</span>
+                                <span>→</span>
+                            </div>
+                            <!-- ADMIN PORTAL TRIGGER (SERVICES & NUMBERS) -->
+                            <div class="profile-menu-row" onclick="openAdminPortal()"
+                                style="background:linear-gradient(135deg, #064E3B 0%, #0E7043 100%);color:#fff;padding:14px;border-radius:14px;margin-bottom:8px;cursor:pointer;font-weight:800;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 12px rgba(6,78,59,0.25)">
+                                <span style="display:flex;align-items:center;gap:10px">
+                                    <span style="font-size:20px">⚙️</span>
+                                    <div>
+                                        <div style="font-size:14px;font-weight:800">അഡ്മിൻ കൺസോൾ (Admin Hub)</div>
+                                        <div style="font-size:11px;color:#A7F3D0;font-weight:600">പുതിയ സർവീസുകളും
+                                            നമ്പറുകളും ചേർക്കാം</div>
+                                    </div>
+                                </span>
+                                <span
+                                    style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:12px;font-size:11px;font-weight:800">തുറക്കുക
+                                    &rsaquo;</span>
+                            </div>
 
-                        <a href="privacy-policy.html" target="_blank" class="profile-menu-row"
-                            style="background:#fff;padding:14px;border-radius:14px;border:1px solid #E5E7EB;margin-bottom:8px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:#0F172A">
-                            <span style="display:flex;align-items:center;gap:8px"><span>🛡️</span> <span>പ്രൈവസി പോളിസി
-                                    (Privacy Policy)</span></span>
-                            <span>→</span>
-                        </a>
-                        <div class="profile-menu-row" onclick="handleProfileLogout()"
-                            style="background:#fff;padding:14px;border-radius:14px;border:1px solid #FECACA;cursor:pointer;font-weight:700;color:#DC2626;display:flex;align-items:center;justify-content:space-between">
-                            <span>🚪 ലോഗ് ഔട്ട് / അക്കൗണ്ട് മാറ്റാം</span>
-                            <span>→</span>
+                            <a href="privacy-policy.html" target="_blank" class="profile-menu-row"
+                                style="background:#fff;padding:14px;border-radius:14px;border:1px solid #E5E7EB;margin-bottom:8px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:#0F172A">
+                                <span style="display:flex;align-items:center;gap:8px"><span>🛡️</span> <span>പ്രൈവസി പോളിസി
+                                        (Privacy Policy)</span></span>
+                                <span>→</span>
+                            </a>
+                            <div class="profile-menu-row" onclick="handleProfileLogout()"
+                                style="background:#fff;padding:14px;border-radius:14px;border:1px solid #FECACA;cursor:pointer;font-weight:700;color:#DC2626;display:flex;align-items:center;justify-content:space-between">
+                                <span>🚪 ലോഗ് ഔട്ട് / അക്കൗണ്ട് മാറ്റാം</span>
+                                <span>→</span>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -1253,7 +1281,7 @@
                 </div>
                 <span>ചാറ്റ് ബോക്സ്</span>
             </button>
-            <button class="nav-item" data-page="profile" onclick="navTo('profile')">
+            <button class="nav-item" data-page="profile" onclick="if(window._viewingOtherUser){window._viewingOtherUser=null;} navTo('profile')">
                 <span style="font-size:20px">👤</span>
                 <span>പ്രൊഫൈൽ</span>
             </button>
@@ -1272,7 +1300,7 @@
                     <span>❮</span>
                     <span>ചാറ്റ് ലിസ്റ്റ്</span>
                 </button>
-                <div class="chat-recipient-info" onclick="openChatRecipientProfile()" style="cursor:pointer" title="ഇവരുടെ പ്രൊഫൈൽ കാണാം">
+                <div class="chat-recipient-info" onclick="viewChatRecipientFullProfile()" style="cursor:pointer" title="ഇവരുടെ മുഴുവൻ പ്രൊഫൈൽ പേജ് കാണാം">
                     <div style="position:relative;flex-shrink:0;display:inline-block">
                         <img id="chatRecipientAvatar" src="" class="chat-recipient-avatar"
                             onerror="this.src=window.DEFAULT_USER_AVATAR||''" alt="Avatar">
@@ -1288,7 +1316,7 @@
                 </div>
 
                 <div class="chat-header-actions">
-                    <button class="chat-call-btn" onclick="openChatRecipientProfile()" style="background:rgba(255,255,255,0.18);border:none;color:#fff;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer" title="പ്രൊഫൈൽ കാണാം">
+                    <button class="chat-call-btn" onclick="viewChatRecipientFullProfile()" style="background:rgba(255,255,255,0.18);border:none;color:#fff;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer" title="മുഴുവൻ പ്രൊഫൈൽ പേജ് കാണാം">
                         <span style="font-size:16px">👤</span>
                     </button>
                     <a id="chatRecipientCallBtn" href="tel:" class="chat-call-btn" title="വിളിക്കുക">
@@ -3296,7 +3324,7 @@
 
     <!-- APPLICATION ENGINES -->
     <script src="js/trades-catalog-500.js?v=2.5"></script>
-    <script src="js/nammude-naadu-engine.js?v=2.6"></script>
+    <script src="js/nammude-naadu-engine.js?v=3.5"></script>
 </body>
 
 </html>
