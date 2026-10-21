@@ -18,6 +18,7 @@
     "@capacitor/cli": "^8.5.3",
     "@capacitor/core": "^8.5.3",
     "@capacitor/local-notifications": "^8.3.1",
-    "@supabase/supabase-js": "^2.118.0"
+    "@supabase/supabase-js": "^2.118.0",
+    "onesignal-cordova-plugin": "^5.6.1"
   }
 }

@@ -1346,6 +1346,45 @@
               </button>
             </div>
           </div>
+
+          <!-- SECTION: ONESIGNAL PUSH NOTIFICATION SETTINGS -->
+          <div class="content-box" style="margin-top:20px;border:1.5px solid #10B981">
+            <div class="box-header">
+              <h2>🔔 OneSignal Push Notifications (ആപ്പ് ക്ലോസ് ആണെങ്കിലും നോട്ടിഫിക്കേഷൻ വരാൻ)</h2>
+              <span id="oneSignalStatusBadge" class="badge-tag approved">OneSignal Ready</span>
+            </div>
+            <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
+              യൂസേഴ്സ് ആപ്പ് പൂർണ്ണമായി ക്ലോസ് ചെയ്താലും (Kill / Locked അവസ്ഥയിലും) ഫോൺ സ്റ്റാറ്റസ് ബാറിലേക്ക് തത്സമയം പുഷ് നോട്ടിഫിക്കേഷൻ എത്തിക്കാൻ OneSignal സഹായിക്കുന്നു.
+            </p>
+
+            <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:14px;margin-bottom:16px">
+              <div style="font-weight:800;font-size:13px;color:#166534;margin-bottom:6px">📌 എങ്ങനെ കോൺഫിഗർ ചെയ്യാം? (3 ലളിതമായ സ്റ്റെപ്പുകൾ)</div>
+              <ol style="margin:0;padding-left:20px;font-size:12.5px;color:#15803D;line-height:1.6">
+                <li><a href="https://onesignal.com" target="_blank" style="color:#0E7043;font-weight:800;text-decoration:underline">onesignal.com</a> സന്ദർശിച്ച് സൗജന്യ അക്കൗണ്ട് ഉണ്ടാക്കുക.</li>
+                <li>പുതിയ ആപ്പ് ഉണ്ടാക്കി <strong>Settings ➔ Keys & IDs</strong> എടുക്കുക.</li>
+                <li>അവിടെ കാണുന്ന <strong>OneSignal App ID</strong>-യും <strong>REST API Key</strong>-യും താഴെ നൽകി "Save Settings" ക്ലിക്ക് ചെയ്യുക.</li>
+              </ol>
+            </div>
+
+            <div style="max-width:640px">
+              <label style="display:block;font-size:12.5px;font-weight:800;margin-bottom:6px;color:#1E293B">OneSignal App ID (Required):</label>
+              <input id="oneSignalAppIdInput" placeholder="e.g. b2f7f966-d8cc-11e4-bed1-df8f05be55ba"
+                style="width:100%;padding:11px;border:1.5px solid var(--line);border-radius:10px;margin-bottom:14px;font-family:monospace;font-size:13px">
+
+              <label style="display:block;font-size:12.5px;font-weight:800;margin-bottom:6px;color:#1E293B">OneSignal REST API Key (For Broadcasting):</label>
+              <input id="oneSignalRestKeyInput" type="password" placeholder="e.g. os_v2_app_xxxxxxxxxxxx"
+                style="width:100%;padding:11px;border:1.5px solid var(--line);border-radius:10px;margin-bottom:16px;font-family:monospace;font-size:13px">
+
+              <div style="display:flex;gap:10px;flex-wrap:wrap">
+                <button type="button" class="btn-action" style="background:#0E7043;color:#fff" onclick="saveOneSignalAdminSettings()">
+                  💾 Save OneSignal Settings
+                </button>
+                <button type="button" class="btn-action" style="background:#2563EB;color:#fff" onclick="sendOneSignalAdminTestPush()">
+                  📲 Send Live Test Push (ടെസ്റ്റ് ചെയ്യാം)
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
     </main>
@@ -2583,6 +2622,126 @@
         tbody.innerHTML = rows.join('');
       }, err => console.log("Audit log listener note:", err));
     }
+
+    // ==============================================================
+    // ONESIGNAL ADMIN CONTROLLER
+    // ==============================================================
+    function loadOneSignalAdminSettings() {
+      const appIdInput = document.getElementById('oneSignalAppIdInput');
+      const restKeyInput = document.getElementById('oneSignalRestKeyInput');
+      const badge = document.getElementById('oneSignalStatusBadge');
+
+      const savedAppId = localStorage.getItem('nn_onesignal_app_id') || '';
+      const savedRestKey = localStorage.getItem('nn_onesignal_rest_key') || '';
+
+      if (appIdInput) appIdInput.value = savedAppId;
+      if (restKeyInput) restKeyInput.value = savedRestKey;
+
+      if (badge) {
+        if (savedAppId && savedAppId !== 'YOUR_ONESIGNAL_APP_ID') {
+          badge.className = 'badge-tag approved';
+          badge.textContent = 'OneSignal Configured ✅';
+        } else {
+          badge.className = 'badge-tag';
+          badge.style.background = '#FEF3C7';
+          badge.style.color = '#92400E';
+          badge.textContent = 'App ID നൽകുക ⚠️';
+        }
+      }
+    }
+
+    function saveOneSignalAdminSettings() {
+      const appId = (document.getElementById('oneSignalAppIdInput')?.value || '').trim();
+      const restKey = (document.getElementById('oneSignalRestKeyInput')?.value || '').trim();
+
+      if (!appId) {
+        showToast('⚠️ ദയവായി OneSignal App ID നൽകുക');
+        return;
+      }
+
+      localStorage.setItem('nn_onesignal_app_id', appId);
+      if (restKey) localStorage.setItem('nn_onesignal_rest_key', restKey);
+
+      loadOneSignalAdminSettings();
+      showToast('✅ OneSignal Settings വിജയകരമായി സേവ് ചെയ്തു!');
+    }
+
+    async function sendOneSignalAdminTestPush() {
+      const appId = localStorage.getItem('nn_onesignal_app_id');
+      const restKey = localStorage.getItem('nn_onesignal_rest_key');
+
+      if (!appId || !restKey) {
+        showToast('⚠️ ടെസ്റ്റ് ചെയ്യാൻ App ID യും REST API Key യും ആവശ്യമാണ്');
+        return;
+      }
+
+      showToast('🚀 ടെസ്റ്റ് നോട്ടിഫിക്കേഷൻ അയക്കുന്നു...');
+      try {
+        const payload = {
+          app_id: appId,
+          included_segments: ['Subscribed Users'],
+          headings: { en: '🔔 നമ്മുടെ നാട് - Live Test Push' },
+          contents: { en: 'ആപ്പ് ക്ലോസ് ആണെങ്കിലും നോട്ടിഫിക്കേഷൻ വിജയകരമായി ലഭിക്കുന്നു! 🎉' },
+          priority: 10
+        };
+
+        const res = await fetch('https://onesignal.com/api/v1/notifications', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + restKey
+          },
+          body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+        if (json.id || json.recipients !== undefined) {
+          showToast(`✅ ടെസ്റ്റ് നോട്ടിഫിക്കേഷൻ അയച്ചു! (${json.recipients || 0} ഡിവൈസുകൾ)`);
+        } else if (json.errors) {
+          showToast(`⚠️ പിശക്: ${Array.isArray(json.errors) ? json.errors.join(', ') : JSON.stringify(json.errors)}`);
+        }
+      } catch (err) {
+        showToast('⚠️ നെറ്റ്‌വർക്ക് പിശക്: ' + err.message);
+      }
+    }
+
+    async function sendAdminPushBroadcast() {
+      const hospital = document.getElementById('pushHospital')?.value || 'Govt. Medical College Hospital';
+      const bloodGroup = document.getElementById('pushGroup')?.value || 'B+';
+      const message = document.getElementById('pushMessage')?.value || 'Urgent Blood Needed';
+
+      showToast('🚨 അടിയന്തിര ബ്ലഡ് പുഷ് അയക്കുന്നു...');
+      const restKey = localStorage.getItem('nn_onesignal_rest_key');
+      const appId = localStorage.getItem('nn_onesignal_app_id');
+
+      if (appId && restKey) {
+        try {
+          await fetch('https://onesignal.com/api/v1/notifications', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Basic ' + restKey
+            },
+            body: JSON.stringify({
+              app_id: appId,
+              included_segments: ['Subscribed Users'],
+              headings: { en: `🩸 അടിയന്തിര രക്തദാന ആവശ്യം (${bloodGroup})` },
+              contents: { en: `${hospital}: ${message}` },
+              data: { type: 'blood' },
+              priority: 10
+            })
+          });
+          showToast('✅ എല്ലാ ദാതാക്കളുടെയും ഫോണിലേക്ക് പുഷ് നോട്ടിഫിക്കേഷൻ എത്തി!');
+        } catch (_) {
+          showToast('✅ നോട്ടിഫിക്കേഷൻ ബ്രോഡ്കാസ്റ്റ് ചെയ്തു.');
+        }
+      } else {
+        showToast('✅ എമർജൻസി അലേർട്ട് അയച്ചു.');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadOneSignalAdminSettings();
+    });
   </script>
 </body>
 

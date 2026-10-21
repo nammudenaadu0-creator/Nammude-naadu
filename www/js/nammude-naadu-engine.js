@@ -2259,6 +2259,25 @@
     if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.sendChatMessage === 'function') {
       window.NN_SUPABASE_SERVICES.sendChatMessage(chatKey, msgObj, metaObj);
     }
+
+    // Closed-app background push delivery via OneSignal
+    if (typeof window !== 'undefined' && window.NN_ONESIGNAL && typeof window.NN_ONESIGNAL.sendPush === 'function') {
+      try {
+        window.NN_ONESIGNAL.sendPush(
+          APP_STATE.activeChatRecipient.phone,
+          `💬 സന്ദേശം: ${senderName}`,
+          text,
+          {
+            type: 'chat',
+            chatKey: chatKey,
+            senderName: senderName,
+            senderPhone: APP_STATE.currentUser.phone || '',
+            senderAvatar: senderAvatar,
+            senderId: APP_STATE.currentUser.id
+          }
+        );
+      } catch (_) {}
+    }
   }
   window.sendChatMessage = sendChatMessage;
 
