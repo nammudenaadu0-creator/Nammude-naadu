@@ -3585,3 +3585,28 @@
     background: transparent !important;
   }
 }
+
+/* Clean Edge-to-Edge Ad Banner: No letters or text overlays covering the banner image */
+#homeVillagePromoBanner .yg-promo-left,
+#homeVillagePromoBanner .admin-ad-badge,
+#homeVillagePromoBanner .yg-village-full-overlay,
+#homeVillagePromoBanner .yg-promo-emblem,
+#homeVillagePromoBanner .yg-promo-title,
+#homeVillagePromoBanner .yg-promo-sub {
+  display: none !important;
+}
+
+#homeVillagePromoBanner {
+  min-height: 140px;
+  background-color: transparent !important;
+}
+
+#homeVillagePromoBanner .yg-village-full-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  border-radius: 20px;
+}

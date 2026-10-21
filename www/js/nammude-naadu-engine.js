@@ -6312,46 +6312,30 @@
     const overlay = document.getElementById('homeVillageBannerOverlay');
     const artWrap = document.getElementById('homeVillageBannerArtWrap');
 
-    if (overlay) overlay.style.display = 'block';
+    // Letters onnum venda: Keep clean edge-to-edge ad image without text overlays
+    if (overlay) overlay.style.display = 'none';
     if (artWrap) artWrap.style.display = 'none';
+    const promoLeft = banner.querySelector('.yg-promo-left');
+    if (promoLeft) promoLeft.style.display = 'none';
+    if (titleEl) {
+      titleEl.style.display = 'none';
+      titleEl.textContent = '';
+    }
+    if (subEl) {
+      subEl.style.display = 'none';
+      subEl.textContent = '';
+    }
+    if (badgeEl) badgeEl.style.display = 'none';
 
     if (fullImg) {
       fullImg.style.transition = 'opacity 0.35s ease';
-      fullImg.style.opacity = '0.4';
+      fullImg.style.opacity = '0.5';
       setTimeout(() => {
         fullImg.src = ad.art;
         fullImg.style.opacity = '1';
-      }, 120);
+      }, 100);
     }
     banner.style.setProperty('background-image', `url("${ad.art}")`, 'important');
-
-    if (titleEl) {
-      titleEl.style.transition = 'all 0.25s ease';
-      titleEl.style.opacity = '0.3';
-      setTimeout(() => {
-        titleEl.textContent = ad.title;
-        titleEl.style.opacity = '1';
-      }, 100);
-    }
-
-    if (subEl) {
-      subEl.style.transition = 'all 0.25s ease';
-      subEl.style.opacity = '0.3';
-      setTimeout(() => {
-        if (ad.sub) {
-          subEl.style.display = 'block';
-          subEl.textContent = ad.sub;
-          subEl.style.opacity = '1';
-        } else {
-          subEl.style.display = 'none';
-          subEl.textContent = '';
-        }
-      }, 100);
-    }
-
-    if (badgeEl && ad.badge) {
-      badgeEl.textContent = ad.badge;
-    }
 
     renderAdCarouselDots(ads.length, currentAdIndex);
   }

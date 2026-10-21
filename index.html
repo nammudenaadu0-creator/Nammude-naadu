@@ -288,32 +288,22 @@
                     </div>
 
                     <!-- ADMIN AD & PROMOTIONAL FEATURE BANNER (അഡ്മിൻ പരസ്യങ്ങൾ / ബാനർ) -->
+                    <!-- ADMIN AD & PROMOTIONAL FEATURE BANNER (അഡ്മിൻ പരസ്യങ്ങൾ / ബാനർ) -->
                     <div class="yg-village-promo-banner mode-full-image" id="homeVillagePromoBanner"
                         onclick="openAdDetailModal()"
-                        style="margin: 0 16px 14px; position:relative; overflow:hidden; border-radius:20px; box-shadow:0 8px 24px rgba(6,78,59,0.18); min-height:135px; cursor:pointer">
-                        <img id="homeVillageBannerFullImg" class="yg-village-full-bg-img" alt="നമ്മുടെ നാട് പരസ്യം"
+                        style="margin: 0 16px 14px; position:relative; overflow:hidden; border-radius:20px; box-shadow:0 8px 24px rgba(6,78,59,0.18); min-height:140px; cursor:pointer">
+                        <img id="homeVillageBannerFullImg" class="yg-village-full-bg-img" alt="പരസ്യം"
                             src="img/kerala-splash.jpg"
                             style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;border-radius:20px">
-                        <div id="homeVillageBannerOverlay" class="yg-village-full-overlay"
-                            style="position:absolute;inset:0;background:linear-gradient(90deg, rgba(6,78,59,0.85) 0%, rgba(6,78,59,0.45) 55%, rgba(0,0,0,0.15) 100%);z-index:2;border-radius:20px">
-                        </div>
-                        <div class="yg-promo-left"
-                            style="position:relative;z-index:3;display:flex;align-items:center;gap:12px;padding:16px">
-                            <div class="yg-promo-emblem"
-                                style="width:44px;height:44px;background:rgba(255,255,255,0.95);border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.5px solid #86EFAC;box-shadow:0 4px 12px rgba(0,0,0,0.15);flex-shrink:0">
-                                <span style="font-size:22px">🌴</span>
-                            </div>
+                        <div id="homeVillageBannerOverlay" class="yg-village-full-overlay" style="display:none"></div>
+                        <div class="yg-promo-left" id="homeVillageBannerTextWrap" style="display:none">
+                            <div class="yg-promo-emblem" style="display:none"></div>
                             <div>
-                                <div class="yg-promo-title" id="homeVillageBannerTitle"
-                                    style="font-size:19px;font-weight:900;color:#ffffff;text-shadow:0 2px 8px rgba(0,0,0,0.6)">
-                                    നമ്മുടെ നാട്</div>
+                                <div class="yg-promo-title" id="homeVillageBannerTitle" style="display:none"></div>
                                 <div class="yg-promo-sub" id="homeVillageBannerSub" style="display:none"></div>
                             </div>
                         </div>
-                        <div class="admin-ad-badge"
-                            style="position:absolute;top:10px;right:12px;background:rgba(0,0,0,0.55);color:#fff;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:800;z-index:4;backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.25)">
-                            ✨ പ്രധാന അറിയിപ്പ് / Ads
-                        </div>
+                        <div class="admin-ad-badge" id="homeVillageBannerBadge" style="display:none"></div>
                         <div class="yg-promo-right" id="homeVillageBannerArtWrap" style="display:none"></div>
                         <!-- CAROUSEL INDICATOR DOTS -->
                         <div id="homeAdCarouselDots"
