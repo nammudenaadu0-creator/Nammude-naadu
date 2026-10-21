@@ -1788,6 +1788,26 @@
   }
   window.shareCommunityPost = shareCommunityPost;
 
+  function getSafePublicUserName(user, fallback = 'പ്രാദേശിക സുഹൃത്ത്') {
+    if (!user) return fallback;
+    const isAmbulance = Boolean(
+      (typeof user === 'object') && (
+        user.category === 'ambulance' ||
+        user.trade?.includes('ആംബുലൻസ്') ||
+        user.name?.includes('ആംബുലൻസ്') ||
+        user.isEmergency
+      )
+    );
+    let name = (typeof user === 'string') ? user : (user.name || '');
+    if (!name || name === 'Chat' || name === 'സുഹൃത്ത്') return fallback;
+    if (!isAmbulance) {
+      if (name.match(/\d{10}/) || name.startsWith('മൊബൈൽ') || name.startsWith('chat_')) {
+        return fallback;
+      }
+    }
+    return name;
+  }
+
   // Helper for normalizing phone numbers to 10 digits
   function normalizePhone(p) {
     if (!p) return '';
@@ -1800,15 +1820,16 @@
   // 9. DEDICATED USER PROFILE PREVIEW MODAL (FULL CAPABILITIES)
   // ==============================================================
   function renderUserProfileSheet(userData) {
-    const isEmergencyOrAmbulance = Boolean(
-      (userData.category === 'ambulance') ||
-      (userData.name && (userData.name.includes('ആംബുലൻസ്') || userData.name.includes('അടിയന്തിരം') || userData.name.includes('Emergency') || userData.name.includes('Ambulance'))) ||
-      (userData.authorId && String(userData.authorId).includes('ambulance'))
-    );
     const sheet = document.getElementById('authorProfileSheetContent');
     if (!sheet) return;
 
-    let name = userData.name || '';
+    const isEmergencyOrAmbulance = Boolean(
+      (userData.category === 'ambulance') ||
+      (userData.trade && userData.trade.includes('ആംബുലൻസ്')) ||
+      (userData.name && (userData.name.includes('ആംബുലൻസ്') || userData.name.includes('അടിയന്തിരം') || userData.name.includes('Emergency') || userData.name.includes('Ambulance'))) ||
+      (userData.authorId && String(userData.authorId).includes('ambulance'))
+    );
+    let name = getSafePublicUserName(userData, 'പ്രാദേശിക സുഹൃത്ത്');
     let phone = userData.phone || '';
     let avatar = userData.avatar || '';
     const authorId = userData.authorId || '';
@@ -3236,7 +3257,7 @@
 
       // Direct message action for the typed query
       const cleanDigits = activeChatSearchQuery.replace(/\D/g, '');
-      const directTargetName = cleanDigits.length >= 10 ? `മൊബൈൽ (${cleanDigits.slice(-10)})` : activeChatSearchQuery;
+      const directTargetName = cleanDigits.length >= 10 ? 'പ്രാദേശിക സുഹൃത്ത്' : activeChatSearchQuery;
       const directPhone = cleanDigits.length >= 10 ? cleanDigits.slice(-10) : '';
       html += `
         <div onclick="openChatModal('${escapeHtml(directTargetName).replace(/'/g, "\\'")}', '${directPhone}', '', '', 'usr_${Date.now()}')"
@@ -6643,8 +6664,8 @@
           <div class="fb-about-item">
             <span class="fb-about-icon">📞</span>
             <div>
-              <div class="fb-about-label">മൊബൈൽ നമ്പർ (Unique ID)</div>
-              <div class="fb-about-val">${APP_STATE.currentUser.phone ? escapeHtml(APP_STATE.currentUser.phone) : 'ഫോൺ ചേർത്തിട്ടില്ല'}</div>
+              <div class="fb-about-label">മൊബൈൽ നമ്പർ (സുരക്ഷ)</div>
+              <div class="fb-about-val" style="color:#64748B;font-weight:700">🔒 സ്വകാര്യ നമ്പർ (സുരക്ഷിതം - മറ്റുള്ളവർക്ക് കാണാൻ കഴിയില്ല)</div>
             </div>
           </div>
           <div class="fb-about-item">
@@ -6810,6 +6831,13 @@
   function renderProfileScreen() {
     const isOther = !!_viewingOtherUser;
     const user = isOther ? _viewingOtherUser : APP_STATE.currentUser;
+    const isEmergencyOrAmbulance = Boolean(user && (
+      user.category === 'ambulance' ||
+      user.trade?.includes('ആംബുലൻസ്') ||
+      user.name?.includes('ആംബുലൻസ്') ||
+      user.isEmergency ||
+      String(user.id || '').includes('ambulance')
+    ));
 
     const otherHeader = document.getElementById('profOtherUserHeader');
     const otherBackLabel = document.getElementById('profOtherUserBackLabel');
@@ -6855,9 +6883,8 @@
     const composerAvatar = document.getElementById('profComposerMiniAvatar');
     const bioEl = document.getElementById('profBioText');
 
-    const displayName = user.name || (isOther ? 'പ്രാദേശിക സുഹൃത്ത്' : 'നാട്ടുകാരൻ');
-    const isEmergencyOrAmbulance = Boolean(isOther && (user.trade?.includes('ആംബുലൻസ്') || user.name?.includes('ആംബുലൻസ്') || user.isEmergency));
-    const displayPhone = isOther ? (isEmergencyOrAmbulance && user.phone ? `📞 ${user.phone}` : '🔒 സ്വകാര്യ നമ്പർ (സുരക്ഷിതം)') : (user.phone ? `📞 ${user.phone}` : 'ഫോൺ ചേർത്തിട്ടില്ല');
+    let displayName = getSafePublicUserName(user, isOther ? 'പ്രാദേശിക സുഹൃത്ത്' : (APP_STATE.currentUser.name || 'നാട്ടുകാരൻ'));
+    const displayPhone = (isEmergencyOrAmbulance && user.phone) ? `📞 ${user.phone}` : '🔒 സ്വകാര്യ നമ്പർ (സുരക്ഷിതം)';
     const currentAvatar = user.avatar || DEFAULT_USER_AVATAR;
     const currentCover = user.cover || 'img/kerala-splash.jpg';
 
