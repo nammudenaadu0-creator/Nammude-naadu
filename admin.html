@@ -2631,16 +2631,16 @@
       const restKeyInput = document.getElementById('oneSignalRestKeyInput');
       const badge = document.getElementById('oneSignalStatusBadge');
 
-      const savedAppId = localStorage.getItem('nn_onesignal_app_id') || '';
+      const savedAppId = localStorage.getItem('nn_onesignal_app_id') || 'ba99bc43-e77b-4db1-90ac-d3cab11c8e3b';
       const savedRestKey = localStorage.getItem('nn_onesignal_rest_key') || '';
 
       if (appIdInput) appIdInput.value = savedAppId;
       if (restKeyInput) restKeyInput.value = savedRestKey;
 
       if (badge) {
-        if (savedAppId && savedAppId !== 'YOUR_ONESIGNAL_APP_ID') {
+        if (savedAppId) {
           badge.className = 'badge-tag approved';
-          badge.textContent = 'OneSignal Configured ✅';
+          badge.textContent = 'OneSignal Active ✅';
         } else {
           badge.className = 'badge-tag';
           badge.style.background = '#FEF3C7';

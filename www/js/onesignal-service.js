@@ -4,8 +4,8 @@
 (function () {
   'use strict';
 
-  // Configurable App ID: Stored in localStorage or fallback constant
-  const DEFAULT_APP_ID = localStorage.getItem('nn_onesignal_app_id') || 'YOUR_ONESIGNAL_APP_ID';
+  // Configurable App ID: Stored in localStorage or default App ID
+  const DEFAULT_APP_ID = localStorage.getItem('nn_onesignal_app_id') || 'ba99bc43-e77b-4db1-90ac-d3cab11c8e3b';
   const DEFAULT_REST_KEY = localStorage.getItem('nn_onesignal_rest_key') || '';
 
   window.NN_ONESIGNAL = {
@@ -16,8 +16,8 @@
     // Initialize OneSignal on App Launch
     init: function () {
       const activeAppId = localStorage.getItem('nn_onesignal_app_id') || this.appId;
-      if (!activeAppId || activeAppId === 'YOUR_ONESIGNAL_APP_ID') {
-        console.info('ℹ️ [OneSignal] Waiting for valid OneSignal App ID. Configure in Admin panel.');
+      if (!activeAppId) {
+        console.info('ℹ️ [OneSignal] Waiting for valid OneSignal App ID.');
         return;
       }
 
