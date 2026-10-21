@@ -450,13 +450,18 @@
       const storedMeta = localStorage.getItem('nn_chats_meta');
       APP_STATE.chatMeta = storedMeta ? JSON.parse(storedMeta) : {};
 
-      // REAL CHATS ONLY: Purge mock welcome conversation
+      // REAL CHATS ONLY: Purge mock welcome conversation and auto-injected messages
       if (APP_STATE.chats['chat_919447123456']) {
         delete APP_STATE.chats['chat_919447123456'];
       }
       if (APP_STATE.chatMeta['chat_919447123456']) {
         delete APP_STATE.chatMeta['chat_919447123456'];
       }
+      Object.keys(APP_STATE.chats || {}).forEach(k => {
+        if (Array.isArray(APP_STATE.chats[k])) {
+          APP_STATE.chats[k] = APP_STATE.chats[k].filter(m => !m.id || !String(m.id).startsWith('msg_ctx_'));
+        }
+      });
       try {
         localStorage.setItem('nn_chats_store', JSON.stringify(APP_STATE.chats));
         localStorage.setItem('nn_chats_meta', JSON.stringify(APP_STATE.chatMeta));
@@ -699,82 +704,91 @@
   // ==============================================================
   // 6. GPS LOCATION & REVERSE GEOCODING (NOMINATIM API)
   // ==============================================================
-  function updateLocationDisplay(name, district, lat, lon) {
-    const validLat = Number.isFinite(Number(lat)) ? Number(lat) : (APP_STATE.location.lat || 10.8505);
-    const validLon = Number.isFinite(Number(lon)) ? Number(lon) : (APP_STATE.location.lon || 76.2711);
-    const cleanName = (name || APP_STATE.location.name || 'തത്സമയ ലൊക്കേഷൻ').trim();
-    const cleanDistrict = (district || APP_STATE.location.district || '').trim();
-    APP_STATE.location.name = cleanName;
-    APP_STATE.location.district = cleanDistrict;
-    APP_STATE.location.lat = validLat;
-    APP_STATE.location.lon = validLon;
+  let isUpdatingLocation = false;
+  function updateLocationDisplay(name, district, lat, lon, skipRefresh = false) {
+    if (isUpdatingLocation) return;
+    isUpdatingLocation = true;
     try {
-      localStorage.setItem('nn_curr_loc_name', cleanName);
-      localStorage.setItem('nn_curr_district', cleanDistrict);
-      localStorage.setItem('nn_curr_lat', String(validLat));
-      localStorage.setItem('nn_curr_lon', String(validLon));
-      // Synchronize with Thuna storage keys
-      localStorage.setItem('thuna_user_location', cleanName);
-      localStorage.setItem('thuna_user_coordinates', JSON.stringify({
-        latitude: validLat,
-        longitude: validLon,
-        accuracy: 50,
-        isManual: false,
-        timestamp: Date.now()
-      }));
-    } catch (_) {}
-    // Synchronize window.LocationService if active
-    if (typeof window !== 'undefined' && window.LocationService) {
+      const validLat = Number.isFinite(Number(lat)) ? Number(lat) : (APP_STATE.location.lat || 10.8505);
+      const validLon = Number.isFinite(Number(lon)) ? Number(lon) : (APP_STATE.location.lon || 76.2711);
+      const cleanName = (name || APP_STATE.location.name || 'തത്സമയ ലൊക്കേഷൻ').trim();
+      const cleanDistrict = (district || APP_STATE.location.district || '').trim();
+      APP_STATE.location.name = cleanName;
+      APP_STATE.location.district = cleanDistrict;
+      APP_STATE.location.lat = validLat;
+      APP_STATE.location.lon = validLon;
       try {
-        window.LocationService.current = {
-          locationName: cleanName,
+        localStorage.setItem('nn_curr_loc_name', cleanName);
+        localStorage.setItem('nn_curr_district', cleanDistrict);
+        localStorage.setItem('nn_curr_lat', String(validLat));
+        localStorage.setItem('nn_curr_lon', String(validLon));
+        // Synchronize with Thuna storage keys
+        localStorage.setItem('thuna_user_location', cleanName);
+        localStorage.setItem('thuna_user_coordinates', JSON.stringify({
           latitude: validLat,
           longitude: validLon,
           accuracy: 50,
           isManual: false,
           timestamp: Date.now()
-        };
-        if (typeof window.LocationService._saveToStorage === 'function') window.LocationService._saveToStorage();
-        if (typeof window.LocationService._notify === 'function') window.LocationService._notify();
+        }));
       } catch (_) {}
-    }
-    document.querySelectorAll('.user-live-city-name').forEach(el => {
-      el.textContent = cleanName;
-    });
-    const homeLoc = document.getElementById('homeLiveLocText');
-    if (homeLoc) homeLoc.textContent = cleanName;
-    const homeRadiusBadge = document.getElementById('homeLiveRadiusBadge');
-    if (homeRadiusBadge) {
-      const curR = APP_STATE.activeRadiusKm || 5;
-      homeRadiusBadge.textContent = curR >= 1000 ? 'മുഴുവൻ' : (curR + ' km');
-    }
-    const desktopLoc = document.getElementById('desktopLiveLocText');
-    if (desktopLoc) desktopLoc.textContent = cleanName;
-    const quickLoc = document.getElementById('quickReqLocation');
-    if (quickLoc && (!quickLoc.value || quickLoc.value.includes('കണ്ണൂർ') || quickLoc.value === 'തത്സമയ ലൊക്കേഷൻ')) {
-      quickLoc.value = cleanName;
-    }
-    const regLoc = document.getElementById('regServiceLoc');
-    if (regLoc && (!regLoc.value || regLoc.value.includes('കണ്ണൂർ') || regLoc.value === 'തത്സമയ ലൊക്കേഷൻ')) {
-      regLoc.value = cleanName;
-    }
+      // Synchronize window.LocationService if active
+      if (typeof window !== 'undefined' && window.LocationService) {
+        try {
+          window.LocationService.current = {
+            locationName: cleanName,
+            latitude: validLat,
+            longitude: validLon,
+            accuracy: 50,
+            isManual: false,
+            timestamp: Date.now()
+          };
+          if (typeof window.LocationService._saveToStorage === 'function') window.LocationService._saveToStorage();
+          if (typeof window.LocationService._notify === 'function') window.LocationService._notify();
+        } catch (_) {}
+      }
+      document.querySelectorAll('.user-live-city-name').forEach(el => {
+        el.textContent = cleanName;
+      });
+      const homeLoc = document.getElementById('homeLiveLocText');
+      if (homeLoc) homeLoc.textContent = cleanName;
+      const homeRadiusBadge = document.getElementById('homeLiveRadiusBadge');
+      if (homeRadiusBadge) {
+        const curR = APP_STATE.activeRadiusKm || 5;
+        homeRadiusBadge.textContent = curR >= 1000 ? 'മുഴുവൻ' : (curR + ' km');
+      }
+      const desktopLoc = document.getElementById('desktopLiveLocText');
+      if (desktopLoc) desktopLoc.textContent = cleanName;
+      const quickLoc = document.getElementById('quickReqLocation');
+      if (quickLoc && (!quickLoc.value || quickLoc.value.includes('കണ്ണൂർ') || quickLoc.value === 'തത്സമയ ലൊക്കേഷൻ')) {
+        quickLoc.value = cleanName;
+      }
+      const regLoc = document.getElementById('regServiceLoc');
+      if (regLoc && (!regLoc.value || regLoc.value.includes('കണ്ണൂർ') || regLoc.value === 'തത്സമയ ലൊക്കേഷൻ')) {
+        regLoc.value = cleanName;
+      }
 
-    console.info('[Location Updated State]', {
-      name: APP_STATE.location.name,
-      district: APP_STATE.location.district,
-      lat: APP_STATE.location.lat,
-      lon: APP_STATE.location.lon
-    });
+      console.info('[Location Updated State]', {
+        name: APP_STATE.location.name,
+        district: APP_STATE.location.district,
+        lat: APP_STATE.location.lat,
+        lon: APP_STATE.location.lon
+      });
 
-    // Refresh active screen with updated distances
-    if (APP_STATE.currentScreen === 'nearby') renderNearbyScreen();
-    if (APP_STATE.currentScreen === 'services') renderServicesScreen();
-    if (APP_STATE.currentScreen === 'jobs') renderJobsScreen();
-    if (APP_STATE.currentScreen === 'rentals') renderRentalsScreen();
-    if (APP_STATE.currentScreen === 'blood' && typeof renderBloodDonorsList === 'function') renderBloodDonorsList();
-    if (typeof renderHomeCommunityFeed === 'function') renderHomeCommunityFeed();
-    if (typeof renderCommunityFeed === 'function') renderCommunityFeed();
-    if (typeof renderHomeScreen === 'function') renderHomeScreen();
+      // Refresh active screen with updated distances only if not skipped
+      if (!skipRefresh) {
+        if (APP_STATE.currentScreen === 'nearby') renderNearbyScreen();
+        if (APP_STATE.currentScreen === 'services') renderServicesScreen();
+        if (APP_STATE.currentScreen === 'jobs') renderJobsScreen();
+        if (APP_STATE.currentScreen === 'rentals') renderRentalsScreen();
+        if (APP_STATE.currentScreen === 'blood' && typeof renderBloodDonorsList === 'function') renderBloodDonorsList();
+        if (typeof renderHomeCommunityFeed === 'function') renderHomeCommunityFeed();
+        if (typeof renderCommunityFeed === 'function') renderCommunityFeed();
+        if (APP_STATE.currentScreen === 'home' && typeof renderHomeScreen === 'function') renderHomeScreen();
+      }
+    } finally {
+      isUpdatingLocation = false;
+    }
   }
 
   const GEO_CACHE = new Map();
@@ -1815,40 +1829,14 @@
       if (banner) banner.style.display = 'none';
     }
 
-    // Initialize thread in memory
+    // Initialize thread in memory (real user-sent messages only, no auto-injected messages)
     if (!APP_STATE.chats[chatKey]) {
       APP_STATE.chats[chatKey] = [];
     }
 
-    // Attach inquiry context if not already present
-    if (initialContext) {
-      const thread = APP_STATE.chats[chatKey];
-      const hasCtx = thread.some(m => m.text && m.text.includes(initialContext));
-      if (!hasCtx) {
-        thread.push({
-          id: 'msg_ctx_' + Date.now(),
-          sender: 'me',
-          senderId: APP_STATE.currentUser.id,
-          senderPhone: APP_STATE.currentUser.phone || '',
-          senderName: APP_STATE.currentUser.name,
-          text: `📌 അന്വേഷണം: ${initialContext}`,
-          time: 'ഇപ്പോൾ',
-          timestamp: Date.now()
-        });
-      }
-    }
-
-    saveChats();
-    updateChatBadgeCounter();
-    if (typeof renderChatListScreen === 'function') {
-      renderChatListScreen();
-    }
-
     const input = document.getElementById('chatInputMessage');
     if (input) {
-      if (initialContext && !input.value) {
-        input.value = 'ഹലോ, എനിക്ക് ഈ സേവനം ആവശ്യമുണ്ട്.';
-      }
+      input.value = '';
     }
 
     renderChatMessages();
@@ -2009,8 +1997,10 @@
 
   function sendQuickReply(text) {
     const input = document.getElementById('chatInputMessage');
-    if (input) input.value = text;
-    sendChatMessage();
+    if (input) {
+      input.value = text;
+      input.focus();
+    }
   }
   window.sendQuickReply = sendQuickReply;
 
@@ -6409,13 +6399,20 @@
   window.shareAdDetail = shareAdDetail;
 
 
+  let isQuickRequestDismissed = false;
   let quickRequestAutoCloseTimer = null;
   function startQuickRequestAutoClose() {
     const card = document.getElementById('homeQuickRequestCard');
     if (!card) return;
-    if (quickRequestAutoCloseTimer) clearTimeout(quickRequestAutoCloseTimer);
+    if (isQuickRequestDismissed) {
+      card.style.display = 'none';
+      return;
+    }
+    // Only count down when actively viewing the home screen
+    if (APP_STATE.currentScreen !== 'home') return;
+    // Don't restart countdown if already running
+    if (quickRequestAutoCloseTimer) return;
 
-    // Auto-dismiss 4 seconds after opening
     quickRequestAutoCloseTimer = setTimeout(() => {
       dismissQuickRequestCard();
     }, 4000);
@@ -6424,12 +6421,13 @@
   function dismissQuickRequestCard() {
     const card = document.getElementById('homeQuickRequestCard');
     if (!card) return;
+    isQuickRequestDismissed = true;
     if (quickRequestAutoCloseTimer) {
       clearTimeout(quickRequestAutoCloseTimer);
       quickRequestAutoCloseTimer = null;
     }
     card.style.transition = 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
-    card.style.maxHeight = card.offsetHeight + 'px';
+    card.style.maxHeight = (card.offsetHeight || 120) + 'px';
     card.style.overflow = 'hidden';
     
     requestAnimationFrame(() => {
@@ -6451,7 +6449,7 @@
   // 17. INITIALIZATION ON DOM READY
   // ==============================================================
   function renderHomeScreen() {
-    updateLocationDisplay(APP_STATE.location.name, APP_STATE.location.district, APP_STATE.location.lat, APP_STATE.location.lon);
+    updateLocationDisplay(APP_STATE.location.name, APP_STATE.location.district, APP_STATE.location.lat, APP_STATE.location.lon, true);
     renderActiveServiceTracker();
     renderHomeVillageBanner();
     startQuickRequestAutoClose();
