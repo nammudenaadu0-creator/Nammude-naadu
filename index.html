@@ -1586,6 +1586,15 @@
                         <input type="text" id="regVehicleRoute" placeholder="Eg: ലോക്കൽ ഓട്ടം & ദീർഘദൂര യാത്രകൾ (24 മണിക്കൂറും)"
                             style="width:100%;padding:9px;border:1px solid #D1D5DB;border-radius:8px;font-size:12px;outline:none;margin-top:3px">
                     </div>
+                    <div>
+                        <label style="font-size:11px;font-weight:700;color:#475569">ബേസ് നിരക്ക് / കിലോമീറ്റർ നിരക്ക് (₹ Base Rate / Km)</label>
+                        <div style="display:flex;align-items:center;margin-top:3px;border:1px solid #D1D5DB;border-radius:8px;overflow:hidden;background:#fff">
+                            <span style="background:#F0FDF4;color:#047857;padding:8px 12px;font-weight:800;font-size:14px;border-right:1px solid #BBF7D0">₹</span>
+                            <input type="text" id="regVehicleRate" placeholder="Eg: 50 മിനിമം അല്ലെങ്കിൽ കിലോമീറ്ററിന് ₹15"
+                                onblur="if(this.value) this.value = formatPrice(this.value)"
+                                style="flex:1;padding:8px;border:none;font-size:12px;outline:none">
+                        </div>
+                    </div>
                 </div>
 
                 <!-- 1-TAP POPULAR TRADE CHIPS (500 SERVICES CATALOG) -->
@@ -1676,11 +1685,14 @@
 
                 <!-- VISITING FEE -->
                 <div>
-                    <label style="font-size:12px;font-weight:700;color:#374151">വിസിറ്റിംഗ് നിരക്ക് / ഫീസ് (Visiting Fee
-                        / Rate)</label>
-                    <input type="text" id="regServiceFee"
-                        placeholder="Eg: ₹200 വിസിറ്റിംഗ് നിരക്ക് അല്ലെങ്കിൽ ചർച്ച ചെയ്യാം"
-                        style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                    <label style="font-size:12px;font-weight:700;color:#374151">വിസിറ്റിംഗ് നിരക്ക് / ഫീസ് (₹ Visiting Fee / Rate)</label>
+                    <div style="display:flex;align-items:center;margin-top:4px;border:1px solid #D1D5DB;border-radius:10px;overflow:hidden;background:#fff">
+                        <span style="background:#F0FDF4;color:#047857;padding:10px 14px;font-weight:800;font-size:15px;border-right:1px solid #BBF7D0">₹</span>
+                        <input type="text" id="regServiceFee"
+                            placeholder="Eg: 200 വിസിറ്റിംഗ് നിരക്ക് അല്ലെങ്കിൽ ചർച്ച ചെയ്യാം"
+                            onblur="if(this.value) this.value = formatPrice(this.value)"
+                            style="flex:1;padding:10px;border:none;font-size:13px;outline:none">
+                    </div>
                 </div>
 
                 <!-- WORKING HOURS -->
@@ -1824,9 +1836,13 @@
                             style="width:100%;padding:9px 12px;border:1.5px solid #0284C7;border-radius:10px;font-size:13px;outline:none;margin-top:3px;background:#F0F9FF;font-weight:700">
                     </div>
                     <div style="flex:1">
-                        <label style="font-size:12px;font-weight:700;color:#374151">ശമ്പളം (Salary Range)</label>
-                        <input type="text" id="postJobSalary" placeholder="Eg: ₹18,000 - ₹22,000"
-                            style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                        <label style="font-size:12px;font-weight:700;color:#374151">ശമ്പളം / വേതനം (₹ Salary)</label>
+                        <div style="display:flex;align-items:center;margin-top:3px;border:1px solid #CBD5E1;border-radius:10px;overflow:hidden;background:#fff">
+                            <span style="background:#F0F9FF;color:#0284C7;padding:9px 12px;font-weight:800;font-size:14px;border-right:1px solid #E0F2FE">₹</span>
+                            <input type="text" id="postJobSalary" placeholder="Eg: 18,000 - 22,000"
+                                onblur="if(this.value) this.value = formatPrice(this.value)"
+                                style="flex:1;padding:9px 12px;border:none;font-size:13px;outline:none">
+                        </div>
                     </div>
                 </div>
                 <div>
@@ -2108,9 +2124,13 @@
 
                     <div style="display:flex;gap:8px">
                         <div style="flex:1">
-                            <label style="font-size:12px;font-weight:700;color:#374151">വിസിറ്റിംഗ് ചാർജ്</label>
-                            <input type="text" id="adminSvcFee" placeholder="Eg: ₹200 / സംസാരിക്കാം"
-                                style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                            <label style="font-size:12px;font-weight:700;color:#374151">വിസിറ്റിംഗ് ചാർജ് (₹ Fee)</label>
+                            <div style="display:flex;align-items:center;margin-top:3px;border:1px solid #CBD5E1;border-radius:10px;overflow:hidden;background:#fff">
+                                <span style="background:#F0FDF4;color:#047857;padding:9px 12px;font-weight:800;font-size:14px;border-right:1px solid #BBF7D0">₹</span>
+                                <input type="text" id="adminSvcFee" placeholder="Eg: 200 / സംസാരിക്കാം"
+                                    onblur="if(this.value) this.value = formatPrice(this.value)"
+                                    style="flex:1;padding:9px 12px;border:none;font-size:13px;outline:none">
+                            </div>
                         </div>
                         <div style="flex:1">
                             <label style="font-size:12px;font-weight:700;color:#374151">പ്രവർത്തന സമയം</label>
@@ -2711,10 +2731,14 @@
                     </select>
                 </div>
                 <div>
-                    <label style="font-size:12px;font-weight:700">വാടക തുക / വില (Rent Rate or Price)</label>
-                    <input type="text" id="rentRate" required
-                        placeholder="Eg: ₹8,000 / മാസം or ₹500 / ദിവസം or ₹1,200 / ട്രിപ്പ്"
-                        style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
+                    <label style="font-size:12px;font-weight:700">വാടക തുക / വില (₹ Rent Rate or Price)</label>
+                    <div style="display:flex;align-items:center;margin-top:4px;border:1px solid #D1D5DB;border-radius:10px;overflow:hidden;background:#fff">
+                        <span style="background:#F0FDF4;color:#047857;padding:10px 14px;font-weight:800;font-size:15px;border-right:1px solid #BBF7D0">₹</span>
+                        <input type="text" id="rentRate" required
+                            placeholder="Eg: 8,000 / മാസം or 500 / ദിവസം or 1,200 / ട്രിപ്പ്"
+                            onblur="if(this.value) this.value = formatPrice(this.value)"
+                            style="flex:1;padding:10px;border:none;font-size:13px;outline:none">
+                    </div>
                 </div>
                 <div>
                     <label style="font-size:12px;font-weight:700">ഫോട്ടോ ചേർക്കാം (Add Photo - Optional)</label>

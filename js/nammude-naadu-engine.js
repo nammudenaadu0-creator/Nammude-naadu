@@ -22,15 +22,25 @@
     if (s.includes('₹')) {
       return s.replace(/₹\s*₹+/g, '₹');
     }
-    s = s.replace(/^(rs\.?|inr)\s*/i, '₹');
+    // Replace Rs, Rs., INR, രൂപ, രൂപ.
+    s = s.replace(/\b(rs\.?|inr|രൂപ\.?)\s*/gi, '₹');
     if (s.includes('₹')) return s;
 
+    // Range like 18000 - 22000 or 18,000 - 22,000
+    if (/^(\d+[\d,]*)\s*-\s*(\d+[\d,]*)/.test(s)) {
+      return s.replace(/^(\d+[\d,]*)\s*-\s*(\d+[\d,]*)/, '₹$1 - ₹$2');
+    }
+
+    // Starts with number (e.g. 200, 200 വിസിറ്റിംഗ് നിരക്ക്, 500 / ദിവസം)
     if (/^\d/.test(s)) {
-      if (/^(\d+[\d,]*)\s*-\s*(\d+[\d,]*)/.test(s)) {
-        return s.replace(/^(\d+[\d,]*)\s*-\s*(\d+[\d,]*)/, '₹$1 - ₹$2');
-      }
       return '₹' + s;
     }
+
+    // Contains number anywhere inside text like "വിസിറ്റിംഗ് ഫീസ് 200" -> "വിസിറ്റിംഗ് ഫീസ് ₹200"
+    if (/\d+/.test(s)) {
+      return s.replace(/(\d+[\d,]*)/, '₹$1');
+    }
+
     return s;
   }
   window.formatPrice = formatPrice;
@@ -4173,7 +4183,8 @@
     const selectedIcon = (document.getElementById('regSelectedIcon') ? document.getElementById('regSelectedIcon').value.trim() : '🛠️') || '🛠️';
     const categoryKey = (document.getElementById('regServiceCategoryKey') ? document.getElementById('regServiceCategoryKey').value : 'other') || 'other';
     const phone = document.getElementById('regServicePhone').value.trim();
-    const fee = (document.getElementById('regServiceFee') ? document.getElementById('regServiceFee').value.trim() : '') || '₹200 വിസിറ്റിംഗ് നിരക്ക്';
+    const rawFee = (document.getElementById('regServiceFee') ? document.getElementById('regServiceFee').value.trim() : '');
+    const fee = rawFee ? formatPrice(rawFee) : '₹200 വിസിറ്റിംഗ് നിരക്ക്';
     const hours = (document.getElementById('regServiceHours') ? document.getElementById('regServiceHours').value.trim() : '') || '8:00 AM - 7:00 PM';
     const rawSpecs = (document.getElementById('regServiceSpecs') ? document.getElementById('regServiceSpecs').value.trim() : '');
     const avail = (document.getElementById('regServiceAvail') ? document.getElementById('regServiceAvail').value : 'available');
@@ -4194,14 +4205,16 @@
     const vNumber = (document.getElementById('regVehicleNumber') ? document.getElementById('regVehicleNumber').value.trim() : '');
     const vStand = (document.getElementById('regVehicleStand') ? document.getElementById('regVehicleStand').value.trim() : '');
     const vRoute = (document.getElementById('regVehicleRoute') ? document.getElementById('regVehicleRoute').value.trim() : '');
+    const vRate = (document.getElementById('regVehicleRate') ? document.getElementById('regVehicleRate').value.trim() : '');
 
     let vehicleDetails = null;
-    if (vModel || vStand || vNumber || vRoute || window._currentRegServiceMode === 'vehicle') {
+    if (vModel || vStand || vNumber || vRoute || vRate || window._currentRegServiceMode === 'vehicle') {
       vehicleDetails = {
         model: vModel,
         number: vNumber,
         stand: vStand,
-        route: vRoute
+        route: vRoute,
+        baseRate: vRate ? formatPrice(vRate) : ''
       };
     }
 
@@ -5273,7 +5286,8 @@
     const phone = (document.getElementById('adminSvcPhone')?.value || document.getElementById('admSrvPhone')?.value || '').trim();
     const loc = (document.getElementById('adminSvcLoc')?.value || document.getElementById('admSrvLocation')?.value || '').trim();
     const exp = (document.getElementById('adminSvcDesc')?.value || document.getElementById('admSrvExp')?.value || '').trim();
-    const fee = (document.getElementById('adminSvcFee')?.value || document.getElementById('admSrvFee')?.value || '').trim();
+    const rawFee = (document.getElementById('adminSvcFee')?.value || document.getElementById('admSrvFee')?.value || '').trim();
+    const fee = rawFee ? formatPrice(rawFee) : '₹200 വിസിറ്റിംഗ് നിരക്ക്';
     const hours = (document.getElementById('adminSvcHours')?.value || document.getElementById('admSrvHours')?.value || '').trim();
     const icon = document.getElementById('adminSvcIcon')?.value || '🛠️';
 
@@ -5291,7 +5305,7 @@
       phone: phone,
       location: loc,
       experience: exp || 'പരിചയസമ്പന്നൻ',
-      visitingFee: fee || 'മിതമായ നിരക്ക്',
+      visitingFee: fee,
       workHours: hours || 'രാവിലെ 8:00 AM - വൈകുന്നേരം 7:30 PM',
       rating: '5.0',
       reviewsCount: 1,
@@ -6676,7 +6690,8 @@
     if (e) e.preventDefault();
     const title = document.getElementById('rentTitle').value.trim();
     const type = document.getElementById('rentType').value;
-    const rate = document.getElementById('rentRate').value.trim();
+    const rawRate = document.getElementById('rentRate').value.trim();
+    const rate = rawRate ? formatPrice(rawRate) : '₹500 / ദിവസം';
     const owner = document.getElementById('rentOwner').value.trim() || APP_STATE.currentUser.name;
     const phone = document.getElementById('rentPhone').value.trim() || APP_STATE.currentUser.phone;
     const loc = document.getElementById('rentLoc').value.trim() || APP_STATE.location.name;
