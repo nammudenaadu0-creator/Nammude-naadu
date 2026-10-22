@@ -2189,7 +2189,7 @@
           ` : `
             <button onclick="closeModal('modal-author-profile'); ${chatKey ? `openChatModalByKey('${chatKey}')` : `openChatModal('${safeEscapedName}', '${safeEscapedPhone}', '${avatar}', 'ഹലോ ${safeEscapedName}', '${authorId}')`}" class="profile-action-cta chat" style="flex:1;background:linear-gradient(135deg, #0E7043 0%, #10B981 100%);color:#fff;padding:12px;border:none;border-radius:14px;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 8px rgba(14,112,67,0.25)">
               <span>💬</span>
-              <span>ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം</span>
+              <span>ചാറ്റ്</span>
             </button>
           `}
           ${(isEmergencyOrAmbulance && phone) ? `
@@ -3678,7 +3678,7 @@
             <button onclick="openBusinessChat('${escapeHtml(b.id)}')"
               style="width:100%;background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#FFFFFF;border:none;padding:10px 14px;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 8px rgba(5,150,105,0.25)">
               <span>💬</span>
-              <span>ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം</span>
+              <span>ചാറ്റ്</span>
             </button>
           </div>
         </div>
@@ -4574,9 +4574,9 @@
 
           <!-- DIRECT ACTION: IN-APP CHAT ONLY -->
           <div class="service-actions-row" onclick="event.stopPropagation()">
-            <button class="prov-btn-chat" onclick="openChatForService('${srv.id}')" title="ആപ്പ് ചാറ്റ്" style="flex:1;justify-content:center">
+            <button class="prov-btn-chat" onclick="openChatForService('${srv.id}')" title="ചാറ്റ്" style="flex:1;justify-content:center">
               <span>💬</span>
-              <span>ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം</span>
+              <span>ചാറ്റ്</span>
             </button>
           </div>
         </div>
@@ -4662,7 +4662,7 @@
         <div style="display:flex;gap:10px;margin-top:4px">
           <button class="prov-btn-chat" style="padding:12px;font-size:0.92rem;border-radius:14px;flex:1;display:flex;align-items:center;justify-content:center;gap:8px" onclick="closeModal('modal-service-detail'); openChatForService('${srv.id}')">
             <span>💬</span>
-            <span>ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം</span>
+            <span>ചാറ്റ്</span>
           </button>
         </div>
 
@@ -5721,7 +5721,7 @@
         </div>
         <div>
           <button onclick="openChatForDonor('${(d.name || 'രക്തദാതാവ്').replace(/'/g, "\\'")}', '${d.phone || ''}', '${d.group || 'O+'}')" style="background:linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);color:#fff;border:none;padding:9px 14px;border-radius:10px;cursor:pointer;font-size:12.5px;font-weight:800;display:flex;align-items:center;gap:6px;box-shadow:0 2px 6px rgba(220,38,38,0.25)">
-            <span>💬 ആപ്പ് ചാറ്റ്</span>
+            <span>💬 ചാറ്റ്</span>
           </button>
         </div>
       </div>
@@ -5762,7 +5762,7 @@
       return;
     }
 
-    const contactDisplay = showPhone ? `${phone} (ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം)` : '🔒 നമ്പർ രഹസ്യമാണ് (താഴെയുള്ള "ആപ്പ് ചാറ്റ്" വഴി സന്ദേശമയക്കുക)';
+    const contactDisplay = showPhone ? `${phone} (ചാറ്റ് ചെയ്യാം)` : '🔒 നമ്പർ രഹസ്യമാണ് (താഴെയുള്ള "ചാറ്റ്" വഴി സന്ദേശമയക്കുക)';
 
     // Automatically create an urgent post in Community Feed as well
     const urgentPost = {
@@ -6841,7 +6841,7 @@
             </button>
             <button onclick="openChatForJob('${j.id}')" 
                     style="flex:1;background:#E0F2FE;color:#0369A1;border:1px solid #BAE6FD;padding:10px 14px;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
-              💬 ആപ്പ് ചാറ്റ്
+              💬 ചാറ്റ്
             </button>
           </div>
         </div>
@@ -6934,7 +6934,7 @@
               <span>ഉടമസ്ഥൻ: <b>${escapeHtml(r.owner)}</b></span> • <span>📍 ${escapeHtml(r.location)}</span> • <span style="color:#0E7043;font-weight:800">${r._calculatedDist || 1.2} km അകലെ</span>
             </div>
             <div style="margin-top:10px">
-              <button onclick="openChatForRental('${r.id}')" style="width:100%;background:#0E7043;color:#fff;border:none;padding:10px;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 6px rgba(14,112,67,0.2)">💬 ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം</button>
+              <button onclick="openChatForRental('${r.id}')" style="width:100%;background:#0E7043;color:#fff;border:none;padding:10px;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 6px rgba(14,112,67,0.2)">💬 ചാറ്റ്</button>
             </div>
           </div>
         `;
@@ -7515,7 +7515,7 @@
               <span class="fb-about-icon">📞</span>
               <div>
                 <div class="fb-about-label">മൊബൈൽ നമ്പർ</div>
-                <div class="fb-about-val" style="color:#64748B;font-weight:700">🔒 സ്വകാര്യ നമ്പർ (ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം)</div>
+                <div class="fb-about-val" style="color:#64748B;font-weight:700">🔒 സ്വകാര്യ നമ്പർ (ചാറ്റ് ചെയ്യാം)</div>
               </div>
             </div>
             ` : '')}
@@ -9138,9 +9138,9 @@
 
           <!-- DIRECT ACTION: IN-APP CHAT ONLY -->
           <div class="service-actions-row" onclick="event.stopPropagation()">
-            <button class="prov-btn-chat" onclick="openChatForService('${srv.id}')" title="ആപ്പ് ചാറ്റ്" style="flex:1;justify-content:center">
+            <button class="prov-btn-chat" onclick="openChatForService('${srv.id}')" title="ചാറ്റ്" style="flex:1;justify-content:center">
               <span>💬</span>
-              <span>ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം</span>
+              <span>ചാറ്റ്</span>
             </button>
           </div>
         </div>
