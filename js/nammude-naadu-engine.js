@@ -6809,17 +6809,19 @@
       return;
     }
 
-    container.innerHTML = inRadiusItems.map(item => {
+    // Save rendered items to memory for completely safe, error-free click handling
+    window._nearbyListItems = inRadiusItems;
+
+    container.innerHTML = inRadiusItems.map((item, idx) => {
       const isOnline = true;
       const typeBadgeColor = item.type === 'service' ? '#059669' : (item.type === 'donor' ? '#DC2626' : (item.type === 'citizen' ? '#2563EB' : '#D97706'));
       const typeBadgeBg = item.type === 'service' ? '#ECFDF5' : (item.type === 'donor' ? '#FEF2F2' : (item.type === 'citizen' ? '#EFF6FF' : '#FFFBEB'));
-      const cardClickAction = item.type === 'service' ? `openServiceDetailModal('${item.id}')` : `openChatModal('${item.name.replace(/'/g, "\\'")}', '${item.phone}', '${item.avatar}', '${item.subtitle.replace(/'/g, "\\'")}', '${item.id}')`;
 
       return `
-        <div class="nearby-person-card" onclick="${cardClickAction}" style="background:#ffffff;border-radius:16px;padding:14px;border:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,0.03);cursor:pointer;transition:transform 0.15s ease,box-shadow 0.15s ease">
+        <div class="nearby-person-card" onclick="openNearbyPersonChat(${idx})" style="background:#ffffff;border-radius:16px;padding:14px;border:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,0.03);cursor:pointer;transition:transform 0.15s ease,box-shadow 0.15s ease">
           <div style="display:flex;align-items:center;gap:12px;min-width:0;flex:1">
             <div style="position:relative;flex-shrink:0">
-              <img src="${item.avatar}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #E2E8F0" onerror="this.src=window.DEFAULT_USER_AVATAR||''" alt="${escapeHtml(item.name)}">
+              <img src="${item.avatar || window.DEFAULT_USER_AVATAR}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #E2E8F0" onerror="this.src=window.DEFAULT_USER_AVATAR||''" alt="${escapeHtml(item.name)}">
               ${isOnline ? '<span style="position:absolute;bottom:1px;right:1px;width:12px;height:12px;border-radius:50%;background:#10B981;border:2px solid #fff"></span>' : ''}
             </div>
 
@@ -6829,7 +6831,7 @@
                 <span style="font-size:10px;font-weight:800;color:${typeBadgeColor};background:${typeBadgeBg};padding:2px 7px;border-radius:8px;flex-shrink:0">${escapeHtml(item.badge)}</span>
               </div>
               <div style="font-size:12px;color:#0F766E;font-weight:700;margin-top:2px;display:flex;align-items:center;gap:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
-                <span>${item.icon}</span>
+                <span>${item.icon || '📍'}</span>
                 <span>${escapeHtml(item.subtitle)}</span>
               </div>
               <div style="font-size:11.5px;color:#059669;font-weight:800;margin-top:4px;display:flex;align-items:center;gap:4px">
@@ -6842,13 +6844,37 @@
           </div>
 
           <div style="display:flex;gap:6px;flex-shrink:0;margin-left:8px" onclick="event.stopPropagation()">
-            <button type="button" onclick="openChatModal('${item.name.replace(/'/g, "\\'")}', '${item.phone}', '${item.avatar}', '${item.subtitle.replace(/'/g, "\\'")}', '${item.id}')" style="background:#0E7043;color:#fff;border:none;padding:8px 12px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:4px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 2px 6px rgba(14,112,67,0.25)" title="ചാറ്റ് ചെയ്യാം">💬 ചാറ്റ്</button>
+            ${item.type === 'service' ? `
+              <button type="button" onclick="openServiceDetailModal('${item.id}')" style="background:#F8FAFC;color:#334155;border:1px solid #CBD5E1;padding:8px 10px;border-radius:12px;font-size:11.5px;font-weight:700;cursor:pointer" title="സേവന വിവരങ്ങൾ">ℹ️ വിവരങ്ങൾ</button>
+            ` : ''}
+            <button type="button" onclick="openNearbyPersonChat(${idx})" style="background:#0E7043;color:#fff;border:none;padding:8px 12px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:4px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 2px 6px rgba(14,112,67,0.25)" title="ചാറ്റ് ചെയ്യാം">💬 ചാറ്റ്</button>
           </div>
         </div>
       `;
     }).join('');
   }
   window.renderNearbyScreen = renderNearbyScreen;
+
+  function openNearbyPersonChat(index) {
+    const list = window._nearbyListItems || [];
+    const item = list[index];
+    if (!item) {
+      console.warn('Nearby item not found at index:', index);
+      return;
+    }
+
+    const safeName = item.name || 'സമീപവാസി';
+    const safePhone = item.phone || '';
+    const safeAvatar = (item.avatar && item.avatar !== window.DEFAULT_USER_AVATAR) ? item.avatar : '';
+    const cleanSubtitle = (item.subtitle || '').replace(/[\r\n\t]+/g, ' ').trim();
+    const context = cleanSubtitle ? `${item.icon || '📍'} ${cleanSubtitle}` : 'സമീപവാസി';
+    const recipientId = item.id || ('nearby_' + (safePhone ? safePhone.replace(/\D/g, '') : index));
+    const chatType = item.type || 'citizen';
+
+    console.log('[Nearby Chat] Starting chat with:', safeName, safePhone, recipientId);
+    openChatModal(safeName, safePhone, safeAvatar, context, recipientId, null, chatType);
+  }
+  window.openNearbyPersonChat = openNearbyPersonChat;
 
   // ==============================================================
   // 15. PROFILE SCREEN & PERSONAL DASHBOARD (FACEBOOK STYLE)
