@@ -6764,12 +6764,11 @@
       return item.type === catFilter;
     });
 
-    // Step B: Apply Text Search Query
+    // Step B: Apply Text Search Query (Matches Name & Profession only)
     if (query) {
       filtered = filtered.filter(item => {
         return (item.name && item.name.toLowerCase().includes(query)) ||
-               (item.subtitle && item.subtitle.toLowerCase().includes(query)) ||
-               (item.location && item.location.toLowerCase().includes(query));
+               (item.subtitle && item.subtitle.toLowerCase().includes(query));
       });
     }
 
@@ -6826,10 +6825,12 @@
                 <span>${item.icon}</span>
                 <span>${escapeHtml(item.subtitle)}</span>
               </div>
-              <div style="font-size:11.5px;color:#64748B;margin-top:2px;display:flex;align-items:center;gap:6px">
-                <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">📍 ${escapeHtml(item.location)}</span>
-                <span>•</span>
-                <span style="font-weight:800;color:#059669;white-space:nowrap;background:#ECFDF5;padding:1px 6px;border-radius:6px">${item.dist} km അകലെ</span>
+              <div style="font-size:11.5px;color:#059669;font-weight:800;margin-top:4px;display:flex;align-items:center;gap:6px">
+                <span style="background:#ECFDF5;border:1px solid #A7F3D0;padding:2px 8px;border-radius:8px;display:inline-flex;align-items:center;gap:4px">
+                  <span>📍</span>
+                  <span>${item.dist < 1 ? (Math.round(item.dist * 1000) + ' മീറ്റർ അകലെ') : (item.dist + ' km അകലെ')}</span>
+                </span>
+                <span style="font-size:10.5px;color:#64748B;font-weight:600">🔒 സ്വകാര്യ ലൊക്കേഷൻ</span>
               </div>
             </div>
           </div>
@@ -6992,7 +6993,7 @@
               <span class="fb-about-icon">📍</span>
               <div>
                 <div class="fb-about-label">വാസസ്ഥലം / ലൊക്കേഷൻ</div>
-                <div class="fb-about-val">${escapeHtml(user.location || APP_STATE.location.name || 'കേരളം')}</div>
+                <div class="fb-about-val">${user.trade ? escapeHtml(user.location || 'കേരളം') : '🔒 സമീപവാസി (സ്വകാര്യത സംരക്ഷിതം)'}</div>
               </div>
             </div>
             ${user.district ? `
@@ -7452,8 +7453,12 @@
     }
 
     if (locEl) {
-      const uLoc = user.location || APP_STATE.location.name || 'കേരളം';
-      locEl.textContent = `📍 ${uLoc}`;
+      if (isOther && !user.trade) {
+        locEl.textContent = '📍 സമീപവാസി (സ്വകാര്യ സുരക്ഷ)';
+      } else {
+        const uLoc = user.location || APP_STATE.location.name || 'കേരളം';
+        locEl.textContent = `📍 ${uLoc}`;
+      }
     }
 
     if (bloodEl) {
