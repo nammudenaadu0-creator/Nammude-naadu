@@ -493,29 +493,9 @@
                         </div>
                     </div>
                     <div class="home-3d-services-grid">
-                        <div class="service-squircle-3d" onclick="filterServiceAndOpen('auto')">
-                            <div class="squircle-3d-icon-wrap">🛺</div>
-                            <div class="squircle-3d-label">ഓട്ടോറിക്ഷ</div>
-                        </div>
-                        <div class="service-squircle-3d" onclick="filterServiceAndOpen('taxi')">
-                            <div class="squircle-3d-icon-wrap">🚕</div>
-                            <div class="squircle-3d-label">ടാക്സി കാർ</div>
-                        </div>
-                        <div class="service-squircle-3d" onclick="filterServiceAndOpen('traveller')">
-                            <div class="squircle-3d-icon-wrap">🚐</div>
-                            <div class="squircle-3d-label">ട്രാവലർ/വാൻ</div>
-                        </div>
-                        <div class="service-squircle-3d" onclick="filterServiceAndOpen('pickup')">
-                            <div class="squircle-3d-icon-wrap">🛻</div>
-                            <div class="squircle-3d-label">പിക്കപ്പ് വാൻ</div>
-                        </div>
-                        <div class="service-squircle-3d" onclick="filterServiceAndOpen('lorry')">
-                            <div class="squircle-3d-icon-wrap">🚛</div>
-                            <div class="squircle-3d-label">ലോറി/ടിപ്പർ</div>
-                        </div>
-                        <div class="service-squircle-3d" onclick="filterServiceAndOpen('jcb')">
-                            <div class="squircle-3d-icon-wrap">🚜</div>
-                            <div class="squircle-3d-label">ജെസിബി</div>
+                        <div class="service-squircle-3d" onclick="filterServiceAndOpen('vehicles')">
+                            <div class="squircle-3d-icon-wrap">🚗</div>
+                            <div class="squircle-3d-label">വാഹനങ്ങൾ</div>
                         </div>
                         <div class="service-squircle-3d" onclick="filterServiceAndOpen('electrician')">
                             <div class="squircle-3d-icon-wrap">⚡</div>
@@ -529,76 +509,29 @@
                             <div class="squircle-3d-icon-wrap">❄️</div>
                             <div class="squircle-3d-label">എസി റിപ്പയർ</div>
                         </div>
+                        <div class="service-squircle-3d" onclick="filterServiceAndOpen('carpenter')">
+                            <div class="squircle-3d-icon-wrap">🪚</div>
+                            <div class="squircle-3d-label">ആശാരി</div>
+                        </div>
+                        <div class="service-squircle-3d" onclick="filterServiceAndOpen('painter')">
+                            <div class="squircle-3d-icon-wrap">🎨</div>
+                            <div class="squircle-3d-label">പെയിന്റർ</div>
+                        </div>
+                        <div class="service-squircle-3d" onclick="filterServiceAndOpen('cleaning')">
+                            <div class="squircle-3d-icon-wrap">🧹</div>
+                            <div class="squircle-3d-label">ക്ലീനിംഗ്</div>
+                        </div>
+                        <div class="service-squircle-3d" onclick="filterServiceAndOpen('mason')">
+                            <div class="squircle-3d-icon-wrap">🧱</div>
+                            <div class="squircle-3d-label">മേസൺ/ടൈൽസ്</div>
+                        </div>
+                        <div class="service-squircle-3d" onclick="filterServiceAndOpen('gardening')">
+                            <div class="squircle-3d-icon-wrap">🌴</div>
+                            <div class="squircle-3d-label">കൃഷി/തോട്ടം</div>
+                        </div>
                         <div class="service-squircle-3d" onclick="filterServiceAndOpen('all')">
                             <div class="squircle-3d-icon-wrap">➕</div>
                             <div class="squircle-3d-label">എല്ലാ സേവനങ്ങളും</div>
-                        </div>
-                    </div>
-
-                    <!-- POPULAR VEHICLES & TRANSPORT SECTION -->
-                    <div
-                        style="margin: 12px 16px 6px;background:linear-gradient(135deg, #0F172A 0%, #1E293B 100%);border-radius:18px;padding:12px 14px;color:#fff;box-shadow:0 4px 15px rgba(15,23,42,0.15)">
-                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-                            <div style="display:flex;align-items:center;gap:6px">
-                                <span style="font-size:18px">🚗</span>
-                                <div>
-                                    <div style="font-size:13.5px;font-weight:900;color:#F8FAFC">വാഹനങ്ങൾ & ട്രാവൽസ്
-                                    </div>
-                                    <div style="font-size:10px;color:#94A3B8">ഓട്ടോ, ടാക്സി, ലോറി, JCB & എല്ലാ
-                                        വാഹനങ്ങളും</div>
-                                </div>
-                            </div>
-                            <button onclick="openAddVehicleModal()"
-                                style="background:linear-gradient(135deg, #10B981 0%, #059669 100%);color:#fff;border:none;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:4px">
-                                <span>➕ വാഹനം ചേർക്കാം</span>
-                            </button>
-                        </div>
-                        <div
-                            style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch">
-                            <button onclick="filterServiceAndOpen('auto')"
-                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
-                                <span>🛺</span><span>ഓട്ടോ</span>
-                            </button>
-                            <button onclick="filterServiceAndOpen('taxi')"
-                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
-                                <span>🚕</span><span>ടാക്സി കാർ</span>
-                            </button>
-                            <button onclick="filterServiceAndOpen('traveller')"
-                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
-                                <span>🚐</span><span>ട്രാവലർ/വാൻ</span>
-                            </button>
-                            <button onclick="filterServiceAndOpen('bus')"
-                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
-                                <span>🚌</span><span>ടൂറിസ്റ്റ് ബസ്</span>
-                            </button>
-                            <button onclick="filterServiceAndOpen('pickup')"
-                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
-                                <span>🛻</span><span>പിക്കപ്പ്</span>
-                            </button>
-                            <button onclick="filterServiceAndOpen('goodsauto')"
-                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
-                                <span>🛺📦</span><span>ഗുഡ്സ് ഓട്ടോ</span>
-                            </button>
-                            <button onclick="filterServiceAndOpen('jeep')"
-                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
-                                <span>🚙</span><span>ജീപ്പ് 4x4</span>
-                            </button>
-                            <button onclick="filterServiceAndOpen('lorry')"
-                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
-                                <span>🚛</span><span>ലോറി/ടിപ്പർ</span>
-                            </button>
-                            <button onclick="filterServiceAndOpen('jcb')"
-                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
-                                <span>🚜</span><span>JCB</span>
-                            </button>
-                            <button onclick="filterServiceAndOpen('crane')"
-                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
-                                <span>🏗️</span><span>ക്രെയിൻ</span>
-                            </button>
-                            <button onclick="filterServiceAndOpen('ambulance')"
-                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
-                                <span>🚑</span><span>ആംബുലൻസ്</span>
-                            </button>
                         </div>
                     </div>
 
@@ -932,6 +865,10 @@
 
                     <!-- 16+ CATEGORIES GRID (HORIZONTAL SCROLLING 3D SQUIRCLES) -->
                     <div class="services-category-grid" id="servicesCategoryGrid"></div>
+
+                    <!-- VEHICLE SUB-CATEGORIES BAR (SHOWN ONLY WHEN VEHICLES CATEGORY IS ACTIVE) -->
+                    <div id="servicesVehicleSubFilterBar"
+                        style="display:none;padding:8px 16px;background:#F0FDF4;border-bottom:1px solid #BBF7D0;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;gap:6px"></div>
 
                     <!-- SERVICE PROVIDERS LIST -->
                     <div class="service-list" id="servicesListContainer"

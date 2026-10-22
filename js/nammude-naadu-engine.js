@@ -4201,23 +4201,12 @@
   // ==============================================================
   const SERVICE_CATEGORIES = [
     { id: 'all', name: 'എല്ലാം', icon: '🛠️' },
-    { id: 'auto', name: 'ഓട്ടോറിക്ഷ', icon: '🛺' },
-    { id: 'taxi', name: 'ടാക്സി കാർ', icon: '🚕' },
-    { id: 'traveller', name: 'ട്രാവലർ/വാൻ', icon: '🚐' },
-    { id: 'bus', name: 'ടൂറിസ്റ്റ് ബസ്', icon: '🚌' },
-    { id: 'pickup', name: 'പിക്കപ്പ് വാൻ', icon: '🛻' },
-    { id: 'goodsauto', name: 'ഗുഡ്സ് ഓട്ടോ', icon: '🛺📦' },
-    { id: 'jeep', name: 'ജീപ്പ് 4x4', icon: '🚙' },
-    { id: 'lorry', name: 'ലോറി / ടിപ്പർ', icon: '🚛' },
-    { id: 'jcb', name: 'ജെസിബി / ഹിറ്റാച്ചി', icon: '🚜' },
-    { id: 'crane', name: 'ക്രെയിൻ / റിക്കവറി', icon: '🏗️' },
-    { id: 'ambulance', name: 'ആംബുലൻസ്', icon: '🚑' },
-    { id: 'driver', name: 'ഡ്രൈവർമാർ', icon: '🛺' },
-    { id: 'plumber', name: 'പ്ലംബർ', icon: '🚰' },
+    { id: 'vehicles', name: 'വാഹനങ്ങൾ', icon: '🚗' },
     { id: 'electrician', name: 'ഇലക്ട്രീഷ്യൻ', icon: '⚡' },
+    { id: 'plumber', name: 'പ്ലംബർ', icon: '🚰' },
+    { id: 'acrepair', name: 'എസി & ഫ്രിഡ്ജ്', icon: '❄️' },
     { id: 'carpenter', name: 'ആശാരി', icon: '🪚' },
     { id: 'painter', name: 'പെയിന്റർ', icon: '🎨' },
-    { id: 'acrepair', name: 'എസി & ഫ്രിഡ്ജ്', icon: '❄️' },
     { id: 'cleaning', name: 'ക്ലീനിംഗ്', icon: '🧹' },
     { id: 'mason', name: 'മേസൺ & വാർപ്പ്', icon: '🧱' },
     { id: 'welding', name: 'വെൽഡിങ് & ഗ്രിൽ', icon: '🔥' },
@@ -4229,20 +4218,35 @@
     { id: 'nursing', name: 'ഹോം നഴ്സിംഗ്', icon: '🩺' },
     { id: 'tuition', name: 'ട്യൂഷൻ', icon: '📚' },
     { id: 'water', name: 'വാട്ടർ സപ്ലൈ', icon: '💧' },
-    { id: 'thekku', name: 'തെങ്ങ് കയറ്റം', icon: '🥥' },
-    { id: 'kinar', name: 'കിണർ പണി', icon: '🪣' },
-    { id: 'mechanic', name: 'മെക്കാനിക്', icon: '🔧' },
+    { id: 'mechanic', name: 'വർക്ക്‌ഷോപ്പ്', icon: '🔧' },
     { id: 'electronics', name: 'ടിവി & മെഷീൻ', icon: '📺' },
     { id: 'tiles', name: 'ടൈൽ & ഗ്രാനൈറ്റ്', icon: '📐' },
     { id: 'roofing', name: 'റൂഫിംഗ് ട്രസ്സ്', icon: '🏠' },
     { id: 'aluminium', name: 'അലുമിനിയം വർക്ക്', icon: '🪟' },
-    { id: 'waste', name: 'സെപ്റ്റിക് ടാങ്ക്', icon: '🚛' },
     { id: 'packers', name: 'പാക്കേഴ്സ് മൂവേഴ്സ്', icon: '📦' },
+    { id: 'waste', name: 'സെപ്റ്റിക് ടാങ്ക്', icon: '🚛' },
+    { id: 'thekku', name: 'തെങ്ങ് കയറ്റം', icon: '🥥' },
+    { id: 'kinar', name: 'കിണർ പണി', icon: '🪣' },
     { id: 'solar', name: 'സോളാർ സിസ്റ്റം', icon: '☀️' },
     { id: 'photography', name: 'ഫോട്ടോഗ്രാഫി', icon: '📷' },
     { id: 'sound', name: 'സൗണ്ട് & ലൈറ്റ്', icon: '🔊' },
     { id: 'gas', name: 'ഗ്യാസ് സ്റ്റൗ', icon: '🍳' },
     { id: 'pestcontrol', name: 'പെസ്റ്റ് കൺട്രോൾ', icon: '🐜' }
+  ];
+
+  const VEHICLE_SUB_TYPES = [
+    { id: 'all', name: 'മുഴുവൻ വാഹനങ്ങളും', icon: '🌟' },
+    { id: 'auto', name: 'ഓട്ടോറിക്ഷ', icon: '🛺' },
+    { id: 'taxi', name: 'ടാക്സി കാർ', icon: '🚕' },
+    { id: 'traveller', name: 'ട്രാവലർ/വാൻ', icon: '🚐' },
+    { id: 'bus', name: 'ടൂറിസ്റ്റ് ബസ്', icon: '🚌' },
+    { id: 'pickup', name: 'പിക്കപ്പ് വാൻ', icon: '🛻' },
+    { id: 'goodsauto', name: 'ഗുഡ്സ് ഓട്ടോ', icon: '🛺📦' },
+    { id: 'jeep', name: 'ജീപ്പ് 4x4', icon: '🚙' },
+    { id: 'lorry', name: 'ലോറി/ടിപ്പർ', icon: '🚛' },
+    { id: 'jcb', name: 'JCB/ഹിറ്റാച്ചി', icon: '🚜' },
+    { id: 'crane', name: 'ക്രെയിൻ/റിക്കവറി', icon: '🏗️' },
+    { id: 'ambulance', name: 'ആംബുലൻസ്', icon: '🚑' }
   ];
 
   function renderServicesCategoriesGrid() {
@@ -4259,7 +4263,12 @@
   }
 
   function filterServiceCategory(catId) {
-    APP_STATE.activeServiceCategory = catId;
+    if (catId === 'vehicles') {
+      APP_STATE.activeServiceCategory = 'vehicles';
+      APP_STATE.activeVehicleSubFilter = 'all';
+    } else {
+      APP_STATE.activeServiceCategory = catId;
+    }
     renderServicesCategoriesGrid();
     renderServicesScreen();
     setTimeout(() => {
@@ -4270,27 +4279,62 @@
   window.filterServiceCategory = filterServiceCategory;
 
   function filterServiceAndOpen(catId) {
-    APP_STATE.activeServiceCategory = catId;
+    const vehicleSubKeys = ['auto', 'taxi', 'traveller', 'bus', 'pickup', 'goodsauto', 'jeep', 'lorry', 'jcb', 'crane', 'ambulance', 'driver'];
+    if (vehicleSubKeys.includes(catId)) {
+      APP_STATE.activeServiceCategory = 'vehicles';
+      APP_STATE.activeVehicleSubFilter = (catId === 'driver' ? 'all' : catId);
+    } else {
+      APP_STATE.activeServiceCategory = catId;
+      if (catId === 'vehicles') {
+        APP_STATE.activeVehicleSubFilter = 'all';
+      }
+    }
     const searchInput = document.getElementById('serviceSearchInput');
     if (searchInput) searchInput.value = '';
     navTo('services');
     setTimeout(() => {
-      const activePill = document.querySelector(`.cat-pill-btn[onclick*="${catId}"]`);
+      const activePill = document.querySelector(`.cat-pill-btn[onclick*="${APP_STATE.activeServiceCategory}"]`);
       if (activePill) activePill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     }, 100);
   }
   window.filterServiceAndOpen = filterServiceAndOpen;
+
+  function setVehicleSubFilter(subId) {
+    APP_STATE.activeVehicleSubFilter = subId;
+    renderServicesScreen();
+  }
+  window.setVehicleSubFilter = setVehicleSubFilter;
 
   function renderServicesScreen() {
     renderServicesCategoriesGrid();
     const container = document.getElementById('servicesListContainer');
     if (!container) return;
 
+    const isVehicleSection = (APP_STATE.activeServiceCategory === 'vehicles');
+    const activeSub = APP_STATE.activeVehicleSubFilter || 'all';
+
+    // Toggle and render the vehicle sub-filter chip bar
+    const subBar = document.getElementById('servicesVehicleSubFilterBar');
+    if (subBar) {
+      if (isVehicleSection) {
+        subBar.style.display = 'flex';
+        subBar.innerHTML = VEHICLE_SUB_TYPES.map(vt => {
+          const isActive = (activeSub === vt.id);
+          const style = isActive
+            ? 'background:#059669;color:#fff;border:1px solid #059669;padding:6px 12px;border-radius:20px;font-size:11.5px;font-weight:800;white-space:nowrap;cursor:pointer;display:inline-flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(5,150,105,0.25)'
+            : 'background:#fff;color:#334155;border:1px solid #CBD5E1;padding:6px 12px;border-radius:20px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer;display:inline-flex;align-items:center;gap:4px';
+          return `<button type="button" onclick="setVehicleSubFilter('${vt.id}')" style="${style}"><span>${vt.icon}</span><span>${vt.name}</span></button>`;
+        }).join('');
+      } else {
+        subBar.style.display = 'none';
+      }
+    }
+
     const searchInput = document.getElementById('serviceSearchInput');
     const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
     const maxRadius = APP_STATE.radiusFilters.services;
 
-    const vehicleCats = ['auto', 'taxi', 'traveller', 'bus', 'pickup', 'goodsauto', 'jeep', 'lorry', 'jcb', 'crane', 'ambulance'];
+    const vehicleCats = ['vehicles', 'auto', 'taxi', 'traveller', 'bus', 'pickup', 'goodsauto', 'jeep', 'lorry', 'jcb', 'crane', 'ambulance', 'driver'];
 
     // Filter services by category and query
     let allMatching = APP_STATE.services.filter(srv => {
@@ -4298,8 +4342,45 @@
       let matchesCategory = false;
       if (APP_STATE.activeServiceCategory === 'all') {
         matchesCategory = true;
-      } else if (APP_STATE.activeServiceCategory === 'driver') {
-        matchesCategory = (srvCat === 'driver') || vehicleCats.includes(srvCat);
+      } else if (isVehicleSection) {
+        const isVeh = vehicleCats.includes(srvCat) || (srv.trade && (
+          srv.trade.includes('ഓട്ടോ') || srv.trade.includes('ടാക്സി') || srv.trade.includes('വാൻ') ||
+          srv.trade.includes('ബസ്') || srv.trade.includes('ലോറി') || srv.trade.includes('പിക്കപ്പ്') ||
+          srv.trade.includes('JCB') || srv.trade.includes('ക്രെയിൻ') || srv.trade.includes('ഡ്രൈവർ') ||
+          srv.trade.includes('ആംബുലൻസ്') || srv.trade.includes('വാഹനം')
+        )) || !!srv.vehicleDetails;
+
+        if (!isVeh) {
+          matchesCategory = false;
+        } else if (activeSub === 'all') {
+          matchesCategory = true;
+        } else {
+          const tradeLower = (srv.trade || '').toLowerCase();
+          const specType = srv.vehicleDetails?.type;
+          matchesCategory = (srvCat === activeSub) || (specType === activeSub) || (
+            activeSub === 'auto' && (tradeLower.includes('ഓട്ടോ') || tradeLower.includes('auto'))
+          ) || (
+            activeSub === 'taxi' && (tradeLower.includes('ടാക്സി') || tradeLower.includes('taxi') || tradeLower.includes('കാർ'))
+          ) || (
+            activeSub === 'traveller' && (tradeLower.includes('ട്രാവലർ') || tradeLower.includes('വാൻ') || tradeLower.includes('traveller'))
+          ) || (
+            activeSub === 'bus' && (tradeLower.includes('ബസ്') || tradeLower.includes('bus'))
+          ) || (
+            activeSub === 'pickup' && (tradeLower.includes('പിക്കപ്പ്') || tradeLower.includes('pickup'))
+          ) || (
+            activeSub === 'goodsauto' && (tradeLower.includes('ഗുഡ്സ്') || tradeLower.includes('goods'))
+          ) || (
+            activeSub === 'jeep' && (tradeLower.includes('ജീപ്പ്') || tradeLower.includes('jeep'))
+          ) || (
+            activeSub === 'lorry' && (tradeLower.includes('ലോറി') || tradeLower.includes('ടിപ്പർ') || tradeLower.includes('lorry'))
+          ) || (
+            activeSub === 'jcb' && (tradeLower.includes('jcb') || tradeLower.includes('ജെസിബി') || tradeLower.includes('ഹിറ്റാച്ചി'))
+          ) || (
+            activeSub === 'crane' && (tradeLower.includes('ക്രെയിൻ') || tradeLower.includes('റിക്കവറി') || tradeLower.includes('crane'))
+          ) || (
+            activeSub === 'ambulance' && (tradeLower.includes('ആംബുലൻസ്') || tradeLower.includes('ambulance'))
+          );
+        }
       } else {
         matchesCategory = (srvCat === APP_STATE.activeServiceCategory);
       }
