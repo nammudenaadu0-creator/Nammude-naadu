@@ -683,6 +683,15 @@
           }
         })
         .subscribe();
+
+      // Realtime listener for citizen profiles registered/updated in profiles table
+      client.channel('public:profiles')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, payload => {
+          if (payload && payload.new) {
+            handleIncomingProfile(payload.new);
+          }
+        })
+        .subscribe();
     } catch (e) {
       console.warn('ℹ️ [Supabase Realtime DB Listeners note]:', e.message);
     }
@@ -1000,6 +1009,57 @@
       } catch (_) {}
       if (typeof renderEmergencyModalList === 'function') {
         renderEmergencyModalList();
+      }
+    }
+  }
+
+  // Handle incoming registered citizen profile from realtime postgres_changes
+  function handleIncomingProfile(p) {
+    if (!p) return;
+    const profileObj = {
+      id: p.id,
+      name: p.name || 'നാട്ടുകാരൻ',
+      phone: p.phone || '',
+      location: p.place || 'കേരളം',
+      avatar: p.avatar || '',
+      bloodGroup: p.blood_group || 'O+',
+      lat: p.latitude,
+      lon: p.longitude,
+      latitude: p.latitude,
+      longitude: p.longitude,
+      isDonor: p.is_donor
+    };
+
+    if (typeof APP_STATE !== 'undefined') {
+      if (!Array.isArray(APP_STATE.cloudProfiles)) APP_STATE.cloudProfiles = [];
+      const cleanPhone = (profileObj.phone || '').replace(/\D/g, '').slice(-10);
+      const idx = APP_STATE.cloudProfiles.findIndex(item => 
+        (item.id && item.id === profileObj.id) ||
+        (cleanPhone && item.phone && item.phone.replace(/\D/g, '').slice(-10) === cleanPhone)
+      );
+
+      if (idx >= 0) {
+        APP_STATE.cloudProfiles[idx] = { ...APP_STATE.cloudProfiles[idx], ...profileObj };
+      } else {
+        APP_STATE.cloudProfiles.unshift(profileObj);
+      }
+
+      try {
+        localStorage.setItem('nn_cloud_profiles', JSON.stringify(APP_STATE.cloudProfiles.slice(0, 100)));
+      } catch (_) {}
+
+      // Refresh screens that display registered user photos
+      if (APP_STATE.currentScreen === 'nearby' && typeof renderNearbyScreen === 'function') {
+        renderNearbyScreen();
+      }
+      if (APP_STATE.currentScreen === 'blood' && typeof renderBloodDonorsList === 'function') {
+        renderBloodDonorsList();
+      }
+      if (APP_STATE.currentScreen === 'home' && typeof renderHomeCommunityFeed === 'function') {
+        renderHomeCommunityFeed();
+      }
+      if (APP_STATE.currentScreen === 'community' && typeof renderCommunityFeed === 'function') {
+        renderCommunityFeed();
       }
     }
   }
@@ -1972,7 +2032,7 @@
         .from('profiles')
         .select('*')
         .order('updated_at', { ascending: false })
-        .limit(60);
+        .limit(120);
 
       if (error) {
         console.warn('⚠️ [Supabase] Sync profiles error:', error.message);
@@ -1994,8 +2054,24 @@
           isDonor: p.is_donor
         }));
 
+        try {
+          localStorage.setItem('nn_cloud_profiles', JSON.stringify(APP_STATE.cloudProfiles));
+        } catch (_) {}
+
         if (APP_STATE.currentScreen === 'nearby' && typeof renderNearbyScreen === 'function') {
           renderNearbyScreen();
+        }
+        if (APP_STATE.currentScreen === 'blood' && typeof renderBloodDonorsList === 'function') {
+          renderBloodDonorsList();
+        }
+        if (APP_STATE.currentScreen === 'home' && typeof renderHomeCommunityFeed === 'function') {
+          renderHomeCommunityFeed();
+        }
+        if (APP_STATE.currentScreen === 'community' && typeof renderCommunityFeed === 'function') {
+          renderCommunityFeed();
+        }
+        if (APP_STATE.currentScreen === 'chat' && typeof renderChatListScreen === 'function') {
+          renderChatListScreen();
         }
       }
       return data || [];

@@ -165,16 +165,147 @@
     bloodRequests: [],
     chats: {},
     serviceRequests: [],
-    emergencyContacts: []
+    emergencyContacts: [],
+    cloudProfiles: (function() {
+      try {
+        const stored = localStorage.getItem('nn_cloud_profiles');
+        return stored ? JSON.parse(stored) : [];
+      } catch (_) { return []; }
+    })()
   };
 
-  // Expose APP_STATE globally for Firebase cloud synchronization
+  // Expose APP_STATE globally for cloud synchronization
   window.APP_STATE = APP_STATE;
 
   // Save user ID permanently
   if (!localStorage.getItem('nn_user_id')) {
     localStorage.setItem('nn_user_id', APP_STATE.currentUser.id.replace('usr_me_', ''));
   }
+
+  // Central Helper: Resolve true profile picture of any registered citizen or entity
+  function getRegisteredUserAvatar(identifier, fallback) {
+    const defaultAvatar = window.DEFAULT_USER_AVATAR || DEFAULT_USER_AVATAR;
+    if (!identifier && !fallback) return defaultAvatar;
+
+    // Direct check if identifier itself is already a valid image string
+    if (typeof identifier === 'string' && (identifier.startsWith('data:image/') || identifier.startsWith('http://') || identifier.startsWith('https://'))) {
+      if (!identifier.includes('data:image/svg+xml') && !identifier.includes('photo-1507003211169-0a1dd7228f2d')) {
+        return identifier;
+      }
+    }
+
+    const cleanStr = String(identifier || '').trim();
+    if (!cleanStr) return fallback || defaultAvatar;
+
+    const cleanPhone = cleanStr.replace(/\D/g, '').slice(-10);
+    const myPhone = (APP_STATE.currentUser?.phone || '').replace(/\D/g, '').slice(-10);
+    const myId = APP_STATE.currentUser?.id;
+    const myName = (APP_STATE.currentUser?.name || '').trim().toLowerCase();
+
+    // 1. Check if matching current user
+    if ((cleanPhone && cleanPhone === myPhone) || (myId && cleanStr === myId) || (cleanStr.toLowerCase() === myName && myName !== 'നാട്ടുകാരൻ')) {
+      if (APP_STATE.currentUser?.avatar && !APP_STATE.currentUser.avatar.includes('data:image/svg+xml') && !APP_STATE.currentUser.avatar.includes('photo-1507003211169-0a1dd7228f2d')) {
+        return APP_STATE.currentUser.avatar;
+      }
+    }
+
+    // 2. Check Supabase cloud registered citizen profiles
+    if (Array.isArray(APP_STATE.cloudProfiles)) {
+      const found = APP_STATE.cloudProfiles.find(p => {
+        if (!p) return false;
+        const pPhone = (p.phone || '').replace(/\D/g, '').slice(-10);
+        if (cleanPhone && pPhone && cleanPhone === pPhone) return true;
+        if (p.id && (p.id === cleanStr || p.id === ('usr_' + cleanPhone))) return true;
+        if (p.name && p.name.trim().toLowerCase() === cleanStr.toLowerCase() && p.name !== 'നാട്ടുകാരൻ') return true;
+        return false;
+      });
+      if (found && found.avatar && found.avatar.length > 20 && !found.avatar.includes('data:image/svg+xml') && !found.avatar.includes('photo-1507003211169-0a1dd7228f2d')) {
+        return found.avatar;
+      }
+    }
+
+    // 3. Check registered services
+    if (Array.isArray(APP_STATE.services)) {
+      const found = APP_STATE.services.find(s => {
+        if (!s) return false;
+        const sPhone = (s.phone || '').replace(/\D/g, '').slice(-10);
+        if (cleanPhone && sPhone && cleanPhone === sPhone) return true;
+        if (s.id && s.id === cleanStr) return true;
+        if (s.name && s.name.trim().toLowerCase() === cleanStr.toLowerCase()) return true;
+        return false;
+      });
+      if (found && found.avatar && found.avatar.length > 20 && !found.avatar.includes('data:image/svg+xml') && !found.avatar.includes('photo-1507003211169-0a1dd7228f2d')) {
+        return found.avatar;
+      }
+    }
+
+    // 4. Check community posts authors
+    if (Array.isArray(APP_STATE.posts)) {
+      const found = APP_STATE.posts.find(p => {
+        if (!p) return false;
+        const pPhone = (p.authorPhone || '').replace(/\D/g, '').slice(-10);
+        if (cleanPhone && pPhone && cleanPhone === pPhone) return true;
+        if (p.authorId && p.authorId === cleanStr) return true;
+        return false;
+      });
+      if (found && found.authorAvatar && found.authorAvatar.length > 20 && !found.authorAvatar.includes('data:image/svg+xml') && !found.authorAvatar.includes('photo-1507003211169-0a1dd7228f2d')) {
+        return found.authorAvatar;
+      }
+    }
+
+    // 5. Check chat metadata cache
+    if (APP_STATE.chatMeta) {
+      for (const k in APP_STATE.chatMeta) {
+        const m = APP_STATE.chatMeta[k];
+        if (m && m.avatar && m.avatar.length > 20 && !m.avatar.includes('data:image/svg+xml')) {
+          const mPhone = (m.phone || '').replace(/\D/g, '').slice(-10);
+          if (cleanPhone && mPhone && cleanPhone === mPhone) return m.avatar;
+          if (m.recipientId && m.recipientId === cleanStr) return m.avatar;
+        }
+      }
+    }
+
+    if (fallback && typeof fallback === 'string' && fallback.length > 20 && !fallback.includes('data:image/svg+xml') && !fallback.includes('photo-1507003211169-0a1dd7228f2d')) {
+      return fallback;
+    }
+    return defaultAvatar;
+  }
+  window.getRegisteredUserAvatar = getRegisteredUserAvatar;
+
+  function findRegisteredUserProfile(identifier) {
+    if (!identifier) return null;
+    const cleanStr = String(identifier).trim();
+    const cleanPhone = cleanStr.replace(/\D/g, '').slice(-10);
+    const myPhone = (APP_STATE.currentUser?.phone || '').replace(/\D/g, '').slice(-10);
+
+    if ((cleanPhone && cleanPhone === myPhone) || (APP_STATE.currentUser?.id && cleanStr === APP_STATE.currentUser.id)) {
+      return {
+        id: APP_STATE.currentUser.id,
+        name: APP_STATE.currentUser.name,
+        phone: APP_STATE.currentUser.phone,
+        avatar: APP_STATE.currentUser.avatar || window.DEFAULT_USER_AVATAR,
+        location: APP_STATE.currentUser.location || 'കേരളം',
+        bloodGroup: APP_STATE.currentUser.bloodGroup || 'O+',
+        trade: APP_STATE.currentUser.trade || '',
+        bio: APP_STATE.currentUser.bio || '',
+        isDonor: APP_STATE.currentUser.isDonor
+      };
+    }
+
+    if (Array.isArray(APP_STATE.cloudProfiles)) {
+      const found = APP_STATE.cloudProfiles.find(p => {
+        if (!p) return false;
+        const pPhone = (p.phone || '').replace(/\D/g, '').slice(-10);
+        if (cleanPhone && pPhone && cleanPhone === pPhone) return true;
+        if (p.id && (p.id === cleanStr || p.id === ('usr_' + cleanPhone))) return true;
+        if (p.name && p.name.trim().toLowerCase() === cleanStr.toLowerCase() && p.name !== 'നാട്ടുകാരൻ') return true;
+        return false;
+      });
+      if (found) return found;
+    }
+    return null;
+  }
+  window.findRegisteredUserProfile = findRegisteredUserProfile;
 
   function updatePostingProfileBar() {
     const avatarEl = document.getElementById('postingAsAvatar');
@@ -465,7 +596,10 @@
       // Background non-blocking sync from Supabase Cloud (instant UI first, smooth background fetch)
       setTimeout(() => {
         if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES) {
-          if (typeof window.NN_SUPABASE_SERVICES.syncPosts === 'function') window.NN_SUPABASE_SERVICES.syncPosts();
+          if (typeof window.NN_SUPABASE_SERVICES.syncProfiles === 'function') window.NN_SUPABASE_SERVICES.syncProfiles();
+          setTimeout(() => {
+            if (typeof window.NN_SUPABASE_SERVICES.syncPosts === 'function') window.NN_SUPABASE_SERVICES.syncPosts();
+          }, 150);
           setTimeout(() => {
             if (typeof window.NN_SUPABASE_SERVICES.syncServices === 'function') window.NN_SUPABASE_SERVICES.syncServices();
           }, 350);
@@ -1581,9 +1715,9 @@
       : (post.authorName || 'നാട്ടുകാരൻ').replace(/'/g, "\\'").replace(/"/g, '&quot;');
     const timeFormatted = formatMalayalamTime(post.timestamp || post.createdAt);
     const locationSafe = post.authorLocation || post.locationName || 'കേരളം';
-    const avatarSafe = (isMine && APP_STATE.currentUser && APP_STATE.currentUser.avatar)
-      ? APP_STATE.currentUser.avatar
-      : (post.authorAvatar || window.DEFAULT_USER_AVATAR || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80');
+    const avatarSafe = isMine
+      ? ((APP_STATE.currentUser && APP_STATE.currentUser.avatar && !APP_STATE.currentUser.avatar.includes('data:image/svg+xml')) ? APP_STATE.currentUser.avatar : window.DEFAULT_USER_AVATAR)
+      : getRegisteredUserAvatar(post.authorPhone || post.authorId || post.authorName, post.authorAvatar);
 
     const typeBadge = post.type === 'offer' ? '<span style="background:#FEF3C7;color:#92400E;font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px">🏷️ ഓഫർ</span>' :
                       post.type === 'photo' ? '<span style="background:#EFF6FF;color:#1E40AF;font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px">🖼️ ചിത്രം</span>' :
@@ -1893,11 +2027,7 @@
     }
 
     // Resolve avatar
-    if (!avatar || avatar === DEFAULT_USER_AVATAR) {
-      if (matchedService && matchedService.avatar) avatar = matchedService.avatar;
-      else if (authorPosts.length > 0 && authorPosts[0].authorAvatar) avatar = authorPosts[0].authorAvatar;
-      else avatar = DEFAULT_USER_AVATAR;
-    }
+    avatar = getRegisteredUserAvatar(phone || authorId || name, avatar || (matchedService?.avatar) || (authorPosts.length > 0 ? authorPosts[0].authorAvatar : DEFAULT_USER_AVATAR));
 
     // Resolve location
     let loc = userData.loc || '';
@@ -2216,7 +2346,7 @@
       id: recipientId || (matchedService ? matchedService.id : (cleanPhone ? ('usr_' + cleanPhone) : 'usr_other')),
       name: name || 'പ്രാദേശിക സുഹൃത്ത്',
       phone: phone || '',
-      avatar: avatar || (matchedService?.avatar) || (matchedDonor?.avatar) || DEFAULT_USER_AVATAR,
+      avatar: getRegisteredUserAvatar(phone || recipientId || name, avatar || (matchedService?.avatar) || (matchedDonor?.avatar) || DEFAULT_USER_AVATAR),
       location: (matchedService?.location) || (matchedDonor?.location) || APP_STATE.location?.name || 'കേരളം',
       bloodGroup: (matchedDonor?.bloodGroup) || '',
       trade: (matchedService?.trade) || '',
@@ -2581,8 +2711,7 @@
     }
 
     if (!APP_STATE.chatMeta) APP_STATE.chatMeta = {};
-    const existingMeta = APP_STATE.chatMeta[chatKey] || {};
-    const resolvedAvatar = safeAvatar || existingMeta.avatar || DEFAULT_USER_AVATAR;
+    const resolvedAvatar = getRegisteredUserAvatar(safePhone || recipientId || safeName, safeAvatar || existingMeta.avatar || DEFAULT_USER_AVATAR);
 
     APP_STATE.activeChatRecipient = {
       name: (safeName && safeName !== 'പ്രാദേശിക സുഹൃത്ത്') ? safeName : (existingMeta.name || safeName),
@@ -3446,7 +3575,8 @@
   function openChatForJob(jobId) {
     const j = (APP_STATE.jobs || []).find(item => item.id === jobId);
     if (!j) return;
-    openChatModal(j.employer, j.employerPhone, DEFAULT_USER_AVATAR, `തൊഴിൽ അന്വേഷണം: ${j.title} (${j.salary})`, j.id, null, 'job');
+    const avatar = getRegisteredUserAvatar(j.employerPhone || j.employer, DEFAULT_USER_AVATAR);
+    openChatModal(j.employer, j.employerPhone, avatar, `തൊഴിൽ അന്വേഷണം: ${j.title} (${j.salary})`, j.id, null, 'job');
   }
   window.openChatForJob = openChatForJob;
 
@@ -3455,17 +3585,20 @@
     if (!r) return;
     const isSale = r.listingType === 'sale' || (r.type && r.type.includes('വിൽപന')) || (r.title && r.title.includes('വിൽപന'));
     const topic = isSale ? `വിൽപന അന്വേഷണം: ${r.title} (${r.rate || r.price})` : `വാടക അന്വേഷണം: ${r.title} (${r.rate || r.price})`;
-    openChatModal(r.owner, r.ownerPhone, r.image || DEFAULT_USER_AVATAR, topic, r.id, null, isSale ? 'buysell' : 'rental');
+    const avatar = r.image || getRegisteredUserAvatar(r.ownerPhone, DEFAULT_USER_AVATAR);
+    openChatModal(r.owner, r.ownerPhone, avatar, topic, r.id, null, isSale ? 'buysell' : 'rental');
   }
   window.openChatForRental = openChatForRental;
 
   function openChatForDonor(name, phone, group) {
-    openChatModal(name, phone, DEFAULT_USER_AVATAR, `രക്തദാന അന്വേഷണം: ${group}`, 'donor_' + (phone ? phone.replace(/\D/g, '') : name), null, 'blood');
+    const avatar = getRegisteredUserAvatar(phone || name, DEFAULT_USER_AVATAR);
+    openChatModal(name, phone, avatar, `രക്തദാന അന്വേഷണം: ${group}`, 'donor_' + (phone ? phone.replace(/\D/g, '') : name), null, 'blood');
   }
   window.openChatForDonor = openChatForDonor;
 
   function openChatForAmbulance(name, phone) {
-    openChatModal(name, phone, DEFAULT_USER_AVATAR, `അടിയന്തിര ആംബുലൻസ് ആവശ്യം`, 'amb_' + (phone ? phone.replace(/\D/g, '') : name), null, 'ambulance');
+    const avatar = getRegisteredUserAvatar(phone || name, DEFAULT_USER_AVATAR);
+    openChatModal(name, phone, avatar, `അടിയന്തിര ആംബുലൻസ് ആവശ്യം`, 'amb_' + (phone ? phone.replace(/\D/g, '') : name), null, 'ambulance');
   }
   window.openChatForAmbulance = openChatForAmbulance;
 
@@ -3513,18 +3646,37 @@
     const myPhone = normalizePhone(APP_STATE.currentUser.phone);
     const myId = APP_STATE.currentUser.id;
 
+    // 0. Registered Citizens from Cloud Profiles
+    (APP_STATE.cloudProfiles || []).forEach(cp => {
+      const cpPhone = normalizePhone(cp.phone);
+      const cpKey = cpPhone || cp.id;
+      if (cpKey && cpKey !== myPhone && cpKey !== myId && !seen.has(cpKey)) {
+        seen.add(cpKey);
+        const resolvedAvatar = getRegisteredUserAvatar(cp.phone || cp.id, cp.avatar);
+        list.push({
+          type: cp.isDonor ? 'donor' : 'citizen',
+          id: cp.id || ('usr_' + cpPhone),
+          name: cp.name || 'നാട്ടുകാരൻ',
+          phone: cp.phone || '',
+          avatar: resolvedAvatar,
+          sub: cp.isDonor ? `🩸 ${cp.bloodGroup || 'O+'} രക്തദാതാവ് • 📍 ${cp.location || 'കേരളം'}` : `👥 രജിസ്റ്റർ ചെയ്ത നാട്ടുകാരൻ • 📍 ${cp.location || 'കേരളം'}`
+        });
+      }
+    });
+
     // 1. Community Post Authors (നാട്ടുകാർ & പോസ്റ്റ് ചെയ്തവർ)
     (APP_STATE.posts || []).forEach(p => {
       const pPhone = normalizePhone(p.authorPhone);
       const pKey = pPhone || p.authorId || p.authorName;
       if (pKey && pKey !== myPhone && pKey !== myId && !seen.has(pKey)) {
         seen.add(pKey);
+        const resolvedAvatar = getRegisteredUserAvatar(p.authorPhone || p.authorId, p.authorAvatar);
         list.push({
           type: 'citizen',
           id: p.authorId || ('usr_' + (pPhone || p.authorName)),
           name: p.authorName || 'നാട്ടുകാരൻ',
           phone: p.authorPhone || '',
-          avatar: p.authorAvatar || DEFAULT_USER_AVATAR,
+          avatar: resolvedAvatar,
           sub: `📢 കമ്മ്യൂണിറ്റി പോസ്റ്റ് • 📍 ${p.authorLocation || 'കേരളം'}`
         });
       }
@@ -3536,60 +3688,67 @@
       const sKey = sPhone || s.id;
       if (sKey && sKey !== myPhone && sKey !== myId && !seen.has(sKey)) {
         seen.add(sKey);
+        const resolvedAvatar = getRegisteredUserAvatar(s.phone || s.userId || s.id, s.avatar);
         list.push({
           type: 'service',
           id: s.id,
           name: s.name,
           phone: s.phone || '',
-          avatar: s.avatar || DEFAULT_USER_AVATAR,
+          avatar: resolvedAvatar,
           sub: `🛠️ ${s.trade} • 📍 ${resolveItemLocation(s) || 'തത്സമയ ലൊക്കേഷൻ'}`
         });
       }
     });
+
     // 3. Blood Donors (രക്തദാതാക്കൾ)
     (APP_STATE.bloodDonors || []).forEach(d => {
       const dPhone = normalizePhone(d.phone);
       const dKey = dPhone || d.name;
       if (dKey && dKey !== myPhone && !seen.has(dKey)) {
         seen.add(dKey);
+        const resolvedAvatar = getRegisteredUserAvatar(d.phone || d.name);
         list.push({
           type: 'donor',
           id: 'donor_' + (dPhone || d.name),
           name: d.name,
           phone: d.phone || '',
-          avatar: DEFAULT_USER_AVATAR,
+          avatar: resolvedAvatar,
           sub: `🩸 ${d.group || 'O+'} രക്തദാതാവ് • 📍 ${resolveItemLocation(d) || 'തത്സമയ ലൊക്കേഷൻ'}`
         });
       }
     });
+
     // 4. Job Employers (തൊഴിൽ ദാതാക്കൾ)
     (APP_STATE.jobs || []).forEach(j => {
       const jPhone = normalizePhone(j.employerPhone);
       const jKey = jPhone || j.employer;
       if (jKey && jKey !== myPhone && !seen.has(jKey)) {
         seen.add(jKey);
+        const resolvedAvatar = getRegisteredUserAvatar(j.employerPhone || j.employer);
         list.push({
           type: 'citizen',
           id: j.id,
           name: j.employer || 'തൊഴിൽ ദാതാവ്',
           phone: j.employerPhone || '',
-          avatar: DEFAULT_USER_AVATAR,
+          avatar: resolvedAvatar,
           sub: `💼 ${j.title} • 📍 ${resolveItemLocation(j) || 'തത്സമയ ലൊക്കേഷൻ'}`
         });
       }
     });
+
     // 5. Rentals Owners (വാടക & വസ്തു)
     (APP_STATE.rentals || []).forEach(r => {
       const rPhone = normalizePhone(r.ownerPhone);
       const rKey = rPhone || r.owner;
       if (rKey && rKey !== myPhone && !seen.has(rKey)) {
         seen.add(rKey);
+        const resolvedAvatar = r.image || getRegisteredUserAvatar(r.ownerPhone || r.owner);
         list.push({
           type: 'citizen',
           id: r.id,
           name: r.owner || 'കെട്ടിട ഉടമ',
           phone: r.ownerPhone || '',
-          avatar: DEFAULT_USER_AVATAR,
+          avatar: resolvedAvatar,
           sub: `🏠 ${r.title} • 📍 ${resolveItemLocation(r) || 'തത്സമയ ലൊക്കേഷൻ'}`
         });
       }
@@ -3795,7 +3954,7 @@
           </div>
         `;
         html += matchedCommunity.slice(0, 15).map(c => `
-          <div onclick="openChatModal('${escapeHtml(c.name).replace(/'/g, "\\'")}', '${c.phone || ''}', '${c.avatar && c.avatar.startsWith('http') ? c.avatar : ''}', '', '${c.id}')"
+          <div onclick="openChatModal('${escapeHtml(c.name).replace(/'/g, "\\'")}', '${c.phone || ''}', '', '', '${c.id}')"
                style="display:flex;align-items:center;gap:12px;padding:11px 14px;background:#fff;border-radius:14px;border:1px solid #E2E8F0;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.02)">
             <div style="position:relative;flex-shrink:0">
               <img src="${c.avatar || DEFAULT_USER_AVATAR}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:1.5px solid #E2E8F0" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
@@ -3843,7 +4002,7 @@
 
       if (allCommunity.length > 0) {
         html += allCommunity.slice(0, 12).map(c => `
-          <div onclick="openChatModal('${escapeHtml(c.name).replace(/'/g, "\\'")}', '${c.phone || ''}', '${c.avatar && c.avatar.startsWith('http') ? c.avatar : ''}', '', '${c.id}')"
+          <div onclick="openChatModal('${escapeHtml(c.name).replace(/'/g, "\\'")}', '${c.phone || ''}', '', '', '${c.id}')"
                style="display:flex;align-items:center;gap:12px;padding:11px 14px;background:#fff;border-radius:14px;border:1px solid #E2E8F0;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.02);transition:all 0.15s">
             <div style="position:relative;flex-shrink:0">
               <img src="${c.avatar || DEFAULT_USER_AVATAR}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:1.5px solid #CBD5E1" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
@@ -3881,7 +4040,7 @@
         <div style="margin-top:16px;padding-top:12px;border-top:1px solid #E2E8F0">
           <div style="font-size:13px;font-weight:800;color:#0F172A;margin-bottom:8px">⚡ കൂടുതൽ ആളുകളുമായി ചാറ്റ് ചെയ്യാം</div>
           ${allCommunity.slice(0, 6).map(c => `
-            <div onclick="openChatModal('${escapeHtml(c.name).replace(/'/g, "\\'")}', '${c.phone || ''}', '${c.avatar && c.avatar.startsWith('http') ? c.avatar : ''}', '', '${c.id}')"
+            <div onclick="openChatModal('${escapeHtml(c.name).replace(/'/g, "\\'")}', '${c.phone || ''}', '', '', '${c.id}')"
                  style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:#fff;border-radius:12px;border:1px solid #E2E8F0;cursor:pointer;margin-bottom:6px">
               <img src="${c.avatar || DEFAULT_USER_AVATAR}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:1.5px solid #CBD5E1" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
               <div style="flex:1;min-width:0">
@@ -3945,7 +4104,7 @@
         <div onclick="event.stopPropagation(); viewChatRecipientFullProfile('${k}')"
              title="മുഴുവൻ പ്രൊഫൈൽ പേജ് കാണാം"
              style="position:relative;flex-shrink:0;cursor:pointer">
-          <img src="${meta.avatar || DEFAULT_USER_AVATAR}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #E2E8F0" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
+          <img src="${getRegisteredUserAvatar(meta.phone || meta.recipientId || meta.name, meta.avatar)}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #E2E8F0" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
           <span style="position:absolute;bottom:1px;right:1px;width:12px;height:12px;border-radius:50%;background:#10B981;border:2px solid #fff"></span>
         </div>
         <div style="flex:1;min-width:0">
@@ -4117,7 +4276,7 @@
       return `
         <div class="service-card" onclick="openServiceDetailModal('${srv.id}')" style="cursor:pointer">
           <div class="service-card-top">
-            <img src="${srv.avatar}" alt="${srv.name}" class="service-prov-avatar" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80'">
+            <img src="${getRegisteredUserAvatar(srv.phone || srv.userId || srv.name, srv.avatar)}" alt="${srv.name}" class="service-prov-avatar" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
             <div class="service-prov-meta">
               <div style="display:flex;justify-content:space-between;align-items:flex-start">
                 <div class="service-prov-name">
@@ -4193,7 +4352,7 @@
           <button onclick="closeModal('modal-service-detail')" style="background:rgba(255,255,255,0.25);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer">✕</button>
         </div>
         <div style="display:flex;align-items:center;gap:14px;margin-top:14px">
-          <img src="${srv.avatar}" alt="${srv.name}" style="width:68px;height:68px;border-radius:50%;border:3px solid #fff;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,0.15)" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80'">
+          <img src="${getRegisteredUserAvatar(srv.phone || srv.userId || srv.name, srv.avatar)}" alt="${srv.name}" style="width:68px;height:68px;border-radius:50%;border:3px solid #fff;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,0.15)" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
           <div>
             <h3 style="margin:0;font-size:1.25rem;font-weight:800">${srv.name}</h3>
             <div style="font-size:0.9rem;opacity:0.95;margin-top:2px;display:flex;align-items:center;gap:6px">
@@ -4973,7 +5132,7 @@
       district: resolvedDistrict,
       lat: APP_STATE.location.lat,
       lon: APP_STATE.location.lon,
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+      avatar: (APP_STATE.currentUser?.avatar && !APP_STATE.currentUser.avatar.includes('data:image/svg+xml')) ? APP_STATE.currentUser.avatar : getRegisteredUserAvatar(phone, DEFAULT_USER_AVATAR),
       badge: vehicleDetails ? 'വാഹന സർവീസ് രജിസ്ട്രേഷൻ' : 'തദ്ദേശവാസി രജിസ്ട്രേഷൻ',
       isCloud: true,
       createdAt: Date.now(),
@@ -5291,11 +5450,14 @@
       return;
     }
 
-    container.innerHTML = bloodExtendedNotice + inRadius.map(d => `
+    container.innerHTML = bloodExtendedNotice + inRadius.map(d => {
+      const donorAvatar = getRegisteredUserAvatar(d.phone || d.id || d.name);
+      return `
       <div style="background:#fff;border-radius:16px;padding:14px;border:1px solid #FECACA;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
         <div style="display:flex;align-items:center;gap:12px">
-          <div style="width:44px;height:44px;border-radius:50%;background:#FEF2F2;color:#DC2626;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;border:2px solid #FCA5A5">
-            ${d.group || 'O+'}
+          <div style="position:relative;width:46px;height:46px;flex-shrink:0">
+            <img src="${donorAvatar}" alt="${escapeHtml(d.name || 'രക്തദാതാവ്')}" style="width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid #FECACA" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
+            <span style="position:absolute;bottom:-2px;right:-2px;background:#DC2626;color:#fff;font-size:9.5px;font-weight:900;padding:1px 5px;border-radius:6px;border:1.5px solid #fff;line-height:1.2">${d.group || 'O+'}</span>
           </div>
           <div>
             <div style="font-weight:800;font-size:14px;color:#111827">${escapeHtml(d.name || 'രക്തദാതാവ്')}</div>
@@ -5308,7 +5470,8 @@
           </button>
         </div>
       </div>
-    `).join('');
+    `;
+    }).join('');
   }
 
   function openBloodModal() {
@@ -6702,19 +6865,22 @@
 
     // Aggregate ALL community entities within the region with complete null-safety
     let rawItems = [];
+    const seenPhones = new Set();
+    if (myPhone) seenPhones.add(myPhone);
 
     // 1. SERVICES & WORKERS (Exclude own service)
     (APP_STATE.services || []).forEach(s => {
       if (isCurrentUserEntity(s.userId || s.id, s.phone, s.name, s.isCurrentUser)) return;
       const dist = getItemDistanceKm(s, APP_STATE.location.lat, APP_STATE.location.lon);
       s._calculatedDist = dist;
+      const resolvedAvatar = getRegisteredUserAvatar(s.phone || s.id, s.avatar);
       rawItems.push({
         type: 'service',
         id: s.id,
         name: s.name,
         subtitle: s.trade,
         icon: s.icon || '🛠️',
-        avatar: s.avatar || DEFAULT_USER_AVATAR,
+        avatar: resolvedAvatar,
         phone: s.phone || '',
         location: resolveItemLocation(s),
         badge: s.rating ? `★ ${s.rating}` : 'വെരിഫൈഡ്',
@@ -6727,17 +6893,21 @@
     (APP_STATE.posts || []).forEach(p => {
       if (isCurrentUserEntity(p.authorId, p.authorPhone, p.authorName, p.isCurrentUser)) return;
       const authorKey = p.authorName || p.authorId;
+      const pPhone = normalizePhone(p.authorPhone);
+      if (pPhone && seenPhones.has(pPhone)) return;
       if (authorKey && !seenAuthors.has(authorKey)) {
         seenAuthors.add(authorKey);
+        if (pPhone) seenPhones.add(pPhone);
         const dist = getItemDistanceKm(p, APP_STATE.location.lat, APP_STATE.location.lon);
         p._calculatedDist = dist;
+        const resolvedAvatar = getRegisteredUserAvatar(p.authorPhone || p.authorId, p.authorAvatar);
         rawItems.push({
           type: 'citizen',
           id: p.authorId || ('citizen_' + p.id),
           name: p.authorName || 'നാട്ടുകാരൻ',
           subtitle: p.content ? (p.content.slice(0, 32) + '...') : 'കമ്മ്യൂണിറ്റി പോസ്റ്റ്',
           icon: '👥',
-          avatar: p.authorAvatar || DEFAULT_USER_AVATAR,
+          avatar: resolvedAvatar,
           phone: p.authorPhone || '',
           location: resolveItemLocation(p),
           badge: 'നാട്ടുകാരൻ',
@@ -6746,18 +6916,45 @@
       }
     });
 
-    // 3. BLOOD DONORS (Exclude self)
+    // 3. REGISTERED CITIZENS (From Supabase cloud profiles)
+    (APP_STATE.cloudProfiles || []).forEach(cp => {
+      if (isCurrentUserEntity(cp.id, cp.phone, cp.full_name || cp.name, false)) return;
+      const cpPhone = normalizePhone(cp.phone);
+      if (cpPhone && seenPhones.has(cpPhone)) return;
+      if (cp.id && seenAuthors.has(cp.id)) return;
+      if (cpPhone) seenPhones.add(cpPhone);
+      if (cp.id) seenAuthors.add(cp.id);
+
+      const dist = getItemDistanceKm(cp, APP_STATE.location.lat, APP_STATE.location.lon);
+      cp._calculatedDist = dist;
+      const resolvedAvatar = getRegisteredUserAvatar(cp.phone || cp.id, cp.avatar_url || cp.avatar);
+      rawItems.push({
+        type: 'citizen',
+        id: cp.id || ('usr_' + (cpPhone || Math.random())),
+        name: cp.full_name || cp.name || 'രജിസ്റ്റർ ചെയ്ത അംഗം',
+        subtitle: cp.status || cp.bio || 'നാട്ടിലെ അംഗം',
+        icon: '👤',
+        avatar: resolvedAvatar,
+        phone: cp.phone || '',
+        location: resolveItemLocation(cp) || 'കേരളം',
+        badge: 'രജിസ്റ്റർ ചെയ്തയാൾ',
+        dist: dist
+      });
+    });
+
+    // 4. BLOOD DONORS (Exclude self)
     (APP_STATE.bloodDonors || []).forEach(d => {
       if (isCurrentUserEntity(d.id, d.phone, d.name, false)) return;
       const dist = getItemDistanceKm(d, APP_STATE.location.lat, APP_STATE.location.lon);
       d._calculatedDist = dist;
+      const resolvedAvatar = getRegisteredUserAvatar(d.phone || d.id, d.avatar);
       rawItems.push({
         type: 'donor',
         id: 'donor_' + (d.phone ? d.phone.replace(/\D/g, '') : d.name),
         name: d.name,
         subtitle: `രക്തദാതാവ് (${d.group || 'All'})`,
         icon: '🩸',
-        avatar: DEFAULT_USER_AVATAR,
+        avatar: resolvedAvatar,
         phone: d.phone || '',
         location: resolveItemLocation(d),
         badge: d.group || 'O+',
@@ -6765,18 +6962,19 @@
       });
     });
 
-    // 4. RENTALS & LOCAL BUSINESSES (Exclude self)
+    // 5. RENTALS & LOCAL BUSINESSES (Exclude self)
     (APP_STATE.rentals || []).forEach(r => {
       if (isCurrentUserEntity(r.userId || r.id, r.ownerPhone, r.owner, false)) return;
       const dist = getItemDistanceKm(r, APP_STATE.location.lat, APP_STATE.location.lon);
       r._calculatedDist = dist;
+      const resolvedAvatar = r.image || getRegisteredUserAvatar(r.ownerPhone || r.userId, DEFAULT_USER_AVATAR);
       rawItems.push({
         type: 'rental',
         id: r.id,
         name: r.owner || r.title,
         subtitle: r.title,
         icon: '🏠',
-        avatar: r.image || DEFAULT_USER_AVATAR,
+        avatar: resolvedAvatar,
         phone: r.ownerPhone || '',
         location: resolveItemLocation(r),
         badge: r.rate || 'വാടകയ്ക്ക്',
@@ -7720,10 +7918,15 @@
       return;
     }
 
+    const userAvatar = (APP_STATE.currentUser && APP_STATE.currentUser.avatar && !APP_STATE.currentUser.avatar.includes('data:image/svg+xml'))
+      ? APP_STATE.currentUser.avatar
+      : '';
+
     const newDonor = {
       name: name,
       group: group,
       phone: phone,
+      avatar: userAvatar,
       location: loc,
       lat: APP_STATE.location.lat,
       lon: APP_STATE.location.lon,
