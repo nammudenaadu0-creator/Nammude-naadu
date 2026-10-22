@@ -1893,7 +1893,7 @@
 
 .kerala-cat-card {
   border-radius: 18px;
-  padding: 14px 8px 12px;
+  padding: 10px 6px 10px;
   text-align: center;
   position: relative;
   cursor: pointer;
@@ -1901,7 +1901,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  min-height: 148px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
@@ -1912,9 +1911,9 @@
 }
 
 .kerala-cat-img-box {
-  width: 58px;
-  height: 58px;
-  margin: 0 auto 8px;
+  width: 74px;
+  height: 74px;
+  margin: 0 auto 6px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1924,15 +1923,15 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  border-radius: 12px;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  border-radius: 14px;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12));
 }
 
 .kerala-cat-title {
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 900;
-  margin-bottom: 3px;
-  line-height: 1.25;
+  margin-bottom: 2px;
+  line-height: 1.2;
   font-family: 'Manjari', sans-serif;
   width: 100%;
 }
@@ -1940,10 +1939,10 @@
 .kerala-cat-sub {
   font-size: 9.5px;
   font-weight: 700;
-  line-height: 1.35;
-  margin-bottom: 16px;
+  line-height: 1.3;
+  margin-bottom: 10px;
   width: 100%;
-  padding: 0 2px;
+  padding: 0 4px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -1952,23 +1951,23 @@
 
 .kerala-cat-arrow-btn {
   position: absolute;
-  bottom: 8px;
-  right: 8px;
-  width: 22px;
-  height: 22px;
+  bottom: 6px;
+  right: 6px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #FFFFFF;
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 900;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 /* KERALA SEARCH CAPSULE BAR */
 .home-kerala-search-wrap {
-  margin: 8px 16px 16px;
+  margin: 6px 16px 12px;
   background: #FFFFFF;
   border: 2px solid #10B981;
   border-radius: 9999px;
@@ -2030,12 +2029,12 @@
 
 /* KERALA HERO HOUSEBOAT BANNER */
 .home-kerala-hero-banner {
-  margin: 0 16px 18px;
+  margin: 0 16px 14px;
   position: relative;
   overflow: hidden;
-  border-radius: 22px;
-  min-height: 180px;
-  box-shadow: 0 10px 26px rgba(6, 78, 59, 0.18);
+  border-radius: 20px;
+  min-height: 160px;
+  box-shadow: 0 8px 24px rgba(6, 78, 59, 0.16);
   border: 1.5px solid rgba(255, 255, 255, 0.8);
 }
 
