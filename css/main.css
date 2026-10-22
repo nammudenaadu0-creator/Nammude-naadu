@@ -99,29 +99,28 @@
             overflow-x: hidden;
         }
 
-        /* Screen Wrapper */
+        /* High Performance Screen Wrapper */
         .screen {
             display: none;
             flex-direction: column;
             width: 100%;
             min-height: 100vh;
             padding-bottom: 96px;
-            animation: fadeIn 0.22s ease-out;
+            contain: content;
+            -webkit-overflow-scrolling: touch;
         }
 
         .screen.active {
             display: flex;
+            animation: fastFadeIn 0.12s cubic-bezier(0, 0, 0.2, 1);
         }
 
-        @keyframes fadeIn {
+        @keyframes fastFadeIn {
             from {
-                opacity: 0;
-                transform: translateY(4px);
+                opacity: 0.82;
             }
-
             to {
                 opacity: 1;
-                transform: translateY(0);
             }
         }
 

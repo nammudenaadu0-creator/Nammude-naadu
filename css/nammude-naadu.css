@@ -31,21 +31,25 @@
 }
 
 /* ==============================================================
-   SCREEN DISPLAY & ANIMATIONS
+   SCREEN DISPLAY & HIGH-PERFORMANCE 60FPS TRANSITIONS
    ============================================================== */
 .screen {
   display: none;
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  contain: content;
   padding-bottom: 90px;
   min-height: 100vh;
+  -webkit-overflow-scrolling: touch;
 }
 
 .screen.active {
-  display: block;
-  opacity: 1;
-  transform: translateY(0);
+  display: flex;
+  flex-direction: column;
+  animation: fastScreenIn 0.12s cubic-bezier(0, 0, 0.2, 1);
+}
+
+@keyframes fastScreenIn {
+  from { opacity: 0.82; }
+  to { opacity: 1; }
 }
 
 #screen-splash.active {
@@ -2079,15 +2083,17 @@
   transform: scale(0.96);
 }
 
-/* KERALA HERO HOUSEBOAT BANNER */
+/* ADMIN VILLAGE POSTER AD BANNER (EDGE-TO-EDGE, NO TEXT OVERLAY) */
 .home-kerala-hero-banner {
   margin: 0 16px 14px;
   position: relative;
   overflow: hidden;
   border-radius: 20px;
-  min-height: 160px;
-  box-shadow: 0 8px 24px rgba(6, 78, 59, 0.16);
-  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  height: 160px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: #064E3B;
+  cursor: pointer;
 }
 
 .home-kerala-hero-bg {
@@ -2097,70 +2103,7 @@
   height: 100%;
   object-fit: cover;
   z-index: 1;
-}
-
-.home-kerala-hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, rgba(3, 46, 31, 0.94) 0%, rgba(4, 61, 41, 0.82) 48%, rgba(6, 78, 59, 0.25) 75%, rgba(0, 0, 0, 0) 100%);
-  z-index: 2;
-}
-
-.home-kerala-hero-content {
-  position: relative;
-  z-index: 3;
-  padding: 18px 18px;
-  max-width: 65%;
-}
-
-.home-kerala-hero-title {
-  margin: 0 0 2px;
-  color: #FFFFFF;
-  font-size: 26px;
-  font-weight: 900;
-  font-family: 'Manjari', sans-serif;
-  letter-spacing: -0.5px;
-  line-height: 1.15;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-}
-
-.home-kerala-hero-subtitle {
-  margin: 0 0 6px;
-  color: #FFFFFF;
-  font-size: 20px;
-  font-weight: 900;
-  font-family: 'Manjari', sans-serif;
-  line-height: 1.2;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-}
-
-.home-kerala-hero-tagline {
-  margin: 0 0 12px;
-  color: #E6F5F2;
-  font-size: 11.5px;
-  font-weight: 700;
-  line-height: 1.4;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
-}
-
-.home-kerala-hero-cta {
-  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-  color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 9999px;
-  padding: 6px 14px;
-  font-size: 11.5px;
-  font-weight: 800;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: transform 0.1s ease;
-}
-
-.home-kerala-hero-cta:active {
-  transform: scale(0.96);
+  display: block;
 }
 
 .home-kerala-hero-dots {

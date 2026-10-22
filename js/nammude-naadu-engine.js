@@ -866,22 +866,28 @@
   window.toast = toast;
 
   // ==============================================================
-  // 5. NAVIGATION & SCREEN SWITCHING ENGINE (Globally Exposed)
+  // 5. NAVIGATION & SCREEN SWITCHING ENGINE (Ultra-Fast 60fps)
   // ==============================================================
   function navTo(screenId) {
     if (!screenId) return;
+    if (APP_STATE.currentScreen === screenId) {
+      window.scrollTo(0, 0);
+      return;
+    }
     APP_STATE.previousScreen = APP_STATE.currentScreen;
     APP_STATE.currentScreen = screenId;
 
-    // Toggle screen DOM classes
-    document.querySelectorAll('.screen').forEach(el => {
-      el.classList.remove('active');
-    });
+    // Toggle screen DOM classes immediately
+    const prev = document.querySelector('.screen.active');
+    if (prev) prev.classList.remove('active');
 
     const target = document.getElementById('screen-' + screenId);
     if (target) {
       target.classList.add('active');
     }
+
+    // Instant top scroll without thread-blocking smooth scroll
+    window.scrollTo(0, 0);
 
     // Toggle bottom navigation
     const bottomNav = document.getElementById('bottomNav');
@@ -897,44 +903,52 @@
       item.classList.toggle('active', item.dataset.dest === screenId);
     });
 
-    // Screen specific triggers
-    if (screenId === 'home') {
-      renderHomeScreen();
-    } else if (screenId === 'nearby') {
-      renderNearbyScreen();
-    } else if (screenId === 'community') {
-      renderCommunityFeed();
-      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncPosts === 'function') {
-        window.NN_SUPABASE_SERVICES.syncPosts();
+    // Screen specific triggers - render in next animation frame to prevent touch latency
+    requestAnimationFrame(() => {
+      if (screenId === 'home') {
+        renderHomeScreen();
+      } else if (screenId === 'nearby') {
+        renderNearbyScreen();
+      } else if (screenId === 'community') {
+        renderCommunityFeed();
+        setTimeout(() => {
+          if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncPosts === 'function') {
+            window.NN_SUPABASE_SERVICES.syncPosts();
+          }
+        }, 120);
+      } else if (screenId === 'services') {
+        renderServicesScreen();
+      } else if (screenId === 'jobs') {
+        renderJobsScreen();
+        setTimeout(() => {
+          if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncJobs === 'function') {
+            window.NN_SUPABASE_SERVICES.syncJobs();
+          }
+        }, 120);
+      } else if (screenId === 'rentals') {
+        renderRentalsScreen();
+        setTimeout(() => {
+          if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncRentals === 'function') {
+            window.NN_SUPABASE_SERVICES.syncRentals();
+          }
+        }, 120);
+      } else if (screenId === 'blood') {
+        renderBloodScreen();
+      } else if (screenId === 'add') {
+        updatePostingProfileBar();
+      } else if (screenId === 'chat') {
+        renderChatListScreen();
+        setTimeout(() => {
+          if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncUserChats === 'function') {
+            window.NN_SUPABASE_SERVICES.syncUserChats();
+          }
+        }, 120);
+      } else if (screenId === 'business') {
+        renderBusinessScreen();
+      } else if (screenId === 'profile') {
+        renderProfileScreen();
       }
-    } else if (screenId === 'services') {
-      renderServicesScreen();
-    } else if (screenId === 'jobs') {
-      renderJobsScreen();
-      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncJobs === 'function') {
-        window.NN_SUPABASE_SERVICES.syncJobs();
-      }
-    } else if (screenId === 'rentals') {
-      renderRentalsScreen();
-      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncRentals === 'function') {
-        window.NN_SUPABASE_SERVICES.syncRentals();
-      }
-    } else if (screenId === 'blood') {
-      renderBloodScreen();
-    } else if (screenId === 'add') {
-      updatePostingProfileBar();
-    } else if (screenId === 'chat') {
-      renderChatListScreen();
-      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncUserChats === 'function') {
-        window.NN_SUPABASE_SERVICES.syncUserChats();
-      }
-    } else if (screenId === 'business') {
-      renderBusinessScreen();
-    } else if (screenId === 'profile') {
-      renderProfileScreen();
-    }
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   }
   window.navTo = navTo;
 
@@ -950,13 +964,11 @@
   function enterAppFromSplash() {
     const splash = document.getElementById('screen-splash');
     if (splash) {
-      splash.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+      splash.style.transition = 'opacity 0.18s ease';
       splash.style.opacity = '0';
-      splash.style.transform = 'scale(0.98)';
       setTimeout(() => {
         splash.classList.remove('active');
         splash.style.opacity = '';
-        splash.style.transform = '';
         navTo('home');
 
         // PROMPT ONBOARDING PROFILE SETUP: If user hasn't completed their profile yet (especially name, phone & blood group)
@@ -9800,12 +9812,12 @@
       } catch (_) {}
     }, 1500);
 
-    // Auto-dismiss splash screen smoothly after 1.6 seconds if user didn't tap
+    // Auto-dismiss splash screen fast after 850ms if user didn't tap
     setTimeout(() => {
       if (APP_STATE.currentScreen === 'splash') {
         enterAppFromSplash();
       }
-    }, 1600);
+    }, 850);
   });
 
 })();
