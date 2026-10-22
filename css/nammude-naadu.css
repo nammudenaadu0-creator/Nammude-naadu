@@ -1882,66 +1882,312 @@
 }
 
 /* 3D CATEGORIES GRID (6 CARDS WITH DEPTH & ISOMETRIC FEEL) */
-.home-3d-cat-grid {
+.home-3d-cat-grid,
+.home-kerala-cat-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   padding: 0 16px;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
-.cat-card-3d {
-  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
-  border-radius: 20px;
-  padding: 16px 8px 14px;
+.kerala-cat-card {
+  border-radius: 18px;
+  padding: 14px 8px 12px;
   text-align: center;
-  border: 1px solid #E2E8F0;
-  border-bottom: 3.5px solid #CBD5E1;
-  box-shadow: 0 8px 18px -3px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.03), inset 0 1px 0 #FFFFFF;
-  cursor: pointer;
   position: relative;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 148px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.cat-card-3d:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 26px -4px rgba(0, 0, 0, 0.12), inset 0 1px 0 #FFFFFF;
+.kerala-cat-card:active {
+  transform: scale(0.96);
 }
 
-.cat-card-3d:active {
-  transform: translateY(2px);
-  border-bottom-width: 1px;
-}
-
-.cat-3d-icon-box {
-  width: 48px;
-  height: 48px;
-  border-radius: 16px;
-  margin: 0 auto 10px;
+.kerala-cat-img-box {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
-  position: relative;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.15);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15), inset 0 2px 4px rgba(255, 255, 255, 0.45);
 }
 
-.cat-3d-title {
-  font-size: 13.5px;
-  font-weight: 800;
-  color: #0F172A;
-  margin-bottom: 2px;
+.kerala-cat-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
 }
 
-.cat-3d-sub {
-  font-size: 10px;
+.kerala-cat-title {
+  font-size: 13px;
+  font-weight: 900;
+  margin-bottom: 3px;
+  line-height: 1.25;
+  font-family: 'Manjari', sans-serif;
+  width: 100%;
+}
+
+.kerala-cat-sub {
+  font-size: 9.5px;
   font-weight: 700;
-  color: #64748B;
-  white-space: nowrap;
+  line-height: 1.35;
+  margin-bottom: 16px;
+  width: 100%;
+  padding: 0 2px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
+}
+
+.kerala-cat-arrow-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: 900;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* KERALA SEARCH CAPSULE BAR */
+.home-kerala-search-wrap {
+  margin: 8px 16px 16px;
+  background: #FFFFFF;
+  border: 2px solid #10B981;
+  border-radius: 9999px;
+  padding: 4px 5px 4px 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.16);
+}
+
+.home-kerala-search-btn-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 3px 8px rgba(5, 150, 105, 0.3);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.home-kerala-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #1E293B;
+  min-width: 0;
+  font-family: inherit;
+}
+
+.home-kerala-search-action-btn {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 9999px;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 3px 10px rgba(5, 150, 105, 0.25);
+  flex-shrink: 0;
+  font-family: inherit;
+  transition: transform 0.1s ease;
+}
+
+.home-kerala-search-action-btn:active {
+  transform: scale(0.96);
+}
+
+/* KERALA HERO HOUSEBOAT BANNER */
+.home-kerala-hero-banner {
+  margin: 0 16px 18px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
+  min-height: 180px;
+  box-shadow: 0 10px 26px rgba(6, 78, 59, 0.18);
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+}
+
+.home-kerala-hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.home-kerala-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(3, 46, 31, 0.94) 0%, rgba(4, 61, 41, 0.82) 48%, rgba(6, 78, 59, 0.25) 75%, rgba(0, 0, 0, 0) 100%);
+  z-index: 2;
+}
+
+.home-kerala-hero-content {
+  position: relative;
+  z-index: 3;
+  padding: 18px 18px;
+  max-width: 65%;
+}
+
+.home-kerala-hero-title {
+  margin: 0 0 2px;
+  color: #FFFFFF;
+  font-size: 26px;
+  font-weight: 900;
+  font-family: 'Manjari', sans-serif;
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.home-kerala-hero-subtitle {
+  margin: 0 0 6px;
+  color: #FFFFFF;
+  font-size: 20px;
+  font-weight: 900;
+  font-family: 'Manjari', sans-serif;
+  line-height: 1.2;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.home-kerala-hero-tagline {
+  margin: 0 0 12px;
+  color: #E6F5F2;
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.home-kerala-hero-cta {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 9999px;
+  padding: 6px 14px;
+  font-size: 11.5px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.1s ease;
+}
+
+.home-kerala-hero-cta:active {
+  transform: scale(0.96);
+}
+
+.home-kerala-hero-dots {
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.home-kerala-hero-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.home-kerala-hero-dot.active {
+  width: 8px;
+  height: 8px;
+  background: #10B981;
+  border: 1px solid #FFFFFF;
+}
+
+/* SECTION HEADER WITH 4-SQUARE GRID ICON */
+.home-kerala-sec-header {
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.home-kerala-sec-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.home-kerala-grid-icon {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3px;
+}
+
+.home-kerala-grid-box {
+  background: #10B981;
+  border-radius: 4px;
+}
+
+.home-kerala-sec-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 900;
+  color: #064E3B;
+  font-family: 'Manjari', sans-serif;
+  letter-spacing: -0.3px;
+}
+
+.home-kerala-sec-sub {
+  font-size: 13px;
+  font-weight: 700;
+  color: #047857;
+  margin-left: 4px;
+}
+
+.home-kerala-sec-viewall {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #059669;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 /* 3D POPULAR SERVICES GRID */

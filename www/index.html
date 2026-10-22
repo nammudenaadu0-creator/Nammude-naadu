@@ -237,32 +237,43 @@
                 <!-- SCREEN 1: HOME (MODERN 3D APP DESIGN & PROPER LOCATION/SEARCH) -->
                 <!-- ============================================================== -->
                 <section id="screen-home" class="screen home-3d-root">
-                    <!-- 3D TOP NAVBAR (BRAND & PROFILE) -->
-                    <header class="home-top-navbar">
-                        <div class="brand-3d-badge">
+                    <!-- KERALA BRAND & PROFILE TOP BAR (MATCHING USER REFERENCE DESIGN) -->
+                    <header class="home-top-navbar"
+                        style="padding:14px 16px 8px;background:linear-gradient(180deg, #E6FBF0 0%, #F0FDF4 100%);border-bottom:1px solid rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:space-between">
+                        <div style="display:flex;align-items:center;gap:10px">
                             <img src="assets/icon-192.png" alt="നമ്മുടെ നാട്"
-                                style="width:24px;height:24px;border-radius:6px;object-fit:cover;flex-shrink:0">
-                            <span class="brand-3d-name">നമ്മുടെ നാട്</span>
-                            <span class="brand-3d-dot"></span>
+                                style="width:44px;height:44px;border-radius:14px;object-fit:cover;box-shadow:0 4px 12px rgba(14,112,67,0.18);border:2px solid #FFFFFF;flex-shrink:0">
+                            <div>
+                                <h1
+                                    style="margin:0;font-size:24px;font-weight:900;color:#0F5132;font-family:'Manjari', sans-serif;letter-spacing:-0.5px;line-height:1.15">
+                                    നമ്മുടെ നാട്</h1>
+                                <div style="font-size:12px;font-weight:700;color:#166534;margin-top:2px">
+                                    നമ്മുടെ നാട് • നമ്മുടെ സമൂഹം</div>
+                            </div>
                         </div>
 
-                        <div class="top-navbar-right-actions">
-                            <button type="button" class="action-3d-pill-btn"
-                                onclick="shareCommunityPost('നമ്മുടെ നാട്', 'കേരളത്തിലെ പ്രാദേശിക സേവനങ്ങളും വാർത്തകളും');"
-                                title="ആപ്പ് ഷെയർ ചെയ്യാം">
-                                <span>🔗</span>
-                                <span>ഷെയർ</span>
+                        <div class="top-navbar-right-actions" style="display:flex;align-items:center;gap:10px">
+                            <!-- Circular Bell Button with Red Indicator Dot -->
+                            <button type="button" onclick="navTo('community')"
+                                title="അറിയിപ്പുകൾ"
+                                style="width:42px;height:42px;border-radius:50%;background:#FFFFFF;border:1px solid #E2E8F0;display:flex;align-items:center;justify-content:center;font-size:19px;position:relative;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,0.06)">
+                                <span>🔔</span>
+                                <span
+                                    style="position:absolute;top:6px;right:7px;width:8px;height:8px;border-radius:50%;background:#EF4444;border:1.5px solid #FFFFFF"></span>
                             </button>
 
-                            <div class="home-avatar-3d-wrap" onclick="navTo('profile')" title="എന്റെ പ്രൊഫൈൽ">
-                                <img id="homeHeaderAvatar" src="" alt="Profile" class="home-avatar-3d-img">
-                                <span class="home-avatar-3d-dot"></span>
+                            <!-- Circular User Profile Button -->
+                            <div class="home-avatar-3d-wrap" onclick="navTo('profile')" title="എന്റെ പ്രൊഫൈൽ"
+                                style="width:42px;height:42px;border-radius:50%;background:#FFFFFF;border:1px solid #E2E8F0;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,0.06);position:relative;overflow:hidden">
+                                <img id="homeHeaderAvatar" src="assets/icon-192.png" alt="Profile"
+                                    style="width:100%;height:100%;object-fit:cover;border-radius:50%">
+                                <span class="home-avatar-3d-dot" style="bottom:1px;right:1px"></span>
                             </div>
                         </div>
                     </header>
 
-                    <!-- 1. SINGLE COMPACT LOCATION BUTTON (ഒരു ബട്ടണിൽ ഒതുക്കി) -->
-                    <div class="home-single-loc-wrapper">
+                    <!-- 1. COMPACT LOCATION BAR -->
+                    <div class="home-single-loc-wrapper" style="margin:8px 16px 4px">
                         <div class="home-single-loc-btn" onclick="openLocationModal()"
                             title="ലൊക്കേഷനും പരിധിയും (Radius) മാറ്റാൻ ടാപ്പ് ചെയ്യുക" role="button" tabindex="0">
                             <span class="hsl-pin">📍</span>
@@ -277,124 +288,131 @@
                         </div>
                     </div>
 
-                    <!-- 2. 3D FLOATING SEARCH BAR (PROPER PLACE — RIGHT UNDER LOCATION!) -->
-                    <div class="home-3d-search-container">
-                        <div class="home-3d-search-box">
-                            <span class="search-3d-glass-icon">🔍</span>
-                            <input type="text" id="homeSearchInput" placeholder="സേവനങ്ങൾ, രക്തം, തൊഴിൽ, വാടക തിരയുക..."
-                                autocomplete="off">
-                            <button class="search-3d-action-btn" onclick="triggerHomeSearch()" title="തിരയുക">
-                                <span>തിരയുക</span>
+                    <!-- 2. KERALA PILL SEARCH CAPSULE BAR (WITH GREEN NEON BORDER & SEARCH BUTTON) -->
+                    <div class="home-kerala-search-wrap">
+                        <div class="home-kerala-search-btn-icon" onclick="triggerHomeSearch()" title="തിരയുക">
+                            🔍
+                        </div>
+                        <input type="text" id="homeSearchInput" class="home-kerala-search-input"
+                            placeholder="സേവനങ്ങൾ, മേഖല, തൊഴിൽ, വിവരം, ആളുകൾ..." autocomplete="off">
+                        <button type="button" class="home-kerala-search-action-btn" onclick="triggerHomeSearch()"
+                            title="തിരയുക">
+                            <span>തിരയുക</span>
+                            <span>➔</span>
+                        </button>
+                    </div>
+                    <!-- Interactive Real-time Search Dropdown -->
+                    <div id="homeSearchResultsDropdown" class="home-search-dropdown" style="display:none;margin:0 16px 12px"></div>
+
+                    <!-- 3. KERALA HOUSEBOAT HERO BANNER (MATCHING REFERENCE DESIGN) -->
+                    <div class="home-kerala-hero-banner" id="homeVillagePromoBanner">
+                        <img src="img/kerala_houseboat_hero.jpg" alt="നമ്മുടെ നാട് - കേരളം"
+                            class="home-kerala-hero-bg">
+                        <div class="home-kerala-hero-overlay"></div>
+                        <div class="home-kerala-hero-content">
+                            <h2 class="home-kerala-hero-title">നമ്മുടെ നാട്</h2>
+                            <h3 class="home-kerala-hero-subtitle">ഒരു കുടുംബം...</h3>
+                            <p class="home-kerala-hero-tagline">സഹായം... സേവനം... ഐക്യം...</p>
+                            <button type="button" class="home-kerala-hero-cta" onclick="navTo('community')">
+                                <span>ഇപ്പോൾ പങ്കുചേരൂ</span>
                                 <span>➔</span>
                             </button>
                         </div>
-                        <!-- Interactive Real-time Search Dropdown -->
-                        <div id="homeSearchResultsDropdown" class="home-search-dropdown" style="display:none"></div>
+                        <!-- Carousel Dots in Bottom Right -->
+                        <div class="home-kerala-hero-dots" id="homeAdCarouselDots">
+                            <span class="home-kerala-hero-dot active"></span>
+                            <span class="home-kerala-hero-dot"></span>
+                            <span class="home-kerala-hero-dot"></span>
+                            <span class="home-kerala-hero-dot"></span>
+                        </div>
                     </div>
 
-                    <!-- ADMIN AD & PROMOTIONAL FEATURE BANNER (അഡ്മിൻ പരസ്യങ്ങൾ / ബാനർ) -->
-                    <!-- ADMIN AD & PROMOTIONAL FEATURE BANNER (അഡ്മിൻ പരസ്യങ്ങൾ / ബാനർ) -->
-                    <div class="yg-village-promo-banner mode-full-image" id="homeVillagePromoBanner"
-                        onclick="openAdDetailModal()"
-                        style="margin: 0 16px 14px; position:relative; overflow:hidden; border-radius:20px; box-shadow:0 8px 24px rgba(6,78,59,0.18); min-height:140px; cursor:pointer">
-                        <img id="homeVillageBannerFullImg" class="yg-village-full-bg-img" alt="പരസ്യം"
-                            src="img/kerala-splash.jpg"
-                            style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;border-radius:20px">
-                        <div id="homeVillageBannerOverlay" class="yg-village-full-overlay" style="display:none"></div>
-                        <div class="yg-promo-left" id="homeVillageBannerTextWrap" style="display:none">
-                            <div class="yg-promo-emblem" style="display:none"></div>
+                    <!-- 4. SECTION HEADER: "വിഭാഗങ്ങൾ (Categories)" -->
+                    <div class="home-kerala-sec-header">
+                        <div class="home-kerala-sec-left">
+                            <div class="home-kerala-grid-icon">
+                                <div class="home-kerala-grid-box"></div>
+                                <div class="home-kerala-grid-box"></div>
+                                <div class="home-kerala-grid-box"></div>
+                                <div class="home-kerala-grid-box"></div>
+                            </div>
                             <div>
-                                <div class="yg-promo-title" id="homeVillageBannerTitle" style="display:none"></div>
-                                <div class="yg-promo-sub" id="homeVillageBannerSub" style="display:none"></div>
+                                <span class="home-kerala-sec-title">വിഭാഗങ്ങൾ</span>
+                                <span class="home-kerala-sec-sub">(Categories)</span>
                             </div>
                         </div>
-                        <div class="admin-ad-badge" id="homeVillageBannerBadge" style="display:none"></div>
-                        <div class="yg-promo-right" id="homeVillageBannerArtWrap" style="display:none"></div>
-                        <!-- CAROUSEL INDICATOR DOTS -->
-                        <div id="homeAdCarouselDots"
-                            style="position:absolute;bottom:10px;right:14px;display:flex;gap:5px;z-index:5"></div>
-                    </div>
-
-                    <!-- 1-TAP QUICK SERVICE REQUEST (EASY WORKFLOW CTA - 4 SEC AUTO CLOSE) -->
-                    <div class="home-quick-request-card" id="homeQuickRequestCard" onclick="openQuickServiceModal()">
-                        <div class="quick-req-left">
-                            <div class="quick-req-icon-pulse">⚡</div>
-                            <div>
-                                <div class="quick-req-badge">1 മിനിറ്റ് വർക്ക്‌ഫ്ലോ</div>
-                                <h3 class="quick-req-title">സേവനം ആവശ്യമുണ്ടോ?</h3>
-                                <p class="quick-req-sub">ആവശ്യം പോസ്റ്റ് ചെയ്യൂ, അടുത്തുള്ള വർക്കർമാർ ഉടൻ ബന്ധപ്പെടും
-                                </p>
-                            </div>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:8px">
-                            <button class="quick-req-btn">ആവശ്യപ്പെടാം ➔</button>
-                            <button type="button" onclick="event.stopPropagation(); dismissQuickRequestCard();"
-                                title="ക്ലോസ് ചെയ്യുക"
-                                style="background:rgba(255,255,255,0.22);color:#fff;border:none;border-radius:50%;width:24px;height:24px;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;cursor:pointer">✕</button>
+                        <div class="home-kerala-sec-viewall" onclick="navTo('services')">
+                            <span>എല്ലാം കാണുക</span>
+                            <span>➔</span>
                         </div>
                     </div>
 
-                    <!-- 4. 3D MAIN CATEGORIES (6 ISOMETRIC ELEVATED CARDS) -->
-                    <div class="home-sec-3d-header">
-                        <div class="sec-title-with-pill">
-                            <span class="sec-3d-pill-badge">പ്രധാനം</span>
-                            <h2 class="sec-3d-heading">വിഭാഗങ്ങൾ (Categories)</h2>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:12px">
-                            <a class="sec-3d-viewall" onclick="navTo('nearby')"
-                                style="color:#059669;font-weight:800;cursor:pointer"
-                                title="സമീപത്തുള്ള ആളുകളെ കണ്ടെത്താം">📍 സമീപത്തുള്ളവർ</a>
-                            <a class="sec-3d-viewall" onclick="navTo('services')">എല്ലാം കാണുക &rsaquo;</a>
-                        </div>
-                    </div>
-                    <div class="home-3d-cat-grid">
-                        <!-- BLOOD NETWORK -->
-                        <div class="cat-card-3d" onclick="openBloodModal()">
-                            <div class="cat-3d-icon-box"
-                                style="background:linear-gradient(135deg, #FF334B 0%, #D90429 100%);color:#fff">🩸</div>
-                            <div class="cat-3d-title">രക്തദാനം</div>
-                            <div class="cat-3d-sub">അടിയന്തര സഹായം</div>
-                        </div>
-
-                        <!-- EMERGENCY SERVICES -->
-                        <div class="cat-card-3d" onclick="openEmergencyModal()">
-                            <div class="cat-3d-icon-box"
-                                style="background:linear-gradient(135deg, #FF7A00 0%, #EA580C 100%);color:#fff">🚨</div>
-                            <div class="cat-3d-title">അടിയന്തിരം</div>
-                            <div class="cat-3d-sub">പോലീസ് & ഫയർ</div>
-                        </div>
-
-                        <!-- SERVICES -->
-                        <div class="cat-card-3d" onclick="navTo('services')">
-                            <div class="cat-3d-icon-box"
-                                style="background:linear-gradient(135deg, #00B4D8 0%, #0077B6 100%);color:#fff">🛠️
+                    <!-- 5. THE 6 VIBRANT 3D CATEGORY CARDS (EXACT MATCH TO REFERENCE IMAGE) -->
+                    <div class="home-kerala-cat-grid">
+                        <!-- CARD 1: രക്തദാനം (BLOOD DONATION) -->
+                        <div class="kerala-cat-card" onclick="openBloodModal()"
+                            style="background:linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 100%);border:1.5px solid #FECDD3">
+                            <div class="kerala-cat-img-box">
+                                <img src="assets/cat-blood-3d.jpg" alt="രക്തദാനം" class="kerala-cat-img">
                             </div>
-                            <div class="cat-3d-title">സേവനങ്ങൾ</div>
-                            <div class="cat-3d-sub">18+ പ്രൊവൈഡർമാർ</div>
+                            <div class="kerala-cat-title" style="color:#991B1B">രക്തദാനം</div>
+                            <div class="kerala-cat-sub" style="color:#BE123C">രക്തം നൽകൂ... ജീവൻ രക്ഷിക്കൂ...</div>
+                            <div class="kerala-cat-arrow-btn" style="background:#E11D48">➔</div>
                         </div>
 
-                        <!-- JOBS -->
-                        <div class="cat-card-3d" onclick="navTo('jobs')">
-                            <div class="cat-3d-icon-box"
-                                style="background:linear-gradient(135deg, #FBBF24 0%, #D97706 100%);color:#fff">💼</div>
-                            <div class="cat-3d-title">തൊഴിലുകൾ</div>
-                            <div class="cat-3d-sub">തൊഴിൽ അവസരങ്ങൾ</div>
+                        <!-- CARD 2: ആരോഗ്യ സേവനം (HEALTHCARE) -->
+                        <div class="kerala-cat-card" onclick="openEmergencyModal()"
+                            style="background:linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%);border:1.5px solid #FED7AA">
+                            <div class="kerala-cat-img-box">
+                                <img src="assets/cat-health-3d.jpg" alt="ആരോഗ്യ സേവനം" class="kerala-cat-img">
+                            </div>
+                            <div class="kerala-cat-title" style="color:#9A3412">ആരോഗ്യ സേവനം</div>
+                            <div class="kerala-cat-sub" style="color:#C2410C">ആരോഗ്യ വിവരം, ആശുപത്രികൾ...</div>
+                            <div class="kerala-cat-arrow-btn" style="background:#EA580C">➔</div>
                         </div>
 
-                        <!-- RENTALS & MARKETPLACE -->
-                        <div class="cat-card-3d" onclick="navTo('rentals')">
-                            <div class="cat-3d-icon-box"
-                                style="background:linear-gradient(135deg, #34D399 0%, #059669 100%);color:#fff">🏠</div>
-                            <div class="cat-3d-title">വാടക & വിൽപന</div>
-                            <div class="cat-3d-sub">വീട്, വാഹനം, ടൂൾസ്</div>
+                        <!-- CARD 3: സേവനങ്ങൾ (SERVICES / TRADES) -->
+                        <div class="kerala-cat-card" onclick="navTo('services')"
+                            style="background:linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);border:1.5px solid #BAE6FD">
+                            <div class="kerala-cat-img-box">
+                                <img src="assets/cat-services-3d.jpg" alt="സേവനങ്ങൾ" class="kerala-cat-img">
+                            </div>
+                            <div class="kerala-cat-title" style="color:#0369A1">സേവനങ്ങൾ</div>
+                            <div class="kerala-cat-sub" style="color:#0284C7">18+ സേവനങ്ങൾ ഒരു കുടക്കീഴിൽ</div>
+                            <div class="kerala-cat-arrow-btn" style="background:#0284C7">➔</div>
                         </div>
 
-                        <!-- AMBULANCE -->
-                        <div class="cat-card-3d" onclick="openAmbulanceModal()">
-                            <div class="cat-3d-icon-box"
-                                style="background:linear-gradient(135deg, #FF1E42 0%, #BE123C 100%);color:#fff">🚑</div>
-                            <div class="cat-3d-title" style="color:#BE123C">ആംബുലൻസ്</div>
-                            <div class="cat-3d-sub" style="color:#E11D48;font-weight:800">24x7 സൗജന്യം</div>
+                        <!-- CARD 4: തൊഴിലുകൾ (JOBS) -->
+                        <div class="kerala-cat-card" onclick="navTo('jobs')"
+                            style="background:linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%);border:1.5px solid #E9D5FF">
+                            <div class="kerala-cat-img-box">
+                                <img src="assets/cat-jobs-3d.jpg" alt="തൊഴിലുകൾ" class="kerala-cat-img">
+                            </div>
+                            <div class="kerala-cat-title" style="color:#6B21A8">തൊഴിലുകൾ</div>
+                            <div class="kerala-cat-sub" style="color:#7E22CE">തൊഴിൽ അവസരങ്ങൾ നിങ്ങൾക്ക് സമീപം</div>
+                            <div class="kerala-cat-arrow-btn" style="background:#9333EA">➔</div>
+                        </div>
+
+                        <!-- CARD 5: വീട് & വിൽപ്പന (REAL ESTATE / MARKETPLACE) -->
+                        <div class="kerala-cat-card" onclick="navTo('rentals')"
+                            style="background:linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);border:1.5px solid #BBF7D0">
+                            <div class="kerala-cat-img-box">
+                                <img src="assets/cat-rentals-3d.jpg" alt="വീട് & വിൽപ്പന" class="kerala-cat-img">
+                            </div>
+                            <div class="kerala-cat-title" style="color:#166534">വീട് & വിൽപ്പന</div>
+                            <div class="kerala-cat-sub" style="color:#15803D">വീട്, വാടക, ഭൂമി എല്ലാം ഇവിടെ</div>
+                            <div class="kerala-cat-arrow-btn" style="background:#16A34A">➔</div>
+                        </div>
+
+                        <!-- CARD 6: ആംബുലൻസ് (AMBULANCE) -->
+                        <div class="kerala-cat-card" onclick="openAmbulanceModal()"
+                            style="background:linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 100%);border:1.5px solid #FECDD3">
+                            <div class="kerala-cat-img-box">
+                                <img src="assets/cat-ambulance-3d.jpg" alt="ആംബുലൻസ്" class="kerala-cat-img">
+                            </div>
+                            <div class="kerala-cat-title" style="color:#DC2626">ആംബുലൻസ്</div>
+                            <div class="kerala-cat-sub" style="color:#E11D48">24x7 സേവനം വേഗത്തിൽ</div>
+                            <div class="kerala-cat-arrow-btn" style="background:#DC2626">➔</div>
                         </div>
                     </div>
 
