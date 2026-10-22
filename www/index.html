@@ -268,9 +268,15 @@
                                 <h1
                                     style="margin:0;font-size:25px;font-weight:900;color:#0F5132;font-family:'Manjari', sans-serif;letter-spacing:-0.5px;line-height:1.15">
                                     നമ്മുടെ നാട്</h1>
-                                <div style="font-size:12px;font-weight:700;color:#166534;margin-top:2px;display:flex;align-items:center;gap:4px">
-                                    <span>നമ്മുടെ നാട് • നമ്മുടെ സമൂഹം</span>
-                                    <span style="font-size:10px;background:rgba(5,150,105,0.15);padding:1px 6px;border-radius:10px;color:#065F46" id="homeLiveLocText" class="user-live-city-name">📍 കേരളം</span>
+                                <div style="display:flex;align-items:center;gap:6px;margin-top:3px">
+                                    <!-- PROMINENT HEADER LOCATION BUTTON -->
+                                    <div onclick="openLocationModal()"
+                                        style="display:inline-flex;align-items:center;gap:4px;background:#FFFFFF;border:1.5px solid #86EFAC;color:#065F46;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800;cursor:pointer;box-shadow:0 2px 6px rgba(16,185,129,0.15)"
+                                        title="സ്ഥലം തിരഞ്ഞെടുക്കുക / മാറ്റുക">
+                                        <span>📍</span>
+                                        <span id="homeLiveLocText" class="user-live-city-name">തത്സമയ ലൊക്കേഷൻ</span>
+                                        <span style="font-size:9px;color:#059669">▼</span>
+                                    </div>
                                     <span id="homeLiveRadiusBadge" style="display:none">5 km</span>
                                 </div>
                             </div>
@@ -298,18 +304,42 @@
                         </div>
                     </header>
 
-                    <!-- 2. KERALA PILL SEARCH CAPSULE BAR (EXACT POSITION DIRECTLY UNDER HEADER) -->
-                    <div class="home-kerala-search-wrap" style="margin:12px 16px 14px">
+                    <!-- 2. KERALA PILL SEARCH CAPSULE BAR WITH INTEGRATED LOCATION SELECTOR -->
+                    <div class="home-kerala-search-wrap" style="margin:12px 16px 8px">
                         <div class="home-kerala-search-btn-icon" onclick="triggerHomeSearch()" title="തിരയുക">
                             🔍
                         </div>
                         <input type="text" id="homeSearchInput" class="home-kerala-search-input"
-                            placeholder="സേവനങ്ങൾ, മേഖല, തൊഴിൽ, വിവരം, ആളുകൾ..." autocomplete="off">
+                            placeholder="സേവനങ്ങൾ, കടകൾ, ആളുകൾ തിരയുക..." autocomplete="off">
+                        <!-- DIRECT LOCATION SEARCH / CHANGE BUTTON -->
+                        <button type="button" onclick="openLocationModal()"
+                            style="background:#F0FDF4;border:1.5px solid #86EFAC;color:#047857;border-radius:20px;padding:6px 10px;font-size:11.5px;font-weight:800;display:flex;align-items:center;gap:4px;cursor:pointer;white-space:nowrap;flex-shrink:0"
+                            title="സ്ഥലം മാറ്റുക / ലൊക്കേഷൻ തിരയുക">
+                            <span>📍</span>
+                            <span class="user-live-city-name" style="max-width:85px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">സ്ഥലം</span>
+                            <span style="font-size:9px">▼</span>
+                        </button>
                         <button type="button" class="home-kerala-search-action-btn" onclick="triggerHomeSearch()"
                             title="തിരയുക">
                             <span>തിരയുക</span>
                             <span>➔</span>
                         </button>
+                    </div>
+
+                    <!-- PROMINENT DEDICATED LOCATION SUMMARY BAR -->
+                    <div onclick="openLocationModal()"
+                        style="margin:0 16px 12px;background:#FFFFFF;border:1.5px solid #A7F3D0;border-radius:14px;padding:7px 12px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;box-shadow:0 2px 8px rgba(16,185,129,0.06);transition:transform 0.1s ease"
+                        title="സ്ഥലം തിരഞ്ഞെടുക്കുക">
+                        <div style="display:flex;align-items:center;gap:6px">
+                            <span style="font-size:15px">📍</span>
+                            <span style="font-size:12px;color:#334155;font-weight:700">
+                                സ്ഥലം: <strong class="user-live-city-name" style="color:#065F46;font-weight:900">തത്സമയ ലൊക്കേഷൻ</strong>
+                            </span>
+                        </div>
+                        <span style="background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#FFFFFF;padding:4px 10px;border-radius:10px;font-size:11px;font-weight:800;display:flex;align-items:center;gap:3px">
+                            <span>മാറ്റാം</span>
+                            <span>✏️</span>
+                        </span>
                     </div>
                     <!-- Interactive Real-time Search Dropdown -->
                     <div id="homeSearchResultsDropdown" class="home-search-dropdown" style="display:none;margin:0 16px 12px"></div>
@@ -1588,16 +1618,13 @@
                 </div>
 
                 <!-- Town Search & Presets -->
-                <div style="font-size:12px;font-weight:800;color:#374151;margin-bottom:6px">സ്ഥലം തിരഞ്ഞെടുക്കുക:</div>
+                <div style="font-size:12px;font-weight:800;color:#374151;margin-bottom:6px">സ്ഥലം തിരയുക / തിരഞ്ഞെടുക്കുക:</div>
                 <div style="position:relative;margin-bottom:10px">
                     <input type="text" id="presetTownSearchInput" placeholder="നഗരം അല്ലെങ്കിൽ പഞ്ചായത്ത് തിരയുക..."
                         oninput="filterPresetLocations(this.value)"
-                        style="width:100%;padding:9px 12px 9px 34px;border:1px solid #CBD5E1;border-radius:10px;font-size:12.5px;outline:none">
-                    oninput="filterPresetLocations(this.value)"
-                    style="width:100%;padding:9px 12px 9px 34px;border:1px solid
-                    #CBD5E1;border-radius:10px;font-size:12.5px;outline:none">
+                        style="width:100%;padding:10px 12px 10px 36px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13px;outline:none;background:#F8FAFC">
                     <span
-                        style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;color:#94A3B8">🔍</span>
+                        style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;color:#94A3B8">🔍</span>
                 </div>
                 <div id="presetLocationsList"
                     style="display:flex;flex-direction:column;gap:7px;max-height:260px;overflow-y:auto"></div>
