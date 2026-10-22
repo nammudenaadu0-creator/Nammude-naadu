@@ -62,16 +62,6 @@
     chatChannel.on('broadcast', { event: 'chat_message' }, ({ payload }) => {
       handleIncomingChatMessage(payload);
     });
-    chatChannel.on('broadcast', { event: 'chat_reaction' }, ({ payload }) => {
-      if (payload && payload.chatKey && payload.msgId && typeof window.handleRemoteChatReaction === 'function') {
-        window.handleRemoteChatReaction(payload.chatKey, payload.msgId, payload.reactions);
-      }
-    });
-    chatChannel.on('broadcast', { event: 'chat_challenge_answer' }, ({ payload }) => {
-      if (payload && payload.chatKey && payload.msgId && typeof window.handleRemoteChallengeAnswer === 'function') {
-        window.handleRemoteChallengeAnswer(payload.chatKey, payload.msgId, payload.answers);
-      }
-    });
     chatChannel.subscribe((status) => {
       console.info('💬 [Supabase Realtime Chat] Status:', status);
     });

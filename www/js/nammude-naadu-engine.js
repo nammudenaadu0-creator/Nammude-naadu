@@ -2639,10 +2639,8 @@
       input.value = '';
     }
 
-    // Apply saved personal theme, streak, and reset Fun Zone
-    if (typeof loadSavedChatTheme === 'function') loadSavedChatTheme();
-    if (typeof updateChatStreakUI === 'function') updateChatStreakUI(chatKey);
-    if (typeof toggleChatFunZone === 'function') toggleChatFunZone(false);
+    // Close stickers drawer on chat open
+    if (typeof toggleChatStickers === 'function') toggleChatStickers(false);
 
     // Dynamic Context Quick Reply Chips (Business vs General)
     const quickBar = document.querySelector('.quick-reply-bar');
@@ -2725,7 +2723,6 @@
           APP_STATE.chats[chatKey].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
           saveChats();
           renderChatMessages();
-          if (typeof updateChatStreakUI === 'function') updateChatStreakUI(chatKey);
         }
       });
     }
@@ -2766,8 +2763,8 @@
             <span>🔒 എൻഡ്-ടു-എൻഡ് സുരക്ഷിത ചാറ്റ്</span>
           </div>
           <div style="margin-top:12px">
-            <button type="button" onclick="toggleChatFunZone(true)" style="background:#FFFBEB;border:1.5px solid #FCD34D;color:#92400E;padding:6px 14px;border-radius:999px;font-size:11.5px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:5px">
-              <span>🎮</span> <span>ഇമോജി ചലഞ്ച് അല്ലെങ്കിൽ സ്റ്റിക്കർ അയക്കൂ!</span>
+            <button type="button" onclick="toggleChatStickers(true)" style="background:#ECFDF5;border:1.5px solid #10B981;color:#047857;padding:6px 14px;border-radius:999px;font-size:11.5px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:5px">
+              <span>🎭</span> <span>മലയാളം സ്റ്റിക്കർ അയക്കൂ!</span>
             </button>
           </div>
         </div>
@@ -2791,7 +2788,7 @@
 
       const recipientAvatar = (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.avatar) || DEFAULT_USER_AVATAR;
 
-      // 1. RENDER MESSAGE CONTENT (STICKER vs CHALLENGE vs TEXT)
+      // 1. RENDER MESSAGE CONTENT (STICKER vs TEXT)
       let innerContentHtml = '';
       if (msg.type === 'sticker') {
         innerContentHtml = `
@@ -2800,91 +2797,9 @@
             <span class="cs-text">${escapeHtml(msg.stickerText || msg.text)}</span>
           </div>
         `;
-      } else if (msg.type === 'challenge') {
-        const ch = msg.challenge || {};
-        const answers = msg.answers || {};
-        const myAnswer = answers[myId];
-        const hasAnswered = typeof myAnswer !== 'undefined';
-        const correctIdx = typeof ch.correctIndex === 'number' ? ch.correctIndex : 0;
-
-        let statusBannerHtml = '';
-        if (hasAnswered) {
-          const isCorrect = myAnswer.optionIndex === correctIdx;
-          statusBannerHtml = `
-            <div class="chat-challenge-status-banner" style="background:${isCorrect ? '#DCFCE7' : '#FEE2E2'};color:${isCorrect ? '#15803D' : '#B91C1C'}">
-              ${isCorrect ? '🎉 ശരിയുത്തരം! അടിപൊളി!' : `❌ തെറ്റിപ്പോയി! ശരിയുത്തരം: ${escapeHtml(ch.options ? ch.options[correctIdx] : '')}`}
-            </div>
-          `;
-        }
-
-        const optionsHtml = (ch.options || []).map((opt, oIdx) => {
-          let optClass = 'chat-challenge-opt-btn';
-          let optSuffix = '';
-          if (hasAnswered) {
-            if (oIdx === correctIdx) {
-              optClass += ' correct';
-              optSuffix = ' ✓';
-            } else if (myAnswer.optionIndex === oIdx) {
-              optClass += ' wrong';
-              optSuffix = ' ✕';
-            }
-          }
-          return `
-            <button type="button" class="${optClass}" ${hasAnswered ? 'disabled' : ''}
-              onclick="answerEmojiChallenge('${escapeHtml(chatKey)}', '${escapeHtml(msg.id)}', ${oIdx})">
-              <span>${oIdx + 1}. ${escapeHtml(opt)}</span>
-              <span>${optSuffix}</span>
-            </button>
-          `;
-        }).join('');
-
-        innerContentHtml = `
-          <div class="chat-challenge-card">
-            <div class="chat-challenge-header">
-              <span class="chat-challenge-tag">🎮 ഇമോജി ചലഞ്ച്</span>
-              <span style="font-size:10px;color:#64748B;font-weight:700">${hasAnswered ? 'പൂർത്തിയായി' : 'ഉത്തരം പറയൂ!'}</span>
-            </div>
-            <div class="chat-challenge-clue">${escapeHtml(ch.clue || '❓')}</div>
-            <div class="chat-challenge-qtext">${escapeHtml(ch.question || msg.text || 'ഇത് ഏതാണെന്ന് പറയാമോ?')}</div>
-            <div class="chat-challenge-options">
-              ${optionsHtml}
-            </div>
-            ${statusBannerHtml}
-          </div>
-        `;
       } else {
         innerContentHtml = `<div class="chat-bubble-content">${escapeHtml(msg.text)}</div>`;
       }
-
-      // 2. RENDER MESSAGE REACTIONS PILLS
-      const reactions = msg.reactions || {};
-      const reactionKeys = Object.keys(reactions).filter(e => Array.isArray(reactions[e]) && reactions[e].length > 0);
-      let reactionsHtml = '';
-      if (reactionKeys.length > 0) {
-        reactionsHtml = `
-          <div class="chat-bubble-reactions-row">
-            ${reactionKeys.map(emoji => {
-              const users = reactions[emoji];
-              const didReact = users.includes(myId);
-              return `
-                <div class="reaction-pill ${didReact ? 'user-reacted' : ''}" title="${emoji} റിയാക്ഷൻ"
-                  onclick="toggleMessageReaction('${escapeHtml(chatKey)}', '${escapeHtml(msg.id)}', '${escapeHtml(emoji)}')">
-                  <span>${emoji}</span>
-                  <span class="reaction-pill-count">${users.length}</span>
-                </div>
-              `;
-            }).join('')}
-          </div>
-        `;
-      }
-
-      // 3. REACTION TRIGGER BUTTON
-      const reactionTriggerHtml = `
-        <button type="button" class="chat-react-trigger" title="റിയാക്റ്റ് ചെയ്യുക"
-          onclick="event.stopPropagation(); showReactionPicker('${escapeHtml(msg.id)}', this, '${escapeHtml(chatKey)}')">
-          😀
-        </button>
-      `;
 
       return `
         ${dateDivider}
@@ -2892,16 +2807,12 @@
           ${!isMe ? `
             <img src="${escapeHtml(recipientAvatar)}" class="chat-bubble-avatar" alt="Avatar" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
           ` : ''}
-          <div class="chat-bubble-actions-wrap">
-            ${reactionTriggerHtml}
-            <div class="chat-bubble ${isMe ? 'outgoing' : 'incoming'} ${msg.type ? ('type-' + msg.type) : ''}">
-              ${innerContentHtml}
-              <div class="chat-bubble-meta">
-                <span class="chat-time-text">${escapeHtml(msg.time || '')}</span>
-                ${isMe ? '<span class="chat-ticks">✓✓</span>' : ''}
-              </div>
+          <div class="chat-bubble ${isMe ? 'outgoing' : 'incoming'} ${msg.type ? ('type-' + msg.type) : ''}">
+            ${innerContentHtml}
+            <div class="chat-bubble-meta">
+              <span class="chat-time-text">${escapeHtml(msg.time || '')}</span>
+              ${isMe ? '<span class="chat-ticks">✓✓</span>' : ''}
             </div>
-            ${reactionsHtml}
           </div>
         </div>
       `;
@@ -2994,45 +2905,9 @@
   window.sendChatMessage = sendChatMessage;
 
   // ==============================================================
-  // CHAT FUN ZONE ENGINE: EMOJI CHALLENGE, STICKERS, THEMES & STREAKS
+  // MALAYALAM STICKERS MODULE (ചാറ്റ് മലയാളം സ്റ്റിക്കറുകൾ)
   // ==============================================================
 
-  // A. Personal Chat Themes
-  const CHAT_THEMES = [
-    { id: 'kerala', name: '🌴 കേരള ഹരിതം', desc: 'തനിമയാർന്ന ഹരിതഭംഗി', bg: '#0E7043', border: '#10B981', sample: '#D9FDD3' },
-    { id: 'glass', name: '💎 പ്രീമിയം ഗ്ലാസ്സ്', desc: 'ഡാർക്ക് ഗ്ലാസ് ഡിസൈൻ', bg: '#0F172A', border: '#334155', sample: '#064E3B' },
-    { id: 'ocean', name: '🌊 അറബിക്കടൽ', desc: 'കോവളം നീലത്തിരകൾ', bg: '#0284C7', border: '#38BDF8', sample: '#E0F2FE' },
-    { id: 'sunset', name: '🌅 കായൽ സന്ധ്യ', desc: 'സന്ധ്യാ കിരണങ്ങളുടെ ശോഭ', bg: '#EA580C', border: '#FB923C', sample: '#FFEDD5' },
-    { id: 'minimal', name: '⚪ ക്ലാസിക് മിനിമൽ', desc: 'ലളിതമായ വെളുപ്പും ഗ്രീനും', bg: '#1E293B', border: '#94A3B8', sample: '#F8FAFC' }
-  ];
-
-  function setChatTheme(themeId) {
-    const sheet = document.getElementById('chatModalSheet');
-    if (!sheet) return;
-    CHAT_THEMES.forEach(t => sheet.classList.remove('chat-theme-' + t.id));
-    sheet.classList.add('chat-theme-' + themeId);
-    try {
-      localStorage.setItem('nn_chat_theme', themeId);
-    } catch (_) {}
-    toast('🎨 ചാറ്റ് തീം മാറ്റി: ' + (CHAT_THEMES.find(t => t.id === themeId)?.name || ''));
-    renderFunZoneThemesTab();
-  }
-  window.setChatTheme = setChatTheme;
-
-  function loadSavedChatTheme() {
-    let saved = 'kerala';
-    try {
-      saved = localStorage.getItem('nn_chat_theme') || 'kerala';
-    } catch (_) {}
-    const sheet = document.getElementById('chatModalSheet');
-    if (sheet) {
-      CHAT_THEMES.forEach(t => sheet.classList.remove('chat-theme-' + t.id));
-      sheet.classList.add('chat-theme-' + saved);
-    }
-  }
-  window.loadSavedChatTheme = loadSavedChatTheme;
-
-  // B. Malayalam Stickers
   const MALAYALAM_STICKERS = [
     { text: 'പൊളിച്ചു!', emoji: '🔥', cat: 'mass' },
     { text: 'എന്താ മോനേ!', emoji: '😎', cat: 'mass' },
@@ -3050,6 +2925,34 @@
     { text: 'സത്യം പറ!', emoji: '🤨', cat: 'care' },
     { text: 'അയ്യോ കഷ്ടം!', emoji: '🥺', cat: 'care' }
   ];
+  window.MALAYALAM_STICKERS = MALAYALAM_STICKERS;
+
+  function toggleChatStickers(forceOpen) {
+    const panel = document.getElementById('chatStickersPanel');
+    if (!panel) return;
+    const shouldOpen = (typeof forceOpen === 'boolean') ? forceOpen : (panel.style.display === 'none');
+    panel.style.display = shouldOpen ? 'flex' : 'none';
+    if (shouldOpen) {
+      renderChatStickersGrid();
+    }
+  }
+  window.toggleChatStickers = toggleChatStickers;
+
+  function renderChatStickersGrid() {
+    const grid = document.getElementById('chatStickersGrid');
+    if (!grid) return;
+    grid.innerHTML = `
+      <div class="cfz-stickers-grid">
+        ${MALAYALAM_STICKERS.map(stk => `
+          <div class="cfz-sticker-item" onclick="sendMalayalamSticker('${escapeHtml(stk.text)}', '${escapeHtml(stk.emoji)}')">
+            <span class="cfz-sticker-emoji">${stk.emoji}</span>
+            <span class="cfz-sticker-text">${escapeHtml(stk.text)}</span>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+  window.renderChatStickersGrid = renderChatStickersGrid;
 
   function sendMalayalamSticker(stickerText, emoji) {
     if (!APP_STATE.activeChatRecipient) return;
@@ -3084,8 +2987,7 @@
     saveChats();
     updateChatBadgeCounter();
     renderChatMessages();
-    toggleChatFunZone(false);
-    if (typeof updateChatStreakUI === 'function') updateChatStreakUI(chatKey);
+    toggleChatStickers(false);
 
     // Broadcast to Supabase Cloud
     const metaObj = {
@@ -3103,435 +3005,6 @@
     }
   }
   window.sendMalayalamSticker = sendMalayalamSticker;
-
-  // C. Emoji Challenges
-  const DEFAULT_EMOJI_CHALLENGES = [
-    // Movies
-    { id: 'ch_m_1', cat: 'movie', catName: '🎬 സിനിമകൾ', clue: '👑 👑', question: 'ഈ മലയാള സിനിമ ഏതാണെന്ന് പറയാമോ?', options: ['രാജമാണിക്യം', 'കിരീടം', 'ദ ഗോഡ്ഫാദർ'], correctIndex: 0 },
-    { id: 'ch_m_2', cat: 'movie', catName: '🎬 സിനിമകൾ', clue: '🕵️‍♂️ 🔍', question: 'ഇത് ഏത് മലയാളം കോമഡി സിനിമയാണ്?', options: ['സിഐഡി മൂസ', 'മേഘം', 'പാണ്ടിപ്പട'], correctIndex: 0 },
-    { id: 'ch_m_3', cat: 'movie', catName: '🎬 സിനിമകൾ', clue: '⚡ 🦸‍♂️', question: 'ഈ സൂപ്പർഹീറോ ചിത്രം ഏതാണ്?', options: ['മിന്നൽ മുരളി', 'കുരുതി', 'കപ്പേള'], correctIndex: 0 },
-    { id: 'ch_m_4', cat: 'movie', catName: '🎬 സിനിമകൾ', clue: '👻 🏰', question: 'പ്രശസ്തമായ ഈ ക്ലാസിക് സിനിമ ഏത്?', options: ['മണിച്ചിത്രത്താഴ്', 'ആകാശഗംഗ', 'ഭാർഗ്ഗവീനിലയം'], correctIndex: 0 },
-    { id: 'ch_m_5', cat: 'movie', catName: '🎬 സിനിമകൾ', clue: '👓 🕶️ 🦯', question: 'ആടുതോമയും ചാക്കോ മാഷും വന്ന സിനിമ?', options: ['സ്ഫടികം', 'ധ്രുവം', 'കമ്മീഷണർ'], correctIndex: 0 },
-    { id: 'ch_m_6', cat: 'movie', catName: '🎬 സിനിമകൾ', clue: '☕ 🥖 🌸', question: 'മലർ മിസ്സും ജോർജ്ജും ഉള്ള ചിത്രം?', options: ['പ്രേമം', 'ബാംഗ്ലൂർ ഡേയ്സ്', 'തട്ടത്തിൻ മറയത്ത്'], correctIndex: 0 },
-    // Riddles
-    { id: 'ch_r_1', cat: 'riddle', catName: '🧩 കടങ്കഥകൾ', clue: '🥥 🌴', question: 'തലയുണ്ട് വാലില്ല, കട്ടൻ വെള്ളം ഉള്ളിലുണ്ട്. എന്താണ്?', options: ['തേങ്ങ (കരിക്ക്)', 'പപ്പായ', 'മാങ്ങ'], correctIndex: 0 },
-    { id: 'ch_r_2', cat: 'riddle', catName: '🧩 കടങ്കഥകൾ', clue: '🐍 🚣‍♂️', question: 'പമ്പയിൽ കുതിച്ചുപായുന്ന വള്ളമേത്?', options: ['ചുണ്ടൻ വള്ളം', 'കെട്ടുവള്ളം', 'ഓടി വള്ളം'], correctIndex: 0 },
-    { id: 'ch_r_3', cat: 'riddle', catName: '🧩 കടങ്കഥകൾ', clue: '🐘 🎪 🥁', question: 'മേളവും കുടമാറ്റവുമുള്ള പൂരം ഏതാണ്?', options: ['തൃശ്ശൂർ പൂരം', 'നെന്മാറ വല്ലങ്ങി വേല', 'ഉത്രാളിക്കാവ് പൂരം'], correctIndex: 0 },
-    { id: 'ch_r_4', cat: 'riddle', catName: '🧩 കടങ്കഥകൾ', clue: '🌧️ ⚡ ☂️', question: 'കേരളത്തിലെ ആദ്യത്തെ മഴക്കാലം ഏത്?', options: ['ഇടവപ്പാതി', 'തുലാവർഷം', 'വേനൽമഴ'], correctIndex: 0 },
-    // Local GK
-    { id: 'ch_g_1', cat: 'gk', catName: '💡 നാട്ടുവിശേഷം', clue: '⚽ 🌴 🏟️', question: 'സെവൻസ് ഫുട്ബോളിന്റെ നാട് ഏത് ജില്ല?', options: ['മലപ്പുറം', 'കോഴിക്കോട്', 'കണ്ണൂർ'], correctIndex: 0 },
-    { id: 'ch_g_2', cat: 'gk', catName: '💡 നാട്ടുവിശേഷം', clue: '🍵 ⛰️ 🌫️', question: 'കേരളത്തിലെ ഏറ്റവും വലിയ തേയിലത്തോട്ടങ്ങൾ എവിടെ?', options: ['മൂന്നാർ', 'വയനാട്', 'നെല്ലിയാമ്പതി'], correctIndex: 0 },
-    { id: 'ch_g_3', cat: 'gk', catName: '💡 നാട്ടുവിശേഷം', clue: '🍛 🍌 🥣', question: 'ഓണത്തിന് തൂശനിലയിൽ വിളമ്പുന്ന വിഭവം?', options: ['ഓണസദ്യ', 'ബിരിയാണി', 'നെയ്ച്ചോറ്'], correctIndex: 0 }
-  ];
-
-  function getAvailableChallenges() {
-    let custom = [];
-    try {
-      custom = JSON.parse(localStorage.getItem('nn_custom_emoji_challenges') || '[]');
-    } catch (_) {}
-    return [...DEFAULT_EMOJI_CHALLENGES, ...custom];
-  }
-
-  function sendEmojiChallenge(challengeId) {
-    if (!APP_STATE.activeChatRecipient) return;
-    const allCh = getAvailableChallenges();
-    const ch = allCh.find(c => c.id === challengeId);
-    if (!ch) return;
-
-    const chatKey = APP_STATE.activeChatRecipient.key;
-    if (!APP_STATE.chats[chatKey]) APP_STATE.chats[chatKey] = [];
-
-    const now = new Date();
-    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const msgId = 'msg_ch_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6);
-
-    const senderName = APP_STATE.currentUser.name || 'നാട്ടുകാരൻ';
-    const senderAvatar = APP_STATE.currentUser.avatar || DEFAULT_USER_AVATAR;
-
-    const msgObj = {
-      id: msgId,
-      senderId: APP_STATE.currentUser.id,
-      senderName: senderName,
-      senderPhone: APP_STATE.currentUser.phone || '',
-      senderAvatar: senderAvatar,
-      type: 'challenge',
-      challenge: ch,
-      answers: {},
-      text: `🎮 ഇമോജി ചലഞ്ച്: ${ch.clue} - ${ch.question}`,
-      time: timeStr,
-      timestamp: Date.now()
-    };
-
-    APP_STATE.chats[chatKey].push({ ...msgObj, sender: 'me' });
-    if (APP_STATE.chatMeta && APP_STATE.chatMeta[chatKey]) {
-      APP_STATE.chatMeta[chatKey].updatedAt = Date.now();
-    }
-    saveChats();
-    updateChatBadgeCounter();
-    renderChatMessages();
-    toggleChatFunZone(false);
-    if (typeof updateChatStreakUI === 'function') updateChatStreakUI(chatKey);
-
-    // Broadcast to Supabase Cloud
-    const metaObj = {
-      recipientId: APP_STATE.activeChatRecipient.id || '',
-      recipientName: APP_STATE.activeChatRecipient.name,
-      recipientPhone: APP_STATE.activeChatRecipient.phone,
-      recipientAvatar: APP_STATE.activeChatRecipient.avatar,
-      senderId: APP_STATE.currentUser.id,
-      senderName: senderName,
-      senderPhone: APP_STATE.currentUser.phone,
-      senderAvatar: senderAvatar
-    };
-    if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.sendChatMessage === 'function') {
-      window.NN_SUPABASE_SERVICES.sendChatMessage(chatKey, msgObj, metaObj);
-    }
-  }
-  window.sendEmojiChallenge = sendEmojiChallenge;
-
-  function answerEmojiChallenge(chatKey, msgId, optionIndex) {
-    if (!chatKey || !msgId) return;
-    const thread = APP_STATE.chats[chatKey];
-    if (!thread) return;
-    const msg = thread.find(m => m.id === msgId);
-    if (!msg || msg.type !== 'challenge') return;
-
-    if (!msg.answers) msg.answers = {};
-    const myId = (APP_STATE.currentUser && APP_STATE.currentUser.id) || 'local_user';
-    if (typeof msg.answers[myId] !== 'undefined') return;
-
-    const correctIdx = (msg.challenge && typeof msg.challenge.correctIndex === 'number') ? msg.challenge.correctIndex : 0;
-    const isCorrect = (optionIndex === correctIdx);
-    msg.answers[myId] = {
-      optionIndex: optionIndex,
-      isCorrect: isCorrect,
-      answeredAt: Date.now()
-    };
-
-    saveChats();
-    renderChatMessages();
-
-    // Broadcast answer to chat partner
-    if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.broadcastChatEvent === 'function') {
-      window.NN_SUPABASE_SERVICES.broadcastChatEvent(chatKey, 'chat_challenge_answer', { msgId, answers: msg.answers });
-    }
-  }
-  window.answerEmojiChallenge = answerEmojiChallenge;
-
-  function handleRemoteChallengeAnswer(chatKey, msgId, answers) {
-    if (!chatKey || !msgId || !answers) return;
-    if (!APP_STATE.chats[chatKey]) return;
-    const msg = APP_STATE.chats[chatKey].find(m => m.id === msgId);
-    if (msg) {
-      msg.answers = answers;
-      saveChats();
-      if (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.key === chatKey) {
-        renderChatMessages();
-      }
-    }
-  }
-  window.handleRemoteChallengeAnswer = handleRemoteChallengeAnswer;
-
-  // D. Message Reactions (❤️ 😂 🔥 👍 😮 👏)
-  const REACTION_EMOJIS = ['❤️', '😂', '🔥', '👍', '😮', '👏'];
-
-  function toggleMessageReaction(chatKey, msgId, emoji) {
-    if (!chatKey || !msgId || !emoji) return;
-    const thread = APP_STATE.chats[chatKey];
-    if (!thread) return;
-    const msg = thread.find(m => m.id === msgId);
-    if (!msg) return;
-
-    if (!msg.reactions) msg.reactions = {};
-    if (!Array.isArray(msg.reactions[emoji])) msg.reactions[emoji] = [];
-
-    const myId = (APP_STATE.currentUser && APP_STATE.currentUser.id) || 'local_user';
-    const idx = msg.reactions[emoji].indexOf(myId);
-    if (idx >= 0) {
-      msg.reactions[emoji].splice(idx, 1);
-      if (msg.reactions[emoji].length === 0) delete msg.reactions[emoji];
-    } else {
-      msg.reactions[emoji].push(myId);
-    }
-
-    saveChats();
-    renderChatMessages();
-
-    // Broadcast reaction
-    if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.broadcastChatEvent === 'function') {
-      window.NN_SUPABASE_SERVICES.broadcastChatEvent(chatKey, 'chat_reaction', { msgId, reactions: msg.reactions });
-    }
-  }
-  window.toggleMessageReaction = toggleMessageReaction;
-
-  function handleRemoteChatReaction(chatKey, msgId, reactions) {
-    if (!chatKey || !msgId || !reactions) return;
-    if (!APP_STATE.chats[chatKey]) return;
-    const msg = APP_STATE.chats[chatKey].find(m => m.id === msgId);
-    if (msg) {
-      msg.reactions = reactions;
-      saveChats();
-      if (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.key === chatKey) {
-        renderChatMessages();
-      }
-    }
-  }
-  window.handleRemoteChatReaction = handleRemoteChatReaction;
-
-  function showReactionPicker(msgId, triggerBtn, chatKey) {
-    const existing = document.getElementById('activeFloatingReactionPicker');
-    if (existing) existing.remove();
-
-    const picker = document.createElement('div');
-    picker.id = 'activeFloatingReactionPicker';
-    picker.className = 'floating-reaction-picker';
-    picker.onclick = (e) => e.stopPropagation();
-
-    picker.innerHTML = REACTION_EMOJIS.map(em => `
-      <button type="button" class="reaction-opt-btn" onclick="toggleMessageReaction('${escapeHtml(chatKey)}', '${escapeHtml(msgId)}', '${em}'); document.getElementById('activeFloatingReactionPicker')?.remove();">
-        ${em}
-      </button>
-    `).join('');
-
-    const parent = triggerBtn.closest('.chat-bubble-actions-wrap');
-    if (parent) {
-      parent.appendChild(picker);
-    }
-
-    const closeHandler = () => {
-      picker.remove();
-      document.removeEventListener('click', closeHandler);
-    };
-    setTimeout(() => document.addEventListener('click', closeHandler), 100);
-  }
-  window.showReactionPicker = showReactionPicker;
-
-  // E. Friendship Streak (🔥)
-  function calculateChatStreak(chatKey) {
-    if (!chatKey || !APP_STATE.chats || !APP_STATE.chats[chatKey]) return 0;
-    try {
-      if (localStorage.getItem('nn_streak_disabled') === 'true') return 0;
-    } catch (_) {}
-
-    const thread = APP_STATE.chats[chatKey];
-    if (thread.length === 0) return 0;
-
-    const daySet = new Set();
-    thread.forEach(m => {
-      if (m.timestamp) {
-        const d = new Date(m.timestamp);
-        const y = d.getFullYear();
-        const mon = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-        daySet.add(`${y}-${mon}-${day}`);
-      }
-    });
-
-    const uniqueDays = Array.from(daySet).sort();
-    if (uniqueDays.length === 0) return 0;
-
-    const now = new Date();
-    const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-    const yest = new Date(now);
-    yest.setDate(now.getDate() - 1);
-    const yestStr = `${yest.getFullYear()}-${String(yest.getMonth() + 1).padStart(2, '0')}-${String(yest.getDate()).padStart(2, '0')}`;
-
-    const lastDay = uniqueDays[uniqueDays.length - 1];
-    if (lastDay !== todayStr && lastDay !== yestStr) {
-      return 0; // Streak broken if no message today or yesterday
-    }
-
-    let streak = 1;
-    let curr = new Date(lastDay);
-    for (let i = uniqueDays.length - 2; i >= 0; i--) {
-      const prev = new Date(uniqueDays[i]);
-      const diffMs = curr.getTime() - prev.getTime();
-      const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
-      if (diffDays === 1) {
-        streak++;
-        curr = prev;
-      } else {
-        break;
-      }
-    }
-    return streak;
-  }
-  window.calculateChatStreak = calculateChatStreak;
-
-  function updateChatStreakUI(chatKey) {
-    const pill = document.getElementById('chatStreakPill');
-    const countEl = document.getElementById('chatStreakCount');
-    if (!pill || !countEl) return;
-
-    const streak = calculateChatStreak(chatKey);
-    countEl.textContent = streak;
-    if (streak > 0) {
-      pill.style.display = 'inline-flex';
-    } else {
-      pill.style.display = 'inline-flex';
-      countEl.textContent = '0';
-    }
-  }
-  window.updateChatStreakUI = updateChatStreakUI;
-
-  function toggleStreakTracking(enabled) {
-    try {
-      localStorage.setItem('nn_streak_disabled', enabled ? 'false' : 'true');
-    } catch (_) {}
-    if (APP_STATE.activeChatRecipient) {
-      updateChatStreakUI(APP_STATE.activeChatRecipient.key);
-    }
-    renderFunZoneStreakTab();
-    toast(enabled ? '🔥 സ്ട്രീക്ക് ഓൺ ചെയ്തു' : '⏸️ സ്ട്രീക്ക് ഓഫ് ചെയ്തു');
-  }
-  window.toggleStreakTracking = toggleStreakTracking;
-
-  // F. Fun Zone Tabs UI Rendering
-  let activeFunZoneTab = 'challenge';
-  let activeChallengeCatFilter = 'all';
-
-  function toggleChatFunZone(forceOpen) {
-    const panel = document.getElementById('chatFunZonePanel');
-    if (!panel) return;
-    const shouldOpen = (typeof forceOpen === 'boolean') ? forceOpen : (panel.style.display === 'none');
-    panel.style.display = shouldOpen ? 'flex' : 'none';
-    if (shouldOpen) {
-      switchFunZoneTab(activeFunZoneTab);
-    }
-  }
-  window.toggleChatFunZone = toggleChatFunZone;
-
-  function openFunZoneTab(tabName) {
-    toggleChatFunZone(true);
-    switchFunZoneTab(tabName);
-  }
-  window.openFunZoneTab = openFunZoneTab;
-
-  function switchFunZoneTab(tabName) {
-    activeFunZoneTab = tabName;
-    document.querySelectorAll('.cfz-tab-btn').forEach(btn => btn.classList.remove('active'));
-    const activeBtn = document.getElementById('cfzTabBtn-' + tabName);
-    if (activeBtn) activeBtn.classList.add('active');
-
-    if (tabName === 'challenge') renderFunZoneChallengeTab();
-    else if (tabName === 'stickers') renderFunZoneStickersTab();
-    else if (tabName === 'themes') renderFunZoneThemesTab();
-    else if (tabName === 'streak') renderFunZoneStreakTab();
-  }
-  window.switchFunZoneTab = switchFunZoneTab;
-
-  function renderFunZoneChallengeTab(catFilter = null) {
-    const container = document.getElementById('cfzTabContent');
-    if (!container) return;
-    if (catFilter) activeChallengeCatFilter = catFilter;
-
-    const allCh = getAvailableChallenges();
-    const filtered = (activeChallengeCatFilter === 'all')
-      ? allCh
-      : allCh.filter(c => c.cat === activeChallengeCatFilter);
-
-    container.innerHTML = `
-      <div class="cfz-challenge-category-tabs">
-        <button type="button" class="cfz-cat-chip ${activeChallengeCatFilter === 'all' ? 'active' : ''}" onclick="renderFunZoneChallengeTab('all')">🌟 എല്ലാം</button>
-        <button type="button" class="cfz-cat-chip ${activeChallengeCatFilter === 'movie' ? 'active' : ''}" onclick="renderFunZoneChallengeTab('movie')">🎬 സിനിമകൾ</button>
-        <button type="button" class="cfz-cat-chip ${activeChallengeCatFilter === 'riddle' ? 'active' : ''}" onclick="renderFunZoneChallengeTab('riddle')">🧩 കടങ്കഥകൾ</button>
-        <button type="button" class="cfz-cat-chip ${activeChallengeCatFilter === 'gk' ? 'active' : ''}" onclick="renderFunZoneChallengeTab('gk')">💡 നാട്ടുവിശേഷം</button>
-      </div>
-
-      <div class="cfz-challenges-list">
-        ${filtered.map(ch => `
-          <div class="cfz-challenge-row">
-            <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
-              <span class="cfz-clue-badge">${escapeHtml(ch.clue)}</span>
-              <div style="min-width:0">
-                <div class="cfz-challenge-q">${escapeHtml(ch.question)}</div>
-                <div class="cfz-challenge-sub">${escapeHtml(ch.catName || 'ചലഞ്ച്')} • ${ch.options.length} ഉത്തരങ്ങൾ</div>
-              </div>
-            </div>
-            <button type="button" class="cfz-send-challenge-btn" onclick="sendEmojiChallenge('${escapeHtml(ch.id)}')">
-              <span>അയക്കാം ➔</span>
-            </button>
-          </div>
-        `).join('')}
-      </div>
-    `;
-  }
-
-  function renderFunZoneStickersTab() {
-    const container = document.getElementById('cfzTabContent');
-    if (!container) return;
-
-    container.innerHTML = `
-      <div class="cfz-stickers-grid">
-        ${MALAYALAM_STICKERS.map(stk => `
-          <div class="cfz-sticker-item" onclick="sendMalayalamSticker('${escapeHtml(stk.text)}', '${escapeHtml(stk.emoji)}')">
-            <span class="cfz-sticker-emoji">${stk.emoji}</span>
-            <span class="cfz-sticker-text">${escapeHtml(stk.text)}</span>
-          </div>
-        `).join('')}
-      </div>
-    `;
-  }
-
-  function renderFunZoneThemesTab() {
-    const container = document.getElementById('cfzTabContent');
-    if (!container) return;
-
-    let saved = 'kerala';
-    try {
-      saved = localStorage.getItem('nn_chat_theme') || 'kerala';
-    } catch (_) {}
-
-    container.innerHTML = `
-      <div class="cfz-themes-grid">
-        ${CHAT_THEMES.map(t => `
-          <div class="cfz-theme-card ${t.id === saved ? 'active' : ''}" onclick="setChatTheme('${t.id}')">
-            <div class="cfz-theme-preview" style="background:${t.bg};border:1.5px solid ${t.border}">
-              <span style="font-size:10px;background:${t.sample};padding:2px 8px;border-radius:10px;font-weight:800;color:#0F172A">ഹായ്! 🌿</span>
-            </div>
-            <div class="cfz-theme-name">
-              <span>${t.name}</span>
-              ${t.id === saved ? '<span style="color:#059669">✓</span>' : ''}
-            </div>
-            <div style="font-size:10px;color:#64748B">${t.desc}</div>
-          </div>
-        `).join('')}
-      </div>
-    `;
-  }
-
-  function renderFunZoneStreakTab() {
-    const container = document.getElementById('cfzTabContent');
-    if (!container) return;
-
-    const chatKey = APP_STATE.activeChatRecipient ? APP_STATE.activeChatRecipient.key : '';
-    const streak = calculateChatStreak(chatKey);
-    let streakDisabled = false;
-    try {
-      streakDisabled = (localStorage.getItem('nn_streak_disabled') === 'true');
-    } catch (_) {}
-
-    container.innerHTML = `
-      <div style="background:linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);border:1.5px solid #FCD34D;border-radius:16px;padding:14px;text-align:center;box-shadow:0 3px 10px rgba(245,158,11,0.15)">
-        <div style="font-size:42px;line-height:1;margin-bottom:6px">🔥</div>
-        <div style="font-size:22px;font-weight:900;color:#92400E">${streak} ദിവസത്തെ സ്ട്രീക്ക്</div>
-        <p style="font-size:12px;color:#B45309;margin:6px 0 12px;line-height:1.4">
-          നിങ്ങളും സുഹൃത്തും തമ്മിൽ തുടർച്ചയായി ദിവസവും സന്ദേശങ്ങൾ കൈമാറുമ്പോൾ സൗഹൃദ സ്ട്രീക്ക് വർദ്ധിക്കുന്നു!
-        </p>
-
-        <div style="background:#FFFFFF;border-radius:12px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border:1px solid #FDE68A">
-          <div style="text-align:left">
-            <div style="font-size:12px;font-weight:800;color:#1E293B">ഫ്രണ്ട്ഷിപ്പ് സ്ട്രീക്ക് ഓപ്ഷൻ</div>
-            <div style="font-size:10.5px;color:#64748B">സ്ട്രോക്ക് കണക്കാക്കുന്നതും ബാഡ്ജും നിയന്ത്രിക്കാം</div>
-          </div>
-          <button type="button" onclick="toggleStreakTracking(${streakDisabled})"
-            style="background:${streakDisabled ? '#E2E8F0' : '#10B981'};color:${streakDisabled ? '#475569' : '#FFFFFF'};border:none;padding:6px 12px;border-radius:999px;font-size:11px;font-weight:800;cursor:pointer">
-            ${streakDisabled ? 'ഓൺ ചെയ്യാം' : 'ഓൺ ആണ് ✓'}
-          </button>
-        </div>
-      </div>
-    `;
-  }
 
   // ==============================================================
   // LOCAL BUSINESS DIRECTORY MODULE (വ്യാപാരങ്ങൾ & കടകൾ)

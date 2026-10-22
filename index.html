@@ -1521,23 +1521,12 @@
                         <span class="chat-online-dot"></span>
                     </div>
                     <div style="min-width:0">
-                        <div style="display:flex;align-items:center;gap:6px">
-                            <div class="chat-recipient-name" id="chatRecipientName">Chat</div>
-                            <!-- FRIENDSHIP STREAK PILL IN HEADER -->
-                            <div id="chatStreakPill" class="chat-streak-pill" onclick="event.stopPropagation(); openFunZoneTab('streak')" title="സൗഹൃദ സ്ട്രീക്ക്">
-                                <span>🔥</span>
-                                <span id="chatStreakCount">0</span>
-                            </div>
-                        </div>
+                        <div class="chat-recipient-name" id="chatRecipientName">Chat</div>
                         <div class="chat-recipient-status">● ഓൺലൈൻ • പ്രൊഫൈൽ കാണാൻ തൊടുക</div>
                     </div>
                 </div>
 
                 <div class="chat-header-actions">
-                    <!-- PERSONAL CHAT THEME BUTTON -->
-                    <button class="chat-theme-btn" onclick="openFunZoneTab('themes')" title="ചാറ്റ് തീം മാറ്റാം">
-                        <span>🎨</span>
-                    </button>
                     <button class="chat-call-btn" onclick="viewChatRecipientFullProfile()"
                         style="background:rgba(255,255,255,0.18);border:none;color:#fff;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer"
                         title="മുഴുവൻ പ്രൊഫൈൽ പേജ് കാണാം">
@@ -1567,7 +1556,7 @@
                 </div>
             </div>
 
-            <!-- CHAT THREAD (CONTAINS MESSAGES, STICKERS, CHALLENGES, REACTIONS) -->
+            <!-- CHAT THREAD (CONTAINS MESSAGES AND STICKERS) -->
             <div class="chat-thread-box" id="chatMessagesBox"></div>
 
             <!-- QUICK REPLY CHIPS -->
@@ -1579,36 +1568,25 @@
                 <button class="quick-chip" onclick="sendQuickReply('ഫോൺ നമ്പർ തരാമോ?')">ഫോൺ നമ്പർ തരാമോ?</button>
             </div>
 
-            <!-- EXPANDABLE CHAT FUN ZONE PANEL (CHALLENGE / STICKERS / THEMES / STREAK) -->
-            <div id="chatFunZonePanel" class="chat-fun-zone-panel" style="display:none">
-                <div class="cfz-header">
-                    <div class="cfz-nav-tabs">
-                        <button type="button" class="cfz-tab-btn active" id="cfzTabBtn-challenge" onclick="switchFunZoneTab('challenge')">
-                            <span>🎮</span> <span>ഇമോജി ചലഞ്ച്</span>
-                        </button>
-                        <button type="button" class="cfz-tab-btn" id="cfzTabBtn-stickers" onclick="switchFunZoneTab('stickers')">
-                            <span>🎭</span> <span>സ്റ്റിക്കർ</span>
-                        </button>
-                        <button type="button" class="cfz-tab-btn" id="cfzTabBtn-themes" onclick="switchFunZoneTab('themes')">
-                            <span>🎨</span> <span>തീമുകൾ</span>
-                        </button>
-                        <button type="button" class="cfz-tab-btn" id="cfzTabBtn-streak" onclick="switchFunZoneTab('streak')">
-                            <span>🔥</span> <span>സ്ട്രീക്ക്</span>
-                        </button>
+            <!-- MALAYALAM STICKERS DRAWER -->
+            <div id="chatStickersPanel" class="chat-stickers-panel" style="display:none">
+                <div class="csp-header">
+                    <div class="csp-title">
+                        <span>🎭</span>
+                        <span>മലയാളം സ്റ്റിക്കറുകൾ</span>
                     </div>
-                    <button type="button" class="cfz-close-btn" onclick="toggleChatFunZone(false)" title="ക്ലോസ് ചെയ്യുക">✕</button>
+                    <button type="button" class="csp-close-btn" onclick="toggleChatStickers(false)" title="ക്ലോസ് ചെയ്യുക">✕</button>
                 </div>
-                <div class="cfz-content" id="cfzTabContent">
-                    <!-- Dynamic Fun Zone Content rendered by JS -->
+                <div class="csp-content" id="chatStickersGrid">
+                    <!-- Populated by JS -->
                 </div>
             </div>
 
-            <!-- INPUT BAR WITH 🎮 FUN ZONE TRIGGER BUTTON -->
+            <!-- INPUT BAR WITH 🎭 STICKER BUTTON -->
             <div class="chat-input-bar">
-                <button type="button" class="chat-fun-btn" id="chatFunBtn" onclick="toggleChatFunZone()"
-                    title="ഫൺ സോൺ (ഗെയിംസ്, സ്റ്റിക്കറുകൾ, തീമുകൾ)">
-                    <span>🎮</span>
-                    <span class="chat-fun-btn-badge">FUN</span>
+                <button type="button" class="chat-sticker-btn" id="chatStickerBtn" onclick="toggleChatStickers()"
+                    title="മലയാളം സ്റ്റിക്കറുകൾ അയക്കാം">
+                    <span>🎭</span>
                 </button>
                 <input type="text" id="chatInputMessage" class="chat-text-input" placeholder="സന്ദേശം ടൈപ്പ് ചെയ്യുക..."
                     onkeydown="if(event.key==='Enter')sendChatMessage()" autocomplete="off">
