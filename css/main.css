@@ -2975,9 +2975,9 @@
             border: 1.5px solid #FFFFFF;
         }
 
-        /* Fullscreen Splash Screen Styling (Matching Mockup) */
+        /* Fullscreen Splash Screen Styling (Matching Kerala 3D Brand) */
         #screen-splash {
-            background: #2b8742 !important;
+            background: linear-gradient(180deg, #E0F9ED 0%, #D1FAE5 35%, #F0FDF4 70%, #FFFFFF 100%) !important;
             padding: 0 !important;
             margin: 0 !important;
             height: 100vh !important;
@@ -2995,7 +2995,8 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
+            justify-content: center;
+            align-items: center;
         }
 
         .splash-full-img {
@@ -3013,42 +3014,42 @@
         .splash-floating-bar {
             position: relative;
             z-index: 25;
-            padding: 0 20px 36px;
+            padding: 24px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            width: 100%;
+            text-align: center;
         }
 
         .splash-launch-btn {
-            width: 88%;
-            max-width: 290px;
-            background: #FFFFFF;
-            color: #065F46;
-            border: 1.5px solid rgba(255, 255, 255, 0.85);
-            border-radius: 30px;
-            padding: 13px 22px;
+            width: auto;
+            min-width: 200px;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 9999px;
+            padding: 13px 32px;
             font-family: 'Manjari', 'Plus Jakarta Sans', sans-serif;
-            font-size: 15.5px;
+            font-size: 15px;
             font-weight: 800;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            box-shadow: 0 8px 24px rgba(6, 95, 70, 0.3);
+            box-shadow: 0 8px 24px rgba(5, 150, 105, 0.35);
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-            animation: pulseSplashBtn 2s infinite ease-in-out;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .splash-launch-btn:hover {
             transform: translateY(-2px);
-            background: #FFFFFF;
-            box-shadow: 0 12px 28px rgba(6, 95, 70, 0.45);
+            box-shadow: 0 12px 28px rgba(5, 150, 105, 0.45);
         }
 
         .splash-launch-btn:active {
-            transform: scale(0.95);
+            transform: scale(0.96);
         }
 
         @keyframes pulseSplashBtn {

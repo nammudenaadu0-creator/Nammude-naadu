@@ -8470,12 +8470,12 @@
       } catch (_) {}
     }, 1500);
 
-    // Auto-dismiss splash screen after 2.5 seconds if user didn't tap
+    // Auto-dismiss splash screen smoothly after 1.6 seconds if user didn't tap
     setTimeout(() => {
       if (APP_STATE.currentScreen === 'splash') {
         enterAppFromSplash();
       }
-    }, 2800);
+    }, 1600);
   });
 
 })();

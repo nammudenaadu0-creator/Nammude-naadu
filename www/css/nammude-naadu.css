@@ -54,7 +54,7 @@
   position: fixed;
   inset: 0;
   z-index: 10000;
-  background: #064E3B;
+  background: linear-gradient(180deg, #E0F9ED 0%, #D1FAE5 35%, #F0FDF4 70%, #FFFFFF 100%);
   align-items: center;
   justify-content: center;
   overflow: hidden;
