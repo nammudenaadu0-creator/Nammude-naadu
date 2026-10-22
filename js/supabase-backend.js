@@ -285,7 +285,8 @@
     else if (extraData.type === 'service') icon = '🛠️';
     else if (extraData.type === 'chat') icon = '💬';
 
-    const phoneLink = extraData.phone ? ('<a href="tel:' + extraData.phone + '" class="inapp-banner-call-btn" onclick="event.stopPropagation()">📞 വിളിക്കുക</a>') : '';
+    const isEmergencyOrAmbulance = extraData.type === 'emergency' || extraData.type === 'ambulance';
+    const phoneLink = (isEmergencyOrAmbulance && extraData.phone) ? ('<a href="tel:' + extraData.phone + '" class="inapp-banner-call-btn" onclick="event.stopPropagation()">📞 വിളിക്കുക</a>') : '';
 
     banner.innerHTML = `
       <div class="inapp-banner-icon">${icon}</div>

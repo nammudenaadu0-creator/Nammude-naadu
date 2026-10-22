@@ -3673,25 +3673,13 @@
             </div>
           ` : ''}
 
-          <!-- ACTIONS BAR: 💬 CHAT DIRECTLY IN UNIFIED INBOX, 📞 CALL, 🟢 WHATSAPP -->
-          <div style="display:flex;gap:7px;margin-top:2px">
+          <!-- ACTIONS BAR: 💬 100% IN-APP CHAT DIRECTLY -->
+          <div style="margin-top:2px">
             <button onclick="openBusinessChat('${escapeHtml(b.id)}')"
-              style="flex:1.4;background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#FFFFFF;border:none;padding:9px 12px;border-radius:12px;font-size:12.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 8px rgba(5,150,105,0.25)">
+              style="width:100%;background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#FFFFFF;border:none;padding:10px 14px;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 8px rgba(5,150,105,0.25)">
               <span>💬</span>
-              <span>ചാറ്റ് ചെയ്യാം</span>
+              <span>ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം</span>
             </button>
-            <a href="tel:${escapeHtml(b.phone)}"
-              style="flex:1;background:#F8FAFC;border:1.5px solid #CBD5E1;color:#1E293B;padding:9px 10px;border-radius:12px;font-size:12px;font-weight:800;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:4px">
-              <span>📞</span>
-              <span>വിളിക്കാം</span>
-            </a>
-            ${b.whatsapp ? `
-              <a href="https://wa.me/${escapeHtml(b.whatsapp.replace(/[^0-9]/g, ''))}?text=${encodeURIComponent('നമസ്കാരം, ' + b.name + ' കടയിലെ വിവരങ്ങൾ അറിയാൻ വിളിക്കുകയാണ്.')}" target="_blank"
-                style="width:38px;height:38px;background:#25D366;color:#FFFFFF;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;box-shadow:0 2px 6px rgba(37,211,102,0.25);flex-shrink:0"
-                title="വാട്സാപ്പ്">
-                💬
-              </a>
-            ` : ''}
           </div>
         </div>
       `;
