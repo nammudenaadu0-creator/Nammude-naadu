@@ -1756,7 +1756,7 @@
                 <!-- SHOP NAME -->
                 <div>
                     <label style="font-size:12px;font-weight:800;color:#334155">സ്ഥാപനത്തിന്റെ പേര് (Shop Name) *</label>
-                    <input type="text" id="regBusinessName" required placeholder="ഉദാ: കണ്ണൂർ സൂപ്പർമാർക്കറ്റ് / മലബാർ ബേക്കറി"
+                    <input type="text" id="regBusinessName" required placeholder="സ്ഥാപനത്തിന്റെ പേര് നൽകുക"
                         style="width:100%;padding:10px 12px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13px;outline:none;margin-top:4px">
                 </div>
 
@@ -1786,7 +1786,7 @@
                             <span>🎯 ലൈവ് GPS എടുക്കാം</span>
                         </button>
                     </div>
-                    <input type="text" id="regBusinessLocation" required placeholder="ഉദാ: പഴയങ്ങാടി ബസ് സ്റ്റാൻഡ് റോഡ്, കണ്ണൂർ"
+                    <input type="text" id="regBusinessLocation" required placeholder="സ്ഥലം, റോഡ് / ടൗൺ"
                         style="width:100%;padding:10px 12px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13px;outline:none;margin-top:4px">
                     <input type="hidden" id="regBusinessLat" value="">
                     <input type="hidden" id="regBusinessLon" value="">
@@ -1809,14 +1809,14 @@
                 <!-- OPENING / CLOSING TIME -->
                 <div>
                     <label style="font-size:12px;font-weight:800;color:#334155">പ്രവർത്തന സമയം (Shop Timing)</label>
-                    <input type="text" id="regBusinessHours" placeholder="ഉദാ: രാവിലെ 8:30 - രാത്രി 9:30 (എല്ലാ ദിവസവും)"
+                    <input type="text" id="regBusinessHours" placeholder="8:30 AM - 9:30 PM (ദിവസവും)"
                         style="width:100%;padding:9px 12px;border:1.5px solid #CBD5E1;border-radius:10px;font-size:12.5px;outline:none;margin-top:3px">
                 </div>
 
                 <!-- TODAY'S OFFERS / HIGHLIGHTS -->
                 <div>
                     <label style="font-size:12px;font-weight:800;color:#334155">ഇന്നത്തെ ഓഫറുകൾ / പ്രത്യേകതകൾ (Offers & Deals)</label>
-                    <textarea id="regBusinessOffer" rows="2" placeholder="ഉദാ: ഈ ആഴ്ച എല്ലാ പലചരക്ക് സാധനങ്ങൾക്കും 10% ഡിസ്കൗണ്ട്, ഹോം ഡെലിവറി ലഭ്യമാണ്..."
+                    <textarea id="regBusinessOffer" rows="2" placeholder="ഓഫറുകൾ, പ്രത്യേകതകൾ അല്ലെങ്കിൽ സേവന വിവരങ്ങൾ..."
                         style="width:100%;padding:9px 12px;border:1.5px solid #CBD5E1;border-radius:10px;font-size:12.5px;outline:none;margin-top:3px;resize:none"></textarea>
                 </div>
 
@@ -1860,9 +1860,8 @@
             <form onsubmit="submitServiceRegistration(event)" style="display:flex;flex-direction:column;gap:12px">
                 <!-- NAME -->
                 <div>
-                    <label style="font-size:12px;font-weight:700;color:#374151" id="regServiceNameLabel">പൂർണ്ണ നാമം /
-                        സ്ഥാപനപ്പേര്</label>
-                    <input type="text" id="regServiceName" required placeholder="Eg: മനോജ് കുമാർ / റോയൽ ട്രാവൽസ്"
+                    <label style="font-size:12px;font-weight:700;color:#374151" id="regServiceNameLabel">പൂർണ്ണ നാമം / സ്ഥാപനപ്പേര്</label>
+                    <input type="text" id="regServiceName" required placeholder="പേര് / സ്ഥാപനത്തിന്റെ പേര്"
                         style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
                 </div>
 
@@ -1935,10 +1934,9 @@
 
                 <!-- SERVICE / TRADE (DYNAMIC LABEL & SUGGESTIONS) -->
                 <div style="position:relative">
-                    <label style="font-size:12px;font-weight:700;color:#374151" id="regServiceTradeLabel">തൊഴിൽ /
-                        സേവനം</label>
+                    <label style="font-size:12px;font-weight:700;color:#374151" id="regServiceTradeLabel">തൊഴിൽ / സേവനം</label>
                     <input type="text" id="regServiceTrade" required autocomplete="off"
-                        placeholder="Eg: പ്ലംബർ, ഇലക്ട്രീഷ്യൻ, CCTV, അലുമിനിയം ഫാബ്രിക്കേഷൻ..."
+                        placeholder="സേവനത്തിന്റെ പേര് നൽകുക..."
                         oninput="handleServiceTradeInput(this.value)" onfocus="handleServiceTradeInput(this.value)"
                         style="width:100%;padding:10px;border:1.5px solid #10B981;border-radius:10px;font-size:13px;outline:none;margin-top:4px;background:#F0FDF4;font-weight:600">
 
@@ -1954,41 +1952,37 @@
                     </div>
                     <div style="display:flex;gap:8px">
                         <div style="flex:1">
-                            <label style="font-size:11px;font-weight:700;color:#475569">വാഹന മോഡൽ / സീറ്റിംഗ് /
-                                കപ്പാസിറ്റി</label>
+                            <label style="font-size:11px;font-weight:700;color:#475569">വാഹന മോഡൽ / സീറ്റിംഗ് / കപ്പാസിറ്റി</label>
                             <input type="text" id="regVehicleModel"
-                                placeholder="Eg: 3 സീറ്റർ / ഇന്നോവ 7 സീറ്റർ / 16 ടൺ ടിപ്പർ"
+                                placeholder="മോഡൽ / കപ്പാസിറ്റി"
                                 style="width:100%;padding:9px;border:1px solid #D1D5DB;border-radius:8px;font-size:12px;outline:none;margin-top:3px">
                         </div>
                         <div style="flex:1">
                             <label style="font-size:11px;font-weight:700;color:#475569">വാഹന നമ്പർ (Optional)</label>
-                            <input type="text" id="regVehicleNumber" placeholder="Eg: KL-07-XX-1234"
+                            <input type="text" id="regVehicleNumber" placeholder="KL-00-XX-0000"
                                 style="width:100%;padding:9px;border:1px solid #D1D5DB;border-radius:8px;font-size:12px;outline:none;margin-top:3px">
                         </div>
                     </div>
                     <div>
-                        <label style="font-size:11px;font-weight:700;color:#475569">പ്രധാന സ്റ്റാൻഡ് / പാർക്കിംഗ്
-                            ലൊക്കേഷൻ</label>
+                        <label style="font-size:11px;font-weight:700;color:#475569">പ്രധാന സ്റ്റാൻഡ് / പാർക്കിംഗ് ലൊക്കേഷൻ</label>
                         <input type="text" id="regVehicleStand"
-                            placeholder="Eg: ടൗൺ ഓട്ടോ സ്റ്റാൻഡ്, റെയിൽവേ സ്റ്റേഷൻ, മെയിൻ ജംഗ്ഷൻ"
+                            placeholder="സ്റ്റാൻഡ് / പാർക്കിംഗ് ലൊക്കേഷൻ"
                             style="width:100%;padding:9px;border:1px solid #D1D5DB;border-radius:8px;font-size:12px;outline:none;margin-top:3px">
                     </div>
                     <div>
-                        <label style="font-size:11px;font-weight:700;color:#475569">ഓട്ടത്തിന്റെ പരിധി /
-                            റൂട്ടുകൾ</label>
+                        <label style="font-size:11px;font-weight:700;color:#475569">ഓട്ടത്തിന്റെ പരിധി / റൂട്ടുകൾ</label>
                         <input type="text" id="regVehicleRoute"
-                            placeholder="Eg: ലോക്കൽ ഓട്ടം & ദീർഘദൂര യാത്രകൾ (24 മണിക്കൂറും)"
+                            placeholder="സർവീസ് റൂട്ടുകൾ / പരിധി"
                             style="width:100%;padding:9px;border:1px solid #D1D5DB;border-radius:8px;font-size:12px;outline:none;margin-top:3px">
                     </div>
                     <div>
-                        <label style="font-size:11px;font-weight:700;color:#475569">ബേസ് നിരക്ക് / കിലോമീറ്റർ നിരക്ക് (₹
-                            Base Rate / Km)</label>
+                        <label style="font-size:11px;font-weight:700;color:#475569">ബേസ് നിരക്ക് / കിലോമീറ്റർ നിരക്ക് (₹ Base Rate / Km)</label>
                         <div
                             style="display:flex;align-items:center;margin-top:3px;border:1px solid #D1D5DB;border-radius:8px;overflow:hidden;background:#fff">
                             <span
                                 style="background:#F0FDF4;color:#047857;padding:8px 12px;font-weight:800;font-size:14px;border-right:1px solid #BBF7D0">₹</span>
                             <input type="text" id="regVehicleRate"
-                                placeholder="Eg: 50 മിനിമം അല്ലെങ്കിൽ കിലോമീറ്ററിന് ₹15"
+                                placeholder="യാത്രാ നിരക്ക്"
                                 onblur="if(this.value) this.value = formatPrice(this.value)"
                                 style="flex:1;padding:8px;border:none;font-size:12px;outline:none">
                         </div>
@@ -2012,7 +2006,7 @@
                     <!-- Quick Filter Input inside 500 Services -->
                     <div style="position:relative;margin-bottom:8px">
                         <input type="text" id="chipFilterInput"
-                            placeholder="🔍 500+ സേവനങ്ങളിൽ പെട്ടെന്ന് തിരയുക (Eg: വയറിങ്, പ്ലംബർ, ടാക്സി...)"
+                            placeholder="🔍 500+ സേവനങ്ങളിൽ പെട്ടെന്ന് തിരയുക..."
                             oninput="filterQuickTradeChips(this.value)"
                             style="width:100%;padding:7px 28px 7px 30px;border:1px solid #CBD5E1;border-radius:8px;font-size:11.5px;outline:none;background:#fff">
                         <span
@@ -2038,10 +2032,8 @@
                 <div class="mini-icon-studio">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
                         <div>
-                            <div style="font-size:12.5px;font-weight:800;color:#065F46">🏷️ സേവന മിനി ഐക്കൺ (Service
-                                Mini Icon)</div>
-                            <div style="font-size:10.5px;color:#64748B">കാർഡിലും ലിസ്റ്റിലും സ്വന്തം ഐക്കൺ കാണിക്കും
-                            </div>
+                            <div style="font-size:12.5px;font-weight:800;color:#065F46">🏷️ സേവന മിനി ഐക്കൺ (Service Mini Icon)</div>
+                            <div style="font-size:10.5px;color:#64748B">കാർഡിലും ലിസ്റ്റിലും സ്വന്തം ഐക്കൺ കാണിക്കും</div>
                         </div>
                         <input type="hidden" id="regSelectedIcon" value="🛠️">
                     </div>
@@ -2052,14 +2044,12 @@
                             <span id="regIconPreviewEmoji">🛠️</span>
                         </div>
                         <div style="flex:1">
-                            <div style="font-size:11px;font-weight:700;color:#374151;margin-bottom:4px">സ്വന്തം ചിഹ്നം /
-                                ഇമോജി ടൈപ്പ് ചെയ്യാം:</div>
+                            <div style="font-size:11px;font-weight:700;color:#374151;margin-bottom:4px">ചിഹ്നം / ഇമോജി തിരഞ്ഞെടുക്കാം:</div>
                             <div style="display:flex;align-items:center;gap:6px">
-                                <input type="text" id="regCustomEmojiInput" maxlength="3" placeholder="Eg: ⚡"
+                                <input type="text" id="regCustomEmojiInput" maxlength="3" placeholder="⚡"
                                     oninput="setCustomServiceEmoji(this.value)"
                                     style="width:75px;padding:8px;border:1.5px solid #CBD5E1;border-radius:8px;font-size:18px;text-align:center;outline:none;background:#fff">
-                                <span style="font-size:10.5px;color:#64748B">അല്ലെങ്കിൽ താഴെയുള്ളതിൽ നിന്ന് ക്ലിക്ക്
-                                    ചെയ്യാം 👇</span>
+                                <span style="font-size:10.5px;color:#64748B">അല്ലെങ്കിൽ താഴെയുള്ളതിൽ നിന്ന് തിരഞ്ഞെടുക്കാം 👇</span>
                             </div>
                         </div>
                     </div>
@@ -2075,22 +2065,20 @@
 
                 <!-- PHONE -->
                 <div>
-                    <label style="font-size:12px;font-weight:700;color:#374151">ഫോൺ നമ്പർ (Phone - നേരിട്ട് വിളിക്കാനും
-                        ചാറ്റിനും)</label>
+                    <label style="font-size:12px;font-weight:700;color:#374151">ഫോൺ നമ്പർ (Phone)</label>
                     <input type="tel" id="regServicePhone" required placeholder="+91 98470 00000"
                         style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
                 </div>
 
                 <!-- VISITING FEE -->
                 <div>
-                    <label style="font-size:12px;font-weight:700;color:#374151">വിസിറ്റിംഗ് നിരക്ക് / ഫീസ് (₹ Visiting
-                        Fee / Rate)</label>
+                    <label style="font-size:12px;font-weight:700;color:#374151">വിസിറ്റിംഗ് നിരക്ക് / ഫീസ് (₹ Visiting Fee)</label>
                     <div
                         style="display:flex;align-items:center;margin-top:4px;border:1px solid #D1D5DB;border-radius:10px;overflow:hidden;background:#fff">
                         <span
                             style="background:#F0FDF4;color:#047857;padding:10px 14px;font-weight:800;font-size:15px;border-right:1px solid #BBF7D0">₹</span>
                         <input type="text" id="regServiceFee"
-                            placeholder="Eg: 200 വിസിറ്റിംഗ് നിരക്ക് അല്ലെങ്കിൽ ചർച്ച ചെയ്യാം"
+                            placeholder="നിരക്ക് (ചർച്ച ചെയ്യാം)"
                             onblur="if(this.value) this.value = formatPrice(this.value)"
                             style="flex:1;padding:10px;border:none;font-size:13px;outline:none">
                     </div>
@@ -2099,16 +2087,15 @@
                 <!-- WORKING HOURS -->
                 <div>
                     <label style="font-size:12px;font-weight:700;color:#374151">പ്രവൃത്തി സമയം (Working Hours)</label>
-                    <input type="text" id="regServiceHours" placeholder="Eg: രാവിലെ 8:00 AM - 7:00 PM"
+                    <input type="text" id="regServiceHours" placeholder="രാവിലെ 8:00 AM - 7:00 PM"
                         style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
                 </div>
 
                 <!-- SPECIALIZATIONS (WITH DYNAMIC SUGGESTIONS) -->
                 <div>
-                    <label style="font-size:12px;font-weight:700;color:#374151">പ്രത്യേക പണികൾ / സ്പെഷ്യലൈസേഷൻ (Skills &
-                        Specialization)</label>
+                    <label style="font-size:12px;font-weight:700;color:#374151">പ്രത്യേക പണികൾ / സ്പെഷ്യലൈസേഷൻ (Skills)</label>
                     <input type="text" id="regServiceSpecs"
-                        placeholder="Eg: ഇൻവെർട്ടർ, വയറിങ്, ഫാൻ ഫിറ്റിംഗ് (കോമയിട്ട് നൽകുക)"
+                        placeholder="ചെയ്യുന്ന പ്രധാന ജോലികൾ (കോമയിട്ട് നൽകുക)"
                         style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
                     <div id="regSkillSuggestionsChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px"></div>
                 </div>
@@ -2126,14 +2113,14 @@
                 <!-- EXPERIENCE -->
                 <div>
                     <label style="font-size:12px;font-weight:700;color:#374151">പ്രവൃത്തിപരിചയം (Experience)</label>
-                    <input type="text" id="regServiceExp" placeholder="Eg: 8 വർഷം പരിചയം"
+                    <input type="text" id="regServiceExp" placeholder="പരിചയ സമ്പത്ത് (വർഷം)"
                         style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
                 </div>
 
                 <!-- LOCATION -->
                 <div>
                     <label style="font-size:12px;font-weight:700;color:#374151">സ്ഥലം (Location)</label>
-                    <input type="text" id="regServiceLoc" placeholder="Eg: അടൂർ, പത്തനംതിട്ട / നിങ്ങളുടെ സ്ഥലം"
+                    <input type="text" id="regServiceLoc" placeholder="നിങ്ങളുടെ സ്ഥലം / പ്രദേശം"
                         style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
                 </div>
 
@@ -2205,14 +2192,13 @@
             <form onsubmit="submitJobPosting(event)" style="display:flex;flex-direction:column;gap:11px">
                 <div>
                     <label style="font-size:12px;font-weight:700;color:#374151">ജോലി തലക്കെട്ട് (Job Title) *</label>
-                    <input type="text" id="postJobTitle" required placeholder="Eg: ഡ്രൈവർ ആവശ്യം, സെയിൽസ്മാൻ, കുക്ക്..."
+                    <input type="text" id="postJobTitle" required placeholder="ജോലി തലക്കെട്ട് നൽകുക"
                         style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                 </div>
                 <div>
-                    <label style="font-size:12px;font-weight:700;color:#374151">സ്ഥാപനം / തൊഴിൽദാതാവ് (Company/Employer)
-                        *</label>
+                    <label style="font-size:12px;font-weight:700;color:#374151">സ്ഥാപനം / തൊഴിൽദാതാവ് (Company/Employer) *</label>
                     <input type="text" id="postJobEmployer" required
-                        placeholder="Eg: ഗ്രീൻവാലി ട്രേഡേഴ്സ് / വ്യക്തിഗത ആവശ്യം"
+                        placeholder="സ്ഥാപനത്തിന്റെ പേര് / തൊഴിൽദാതാവ്"
                         style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                 </div>
                 <div>
@@ -2233,7 +2219,7 @@
                 <div style="display:flex;gap:8px">
                     <div style="flex:1">
                         <label style="font-size:12px;font-weight:700;color:#374151">ഫോൺ നമ്പർ (Phone) *</label>
-                        <input type="tel" id="postJobPhone" required placeholder="Eg: 9447100000"
+                        <input type="tel" id="postJobPhone" required placeholder="മൊബൈൽ നമ്പർ"
                             style="width:100%;padding:9px 12px;border:1.5px solid #0284C7;border-radius:10px;font-size:13px;outline:none;margin-top:3px;background:#F0F9FF;font-weight:700">
                     </div>
                     <div style="flex:1">
@@ -2242,7 +2228,7 @@
                             style="display:flex;align-items:center;margin-top:3px;border:1px solid #CBD5E1;border-radius:10px;overflow:hidden;background:#fff">
                             <span
                                 style="background:#F0F9FF;color:#0284C7;padding:9px 12px;font-weight:800;font-size:14px;border-right:1px solid #E0F2FE">₹</span>
-                            <input type="text" id="postJobSalary" placeholder="Eg: 18,000 - 22,000"
+                            <input type="text" id="postJobSalary" placeholder="പ്രതിമാസ ശമ്പളം / വേതനം"
                                 onblur="if(this.value) this.value = formatPrice(this.value)"
                                 style="flex:1;padding:9px 12px;border:none;font-size:13px;outline:none">
                         </div>
@@ -2250,7 +2236,7 @@
                 </div>
                 <div>
                     <label style="font-size:12px;font-weight:700;color:#374151">ജോലി സ്ഥലം (Location) *</label>
-                    <input type="text" id="postJobLocation" required placeholder="Eg: നിങ്ങളുടെ പ്രദേശം / സ്ഥലം"
+                    <input type="text" id="postJobLocation" required placeholder="ജോലി സ്ഥലം / പ്രദേശം"
                         style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                 </div>
                 <div>
@@ -2295,7 +2281,7 @@
                 <div style="display:flex;gap:8px">
                     <div style="flex:1">
                         <label style="font-size:12px;font-weight:700;color:#374151">പ്രായം & ലിംഗം</label>
-                        <input type="text" id="bReqAge" placeholder="Eg: 34 / Male"
+                        <input type="text" id="bReqAge" placeholder="പ്രായം / ലിംഗം"
                             style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                     </div>
                     <div style="flex:1">
@@ -2321,15 +2307,14 @@
 
                 <div>
                     <label style="font-size:12px;font-weight:700;color:#374151">ആശുപത്രി & സ്ഥലം *</label>
-                    <input type="text" id="bReqHospital" required placeholder="Eg: താലൂക്ക് / ജില്ലാ ആശുപത്രി (വാർഡ് 4)"
+                    <input type="text" id="bReqHospital" required placeholder="ആശുപത്രിയുടെ പേര് & സ്ഥലം"
                         style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                 </div>
 
                 <div style="display:flex;gap:8px">
                     <div style="flex:1">
-                        <label style="font-size:12px;font-weight:700;color:#374151">IP/OP നമ്പർ അല്ലെങ്കിൽ
-                            രോഗവിവരം</label>
-                        <input type="text" id="bReqIpNo" placeholder="Eg: IP: 4120 / സർജറി / അത്യാഹിതം"
+                        <label style="font-size:12px;font-weight:700;color:#374151">IP/OP നമ്പർ അല്ലെങ്കിൽ രോഗവിവരം</label>
+                        <input type="text" id="bReqIpNo" placeholder="വാർഡ് / രോഗവിവരം"
                             style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                     </div>
                     <div style="flex:1">
@@ -2481,7 +2466,7 @@
                     <div>
                         <label style="font-size:12px;font-weight:700;color:#374151">പേര് / സ്ഥാപനത്തിന്റെ പേര് (Provider
                             Name) *</label>
-                        <input type="text" id="adminSvcName" required placeholder="Eg: മനോജ് കുമാർ / റോയൽ വർക്ക്‌ഷോപ്പ്"
+                        <input type="text" id="adminSvcName" required placeholder="പേര് / സ്ഥാപനത്തിന്റെ പേര്"
                             style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                     </div>
 
@@ -2490,7 +2475,7 @@
                             <label style="font-size:12px;font-weight:700;color:#374151">തൊഴിൽ വിഭാഗം (Category/Trade)
                                 *</label>
                             <input type="text" id="adminSvcTrade" required
-                                placeholder="Eg: പ്ലംബർ, ഇലക്ട്രീഷ്യൻ, ഡ്രൈവർ..."
+                                placeholder="തൊഴിൽ വിഭാഗം (പ്ലംബർ, ഡ്രൈവർ...)"
                                 style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                         </div>
                         <div style="width:90px">
@@ -2520,7 +2505,7 @@
                         </div>
                         <div style="flex:1">
                             <label style="font-size:12px;font-weight:700;color:#374151">സ്ഥലം (Location) *</label>
-                            <input type="text" id="adminSvcLoc" required placeholder="Eg: നിങ്ങളുടെ പ്രദേശം / സ്ഥലം"
+                            <input type="text" id="adminSvcLoc" required placeholder="പ്രദേശം / സ്ഥലം"
                                 style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                         </div>
                     </div>
@@ -2533,21 +2518,21 @@
                                 style="display:flex;align-items:center;margin-top:3px;border:1px solid #CBD5E1;border-radius:10px;overflow:hidden;background:#fff">
                                 <span
                                     style="background:#F0FDF4;color:#047857;padding:9px 12px;font-weight:800;font-size:14px;border-right:1px solid #BBF7D0">₹</span>
-                                <input type="text" id="adminSvcFee" placeholder="Eg: 200 / സംസാരിക്കാം"
+                                <input type="text" id="adminSvcFee" placeholder="തുക അല്ലെങ്കിൽ സംസാരിക്കാം"
                                     onblur="if(this.value) this.value = formatPrice(this.value)"
                                     style="flex:1;padding:9px 12px;border:none;font-size:13px;outline:none">
                             </div>
                         </div>
                         <div style="flex:1">
                             <label style="font-size:12px;font-weight:700;color:#374151">പ്രവർത്തന സമയം</label>
-                            <input type="text" id="adminSvcHours" placeholder="Eg: 8 AM - 8 PM / 24x7"
+                            <input type="text" id="adminSvcHours" placeholder="8:00 AM - 8:00 PM / 24x7"
                                 style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                         </div>
                     </div>
 
                     <div>
                         <label style="font-size:12px;font-weight:700;color:#374151">വിവരണം / സേവന വിശേഷങ്ങൾ</label>
-                        <input type="text" id="adminSvcDesc" placeholder="Eg: വയറിംഗ്, ഇൻവെർട്ടർ സർവീസ്, പ്ലംബിംഗ്..."
+                        <input type="text" id="adminSvcDesc" placeholder="സേവന വിവരങ്ങൾ അല്ലെങ്കിൽ പ്രത്യേകതകൾ..."
                             style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                     </div>
 
@@ -2573,7 +2558,7 @@
                         <label style="font-size:12px;font-weight:700;color:#374151">സേവന സ്ഥാപനം / ഹെൽപ്പ്‌ലൈൻ പേര്
                             *</label>
                         <input type="text" id="adminNumTitle" required
-                            placeholder="Eg: KSEB ഇലക്ട്രിസിറ്റി, താലൂക്ക് ആശുപത്രി, പോലീസ്..."
+                            placeholder="സ്ഥാപനം / ഹെൽപ്പ്‌ലൈൻ പേര്"
                             style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                     </div>
 
@@ -2611,12 +2596,12 @@
                         <div style="flex:1">
                             <label style="font-size:12px;font-weight:700;color:#374151">ഹെൽപ്പ്‌ലൈൻ / ഫോൺ നമ്പർ
                                 *</label>
-                            <input type="tel" id="adminNumPhone" required placeholder="Eg: 1912, 0497-2700000, 9447..."
+                            <input type="tel" id="adminNumPhone" required placeholder="ഹെൽപ്പ്‌ലൈൻ / ഫോൺ നമ്പർ"
                                 style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                         </div>
                         <div style="flex:1">
                             <label style="font-size:12px;font-weight:700;color:#374151">പ്രദേശം (Location) *</label>
-                            <input type="text" id="adminNumLoc" required placeholder="Eg: നിങ്ങളുടെ പ്രദേശം, കേരളം"
+                            <input type="text" id="adminNumLoc" required placeholder="പ്രദേശം / ജില്ല"
                                 style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                         </div>
                     </div>
@@ -2624,12 +2609,12 @@
                     <div style="display:flex;gap:8px">
                         <div style="flex:1">
                             <label style="font-size:12px;font-weight:700;color:#374151">ബാഡ്ജ് / ടാഗ്</label>
-                            <input type="text" id="adminNumBadge" placeholder="Eg: 24x7, ടോൾ ഫ്രീ, അത്യാഹിതം"
+                            <input type="text" id="adminNumBadge" placeholder="24x7, ടോൾ ഫ്രീ, അത്യാഹിതം..."
                                 style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                         </div>
                         <div style="flex:1">
                             <label style="font-size:12px;font-weight:700;color:#374151">ലഘുവിവരണം</label>
-                            <input type="text" id="adminNumDesc" placeholder="Eg: 24 മണിക്കൂറും സേവനം ലഭ്യമാണ്"
+                            <input type="text" id="adminNumDesc" placeholder="സേവന വിവരണം നൽകുക"
                                 style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                         </div>
                     </div>
@@ -2756,7 +2741,7 @@
                     <div style="display:flex;gap:8px">
                         <div style="flex:1">
                             <label style="font-size:12px;font-weight:700;color:#374151">ഫോൺ നമ്പർ (Optional):</label>
-                            <input type="tel" id="adminInAppBannerPhone" placeholder="Eg: 9847123456"
+                            <input type="tel" id="adminInAppBannerPhone" placeholder="ഫോൺ നമ്പർ (ആവശ്യമെങ്കിൽ)"
                                 style="width:100%;padding:8px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:12.5px;outline:none;margin-top:3px">
                         </div>
                         <div style="flex:1">
@@ -2939,33 +2924,29 @@
 
                     <!-- DRIVER NAME -->
                     <div>
-                        <label style="font-size:12px;font-weight:700;color:#374151">ഡ്രൈവറുടെ / സർവീസിന്റെ പേര് (Driver
-                            Name) *</label>
-                        <input type="text" id="ambDriverName" required placeholder="Eg: സുരേഷ് കുമാർ (Ambulance Driver)"
+                        <label style="font-size:12px;font-weight:700;color:#374151">ഡ്രൈവറുടെ / സർവീസിന്റെ പേര് *</label>
+                        <input type="text" id="ambDriverName" required placeholder="ഡ്രൈവറുടെ / സർവീസിന്റെ പേര്"
                             style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                     </div>
 
                     <!-- DRIVER PHONE NUMBER -->
                     <div>
-                        <label style="font-size:12px;font-weight:700;color:#374151">ഡ്രൈവറുടെ മൊബൈൽ നമ്പർ (അടിയന്തിരമായി
-                            വിളിക്കാൻ) *</label>
-                        <input type="tel" id="ambDriverPhone" required placeholder="Eg: 9847123456"
+                        <label style="font-size:12px;font-weight:700;color:#374151">മൊബൈൽ നമ്പർ *</label>
+                        <input type="tel" id="ambDriverPhone" required placeholder="മൊബൈൽ നമ്പർ"
                             style="width:100%;padding:9px 12px;border:1.5px solid #10B981;border-radius:10px;font-size:13px;outline:none;margin-top:3px;background:#F0FDF4;font-weight:700">
                     </div>
 
                     <!-- WHATSAPP NUMBER -->
                     <div>
-                        <label style="font-size:12px;font-weight:700;color:#374151">വാട്സ്ആപ്പ് നമ്പർ (ലൊക്കേഷൻ
-                            അയച്ചുനൽകാൻ)</label>
-                        <input type="tel" id="ambDriverWhatsApp" placeholder="Eg: 9847123456"
+                        <label style="font-size:12px;font-weight:700;color:#374151">വാട്സ്ആപ്പ് നമ്പർ</label>
+                        <input type="tel" id="ambDriverWhatsApp" placeholder="വാട്സ്ആപ്പ് നമ്പർ"
                             style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                     </div>
 
                     <!-- VEHICLE NUMBER -->
                     <div>
-                        <label style="font-size:12px;font-weight:700;color:#374151">ആംബുലൻസ് വാഹന നമ്പർ (Vehicle Reg No)
-                            *</label>
-                        <input type="text" id="ambVehicleNo" required placeholder="Eg: KL-13-AB-1234"
+                        <label style="font-size:12px;font-weight:700;color:#374151">ആംബുലൻസ് വാഹന നമ്പർ *</label>
+                        <input type="text" id="ambVehicleNo" required placeholder="KL-00-XX-0000"
                             style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px;text-transform:uppercase">
                     </div>
 
@@ -2990,10 +2971,9 @@
 
                     <!-- BASE LOCATION / STAND / HOSPITAL -->
                     <div>
-                        <label style="font-size:12px;font-weight:700;color:#374151">സ്റ്റാൻഡ് / ഹോസ്പിറ്റൽ പരിസരം /
-                            സ്ഥലം (Base Location) *</label>
+                        <label style="font-size:12px;font-weight:700;color:#374151">സ്റ്റാൻഡ് / ഹോസ്പിറ്റൽ പരിസരം / സ്ഥലം *</label>
                         <input type="text" id="ambDriverLocation" required
-                            placeholder="Eg: സമീപത്തെ സ്റ്റാൻഡ് / ആശുപത്രി പരിസരം"
+                            placeholder="സ്റ്റാൻഡ് / ആശുപത്രി പരിസരം"
                             style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                     </div>
 
@@ -3011,9 +2991,8 @@
 
                     <!-- LICENCE / BADGE NO -->
                     <div>
-                        <label style="font-size:12px;font-weight:700;color:#374151">ഡ്രൈവിംഗ് ലൈസൻസ് / ബാഡ്ജ് നമ്പർ
-                            (ഓപ്ഷണൽ)</label>
-                        <input type="text" id="ambLicenceNo" placeholder="Eg: KL13 20180000000"
+                        <label style="font-size:12px;font-weight:700;color:#374151">ഡ്രൈവിംഗ് ലൈസൻസ് നമ്പർ (ഓപ്ഷണൽ)</label>
+                        <input type="text" id="ambLicenceNo" placeholder="ഡ്രൈവിംഗ് ലൈസൻസ് നമ്പർ"
                             style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
                     </div>
 
@@ -3055,7 +3034,7 @@
             <form onsubmit="submitDonorRegistration(event)" style="display:flex;flex-direction:column;gap:10px">
                 <div>
                     <label style="font-size:12px;font-weight:700">പൂർണ്ണ നാമം (Full Name)</label>
-                    <input type="text" id="regDonorName" required placeholder="Eg: അരുൺ കൃഷ്ണൻ"
+                    <input type="text" id="regDonorName" required placeholder="നിങ്ങളുടെ പേര്"
                         style="width:100%;padding:10px;border:1px solid #FECACA;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
                 </div>
                 <div style="display:flex;gap:10px">
@@ -3089,7 +3068,7 @@
                 </div>
                 <div>
                     <label style="font-size:12px;font-weight:700">സ്ഥലം (Location / Town)</label>
-                    <input type="text" id="regDonorLoc" placeholder="Eg: നിങ്ങളുടെ പ്രദേശം / സ്ഥലം"
+                    <input type="text" id="regDonorLoc" placeholder="നിങ്ങളുടെ സ്ഥലം / പ്രദേശം"
                         style="width:100%;padding:10px;border:1px solid #FECACA;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
                 </div>
 
@@ -3134,12 +3113,11 @@
             </div>
             <input type="hidden" id="rentListingMode" value="rent">
 
-            <p id="rentModeDescription" style="font-size:12px;color:#6B7280;margin:0 0 12px">വീടുകൾ, വാഹനങ്ങൾ, യന്ത്രങ്ങൾ, പന്തൽ, മറ്റ് ഏത് സാധനങ്ങളും വാടകയ്ക്ക് നൽകാം.</p>
             <form onsubmit="submitRentalPosting(event)" style="display:flex;flex-direction:column;gap:10px">
                 <div>
                     <label id="rentTitleLabel" style="font-size:12px;font-weight:700">ഇനത്തിന്റെ പേര് / വിവരണം (Title)</label>
                     <input type="text" id="rentTitle" required
-                        placeholder="Eg: 2 BHK വീട് / മഹീന്ദ്ര ജീപ്പ് / ജെസിബി / മിക്സർ മെഷീൻ"
+                        placeholder="ഇനത്തിന്റെ പേര് നൽകുക"
                         style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
                 </div>
                 <div>
@@ -3163,7 +3141,7 @@
                         <span id="rentRateCurrency"
                             style="background:#F0FDF4;color:#047857;padding:10px 14px;font-weight:800;font-size:15px;border-right:1px solid #BBF7D0">₹</span>
                         <input type="text" id="rentRate" required
-                            placeholder="Eg: 8,000 / മാസം or 500 / ദിവസം or 1,200 / ട്രിപ്പ്"
+                            placeholder="തുക നൽകുക"
                             onblur="if(this.value) this.value = formatPrice(this.value)"
                             style="flex:1;padding:10px;border:none;font-size:13px;outline:none">
                     </div>
@@ -3176,10 +3154,7 @@
                             onchange="handleRentalPhotoUpload(event)">
                         <div id="rentPhotoPlaceholder">
                             <span style="font-size:24px">📷</span>
-                            <div style="font-size:12px;color:#0E7043;font-weight:700;margin-top:2px">ഫോട്ടോ ചേർക്കാൻ
-                                ടാപ്പ് ചെയ്യുക</div>
-                            <div style="font-size:10.5px;color:#6B7280">(ഗാലറിയിൽ നിന്നോ ക്യാമറയിൽ നിന്നോ
-                                തിരഞ്ഞെടുക്കാം)</div>
+                            <div style="font-size:12px;color:#0E7043;font-weight:700;margin-top:2px">ഫോട്ടോ ചേർക്കാൻ ടാപ്പ് ചെയ്യുക</div>
                         </div>
                         <div id="rentPhotoPreviewWrap" style="display:none;position:relative;margin-top:6px">
                             <img id="rentPhotoPreviewImg" src=""
@@ -3192,7 +3167,7 @@
                 <div style="display:flex;gap:10px">
                     <div style="flex:1">
                         <label style="font-size:12px;font-weight:700">ഉടമസ്ഥന്റെ പേര്</label>
-                        <input type="text" id="rentOwner" placeholder="Eg: സുധീർ"
+                        <input type="text" id="rentOwner" placeholder="പേര്"
                             style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
                     </div>
                     <div style="flex:1">
@@ -3203,7 +3178,7 @@
                 </div>
                 <div>
                     <label style="font-size:12px;font-weight:700">സ്ഥലം (Location / Town)</label>
-                    <input type="text" id="rentLoc" placeholder="Eg: നിങ്ങളുടെ പ്രദേശം / സ്ഥലം"
+                    <input type="text" id="rentLoc" placeholder="സ്ഥലം / ടൗൺ"
                         style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
                 </div>
                 <button type="submit" id="rentSubmitBtn"
@@ -3441,7 +3416,7 @@
                             style="font-size:11.5px;font-weight:800;color:#334155;display:block;margin-bottom:4px">തൊഴിൽ
                             / ജോലി (Profession / Trade)</label>
                         <input type="text" id="editProfTrade"
-                            placeholder="ഉദാ: ഡ്രൈവർ, ഇലക്ട്രീഷ്യൻ, അധ്യാപകൻ, വ്യാപാരി, വിദ്യാർത്ഥി..."
+                            placeholder="ഡ്രൈവർ, ഇലക്ട്രീഷ്യൻ, വ്യാപാരി..."
                             style="width:100%;padding:11px 12px;border:1px solid #CBD5E1;border-radius:12px;font-size:13px;outline:none">
                     </div>
 
@@ -3569,7 +3544,7 @@
                     <label style="font-size:12px;font-weight:800;color:#334155">2. എന്താണ് പ്രശ്നം? (Describe
                         Problem)</label>
                     <textarea id="quickReqDescription" required
-                        placeholder="ഉദാഹരണത്തിന്: ബാത്ത്റൂമിൽ പൈപ്പ് ലീക്ക്, പുതിയ സ്വിച്ച് ഇടണം, അല്ലെങ്കിൽ യാത്രയ്ക്ക് വാഹനം..."
+                        placeholder="നിങ്ങൾക്ക് ആവശ്യമുള്ള സഹായം അല്ലെങ്കിൽ പ്രശ്നം ഇവിടെ ചുരുക്കി എഴുതാം..."
                         rows="2"
                         style="width:100%;padding:10px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:4px;resize:none"></textarea>
                 </div>

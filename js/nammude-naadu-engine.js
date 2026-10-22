@@ -4269,7 +4269,7 @@
               <button type="button" class="star-btn active" onclick="setServiceRatingStar(4)">★</button>
               <button type="button" class="star-btn active" onclick="setServiceRatingStar(5)">★</button>
             </div>
-            <input type="text" id="serviceReviewTextInput" placeholder="അഭിപ്രായം രേഖപ്പെടുത്താം (ഉദാ: നല്ല സർവീസ്, ന്യായമായ കൂലി)..." style="width:100%;padding:8px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:0.8rem;outline:none;margin-bottom:8px">
+            <input type="text" id="serviceReviewTextInput" placeholder="നിങ്ങളുടെ അനുഭവം / അഭിപ്രായം ഇവിടെ എഴുതാം..." style="width:100%;padding:8px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:0.8rem;outline:none;margin-bottom:8px">
             <button onclick="submitProviderReview('${srv.id}')" style="width:100%;padding:8px;background:#0E7043;color:#fff;border:none;border-radius:10px;font-weight:800;font-size:0.82rem;cursor:pointer">
               റേറ്റിംഗ് സമർപ്പിക്കാം
             </button>
@@ -4491,17 +4491,17 @@
     selectMiniIcon(typeIcon);
 
     const modelPlaceholders = {
-      auto: 'Eg: ബജാജ് RE കോംപാക്ട് 3-സീറ്റർ',
-      taxi: 'Eg: ഇന്നോവ / എർട്ടിഗ / ഡിസയർ (AC)',
-      traveller: 'Eg: 17 / 26 സീറ്റർ ട്രാവലർ (AC പുഷ്ബാക്ക്)',
-      bus: 'Eg: 32 / 49 സീറ്റർ എയർ സസ്പെൻഷൻ ടൂറിസ്റ്റ് ബസ്',
-      pickup: 'Eg: ബൊലേറോ പിക്കപ്പ് / ദോസ്ത് (1.5 ടൺ)',
-      goodsauto: 'Eg: ആപ്പെ / പിയാജിയോ ഗുഡ്സ് ഓട്ടോ',
-      jeep: 'Eg: മഹീന്ദ്ര 4x4 ജീപ്പ് / സഫാരി ജീപ്പ്',
-      lorry: 'Eg: 10 / 16 ടൺ ടിപ്പർ ലോറി / ടോറസ്',
-      jcb: 'Eg: JCB 3DX സൂപ്പർ / ഹിറ്റാച്ചി എക്സ്കവേറ്റർ',
-      crane: 'Eg: ഹൈഡ്രോളിക് റിക്കവറി ക്രെയിൻ & ടോവിങ്',
-      ambulance: 'Eg: ഒക്സിജൻ സപ്പോർട്ട് ഉള്ള ICU ആംബുലൻസ്'
+      auto: 'മോഡൽ / കപ്പാസിറ്റി (3-സീറ്റർ)',
+      taxi: 'മോഡൽ / എയർകണ്ടീഷണർ വിവരങ്ങൾ',
+      traveller: 'സീറ്റിംഗ് കപ്പാസിറ്റി (17/26 സീറ്റർ)',
+      bus: 'ബസ് വിവരങ്ങൾ / കപ്പാസിറ്റി',
+      pickup: 'വാഹന മോഡൽ / കപ്പാസിറ്റി',
+      goodsauto: 'ഗുഡ്സ് ഓട്ടോ വിവരങ്ങൾ',
+      jeep: 'ജീപ്പ് മോഡൽ / 4x4',
+      lorry: 'ലോറി ടൺ കപ്പാസിറ്റി',
+      jcb: 'JCB / എക്സ്കവേറ്റർ മോഡൽ',
+      crane: 'ക്രെയിൻ / ടോവിങ് വിവരങ്ങൾ',
+      ambulance: 'ആംബുലൻസ് വിവരങ്ങൾ'
     };
     if (modelInput && modelPlaceholders[typeKey]) {
       modelInput.placeholder = modelPlaceholders[typeKey];
@@ -7782,7 +7782,7 @@
         curr.style.color = '#1D4ED8';
         curr.style.borderRight = '1px solid #BFDBFE';
       }
-      if (input) input.placeholder = 'Eg: 25,000 or 1,50,000 (വില)';
+      if (input) input.placeholder = 'വില്പന തുക നൽകുക (₹)';
       if (submitBtn) {
         submitBtn.style.background = '#2563EB';
         submitBtn.textContent = '🏷️ വിൽപനയ്ക്ക് ലിസ്റ്റ് ചെയ്യാം';
@@ -7813,7 +7813,7 @@
         curr.style.color = '#047857';
         curr.style.borderRight = '1px solid #BBF7D0';
       }
-      if (input) input.placeholder = 'Eg: 8,000 / മാസം or 500 / ദിവസം';
+      if (input) input.placeholder = 'വാടക തുക നൽകുക (₹)';
       if (submitBtn) {
         submitBtn.style.background = '#0E7043';
         submitBtn.textContent = '🏠 വാടകയ്ക്ക് ലിസ്റ്റ് ചെയ്യാം';
