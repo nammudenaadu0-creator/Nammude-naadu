@@ -3829,3 +3829,207 @@
   z-index: 1;
   border-radius: 20px;
 }
+
+/* ==============================================================
+   UNIVERSAL KERALA 3D THEME (FULL-APP SYSTEM DESIGN)
+   ============================================================== */
+
+/* 1. All Screen Backgrounds */
+.screen {
+  background: linear-gradient(180deg, #E8FDF5 0%, #F0FDF4 160px, #F8FAFC 100%) !important;
+  min-height: 100vh;
+}
+
+/* 2. Unified Kerala Headers Across All Screens */
+.app-header,
+.nearby-header,
+.yw-services-header,
+#screen-nearby .nearby-header,
+#screen-community .app-header,
+#screen-services .yw-services-header,
+#screen-jobs > div:first-child,
+#screen-rentals > div:first-child,
+#screen-blood > div:first-child,
+#screen-chat > div:first-child,
+#screen-add > div:first-child,
+.community-header {
+  background: linear-gradient(180deg, #E6FBF0 0%, #F0FDF4 100%) !important;
+  border-bottom: 1.5px solid rgba(16, 185, 129, 0.22) !important;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.07) !important;
+  color: #064E3B !important;
+}
+
+/* Header Titles */
+.nearby-header-title,
+#screen-community h2,
+#screen-jobs h2,
+#screen-rentals h2,
+#screen-blood h2,
+#screen-chat h2,
+#screen-add h2,
+.app-header h2 {
+  color: #064E3B !important;
+  font-family: 'Manjari', sans-serif !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.3px !important;
+}
+
+/* Round Back & Action Buttons in Headers */
+.round-back-btn,
+.round-gear-btn,
+#screen-community header button,
+#screen-jobs button:first-child,
+#screen-rentals button:first-child,
+#screen-blood button:first-child,
+#screen-chat .round-back-btn,
+#screen-services .yw-services-header button:first-child {
+  background: #FFFFFF !important;
+  border: 1.5px solid #E2E8F0 !important;
+  color: #064E3B !important;
+  border-radius: 50% !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+  cursor: pointer !important;
+  transition: transform 0.1s ease !important;
+}
+
+.round-back-btn:active,
+.round-gear-btn:active {
+  transform: scale(0.92) !important;
+}
+
+/* 3. Header Action Pills (Add, Register, Filter) */
+#screen-community header button[onclick*="navTo('add')"],
+#screen-jobs button[onclick*="openPostJobModal"],
+#screen-rentals button[onclick*="openAddRentalModal"],
+#screen-blood button[onclick*="openRegisterDonorModal"],
+#screen-services button[onclick*="openAddServiceModal"] {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  border-radius: 9999px !important;
+  padding: 7px 14px !important;
+  font-weight: 800 !important;
+  font-size: 11.5px !important;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3) !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+}
+
+/* 4. Filter Chips Across All Screens */
+.radius-chip,
+.job-cat-chip,
+.rental-cat-chip,
+.chat-filter-chip {
+  background: #FFFFFF !important;
+  border: 1.5px solid #BBF7D0 !important;
+  color: #065F46 !important;
+  font-weight: 800 !important;
+  border-radius: 9999px !important;
+  padding: 6px 14px !important;
+  font-size: 11.5px !important;
+  box-shadow: 0 2px 6px rgba(14, 112, 67, 0.04) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.radius-chip.active,
+.job-cat-chip.active,
+.rental-cat-chip.active,
+.chat-filter-chip.active {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+  border-color: #059669 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.32) !important;
+}
+
+/* 5. Inputs & Search Fields Across All Screens */
+#nearbySearchInput,
+#serviceSearchInput,
+#jobSearchInput,
+#rentalSearchInput,
+#chatSearchInput {
+  border: 1.5px solid #86EFAC !important;
+  border-radius: 9999px !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.08) !important;
+  font-weight: 600 !important;
+  padding: 10px 16px !important;
+  color: #1E293B !important;
+  outline: none !important;
+}
+
+#nearbySearchInput:focus,
+#serviceSearchInput:focus,
+#jobSearchInput:focus,
+#rentalSearchInput:focus,
+#chatSearchInput:focus {
+  border-color: #10B981 !important;
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.2) !important;
+}
+
+/* 6. Cards and Feeds Across All Screens */
+.community-post-card,
+.fb-post-card,
+.job-card-modern,
+.rental-card-modern,
+.chat-thread-card,
+.service-provider-card,
+.blood-donor-card {
+  border-radius: 20px !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.16) !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 6px 20px rgba(6, 78, 59, 0.06) !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+  overflow: hidden !important;
+}
+
+.community-post-card:active,
+.job-card-modern:active,
+.rental-card-modern:active,
+.chat-thread-card:active,
+.service-provider-card:active {
+  transform: scale(0.98) !important;
+}
+
+/* 7. Bottom Navigation Bar — Premium Mint Claymorphic Bar */
+.bottom-nav {
+  background: #FFFFFF !important;
+  border-top: 1.5px solid #BBF7D0 !important;
+  border-radius: 26px 26px 0 0 !important;
+  box-shadow: 0 -6px 28px rgba(6, 78, 59, 0.1) !important;
+  height: 70px !important;
+}
+
+.bottom-nav .nav-item {
+  color: #64748B !important;
+  font-weight: 700 !important;
+  transition: all 0.2s ease !important;
+}
+
+.bottom-nav .nav-item.active {
+  color: #059669 !important;
+  font-weight: 900 !important;
+}
+
+.bottom-nav .nav-item.active span:first-child {
+  transform: scale(1.15);
+  display: inline-block;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bottom-nav .nav-add-circle {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+  box-shadow: 0 6px 18px rgba(5, 150, 105, 0.42) !important;
+  border: 3px solid #FFFFFF !important;
+  transition: transform 0.15s ease !important;
+}
+
+.bottom-nav .nav-add-btn-wrap:active .nav-add-circle {
+  transform: scale(0.92) !important;
+}
+
+.bottom-nav .nav-add-label {
+  color: #059669 !important;
+  font-weight: 800 !important;
+}
