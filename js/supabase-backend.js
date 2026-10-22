@@ -63,6 +63,9 @@
     chatChannel.on('broadcast', { event: 'chat_message' }, ({ payload }) => {
       handleIncomingChatMessage(payload);
     });
+    chatChannel.on('broadcast', { event: 'chat_seen' }, ({ payload }) => {
+      handleIncomingChatSeen(payload);
+    });
     chatChannel.subscribe((status) => {
       console.info('💬 [Supabase Realtime Chat] Status:', status);
     });
@@ -633,6 +636,15 @@
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
           if (payload && payload.new) {
             const row = payload.new;
+            if (row.text === '[read_receipt]') {
+              handleIncomingChatSeen({
+                chatKey: row.chat_key,
+                readerPhone: row.sender_phone,
+                readerId: row.sender_id,
+                seenAt: Number(row.created_at) || Date.now()
+              });
+              return;
+            }
             const chatKey = row.chat_key;
             const msgObj = {
               id: row.id,
@@ -788,6 +800,8 @@
           if (typeof renderChatMessages === 'function') {
             try { renderChatMessages(); } catch (_) {}
           }
+          // Recipient is viewing this thread right now: send immediate read receipt!
+          markChatSeen(chatKey, myPhone, myId);
         } else {
           // Update chat badge and central inbox list
           if (typeof updateChatBadgeCounter === 'function') {
@@ -828,6 +842,66 @@
           }
         } catch (_) {}
       });
+    }
+  }
+
+  // Handle incoming real-time seen receipt from recipient
+  function handleIncomingChatSeen(payload) {
+    if (!payload || !payload.chatKey) return;
+    const { chatKey, readerPhone, readerId, seenAt } = payload;
+    const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone)
+      ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
+
+    // Ignore self-echo on the exact same client tab
+    if (readerPhone && myPhone && readerPhone === myPhone && payload.sessionId === SESSION_CLIENT_ID) {
+      return;
+    }
+
+    let targetKey = chatKey;
+    if (typeof APP_STATE !== 'undefined' && APP_STATE.chats) {
+      if (!APP_STATE.chats[targetKey]) {
+        const cleanReader = readerPhone ? String(readerPhone).replace(/\D/g, '').slice(-10) : '';
+        const match = Object.keys(APP_STATE.chats).find(k => cleanReader && k.includes(cleanReader));
+        if (match) targetKey = match;
+      }
+
+      const thread = APP_STATE.chats[targetKey];
+      if (Array.isArray(thread) && thread.length > 0) {
+        let updated = false;
+        const effectiveSeenTime = Number(seenAt) || Date.now();
+        thread.forEach(m => {
+          if (m.sender === 'me' && m.status !== 'seen') {
+            m.status = 'seen';
+            m.seen = true;
+            m.seenAt = effectiveSeenTime;
+            updated = true;
+          }
+        });
+
+        if (updated) {
+          if (typeof saveChats === 'function') {
+            try { saveChats(); } catch (_) {}
+          }
+          const activeKey = APP_STATE.activeChatRecipient?.key;
+          const activePhone = APP_STATE.activeChatRecipient?.phone ? String(APP_STATE.activeChatRecipient.phone).replace(/\D/g, '').slice(-10) : '';
+          const cleanReader = readerPhone ? String(readerPhone).replace(/\D/g, '').slice(-10) : '';
+          const isCurrentChatActive = activeKey === targetKey || (activePhone && cleanReader && activePhone === cleanReader);
+
+          if (APP_STATE.activeChatRecipient && isCurrentChatActive) {
+            if (typeof renderChatMessages === 'function') {
+              try { renderChatMessages(); } catch (_) {}
+            }
+            const statusEl = document.getElementById('chatRecipientStatus');
+            if (statusEl) {
+              const timeStr = new Date(effectiveSeenTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+              statusEl.innerHTML = `<span style="color:#53BDEB;font-weight:700">✓✓ കണ്ടു (${timeStr})</span>`;
+            }
+          }
+          if (typeof renderChatListScreen === 'function') {
+            try { renderChatListScreen(); } catch (_) {}
+          }
+        }
+      }
     }
   }
 
@@ -1137,6 +1211,42 @@
     return false;
   }
 
+  async function markChatSeen(chatKey, readerPhone, readerId) {
+    if (!chatKey) return false;
+    initSupabase();
+    const seenAt = Date.now();
+
+    if (chatChannel) {
+      try {
+        await chatChannel.send({
+          type: 'broadcast',
+          event: 'chat_seen',
+          payload: { chatKey, readerPhone, readerId, seenAt, sessionId: SESSION_CLIENT_ID }
+        });
+      } catch (err) {
+        console.warn('⚠️ [Supabase Chat Seen Broadcast]', err.message);
+      }
+    }
+
+    if (client) {
+      try {
+        const cleanKey = chatKey.replace(/[^a-zA-Z0-9_]/g, '');
+        const cleanReader = (readerPhone || readerId || 'anon').replace(/[^a-zA-Z0-9_]/g, '');
+        await client.from('messages').upsert({
+          id: 'seen_' + cleanKey + '_' + cleanReader,
+          chat_key: chatKey,
+          sender_phone: readerPhone || '',
+          sender_id: readerId || '',
+          text: '[read_receipt]',
+          created_at: seenAt
+        });
+      } catch (e) {
+        console.info('ℹ️ [Supabase Seen Upsert note]:', e.message);
+      }
+    }
+    return true;
+  }
+
   function subscribeChatThread(chatKey, onMessagesUpdate) {
     if (!chatKey) return () => {};
     initSupabase();
@@ -1160,15 +1270,30 @@
       query.order('created_at', { ascending: true })
         .then(({ data, error }) => {
           if (!error && Array.isArray(data)) {
-            const validRows = data.filter(m => m && m.text && m.text.trim() && m.text !== '[deleted]' && m.chat_key !== 'purged_archive_cleared');
-            if (validRows.length === 0) return;
+            let maxSeenTimestamp = 0;
             const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser.id : '';
-            const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone) 
+            const myCleanPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone) 
               ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
+
+            data.forEach(r => {
+              if (r.text === '[read_receipt]') {
+                const rPhone = r.sender_phone ? String(r.sender_phone).replace(/\D/g, '').slice(-10) : '';
+                if (!myCleanPhone || rPhone !== myCleanPhone) {
+                  const t = Number(r.created_at) || 0;
+                  if (t > maxSeenTimestamp) maxSeenTimestamp = t;
+                }
+              }
+            });
+
+            const validRows = data.filter(m => m && m.text && m.text.trim() && m.text !== '[deleted]' && m.text !== '[read_receipt]' && m.chat_key !== 'purged_archive_cleared');
+            if (validRows.length === 0) return;
 
             const mapped = validRows.map(m => {
               const mPhone = (m.sender_phone ? String(m.sender_phone).replace(/\D/g, '').slice(-10) : '');
-              const isMe = (m.sender_id === myId) || (myPhone && mPhone && mPhone === myPhone);
+              const isMe = (m.sender_id === myId) || (myCleanPhone && mPhone && mPhone === myCleanPhone);
+              const mTime = Number(m.created_at) || Date.now();
+              const isSeen = isMe && maxSeenTimestamp > 0 && mTime <= maxSeenTimestamp;
+
               return {
                 id: m.id,
                 sender: isMe ? 'me' : 'them',
@@ -1178,7 +1303,9 @@
                 senderAvatar: m.sender_avatar,
                 text: m.text,
                 time: m.time || 'ഇപ്പോൾ',
-                timestamp: Number(m.created_at) || Date.now()
+                timestamp: mTime,
+                status: isSeen ? 'seen' : (isMe ? 'delivered' : ''),
+                seen: isSeen
               };
             });
             onMessagesUpdate(mapped);
@@ -2087,6 +2214,7 @@
     syncProfiles,
     // Chat
     sendChatMessage,
+    markChatSeen,
     broadcastChatEvent,
     subscribeChatThread,
     syncUserChats,

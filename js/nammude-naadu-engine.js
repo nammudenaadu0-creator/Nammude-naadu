@@ -2867,6 +2867,7 @@
 
     renderChatMessages();
     openModal('modal-chat');
+    markChatAsSeen(chatKey);
 
     setTimeout(() => {
       const box = document.getElementById('chatMessagesBox');
@@ -2913,12 +2914,24 @@
                 reactions: m.reactions || {},
                 text: m.text,
                 time: m.time || 'ഇപ്പോൾ',
-                timestamp: m.timestamp || Date.now()
+                timestamp: m.timestamp || Date.now(),
+                status: m.status || (isMe ? 'delivered' : ''),
+                seen: m.seen || (m.status === 'seen')
               });
             } else {
               const localMsg = APP_STATE.chats[chatKey].find(local => local.id === m.id || (local.timestamp === m.timestamp && local.text === m.text));
               if (localMsg) {
                 if (isMe) localMsg.sender = 'me';
+                if (m.status && m.status !== localMsg.status) {
+                  localMsg.status = m.status;
+                  localMsg.seen = (m.status === 'seen' || m.seen === true);
+                  hasNewMessage = true;
+                }
+                if (m.seen && !localMsg.seen) {
+                  localMsg.seen = true;
+                  localMsg.status = 'seen';
+                  hasNewMessage = true;
+                }
                 if (m.reactions && JSON.stringify(m.reactions) !== JSON.stringify(localMsg.reactions)) {
                   localMsg.reactions = m.reactions;
                   hasNewMessage = true;
@@ -2935,6 +2948,7 @@
             APP_STATE.chats[chatKey].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
             saveChats();
             renderChatMessages();
+            markChatAsSeen(chatKey);
           }
         }
       });
@@ -2945,6 +2959,32 @@
       if (box) box.scrollTop = box.scrollHeight;
     }, 150);
   }
+
+  function markChatAsSeen(chatKey) {
+    if (!chatKey || !APP_STATE.chats || !APP_STATE.chats[chatKey]) return;
+    const thread = APP_STATE.chats[chatKey];
+    let changed = false;
+    const now = Date.now();
+    const myId = APP_STATE.currentUser?.id;
+    const myCleanPhone = normalizePhone(APP_STATE.currentUser?.phone);
+
+    thread.forEach(m => {
+      if (m.sender === 'them' && !m.seen) {
+        m.seen = true;
+        m.seenAt = now;
+        changed = true;
+      }
+    });
+
+    if (changed) {
+      saveChats();
+    }
+
+    if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.markChatSeen === 'function') {
+      window.NN_SUPABASE_SERVICES.markChatSeen(chatKey, myCleanPhone, myId);
+    }
+  }
+  window.markChatAsSeen = markChatAsSeen;
   window.openChatModal = openChatModal;
 
   function formatChatDatePill(timestamp) {
@@ -3024,7 +3064,13 @@
             ${innerContentHtml}
             <div class="chat-bubble-meta">
               <span class="chat-time-text">${escapeHtml(msg.time || '')}</span>
-              ${isMe ? '<span class="chat-ticks">✓✓</span>' : ''}
+              ${isMe ? (
+                (msg.status === 'seen' || msg.seen === true)
+                  ? '<span class="chat-ticks seen" title="കണ്ടു (Seen)">✓✓</span><span class="chat-seen-pill">കണ്ടു</span>'
+                  : ((msg.status === 'sent')
+                      ? '<span class="chat-ticks sent" title="അയച്ചു (Sent)">✓</span>'
+                      : '<span class="chat-ticks delivered" title="എത്തിച്ചേർന്നു (Delivered)">✓✓</span>')
+              ) : ''}
             </div>
           </div>
         </div>
@@ -3059,13 +3105,15 @@
       type: 'text',
       text: text,
       time: timeStr,
-      timestamp: Date.now()
+      timestamp: Date.now(),
+      status: 'sent'
     };
 
     // Instant local echo
     APP_STATE.chats[chatKey].push({
       ...msgObj,
-      sender: 'me'
+      sender: 'me',
+      status: 'sent'
     });
 
     if (input) input.value = '';
@@ -4200,7 +4248,11 @@
             ${(meta.type === 'ambulance' || meta.category?.includes('ആംബുലൻസ്')) && meta.phone ? `<span style="font-size:11px;color:#94A3B8">📞 ${meta.phone}</span>` : ''}
           </div>
           <div style="font-size:12.5px;color:#64748B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">
-            ${lastMsg.sender === 'me' ? '<span style="color:#53BDEB;font-weight:900;margin-right:4px;letter-spacing:-1.5px;font-size:11px">✓✓</span>' : ''}
+            ${lastMsg.sender === 'me' ? (
+              (lastMsg.status === 'seen' || lastMsg.seen === true)
+                ? '<span style="color:#53BDEB;font-weight:900;margin-right:4px;letter-spacing:-1.5px;font-size:11px" title="കണ്ടു (Seen)">✓✓</span>'
+                : '<span style="color:#8696A0;font-weight:900;margin-right:4px;letter-spacing:-1.5px;font-size:11px" title="എത്തി (Delivered)">✓✓</span>'
+            ) : ''}
             <span style="overflow:hidden;text-overflow:ellipsis">${escapeHtml(lastMsg.text)}</span>
           </div>
         </div>
