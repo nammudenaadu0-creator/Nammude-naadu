@@ -758,15 +758,33 @@
 
   function savePosts() {
     try {
-      localStorage.setItem('nn_posts', JSON.stringify(APP_STATE.posts));
-    } catch (_) {}
+      const postsToStore = (Array.isArray(APP_STATE.posts) && APP_STATE.posts.length > 60)
+        ? APP_STATE.posts.slice(0, 60)
+        : (APP_STATE.posts || []);
+      localStorage.setItem('nn_posts', JSON.stringify(postsToStore));
+    } catch (e) {
+      try {
+        if (Array.isArray(APP_STATE.posts)) {
+          localStorage.setItem('nn_posts', JSON.stringify(APP_STATE.posts.slice(0, 25)));
+        }
+      } catch (_) {}
+    }
   }
   window.savePosts = savePosts;
 
   function saveServices() {
     try {
-      localStorage.setItem('nn_services', JSON.stringify(APP_STATE.services));
-    } catch (_) {}
+      const srvToStore = (Array.isArray(APP_STATE.services) && APP_STATE.services.length > 150)
+        ? APP_STATE.services.slice(0, 150)
+        : (APP_STATE.services || []);
+      localStorage.setItem('nn_services', JSON.stringify(srvToStore));
+    } catch (e) {
+      try {
+        if (Array.isArray(APP_STATE.services)) {
+          localStorage.setItem('nn_services', JSON.stringify(APP_STATE.services.slice(0, 50)));
+        }
+      } catch (_) {}
+    }
   }
   window.saveServices = saveServices;
 
@@ -776,6 +794,9 @@
         Object.keys(APP_STATE.chats).forEach(k => {
           if (Array.isArray(APP_STATE.chats[k])) {
             APP_STATE.chats[k].sort((a, b) => (Number(a.timestamp) || 0) - (Number(b.timestamp) || 0));
+            if (APP_STATE.chats[k].length > 150) {
+              APP_STATE.chats[k] = APP_STATE.chats[k].slice(-150);
+            }
           }
         });
       }
@@ -783,7 +804,18 @@
       if (APP_STATE.chatMeta) {
         localStorage.setItem('nn_chats_meta', JSON.stringify(APP_STATE.chatMeta));
       }
-    } catch (_) {}
+    } catch (e) {
+      try {
+        if (APP_STATE.chats) {
+          Object.keys(APP_STATE.chats).forEach(k => {
+            if (Array.isArray(APP_STATE.chats[k]) && APP_STATE.chats[k].length > 40) {
+              APP_STATE.chats[k] = APP_STATE.chats[k].slice(-40);
+            }
+          });
+          localStorage.setItem('nn_chats_store', JSON.stringify(APP_STATE.chats));
+        }
+      } catch (_) {}
+    }
     if (typeof updateChatBadgeCounter === 'function') {
       updateChatBadgeCounter();
     }
@@ -6383,7 +6415,9 @@
       return;
     }
 
-    localStorage.setItem('nn_app_splash_bg', targetSrc);
+    try {
+      localStorage.setItem('nn_app_splash_bg', targetSrc);
+    } catch (_) {}
     const mainSplash = document.getElementById('splashMainBgImage');
     if (mainSplash) mainSplash.src = targetSrc;
 
@@ -6495,7 +6529,9 @@
 
     if (!Array.isArray(APP_STATE.emergencyContacts)) APP_STATE.emergencyContacts = [];
     APP_STATE.emergencyContacts.unshift(newEmg);
-    localStorage.setItem('nn_emergency_contacts', JSON.stringify(APP_STATE.emergencyContacts));
+    try {
+      localStorage.setItem('nn_emergency_contacts', JSON.stringify(APP_STATE.emergencyContacts));
+    } catch (_) {}
 
     if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveEmergencyContact === 'function') {
       window.NN_SUPABASE_SERVICES.saveEmergencyContact(newEmg);
