@@ -59,6 +59,56 @@
   }
   window.escapeHtml = escapeHtml;
 
+  // ==============================================================
+  // COMPLETE APP RESET & FRESH START (Wipe all registered profiles)
+  // ==============================================================
+  function resetAppToFreshState(reload) {
+    try {
+      const keysToRemove = [
+        'nn_user_name',
+        'nn_user_phone',
+        'nn_permanent_phone',
+        'nn_permanent_id',
+        'nn_user_id',
+        'nn_user_avatar',
+        'nn_user_bio',
+        'nn_user_blood',
+        'nn_user_is_donor',
+        'nn_user_cover',
+        'nn_user_loc',
+        'nn_cloud_profiles',
+        'nn_blood_donors',
+        'nn_posts',
+        'nn_jobs',
+        'nn_rentals',
+        'nn_chats_store',
+        'nn_blood_requests',
+        'nn_services',
+        'nn_user_profile',
+        'nn_service_user',
+        'nn_saved_services',
+        'nn_notifications',
+        'nn_liked_posts'
+      ];
+      keysToRemove.forEach(k => {
+        try { localStorage.removeItem(k); } catch (_) {}
+      });
+      localStorage.setItem('nn_fresh_start_clean_v2', 'true');
+      console.info('🧹 [Nammude Naadu] All local profiles & storage cleared. Fresh state initialized.');
+      if (reload && typeof window !== 'undefined' && window.location) {
+        window.location.reload();
+      }
+    } catch (_) {}
+  }
+  window.resetAppToFreshState = resetAppToFreshState;
+
+  // Run one-time clean-slate purge on startup to remove any old registered profiles
+  try {
+    if (!localStorage.getItem('nn_fresh_start_clean_v2')) {
+      resetAppToFreshState(false);
+    }
+  } catch (_) {}
+
   // Purge legacy dummy placeholders if previously stored
   let savedUserName = localStorage.getItem('nn_user_name') || '';
   if (savedUserName === 'അജിത് കുമാർ' || savedUserName === 'അജയകുമാർ' || savedUserName.toLowerCase() === 'ajith kumar') {

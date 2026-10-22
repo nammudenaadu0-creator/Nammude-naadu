@@ -1226,7 +1226,7 @@
       if (!error && Array.isArray(data) && data.length > 0) {
         data.forEach(row => {
           const key = row.chat_key;
-          if (!key) return;
+          if (!key || !row.text || row.text === '[deleted]' || (!row.sender_name && !row.sender_phone)) return;
 
           const rowSenderPhone = row.sender_phone ? String(row.sender_phone).replace(/\D/g, '').slice(-10) : '';
           const rowRecipientPhone = row.recipient_phone ? String(row.recipient_phone).replace(/\D/g, '').slice(-10) : '';
@@ -1540,6 +1540,7 @@
       if (!error && Array.isArray(data) && data.length > 0) {
         if (typeof APP_STATE !== 'undefined' && Array.isArray(APP_STATE.bloodDonors)) {
           data.forEach(d => {
+            if (!d.name || !d.phone || d.ready_to_donate === false) return;
             const mapped = {
               id: d.id,
               name: d.name,
@@ -2040,7 +2041,7 @@
       }
 
       if (Array.isArray(data) && typeof APP_STATE !== 'undefined') {
-        APP_STATE.cloudProfiles = data.map(p => ({
+        APP_STATE.cloudProfiles = data.filter(p => p && p.name && p.phone).map(p => ({
           id: p.id,
           name: p.name || 'നാട്ടുകാരൻ',
           phone: p.phone || '',

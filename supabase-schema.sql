@@ -24,9 +24,11 @@ alter table public.messages enable row level security;
 drop policy if exists "Allow public select messages" on public.messages;
 drop policy if exists "Allow public insert messages" on public.messages;
 drop policy if exists "Allow public update messages" on public.messages;
+drop policy if exists "Allow public delete messages" on public.messages;
 create policy "Allow public select messages" on public.messages for select using (true);
 create policy "Allow public insert messages" on public.messages for insert with check (true);
 create policy "Allow public update messages" on public.messages for update using (true);
+create policy "Allow public delete messages" on public.messages for delete using (true);
 
 -- 2. POSTS TABLE (Community News, Announcements & Media)
 create table if not exists public.posts (
@@ -107,8 +109,10 @@ create table if not exists public.service_reviews (
 alter table public.service_reviews enable row level security;
 drop policy if exists "Allow public select reviews" on public.service_reviews;
 drop policy if exists "Allow public insert reviews" on public.service_reviews;
+drop policy if exists "Allow public delete reviews" on public.service_reviews;
 create policy "Allow public select reviews" on public.service_reviews for select using (true);
 create policy "Allow public insert reviews" on public.service_reviews for insert with check (true);
+create policy "Allow public delete reviews" on public.service_reviews for delete using (true);
 
 -- 5. BLOOD DONORS TABLE
 create table if not exists public.blood_donors (
@@ -131,9 +135,11 @@ alter table public.blood_donors enable row level security;
 drop policy if exists "Allow public select donors" on public.blood_donors;
 drop policy if exists "Allow public insert donors" on public.blood_donors;
 drop policy if exists "Allow public update donors" on public.blood_donors;
+drop policy if exists "Allow public delete donors" on public.blood_donors;
 create policy "Allow public select donors" on public.blood_donors for select using (true);
 create policy "Allow public insert donors" on public.blood_donors for insert with check (true);
 create policy "Allow public update donors" on public.blood_donors for update using (true);
+create policy "Allow public delete donors" on public.blood_donors for delete using (true);
 
 -- 6. BLOOD REQUESTS TABLE (Urgent Blood Emergency)
 create table if not exists public.blood_requests (
@@ -157,9 +163,11 @@ alter table public.blood_requests enable row level security;
 drop policy if exists "Allow public select blood_reqs" on public.blood_requests;
 drop policy if exists "Allow public insert blood_reqs" on public.blood_requests;
 drop policy if exists "Allow public update blood_reqs" on public.blood_requests;
+drop policy if exists "Allow public delete blood_reqs" on public.blood_requests;
 create policy "Allow public select blood_reqs" on public.blood_requests for select using (true);
 create policy "Allow public insert blood_reqs" on public.blood_requests for insert with check (true);
 create policy "Allow public update blood_reqs" on public.blood_requests for update using (true);
+create policy "Allow public delete blood_reqs" on public.blood_requests for delete using (true);
 
 -- 7. JOBS TABLE (Local Jobs & Vacancies)
 create table if not exists public.jobs (
@@ -241,9 +249,11 @@ alter table public.service_requests add column if not exists description text;
 drop policy if exists "Allow public select svc_reqs" on public.service_requests;
 drop policy if exists "Allow public insert svc_reqs" on public.service_requests;
 drop policy if exists "Allow public update svc_reqs" on public.service_requests;
+drop policy if exists "Allow public delete svc_reqs" on public.service_requests;
 create policy "Allow public select svc_reqs" on public.service_requests for select using (true);
 create policy "Allow public insert svc_reqs" on public.service_requests for insert with check (true);
 create policy "Allow public update svc_reqs" on public.service_requests for update using (true);
+create policy "Allow public delete svc_reqs" on public.service_requests for delete using (true);
 
 -- 10. PROFILES TABLE (User Profiles)
 create table if not exists public.profiles (
@@ -267,9 +277,11 @@ alter table public.profiles enable row level security;
 drop policy if exists "Allow public select profiles" on public.profiles;
 drop policy if exists "Allow public insert profiles" on public.profiles;
 drop policy if exists "Allow public update profiles" on public.profiles;
+drop policy if exists "Allow public delete profiles" on public.profiles;
 create policy "Allow public select profiles" on public.profiles for select using (true);
 create policy "Allow public insert profiles" on public.profiles for insert with check (true);
 create policy "Allow public update profiles" on public.profiles for update using (true);
+create policy "Allow public delete profiles" on public.profiles for delete using (true);
 
 -- 11. EMERGENCY & ESSENTIAL DIRECTORY CONTACTS TABLE
 create table if not exists public.emergency_contacts (
