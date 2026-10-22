@@ -10,23 +10,13 @@
     (function () {
       let isPhoneAdmin = false;
       try {
-        const prof = JSON.parse(localStorage.getItem('thuna_user_profile') || '{}');
-        const phone = (prof.phone || '').replace(/\D/g, '');
-        if (phone.includes('9605406699')) isPhoneAdmin = true;
+        const phone = (localStorage.getItem('nn_user_phone') || localStorage.getItem('nn_permanent_phone') || '').replace(/\D/g, '').slice(-10);
+        if (phone === '9605406699') isPhoneAdmin = true;
       } catch(_) {}
 
-      if (isPhoneAdmin) {
-        sessionStorage.setItem('nammudenaad_admin_authenticated', 'true');
-      }
-
-      if (sessionStorage.getItem('nammudenaad_admin_authenticated') !== 'true') {
-        const pin = prompt('🔒 അഡ്മിൻ പിൻ നൽകുക (Enter Admin PIN):');
-        if (pin === '2026') {
-          sessionStorage.setItem('nammudenaad_admin_authenticated', 'true');
-        } else {
-          alert('❌ തെറ്റായ പിൻ! അഡ്മിന് മാത്രമേ പ്രവേശനമുള്ളൂ.');
-          window.location.replace('index.html');
-        }
+      if (!isPhoneAdmin) {
+        alert('❌ ഈ പേജ് അഡ്മിന് (9605406699) മാത്രമേ പ്രവേശനമുള്ളൂ.');
+        window.location.replace('index.html');
       }
     })();
   </script>

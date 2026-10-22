@@ -211,8 +211,8 @@
                             <span class="desktop-nav-icon">👤</span>
                             <span>എന്റെ പ്രൊഫൈൽ (Profile)</span>
                         </a>
-                        <a href="admin.html" class="desktop-nav-item"
-                            style="margin-top:12px;border-top:1px dashed #CBD5E1;padding-top:12px;color:#0F766E"
+                        <a id="desktopAdminNavLink" href="admin.html" class="desktop-nav-item"
+                            style="display:none;margin-top:12px;border-top:1px dashed #CBD5E1;padding-top:12px;color:#0F766E"
                             title="അഡ്മിൻ കൺസോൾ">
                             <span class="desktop-nav-icon">🔐</span>
                             <span>അഡ്മിൻ കൺസോൾ (Admin)</span>
@@ -1310,9 +1310,9 @@
                                 <span>🩸 ബ്ലഡ് ഡോണർ നെറ്റ്‌വർക്ക്</span>
                                 <span>→</span>
                             </div>
-                            <!-- ADMIN PORTAL TRIGGER (SERVICES & NUMBERS) -->
-                            <div class="profile-menu-row" onclick="openAdminPortal()"
-                                style="background:linear-gradient(135deg, #064E3B 0%, #0E7043 100%);color:#fff;padding:14px;border-radius:14px;margin-bottom:8px;cursor:pointer;font-weight:800;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 12px rgba(6,78,59,0.25)">
+                            <!-- ADMIN PORTAL TRIGGER (SERVICES & NUMBERS) - VISIBLE ONLY FOR ADMIN (9605406699) -->
+                            <div id="profileAdminPortalRow" class="profile-menu-row" onclick="openAdminPortal()"
+                                style="display:none;background:linear-gradient(135deg, #064E3B 0%, #0E7043 100%);color:#fff;padding:14px;border-radius:14px;margin-bottom:8px;cursor:pointer;font-weight:800;align-items:center;justify-content:space-between;box-shadow:0 4px 12px rgba(6,78,59,0.25)">
                                 <span style="display:flex;align-items:center;gap:10px">
                                     <span style="font-size:20px">⚙️</span>
                                     <div>
@@ -2317,8 +2317,8 @@
                     </div>
                 </div>
                 <div style="display:flex;align-items:center;gap:6px">
-                    <button onclick="openAdminPortal('numbers')"
-                        style="background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:14px;padding:4px 10px;font-size:11px;font-weight:800;cursor:pointer">
+                    <button id="emgAddNumberAdminBtn" onclick="openAdminPortal('numbers')"
+                        style="display:none;background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:14px;padding:4px 10px;font-size:11px;font-weight:800;cursor:pointer">
                         ➕ നമ്പർ ചേർക്കാം (Admin)
                     </button>
                     <button onclick="closeModal('modal-emergency')"

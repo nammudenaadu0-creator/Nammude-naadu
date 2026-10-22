@@ -772,10 +772,7 @@
 
   function saveChats() {
     try {
-      if (typeof reconcileChatThreads === 'function') {
-        reconcileChatThreads();
-      }
-      localStorage.setItem('nn_chats_store', JSON.stringify(APP_STATE.chats));
+      localStorage.setItem('nn_chats_store', JSON.stringify(APP_STATE.chats || {}));
       if (APP_STATE.chatMeta) {
         localStorage.setItem('nn_chats_meta', JSON.stringify(APP_STATE.chatMeta));
       }
@@ -2503,7 +2500,7 @@
       if (matches && matches.length > 0) {
         if (myPhone) {
           const other = matches.find(p => p !== myPhone);
-          phone = other || matches[0];
+          phone = other || '';
         } else {
           phone = matches[0];
         }
@@ -2513,7 +2510,7 @@
     const name = (meta?.name && meta.name !== 'സുഹൃത്ത്' && !meta.name.startsWith('chat_')) ? meta.name.trim() : '';
 
     let groupKey = '';
-    if (phone) {
+    if (phone && phone !== myPhone) {
       groupKey = 'phone_' + phone;
     } else if (recipientId) {
       groupKey = 'id_' + recipientId;
@@ -2565,29 +2562,21 @@
 
       keys.forEach(k => {
         const inf = contactInfoMap[k];
-        if (inf.phone && !contactPhone) contactPhone = inf.phone;
+        if (inf.phone && inf.phone !== myPhone && !contactPhone) contactPhone = inf.phone;
         if (inf.recipientId && !contactId) contactId = inf.recipientId;
         if (inf.name && !contactName) contactName = inf.name;
       });
 
       // Compute canonical key for this contact
       let canonicalKey = '';
-      if (contactPhone) {
-        if (myPhone && contactPhone !== myPhone) {
-          canonicalKey = 'chat_' + [contactPhone, myPhone].sort().join('_');
-        } else {
-          // If my phone not configured yet, check if any existing key already has 2 phones
-          const keyWithTwoPhones = keys.find(k => (String(k).match(/\d{10}/g) || []).length >= 2);
-          if (keyWithTwoPhones) {
-            canonicalKey = keyWithTwoPhones;
-          } else {
-            canonicalKey = 'chat_' + contactPhone;
-          }
-        }
-      } else if (contactId) {
-        canonicalKey = computeChatKey(myId, myPhone, APP_STATE.currentUser?.name, contactId, '', contactName);
+      if (contactPhone && myPhone && contactPhone !== myPhone) {
+        canonicalKey = 'chat_' + [contactPhone, myPhone].sort().join('_');
+      } else if (contactPhone && !myPhone) {
+        canonicalKey = 'chat_' + contactPhone;
+      } else if (contactId && contactId !== myId) {
+        canonicalKey = computeChatKey(myId, myPhone, APP_STATE.currentUser?.name, contactId, contactPhone, contactName);
       } else {
-        canonicalKey = keys.find(k => k.startsWith('chat_')) || keys[0];
+        canonicalKey = keys.find(k => k.startsWith('chat_') && k !== ('chat_' + myPhone)) || keys[0];
       }
 
       const needsMigration = keys.length > 1 || (keys[0] !== canonicalKey);
@@ -2775,6 +2764,7 @@
     }
 
     if (!APP_STATE.chatMeta) APP_STATE.chatMeta = {};
+    const existingMeta = (chatKey && APP_STATE.chatMeta[chatKey]) || {};
     const resolvedAvatar = getRegisteredUserAvatar(safePhone || recipientId || safeName, safeAvatar || existingMeta.avatar || DEFAULT_USER_AVATAR);
 
     APP_STATE.activeChatRecipient = {
@@ -2879,15 +2869,11 @@
         if (Array.isArray(cloudMsgs)) {
           if (!APP_STATE.chats[chatKey]) APP_STATE.chats[chatKey] = [];
 
-          if (cloudMsgs.length === 0) {
-            APP_STATE.chats[chatKey] = (APP_STATE.chats[chatKey] || []).filter(m => m && m.text && m.text !== '[deleted]');
-            saveChats();
-            renderChatMessages();
-            return;
-          }
+          if (cloudMsgs.length === 0) return;
 
           const myId = APP_STATE.currentUser.id;
           const myCleanPhone = normalizePhone(APP_STATE.currentUser.phone);
+          let hasNewMessage = false;
 
           cloudMsgs.forEach(m => {
             if (!m || !m.text || m.text === '[deleted]') return;
@@ -2895,6 +2881,7 @@
             const isMe = m.sender === 'me' || (m.senderId && m.senderId === myId) || (myCleanPhone && mPhone && mPhone === myCleanPhone);
             const exists = APP_STATE.chats[chatKey].some(local => local.id === m.id || (local.timestamp === m.timestamp && local.text === m.text));
             if (!exists) {
+              hasNewMessage = true;
               APP_STATE.chats[chatKey].push({
                 id: m.id || ('msg_' + Date.now()),
                 sender: isMe ? 'me' : 'them',
@@ -2915,15 +2902,23 @@
               const localMsg = APP_STATE.chats[chatKey].find(local => local.id === m.id || (local.timestamp === m.timestamp && local.text === m.text));
               if (localMsg) {
                 if (isMe) localMsg.sender = 'me';
-                if (m.reactions) localMsg.reactions = m.reactions;
-                if (m.answers) localMsg.answers = m.answers;
+                if (m.reactions && JSON.stringify(m.reactions) !== JSON.stringify(localMsg.reactions)) {
+                  localMsg.reactions = m.reactions;
+                  hasNewMessage = true;
+                }
+                if (m.answers && JSON.stringify(m.answers) !== JSON.stringify(localMsg.answers)) {
+                  localMsg.answers = m.answers;
+                  hasNewMessage = true;
+                }
               }
             }
           });
 
-          APP_STATE.chats[chatKey].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
-          saveChats();
-          renderChatMessages();
+          if (hasNewMessage) {
+            APP_STATE.chats[chatKey].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+            saveChats();
+            renderChatMessages();
+          }
         }
       });
     }
@@ -5910,10 +5905,12 @@
         <div style="text-align:center;padding:28px 16px;background:#F8FAFC;border-radius:14px;border:1px dashed #CBD5E1">
           <div style="font-size:32px;margin-bottom:8px">🚨</div>
           <div style="font-size:14px;font-weight:800;color:#334155">നമ്പറുകൾ കണ്ടെത്താനായില്ല</div>
-          <div style="font-size:12px;color:#64748B;margin-top:4px">തിരഞ്ഞ പദം മാറ്റി നോക്കുക അല്ലെങ്കിൽ പുതിയ നമ്പർ ചേർക്കുക</div>
+          <div style="font-size:12px;color:#64748B;margin-top:4px">തിരഞ്ഞ പദം മാറ്റി നോക്കുക</div>
+          ${checkIsAdmin() ? `
           <button type="button" onclick="openAdminPortal('emergency')" style="margin-top:12px;background:#0E7043;color:#fff;border:none;padding:7px 16px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer">
             ➕ അഡ്മിൻ നമ്പർ ചേർക്കുക
           </button>
+          ` : ''}
         </div>
       `;
       return;
@@ -5964,40 +5961,53 @@
 
   function openEmergencyModal() {
     renderEmergencyModalList();
+    if (typeof updateAdminUI === 'function') updateAdminUI();
     openModal('modal-emergency');
   }
   window.openEmergencyModal = openEmergencyModal;
 
   // ==============================================================
   // 11C. ADMIN PORTAL (SERVICES & EMERGENCY DIRECTORY MANAGEMENT)
+  // Strictly restricted to official Admin Phone: 9605406699
   // ==============================================================
+  const ADMIN_PHONE = '9605406699';
+
   function checkIsAdmin() {
-    const userPhone = (APP_STATE.currentUser.phone || '').replace(/\D/g, '').slice(-10);
-    return userPhone === '9605406699' || localStorage.getItem('nn_is_admin') === 'true';
+    const raw = (APP_STATE.currentUser?.phone || localStorage.getItem('nn_user_phone') || localStorage.getItem('nn_permanent_phone') || '');
+    const userPhone = String(raw).replace(/\D/g, '').slice(-10);
+    return userPhone === ADMIN_PHONE;
   }
   window.checkIsAdmin = checkIsAdmin;
+
+  function updateAdminUI() {
+    const isAdmin = checkIsAdmin();
+    const profRow = document.getElementById('profileAdminPortalRow');
+    if (profRow) profRow.style.display = isAdmin ? 'flex' : 'none';
+
+    const emgBtn = document.getElementById('emgAddNumberAdminBtn');
+    if (emgBtn) emgBtn.style.display = isAdmin ? 'inline-flex' : 'none';
+
+    const desktopNav = document.getElementById('desktopAdminNavLink');
+    if (desktopNav) desktopNav.style.display = isAdmin ? 'flex' : 'none';
+  }
+  window.updateAdminUI = updateAdminUI;
 
   function promptAdminAuth(callback) {
     if (checkIsAdmin()) {
       if (typeof callback === 'function') callback();
       return;
     }
-    const pin = prompt('🔐 അഡ്മിൻ ആക്സസ് PIN നൽകുക:');
-    if (pin === '2026') {
-      localStorage.setItem('nn_is_admin', 'true');
-      toast('✅ അഡ്മിൻ തിരിച്ചറിഞ്ഞു!');
-      if (typeof callback === 'function') callback();
-    } else if (pin !== null) {
-      toast('❌ തെറ്റായ PIN! ആക്സസ് നിരസിച്ചു.');
-    }
+    toast('⚠️ അഡ്മിൻ ആക്സസ് ഈ ഫോൺ നമ്പറിന് (9605406699) മാത്രമേ അനുവദിച്ചിട്ടുള്ളൂ.');
   }
   window.promptAdminAuth = promptAdminAuth;
 
   function openAdminPortal(tab = 'services') {
-    promptAdminAuth(() => {
-      openModal('modal-admin-hub');
-      switchAdminHubTab(tab);
-    });
+    if (!checkIsAdmin()) {
+      toast('⚠️ അഡ്മിൻ ആക്സസ് ഈ ഫോൺ നമ്പറിന് (9605406699) മാത്രമേ അനുവദിച്ചിട്ടുള്ളൂ.');
+      return;
+    }
+    openModal('modal-admin-hub');
+    switchAdminHubTab(tab);
   }
   window.openAdminPortal = openAdminPortal;
 
@@ -7936,6 +7946,7 @@
     }
 
     renderProfileDashboard(APP_STATE.activeProfileSubTab || 'posts');
+    if (typeof updateAdminUI === 'function') updateAdminUI();
   }
   window.renderProfileScreen = renderProfileScreen;
 
@@ -8981,7 +8992,9 @@
   window.renderHomeScreen = renderHomeScreen;
 
   document.addEventListener('DOMContentLoaded', () => {
+    try { localStorage.removeItem('nn_is_admin'); } catch (_) {}
     initData();
+    if (typeof updateAdminUI === 'function') updateAdminUI();
     updateChatBadgeCounter();
     renderHomeScreen();
     renderCommunityFeed();

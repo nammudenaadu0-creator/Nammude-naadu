@@ -1136,7 +1136,8 @@
     }
     chatSubscribers.get(chatKey).add(onMessagesUpdate);
 
-    if (client) {
+    function fetchThreadMessages() {
+      if (!client) return;
       client.from('messages')
         .select('*')
         .eq('chat_key', chatKey)
@@ -1144,11 +1145,7 @@
         .then(({ data, error }) => {
           if (!error && Array.isArray(data)) {
             const validRows = data.filter(m => m && m.text && m.text.trim() && m.text !== '[deleted]' && m.chat_key !== 'purged_archive_cleared');
-            if (validRows.length === 0) {
-              onMessagesUpdate([]);
-              return;
-            }
-            console.info('📥 [Supabase] Loaded past thread messages:', validRows.length);
+            if (validRows.length === 0) return;
             const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser.id : '';
             const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone) 
               ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
@@ -1173,43 +1170,15 @@
         }).catch(() => {});
     }
 
+    // Fast initial fetch on opening
+    fetchThreadMessages();
+
+    // Gentle fallback background poll every 6s (instead of lagging 1.2s interval)
     const pollInterval = setInterval(() => {
       if (client && chatSubscribers.has(chatKey) && chatSubscribers.get(chatKey).size > 0) {
-        client.from('messages')
-          .select('*')
-          .eq('chat_key', chatKey)
-          .order('created_at', { ascending: true })
-          .then(({ data, error }) => {
-            if (!error && Array.isArray(data)) {
-              const validRows = data.filter(m => m && m.text && m.text.trim() && m.text !== '[deleted]' && m.chat_key !== 'purged_archive_cleared');
-              if (validRows.length === 0) {
-                onMessagesUpdate([]);
-                return;
-              }
-              const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser.id : '';
-              const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone) 
-                ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
-
-              const mapped = validRows.map(m => {
-                const mPhone = (m.sender_phone ? String(m.sender_phone).replace(/\D/g, '').slice(-10) : '');
-                const isMe = (m.sender_id === myId) || (myPhone && mPhone && mPhone === myPhone);
-                return {
-                  id: m.id,
-                  sender: isMe ? 'me' : 'them',
-                  senderId: m.sender_id,
-                  senderPhone: m.sender_phone,
-                  senderName: m.sender_name,
-                  senderAvatar: m.sender_avatar,
-                  text: m.text,
-                  time: m.time || 'ഇപ്പോൾ',
-                  timestamp: Number(m.created_at) || Date.now()
-                };
-              });
-              onMessagesUpdate(mapped);
-            }
-          }).catch(() => {});
+        fetchThreadMessages();
       }
-    }, 1200);
+    }, 6000);
 
     return () => {
       if (pollInterval) clearInterval(pollInterval);
