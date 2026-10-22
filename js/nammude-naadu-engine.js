@@ -8744,6 +8744,54 @@
   }
   window.handleProfileLogout = handleProfileLogout;
 
+  function openSettingsModal() {
+    const user = (APP_STATE && APP_STATE.currentUser) || {};
+    const nameEl = document.getElementById('settingsUserName');
+    if (nameEl) nameEl.textContent = user.name || 'നാട്ടുകാരൻ';
+
+    const phoneEl = document.getElementById('settingsUserPhone');
+    if (phoneEl) phoneEl.textContent = user.phone ? '📱 ' + user.phone : 'ഫോൺ നമ്പർ നൽകിയിട്ടില്ല';
+
+    const avatarEl = document.getElementById('settingsUserAvatar');
+    if (avatarEl) avatarEl.src = user.avatar || window.DEFAULT_USER_AVATAR;
+
+    const locEl = document.getElementById('settingsUserLoc');
+    if (locEl) locEl.textContent = '📍 ' + ((APP_STATE && APP_STATE.location && APP_STATE.location.name) || 'തത്സമയ ലൊക്കേഷൻ');
+
+    const radEl = document.getElementById('settingsUserRadius');
+    if (radEl) radEl.textContent = ((APP_STATE && APP_STATE.location && APP_STATE.location.radius) || 5) + ' km പരിധി';
+
+    const verEl = document.getElementById('settingsAppVersion');
+    if (verEl) verEl.textContent = 'v' + ((window.APP_BUILD_INFO && window.APP_BUILD_INFO.versionName) || '1.0.2');
+
+    // Admin visibility strictly locked to 9605406699
+    const adminRow = document.getElementById('settingsAdminHubRow');
+    if (adminRow) {
+      const isAdmin = user.phone === '9605406699' || (typeof isUserAdmin === 'function' && isUserAdmin());
+      adminRow.style.display = isAdmin ? 'flex' : 'none';
+    }
+
+    openModal('modal-settings');
+  }
+  window.openSettingsModal = openSettingsModal;
+
+  function clearAppCacheAndRefresh() {
+    if (confirm('ആപ്പിലെ താൽക്കാലിക കാഷെ (Cache) ക്ലിയർ ചെയ്ത് റീഫ്രഷ് ചെയ്യണോ? (നിങ്ങളുടെ ലോഗിനോ അക്കൗണ്ട് വിവരങ്ങളോ നഷ്ടപ്പെടില്ല)')) {
+      try {
+        if ('caches' in window) {
+          caches.keys().then(names => {
+            names.forEach(name => caches.delete(name));
+          });
+        }
+      } catch (_) {}
+      showToast('🧹 കാഷെ ക്ലിയർ ചെയ്തു. ആപ്പ് റീഫ്രഷ് ആകുന്നു...');
+      setTimeout(() => {
+        window.location.reload(true);
+      }, 700);
+    }
+  }
+  window.clearAppCacheAndRefresh = clearAppCacheAndRefresh;
+
   // ==============================================================
   // 16. MODAL UTILITIES (OPEN & CLOSE)
   // ==============================================================
