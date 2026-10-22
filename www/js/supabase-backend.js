@@ -62,6 +62,16 @@
     chatChannel.on('broadcast', { event: 'chat_message' }, ({ payload }) => {
       handleIncomingChatMessage(payload);
     });
+    chatChannel.on('broadcast', { event: 'chat_reaction' }, ({ payload }) => {
+      if (payload && payload.chatKey && payload.msgId && typeof window.handleRemoteChatReaction === 'function') {
+        window.handleRemoteChatReaction(payload.chatKey, payload.msgId, payload.reactions);
+      }
+    });
+    chatChannel.on('broadcast', { event: 'chat_challenge_answer' }, ({ payload }) => {
+      if (payload && payload.chatKey && payload.msgId && typeof window.handleRemoteChallengeAnswer === 'function') {
+        window.handleRemoteChallengeAnswer(payload.chatKey, payload.msgId, payload.answers);
+      }
+    });
     chatChannel.subscribe((status) => {
       console.info('💬 [Supabase Realtime Chat] Status:', status);
     });
@@ -1049,6 +1059,24 @@
     return true;
   }
 
+  async function broadcastChatEvent(chatKey, eventName, payload) {
+    if (!chatKey || !eventName) return false;
+    initSupabase();
+    if (chatChannel) {
+      try {
+        await chatChannel.send({
+          type: 'broadcast',
+          event: eventName,
+          payload: { chatKey, ...payload }
+        });
+        return true;
+      } catch (err) {
+        console.warn('⚠️ [Supabase Chat Broadcast Event Error]:', err.message);
+      }
+    }
+    return false;
+  }
+
   function subscribeChatThread(chatKey, onMessagesUpdate) {
     if (!chatKey) return () => {};
     initSupabase();
@@ -1997,6 +2025,7 @@
     syncProfiles,
     // Chat
     sendChatMessage,
+    broadcastChatEvent,
     subscribeChatThread,
     syncUserChats,
     // Posts

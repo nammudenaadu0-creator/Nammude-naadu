@@ -694,6 +694,8 @@
       if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncUserChats === 'function') {
         window.NN_SUPABASE_SERVICES.syncUserChats();
       }
+    } else if (screenId === 'business') {
+      renderBusinessScreen();
     } else if (screenId === 'profile') {
       renderProfileScreen();
     }
@@ -1101,7 +1103,7 @@
   }
   window.openLocationModal = openLocationModal;
 
-  function renderPresetLocationsList(itemsToRender = null) {
+  function renderPresetLocationsList(itemsToRender = null, searchQuery = '') {
     const list = document.getElementById('presetLocationsList');
     if (!list) return;
     const items = itemsToRender || KERALA_PRESETS;
@@ -2637,6 +2639,34 @@
       input.value = '';
     }
 
+    // Apply saved personal theme, streak, and reset Fun Zone
+    if (typeof loadSavedChatTheme === 'function') loadSavedChatTheme();
+    if (typeof updateChatStreakUI === 'function') updateChatStreakUI(chatKey);
+    if (typeof toggleChatFunZone === 'function') toggleChatFunZone(false);
+
+    // Dynamic Context Quick Reply Chips (Business vs General)
+    const quickBar = document.querySelector('.quick-reply-bar');
+    if (quickBar) {
+      const isBiz = (chatType === 'business' || (initialContext && (initialContext.includes('🏪') || initialContext.includes('കട') || initialContext.includes('Shop'))));
+      if (isBiz) {
+        quickBar.innerHTML = `
+          <button class="quick-chip" onclick="sendQuickReply('സ്റ്റോക്ക് ഉണ്ടോ?')">സ്റ്റോക്ക് ഉണ്ടോ?</button>
+          <button class="quick-chip" onclick="sendQuickReply('ഹോം ഡെലിവറി ഉണ്ടോ?')">ഹോം ഡെലിവറി ഉണ്ടോ?</button>
+          <button class="quick-chip" onclick="sendQuickReply('ഇപ്പോൾ തുറന്നിട്ടുണ്ടോ?')">ഇപ്പോൾ തുറന്നിട്ടുണ്ടോ?</button>
+          <button class="quick-chip" onclick="sendQuickReply('വില എത്രയാണ്?')">വില എത്രയാണ്?</button>
+          <button class="quick-chip" onclick="sendQuickReply('സ്ഥലം എവിടെയാണ്?')">സ്ഥലം എവിടെയാണ്?</button>
+        `;
+      } else {
+        quickBar.innerHTML = `
+          <button class="quick-chip" onclick="sendQuickReply('ലഭ്യമാണോ?')">ലഭ്യമാണോ?</button>
+          <button class="quick-chip" onclick="sendQuickReply('സ്ഥലം എവിടെയാണ്?')">സ്ഥലം എവിടെയാണ്?</button>
+          <button class="quick-chip" onclick="sendQuickReply('റേറ്റ് എത്രയാണ്?')">റേറ്റ് എത്രയാണ്?</button>
+          <button class="quick-chip" onclick="sendQuickReply('നാളെ വരാമോ?')">നാളെ വരാമോ?</button>
+          <button class="quick-chip" onclick="sendQuickReply('ഫോൺ നമ്പർ തരാമോ?')">ഫോൺ നമ്പർ തരാമോ?</button>
+        `;
+      }
+    }
+
     renderChatMessages();
     openModal('modal-chat');
 
@@ -2672,14 +2702,22 @@
                 senderId: m.senderId,
                 senderPhone: m.senderPhone,
                 senderName: m.senderName || '',
+                type: m.type || 'text',
+                stickerEmoji: m.stickerEmoji,
+                stickerText: m.stickerText,
+                challenge: m.challenge,
+                answers: m.answers || {},
+                reactions: m.reactions || {},
                 text: m.text,
                 time: m.time || 'ഇപ്പോൾ',
                 timestamp: m.timestamp || Date.now()
               });
             } else {
               const localMsg = APP_STATE.chats[chatKey].find(local => local.id === m.id || (local.timestamp === m.timestamp && local.text === m.text));
-              if (localMsg && isMe) {
-                localMsg.sender = 'me';
+              if (localMsg) {
+                if (isMe) localMsg.sender = 'me';
+                if (m.reactions) localMsg.reactions = m.reactions;
+                if (m.answers) localMsg.answers = m.answers;
               }
             }
           });
@@ -2687,6 +2725,7 @@
           APP_STATE.chats[chatKey].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
           saveChats();
           renderChatMessages();
+          if (typeof updateChatStreakUI === 'function') updateChatStreakUI(chatKey);
         }
       });
     }
@@ -2715,6 +2754,7 @@
 
     const chatKey = APP_STATE.activeChatRecipient.key;
     const thread = APP_STATE.chats[chatKey] || [];
+    const myId = (APP_STATE.currentUser && APP_STATE.currentUser.id) || 'local_user';
 
     if (thread.length === 0) {
       box.innerHTML = `
@@ -2724,6 +2764,11 @@
           <p style="font-size:12px;color:#667781;margin:6px 0 0;line-height:1.5">നേരിട്ടുള്ള തത്സമയ സംഭാഷണം ആരംഭിക്കൂ. സന്ദേശങ്ങൾ ഇൻസ്റ്റന്റായി കൈമാറുന്നു.</p>
           <div style="margin-top:14px;font-size:11px;font-weight:700;color:#075E54;background:#DCF8C6;display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:12px">
             <span>🔒 എൻഡ്-ടു-എൻഡ് സുരക്ഷിത ചാറ്റ്</span>
+          </div>
+          <div style="margin-top:12px">
+            <button type="button" onclick="toggleChatFunZone(true)" style="background:#FFFBEB;border:1.5px solid #FCD34D;color:#92400E;padding:6px 14px;border-radius:999px;font-size:11.5px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:5px">
+              <span>🎮</span> <span>ഇമോജി ചലഞ്ച് അല്ലെങ്കിൽ സ്റ്റിക്കർ അയക്കൂ!</span>
+            </button>
           </div>
         </div>
       `;
@@ -2746,18 +2791,117 @@
 
       const recipientAvatar = (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.avatar) || DEFAULT_USER_AVATAR;
 
+      // 1. RENDER MESSAGE CONTENT (STICKER vs CHALLENGE vs TEXT)
+      let innerContentHtml = '';
+      if (msg.type === 'sticker') {
+        innerContentHtml = `
+          <div class="chat-sticker-bubble">
+            <span class="cs-emoji">${escapeHtml(msg.stickerEmoji || '🔥')}</span>
+            <span class="cs-text">${escapeHtml(msg.stickerText || msg.text)}</span>
+          </div>
+        `;
+      } else if (msg.type === 'challenge') {
+        const ch = msg.challenge || {};
+        const answers = msg.answers || {};
+        const myAnswer = answers[myId];
+        const hasAnswered = typeof myAnswer !== 'undefined';
+        const correctIdx = typeof ch.correctIndex === 'number' ? ch.correctIndex : 0;
+
+        let statusBannerHtml = '';
+        if (hasAnswered) {
+          const isCorrect = myAnswer.optionIndex === correctIdx;
+          statusBannerHtml = `
+            <div class="chat-challenge-status-banner" style="background:${isCorrect ? '#DCFCE7' : '#FEE2E2'};color:${isCorrect ? '#15803D' : '#B91C1C'}">
+              ${isCorrect ? '🎉 ശരിയുത്തരം! അടിപൊളി!' : `❌ തെറ്റിപ്പോയി! ശരിയുത്തരം: ${escapeHtml(ch.options ? ch.options[correctIdx] : '')}`}
+            </div>
+          `;
+        }
+
+        const optionsHtml = (ch.options || []).map((opt, oIdx) => {
+          let optClass = 'chat-challenge-opt-btn';
+          let optSuffix = '';
+          if (hasAnswered) {
+            if (oIdx === correctIdx) {
+              optClass += ' correct';
+              optSuffix = ' ✓';
+            } else if (myAnswer.optionIndex === oIdx) {
+              optClass += ' wrong';
+              optSuffix = ' ✕';
+            }
+          }
+          return `
+            <button type="button" class="${optClass}" ${hasAnswered ? 'disabled' : ''}
+              onclick="answerEmojiChallenge('${escapeHtml(chatKey)}', '${escapeHtml(msg.id)}', ${oIdx})">
+              <span>${oIdx + 1}. ${escapeHtml(opt)}</span>
+              <span>${optSuffix}</span>
+            </button>
+          `;
+        }).join('');
+
+        innerContentHtml = `
+          <div class="chat-challenge-card">
+            <div class="chat-challenge-header">
+              <span class="chat-challenge-tag">🎮 ഇമോജി ചലഞ്ച്</span>
+              <span style="font-size:10px;color:#64748B;font-weight:700">${hasAnswered ? 'പൂർത്തിയായി' : 'ഉത്തരം പറയൂ!'}</span>
+            </div>
+            <div class="chat-challenge-clue">${escapeHtml(ch.clue || '❓')}</div>
+            <div class="chat-challenge-qtext">${escapeHtml(ch.question || msg.text || 'ഇത് ഏതാണെന്ന് പറയാമോ?')}</div>
+            <div class="chat-challenge-options">
+              ${optionsHtml}
+            </div>
+            ${statusBannerHtml}
+          </div>
+        `;
+      } else {
+        innerContentHtml = `<div class="chat-bubble-content">${escapeHtml(msg.text)}</div>`;
+      }
+
+      // 2. RENDER MESSAGE REACTIONS PILLS
+      const reactions = msg.reactions || {};
+      const reactionKeys = Object.keys(reactions).filter(e => Array.isArray(reactions[e]) && reactions[e].length > 0);
+      let reactionsHtml = '';
+      if (reactionKeys.length > 0) {
+        reactionsHtml = `
+          <div class="chat-bubble-reactions-row">
+            ${reactionKeys.map(emoji => {
+              const users = reactions[emoji];
+              const didReact = users.includes(myId);
+              return `
+                <div class="reaction-pill ${didReact ? 'user-reacted' : ''}" title="${emoji} റിയാക്ഷൻ"
+                  onclick="toggleMessageReaction('${escapeHtml(chatKey)}', '${escapeHtml(msg.id)}', '${escapeHtml(emoji)}')">
+                  <span>${emoji}</span>
+                  <span class="reaction-pill-count">${users.length}</span>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      }
+
+      // 3. REACTION TRIGGER BUTTON
+      const reactionTriggerHtml = `
+        <button type="button" class="chat-react-trigger" title="റിയാക്റ്റ് ചെയ്യുക"
+          onclick="event.stopPropagation(); showReactionPicker('${escapeHtml(msg.id)}', this, '${escapeHtml(chatKey)}')">
+          😀
+        </button>
+      `;
+
       return `
         ${dateDivider}
-        <div class="chat-message-row ${isMe ? 'outgoing-row' : 'incoming-row'}">
+        <div class="chat-message-row ${isMe ? 'outgoing-row' : 'incoming-row'}" data-msg-id="${escapeHtml(msg.id)}">
           ${!isMe ? `
             <img src="${escapeHtml(recipientAvatar)}" class="chat-bubble-avatar" alt="Avatar" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
           ` : ''}
-          <div class="chat-bubble ${isMe ? 'outgoing' : 'incoming'}">
-            <div class="chat-bubble-content">${escapeHtml(msg.text)}</div>
-            <div class="chat-bubble-meta">
-              <span class="chat-time-text">${escapeHtml(msg.time || '')}</span>
-              ${isMe ? '<span class="chat-ticks">✓✓</span>' : ''}
+          <div class="chat-bubble-actions-wrap">
+            ${reactionTriggerHtml}
+            <div class="chat-bubble ${isMe ? 'outgoing' : 'incoming'} ${msg.type ? ('type-' + msg.type) : ''}">
+              ${innerContentHtml}
+              <div class="chat-bubble-meta">
+                <span class="chat-time-text">${escapeHtml(msg.time || '')}</span>
+                ${isMe ? '<span class="chat-ticks">✓✓</span>' : ''}
+              </div>
             </div>
+            ${reactionsHtml}
           </div>
         </div>
       `;
@@ -2788,6 +2932,7 @@
       senderName: senderName,
       senderPhone: APP_STATE.currentUser.phone || '',
       senderAvatar: senderAvatar,
+      type: 'text',
       text: text,
       time: timeStr,
       timestamp: Date.now()
@@ -2795,14 +2940,8 @@
 
     // Instant local echo
     APP_STATE.chats[chatKey].push({
-      id: msgId,
-      sender: 'me',
-      senderId: APP_STATE.currentUser.id,
-      senderPhone: APP_STATE.currentUser.phone || '',
-      senderName: senderName,
-      text: text,
-      time: timeStr,
-      timestamp: Date.now()
+      ...msgObj,
+      sender: 'me'
     });
 
     if (input) input.value = '';
@@ -2815,6 +2954,7 @@
       renderChatListScreen();
     }
     renderChatMessages();
+    if (typeof updateChatStreakUI === 'function') updateChatStreakUI(chatKey);
 
     // Broadcast to Supabase Realtime Cloud (Instant cross-device delivery)
     const metaObj = {
@@ -2852,6 +2992,931 @@
     }
   }
   window.sendChatMessage = sendChatMessage;
+
+  // ==============================================================
+  // CHAT FUN ZONE ENGINE: EMOJI CHALLENGE, STICKERS, THEMES & STREAKS
+  // ==============================================================
+
+  // A. Personal Chat Themes
+  const CHAT_THEMES = [
+    { id: 'kerala', name: '🌴 കേരള ഹരിതം', desc: 'തനിമയാർന്ന ഹരിതഭംഗി', bg: '#0E7043', border: '#10B981', sample: '#D9FDD3' },
+    { id: 'glass', name: '💎 പ്രീമിയം ഗ്ലാസ്സ്', desc: 'ഡാർക്ക് ഗ്ലാസ് ഡിസൈൻ', bg: '#0F172A', border: '#334155', sample: '#064E3B' },
+    { id: 'ocean', name: '🌊 അറബിക്കടൽ', desc: 'കോവളം നീലത്തിരകൾ', bg: '#0284C7', border: '#38BDF8', sample: '#E0F2FE' },
+    { id: 'sunset', name: '🌅 കായൽ സന്ധ്യ', desc: 'സന്ധ്യാ കിരണങ്ങളുടെ ശോഭ', bg: '#EA580C', border: '#FB923C', sample: '#FFEDD5' },
+    { id: 'minimal', name: '⚪ ക്ലാസിക് മിനിമൽ', desc: 'ലളിതമായ വെളുപ്പും ഗ്രീനും', bg: '#1E293B', border: '#94A3B8', sample: '#F8FAFC' }
+  ];
+
+  function setChatTheme(themeId) {
+    const sheet = document.getElementById('chatModalSheet');
+    if (!sheet) return;
+    CHAT_THEMES.forEach(t => sheet.classList.remove('chat-theme-' + t.id));
+    sheet.classList.add('chat-theme-' + themeId);
+    try {
+      localStorage.setItem('nn_chat_theme', themeId);
+    } catch (_) {}
+    toast('🎨 ചാറ്റ് തീം മാറ്റി: ' + (CHAT_THEMES.find(t => t.id === themeId)?.name || ''));
+    renderFunZoneThemesTab();
+  }
+  window.setChatTheme = setChatTheme;
+
+  function loadSavedChatTheme() {
+    let saved = 'kerala';
+    try {
+      saved = localStorage.getItem('nn_chat_theme') || 'kerala';
+    } catch (_) {}
+    const sheet = document.getElementById('chatModalSheet');
+    if (sheet) {
+      CHAT_THEMES.forEach(t => sheet.classList.remove('chat-theme-' + t.id));
+      sheet.classList.add('chat-theme-' + saved);
+    }
+  }
+  window.loadSavedChatTheme = loadSavedChatTheme;
+
+  // B. Malayalam Stickers
+  const MALAYALAM_STICKERS = [
+    { text: 'പൊളിച്ചു!', emoji: '🔥', cat: 'mass' },
+    { text: 'എന്താ മോനേ!', emoji: '😎', cat: 'mass' },
+    { text: 'വേറെ ലെവൽ!', emoji: '🚀', cat: 'mass' },
+    { text: 'തീപ്പൊരി!', emoji: '💥', cat: 'mass' },
+    { text: 'ചിരിച്ചു ചത്തു!', emoji: '😂', cat: 'comedy' },
+    { text: 'ഇതാര് സാമ്പോളിയോ?!', emoji: '🤣', cat: 'comedy' },
+    { text: 'അയ്യോ ചിരി നിർത്താൻ വയ്യ!', emoji: '💀', cat: 'comedy' },
+    { text: 'ശരി ഡാ!', emoji: '👍', cat: 'support' },
+    { text: 'കട്ട സപ്പോർട്ട്!', emoji: '🤝', cat: 'support' },
+    { text: 'അടിപൊളി!', emoji: '✨', cat: 'support' },
+    { text: 'ഭാഗ്യം ഉണ്ടാവട്ടെ!', emoji: '🍀', cat: 'support' },
+    { text: 'ചായ കുടിച്ചോ?', emoji: '☕', cat: 'care' },
+    { text: 'നാട്ടിൽ എപ്പോഴാ?', emoji: '🌴', cat: 'care' },
+    { text: 'സത്യം പറ!', emoji: '🤨', cat: 'care' },
+    { text: 'അയ്യോ കഷ്ടം!', emoji: '🥺', cat: 'care' }
+  ];
+
+  function sendMalayalamSticker(stickerText, emoji) {
+    if (!APP_STATE.activeChatRecipient) return;
+    const chatKey = APP_STATE.activeChatRecipient.key;
+    if (!APP_STATE.chats[chatKey]) APP_STATE.chats[chatKey] = [];
+
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const msgId = 'msg_stk_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6);
+
+    const senderName = APP_STATE.currentUser.name || 'നാട്ടുകാരൻ';
+    const senderAvatar = APP_STATE.currentUser.avatar || DEFAULT_USER_AVATAR;
+
+    const msgObj = {
+      id: msgId,
+      senderId: APP_STATE.currentUser.id,
+      senderName: senderName,
+      senderPhone: APP_STATE.currentUser.phone || '',
+      senderAvatar: senderAvatar,
+      type: 'sticker',
+      stickerText: stickerText,
+      stickerEmoji: emoji,
+      text: `${emoji} ${stickerText}`,
+      time: timeStr,
+      timestamp: Date.now()
+    };
+
+    APP_STATE.chats[chatKey].push({ ...msgObj, sender: 'me' });
+    if (APP_STATE.chatMeta && APP_STATE.chatMeta[chatKey]) {
+      APP_STATE.chatMeta[chatKey].updatedAt = Date.now();
+    }
+    saveChats();
+    updateChatBadgeCounter();
+    renderChatMessages();
+    toggleChatFunZone(false);
+    if (typeof updateChatStreakUI === 'function') updateChatStreakUI(chatKey);
+
+    // Broadcast to Supabase Cloud
+    const metaObj = {
+      recipientId: APP_STATE.activeChatRecipient.id || '',
+      recipientName: APP_STATE.activeChatRecipient.name,
+      recipientPhone: APP_STATE.activeChatRecipient.phone,
+      recipientAvatar: APP_STATE.activeChatRecipient.avatar,
+      senderId: APP_STATE.currentUser.id,
+      senderName: senderName,
+      senderPhone: APP_STATE.currentUser.phone,
+      senderAvatar: senderAvatar
+    };
+    if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.sendChatMessage === 'function') {
+      window.NN_SUPABASE_SERVICES.sendChatMessage(chatKey, msgObj, metaObj);
+    }
+  }
+  window.sendMalayalamSticker = sendMalayalamSticker;
+
+  // C. Emoji Challenges
+  const DEFAULT_EMOJI_CHALLENGES = [
+    // Movies
+    { id: 'ch_m_1', cat: 'movie', catName: '🎬 സിനിമകൾ', clue: '👑 👑', question: 'ഈ മലയാള സിനിമ ഏതാണെന്ന് പറയാമോ?', options: ['രാജമാണിക്യം', 'കിരീടം', 'ദ ഗോഡ്ഫാദർ'], correctIndex: 0 },
+    { id: 'ch_m_2', cat: 'movie', catName: '🎬 സിനിമകൾ', clue: '🕵️‍♂️ 🔍', question: 'ഇത് ഏത് മലയാളം കോമഡി സിനിമയാണ്?', options: ['സിഐഡി മൂസ', 'മേഘം', 'പാണ്ടിപ്പട'], correctIndex: 0 },
+    { id: 'ch_m_3', cat: 'movie', catName: '🎬 സിനിമകൾ', clue: '⚡ 🦸‍♂️', question: 'ഈ സൂപ്പർഹീറോ ചിത്രം ഏതാണ്?', options: ['മിന്നൽ മുരളി', 'കുരുതി', 'കപ്പേള'], correctIndex: 0 },
+    { id: 'ch_m_4', cat: 'movie', catName: '🎬 സിനിമകൾ', clue: '👻 🏰', question: 'പ്രശസ്തമായ ഈ ക്ലാസിക് സിനിമ ഏത്?', options: ['മണിച്ചിത്രത്താഴ്', 'ആകാശഗംഗ', 'ഭാർഗ്ഗവീനിലയം'], correctIndex: 0 },
+    { id: 'ch_m_5', cat: 'movie', catName: '🎬 സിനിമകൾ', clue: '👓 🕶️ 🦯', question: 'ആടുതോമയും ചാക്കോ മാഷും വന്ന സിനിമ?', options: ['സ്ഫടികം', 'ധ്രുവം', 'കമ്മീഷണർ'], correctIndex: 0 },
+    { id: 'ch_m_6', cat: 'movie', catName: '🎬 സിനിമകൾ', clue: '☕ 🥖 🌸', question: 'മലർ മിസ്സും ജോർജ്ജും ഉള്ള ചിത്രം?', options: ['പ്രേമം', 'ബാംഗ്ലൂർ ഡേയ്സ്', 'തട്ടത്തിൻ മറയത്ത്'], correctIndex: 0 },
+    // Riddles
+    { id: 'ch_r_1', cat: 'riddle', catName: '🧩 കടങ്കഥകൾ', clue: '🥥 🌴', question: 'തലയുണ്ട് വാലില്ല, കട്ടൻ വെള്ളം ഉള്ളിലുണ്ട്. എന്താണ്?', options: ['തേങ്ങ (കരിക്ക്)', 'പപ്പായ', 'മാങ്ങ'], correctIndex: 0 },
+    { id: 'ch_r_2', cat: 'riddle', catName: '🧩 കടങ്കഥകൾ', clue: '🐍 🚣‍♂️', question: 'പമ്പയിൽ കുതിച്ചുപായുന്ന വള്ളമേത്?', options: ['ചുണ്ടൻ വള്ളം', 'കെട്ടുവള്ളം', 'ഓടി വള്ളം'], correctIndex: 0 },
+    { id: 'ch_r_3', cat: 'riddle', catName: '🧩 കടങ്കഥകൾ', clue: '🐘 🎪 🥁', question: 'മേളവും കുടമാറ്റവുമുള്ള പൂരം ഏതാണ്?', options: ['തൃശ്ശൂർ പൂരം', 'നെന്മാറ വല്ലങ്ങി വേല', 'ഉത്രാളിക്കാവ് പൂരം'], correctIndex: 0 },
+    { id: 'ch_r_4', cat: 'riddle', catName: '🧩 കടങ്കഥകൾ', clue: '🌧️ ⚡ ☂️', question: 'കേരളത്തിലെ ആദ്യത്തെ മഴക്കാലം ഏത്?', options: ['ഇടവപ്പാതി', 'തുലാവർഷം', 'വേനൽമഴ'], correctIndex: 0 },
+    // Local GK
+    { id: 'ch_g_1', cat: 'gk', catName: '💡 നാട്ടുവിശേഷം', clue: '⚽ 🌴 🏟️', question: 'സെവൻസ് ഫുട്ബോളിന്റെ നാട് ഏത് ജില്ല?', options: ['മലപ്പുറം', 'കോഴിക്കോട്', 'കണ്ണൂർ'], correctIndex: 0 },
+    { id: 'ch_g_2', cat: 'gk', catName: '💡 നാട്ടുവിശേഷം', clue: '🍵 ⛰️ 🌫️', question: 'കേരളത്തിലെ ഏറ്റവും വലിയ തേയിലത്തോട്ടങ്ങൾ എവിടെ?', options: ['മൂന്നാർ', 'വയനാട്', 'നെല്ലിയാമ്പതി'], correctIndex: 0 },
+    { id: 'ch_g_3', cat: 'gk', catName: '💡 നാട്ടുവിശേഷം', clue: '🍛 🍌 🥣', question: 'ഓണത്തിന് തൂശനിലയിൽ വിളമ്പുന്ന വിഭവം?', options: ['ഓണസദ്യ', 'ബിരിയാണി', 'നെയ്ച്ചോറ്'], correctIndex: 0 }
+  ];
+
+  function getAvailableChallenges() {
+    let custom = [];
+    try {
+      custom = JSON.parse(localStorage.getItem('nn_custom_emoji_challenges') || '[]');
+    } catch (_) {}
+    return [...DEFAULT_EMOJI_CHALLENGES, ...custom];
+  }
+
+  function sendEmojiChallenge(challengeId) {
+    if (!APP_STATE.activeChatRecipient) return;
+    const allCh = getAvailableChallenges();
+    const ch = allCh.find(c => c.id === challengeId);
+    if (!ch) return;
+
+    const chatKey = APP_STATE.activeChatRecipient.key;
+    if (!APP_STATE.chats[chatKey]) APP_STATE.chats[chatKey] = [];
+
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const msgId = 'msg_ch_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6);
+
+    const senderName = APP_STATE.currentUser.name || 'നാട്ടുകാരൻ';
+    const senderAvatar = APP_STATE.currentUser.avatar || DEFAULT_USER_AVATAR;
+
+    const msgObj = {
+      id: msgId,
+      senderId: APP_STATE.currentUser.id,
+      senderName: senderName,
+      senderPhone: APP_STATE.currentUser.phone || '',
+      senderAvatar: senderAvatar,
+      type: 'challenge',
+      challenge: ch,
+      answers: {},
+      text: `🎮 ഇമോജി ചലഞ്ച്: ${ch.clue} - ${ch.question}`,
+      time: timeStr,
+      timestamp: Date.now()
+    };
+
+    APP_STATE.chats[chatKey].push({ ...msgObj, sender: 'me' });
+    if (APP_STATE.chatMeta && APP_STATE.chatMeta[chatKey]) {
+      APP_STATE.chatMeta[chatKey].updatedAt = Date.now();
+    }
+    saveChats();
+    updateChatBadgeCounter();
+    renderChatMessages();
+    toggleChatFunZone(false);
+    if (typeof updateChatStreakUI === 'function') updateChatStreakUI(chatKey);
+
+    // Broadcast to Supabase Cloud
+    const metaObj = {
+      recipientId: APP_STATE.activeChatRecipient.id || '',
+      recipientName: APP_STATE.activeChatRecipient.name,
+      recipientPhone: APP_STATE.activeChatRecipient.phone,
+      recipientAvatar: APP_STATE.activeChatRecipient.avatar,
+      senderId: APP_STATE.currentUser.id,
+      senderName: senderName,
+      senderPhone: APP_STATE.currentUser.phone,
+      senderAvatar: senderAvatar
+    };
+    if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.sendChatMessage === 'function') {
+      window.NN_SUPABASE_SERVICES.sendChatMessage(chatKey, msgObj, metaObj);
+    }
+  }
+  window.sendEmojiChallenge = sendEmojiChallenge;
+
+  function answerEmojiChallenge(chatKey, msgId, optionIndex) {
+    if (!chatKey || !msgId) return;
+    const thread = APP_STATE.chats[chatKey];
+    if (!thread) return;
+    const msg = thread.find(m => m.id === msgId);
+    if (!msg || msg.type !== 'challenge') return;
+
+    if (!msg.answers) msg.answers = {};
+    const myId = (APP_STATE.currentUser && APP_STATE.currentUser.id) || 'local_user';
+    if (typeof msg.answers[myId] !== 'undefined') return;
+
+    const correctIdx = (msg.challenge && typeof msg.challenge.correctIndex === 'number') ? msg.challenge.correctIndex : 0;
+    const isCorrect = (optionIndex === correctIdx);
+    msg.answers[myId] = {
+      optionIndex: optionIndex,
+      isCorrect: isCorrect,
+      answeredAt: Date.now()
+    };
+
+    saveChats();
+    renderChatMessages();
+
+    // Broadcast answer to chat partner
+    if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.broadcastChatEvent === 'function') {
+      window.NN_SUPABASE_SERVICES.broadcastChatEvent(chatKey, 'chat_challenge_answer', { msgId, answers: msg.answers });
+    }
+  }
+  window.answerEmojiChallenge = answerEmojiChallenge;
+
+  function handleRemoteChallengeAnswer(chatKey, msgId, answers) {
+    if (!chatKey || !msgId || !answers) return;
+    if (!APP_STATE.chats[chatKey]) return;
+    const msg = APP_STATE.chats[chatKey].find(m => m.id === msgId);
+    if (msg) {
+      msg.answers = answers;
+      saveChats();
+      if (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.key === chatKey) {
+        renderChatMessages();
+      }
+    }
+  }
+  window.handleRemoteChallengeAnswer = handleRemoteChallengeAnswer;
+
+  // D. Message Reactions (❤️ 😂 🔥 👍 😮 👏)
+  const REACTION_EMOJIS = ['❤️', '😂', '🔥', '👍', '😮', '👏'];
+
+  function toggleMessageReaction(chatKey, msgId, emoji) {
+    if (!chatKey || !msgId || !emoji) return;
+    const thread = APP_STATE.chats[chatKey];
+    if (!thread) return;
+    const msg = thread.find(m => m.id === msgId);
+    if (!msg) return;
+
+    if (!msg.reactions) msg.reactions = {};
+    if (!Array.isArray(msg.reactions[emoji])) msg.reactions[emoji] = [];
+
+    const myId = (APP_STATE.currentUser && APP_STATE.currentUser.id) || 'local_user';
+    const idx = msg.reactions[emoji].indexOf(myId);
+    if (idx >= 0) {
+      msg.reactions[emoji].splice(idx, 1);
+      if (msg.reactions[emoji].length === 0) delete msg.reactions[emoji];
+    } else {
+      msg.reactions[emoji].push(myId);
+    }
+
+    saveChats();
+    renderChatMessages();
+
+    // Broadcast reaction
+    if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.broadcastChatEvent === 'function') {
+      window.NN_SUPABASE_SERVICES.broadcastChatEvent(chatKey, 'chat_reaction', { msgId, reactions: msg.reactions });
+    }
+  }
+  window.toggleMessageReaction = toggleMessageReaction;
+
+  function handleRemoteChatReaction(chatKey, msgId, reactions) {
+    if (!chatKey || !msgId || !reactions) return;
+    if (!APP_STATE.chats[chatKey]) return;
+    const msg = APP_STATE.chats[chatKey].find(m => m.id === msgId);
+    if (msg) {
+      msg.reactions = reactions;
+      saveChats();
+      if (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.key === chatKey) {
+        renderChatMessages();
+      }
+    }
+  }
+  window.handleRemoteChatReaction = handleRemoteChatReaction;
+
+  function showReactionPicker(msgId, triggerBtn, chatKey) {
+    const existing = document.getElementById('activeFloatingReactionPicker');
+    if (existing) existing.remove();
+
+    const picker = document.createElement('div');
+    picker.id = 'activeFloatingReactionPicker';
+    picker.className = 'floating-reaction-picker';
+    picker.onclick = (e) => e.stopPropagation();
+
+    picker.innerHTML = REACTION_EMOJIS.map(em => `
+      <button type="button" class="reaction-opt-btn" onclick="toggleMessageReaction('${escapeHtml(chatKey)}', '${escapeHtml(msgId)}', '${em}'); document.getElementById('activeFloatingReactionPicker')?.remove();">
+        ${em}
+      </button>
+    `).join('');
+
+    const parent = triggerBtn.closest('.chat-bubble-actions-wrap');
+    if (parent) {
+      parent.appendChild(picker);
+    }
+
+    const closeHandler = () => {
+      picker.remove();
+      document.removeEventListener('click', closeHandler);
+    };
+    setTimeout(() => document.addEventListener('click', closeHandler), 100);
+  }
+  window.showReactionPicker = showReactionPicker;
+
+  // E. Friendship Streak (🔥)
+  function calculateChatStreak(chatKey) {
+    if (!chatKey || !APP_STATE.chats || !APP_STATE.chats[chatKey]) return 0;
+    try {
+      if (localStorage.getItem('nn_streak_disabled') === 'true') return 0;
+    } catch (_) {}
+
+    const thread = APP_STATE.chats[chatKey];
+    if (thread.length === 0) return 0;
+
+    const daySet = new Set();
+    thread.forEach(m => {
+      if (m.timestamp) {
+        const d = new Date(m.timestamp);
+        const y = d.getFullYear();
+        const mon = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        daySet.add(`${y}-${mon}-${day}`);
+      }
+    });
+
+    const uniqueDays = Array.from(daySet).sort();
+    if (uniqueDays.length === 0) return 0;
+
+    const now = new Date();
+    const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    const yest = new Date(now);
+    yest.setDate(now.getDate() - 1);
+    const yestStr = `${yest.getFullYear()}-${String(yest.getMonth() + 1).padStart(2, '0')}-${String(yest.getDate()).padStart(2, '0')}`;
+
+    const lastDay = uniqueDays[uniqueDays.length - 1];
+    if (lastDay !== todayStr && lastDay !== yestStr) {
+      return 0; // Streak broken if no message today or yesterday
+    }
+
+    let streak = 1;
+    let curr = new Date(lastDay);
+    for (let i = uniqueDays.length - 2; i >= 0; i--) {
+      const prev = new Date(uniqueDays[i]);
+      const diffMs = curr.getTime() - prev.getTime();
+      const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+      if (diffDays === 1) {
+        streak++;
+        curr = prev;
+      } else {
+        break;
+      }
+    }
+    return streak;
+  }
+  window.calculateChatStreak = calculateChatStreak;
+
+  function updateChatStreakUI(chatKey) {
+    const pill = document.getElementById('chatStreakPill');
+    const countEl = document.getElementById('chatStreakCount');
+    if (!pill || !countEl) return;
+
+    const streak = calculateChatStreak(chatKey);
+    countEl.textContent = streak;
+    if (streak > 0) {
+      pill.style.display = 'inline-flex';
+    } else {
+      pill.style.display = 'inline-flex';
+      countEl.textContent = '0';
+    }
+  }
+  window.updateChatStreakUI = updateChatStreakUI;
+
+  function toggleStreakTracking(enabled) {
+    try {
+      localStorage.setItem('nn_streak_disabled', enabled ? 'false' : 'true');
+    } catch (_) {}
+    if (APP_STATE.activeChatRecipient) {
+      updateChatStreakUI(APP_STATE.activeChatRecipient.key);
+    }
+    renderFunZoneStreakTab();
+    toast(enabled ? '🔥 സ്ട്രീക്ക് ഓൺ ചെയ്തു' : '⏸️ സ്ട്രീക്ക് ഓഫ് ചെയ്തു');
+  }
+  window.toggleStreakTracking = toggleStreakTracking;
+
+  // F. Fun Zone Tabs UI Rendering
+  let activeFunZoneTab = 'challenge';
+  let activeChallengeCatFilter = 'all';
+
+  function toggleChatFunZone(forceOpen) {
+    const panel = document.getElementById('chatFunZonePanel');
+    if (!panel) return;
+    const shouldOpen = (typeof forceOpen === 'boolean') ? forceOpen : (panel.style.display === 'none');
+    panel.style.display = shouldOpen ? 'flex' : 'none';
+    if (shouldOpen) {
+      switchFunZoneTab(activeFunZoneTab);
+    }
+  }
+  window.toggleChatFunZone = toggleChatFunZone;
+
+  function openFunZoneTab(tabName) {
+    toggleChatFunZone(true);
+    switchFunZoneTab(tabName);
+  }
+  window.openFunZoneTab = openFunZoneTab;
+
+  function switchFunZoneTab(tabName) {
+    activeFunZoneTab = tabName;
+    document.querySelectorAll('.cfz-tab-btn').forEach(btn => btn.classList.remove('active'));
+    const activeBtn = document.getElementById('cfzTabBtn-' + tabName);
+    if (activeBtn) activeBtn.classList.add('active');
+
+    if (tabName === 'challenge') renderFunZoneChallengeTab();
+    else if (tabName === 'stickers') renderFunZoneStickersTab();
+    else if (tabName === 'themes') renderFunZoneThemesTab();
+    else if (tabName === 'streak') renderFunZoneStreakTab();
+  }
+  window.switchFunZoneTab = switchFunZoneTab;
+
+  function renderFunZoneChallengeTab(catFilter = null) {
+    const container = document.getElementById('cfzTabContent');
+    if (!container) return;
+    if (catFilter) activeChallengeCatFilter = catFilter;
+
+    const allCh = getAvailableChallenges();
+    const filtered = (activeChallengeCatFilter === 'all')
+      ? allCh
+      : allCh.filter(c => c.cat === activeChallengeCatFilter);
+
+    container.innerHTML = `
+      <div class="cfz-challenge-category-tabs">
+        <button type="button" class="cfz-cat-chip ${activeChallengeCatFilter === 'all' ? 'active' : ''}" onclick="renderFunZoneChallengeTab('all')">🌟 എല്ലാം</button>
+        <button type="button" class="cfz-cat-chip ${activeChallengeCatFilter === 'movie' ? 'active' : ''}" onclick="renderFunZoneChallengeTab('movie')">🎬 സിനിമകൾ</button>
+        <button type="button" class="cfz-cat-chip ${activeChallengeCatFilter === 'riddle' ? 'active' : ''}" onclick="renderFunZoneChallengeTab('riddle')">🧩 കടങ്കഥകൾ</button>
+        <button type="button" class="cfz-cat-chip ${activeChallengeCatFilter === 'gk' ? 'active' : ''}" onclick="renderFunZoneChallengeTab('gk')">💡 നാട്ടുവിശേഷം</button>
+      </div>
+
+      <div class="cfz-challenges-list">
+        ${filtered.map(ch => `
+          <div class="cfz-challenge-row">
+            <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
+              <span class="cfz-clue-badge">${escapeHtml(ch.clue)}</span>
+              <div style="min-width:0">
+                <div class="cfz-challenge-q">${escapeHtml(ch.question)}</div>
+                <div class="cfz-challenge-sub">${escapeHtml(ch.catName || 'ചലഞ്ച്')} • ${ch.options.length} ഉത്തരങ്ങൾ</div>
+              </div>
+            </div>
+            <button type="button" class="cfz-send-challenge-btn" onclick="sendEmojiChallenge('${escapeHtml(ch.id)}')">
+              <span>അയക്കാം ➔</span>
+            </button>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  function renderFunZoneStickersTab() {
+    const container = document.getElementById('cfzTabContent');
+    if (!container) return;
+
+    container.innerHTML = `
+      <div class="cfz-stickers-grid">
+        ${MALAYALAM_STICKERS.map(stk => `
+          <div class="cfz-sticker-item" onclick="sendMalayalamSticker('${escapeHtml(stk.text)}', '${escapeHtml(stk.emoji)}')">
+            <span class="cfz-sticker-emoji">${stk.emoji}</span>
+            <span class="cfz-sticker-text">${escapeHtml(stk.text)}</span>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  function renderFunZoneThemesTab() {
+    const container = document.getElementById('cfzTabContent');
+    if (!container) return;
+
+    let saved = 'kerala';
+    try {
+      saved = localStorage.getItem('nn_chat_theme') || 'kerala';
+    } catch (_) {}
+
+    container.innerHTML = `
+      <div class="cfz-themes-grid">
+        ${CHAT_THEMES.map(t => `
+          <div class="cfz-theme-card ${t.id === saved ? 'active' : ''}" onclick="setChatTheme('${t.id}')">
+            <div class="cfz-theme-preview" style="background:${t.bg};border:1.5px solid ${t.border}">
+              <span style="font-size:10px;background:${t.sample};padding:2px 8px;border-radius:10px;font-weight:800;color:#0F172A">ഹായ്! 🌿</span>
+            </div>
+            <div class="cfz-theme-name">
+              <span>${t.name}</span>
+              ${t.id === saved ? '<span style="color:#059669">✓</span>' : ''}
+            </div>
+            <div style="font-size:10px;color:#64748B">${t.desc}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  function renderFunZoneStreakTab() {
+    const container = document.getElementById('cfzTabContent');
+    if (!container) return;
+
+    const chatKey = APP_STATE.activeChatRecipient ? APP_STATE.activeChatRecipient.key : '';
+    const streak = calculateChatStreak(chatKey);
+    let streakDisabled = false;
+    try {
+      streakDisabled = (localStorage.getItem('nn_streak_disabled') === 'true');
+    } catch (_) {}
+
+    container.innerHTML = `
+      <div style="background:linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);border:1.5px solid #FCD34D;border-radius:16px;padding:14px;text-align:center;box-shadow:0 3px 10px rgba(245,158,11,0.15)">
+        <div style="font-size:42px;line-height:1;margin-bottom:6px">🔥</div>
+        <div style="font-size:22px;font-weight:900;color:#92400E">${streak} ദിവസത്തെ സ്ട്രീക്ക്</div>
+        <p style="font-size:12px;color:#B45309;margin:6px 0 12px;line-height:1.4">
+          നിങ്ങളും സുഹൃത്തും തമ്മിൽ തുടർച്ചയായി ദിവസവും സന്ദേശങ്ങൾ കൈമാറുമ്പോൾ സൗഹൃദ സ്ട്രീക്ക് വർദ്ധിക്കുന്നു!
+        </p>
+
+        <div style="background:#FFFFFF;border-radius:12px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border:1px solid #FDE68A">
+          <div style="text-align:left">
+            <div style="font-size:12px;font-weight:800;color:#1E293B">ഫ്രണ്ട്ഷിപ്പ് സ്ട്രീക്ക് ഓപ്ഷൻ</div>
+            <div style="font-size:10.5px;color:#64748B">സ്ട്രോക്ക് കണക്കാക്കുന്നതും ബാഡ്ജും നിയന്ത്രിക്കാം</div>
+          </div>
+          <button type="button" onclick="toggleStreakTracking(${streakDisabled})"
+            style="background:${streakDisabled ? '#E2E8F0' : '#10B981'};color:${streakDisabled ? '#475569' : '#FFFFFF'};border:none;padding:6px 12px;border-radius:999px;font-size:11px;font-weight:800;cursor:pointer">
+            ${streakDisabled ? 'ഓൺ ചെയ്യാം' : 'ഓൺ ആണ് ✓'}
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  // ==============================================================
+  // LOCAL BUSINESS DIRECTORY MODULE (വ്യാപാരങ്ങൾ & കടകൾ)
+  // ==============================================================
+
+  const SEED_BUSINESSES = [
+    {
+      id: 'biz_1',
+      name: 'കണ്ണൂർ സൂപ്പർമാർക്കറ്റ് & ഗ്രോസറി',
+      category: 'grocery',
+      categoryName: 'സൂപ്പർമാർക്കറ്റ് & പലചരക്ക്',
+      icon: '🛒',
+      location: 'പഴയങ്ങാടി ബസ് സ്റ്റാൻഡ്, കണ്ണൂർ',
+      district: 'കണ്ണൂർ',
+      lat: 11.9360,
+      lon: 75.3620,
+      phone: '+919846011223',
+      whatsapp: '+919846011223',
+      timing: 'രാവിലെ 8:00 - രാത്രി 9:30',
+      offer: '🔥 ഈ ആഴ്ചയിലെ ഓഫർ: എല്ലാ പലചരക്ക് സാധനങ്ങൾക്കും 10% ഡിസ്കൗണ്ട്!',
+      delivery: true,
+      verified: true,
+      rating: 4.8
+    },
+    {
+      id: 'biz_2',
+      name: 'മലബാർ റോയൽ ബേക്കറി & കഫേ',
+      category: 'food',
+      categoryName: 'ഹോട്ടൽ & ബേക്കറി',
+      icon: '🍲',
+      location: 'തളിപ്പറമ്പ് മെയിൻ റോഡ്, കണ്ണൂർ',
+      district: 'കണ്ണൂർ',
+      lat: 12.0450,
+      lon: 75.3580,
+      phone: '+919847123456',
+      whatsapp: '+919847123456',
+      timing: 'രാവിലെ 7:00 - രാത്രി 10:00',
+      offer: '☕ വൈകുന്നേരത്തെ സ്പെഷ്യൽ: നാടൻ ചായയും ചൂടുള്ള നെയ്യപ്പവും',
+      delivery: true,
+      verified: true,
+      rating: 4.9
+    },
+    {
+      id: 'biz_3',
+      name: 'ശ്രീലക്ഷ്മി ടെക്സ്റ്റൈൽസ് & സിൽക്ക്സ്',
+      category: 'fashion',
+      categoryName: 'വസ്ത്രങ്ങൾ & ഫാഷൻ',
+      icon: '👗',
+      location: 'പയ്യന്നൂർ ടൗൺ, കണ്ണൂർ',
+      district: 'കണ്ണൂർ',
+      lat: 12.1000,
+      lon: 75.2000,
+      phone: '+919846234567',
+      whatsapp: '+919846234567',
+      timing: 'രാവിലെ 9:00 - രാത്രി 8:30',
+      offer: '✨ വിവാഹ പർച്ചേസുകൾക്ക് സൗജന്യ ഗിഫ്റ്റ് പാക്ക്',
+      delivery: false,
+      verified: true,
+      rating: 4.7
+    },
+    {
+      id: 'biz_4',
+      name: 'കേരള ഓർഗാനിക് തേൻ & നാടൻ ഉൽപ്പന്നങ്ങൾ',
+      category: 'homemade',
+      categoryName: 'ഹോം മെയ്ഡ് & നാടൻ',
+      icon: '🍯',
+      location: 'ശ്രീകണ്ഠപുരം, കണ്ണൂർ',
+      district: 'കണ്ണൂർ',
+      lat: 11.9800,
+      lon: 75.5200,
+      phone: '+919447345678',
+      whatsapp: '+919447345678',
+      timing: 'രാവിലെ 8:30 - രാത്രി 7:30',
+      offer: '🐝 ശുദ്ധമായ ചെറുതേനും നാടൻ വെളിച്ചെണ്ണയും നേരിട്ട് വാങ്ങാം',
+      delivery: true,
+      verified: true,
+      rating: 5.0
+    },
+    {
+      id: 'biz_5',
+      name: 'സ്മാർട്ട് മൊബൈൽ കെയർ & ഇലക്ട്രോണിക്സ്',
+      category: 'electronics',
+      categoryName: 'മൊബൈൽ & ഇലക്ട്രോണിക്സ്',
+      icon: '📱',
+      location: 'കണ്ണൂർ റെയിൽവേ സ്റ്റേഷൻ റോഡ്',
+      district: 'കണ്ണൂർ',
+      lat: 11.8745,
+      lon: 75.3704,
+      phone: '+919895456789',
+      whatsapp: '+919895456789',
+      timing: 'രാവിലെ 9:30 - രാത്രി 8:30',
+      offer: '⚡ സ്മാർട്ട്ഫോൺ ഡിസ്പ്ലേ ചേഞ്ചിംഗിന് 3 മാസത്തെ ഗ്യാരണ്ടി',
+      delivery: false,
+      verified: true,
+      rating: 4.8
+    },
+    {
+      id: 'biz_6',
+      name: 'ജനസേവന മെഡിക്കൽ & സർജിക്കൽസ്',
+      category: 'pharmacy',
+      categoryName: 'മെഡിക്കൽ & ഫാർമസി',
+      icon: '💊',
+      location: 'തോട്ടട, കണ്ണൂർ',
+      district: 'കണ്ണൂർ',
+      lat: 11.8380,
+      lon: 75.4050,
+      phone: '+919446567890',
+      whatsapp: '+919446567890',
+      timing: '24 മണിക്കൂറും പ്രവർത്തിക്കുന്നു (24x7)',
+      offer: '🚑 എല്ലാ പ്രിസ്‌ക്രിപ്ഷൻ മരുന്നുകൾക്കും 15% ഇളവ് & ഫ്രീ ഹോം ഡെലിവറി',
+      delivery: true,
+      verified: true,
+      rating: 4.9
+    }
+  ];
+
+  if (!APP_STATE.businesses) {
+    try {
+      const stored = localStorage.getItem('nn_businesses');
+      APP_STATE.businesses = stored ? JSON.parse(stored) : [...SEED_BUSINESSES];
+    } catch (_) {
+      APP_STATE.businesses = [...SEED_BUSINESSES];
+    }
+  }
+
+  function saveBusinesses() {
+    try {
+      localStorage.setItem('nn_businesses', JSON.stringify(APP_STATE.businesses));
+    } catch (_) {}
+  }
+  window.saveBusinesses = saveBusinesses;
+
+  let activeBusinessCategory = 'all';
+  let activeBusinessSearchQuery = '';
+
+  function filterBusinessCategory(cat, btn) {
+    activeBusinessCategory = cat;
+    document.querySelectorAll('.business-cat-chip').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderBusinessScreen();
+  }
+  window.filterBusinessCategory = filterBusinessCategory;
+
+  function handleBusinessSearchInput(query) {
+    activeBusinessSearchQuery = (query || '').toLowerCase().trim();
+    renderBusinessScreen();
+  }
+  window.handleBusinessSearchInput = handleBusinessSearchInput;
+
+  function openBusinessChat(shopId) {
+    const biz = (APP_STATE.businesses || []).find(b => b.id === shopId);
+    if (!biz) return;
+    openChatModal(
+      biz.name,
+      biz.phone,
+      'assets/cat-business-3d.jpg',
+      `🏪 ${biz.name} (${biz.categoryName})`,
+      biz.id,
+      null,
+      'business'
+    );
+  }
+  window.openBusinessChat = openBusinessChat;
+
+  function openAddBusinessModal() {
+    const locInput = document.getElementById('regBusinessLocation');
+    if (locInput && (!locInput.value || locInput.value === 'തത്സമയ ലൊക്കേഷൻ')) {
+      locInput.value = (APP_STATE.location && APP_STATE.location.name) || 'കണ്ണൂർ, കേരളം';
+    }
+    const latInp = document.getElementById('regBusinessLat');
+    const lonInp = document.getElementById('regBusinessLon');
+    if (latInp && APP_STATE.location) latInp.value = APP_STATE.location.lat;
+    if (lonInp && APP_STATE.location) lonInp.value = APP_STATE.location.lon;
+    openModal('modal-add-business');
+  }
+  window.openAddBusinessModal = openAddBusinessModal;
+
+  function detectLiveGpsLocationForBusiness() {
+    toast('📡 ലൈവ് GPS ലൊക്കേഷൻ കണ്ടെത്തുന്നു...');
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+        const latInp = document.getElementById('regBusinessLat');
+        const lonInp = document.getElementById('regBusinessLon');
+        if (latInp) latInp.value = lat;
+        if (lonInp) lonInp.value = lon;
+        const locInp = document.getElementById('regBusinessLocation');
+        if (locInp) {
+          locInp.value = `${APP_STATE.location.name || 'കേരളം'} (${lat.toFixed(4)}, ${lon.toFixed(4)})`;
+        }
+        toast('✅ കൃത്യമായ ലൈവ് സ്ഥാനം ചേർത്തു!');
+      }, () => {
+        toast('ℹ️ GPS ലഭ്യമായില്ല, സ്ഥലം നേരിട്ട് ടൈപ്പ് ചെയ്യുക');
+      });
+    }
+  }
+  window.detectLiveGpsLocationForBusiness = detectLiveGpsLocationForBusiness;
+
+  function submitBusinessRegistration(event) {
+    if (event) event.preventDefault();
+
+    const name = document.getElementById('regBusinessName')?.value?.trim();
+    const category = document.getElementById('regBusinessCategory')?.value;
+    const location = document.getElementById('regBusinessLocation')?.value?.trim();
+    const phone = document.getElementById('regBusinessPhone')?.value?.trim();
+    const whatsapp = document.getElementById('regBusinessWhatsapp')?.value?.trim() || phone;
+    const hours = document.getElementById('regBusinessHours')?.value?.trim() || 'രാവിലെ 9:00 - രാത്രി 9:00';
+    const offer = document.getElementById('regBusinessOffer')?.value?.trim() || '';
+    const delivery = document.getElementById('regBusinessDelivery')?.checked || false;
+    const lat = parseFloat(document.getElementById('regBusinessLat')?.value || APP_STATE.location.lat);
+    const lon = parseFloat(document.getElementById('regBusinessLon')?.value || APP_STATE.location.lon);
+
+    if (!name || !location || !phone) {
+      toast('⚠️ ദയവായി ആവശ്യമായ വിവരങ്ങൾ പൂരിപ്പിക്കുക');
+      return;
+    }
+
+    const catNames = {
+      grocery: 'സൂപ്പർമാർക്കറ്റ് & പലചരക്ക്',
+      food: 'ഹോട്ടൽ & ബേക്കറി',
+      fashion: 'വസ്ത്രങ്ങൾ & ഫാഷൻ',
+      electronics: 'മൊബൈൽ & ഇലക്ട്രോണിക്സ്',
+      pharmacy: 'മെഡിക്കൽ & ഫാർമസി',
+      homemade: 'ഹോം മെയ്ഡ് & നാടൻ',
+      hardware: 'ഹാർഡ്‌വെയർ',
+      auto: 'വർക്ക്ഷോപ്പ്',
+      other: 'പ്രാദേശിക വ്യാപാരം'
+    };
+
+    const newBiz = {
+      id: 'biz_' + Date.now(),
+      name: name,
+      category: category,
+      categoryName: catNames[category] || 'വ്യാപാരം',
+      icon: '🏪',
+      location: location,
+      district: APP_STATE.location.district || 'കേരളം',
+      lat: lat,
+      lon: lon,
+      phone: phone,
+      whatsapp: whatsapp,
+      timing: hours,
+      offer: offer ? `🏷️ ${offer}` : '',
+      delivery: delivery,
+      verified: true,
+      rating: 5.0,
+      timestamp: Date.now()
+    };
+
+    if (!APP_STATE.businesses) APP_STATE.businesses = [];
+    APP_STATE.businesses.unshift(newBiz);
+    saveBusinesses();
+    closeModal('modal-add-business');
+    toast(`🎉 '${name}' കട വിജയകരമായി ചേർത്തു!`);
+    renderBusinessScreen();
+  }
+  window.submitBusinessRegistration = submitBusinessRegistration;
+
+  function renderBusinessScreen() {
+    const container = document.getElementById('businessListContainer');
+    if (!container) return;
+
+    if (!APP_STATE.businesses || APP_STATE.businesses.length === 0) {
+      APP_STATE.businesses = [...SEED_BUSINESSES];
+    }
+
+    const maxR = APP_STATE.activeRadiusKm || 5;
+    const userLat = APP_STATE.location.lat;
+    const userLon = APP_STATE.location.lon;
+
+    const filtered = APP_STATE.businesses.filter(b => {
+      // 1. Category Filter
+      if (activeBusinessCategory !== 'all' && b.category !== activeBusinessCategory) {
+        return false;
+      }
+      // 2. Search Filter
+      if (activeBusinessSearchQuery) {
+        const q = activeBusinessSearchQuery;
+        const matches = (b.name && b.name.toLowerCase().includes(q)) ||
+                        (b.location && b.location.toLowerCase().includes(q)) ||
+                        (b.offer && b.offer.toLowerCase().includes(q)) ||
+                        (b.categoryName && b.categoryName.toLowerCase().includes(q));
+        if (!matches) return false;
+      }
+      // 3. Radius Distance Filter
+      if (maxR < 1000 && b.lat && b.lon) {
+        const d = calculateDistanceKm(userLat, userLon, b.lat, b.lon);
+        if (d > maxR) return false;
+      }
+      return true;
+    });
+
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div style="text-align:center;padding:36px 16px;background:#FFFFFF;border-radius:20px;border:1px solid #E2E8F0">
+          <div style="font-size:38px;margin-bottom:8px">🏪</div>
+          <div style="font-weight:800;font-size:15px;color:#0F172A">ഈ വിഭാഗത്തിൽ കടകൾ കണ്ടെത്തിയില്ല</div>
+          <p style="font-size:12px;color:#64748B;margin:6px 0 14px">നിങ്ങളുടെ സ്വന്തം കടയോ നിങ്ങൾക്കറിയാവുന്ന കടയോ ഇപ്പോൾ ചേർക്കാം</p>
+          <button onclick="openAddBusinessModal()" style="background:#059669;color:#FFFFFF;border:none;padding:10px 18px;border-radius:999px;font-size:13px;font-weight:800;cursor:pointer">
+            ➕ സ്വന്തം കട ചേർക്കാം
+          </button>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = filtered.map(b => {
+      let distStr = '';
+      if (b.lat && b.lon) {
+        const d = calculateDistanceKm(userLat, userLon, b.lat, b.lon);
+        distStr = d < 1 ? `${Math.round(d * 1000)} m` : `${d.toFixed(1)} km`;
+      }
+
+      return `
+        <div style="background:#FFFFFF;border-radius:18px;border:1.5px solid #E2E8F0;padding:14px;box-shadow:0 3px 12px rgba(6,78,59,0.06);display:flex;flex-direction:column;gap:10px;transition:transform 0.15s ease">
+          <!-- TOP ROW: TITLE & BADGE -->
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);border:1.5px solid #86EFAC;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">
+                ${b.icon || '🏪'}
+              </div>
+              <div>
+                <div style="font-size:15.5px;font-weight:900;color:#064E3B;font-family:'Manjari', sans-serif;letter-spacing:-0.3px;line-height:1.25">
+                  ${escapeHtml(b.name)}
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;margin-top:3px;font-size:11px;color:#047857;font-weight:700">
+                  <span>🏷️ ${escapeHtml(b.categoryName)}</span>
+                  ${b.verified ? '<span style="background:#ECFDF5;color:#059669;padding:1px 6px;border-radius:6px;font-size:9.5px;font-weight:900">✓ വെരിഫൈഡ്</span>' : ''}
+                </div>
+              </div>
+            </div>
+            ${distStr ? `
+              <span style="font-size:11px;font-weight:800;color:#047857;background:#F0FDF4;padding:3px 8px;border-radius:10px;border:1px solid #86EFAC;white-space:nowrap">
+                📍 ${distStr}
+              </span>
+            ` : ''}
+          </div>
+
+          <!-- LOCATION & HOURS -->
+          <div style="font-size:12px;color:#475569;display:flex;flex-direction:column;gap:3px;background:#F8FAFC;padding:8px 10px;border-radius:10px">
+            <div style="display:flex;align-items:center;gap:6px">
+              <span>📍</span>
+              <span style="font-weight:600">${escapeHtml(b.location)}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span>🕒</span>
+              <span style="color:#065F46;font-weight:700">${escapeHtml(b.timing || 'തുറന്നിരിക്കുന്നു')}</span>
+              ${b.delivery ? '<span style="margin-left:auto;font-size:10.5px;color:#059669;font-weight:800">🛵 ഹോം ഡെലിവറി</span>' : ''}
+            </div>
+          </div>
+
+          <!-- SPECIAL OFFER BANNER IF AVAILABLE -->
+          ${b.offer ? `
+            <div style="background:linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);border:1px dashed #F59E0B;border-radius:10px;padding:7px 10px;font-size:11.5px;font-weight:800;color:#92400E;display:flex;align-items:center;gap:6px">
+              <span>🏷️</span>
+              <span>${escapeHtml(b.offer)}</span>
+            </div>
+          ` : ''}
+
+          <!-- ACTIONS BAR: 💬 CHAT DIRECTLY IN UNIFIED INBOX, 📞 CALL, 🟢 WHATSAPP -->
+          <div style="display:flex;gap:7px;margin-top:2px">
+            <button onclick="openBusinessChat('${escapeHtml(b.id)}')"
+              style="flex:1.4;background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#FFFFFF;border:none;padding:9px 12px;border-radius:12px;font-size:12.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 8px rgba(5,150,105,0.25)">
+              <span>💬</span>
+              <span>ചാറ്റ് ചെയ്യാം</span>
+            </button>
+            <a href="tel:${escapeHtml(b.phone)}"
+              style="flex:1;background:#F8FAFC;border:1.5px solid #CBD5E1;color:#1E293B;padding:9px 10px;border-radius:12px;font-size:12px;font-weight:800;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:4px">
+              <span>📞</span>
+              <span>വിളിക്കാം</span>
+            </a>
+            ${b.whatsapp ? `
+              <a href="https://wa.me/${escapeHtml(b.whatsapp.replace(/[^0-9]/g, ''))}?text=${encodeURIComponent('നമസ്കാരം, ' + b.name + ' കടയിലെ വിവരങ്ങൾ അറിയാൻ വിളിക്കുകയാണ്.')}" target="_blank"
+                style="width:38px;height:38px;background:#25D366;color:#FFFFFF;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;box-shadow:0 2px 6px rgba(37,211,102,0.25);flex-shrink:0"
+                title="വാട്സാപ്പ്">
+                💬
+              </a>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+  window.renderBusinessScreen = renderBusinessScreen;
 
   function sendQuickReply(text) {
     const input = document.getElementById('chatInputMessage');
@@ -3051,6 +4116,23 @@
           phone: r.ownerPhone || '',
           avatar: DEFAULT_USER_AVATAR,
           sub: `🏠 ${r.title} • 📍 ${resolveItemLocation(r) || 'തത്സമയ ലൊക്കേഷൻ'}`
+        });
+      }
+    });
+
+    // 6. Local Businesses & Shops (കടകൾ & വ്യാപാരങ്ങൾ)
+    (APP_STATE.businesses || []).forEach(b => {
+      const bPhone = normalizePhone(b.phone);
+      const bKey = bPhone || b.id;
+      if (bKey && bKey !== myPhone && !seen.has(bKey)) {
+        seen.add(bKey);
+        list.push({
+          type: 'business',
+          id: b.id,
+          name: b.name,
+          phone: b.phone || '',
+          avatar: 'assets/cat-business-3d.jpg',
+          sub: `🏪 ${b.categoryName} • 📍 ${b.location || 'തത്സമയ ലൊക്കേഷൻ'}`
         });
       }
     });

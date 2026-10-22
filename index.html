@@ -304,42 +304,34 @@
                         </div>
                     </header>
 
-                    <!-- 2. KERALA PILL SEARCH CAPSULE BAR WITH INTEGRATED LOCATION SELECTOR -->
-                    <div class="home-kerala-search-wrap" style="margin:12px 16px 8px">
+                    <!-- 1. COMPACT PROMINENT LOCATION BAR (ലൊക്കേഷൻ ബട്ടൺ) -->
+                    <div class="home-single-loc-wrapper" style="margin:8px 16px 4px">
+                        <div class="home-single-loc-btn" onclick="openLocationModal()"
+                            title="ലൊക്കേഷനും പരിധിയും (Radius) മാറ്റാൻ ടാപ്പ് ചെയ്യുക" role="button" tabindex="0">
+                            <span class="hsl-pin">📍</span>
+                            <span class="hsl-name user-live-city-name" id="homeLiveLocText">തത്സമയ ലൊക്കേഷൻ</span>
+                            <span class="hsl-km-pill" id="homeLiveRadiusBadge">5 km</span>
+                            <span class="hsl-arrow">▾</span>
+                            <button type="button" class="hsl-gps-mini-btn"
+                                onclick="event.stopPropagation(); detectLiveGpsLocation(true);"
+                                title="GPS തത്സമയം പുതുക്കുക">
+                                <span class="loc-spin-icon">🔄</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 2. KERALA PILL SEARCH CAPSULE BAR (EXACT POSITION DIRECTLY UNDER LOCATION) -->
+                    <div class="home-kerala-search-wrap" style="margin:8px 16px 12px">
                         <div class="home-kerala-search-btn-icon" onclick="triggerHomeSearch()" title="തിരയുക">
                             🔍
                         </div>
                         <input type="text" id="homeSearchInput" class="home-kerala-search-input"
                             placeholder="സേവനങ്ങൾ, കടകൾ, ആളുകൾ തിരയുക..." autocomplete="off">
-                        <!-- DIRECT LOCATION SEARCH / CHANGE BUTTON -->
-                        <button type="button" onclick="openLocationModal()"
-                            style="background:#F0FDF4;border:1.5px solid #86EFAC;color:#047857;border-radius:20px;padding:6px 10px;font-size:11.5px;font-weight:800;display:flex;align-items:center;gap:4px;cursor:pointer;white-space:nowrap;flex-shrink:0"
-                            title="സ്ഥലം മാറ്റുക / ലൊക്കേഷൻ തിരയുക">
-                            <span>📍</span>
-                            <span class="user-live-city-name" style="max-width:85px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">സ്ഥലം</span>
-                            <span style="font-size:9px">▼</span>
-                        </button>
                         <button type="button" class="home-kerala-search-action-btn" onclick="triggerHomeSearch()"
                             title="തിരയുക">
                             <span>തിരയുക</span>
                             <span>➔</span>
                         </button>
-                    </div>
-
-                    <!-- PROMINENT DEDICATED LOCATION SUMMARY BAR -->
-                    <div onclick="openLocationModal()"
-                        style="margin:0 16px 12px;background:#FFFFFF;border:1.5px solid #A7F3D0;border-radius:14px;padding:7px 12px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;box-shadow:0 2px 8px rgba(16,185,129,0.06);transition:transform 0.1s ease"
-                        title="സ്ഥലം തിരഞ്ഞെടുക്കുക">
-                        <div style="display:flex;align-items:center;gap:6px">
-                            <span style="font-size:15px">📍</span>
-                            <span style="font-size:12px;color:#334155;font-weight:700">
-                                സ്ഥലം: <strong class="user-live-city-name" style="color:#065F46;font-weight:900">തത്സമയ ലൊക്കേഷൻ</strong>
-                            </span>
-                        </div>
-                        <span style="background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#FFFFFF;padding:4px 10px;border-radius:10px;font-size:11px;font-weight:800;display:flex;align-items:center;gap:3px">
-                            <span>മാറ്റാം</span>
-                            <span>✏️</span>
-                        </span>
                     </div>
                     <!-- Interactive Real-time Search Dropdown -->
                     <div id="homeSearchResultsDropdown" class="home-search-dropdown" style="display:none;margin:0 16px 12px"></div>
@@ -453,6 +445,26 @@
                             <div class="kerala-cat-title" style="color:#DC2626">ആംബുലൻസ്</div>
                             <div class="kerala-cat-sub" style="color:#E11D48">24x7 സേവനം വേഗത്തിൽ</div>
                             <div class="kerala-cat-arrow-btn" style="background:#DC2626">➔</div>
+                        </div>
+                    </div>
+
+                    <!-- 3D LOCAL BUSINESS & SHOPS SHOWCASE CARD -->
+                    <div class="home-3d-business-banner" onclick="navTo('business')"
+                        style="margin:0 16px 14px;background:linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 50%, #FEF3C7 100%);border:1.5px solid #86EFAC;border-radius:20px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 6px 20px rgba(16,185,129,0.12);cursor:pointer;position:relative;overflow:hidden">
+                        <div style="display:flex;align-items:center;gap:12px;position:relative;z-index:2">
+                            <img src="assets/cat-business-3d.jpg" alt="വ്യാപാരങ്ങൾ"
+                                style="width:58px;height:58px;border-radius:16px;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,0.1);border:2px solid #fff;flex-shrink:0">
+                            <div>
+                                <div style="display:flex;align-items:center;gap:6px">
+                                    <span style="font-size:15px;font-weight:900;color:#064E3B;letter-spacing:-0.2px">വ്യാപാരങ്ങൾ & കടകൾ</span>
+                                    <span style="font-size:9.5px;background:#059669;color:#fff;padding:1px 6px;border-radius:8px;font-weight:800">പുതിയത്</span>
+                                </div>
+                                <div style="font-size:11.5px;color:#047857;font-weight:700;margin-top:2px">സൂപ്പർമാർക്കറ്റ്, ഹോട്ടൽ, ബേക്കറി & ഓഫറുകൾ</div>
+                                <div style="font-size:10.5px;color:#64748B;margin-top:2px">നാട്ടിലെ കടകൾ • ഒരൊറ്റ ചാറ്റ് ബോക്സ് ഓർഡർ</div>
+                            </div>
+                        </div>
+                        <div style="width:34px;height:34px;border-radius:50%;background:#059669;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;flex-shrink:0;box-shadow:0 3px 8px rgba(5,150,105,0.3);position:relative;z-index:2">
+                            ➔
                         </div>
                     </div>
 
@@ -937,6 +949,92 @@
                 </section>
 
                 <!-- ============================================================== -->
+                <!-- SCREEN: BUSINESSES & LOCAL SHOPS (വ്യാപാരങ്ങൾ & കടകൾ)         -->
+                <!-- ============================================================== -->
+                <section id="screen-business" class="screen" style="background:#F8FAFC">
+                    <!-- KERALA BRAND BUSINESS TOP BAR -->
+                    <div class="services-kerala-top-bar"
+                        style="padding:14px 16px 12px;background:linear-gradient(180deg, #E0F9ED 0%, #EBFDF5 100%);border-bottom:1px solid rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:space-between">
+                        <div style="display:flex;align-items:center;gap:10px">
+                            <button onclick="navTo('home')"
+                                style="width:38px;height:38px;border-radius:50%;background:#FFFFFF;border:1.5px solid #A7F3D0;color:#065F46;font-size:16px;font-weight:900;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 3px 8px rgba(16,185,129,0.12);transition:transform 0.1s ease"
+                                onactive="this.style.transform='scale(0.92)'">❮</button>
+                            <div>
+                                <h1 style="margin:0;font-size:21px;font-weight:900;color:#064E3B;font-family:'Manjari', sans-serif;letter-spacing:-0.4px;line-height:1.15">
+                                    വ്യാപാരങ്ങൾ & കടകൾ
+                                </h1>
+                                <div onclick="openLocationModal()" style="font-size:11.5px;font-weight:700;color:#047857;margin-top:2px;display:flex;align-items:center;gap:4px;cursor:pointer">
+                                    <span>📍</span>
+                                    <span class="user-live-city-name">തത്സമയ ലൊക്കേഷൻ</span>
+                                    <span style="font-size:10px;color:#059669">▼</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="openAddBusinessModal()"
+                            style="background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#FFFFFF;border:none;border-radius:9999px;padding:8px 14px;font-size:12px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:5px;box-shadow:0 3px 10px rgba(5,150,105,0.25);font-family:inherit">
+                            <span>➕</span>
+                            <span>കട ചേർക്കാം</span>
+                        </button>
+                    </div>
+
+                    <!-- KERALA NEON PILL SEARCH CAPSULE BAR FOR BUSINESS -->
+                    <div class="home-kerala-search-wrap" style="margin:12px 16px 8px;position:relative">
+                        <div class="home-kerala-search-btn-icon" title="തിരയുക">
+                            🔍
+                        </div>
+                        <input type="text" id="businessSearchInput" class="home-kerala-search-input"
+                            placeholder="സൂപ്പർമാർക്കറ്റ്, ഹോട്ടൽ, ബേക്കറി, തുണിക്കട, ഓഫർ..." autocomplete="off"
+                            oninput="handleBusinessSearchInput(this.value)">
+                        <button type="button" onclick="openLocationModal()"
+                            style="background:#F0FDF4;border:1.5px solid #86EFAC;color:#047857;border-radius:20px;padding:6px 10px;font-size:11.5px;font-weight:800;display:flex;align-items:center;gap:4px;cursor:pointer;white-space:nowrap;flex-shrink:0"
+                            title="സ്ഥലം മാറ്റുക">
+                            <span>📍</span>
+                            <span class="user-live-city-name" style="max-width:85px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">സ്ഥലം</span>
+                            <span style="font-size:9px">▼</span>
+                        </button>
+                    </div>
+
+                    <!-- TODAY'S OFFERS BANNER -->
+                    <div style="margin:0 16px 10px;background:linear-gradient(135deg, #047857 0%, #059669 50%, #10B981 100%);border-radius:16px;padding:12px 16px;color:#FFFFFF;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 14px rgba(4,120,87,0.18)">
+                        <div style="display:flex;align-items:center;gap:10px">
+                            <span style="font-size:22px">🏷️</span>
+                            <div>
+                                <div style="font-weight:900;font-size:13.5px">ഇന്നത്തെ നാട്ടിലെ ഓഫറുകൾ (Today's Deals)</div>
+                                <div style="font-size:11px;opacity:0.92;margin-top:1px">നാട്ടിലെ കടകളിലെ വിലക്കുറവും ഓഫറുകളും കാണാം</div>
+                            </div>
+                        </div>
+                        <span onclick="openAddBusinessModal()" style="background:#FFFFFF;color:#047857;padding:5px 10px;border-radius:12px;font-size:10.5px;font-weight:800;cursor:pointer;white-space:nowrap">ഓഫർ ചേർക്കാം +</span>
+                    </div>
+
+                    <!-- RADIUS FILTER CHIPS (500m, 1km, 5km, 10km, All) -->
+                    <div class="radius-filter-container" style="padding:4px 16px 8px;background:transparent;border:none">
+                        <span class="radius-filter-label" style="color:#064E3B;font-weight:800">🎯 പരിധി:</span>
+                        <button class="radius-chip" onclick="setRadiusFilter('business', 0.5, this)">500m</button>
+                        <button class="radius-chip" onclick="setRadiusFilter('business', 1, this)">1 km</button>
+                        <button class="radius-chip active" onclick="setRadiusFilter('business', 5, this)">5 km</button>
+                        <button class="radius-chip" onclick="setRadiusFilter('business', 10, this)">10 km</button>
+                        <button class="radius-chip" onclick="setRadiusFilter('business', 1000, this)">മുഴുവൻ</button>
+                    </div>
+
+                    <!-- BUSINESS CATEGORY CHIPS (HORIZONTAL SCROLL) -->
+                    <div class="business-category-tabs"
+                        style="display:flex;gap:7px;padding:6px 16px 12px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch">
+                        <button class="radius-chip active business-cat-chip" data-cat="all" onclick="filterBusinessCategory('all', this)">🌟 എല്ലാം</button>
+                        <button class="radius-chip business-cat-chip" data-cat="grocery" onclick="filterBusinessCategory('grocery', this)">🛒 സൂപ്പർമാർക്കറ്റ്</button>
+                        <button class="radius-chip business-cat-chip" data-cat="food" onclick="filterBusinessCategory('food', this)">🍲 ഹോട്ടൽ & ബേക്കറി</button>
+                        <button class="radius-chip business-cat-chip" data-cat="fashion" onclick="filterBusinessCategory('fashion', this)">👗 വസ്ത്രങ്ങൾ</button>
+                        <button class="radius-chip business-cat-chip" data-cat="electronics" onclick="filterBusinessCategory('electronics', this)">📱 ഇലക്ട്രോണിക്സ്</button>
+                        <button class="radius-chip business-cat-chip" data-cat="pharmacy" onclick="filterBusinessCategory('pharmacy', this)">💊 മെഡിക്കൽ & ഫാർമസി</button>
+                        <button class="radius-chip business-cat-chip" data-cat="homemade" onclick="filterBusinessCategory('homemade', this)">🍯 ഹോം മെയ്ഡ് & നാടൻ</button>
+                        <button class="radius-chip business-cat-chip" data-cat="hardware" onclick="filterBusinessCategory('hardware', this)">🔨 ഹാർഡ്‌വെയർ</button>
+                        <button class="radius-chip business-cat-chip" data-cat="auto" onclick="filterBusinessCategory('auto', this)">🚗 വർക്ക്ഷോപ്പ്</button>
+                    </div>
+
+                    <!-- BUSINESS LIST CONTAINER -->
+                    <div id="businessListContainer" style="padding:4px 16px 20px;display:flex;flex-direction:column;gap:14px"></div>
+                </section>
+
+                <!-- ============================================================== -->
                 <!-- SCREEN 6: JOBS (തൊഴിൽ അവസരങ്ങൾ)                              -->
                 <!-- ============================================================== -->
                 <section id="screen-jobs" class="screen">
@@ -1114,6 +1212,8 @@
                         style="display:flex;gap:6px;padding:8px 16px;background:#fff;border-bottom:1px solid #E5E7EB;overflow-x:auto;scrollbar-width:none">
                         <button class="chat-filter-chip active" data-filter="all"
                             onclick="filterChatCategory('all', this)">എല്ലാം</button>
+                        <button class="chat-filter-chip" data-filter="business"
+                            onclick="filterChatCategory('business', this)">🏪 കടകൾ</button>
                         <button class="chat-filter-chip" data-filter="service"
                             onclick="filterChatCategory('service', this)">🛠️ സർവീസുകൾ</button>
                         <button class="chat-filter-chip" data-filter="blood"
@@ -1415,10 +1515,10 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- MODAL: REALTIME 1-ON-1 IN-APP CHAT                             -->
+    <!-- MODAL: REALTIME 1-ON-1 IN-APP CHAT (WITH PREMIUM FUN ZONE)     -->
     <!-- ============================================================== -->
     <div id="modal-chat" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-chat')">
-        <div class="chat-modal-sheet">
+        <div class="chat-modal-sheet" id="chatModalSheet">
             <div class="chat-modal-header">
                 <button class="chat-back-to-inbox-btn" onclick="goToAllChatsInbox()"
                     title="ചാറ്റ് ബോക്സിലേക്ക് മടങ്ങാം">
@@ -1435,15 +1535,21 @@
                     <div style="min-width:0">
                         <div style="display:flex;align-items:center;gap:6px">
                             <div class="chat-recipient-name" id="chatRecipientName">Chat</div>
-                            <span
-                                style="font-size:10px;background:rgba(255,255,255,0.22);color:#fff;padding:1px 6px;border-radius:10px;font-weight:700">പ്രൊഫൈൽ
-                                ➔</span>
+                            <!-- FRIENDSHIP STREAK PILL IN HEADER -->
+                            <div id="chatStreakPill" class="chat-streak-pill" onclick="event.stopPropagation(); openFunZoneTab('streak')" title="സൗഹൃദ സ്ട്രീക്ക്">
+                                <span>🔥</span>
+                                <span id="chatStreakCount">0</span>
+                            </div>
                         </div>
                         <div class="chat-recipient-status">● ഓൺലൈൻ • പ്രൊഫൈൽ കാണാൻ തൊടുക</div>
                     </div>
                 </div>
 
                 <div class="chat-header-actions">
+                    <!-- PERSONAL CHAT THEME BUTTON -->
+                    <button class="chat-theme-btn" onclick="openFunZoneTab('themes')" title="ചാറ്റ് തീം മാറ്റാം">
+                        <span>🎨</span>
+                    </button>
                     <button class="chat-call-btn" onclick="viewChatRecipientFullProfile()"
                         style="background:rgba(255,255,255,0.18);border:none;color:#fff;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer"
                         title="മുഴുവൻ പ്രൊഫൈൽ പേജ് കാണാം">
@@ -1473,7 +1579,7 @@
                 </div>
             </div>
 
-            <!-- CHAT THREAD -->
+            <!-- CHAT THREAD (CONTAINS MESSAGES, STICKERS, CHALLENGES, REACTIONS) -->
             <div class="chat-thread-box" id="chatMessagesBox"></div>
 
             <!-- QUICK REPLY CHIPS -->
@@ -1485,11 +1591,40 @@
                 <button class="quick-chip" onclick="sendQuickReply('ഫോൺ നമ്പർ തരാമോ?')">ഫോൺ നമ്പർ തരാമോ?</button>
             </div>
 
-            <!-- INPUT BAR -->
+            <!-- EXPANDABLE CHAT FUN ZONE PANEL (CHALLENGE / STICKERS / THEMES / STREAK) -->
+            <div id="chatFunZonePanel" class="chat-fun-zone-panel" style="display:none">
+                <div class="cfz-header">
+                    <div class="cfz-nav-tabs">
+                        <button type="button" class="cfz-tab-btn active" id="cfzTabBtn-challenge" onclick="switchFunZoneTab('challenge')">
+                            <span>🎮</span> <span>ഇമോജി ചലഞ്ച്</span>
+                        </button>
+                        <button type="button" class="cfz-tab-btn" id="cfzTabBtn-stickers" onclick="switchFunZoneTab('stickers')">
+                            <span>🎭</span> <span>സ്റ്റിക്കർ</span>
+                        </button>
+                        <button type="button" class="cfz-tab-btn" id="cfzTabBtn-themes" onclick="switchFunZoneTab('themes')">
+                            <span>🎨</span> <span>തീമുകൾ</span>
+                        </button>
+                        <button type="button" class="cfz-tab-btn" id="cfzTabBtn-streak" onclick="switchFunZoneTab('streak')">
+                            <span>🔥</span> <span>സ്ട്രീക്ക്</span>
+                        </button>
+                    </div>
+                    <button type="button" class="cfz-close-btn" onclick="toggleChatFunZone(false)" title="ക്ലോസ് ചെയ്യുക">✕</button>
+                </div>
+                <div class="cfz-content" id="cfzTabContent">
+                    <!-- Dynamic Fun Zone Content rendered by JS -->
+                </div>
+            </div>
+
+            <!-- INPUT BAR WITH 🎮 FUN ZONE TRIGGER BUTTON -->
             <div class="chat-input-bar">
+                <button type="button" class="chat-fun-btn" id="chatFunBtn" onclick="toggleChatFunZone()"
+                    title="ഫൺ സോൺ (ഗെയിംസ്, സ്റ്റിക്കറുകൾ, തീമുകൾ)">
+                    <span>🎮</span>
+                    <span class="chat-fun-btn-badge">FUN</span>
+                </button>
                 <input type="text" id="chatInputMessage" class="chat-text-input" placeholder="സന്ദേശം ടൈപ്പ് ചെയ്യുക..."
-                    onkeydown="if(event.key==='Enter')sendChatMessage()">
-                <button class="chat-send-btn" onclick="sendChatMessage()">➤</button>
+                    onkeydown="if(event.key==='Enter')sendChatMessage()" autocomplete="off">
+                <button class="chat-send-btn" onclick="sendChatMessage()" title="സന്ദേശം അയക്കാം">➤</button>
             </div>
         </div>
     </div>
@@ -1629,6 +1764,106 @@
                 <div id="presetLocationsList"
                     style="display:flex;flex-direction:column;gap:7px;max-height:260px;overflow-y:auto"></div>
             </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: REGISTER NEW LOCAL BUSINESS / SHOP (കട ചേർക്കാം)        -->
+    <!-- ============================================================== -->
+    <div id="modal-add-business" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-add-business')">
+        <div class="modal-sheet" style="max-height:90vh;overflow-y:auto">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                <div style="display:flex;align-items:center;gap:8px">
+                    <span style="font-size:22px">🏪</span>
+                    <div>
+                        <h3 style="margin:0;font-size:16.5px;font-weight:900;color:#064E3B">കട / സ്ഥാപനം ചേർക്കാം</h3>
+                        <div style="font-size:11px;color:#047857">നാട്ടിലെ എല്ലാവരിലേക്കും നിങ്ങളുടെ കട എത്തിക്കൂ</div>
+                    </div>
+                </div>
+                <button onclick="closeModal('modal-add-business')"
+                    style="background:none;border:none;font-size:20px;cursor:pointer;color:#64748B">✕</button>
+            </div>
+
+            <form onsubmit="submitBusinessRegistration(event)" style="display:flex;flex-direction:column;gap:11px">
+                <!-- SHOP NAME -->
+                <div>
+                    <label style="font-size:12px;font-weight:800;color:#334155">സ്ഥാപനത്തിന്റെ പേര് (Shop Name) *</label>
+                    <input type="text" id="regBusinessName" required placeholder="ഉദാ: കണ്ണൂർ സൂപ്പർമാർക്കറ്റ് / മലബാർ ബേക്കറി"
+                        style="width:100%;padding:10px 12px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13px;outline:none;margin-top:4px">
+                </div>
+
+                <!-- CATEGORY -->
+                <div>
+                    <label style="font-size:12px;font-weight:800;color:#334155">വ്യാപാര വിഭാഗം (Category) *</label>
+                    <select id="regBusinessCategory" required
+                        style="width:100%;padding:10px 12px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13px;outline:none;margin-top:4px;background:#FFFFFF">
+                        <option value="grocery">🛒 സൂപ്പർമാർക്കറ്റ് & പലചരക്ക് (Supermarket & Grocery)</option>
+                        <option value="food">🍲 ഹോട്ടൽ, റെസ്റ്റോറന്റ് & ബേക്കറി (Food & Bakery)</option>
+                        <option value="fashion">👗 വസ്ത്രങ്ങൾ & ടെക്സ്റ്റൈൽസ് (Fashion & Textiles)</option>
+                        <option value="electronics">📱 ഇലക്ട്രോണിക്സ് & മൊബൈൽ (Electronics & Mobile)</option>
+                        <option value="pharmacy">💊 മെഡിക്കൽ & ഫാർമസി (Medical & Pharmacy)</option>
+                        <option value="homemade">🍯 ഹോം മെയ്ഡ്, നാടൻ ഉൽപ്പന്നങ്ങൾ & അഗ്രി (Homemade & Agri)</option>
+                        <option value="hardware">🔨 ഹാർഡ്‌വെയർ, പെയിന്റ് & സാനിറ്ററി (Hardware & Sanitary)</option>
+                        <option value="auto">🚗 വർക്ക്ഷോപ്പ് & സ്പെയർ പാർട്സ് (Automobile & Spares)</option>
+                        <option value="other">✨ മറ്റ് പ്രാദേശിക വ്യാപാരങ്ങൾ (Other Businesses)</option>
+                    </select>
+                </div>
+
+                <!-- LOCATION & GPS DETECT -->
+                <div>
+                    <div style="display:flex;justify-content:space-between;align-items:center">
+                        <label style="font-size:12px;font-weight:800;color:#334155">സ്ഥലം / വിലാസം (Location) *</label>
+                        <button type="button" onclick="detectLiveGpsLocationForBusiness()"
+                            style="background:#ECFDF5;border:1px solid #10B981;color:#065F46;border-radius:12px;padding:3px 8px;font-size:10.5px;font-weight:800;cursor:pointer">
+                            <span>🎯 ലൈവ് GPS എടുക്കാം</span>
+                        </button>
+                    </div>
+                    <input type="text" id="regBusinessLocation" required placeholder="ഉദാ: പഴയങ്ങാടി ബസ് സ്റ്റാൻഡ് റോഡ്, കണ്ണൂർ"
+                        style="width:100%;padding:10px 12px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13px;outline:none;margin-top:4px">
+                    <input type="hidden" id="regBusinessLat" value="">
+                    <input type="hidden" id="regBusinessLon" value="">
+                </div>
+
+                <!-- CONTACT PHONE & WHATSAPP -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                    <div>
+                        <label style="font-size:11.5px;font-weight:800;color:#334155">മൊബൈൽ നമ്പർ *</label>
+                        <input type="tel" id="regBusinessPhone" required placeholder="ഫോൺ നമ്പർ"
+                            style="width:100%;padding:9px 10px;border:1.5px solid #CBD5E1;border-radius:10px;font-size:12.5px;outline:none;margin-top:3px">
+                    </div>
+                    <div>
+                        <label style="font-size:11.5px;font-weight:800;color:#334155">വാട്സാപ്പ് നമ്പർ</label>
+                        <input type="tel" id="regBusinessWhatsapp" placeholder="വാട്സാപ്പ് നമ്പർ"
+                            style="width:100%;padding:9px 10px;border:1.5px solid #CBD5E1;border-radius:10px;font-size:12.5px;outline:none;margin-top:3px">
+                    </div>
+                </div>
+
+                <!-- OPENING / CLOSING TIME -->
+                <div>
+                    <label style="font-size:12px;font-weight:800;color:#334155">പ്രവർത്തന സമയം (Shop Timing)</label>
+                    <input type="text" id="regBusinessHours" placeholder="ഉദാ: രാവിലെ 8:30 - രാത്രി 9:30 (എല്ലാ ദിവസവും)"
+                        style="width:100%;padding:9px 12px;border:1.5px solid #CBD5E1;border-radius:10px;font-size:12.5px;outline:none;margin-top:3px">
+                </div>
+
+                <!-- TODAY'S OFFERS / HIGHLIGHTS -->
+                <div>
+                    <label style="font-size:12px;font-weight:800;color:#334155">ഇന്നത്തെ ഓഫറുകൾ / പ്രത്യേകതകൾ (Offers & Deals)</label>
+                    <textarea id="regBusinessOffer" rows="2" placeholder="ഉദാ: ഈ ആഴ്ച എല്ലാ പലചരക്ക് സാധനങ്ങൾക്കും 10% ഡിസ്കൗണ്ട്, ഹോം ഡെലിവറി ലഭ്യമാണ്..."
+                        style="width:100%;padding:9px 12px;border:1.5px solid #CBD5E1;border-radius:10px;font-size:12.5px;outline:none;margin-top:3px;resize:none"></textarea>
+                </div>
+
+                <!-- HOME DELIVERY CHECKBOX -->
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12.5px;font-weight:800;color:#065F46;background:#F0FDF4;padding:8px 12px;border-radius:10px;border:1px solid #BBF7D0">
+                    <input type="checkbox" id="regBusinessDelivery" style="width:16px;height:16px;accent-color:#059669" checked>
+                    <span>🛵 ഹോം ഡെലിവറി (Home Delivery) സൗകര്യം ലഭ്യമാണ്</span>
+                </label>
+
+                <!-- SUBMIT BUTTON -->
+                <button type="submit"
+                    style="background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#FFFFFF;border:none;padding:13px;border-radius:14px;font-size:15px;font-weight:900;cursor:pointer;box-shadow:0 4px 14px rgba(5,150,105,0.3);margin-top:4px">
+                    🏪 കട വിജയകരമായി ചേർക്കാം
+                </button>
+            </form>
         </div>
     </div>
 

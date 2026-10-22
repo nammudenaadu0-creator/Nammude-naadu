@@ -4052,3 +4052,748 @@
   color: #059669 !important;
   font-weight: 800 !important;
 }
+
+/* ==============================================================
+   NAMMUDE NAADU – PREMIUM CHAT FUN ZONE & THEMES
+   ============================================================== */
+
+/* 1. Header Streak & Theme Pills */
+.chat-header-meta-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chat-streak-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(135deg, #FF6B00 0%, #EA580C 100%);
+  color: #FFFFFF;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transition: transform 0.15s ease;
+  user-select: none;
+}
+
+.chat-streak-pill:active {
+  transform: scale(0.92);
+}
+
+.chat-theme-btn {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  color: #FFFFFF !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 14px !important;
+  cursor: pointer !important;
+  transition: transform 0.15s ease;
+}
+
+.chat-theme-btn:hover {
+  background: rgba(255, 255, 255, 0.35) !important;
+  transform: scale(1.08);
+}
+
+/* 2. Input Bar Fun Button */
+.chat-fun-btn {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 3px 10px rgba(217, 119, 6, 0.32);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.chat-fun-btn:hover {
+  transform: translateY(-1px) scale(1.05);
+  box-shadow: 0 5px 14px rgba(217, 119, 6, 0.45);
+}
+
+.chat-fun-btn:active {
+  transform: scale(0.92);
+}
+
+.chat-fun-btn-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #10B981;
+  color: #FFFFFF;
+  font-size: 8px;
+  font-weight: 900;
+  padding: 1px 4px;
+  border-radius: 6px;
+  border: 1px solid #FFFFFF;
+  line-height: 1.1;
+  letter-spacing: 0.3px;
+}
+
+/* 3. Fun Zone Expandable Panel */
+.chat-fun-zone-panel {
+  background: #FFFFFF;
+  border-top: 2px solid #E2E8F0;
+  max-height: 290px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+  animation: cfzSlideUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 25;
+}
+
+@keyframes cfzSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.cfz-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #F8FAFC;
+  border-bottom: 1px solid #E2E8F0;
+  gap: 8px;
+}
+
+.cfz-nav-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex: 1;
+}
+
+.cfz-nav-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.cfz-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  color: #475569;
+  font-size: 11.5px;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.cfz-tab-btn.active {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: #FFFFFF;
+  border-color: #047857;
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);
+}
+
+.cfz-close-btn {
+  background: #E2E8F0;
+  border: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 800;
+  color: #475569;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cfz-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 14px 14px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 4. Emoji Challenge Grid & Items */
+.cfz-challenge-category-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.cfz-cat-chip {
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
+  font-size: 11px;
+  font-weight: 700;
+  color: #475569;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.cfz-cat-chip.active {
+  background: #ECFDF5;
+  border-color: #10B981;
+  color: #065F46;
+  font-weight: 800;
+}
+
+.cfz-challenges-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cfz-challenge-row {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  transition: all 0.15s ease;
+}
+
+.cfz-challenge-row:hover {
+  background: #F0FDF4;
+  border-color: #86EFAC;
+}
+
+.cfz-clue-badge {
+  font-size: 22px;
+  line-height: 1;
+  padding: 6px 10px;
+  background: #FFFFFF;
+  border-radius: 12px;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.cfz-challenge-q {
+  font-size: 12px;
+  font-weight: 800;
+  color: #1E293B;
+  margin-bottom: 2px;
+}
+
+.cfz-challenge-sub {
+  font-size: 10.5px;
+  color: #64748B;
+}
+
+.cfz-send-challenge-btn {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: #FFFFFF;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.25);
+}
+
+/* 5. Malayalam Stickers Grid */
+.cfz-stickers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.cfz-sticker-item {
+  background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+  border: 1.5px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 10px 8px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.cfz-sticker-item:hover {
+  transform: translateY(-2px) scale(1.03);
+  border-color: #10B981;
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.18);
+  background: #ECFDF5;
+}
+
+.cfz-sticker-item:active {
+  transform: scale(0.94);
+}
+
+.cfz-sticker-emoji {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.cfz-sticker-text {
+  font-size: 11.5px;
+  font-weight: 900;
+  color: #064E3B;
+  font-family: 'Manjari', sans-serif;
+  line-height: 1.2;
+}
+
+/* 6. In-Chat Rendered Sticker Bubble */
+.chat-sticker-bubble {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+  border: 2px solid #86EFAC;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.18);
+  text-align: center;
+  margin: 2px 0;
+}
+
+.chat-sticker-bubble .cs-emoji {
+  font-size: 34px;
+  display: block;
+  margin-bottom: 4px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  animation: stickerBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes stickerBounce {
+  0% { transform: scale(0.4); opacity: 0; }
+  70% { transform: scale(1.15); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.chat-sticker-bubble .cs-text {
+  font-size: 14px;
+  font-weight: 900;
+  color: #065F46;
+  font-family: 'Manjari', sans-serif;
+  letter-spacing: -0.2px;
+}
+
+/* 7. In-Chat Rendered Interactive Challenge Card */
+.chat-challenge-card {
+  background: #FFFFFF;
+  border: 1.5px solid #BBF7D0;
+  border-radius: 18px;
+  padding: 12px 14px;
+  box-shadow: 0 4px 14px rgba(6, 78, 59, 0.08);
+  margin: 3px 0;
+  max-width: 290px;
+}
+
+.chat-challenge-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.chat-challenge-tag {
+  background: #ECFDF5;
+  color: #065F46;
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.chat-challenge-clue {
+  font-size: 30px;
+  text-align: center;
+  margin: 6px 0 10px;
+  background: #F8FAFC;
+  padding: 8px;
+  border-radius: 14px;
+  letter-spacing: 4px;
+}
+
+.chat-challenge-qtext {
+  font-size: 13px;
+  font-weight: 800;
+  color: #1E293B;
+  margin-bottom: 10px;
+  line-height: 1.35;
+}
+
+.chat-challenge-options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.chat-challenge-opt-btn {
+  background: #F8FAFC;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #334155;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chat-challenge-opt-btn:hover:not(:disabled) {
+  background: #F0FDF4;
+  border-color: #86EFAC;
+  color: #065F46;
+}
+
+.chat-challenge-opt-btn.correct {
+  background: #DCFCE7 !important;
+  border-color: #22C55E !important;
+  color: #15803D !important;
+  font-weight: 800 !important;
+}
+
+.chat-challenge-opt-btn.wrong {
+  background: #FEE2E2 !important;
+  border-color: #EF4444 !important;
+  color: #B91C1C !important;
+  font-weight: 800 !important;
+}
+
+.chat-challenge-status-banner {
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  text-align: center;
+}
+
+/* 8. Message Reactions (Floating Picker & Pill List) */
+.chat-bubble-actions-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.chat-react-trigger {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  background: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  z-index: 10;
+}
+
+.incoming-row .chat-react-trigger {
+  right: -28px;
+}
+
+.outgoing-row .chat-react-trigger {
+  left: -28px;
+}
+
+.chat-message-row:hover .chat-react-trigger,
+.chat-message-row:active .chat-react-trigger,
+.chat-react-trigger.active {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .chat-react-trigger {
+    opacity: 0.85;
+  }
+}
+
+.floating-reaction-picker {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  background: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  border-radius: 999px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  z-index: 50;
+  animation: pickerPop 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.incoming-row .floating-reaction-picker {
+  left: 0;
+}
+
+.outgoing-row .floating-reaction-picker {
+  right: 0;
+}
+
+@keyframes pickerPop {
+  from { opacity: 0; transform: scale(0.7) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.reaction-opt-btn {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  padding: 3px 5px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reaction-opt-btn:hover {
+  transform: scale(1.35);
+}
+
+.reaction-opt-btn:active {
+  transform: scale(1.1);
+}
+
+.chat-bubble-reactions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.incoming-row .chat-bubble-reactions-row {
+  justify-content: flex-start;
+}
+
+.outgoing-row .chat-bubble-reactions-row {
+  justify-content: flex-end;
+}
+
+.reaction-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 999px;
+  padding: 1px 6px;
+  font-size: 11px;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  user-select: none;
+  transition: all 0.15s ease;
+}
+
+.reaction-pill:hover {
+  transform: scale(1.06);
+}
+
+.reaction-pill.user-reacted {
+  background: #ECFDF5;
+  border-color: #10B981;
+  color: #065F46;
+  font-weight: 800;
+}
+
+.reaction-pill-count {
+  font-size: 10px;
+  font-weight: 800;
+  color: #475569;
+}
+
+.reaction-pill.user-reacted .reaction-pill-count {
+  color: #065F46;
+}
+
+/* 9. Personal Chat Themes Implementation */
+/* Theme 1: Kerala Green & Gold (Default) */
+.chat-theme-kerala {
+  background: #EFEAE2 !important;
+  background-image: radial-gradient(#dfd8cc 0.8px, transparent 0.8px), radial-gradient(#dfd8cc 0.8px, #EFEAE2 0.8px) !important;
+}
+.chat-theme-kerala .chat-modal-header {
+  background: linear-gradient(135deg, #075E54 0%, #0E7043 100%) !important;
+}
+.chat-theme-kerala .chat-bubble.outgoing {
+  background: #D9FDD3 !important;
+  border: 1px solid #BBF7D0 !important;
+}
+
+/* Theme 2: Premium Glass */
+.chat-theme-glass {
+  background: linear-gradient(180deg, #0F172A 0%, #064E3B 100%) !important;
+}
+.chat-theme-glass .chat-modal-header {
+  background: rgba(15, 23, 42, 0.85) !important;
+  backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+.chat-theme-glass .chat-bubble.incoming {
+  background: rgba(255, 255, 255, 0.12) !important;
+  backdrop-filter: blur(10px) !important;
+  color: #F8FAFC !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+}
+.chat-theme-glass .chat-bubble.incoming .chat-bubble-content {
+  color: #F8FAFC !important;
+}
+.chat-theme-glass .chat-bubble.outgoing {
+  background: rgba(16, 185, 129, 0.3) !important;
+  backdrop-filter: blur(10px) !important;
+  color: #ECFDF5 !important;
+  border: 1.5px solid rgba(52, 211, 153, 0.5) !important;
+}
+.chat-theme-glass .chat-bubble.outgoing .chat-bubble-content {
+  color: #ECFDF5 !important;
+}
+.chat-theme-glass .chat-time-text {
+  color: #94A3B8 !important;
+}
+.chat-theme-glass .chat-input-bar {
+  background: #0B1320 !important;
+  border-top-color: rgba(255, 255, 255, 0.1) !important;
+}
+.chat-theme-glass .chat-text-input {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #F8FAFC !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Theme 3: Ocean Blue */
+.chat-theme-ocean {
+  background: linear-gradient(180deg, #E0F2FE 0%, #BAE6FD 100%) !important;
+}
+.chat-theme-ocean .chat-modal-header {
+  background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important;
+}
+.chat-theme-ocean .chat-bubble.incoming {
+  background: #FFFFFF !important;
+  border: 1px solid #BAE6FD !important;
+}
+.chat-theme-ocean .chat-bubble.outgoing {
+  background: #E0F2FE !important;
+  border: 1.5px solid #7DD3FC !important;
+  color: #0369A1 !important;
+}
+
+/* Theme 4: Sunset Gradient */
+.chat-theme-sunset {
+  background: linear-gradient(180deg, #FFF1F2 0%, #FFE4E6 50%, #FFEDD5 100%) !important;
+}
+.chat-theme-sunset .chat-modal-header {
+  background: linear-gradient(135deg, #E11D48 0%, #EA580C 100%) !important;
+}
+.chat-theme-sunset .chat-bubble.incoming {
+  background: #FFFFFF !important;
+  border: 1px solid #FECDD3 !important;
+}
+.chat-theme-sunset .chat-bubble.outgoing {
+  background: #FFEDD5 !important;
+  border: 1.5px solid #FDBA74 !important;
+  color: #9A3412 !important;
+}
+
+/* Theme 5: Classic Minimal */
+.chat-theme-minimal {
+  background: #F8FAFC !important;
+}
+.chat-theme-minimal .chat-modal-header {
+  background: #1E293B !important;
+}
+.chat-theme-minimal .chat-bubble.incoming {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+}
+.chat-theme-minimal .chat-bubble.outgoing {
+  background: #047857 !important;
+  color: #FFFFFF !important;
+}
+.chat-theme-minimal .chat-bubble.outgoing .chat-bubble-content {
+  color: #FFFFFF !important;
+}
+.chat-theme-minimal .chat-bubble.outgoing .chat-time-text {
+  color: #A7F3D0 !important;
+}
+.chat-theme-minimal .chat-bubble.outgoing .chat-ticks {
+  color: #FFFFFF !important;
+}
+
+/* Theme Selector Cards inside Fun Zone */
+.cfz-themes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.cfz-theme-card {
+  border: 2px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: all 0.2s ease;
+  background: #FFFFFF;
+}
+
+.cfz-theme-card.active {
+  border-color: #059669;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.22);
+}
+
+.cfz-theme-preview {
+  height: 50px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 8px;
+}
+
+.cfz-theme-name {
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #1E293B;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
