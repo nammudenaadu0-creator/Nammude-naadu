@@ -3453,7 +3453,9 @@
   function openChatForRental(rentId) {
     const r = (APP_STATE.rentals || []).find(item => item.id === rentId);
     if (!r) return;
-    openChatModal(r.owner, r.ownerPhone, r.image || DEFAULT_USER_AVATAR, `വാടക അന്വേഷണം: ${r.title} (${r.rate})`, r.id, null, 'rental');
+    const isSale = r.listingType === 'sale' || (r.type && r.type.includes('വിൽപന')) || (r.title && r.title.includes('വിൽപന'));
+    const topic = isSale ? `വിൽപന അന്വേഷണം: ${r.title} (${r.rate || r.price})` : `വാടക അന്വേഷണം: ${r.title} (${r.rate || r.price})`;
+    openChatModal(r.owner, r.ownerPhone, r.image || DEFAULT_USER_AVATAR, topic, r.id, null, isSale ? 'buysell' : 'rental');
   }
   window.openChatForRental = openChatForRental;
 
@@ -6422,21 +6424,27 @@
     const rentalsListEl = document.getElementById('rentalsListContainer');
     if (!rentalsListEl) return;
 
-    const maxRadius = APP_STATE.radiusFilters.rentals;
+    const maxRadius = APP_STATE.radiusFilters.rentals || 10;
     const searchInput = document.getElementById('rentalSearchInput');
     const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
 
     let allMatchingRentals = APP_STATE.rentals.filter(r => {
       let matchesCat = true;
-      if (APP_STATE.activeRentalCategory === 'house') {
-        matchesCat = (r.type && (r.type.includes('വീട്') || r.type.includes('മുറി') || r.type.includes('ഹോസ്റ്റൽ'))) || r.title.includes('വീട്') || r.title.includes('റൂം');
-      } else if (APP_STATE.activeRentalCategory === 'vehicle') {
-        matchesCat = (r.type && (r.type.includes('വാഹന') || r.type.includes('കാർ') || r.type.includes('ജീപ്പ്') || r.type.includes('സ്കൂട്ടർ'))) || r.title.includes('പിക്കപ്പ്') || r.title.includes('ഓട്ടോ') || r.title.includes('കാർ') || r.title.includes('സ്കൂട്ടർ');
-      } else if (APP_STATE.activeRentalCategory === 'tool') {
-        matchesCat = (r.type && (r.type.includes('ടൂള') || r.type.includes('യന്ത്ര') || r.type.includes('ട്രാക്ടർ'))) || r.title.includes('മിക്സർ') || r.title.includes('യന്ത്ര') || r.title.includes('ട്രാക്ടർ');
+      const isSale = r.listingType === 'sale' || (r.type && r.type.includes('വിൽപന')) || (r.title && r.title.includes('വിൽപന'));
+      const isRent = !isSale;
+
+      if (APP_STATE.activeRentalCategory === 'rent') {
+        matchesCat = isRent;
       } else if (APP_STATE.activeRentalCategory === 'buysell') {
-        matchesCat = (r.type && (r.type.includes('വിൽപന') || r.type.includes('ഇലക്ട്രോണിക്സ്'))) || r.title.includes('വിൽപന');
+        matchesCat = isSale;
+      } else if (APP_STATE.activeRentalCategory === 'house') {
+        matchesCat = (r.type && (r.type.includes('വീട്') || r.type.includes('മുറി') || r.type.includes('ഹോസ്റ്റൽ') || r.type.includes('സ്ഥലം') || r.type.includes('ഫ്ലാറ്റ്'))) || (r.title && (r.title.includes('വീട്') || r.title.includes('റൂം') || r.title.includes('സ്ഥലം') || r.title.includes('പ്ലോട്ട്')));
+      } else if (APP_STATE.activeRentalCategory === 'vehicle') {
+        matchesCat = (r.type && (r.type.includes('വാഹന') || r.type.includes('കാർ') || r.type.includes('ജീപ്പ്') || r.type.includes('ബൈക്ക്') || r.type.includes('സ്കൂട്ടർ'))) || (r.title && (r.title.includes('പിക്കപ്പ്') || r.title.includes('ഓട്ടോ') || r.title.includes('കാർ') || r.title.includes('ബൈക്ക്')));
+      } else if (APP_STATE.activeRentalCategory === 'tool') {
+        matchesCat = (r.type && (r.type.includes('ടൂള') || r.type.includes('യന്ത്ര') || r.type.includes('ട്രാക്ടർ') || r.type.includes('പന്തൽ') || r.type.includes('കാറ്ററിംഗ്'))) || (r.title && (r.title.includes('മിക്സർ') || r.title.includes('യന്ത്ര') || r.title.includes('ട്രാക്ടർ')));
       }
+
       const matchesQuery = !query || r.title.toLowerCase().includes(query) || (r.owner && r.owner.toLowerCase().includes(query)) || (r.type && r.type.toLowerCase().includes(query));
       const dist = getItemDistanceKm(r, APP_STATE.location.lat, APP_STATE.location.lon);
       r._calculatedDist = dist;
@@ -6452,8 +6460,8 @@
       rentalsListEl.innerHTML = `
         <div style="text-align:center;padding:36px 16px;background:#fff;border-radius:16px;border:1px solid #E2E8F0">
           <div style="font-size:36px;margin-bottom:8px">🏠</div>
-          <h3 style="margin:0 0 6px;color:#111827">ഈ പ്രദേശത്ത് വാടക ഇനങ്ങൾ ലഭ്യമല്ല</h3>
-          <p style="color:#6B7280;margin:0 0 14px;font-size:13px"><b>${escapeHtml(APP_STATE.location.name)}</b> പരിസരത്ത്${radiusLabel} വാടക ഇനങ്ങൾ കണ്ടെത്തിയില്ല.</p>
+          <h3 style="margin:0 0 6px;color:#111827">ഈ പ്രദേശത്ത് ഇനങ്ങൾ ലഭ്യമല്ല</h3>
+          <p style="color:#6B7280;margin:0 0 14px;font-size:13px"><b>${escapeHtml(APP_STATE.location.name)}</b> പരിസരത്ത്${radiusLabel} വാടക/വിൽപന ഇനങ്ങൾ കണ്ടെത്തിയില്ല.</p>
           <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
             <button onclick="setGlobalRadius(25, null)" style="background:#ECFDF5;color:#0E7043;border:1px solid #A7F3D0;border-radius:10px;padding:8px 14px;font-weight:700;font-size:12px;cursor:pointer">25 km പരിധി</button>
             <button onclick="setGlobalRadius(1000, null)" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;border-radius:10px;padding:8px 14px;font-weight:700;font-size:12px;cursor:pointer">മുഴുവൻ കാണുക</button>
@@ -6462,20 +6470,38 @@
         </div>
       `;
     } else {
-      rentalsListEl.innerHTML = filteredRentals.map(r => `
-        <div class="job-card">
-          ${r.image ? `<img src="${r.image}" style="width:100%;height:160px;object-fit:cover;border-radius:12px;margin-bottom:8px">` : ''}
-          <div style="display:flex;justify-content:space-between;align-items:flex-start">
-            <h3 style="margin:0 0 4px;font-size:15px;color:#111827">${r.title}</h3>
-            <span style="background:#FEF3C7;color:#B45309;padding:4px 8px;border-radius:8px;font-size:12px;font-weight:800">${formatPrice(r.rate)}</span>
+      rentalsListEl.innerHTML = filteredRentals.map(r => {
+        const isSale = r.listingType === 'sale' || (r.type && r.type.includes('വിൽപന')) || (r.title && r.title.includes('വിൽപന'));
+        const typeBadge = isSale
+          ? '<span style="background:#EFF6FF;color:#1D4ED8;border:1px solid #BFDBFE;padding:3px 8px;border-radius:6px;font-weight:800;font-size:11px;display:inline-flex;align-items:center;gap:3px"><span>🏷️</span><span>വിൽപനയ്ക്ക്</span></span>'
+          : '<span style="background:#ECFDF5;color:#047857;border:1px solid #A7F3D0;padding:3px 8px;border-radius:6px;font-weight:800;font-size:11px;display:inline-flex;align-items:center;gap:3px"><span>🏠</span><span>വാടകയ്ക്ക്</span></span>';
+
+        const priceBadgeColor = isSale ? '#1D4ED8' : '#B45309';
+        const priceBadgeBg = isSale ? '#EFF6FF' : '#FEF3C7';
+        const priceText = isSale ? `വില: ${formatPrice(r.rate || r.price)}` : formatPrice(r.rate || r.price);
+
+        return `
+          <div class="job-card" style="background:#fff;border-radius:16px;padding:14px;border:1px solid #E2E8F0;box-shadow:0 1px 3px rgba(0,0,0,0.04);margin-bottom:10px">
+            ${r.image ? `<img src="${r.image}" style="width:100%;height:160px;object-fit:cover;border-radius:12px;margin-bottom:10px;border:1px solid #E2E8F0">` : ''}
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+              <div>
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+                  ${typeBadge}
+                  <span style="font-size:11px;color:#64748B;font-weight:700">${escapeHtml(r.type || 'ജനറൽ')}</span>
+                </div>
+                <h3 style="margin:0 0 4px;font-size:15px;font-weight:800;color:#0F172A">${escapeHtml(r.title)}</h3>
+              </div>
+              <span style="background:${priceBadgeBg};color:${priceBadgeColor};padding:4px 10px;border-radius:8px;font-size:12.5px;font-weight:800;white-space:nowrap">${priceText}</span>
+            </div>
+            <div style="font-size:12px;color:#64748B;margin-top:4px">
+              <span>ഉടമസ്ഥൻ: <b>${escapeHtml(r.owner)}</b></span> • <span>📍 ${escapeHtml(r.location)}</span> • <span style="color:#0E7043;font-weight:800">${r._calculatedDist || 1.2} km അകലെ</span>
+            </div>
+            <div style="margin-top:10px">
+              <button onclick="openChatForRental('${r.id}')" style="width:100%;background:#0E7043;color:#fff;border:none;padding:10px;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 6px rgba(14,112,67,0.2)">💬 ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം</button>
+            </div>
           </div>
-          <div style="font-size:11px;background:#F0FDF4;color:#166534;padding:3px 8px;border-radius:6px;align-self:flex-start;font-weight:700">${r.type || 'വാടക & വിൽപന'}</div>
-          <div style="font-size:12px;color:#6B7280">ഉടമസ്ഥൻ: ${r.owner} • 📍 ${r.location} • <span style="color:#0E7043;font-weight:700">${r._calculatedDist || 1.2} km അകലെ</span></div>
-          <div style="margin-top:6px">
-            <button onclick="openChatForRental('${r.id}')" style="width:100%;background:#0E7043;color:#fff;border:none;padding:10px;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">💬 ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം</button>
-          </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
   }
 
@@ -7727,30 +7753,115 @@
   }
   window.submitDonorRegistration = submitDonorRegistration;
 
+  function setRentalListingMode(mode) {
+    const hidden = document.getElementById('rentListingMode');
+    if (hidden) hidden.value = mode;
+
+    const rentBtn = document.getElementById('rentModeBtnRent');
+    const saleBtn = document.getElementById('rentModeBtnSale');
+    const label = document.getElementById('rentRateLabel');
+    const curr = document.getElementById('rentRateCurrency');
+    const input = document.getElementById('rentRate');
+    const select = document.getElementById('rentType');
+    const submitBtn = document.getElementById('rentSubmitBtn');
+    const desc = document.getElementById('rentModeDescription');
+
+    if (mode === 'sale') {
+      if (saleBtn) {
+        saleBtn.style.background = '#2563EB';
+        saleBtn.style.color = '#fff';
+      }
+      if (rentBtn) {
+        rentBtn.style.background = 'none';
+        rentBtn.style.color = '#475569';
+      }
+      if (desc) desc.textContent = 'വീടുകൾ, സ്ഥലം, വാഹനങ്ങൾ, ഇലക്ട്രോണിക്സ്, മറ്റ് ഏത് സാധനങ്ങളും വിൽപ്പനയ്ക്ക് വെയ്ക്കാം.';
+      if (label) label.textContent = 'വിൽപന വില (₹ Sale Price)';
+      if (curr) {
+        curr.style.background = '#EFF6FF';
+        curr.style.color = '#1D4ED8';
+        curr.style.borderRight = '1px solid #BFDBFE';
+      }
+      if (input) input.placeholder = 'Eg: 25,000 or 1,50,000 (വില)';
+      if (submitBtn) {
+        submitBtn.style.background = '#2563EB';
+        submitBtn.textContent = '🏷️ വിൽപനയ്ക്ക് ലിസ്റ്റ് ചെയ്യാം';
+      }
+      if (select) {
+        select.innerHTML = `
+          <option value="വീട് & സ്ഥലം (വിൽപന)">🏠 വീട് / ഫ്ലാറ്റ് / സ്ഥലം (Real Estate)</option>
+          <option value="വാഹനങ്ങൾ (വിൽപന)">🚗 യൂസ്ഡ് കാർ / ബൈക്ക് / വാഹനം</option>
+          <option value="മൊബൈൽ & ഇലക്ട്രോണിക്സ്">📱 മൊബൈൽ / ഇലക്ട്രോണിക്സ് / ലാപ്ടോപ്പ്</option>
+          <option value="ഫർണിച്ചർ & ഗൃഹോപകരണങ്ങൾ">🛋️ ഫർണിച്ചർ & ഗൃഹോപകരണങ്ങൾ</option>
+          <option value="യന്ത്രങ്ങൾ & ടൂളുകൾ">🚜 യന്ത്രങ്ങൾ & വർക്ക്ഷോപ്പ് ടൂളുകൾ</option>
+          <option value="മറ്റ് സാധനങ്ങൾ">🏷️ മറ്റ് സാധനങ്ങൾ (Other Items)</option>
+        `;
+      }
+    } else {
+      if (rentBtn) {
+        rentBtn.style.background = '#0E7043';
+        rentBtn.style.color = '#fff';
+      }
+      if (saleBtn) {
+        saleBtn.style.background = 'none';
+        saleBtn.style.color = '#475569';
+      }
+      if (desc) desc.textContent = 'വീടുകൾ, വാഹനങ്ങൾ, യന്ത്രങ്ങൾ, പന്തൽ, മറ്റ് ഏത് സാധനങ്ങളും വാടകയ്ക്ക് നൽകാം.';
+      if (label) label.textContent = 'വാടക തുക (₹ Rent Rate)';
+      if (curr) {
+        curr.style.background = '#F0FDF4';
+        curr.style.color = '#047857';
+        curr.style.borderRight = '1px solid #BBF7D0';
+      }
+      if (input) input.placeholder = 'Eg: 8,000 / മാസം or 500 / ദിവസം';
+      if (submitBtn) {
+        submitBtn.style.background = '#0E7043';
+        submitBtn.textContent = '🏠 വാടകയ്ക്ക് ലിസ്റ്റ് ചെയ്യാം';
+      }
+      if (select) {
+        select.innerHTML = `
+          <option value="വാടക വീട് / മുറി">🏠 വാടക വീട് / മുറി / ഹോസ്റ്റൽ</option>
+          <option value="കടമുറി & ഗോഡൗൺ">🏪 കടമുറി / ഓഫീസ് / ഗോഡൗൺ</option>
+          <option value="വാഹനങ്ങൾ">🚗 വാഹനം (കാർ, ജീപ്പ്, ബൈക്ക്, പിക്കപ്പ്)</option>
+          <option value="ടൂളുകൾ & യന്ത്രങ്ങൾ">🚜 ട്രാക്ടർ, മിക്സർ & യന്ത്രങ്ങൾ</option>
+          <option value="സ്റ്റേജ് & പന്തൽ">🎪 സ്റ്റേജ്, പന്തൽ, സൗണ്ട് & ലൈറ്റ്സ്</option>
+          <option value="കാറ്ററിംഗ് പാത്രങ്ങൾ">🍲 കാറ്ററിംഗ് പാത്രങ്ങൾ & അടുപ്പ്</option>
+          <option value="ഇലക്ട്രോണിക്സ്">📷 ക്യാമറ, പ്രൊജക്ടർ & ഇലക്ട്രോണിക്സ്</option>
+          <option value="മറ്റ് ഏത് സാധനങ്ങളും">📦 മറ്റ് ഏത് സാധനങ്ങളും വാടകയ്ക്ക്</option>
+        `;
+      }
+    }
+  }
+  window.setRentalListingMode = setRentalListingMode;
+
   function openAddRentalModal() {
     const ownerEl = document.getElementById('rentOwner');
     const phoneEl = document.getElementById('rentPhone');
     const locEl = document.getElementById('rentLoc');
-    if (ownerEl) ownerEl.value = APP_STATE.currentUser.name;
-    if (phoneEl) phoneEl.value = APP_STATE.currentUser.phone;
-    if (locEl) locEl.value = APP_STATE.location.name;
+    if (ownerEl) ownerEl.value = APP_STATE.currentUser.name || '';
+    if (phoneEl) phoneEl.value = APP_STATE.currentUser.phone || '';
+    if (locEl) locEl.value = APP_STATE.location.name || '';
     removeRentalPhoto();
+    setRentalListingMode('rent');
     openModal('modal-add-rental');
   }
   window.openAddRentalModal = openAddRentalModal;
 
   function submitRentalPosting(e) {
     if (e) e.preventDefault();
+    const modeEl = document.getElementById('rentListingMode');
+    const listingType = (modeEl ? modeEl.value : 'rent') || 'rent';
     const title = document.getElementById('rentTitle').value.trim();
     const type = document.getElementById('rentType').value;
     const rawRate = document.getElementById('rentRate').value.trim();
-    const rate = rawRate ? formatPrice(rawRate) : '₹500 / ദിവസം';
+    const defaultRate = listingType === 'sale' ? '₹25,000' : '₹500 / ദിവസം';
+    const rate = rawRate ? formatPrice(rawRate) : defaultRate;
     const owner = document.getElementById('rentOwner').value.trim() || APP_STATE.currentUser.name;
     const phone = document.getElementById('rentPhone').value.trim() || APP_STATE.currentUser.phone;
     const loc = document.getElementById('rentLoc').value.trim() || APP_STATE.location.name;
 
-    if (!title || !rate) {
-      toast('⚠️ തലക്കെട്ടും വാടകയും നൽകുക.');
+    if (!title || !rawRate) {
+      toast(listingType === 'sale' ? '⚠️ തലക്കെട്ടും വിലയും നൽകുക.' : '⚠️ തലക്കെട്ടും വാടകയും നൽകുക.');
       return;
     }
 
@@ -7763,13 +7874,14 @@
       defaultImg = 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=400&q=80';
     } else if (type.includes('കാറ്ററിംഗ്')) {
       defaultImg = 'https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=400&q=80';
-    } else if (type.includes('ഇലക്ട്രോണിക്സ്')) {
+    } else if (type.includes('ഇലക്ട്രോണിക്സ്') || type.includes('മൊബൈൽ')) {
       defaultImg = 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80';
     }
 
     const newRental = {
       id: 'rent_' + Date.now(),
       title: title,
+      listingType: listingType,
       type: type,
       rate: rate,
       price: rate,
@@ -7801,7 +7913,7 @@
 
     renderRentalsScreen();
     if (APP_STATE.currentScreen === 'profile') renderProfileScreen();
-    toast('🏠 വാടക ഇനം വിജയകരമായി ലിസ്റ്റ് ചെയ്തു! ക്ലൗഡിലേക്ക് സേവ് ചെയ്തു.');
+    toast(listingType === 'sale' ? '🏷️ വിൽപന ഇനം വിജയകരമായി ലിസ്റ്റ് ചെയ്തു! ക്ലൗഡിലേക്ക് സേവ് ചെയ്തു.' : '🏠 വാടക ഇനം വിജയകരമായി ലിസ്റ്റ് ചെയ്തു! ക്ലൗഡിലേക്ക് സേവ് ചെയ്തു.');
   }
   window.submitRentalPosting = submitRentalPosting;
 

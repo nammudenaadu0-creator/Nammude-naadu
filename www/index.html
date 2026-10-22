@@ -1121,19 +1121,21 @@
                             style="width:100%;padding:10px 14px;border:1px solid #E5E7EB;border-radius:12px;outline:none;font-size:13px;background:#F9FAFB">
                     </div>
 
-                    <!-- RENTAL CATEGORY FILTER CHIPS -->
+                    <!-- RENTAL & SALE CATEGORY FILTER CHIPS -->
                     <div
                         style="display:flex;gap:6px;padding:10px 16px;background:#fff;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid #E5E7EB">
                         <button class="rental-cat-chip radius-chip active" data-cat="all"
-                            onclick="filterRentalCategory('all', this)">എല്ലാം</button>
-                        <button class="rental-cat-chip radius-chip" data-cat="house"
-                            onclick="filterRentalCategory('house', this)">വാടക വീട് / മുറി</button>
-                        <button class="rental-cat-chip radius-chip" data-cat="vehicle"
-                            onclick="filterRentalCategory('vehicle', this)">വാഹനങ്ങൾ</button>
-                        <button class="rental-cat-chip radius-chip" data-cat="tool"
-                            onclick="filterRentalCategory('tool', this)">ടൂളുകൾ & യന്ത്രങ്ങൾ</button>
+                            onclick="filterRentalCategory('all', this)">🌟 എല്ലാം</button>
+                        <button class="rental-cat-chip radius-chip" data-cat="rent"
+                            onclick="filterRentalCategory('rent', this)">🏠 വാടകയ്ക്ക്</button>
                         <button class="rental-cat-chip radius-chip" data-cat="buysell"
-                            onclick="filterRentalCategory('buysell', this)">വിൽപനയ്ക്ക്</button>
+                            onclick="filterRentalCategory('buysell', this)">🏷️ വിൽപനയ്ക്ക്</button>
+                        <button class="rental-cat-chip radius-chip" data-cat="house"
+                            onclick="filterRentalCategory('house', this)">🏡 വീട് & സ്ഥലം</button>
+                        <button class="rental-cat-chip radius-chip" data-cat="vehicle"
+                            onclick="filterRentalCategory('vehicle', this)">🚗 വാഹനങ്ങൾ</button>
+                        <button class="rental-cat-chip radius-chip" data-cat="tool"
+                            onclick="filterRentalCategory('tool', this)">🚜 യന്ത്രങ്ങൾ & ടൂളുകൾ</button>
                     </div>
 
                     <div id="rentalsListContainer"
@@ -3114,16 +3116,28 @@
     <div id="modal-add-rental" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-add-rental')">
         <div class="modal-sheet">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-                <h3 style="margin:0;color:#0E7043;font-size:17px;font-weight:800">🏠 വാടകയ്ക്ക് നൽകാം / ലിസ്റ്റ് ചെയ്യാം
-                </h3>
+                <h3 style="margin:0;color:#0E7043;font-size:17px;font-weight:800">🏠 വാടക / വിൽപന ലിസ്റ്റ് ചെയ്യാം</h3>
                 <button onclick="closeModal('modal-add-rental')"
                     style="background:none;border:none;font-size:20px;cursor:pointer">✕</button>
             </div>
-            <p style="font-size:12px;color:#6B7280;margin:0 0 12px">വീടുകൾ, വാഹനങ്ങൾ, യന്ത്രങ്ങൾ, പന്തൽ, മറ്റ് ഏത്
-                സാധനങ്ങളും വാടകയ്ക്ക് ഇവിടെ നൽകാം.</p>
+            
+            <!-- SEGMENTED TOGGLE: വാടകയ്ക്ക് vs വിൽപനയ്ക്ക് -->
+            <div style="display:flex;gap:6px;background:#F1F5F9;padding:4px;border-radius:14px;margin-bottom:12px">
+                <button type="button" id="rentModeBtnRent" class="rent-mode-tab active" onclick="setRentalListingMode('rent')"
+                    style="flex:1;padding:10px 8px;border-radius:10px;border:none;font-weight:800;font-size:13px;cursor:pointer;background:#0E7043;color:#fff;display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s">
+                    <span>🏠</span> <span>വാടകയ്ക്ക് (For Rent)</span>
+                </button>
+                <button type="button" id="rentModeBtnSale" class="rent-mode-tab" onclick="setRentalListingMode('sale')"
+                    style="flex:1;padding:10px 8px;border-radius:10px;border:none;font-weight:800;font-size:13px;cursor:pointer;background:none;color:#475569;display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s">
+                    <span>🏷️</span> <span>വിൽപനയ്ക്ക് (For Sale)</span>
+                </button>
+            </div>
+            <input type="hidden" id="rentListingMode" value="rent">
+
+            <p id="rentModeDescription" style="font-size:12px;color:#6B7280;margin:0 0 12px">വീടുകൾ, വാഹനങ്ങൾ, യന്ത്രങ്ങൾ, പന്തൽ, മറ്റ് ഏത് സാധനങ്ങളും വാടകയ്ക്ക് നൽകാം.</p>
             <form onsubmit="submitRentalPosting(event)" style="display:flex;flex-direction:column;gap:10px">
                 <div>
-                    <label style="font-size:12px;font-weight:700">ഇനത്തിന്റെ പേര് / വിവരണം (Title)</label>
+                    <label id="rentTitleLabel" style="font-size:12px;font-weight:700">ഇനത്തിന്റെ പേര് / വിവരണം (Title)</label>
                     <input type="text" id="rentTitle" required
                         placeholder="Eg: 2 BHK വീട് / മഹീന്ദ്ര ജീപ്പ് / ജെസിബി / മിക്സർ മെഷീൻ"
                         style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
@@ -3133,20 +3147,20 @@
                     <select id="rentType"
                         style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
                         <option value="വാടക വീട് / മുറി">🏠 വാടക വീട് / മുറി / ഹോസ്റ്റൽ</option>
+                        <option value="കടമുറി & ഗോഡൗൺ">🏪 കടമുറി / ഓഫീസ് / ഗോഡൗൺ</option>
                         <option value="വാഹനങ്ങൾ">🚗 വാഹനം (കാർ, ജീപ്പ്, ബൈക്ക്, പിക്കപ്പ്)</option>
                         <option value="ടൂളുകൾ & യന്ത്രങ്ങൾ">🚜 ട്രാക്ടർ, മിക്സർ & യന്ത്രങ്ങൾ</option>
                         <option value="സ്റ്റേജ് & പന്തൽ">🎪 സ്റ്റേജ്, പന്തൽ, സൗണ്ട് & ലൈറ്റ്സ്</option>
                         <option value="കാറ്ററിംഗ് പാത്രങ്ങൾ">🍲 കാറ്ററിംഗ് പാത്രങ്ങൾ & അടുപ്പ്</option>
                         <option value="ഇലക്ട്രോണിക്സ്">📷 ക്യാമറ, പ്രൊജക്ടർ & ഇലക്ട്രോണിക്സ്</option>
-                        <option value="വിൽപനയ്ക്ക്">🏷️ വിൽപനയ്ക്ക് (Buy & Sell)</option>
                         <option value="മറ്റ് ഏത് സാധനങ്ങളും">📦 മറ്റ് ഏത് സാധനങ്ങളും വാടകയ്ക്ക്</option>
                     </select>
                 </div>
                 <div>
-                    <label style="font-size:12px;font-weight:700">വാടക തുക / വില (₹ Rent Rate or Price)</label>
+                    <label id="rentRateLabel" style="font-size:12px;font-weight:700">വാടക തുക (₹ Rent Rate)</label>
                     <div
                         style="display:flex;align-items:center;margin-top:4px;border:1px solid #D1D5DB;border-radius:10px;overflow:hidden;background:#fff">
-                        <span
+                        <span id="rentRateCurrency"
                             style="background:#F0FDF4;color:#047857;padding:10px 14px;font-weight:800;font-size:15px;border-right:1px solid #BBF7D0">₹</span>
                         <input type="text" id="rentRate" required
                             placeholder="Eg: 8,000 / മാസം or 500 / ദിവസം or 1,200 / ട്രിപ്പ്"
@@ -3192,9 +3206,8 @@
                     <input type="text" id="rentLoc" placeholder="Eg: നിങ്ങളുടെ പ്രദേശം / സ്ഥലം"
                         style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
                 </div>
-                <button type="submit"
-                    style="background:#0E7043;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;margin-top:4px">ലിസ്റ്റ്
-                    ചെയ്യാം (Post Rental)</button>
+                <button type="submit" id="rentSubmitBtn"
+                    style="background:#0E7043;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;margin-top:4px">🏠 വാടകയ്ക്ക് ലിസ്റ്റ് ചെയ്യാം</button>
             </form>
         </div>
     </div>
