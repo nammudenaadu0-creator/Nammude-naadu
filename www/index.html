@@ -303,12 +303,6 @@
                                     style="position:absolute;top:7px;right:7px;width:8px;height:8px;border-radius:50%;background:#EF4444;border:2px solid #FFFFFF"></span>
                             </button>
 
-                            <!-- Circular Settings Button -->
-                            <button type="button" onclick="openSettingsModal()"
-                                title="ക്രമീകരണങ്ങൾ (Settings)"
-                                style="width:42px;height:42px;border-radius:50%;background:#FFFFFF;border:1.5px solid rgba(226,232,240,0.85);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.06);transition:transform 0.1s ease">
-                                <span>⚙️</span>
-                            </button>
 
                             <!-- Circular User Profile Button (Clean Green Avatar on White Disc) -->
                             <div onclick="navTo('profile')" title="എന്റെ പ്രൊഫൈൽ"
@@ -1255,18 +1249,15 @@
                         <div id="profMyActionBtns" class="fb-profile-action-btns">
                             <button class="fb-action-btn-primary" onclick="navTo('add')">
                                 <span>➕</span>
-                                <span>പോസ്റ്റ്</span>
+                                <span>പോസ്റ്റ് ചെയ്യാം</span>
                             </button>
                             <button class="fb-action-btn-secondary" onclick="openEditProfileModal()">
                                 <span>✏️</span>
                                 <span>എഡിറ്റ്</span>
                             </button>
-                            <button class="fb-action-btn-secondary" onclick="openSettingsModal()" title="സെറ്റിംഗ്സ്">
-                                <span>⚙️</span>
-                                <span>സെറ്റിംഗ്സ്</span>
-                            </button>
                             <button class="fb-action-btn-secondary" onclick="openLocationModal()" title="സ്ഥലം മാറ്റാം">
                                 <span>📍</span>
+                                <span>സ്ഥലം</span>
                             </button>
                         </div>
                         <div id="profOtherActionBtns" class="fb-profile-action-btns" style="display:none;gap:10px">
@@ -1319,63 +1310,42 @@
                         <div id="profileTabContentContainer"
                             style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px"></div>
 
+                        <!-- PROFILE ACTIONS & UNIFIED SETTINGS -->
                         <div id="profMySettingsMenu">
-                            <div class="profile-menu-row" onclick="openSettingsModal()"
-                                style="background:#fff;padding:14px;border-radius:14px;border:1px solid #E5E7EB;margin-bottom:8px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:space-between">
-                                <span style="display:flex;align-items:center;gap:10px">
-                                    <span style="font-size:18px">⚙️</span>
-                                    <div>
-                                        <div style="font-size:14px;color:#0F172A">ക്രമീകരണങ്ങൾ (App Settings)</div>
-                                        <div style="font-size:11px;color:#64748B;font-weight:600">ലൊക്കേഷൻ, നോട്ടിഫിക്കേഷൻ, കാഷെ ക്ലിയർ</div>
-                                    </div>
-                                </span>
-                                <span style="background:#F1F5F9;padding:4px 9px;border-radius:8px;font-size:11px;color:#475569;font-weight:800">തുറക്കുക ›</span>
-                            </div>
-
+                            <!-- 1. BLOOD NETWORK -->
                             <div class="profile-menu-row" onclick="openBloodModal()"
                                 style="background:#fff;padding:14px;border-radius:14px;border:1px solid #E5E7EB;margin-bottom:8px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:space-between">
-                                <span>🩸 ബ്ലഡ് ഡോണർ നെറ്റ്‌വർക്ക്</span>
+                                <span style="display:flex;align-items:center;gap:10px">
+                                    <span style="font-size:18px">🩸</span>
+                                    <span>ബ്ലഡ് ഡോണർ നെറ്റ്‌വർക്ക്</span>
+                                </span>
                                 <span>→</span>
                             </div>
-                            <!-- ADMIN PORTAL TRIGGER (SERVICES & NUMBERS) - VISIBLE ONLY FOR ADMIN (9605406699) -->
+
+                            <!-- 2. ADMIN PORTAL (VISIBLE ONLY FOR ADMIN 9605406699) -->
                             <div id="profileAdminPortalRow" class="profile-menu-row" onclick="openAdminPortal()"
                                 style="display:none;background:linear-gradient(135deg, #064E3B 0%, #0E7043 100%);color:#fff;padding:14px;border-radius:14px;margin-bottom:8px;cursor:pointer;font-weight:800;align-items:center;justify-content:space-between;box-shadow:0 4px 12px rgba(6,78,59,0.25)">
                                 <span style="display:flex;align-items:center;gap:10px">
                                     <span style="font-size:20px">⚙️</span>
                                     <div>
                                         <div style="font-size:14px;font-weight:800">അഡ്മിൻ കൺസോൾ (Admin Hub)</div>
-                                        <div style="font-size:11px;color:#A7F3D0;font-weight:600">പുതിയ സർവീസുകളും
-                                            നമ്പറുകളും ചേർക്കാം</div>
+                                        <div style="font-size:11px;color:#A7F3D0;font-weight:600">പുതിയ സർവീസുകളും നമ്പറുകളും ചേർക്കാം</div>
                                     </div>
                                 </span>
-                                <span
-                                    style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:12px;font-size:11px;font-weight:800">തുറക്കുക
-                                    &rsaquo;</span>
+                                <span style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:12px;font-size:11px;font-weight:800">തുറക്കുക &rsaquo;</span>
                             </div>
 
-                            <div class="profile-menu-row" onclick="checkAppUpdates(false)"
-                                style="background:#fff;padding:14px;border-radius:14px;border:1px solid #E5E7EB;margin-bottom:8px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:space-between">
+                            <!-- 3. UNIFIED APP SETTINGS (ONE SINGLE CLEAN PLACE FOR ALL SETTINGS & LOGOUT) -->
+                            <div class="profile-menu-row" onclick="openSettingsModal()"
+                                style="background:#fff;padding:14px;border-radius:14px;border:1px solid #E5E7EB;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:space-between">
                                 <span style="display:flex;align-items:center;gap:10px">
-                                    <span style="font-size:18px">🔄</span>
+                                    <span style="font-size:18px">⚙️</span>
                                     <div>
-                                        <div style="font-size:14px;color:#0F172A">ആപ്പ് അപ്‌ഡേറ്റ് പരിശോധിക്കാം</div>
-                                        <div style="font-size:11px;color:#059669;font-weight:700" id="profCurrentAppVersion">വേർഷൻ v1.0.2</div>
+                                        <div style="font-size:14px;color:#0F172A">ക്രമീകരണങ്ങൾ (Settings)</div>
+                                        <div style="font-size:11px;color:#64748B;font-weight:600">അപ്‌ഡേറ്റുകൾ, അറിയിപ്പുകൾ, പ്രൈവസി & ലോഗ് ഔട്ട്</div>
                                     </div>
-                                </span>
-                                <span style="background:#F1F5F9;padding:4px 9px;border-radius:8px;font-size:11px;color:#475569;font-weight:800">Check ›</span>
-                            </div>
-
-                            <a href="privacy-policy.html" target="_blank" class="profile-menu-row"
-                                style="background:#fff;padding:14px;border-radius:14px;border:1px solid #E5E7EB;margin-bottom:8px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:#0F172A">
-                                <span style="display:flex;align-items:center;gap:8px"><span>🛡️</span> <span>പ്രൈവസി
-                                        പോളിസി
-                                        (Privacy Policy)</span></span>
-                                <span>→</span>
-                            </a>
-                            <div class="profile-menu-row" onclick="handleProfileLogout()"
-                                style="background:#fff;padding:14px;border-radius:14px;border:1px solid #FECACA;cursor:pointer;font-weight:700;color:#DC2626;display:flex;align-items:center;justify-content:space-between">
-                                <span>🚪 ലോഗ് ഔട്ട് / അക്കൗണ്ട് മാറ്റാം</span>
-                                <span>→</span>
+                                </div>
+                                <span style="background:#F1F5F9;padding:4px 9px;border-radius:8px;font-size:11px;color:#475569;font-weight:800">തുറക്കുക ›</span>
                             </div>
                         </div>
                     </div>
