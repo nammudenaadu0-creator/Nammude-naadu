@@ -7516,13 +7516,6 @@
             </div>
             ` : '')}
             <div class="fb-about-item">
-              <span class="fb-about-icon">🆔</span>
-              <div>
-                <div class="fb-about-label">നമ്മുടെ നാട് സിറ്റിസൺ ID</div>
-                <div class="fb-about-val" style="font-family:monospace;color:#1877F2;font-weight:800">${escapeHtml(user.id || ('usr_' + cleanId) || 'usr_citizen')}</div>
-              </div>
-            </div>
-            <div class="fb-about-item">
               <span class="fb-about-icon">📍</span>
               <div>
                 <div class="fb-about-label">വാസസ്ഥലം / ലൊക്കേഷൻ</div>
@@ -7748,13 +7741,6 @@
             <div>
               <div class="fb-about-label">മൊബൈൽ നമ്പർ (സുരക്ഷ)</div>
               <div class="fb-about-val" style="color:#64748B;font-weight:700">🔒 സ്വകാര്യ നമ്പർ (സുരക്ഷിതം - മറ്റുള്ളവർക്ക് കാണാൻ കഴിയില്ല)</div>
-            </div>
-          </div>
-          <div class="fb-about-item">
-            <span class="fb-about-icon">🆔</span>
-            <div>
-              <div class="fb-about-label">നമ്മുടെ നാട് സിറ്റിസൺ ID</div>
-              <div class="fb-about-val" style="font-family:monospace;color:#1877F2;font-weight:800">${escapeHtml(APP_STATE.currentUser.id || ('usr_' + cleanId) || 'usr_citizen')}</div>
             </div>
           </div>
           <div class="fb-about-item">
@@ -7985,13 +7971,7 @@
     if (phoneEl) phoneEl.textContent = displayPhone;
 
     if (idBadgeEl) {
-      const cleanId = (user.id || '').replace(/^usr_me_/, '').replace(/^usr_/, '');
-      if (cleanId) {
-        idBadgeEl.textContent = `ID: ${cleanId}`;
-        idBadgeEl.style.display = 'inline-block';
-      } else {
-        idBadgeEl.style.display = 'none';
-      }
+      idBadgeEl.style.display = 'none';
     }
 
     if (bioEl) {
@@ -8446,7 +8426,7 @@
     phoneLookupDebounce = setTimeout(async () => {
       if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.fetchUserProfile === 'function') {
         if (statusEl) {
-          statusEl.textContent = '🔍 ക്ലൗഡ് പ്രൊഫൈൽ പരിശോധിക്കുന്നു...';
+          statusEl.textContent = '🔍 വിവരങ്ങൾ പരിശോധിക്കുന്നു...';
           statusEl.style.color = '#64748B';
           statusEl.style.display = 'block';
         }
@@ -8477,13 +8457,13 @@
           }
 
           if (statusEl) {
-            statusEl.textContent = `✨ "${cloud.name || 'സുഹൃത്ത്'}" എന്ന പേരിലുള്ള ക്ലൗഡ് പ്രൊഫൈൽ കണ്ടെത്തി!`;
+            statusEl.textContent = `✨ "${cloud.name || 'സുഹൃത്ത്'}" പ്രൊഫൈൽ കണ്ടെത്തി!`;
             statusEl.style.color = '#0E7043';
             statusEl.style.display = 'block';
           }
         } else {
           if (statusEl) {
-            statusEl.textContent = '🆕 പുതിയ സിറ്റിസൺ ID: usr_' + digits;
+            statusEl.textContent = '✨ പുതിയ അംഗം, സ്വാഗതം!';
             statusEl.style.color = '#0284C7';
             statusEl.style.display = 'block';
           }
