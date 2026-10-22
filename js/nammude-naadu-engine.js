@@ -82,6 +82,7 @@
         'nn_jobs',
         'nn_rentals',
         'nn_chats_store',
+        'nn_chats_meta',
         'nn_blood_requests',
         'nn_services',
         'nn_user_profile',
@@ -93,8 +94,13 @@
       keysToRemove.forEach(k => {
         try { localStorage.removeItem(k); } catch (_) {}
       });
-      localStorage.setItem('nn_fresh_start_clean_v2', 'true');
-      console.info('🧹 [Nammude Naadu] All local profiles & storage cleared. Fresh state initialized.');
+      localStorage.setItem('nn_fresh_start_clean_v3', 'true');
+      if (typeof APP_STATE !== 'undefined') {
+        APP_STATE.chats = {};
+        APP_STATE.chatMeta = {};
+        APP_STATE.cloudProfiles = [];
+      }
+      console.info('🧹 [Nammude Naadu] All local profiles, chats & storage cleared. Fresh state initialized.');
       if (reload && typeof window !== 'undefined' && window.location) {
         window.location.reload();
       }
@@ -102,9 +108,9 @@
   }
   window.resetAppToFreshState = resetAppToFreshState;
 
-  // Run one-time clean-slate purge on startup to remove any old registered profiles
+  // Run one-time clean-slate purge on startup to remove any old registered profiles & chats
   try {
-    if (!localStorage.getItem('nn_fresh_start_clean_v2')) {
+    if (!localStorage.getItem('nn_fresh_start_clean_v3')) {
       resetAppToFreshState(false);
     }
   } catch (_) {}
@@ -689,7 +695,15 @@
       }
       Object.keys(APP_STATE.chats || {}).forEach(k => {
         if (Array.isArray(APP_STATE.chats[k])) {
-          APP_STATE.chats[k] = APP_STATE.chats[k].filter(m => !m.id || !String(m.id).startsWith('msg_ctx_'));
+          APP_STATE.chats[k] = APP_STATE.chats[k].filter(m => m && m.text && m.text !== '[deleted]' && !String(m.id).startsWith('msg_ctx_'));
+          if (APP_STATE.chats[k].length === 0) {
+            delete APP_STATE.chats[k];
+          }
+        }
+      });
+      Object.keys(APP_STATE.chatMeta || {}).forEach(k => {
+        if (!APP_STATE.chats[k] || APP_STATE.chats[k].length === 0) {
+          delete APP_STATE.chatMeta[k];
         }
       });
       if (typeof reconcileChatThreads === 'function') {
@@ -2862,13 +2876,21 @@
 
     if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.subscribeChatThread === 'function') {
       window._activeChatUnsubscribe = window.NN_SUPABASE_SERVICES.subscribeChatThread(chatKey, (cloudMsgs) => {
-        if (Array.isArray(cloudMsgs) && cloudMsgs.length > 0) {
+        if (Array.isArray(cloudMsgs)) {
+          if (!APP_STATE.chats[chatKey]) APP_STATE.chats[chatKey] = [];
+
+          if (cloudMsgs.length === 0) {
+            APP_STATE.chats[chatKey] = (APP_STATE.chats[chatKey] || []).filter(m => m && m.text && m.text !== '[deleted]');
+            saveChats();
+            renderChatMessages();
+            return;
+          }
+
           const myId = APP_STATE.currentUser.id;
           const myCleanPhone = normalizePhone(APP_STATE.currentUser.phone);
 
-          if (!APP_STATE.chats[chatKey]) APP_STATE.chats[chatKey] = [];
-
           cloudMsgs.forEach(m => {
+            if (!m || !m.text || m.text === '[deleted]') return;
             const mPhone = normalizePhone(m.senderPhone || m.sender_phone);
             const isMe = m.sender === 'me' || (m.senderId && m.senderId === myId) || (myCleanPhone && mPhone && mPhone === myCleanPhone);
             const exists = APP_STATE.chats[chatKey].some(local => local.id === m.id || (local.timestamp === m.timestamp && local.text === m.text));
@@ -2929,7 +2951,7 @@
     if (!box || !APP_STATE.activeChatRecipient) return;
 
     const chatKey = APP_STATE.activeChatRecipient.key;
-    const thread = APP_STATE.chats[chatKey] || [];
+    const thread = (APP_STATE.chats[chatKey] || []).filter(m => m && m.text && m.text !== '[deleted]');
     const myId = (APP_STATE.currentUser && APP_STATE.currentUser.id) || 'local_user';
 
     if (thread.length === 0) {
@@ -3927,14 +3949,13 @@
       reconcileChatThreads();
     }
 
-    // Gather all chat keys from APP_STATE.chats and APP_STATE.chatMeta
+    // Gather all chat keys with active messages
     const allKeys = Array.from(new Set([
       ...Object.keys(APP_STATE.chats || {}),
       ...Object.keys(APP_STATE.chatMeta || {})
     ])).filter(k => {
-      const msgs = (APP_STATE.chats && APP_STATE.chats[k]) || [];
-      const meta = (APP_STATE.chatMeta && APP_STATE.chatMeta[k]);
-      return msgs.length > 0 || meta;
+      const msgs = ((APP_STATE.chats && APP_STATE.chats[k]) || []).filter(m => m && m.text && m.text !== '[deleted]');
+      return msgs.length > 0;
     });
 
     // Sort active threads by latest message / timestamp descending

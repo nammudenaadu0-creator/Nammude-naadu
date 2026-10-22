@@ -1142,13 +1142,18 @@
         .eq('chat_key', chatKey)
         .order('created_at', { ascending: true })
         .then(({ data, error }) => {
-          if (!error && Array.isArray(data) && data.length > 0) {
-            console.info('📥 [Supabase] Loaded past thread messages:', data.length);
+          if (!error && Array.isArray(data)) {
+            const validRows = data.filter(m => m && m.text && m.text.trim() && m.text !== '[deleted]' && m.chat_key !== 'purged_archive_cleared');
+            if (validRows.length === 0) {
+              onMessagesUpdate([]);
+              return;
+            }
+            console.info('📥 [Supabase] Loaded past thread messages:', validRows.length);
             const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser.id : '';
             const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone) 
               ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
 
-            const mapped = data.map(m => {
+            const mapped = validRows.map(m => {
               const mPhone = (m.sender_phone ? String(m.sender_phone).replace(/\D/g, '').slice(-10) : '');
               const isMe = (m.sender_id === myId) || (myPhone && mPhone && mPhone === myPhone);
               return {
@@ -1175,12 +1180,17 @@
           .eq('chat_key', chatKey)
           .order('created_at', { ascending: true })
           .then(({ data, error }) => {
-            if (!error && Array.isArray(data) && data.length > 0) {
+            if (!error && Array.isArray(data)) {
+              const validRows = data.filter(m => m && m.text && m.text.trim() && m.text !== '[deleted]' && m.chat_key !== 'purged_archive_cleared');
+              if (validRows.length === 0) {
+                onMessagesUpdate([]);
+                return;
+              }
               const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser.id : '';
               const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone) 
                 ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
 
-              const mapped = data.map(m => {
+              const mapped = validRows.map(m => {
                 const mPhone = (m.sender_phone ? String(m.sender_phone).replace(/\D/g, '').slice(-10) : '');
                 const isMe = (m.sender_id === myId) || (myPhone && mPhone && mPhone === myPhone);
                 return {
