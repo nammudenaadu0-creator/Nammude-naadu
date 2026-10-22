@@ -24,6 +24,7 @@
   let servicesChannel = null;
 
   const chatSubscribers = new Map(); // chatKey -> Set of callbacks
+  const SESSION_CLIENT_ID = 'sess_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
 
   function initSupabase() {
     if (client) return client;
@@ -702,18 +703,15 @@
     if (!payload || !payload.chatKey || !payload.msgObj) return;
     const { chatKey, msgObj, metaObj } = payload;
 
+    // Ignore duplicate if this exact browser tab was the sender (already locally rendered)
+    if (msgObj.sessionId && msgObj.sessionId === SESSION_CLIENT_ID) {
+      return;
+    }
+
     const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser.id : '';
     const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone)
       ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
     const senderPhone = (msgObj.senderPhone ? String(msgObj.senderPhone).replace(/\D/g, '').slice(-10) : '');
-
-    // Ignore duplicate of own message
-    if (myId && msgObj.senderId && msgObj.senderId === myId) {
-      return;
-    }
-    if (myPhone && senderPhone && myPhone === senderPhone && myPhone !== '9847012345' && myPhone !== '9847000000') {
-      return;
-    }
 
     // Verify recipient so 1-on-1 chats only go to the intended participant
     const recPhone = (metaObj && metaObj.recipientPhone ? String(metaObj.recipientPhone).replace(/\D/g, '').slice(-10) : '');
@@ -725,6 +723,7 @@
     const isForMe = (!metaObj) ||
       (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.key === chatKey) ||
       (myPhone && recPhone && myPhone === recPhone) ||
+      (myPhone && senderPhone && myPhone === senderPhone) ||
       (myId && recId && myId === recId) ||
       (myPhone && chatKey.includes(myPhone)) ||
       (cleanMyId && chatKey.includes(cleanMyId)) ||
@@ -779,6 +778,13 @@
         const isCurrentChatActive = activeKey === chatKey || (activePhone && incomingSenderPhone && activePhone === incomingSenderPhone);
 
         if (APP_STATE.activeChatRecipient && isCurrentChatActive) {
+          if (activeKey && activeKey !== chatKey) {
+            if (!APP_STATE.chats[activeKey]) APP_STATE.chats[activeKey] = [];
+            const activeExists = APP_STATE.chats[activeKey].some(m => m.id === msgObj.id || (m.timestamp === msgObj.timestamp && m.text === msgObj.text));
+            if (!activeExists) {
+              APP_STATE.chats[activeKey].push({ ...APP_STATE.chats[chatKey][APP_STATE.chats[chatKey].length - 1] });
+            }
+          }
           if (typeof renderChatMessages === 'function') {
             try { renderChatMessages(); } catch (_) {}
           }
@@ -1073,6 +1079,10 @@
     if (!chatKey || !msgObj) return false;
     initSupabase();
 
+    if (!msgObj.sessionId) {
+      msgObj.sessionId = SESSION_CLIENT_ID;
+    }
+
     if (chatChannel) {
       try {
         await chatChannel.send({
@@ -1138,10 +1148,16 @@
 
     function fetchThreadMessages() {
       if (!client) return;
-      client.from('messages')
-        .select('*')
-        .eq('chat_key', chatKey)
-        .order('created_at', { ascending: true })
+      const phones = String(chatKey).match(/\d{10}/g) || [];
+      let query = client.from('messages').select('*');
+      if (phones.length >= 2) {
+        const p1 = phones[0];
+        const p2 = phones[1];
+        query = query.or(`chat_key.eq.${chatKey},chat_key.eq.chat_${p2}_${p1},and(sender_phone.eq.${p1},recipient_phone.eq.${p2}),and(sender_phone.eq.${p2},recipient_phone.eq.${p1})`);
+      } else {
+        query = query.eq('chat_key', chatKey);
+      }
+      query.order('created_at', { ascending: true })
         .then(({ data, error }) => {
           if (!error && Array.isArray(data)) {
             const validRows = data.filter(m => m && m.text && m.text.trim() && m.text !== '[deleted]' && m.chat_key !== 'purged_archive_cleared');

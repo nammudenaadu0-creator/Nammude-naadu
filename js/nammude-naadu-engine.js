@@ -2571,12 +2571,17 @@
       let canonicalKey = '';
       if (contactPhone && myPhone && contactPhone !== myPhone) {
         canonicalKey = 'chat_' + [contactPhone, myPhone].sort().join('_');
-      } else if (contactPhone && !myPhone) {
-        canonicalKey = 'chat_' + contactPhone;
-      } else if (contactId && contactId !== myId) {
-        canonicalKey = computeChatKey(myId, myPhone, APP_STATE.currentUser?.name, contactId, contactPhone, contactName);
       } else {
-        canonicalKey = keys.find(k => k.startsWith('chat_') && k !== ('chat_' + myPhone)) || keys[0];
+        const multiPartKey = keys.find(k => k.startsWith('chat_') && k.split('_').length >= 3);
+        if (multiPartKey) {
+          canonicalKey = multiPartKey;
+        } else if (contactId && contactId !== myId) {
+          canonicalKey = computeChatKey(myId, myPhone, APP_STATE.currentUser?.name, contactId, contactPhone, contactName);
+        } else if (contactPhone && myId) {
+          canonicalKey = computeChatKey(myId, myPhone, APP_STATE.currentUser?.name, contactId, contactPhone, contactName);
+        } else {
+          canonicalKey = keys.find(k => k.startsWith('chat_') && k !== ('chat_' + myPhone)) || keys[0];
+        }
       }
 
       const needsMigration = keys.length > 1 || (keys[0] !== canonicalKey);
@@ -2708,7 +2713,8 @@
       const phones = String(resolvedKey).match(/\d{10}/g) || String(chatKey).match(/\d{10}/g) || [];
       const myCleanPhone = normalizePhone(APP_STATE.currentUser?.phone);
       if (phones.length > 0) {
-        phone = phones.find(p => p !== myCleanPhone) || phones[0];
+        const otherPhone = phones.find(p => p !== myCleanPhone);
+        phone = otherPhone || (phones[0] !== myCleanPhone ? phones[0] : '');
       }
     }
 
@@ -2741,10 +2747,13 @@
 
     if (!chatKey && safePhone) {
       const cleanPhone = normalizePhone(safePhone);
-      if (cleanPhone) {
+      const myClean = normalizePhone(APP_STATE.currentUser?.phone);
+      if (cleanPhone && myClean && cleanPhone !== myClean) {
+        chatKey = 'chat_' + [cleanPhone, myClean].sort().join('_');
+      } else if (cleanPhone) {
         const existingKey = Object.keys(APP_STATE.chats || {}).find(k => {
           const meta = APP_STATE.chatMeta && APP_STATE.chatMeta[k];
-          return (meta && normalizePhone(meta.phone) === cleanPhone) || (k.includes(cleanPhone));
+          return (meta && normalizePhone(meta.phone) === cleanPhone) || (k.includes(cleanPhone) && k.split('_').length >= 3);
         });
         if (existingKey) {
           chatKey = existingKey;
@@ -2774,6 +2783,14 @@
       id: recipientId || existingMeta.recipientId || '',
       key: chatKey
     };
+    if (!APP_STATE.activeChatRecipient.phone && chatKey) {
+      const pMatch = chatKey.match(/\d{10}/g);
+      if (pMatch && pMatch.length > 0) {
+        const myClean = normalizePhone(APP_STATE.currentUser?.phone);
+        const otherP = pMatch.find(p => p !== myClean);
+        if (otherP) APP_STATE.activeChatRecipient.phone = otherP;
+      }
+    }
 
     APP_STATE.chatMeta[chatKey] = {
       name: APP_STATE.activeChatRecipient.name,
