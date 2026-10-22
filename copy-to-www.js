@@ -16,7 +16,8 @@ const filesToCopy = [
     'admin.html',
     'privacy-policy.html',
     'manifest.json',
-    'sw.js'
+    'sw.js',
+    'version.json'
 ];
 
 function minifyCss(css) {

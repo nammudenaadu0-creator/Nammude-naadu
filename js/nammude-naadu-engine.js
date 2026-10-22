@@ -9115,6 +9115,119 @@
   }
   window.renderHomeScreen = renderHomeScreen;
 
+  // ==============================================================
+  // 17. IN-APP INSTANT AUTO-UPDATE ENGINE (ZERO MANUAL RE-INSTALL)
+  // ==============================================================
+  const APP_BUILD_INFO = {
+    versionCode: 2,
+    versionName: "1.0.2",
+    buildDate: "2026-10-22"
+  };
+  window.APP_BUILD_INFO = APP_BUILD_INFO;
+
+  // Global pending update payload
+  window._PENDING_UPDATE_DATA = null;
+
+  async function checkAppUpdates(silent = true) {
+    try {
+      // Version check endpoint: GitHub raw JSON (always live) or local fallback
+      const endpoints = [
+        'https://raw.githubusercontent.com/nammudenaadu0-creator/Nammude-naadu/main/version.json?t=' + Date.now(),
+        'https://nammudenaadu0-creator.github.io/Nammude-naadu/version.json?t=' + Date.now(),
+        './version.json?t=' + Date.now()
+      ];
+
+      let updateData = null;
+      for (const url of endpoints) {
+        try {
+          const res = await fetch(url, { cache: 'no-store' });
+          if (res.ok) {
+            updateData = await res.json();
+            if (updateData && updateData.versionCode) break;
+          }
+        } catch (_) {}
+      }
+
+      if (!updateData || !updateData.versionCode) {
+        if (!silent) {
+          showToast('അപ്‌ഡേറ്റ് വിവരങ്ങൾ ലഭ്യമായില്ല. ദയവായി ഇന്റർനെറ്റ് പരിശോധിക്കുക.');
+        }
+        return;
+      }
+
+      window._PENDING_UPDATE_DATA = updateData;
+
+      // Update version badge in profile if element exists
+      const profVer = document.getElementById('profCurrentAppVersion');
+      if (profVer) {
+        profVer.textContent = 'വേർഷൻ v' + APP_BUILD_INFO.versionName;
+      }
+
+      if (updateData.versionCode > APP_BUILD_INFO.versionCode) {
+        // A newer version is available!
+        const modal = document.getElementById('modal-app-update');
+        if (modal) {
+          const titleEl = document.getElementById('appUpdateTitle');
+          if (titleEl) titleEl.textContent = updateData.title || 'പുതിയ അപ്‌ഡേറ്റ് ലഭ്യമാണ്!';
+
+          const verPill = document.getElementById('appUpdateVersionPill');
+          if (verPill) verPill.textContent = 'Version ' + (updateData.versionName || updateData.versionCode);
+
+          const notesList = document.getElementById('appUpdateNotesList');
+          if (notesList) {
+            if (Array.isArray(updateData.releaseNotes)) {
+              notesList.innerHTML = updateData.releaseNotes.map(n => `<div style="margin-bottom:6px;display:flex;align-items:flex-start;gap:6px"><span>•</span><span>${escapeHtml(n)}</span></div>`).join('');
+            } else if (typeof updateData.releaseNotes === 'string') {
+              notesList.innerHTML = escapeHtml(updateData.releaseNotes).replace(/\n/g, '<br>');
+            } else {
+              notesList.innerHTML = 'പുതിയ വേഗതയും ബഗ് പരിഹാരങ്ങളും ഉൾപ്പെടുത്തിയിരിക്കുന്നു.';
+            }
+          }
+
+          openModal('modal-app-update');
+        } else if (!silent) {
+          showToast('പുതിയ അപ്‌ഡേറ്റ് ലഭ്യമാണ്: v' + updateData.versionName);
+        }
+      } else {
+        // Already on latest
+        if (!silent) {
+          showToast('നിങ്ങൾ ഏറ്റവും പുതിയ വേർഷനാണ് ഉപയോഗിക്കുന്നത് (v' + APP_BUILD_INFO.versionName + ') ✅');
+        }
+      }
+    } catch (e) {
+      if (!silent) {
+        showToast('അപ്‌ഡേറ്റ് ചെക്ക് ചെയ്യുന്നതിൽ തടസ്സമുണ്ടായി.');
+      }
+    }
+  }
+  window.checkAppUpdates = checkAppUpdates;
+
+  function triggerAppUpdateDownload() {
+    const data = window._PENDING_UPDATE_DATA || {};
+    const apkUrl = data.apkUrl || 'https://github.com/nammudenaadu0-creator/Nammude-naadu/raw/main/NammudeNaadu.apk';
+
+    showToast('ഡൗൺലോഡ് ആരംഭിക്കുന്നു... പുതിയ വേർഷൻ ഓവർറൈറ്റ് ചെയ്യാം 🚀');
+
+    // Close update modal after 600ms
+    setTimeout(() => {
+      closeModal('modal-app-update');
+    }, 600);
+
+    // Direct download trigger
+    try {
+      const a = document.createElement('a');
+      a.href = apkUrl;
+      a.download = 'NammudeNaadu.apk';
+      a.target = '_blank';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => document.body.removeChild(a), 1000);
+    } catch (_) {
+      window.open(apkUrl, '_blank');
+    }
+  }
+  window.triggerAppUpdateDownload = triggerAppUpdateDownload;
+
   document.addEventListener('DOMContentLoaded', () => {
     try { localStorage.removeItem('nn_is_admin'); } catch (_) {}
     initData();
@@ -9129,6 +9242,11 @@
         requestNotificationPermission();
       }
     }, 1200);
+
+    // Auto-check for in-app updates after 3.5 seconds
+    setTimeout(() => {
+      checkAppUpdates(true);
+    }, 3500);
 
     // Register service worker if available
     if ('serviceWorker' in navigator) {
