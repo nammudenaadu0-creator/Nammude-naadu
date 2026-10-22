@@ -6772,11 +6772,18 @@
       });
     }
 
-    // Step C: Sort by Distance Ascending
-    filtered.sort((a, b) => a.dist - b.dist);
+    // Step C: Sort strictly by Distance Ascending (Nearest people first)
+    filtered.sort((a, b) => {
+      const distA = typeof a.dist === 'number' ? a.dist : (parseFloat(a.dist) || 0);
+      const distB = typeof b.dist === 'number' ? b.dist : (parseFloat(b.dist) || 0);
+      return distA - distB;
+    });
 
     // Step D: Apply Strict Radius Filter
-    let inRadiusItems = (maxRadius >= 1000) ? filtered : filtered.filter(item => item.dist <= maxRadius);
+    let inRadiusItems = (maxRadius >= 1000) ? filtered : filtered.filter(item => {
+      const d = typeof item.dist === 'number' ? item.dist : (parseFloat(item.dist) || 0);
+      return d <= maxRadius;
+    });
 
     // Update Counter Stat Pill
     const countBadge = document.getElementById('nearbyFoundCountText');
@@ -6825,12 +6832,11 @@
                 <span>${item.icon}</span>
                 <span>${escapeHtml(item.subtitle)}</span>
               </div>
-              <div style="font-size:11.5px;color:#059669;font-weight:800;margin-top:4px;display:flex;align-items:center;gap:6px">
+              <div style="font-size:11.5px;color:#059669;font-weight:800;margin-top:4px;display:flex;align-items:center;gap:4px">
                 <span style="background:#ECFDF5;border:1px solid #A7F3D0;padding:2px 8px;border-radius:8px;display:inline-flex;align-items:center;gap:4px">
                   <span>📍</span>
                   <span>${item.dist < 1 ? (Math.round(item.dist * 1000) + ' മീറ്റർ അകലെ') : (item.dist + ' km അകലെ')}</span>
                 </span>
-                <span style="font-size:10.5px;color:#64748B;font-weight:600">🔒 സ്വകാര്യ ലൊക്കേഷൻ</span>
               </div>
             </div>
           </div>
