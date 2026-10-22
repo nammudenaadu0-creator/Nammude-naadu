@@ -772,6 +772,13 @@
 
   function saveChats() {
     try {
+      if (APP_STATE.chats) {
+        Object.keys(APP_STATE.chats).forEach(k => {
+          if (Array.isArray(APP_STATE.chats[k])) {
+            APP_STATE.chats[k].sort((a, b) => (Number(a.timestamp) || 0) - (Number(b.timestamp) || 0));
+          }
+        });
+      }
       localStorage.setItem('nn_chats_store', JSON.stringify(APP_STATE.chats || {}));
       if (APP_STATE.chatMeta) {
         localStorage.setItem('nn_chats_meta', JSON.stringify(APP_STATE.chatMeta));
@@ -3003,7 +3010,10 @@
     if (!box || !APP_STATE.activeChatRecipient) return;
 
     const chatKey = APP_STATE.activeChatRecipient.key;
-    const thread = (APP_STATE.chats[chatKey] || []).filter(m => m && m.text && m.text !== '[deleted]');
+    const rawThread = (APP_STATE.chats[chatKey] || []).filter(m => m && m.text && m.text !== '[deleted]');
+    rawThread.sort((a, b) => (Number(a.timestamp) || 0) - (Number(b.timestamp) || 0));
+    APP_STATE.chats[chatKey] = rawThread;
+    const thread = rawThread;
     const myId = (APP_STATE.currentUser && APP_STATE.currentUser.id) || 'local_user';
 
     if (thread.length === 0) {
@@ -3079,6 +3089,9 @@
 
     box.innerHTML = messagesHtml;
     box.scrollTop = box.scrollHeight;
+    requestAnimationFrame(() => {
+      if (box) box.scrollTop = box.scrollHeight;
+    });
   }
 
   function sendChatMessage() {
@@ -3115,6 +3128,7 @@
       sender: 'me',
       status: 'sent'
     });
+    APP_STATE.chats[chatKey].sort((a, b) => (Number(a.timestamp) || 0) - (Number(b.timestamp) || 0));
 
     if (input) input.value = '';
     if (APP_STATE.chatMeta && APP_STATE.chatMeta[chatKey]) {
@@ -3242,6 +3256,7 @@
     };
 
     APP_STATE.chats[chatKey].push({ ...msgObj, sender: 'me' });
+    APP_STATE.chats[chatKey].sort((a, b) => (Number(a.timestamp) || 0) - (Number(b.timestamp) || 0));
     if (APP_STATE.chatMeta && APP_STATE.chatMeta[chatKey]) {
       APP_STATE.chatMeta[chatKey].updatedAt = Date.now();
     }
@@ -4019,13 +4034,17 @@
     });
 
     // Sort active threads by latest message / timestamp descending
-    allKeys.sort((a, b) => {
-      const threadA = (APP_STATE.chats && APP_STATE.chats[a]) || [];
-      const threadB = (APP_STATE.chats && APP_STATE.chats[b]) || [];
-      const timeA = threadA.length ? (threadA[threadA.length - 1].timestamp || 0) : ((APP_STATE.chatMeta && APP_STATE.chatMeta[a]?.updatedAt) || 0);
-      const timeB = threadB.length ? (threadB[threadB.length - 1].timestamp || 0) : ((APP_STATE.chatMeta && APP_STATE.chatMeta[b]?.updatedAt) || 0);
-      return timeB - timeA;
-    });
+    const getThreadLatestTimestamp = (k) => {
+      const msgs = (APP_STATE.chats && APP_STATE.chats[k]) || [];
+      let latestT = 0;
+      for (let i = 0; i < msgs.length; i++) {
+        const t = Number(msgs[i].timestamp) || 0;
+        if (t > latestT) latestT = t;
+      }
+      return latestT || ((APP_STATE.chatMeta && APP_STATE.chatMeta[k]?.updatedAt) || 0);
+    };
+
+    allKeys.sort((a, b) => getThreadLatestTimestamp(b) - getThreadLatestTimestamp(a));
 
     // Apply category & search filtering for active threads
     const filteredKeys = allKeys.filter(k => {

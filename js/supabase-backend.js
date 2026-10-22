@@ -768,6 +768,7 @@
           time: msgObj.time || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           timestamp: msgObj.timestamp || Date.now()
         });
+        APP_STATE.chats[chatKey].sort((a, b) => (Number(a.timestamp) || 0) - (Number(b.timestamp) || 0));
 
         if (!APP_STATE.chatMeta) APP_STATE.chatMeta = {};
         if (!APP_STATE.chatMeta[chatKey] || metaObj) {
