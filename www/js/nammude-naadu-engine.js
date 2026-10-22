@@ -2718,7 +2718,7 @@
 
     if (thread.length === 0) {
       box.innerHTML = `
-        <div style="text-align:center;padding:26px 18px;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);border-radius:20px;margin:24px auto;max-width:320px;box-shadow:0 4px 16px rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.04)">
+        <div style="text-align:center;padding:26px 18px;background:#FFFFFF;border-radius:20px;margin:24px auto;max-width:320px;box-shadow:0 4px 16px rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.06)">
           <div style="width:58px;height:58px;border-radius:50%;background:#DCF8C6;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:28px;box-shadow:0 3px 8px rgba(0,0,0,0.08)">💬</div>
           <div style="font-weight:800;font-size:15px;color:#111B21">${escapeHtml(APP_STATE.activeChatRecipient.name)}</div>
           <p style="font-size:12px;color:#667781;margin:6px 0 0;line-height:1.5">നേരിട്ടുള്ള തത്സമയ സംഭാഷണം ആരംഭിക്കൂ. സന്ദേശങ്ങൾ ഇൻസ്റ്റന്റായി കൈമാറുന്നു.</p>

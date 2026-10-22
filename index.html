@@ -54,7 +54,7 @@
                     <img src="assets/icon-512.png" alt="നമ്മുടെ നാട് ലോഗോ"
                         style="width:96px;height:96px;border-radius:24px;box-shadow:0 14px 35px rgba(0,0,0,0.55);border:2.5px solid rgba(255,255,255,0.4);object-fit:cover;margin-bottom:2px">
                     <div
-                        style="background:rgba(255,255,255,0.18);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,0.3);display:inline-flex;align-items:center;gap:6px;margin-bottom:2px">
+                        style="background:rgba(255,255,255,0.22);padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,0.35);display:inline-flex;align-items:center;gap:6px;margin-bottom:2px">
                         <span style="font-size:16px">🌴</span>
                         <span style="color:#FFFFFF;font-weight:800;font-size:12px;letter-spacing:0.5px">കേരളത്തിന്റെ
                             സ്വന്തം കമ്മ്യൂണിറ്റി ആപ്പ്</span>
@@ -467,51 +467,67 @@
                     </div>
 
                     <!-- POPULAR VEHICLES & TRANSPORT SECTION -->
-                    <div style="margin: 12px 16px 6px;background:linear-gradient(135deg, #0F172A 0%, #1E293B 100%);border-radius:18px;padding:12px 14px;color:#fff;box-shadow:0 4px 15px rgba(15,23,42,0.15)">
+                    <div
+                        style="margin: 12px 16px 6px;background:linear-gradient(135deg, #0F172A 0%, #1E293B 100%);border-radius:18px;padding:12px 14px;color:#fff;box-shadow:0 4px 15px rgba(15,23,42,0.15)">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
                             <div style="display:flex;align-items:center;gap:6px">
                                 <span style="font-size:18px">🚗</span>
                                 <div>
-                                    <div style="font-size:13.5px;font-weight:900;color:#F8FAFC">വാഹനങ്ങൾ & ട്രാവൽസ്</div>
-                                    <div style="font-size:10px;color:#94A3B8">ഓട്ടോ, ടാക്സി, ലോറി, JCB & എല്ലാ വാഹനങ്ങളും</div>
+                                    <div style="font-size:13.5px;font-weight:900;color:#F8FAFC">വാഹനങ്ങൾ & ട്രാവൽസ്
+                                    </div>
+                                    <div style="font-size:10px;color:#94A3B8">ഓട്ടോ, ടാക്സി, ലോറി, JCB & എല്ലാ
+                                        വാഹനങ്ങളും</div>
                                 </div>
                             </div>
-                            <button onclick="openAddVehicleModal()" style="background:linear-gradient(135deg, #10B981 0%, #059669 100%);color:#fff;border:none;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:4px">
+                            <button onclick="openAddVehicleModal()"
+                                style="background:linear-gradient(135deg, #10B981 0%, #059669 100%);color:#fff;border:none;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:4px">
                                 <span>➕ വാഹനം ചേർക്കാം</span>
                             </button>
                         </div>
-                        <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch">
-                            <button onclick="filterServiceAndOpen('auto')" style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
+                        <div
+                            style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch">
+                            <button onclick="filterServiceAndOpen('auto')"
+                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
                                 <span>🛺</span><span>ഓട്ടോ</span>
                             </button>
-                            <button onclick="filterServiceAndOpen('taxi')" style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
+                            <button onclick="filterServiceAndOpen('taxi')"
+                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
                                 <span>🚕</span><span>ടാക്സി കാർ</span>
                             </button>
-                            <button onclick="filterServiceAndOpen('traveller')" style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
+                            <button onclick="filterServiceAndOpen('traveller')"
+                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
                                 <span>🚐</span><span>ട്രാവലർ/വാൻ</span>
                             </button>
-                            <button onclick="filterServiceAndOpen('bus')" style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
+                            <button onclick="filterServiceAndOpen('bus')"
+                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
                                 <span>🚌</span><span>ടൂറിസ്റ്റ് ബസ്</span>
                             </button>
-                            <button onclick="filterServiceAndOpen('pickup')" style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
+                            <button onclick="filterServiceAndOpen('pickup')"
+                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
                                 <span>🛻</span><span>പിക്കപ്പ്</span>
                             </button>
-                            <button onclick="filterServiceAndOpen('goodsauto')" style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
+                            <button onclick="filterServiceAndOpen('goodsauto')"
+                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
                                 <span>🛺📦</span><span>ഗുഡ്സ് ഓട്ടോ</span>
                             </button>
-                            <button onclick="filterServiceAndOpen('jeep')" style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
+                            <button onclick="filterServiceAndOpen('jeep')"
+                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
                                 <span>🚙</span><span>ജീപ്പ് 4x4</span>
                             </button>
-                            <button onclick="filterServiceAndOpen('lorry')" style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
+                            <button onclick="filterServiceAndOpen('lorry')"
+                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
                                 <span>🚛</span><span>ലോറി/ടിപ്പർ</span>
                             </button>
-                            <button onclick="filterServiceAndOpen('jcb')" style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
+                            <button onclick="filterServiceAndOpen('jcb')"
+                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
                                 <span>🚜</span><span>JCB</span>
                             </button>
-                            <button onclick="filterServiceAndOpen('crane')" style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
+                            <button onclick="filterServiceAndOpen('crane')"
+                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
                                 <span>🏗️</span><span>ക്രെയിൻ</span>
                             </button>
-                            <button onclick="filterServiceAndOpen('ambulance')" style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
+                            <button onclick="filterServiceAndOpen('ambulance')"
+                                style="flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:6px 10px;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer">
                                 <span>🚑</span><span>ആംബുലൻസ്</span>
                             </button>
                         </div>
@@ -1108,11 +1124,14 @@
                             </button>
                         </div>
                         <div id="profOtherActionBtns" class="fb-profile-action-btns" style="display:none;gap:10px">
-                            <button class="fb-action-btn-primary" id="profOtherChatActionBtn" onclick="openChatFromProfile()" style="flex:1;justify-content:center;padding:12px;font-size:13.5px">
+                            <button class="fb-action-btn-primary" id="profOtherChatActionBtn"
+                                onclick="openChatFromProfile()"
+                                style="flex:1;justify-content:center;padding:12px;font-size:13.5px">
                                 <span>💬</span>
                                 <span>ആപ്പ് വഴി ചാറ്റ് ചെയ്യാം</span>
                             </button>
-                            <a id="profOtherCallActionBtn" href="tel:" class="fb-action-btn-secondary" style="flex:1;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;background:#F0FDF4;color:#047857;border-color:#86EFAC;font-weight:800;font-size:13.5px;padding:12px">
+                            <a id="profOtherCallActionBtn" href="tel:" class="fb-action-btn-secondary"
+                                style="flex:1;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;background:#F0FDF4;color:#047857;border-color:#86EFAC;font-weight:800;font-size:13.5px;padding:12px">
                                 <span>📞</span>
                                 <span>വിളിക്കാം</span>
                             </a>
@@ -1178,7 +1197,8 @@
 
                             <a href="privacy-policy.html" target="_blank" class="profile-menu-row"
                                 style="background:#fff;padding:14px;border-radius:14px;border:1px solid #E5E7EB;margin-bottom:8px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:#0F172A">
-                                <span style="display:flex;align-items:center;gap:8px"><span>🛡️</span> <span>പ്രൈവസി പോളിസി
+                                <span style="display:flex;align-items:center;gap:8px"><span>🛡️</span> <span>പ്രൈവസി
+                                        പോളിസി
                                         (Privacy Policy)</span></span>
                                 <span>→</span>
                             </a>
@@ -1281,7 +1301,8 @@
                 </div>
                 <span>ചാറ്റ് ബോക്സ്</span>
             </button>
-            <button class="nav-item" data-page="profile" onclick="if(window._viewingOtherUser){window._viewingOtherUser=null;} navTo('profile')">
+            <button class="nav-item" data-page="profile"
+                onclick="if(window._viewingOtherUser){window._viewingOtherUser=null;} navTo('profile')">
                 <span style="font-size:20px">👤</span>
                 <span>പ്രൊഫൈൽ</span>
             </button>
@@ -1300,7 +1321,8 @@
                     <span>❮</span>
                     <span>ചാറ്റ് ലിസ്റ്റ്</span>
                 </button>
-                <div class="chat-recipient-info" onclick="viewChatRecipientFullProfile()" style="cursor:pointer" title="ഇവരുടെ മുഴുവൻ പ്രൊഫൈൽ പേജ് കാണാം">
+                <div class="chat-recipient-info" onclick="viewChatRecipientFullProfile()" style="cursor:pointer"
+                    title="ഇവരുടെ മുഴുവൻ പ്രൊഫൈൽ പേജ് കാണാം">
                     <div style="position:relative;flex-shrink:0;display:inline-block">
                         <img id="chatRecipientAvatar" src="" class="chat-recipient-avatar"
                             onerror="this.src=window.DEFAULT_USER_AVATAR||''" alt="Avatar">
@@ -1309,14 +1331,18 @@
                     <div style="min-width:0">
                         <div style="display:flex;align-items:center;gap:6px">
                             <div class="chat-recipient-name" id="chatRecipientName">Chat</div>
-                            <span style="font-size:10px;background:rgba(255,255,255,0.22);color:#fff;padding:1px 6px;border-radius:10px;font-weight:700">പ്രൊഫൈൽ ➔</span>
+                            <span
+                                style="font-size:10px;background:rgba(255,255,255,0.22);color:#fff;padding:1px 6px;border-radius:10px;font-weight:700">പ്രൊഫൈൽ
+                                ➔</span>
                         </div>
                         <div class="chat-recipient-status">● ഓൺലൈൻ • പ്രൊഫൈൽ കാണാൻ തൊടുക</div>
                     </div>
                 </div>
 
                 <div class="chat-header-actions">
-                    <button class="chat-call-btn" onclick="viewChatRecipientFullProfile()" style="background:rgba(255,255,255,0.18);border:none;color:#fff;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer" title="മുഴുവൻ പ്രൊഫൈൽ പേജ് കാണാം">
+                    <button class="chat-call-btn" onclick="viewChatRecipientFullProfile()"
+                        style="background:rgba(255,255,255,0.18);border:none;color:#fff;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer"
+                        title="മുഴുവൻ പ്രൊഫൈൽ പേജ് കാണാം">
                         <span style="font-size:16px">👤</span>
                     </button>
                     <a id="chatRecipientCallBtn" href="tel:" class="chat-call-btn" title="വിളിക്കുക">
@@ -1511,7 +1537,8 @@
     <div id="modal-add-service" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-add-service')">
         <div class="modal-sheet">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-                <h3 style="margin:0;font-size:16px;font-weight:800;color:#0F172A" id="modalServiceTitle">🛠️ സേവനം രജിസ്റ്റർ ചെയ്യാം</h3>
+                <h3 style="margin:0;font-size:16px;font-weight:800;color:#0F172A" id="modalServiceTitle">🛠️ സേവനം
+                    രജിസ്റ്റർ ചെയ്യാം</h3>
                 <button onclick="closeModal('modal-add-service')"
                     style="background:none;border:none;font-size:20px;cursor:pointer">✕</button>
             </div>
@@ -1519,57 +1546,84 @@
             <!-- REGISTRATION MODE SELECTOR: GENERAL SERVICE vs VEHICLE / TRANSPORT -->
             <div style="display:flex;gap:6px;background:#F1F5F9;padding:4px;border-radius:12px;margin-bottom:12px">
                 <button type="button" id="regModeServiceBtn" onclick="setRegServiceMode('general')"
-                    style="flex:1;padding:8px 10px;border:none;border-radius:8px;font-size:12px;font-weight:800;cursor:pointer;background:#fff;color:#0F172A;box-shadow:0 1px 3px rgba(0,0,0,0.08);transition:all 0.15s">🛠️ തൊഴിൽ / സർവീസ്</button>
+                    style="flex:1;padding:8px 10px;border:none;border-radius:8px;font-size:12px;font-weight:800;cursor:pointer;background:#fff;color:#0F172A;box-shadow:0 1px 3px rgba(0,0,0,0.08);transition:all 0.15s">🛠️
+                    തൊഴിൽ / സർവീസ്</button>
                 <button type="button" id="regModeVehicleBtn" onclick="setRegServiceMode('vehicle')"
-                    style="flex:1;padding:8px 10px;border:none;border-radius:8px;font-size:12px;font-weight:800;cursor:pointer;background:transparent;color:#64748B;transition:all 0.15s">🚗 വാഹനം / ട്രാൻസ്പോർട്ട്</button>
+                    style="flex:1;padding:8px 10px;border:none;border-radius:8px;font-size:12px;font-weight:800;cursor:pointer;background:transparent;color:#64748B;transition:all 0.15s">🚗
+                    വാഹനം / ട്രാൻസ്പോർട്ട്</button>
             </div>
 
             <form onsubmit="submitServiceRegistration(event)" style="display:flex;flex-direction:column;gap:12px">
                 <!-- NAME -->
                 <div>
-                    <label style="font-size:12px;font-weight:700;color:#374151" id="regServiceNameLabel">പൂർണ്ണ നാമം / സ്ഥാപനപ്പേര്</label>
+                    <label style="font-size:12px;font-weight:700;color:#374151" id="regServiceNameLabel">പൂർണ്ണ നാമം /
+                        സ്ഥാപനപ്പേര്</label>
                     <input type="text" id="regServiceName" required placeholder="Eg: മനോജ് കുമാർ / റോയൽ ട്രാവൽസ്"
                         style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
                 </div>
 
                 <!-- DEDICATED VEHICLE PICKER (SHOWN IN VEHICLE MODE) -->
-                <div id="regVehiclePickerSection" style="display:none;background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:14px;padding:12px;margin-bottom:2px">
+                <div id="regVehiclePickerSection"
+                    style="display:none;background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:14px;padding:12px;margin-bottom:2px">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
                         <span style="font-size:12px;font-weight:800;color:#065F46">🚗 വാഹന തരം തിരഞ്ഞെടുക്കുക:</span>
                         <span style="font-size:10px;color:#047857;font-weight:700">1-ടാപ്പ് സെലക്ഷൻ 👇</span>
                     </div>
-                    <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch">
-                        <button type="button" class="vehicle-type-chip active" onclick="selectVehicleTypeInForm('auto', 'ഓട്ടോറിക്ഷ', '🛺')" style="flex-shrink:0;background:#fff;border:1.5px solid #10B981;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#065F46;cursor:pointer;display:flex;align-items:center;gap:4px">
+                    <div
+                        style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch">
+                        <button type="button" class="vehicle-type-chip active"
+                            onclick="selectVehicleTypeInForm('auto', 'ഓട്ടോറിക്ഷ', '🛺')"
+                            style="flex-shrink:0;background:#fff;border:1.5px solid #10B981;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#065F46;cursor:pointer;display:flex;align-items:center;gap:4px">
                             <span>🛺</span><span>ഓട്ടോ</span>
                         </button>
-                        <button type="button" class="vehicle-type-chip" onclick="selectVehicleTypeInForm('taxi', 'ടാക്സി കാർ', '🚕')" style="flex-shrink:0;background:#fff;border:1px solid #CBD5E1;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#334155;cursor:pointer;display:flex;align-items:center;gap:4px">
+                        <button type="button" class="vehicle-type-chip"
+                            onclick="selectVehicleTypeInForm('taxi', 'ടാക്സി കാർ', '🚕')"
+                            style="flex-shrink:0;background:#fff;border:1px solid #CBD5E1;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#334155;cursor:pointer;display:flex;align-items:center;gap:4px">
                             <span>🚕</span><span>ടാക്സി</span>
                         </button>
-                        <button type="button" class="vehicle-type-chip" onclick="selectVehicleTypeInForm('traveller', 'വാൻ & ട്രാവലർ', '🚐')" style="flex-shrink:0;background:#fff;border:1px solid #CBD5E1;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#334155;cursor:pointer;display:flex;align-items:center;gap:4px">
+                        <button type="button" class="vehicle-type-chip"
+                            onclick="selectVehicleTypeInForm('traveller', 'വാൻ & ട്രാവലർ', '🚐')"
+                            style="flex-shrink:0;background:#fff;border:1px solid #CBD5E1;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#334155;cursor:pointer;display:flex;align-items:center;gap:4px">
                             <span>🚐</span><span>ട്രാവലർ</span>
                         </button>
-                        <button type="button" class="vehicle-type-chip" onclick="selectVehicleTypeInForm('bus', 'ടൂറിസ്റ്റ് ബസ്', '🚌')" style="flex-shrink:0;background:#fff;border:1px solid #CBD5E1;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#334155;cursor:pointer;display:flex;align-items:center;gap:4px">
+                        <button type="button" class="vehicle-type-chip"
+                            onclick="selectVehicleTypeInForm('bus', 'ടൂറിസ്റ്റ് ബസ്', '🚌')"
+                            style="flex-shrink:0;background:#fff;border:1px solid #CBD5E1;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#334155;cursor:pointer;display:flex;align-items:center;gap:4px">
                             <span>🚌</span><span>ബസ്</span>
                         </button>
-                        <button type="button" class="vehicle-type-chip" onclick="selectVehicleTypeInForm('pickup', 'പിക്കപ്പ് വാൻ', '🛻')" style="flex-shrink:0;background:#fff;border:1px solid #CBD5E1;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#334155;cursor:pointer;display:flex;align-items:center;gap:4px">
+                        <button type="button" class="vehicle-type-chip"
+                            onclick="selectVehicleTypeInForm('pickup', 'പിക്കപ്പ് വാൻ', '🛻')"
+                            style="flex-shrink:0;background:#fff;border:1px solid #CBD5E1;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#334155;cursor:pointer;display:flex;align-items:center;gap:4px">
                             <span>🛻</span><span>പിക്കപ്പ്</span>
                         </button>
-                        <button type="button" class="vehicle-type-chip" onclick="selectVehicleTypeInForm('goodsauto', 'ഗുഡ്സ് ഓട്ടോ', '🛺📦')" style="flex-shrink:0;background:#fff;border:1px solid #CBD5E1;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#334155;cursor:pointer;display:flex;align-items:center;gap:4px">
+                        <button type="button" class="vehicle-type-chip"
+                            onclick="selectVehicleTypeInForm('goodsauto', 'ഗുഡ്സ് ഓട്ടോ', '🛺📦')"
+                            style="flex-shrink:0;background:#fff;border:1px solid #CBD5E1;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#334155;cursor:pointer;display:flex;align-items:center;gap:4px">
                             <span>🛺📦</span><span>ഗുഡ്സ്</span>
                         </button>
-                        <button type="button" class="vehicle-type-chip" onclick="selectVehicleTypeInForm('jeep', 'ജീപ്പ് 4x4', '🚙')" style="flex-shrink:0;background:#fff;border:1px solid #CBD5E1;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#334155;cursor:pointer;display:flex;align-items:center;gap:4px">
+                        <button type="button" class="vehicle-type-chip"
+                            onclick="selectVehicleTypeInForm('jeep', 'ജീപ്പ് 4x4', '🚙')"
+                            style="flex-shrink:0;background:#fff;border:1px solid #CBD5E1;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#334155;cursor:pointer;display:flex;align-items:center;gap:4px">
                             <span>🚙</span><span>ജീപ്പ്</span>
                         </button>
-                        <button type="button" class="vehicle-type-chip" onclick="selectVehicleTypeInForm('lorry', 'ലോറി / ടിപ്പർ', '🚛')" style="flex-shrink:0;background:#fff;border:1px solid #CBD5E1;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#334155;cursor:pointer;display:flex;align-items:center;gap:4px">
+                        <button type="button" class="vehicle-type-chip"
+                            onclick="selectVehicleTypeInForm('lorry', 'ലോറി / ടിപ്പർ', '🚛')"
+                            style="flex-shrink:0;background:#fff;border:1px solid #CBD5E1;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#334155;cursor:pointer;display:flex;align-items:center;gap:4px">
                             <span>🚛</span><span>ലോറി/ടിപ്പർ</span>
                         </button>
-                        <button type="button" class="vehicle-type-chip" onclick="selectVehicleTypeInForm('jcb', 'ജെസിബി / ഹിറ്റാച്ചി', '🚜')" style="flex-shrink:0;background:#fff;border:1px solid #CBD5E1;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#334155;cursor:pointer;display:flex;align-items:center;gap:4px">
+                        <button type="button" class="vehicle-type-chip"
+                            onclick="selectVehicleTypeInForm('jcb', 'ജെസിബി / ഹിറ്റാച്ചി', '🚜')"
+                            style="flex-shrink:0;background:#fff;border:1px solid #CBD5E1;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#334155;cursor:pointer;display:flex;align-items:center;gap:4px">
                             <span>🚜</span><span>JCB</span>
                         </button>
-                        <button type="button" class="vehicle-type-chip" onclick="selectVehicleTypeInForm('crane', 'ക്രെയിൻ / റിക്കവറി', '🏗️')" style="flex-shrink:0;background:#fff;border:1px solid #CBD5E1;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#334155;cursor:pointer;display:flex;align-items:center;gap:4px">
+                        <button type="button" class="vehicle-type-chip"
+                            onclick="selectVehicleTypeInForm('crane', 'ക്രെയിൻ / റിക്കവറി', '🏗️')"
+                            style="flex-shrink:0;background:#fff;border:1px solid #CBD5E1;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#334155;cursor:pointer;display:flex;align-items:center;gap:4px">
                             <span>🏗️</span><span>ക്രെയിൻ</span>
                         </button>
-                        <button type="button" class="vehicle-type-chip" onclick="selectVehicleTypeInForm('ambulance', 'ആംബുലൻസ് 24x7', '🚑')" style="flex-shrink:0;background:#fff;border:1px solid #CBD5E1;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#334155;cursor:pointer;display:flex;align-items:center;gap:4px">
+                        <button type="button" class="vehicle-type-chip"
+                            onclick="selectVehicleTypeInForm('ambulance', 'ആംബുലൻസ് 24x7', '🚑')"
+                            style="flex-shrink:0;background:#fff;border:1px solid #CBD5E1;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#334155;cursor:pointer;display:flex;align-items:center;gap:4px">
                             <span>🚑</span><span>ആംബുലൻസ്</span>
                         </button>
                     </div>
@@ -1577,7 +1631,8 @@
 
                 <!-- SERVICE / TRADE (DYNAMIC LABEL & SUGGESTIONS) -->
                 <div style="position:relative">
-                    <label style="font-size:12px;font-weight:700;color:#374151" id="regServiceTradeLabel">തൊഴിൽ / സേവനം</label>
+                    <label style="font-size:12px;font-weight:700;color:#374151" id="regServiceTradeLabel">തൊഴിൽ /
+                        സേവനം</label>
                     <input type="text" id="regServiceTrade" required autocomplete="off"
                         placeholder="Eg: പ്ലംബർ, ഇലക്ട്രീഷ്യൻ, CCTV, അലുമിനിയം ഫാബ്രിക്കേഷൻ..."
                         oninput="handleServiceTradeInput(this.value)" onfocus="handleServiceTradeInput(this.value)"
@@ -1588,14 +1643,17 @@
                 </div>
 
                 <!-- VEHICLE-SPECIFIC EXTENDED FIELDS (SHOWN IN VEHICLE MODE) -->
-                <div id="regVehicleSpecificFields" style="display:none;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:14px;padding:12px;display:none;flex-direction:column;gap:10px">
+                <div id="regVehicleSpecificFields"
+                    style="display:none;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:14px;padding:12px;display:none;flex-direction:column;gap:10px">
                     <div style="font-size:12px;font-weight:800;color:#0F172A;display:flex;align-items:center;gap:6px">
                         <span>📋 വാഹന വിവരങ്ങൾ</span>
                     </div>
                     <div style="display:flex;gap:8px">
                         <div style="flex:1">
-                            <label style="font-size:11px;font-weight:700;color:#475569">വാഹന മോഡൽ / സീറ്റിംഗ് / കപ്പാസിറ്റി</label>
-                            <input type="text" id="regVehicleModel" placeholder="Eg: 3 സീറ്റർ / ഇന്നോവ 7 സീറ്റർ / 16 ടൺ ടിപ്പർ"
+                            <label style="font-size:11px;font-weight:700;color:#475569">വാഹന മോഡൽ / സീറ്റിംഗ് /
+                                കപ്പാസിറ്റി</label>
+                            <input type="text" id="regVehicleModel"
+                                placeholder="Eg: 3 സീറ്റർ / ഇന്നോവ 7 സീറ്റർ / 16 ടൺ ടിപ്പർ"
                                 style="width:100%;padding:9px;border:1px solid #D1D5DB;border-radius:8px;font-size:12px;outline:none;margin-top:3px">
                         </div>
                         <div style="flex:1">
@@ -1605,20 +1663,28 @@
                         </div>
                     </div>
                     <div>
-                        <label style="font-size:11px;font-weight:700;color:#475569">പ്രധാന സ്റ്റാൻഡ് / പാർക്കിംഗ് ലൊക്കേഷൻ</label>
-                        <input type="text" id="regVehicleStand" placeholder="Eg: ടൗൺ ഓട്ടോ സ്റ്റാൻഡ്, റെയിൽവേ സ്റ്റേഷൻ, മെയിൻ ജംഗ്ഷൻ"
+                        <label style="font-size:11px;font-weight:700;color:#475569">പ്രധാന സ്റ്റാൻഡ് / പാർക്കിംഗ്
+                            ലൊക്കേഷൻ</label>
+                        <input type="text" id="regVehicleStand"
+                            placeholder="Eg: ടൗൺ ഓട്ടോ സ്റ്റാൻഡ്, റെയിൽവേ സ്റ്റേഷൻ, മെയിൻ ജംഗ്ഷൻ"
                             style="width:100%;padding:9px;border:1px solid #D1D5DB;border-radius:8px;font-size:12px;outline:none;margin-top:3px">
                     </div>
                     <div>
-                        <label style="font-size:11px;font-weight:700;color:#475569">ഓട്ടത്തിന്റെ പരിധി / റൂട്ടുകൾ</label>
-                        <input type="text" id="regVehicleRoute" placeholder="Eg: ലോക്കൽ ഓട്ടം & ദീർഘദൂര യാത്രകൾ (24 മണിക്കൂറും)"
+                        <label style="font-size:11px;font-weight:700;color:#475569">ഓട്ടത്തിന്റെ പരിധി /
+                            റൂട്ടുകൾ</label>
+                        <input type="text" id="regVehicleRoute"
+                            placeholder="Eg: ലോക്കൽ ഓട്ടം & ദീർഘദൂര യാത്രകൾ (24 മണിക്കൂറും)"
                             style="width:100%;padding:9px;border:1px solid #D1D5DB;border-radius:8px;font-size:12px;outline:none;margin-top:3px">
                     </div>
                     <div>
-                        <label style="font-size:11px;font-weight:700;color:#475569">ബേസ് നിരക്ക് / കിലോമീറ്റർ നിരക്ക് (₹ Base Rate / Km)</label>
-                        <div style="display:flex;align-items:center;margin-top:3px;border:1px solid #D1D5DB;border-radius:8px;overflow:hidden;background:#fff">
-                            <span style="background:#F0FDF4;color:#047857;padding:8px 12px;font-weight:800;font-size:14px;border-right:1px solid #BBF7D0">₹</span>
-                            <input type="text" id="regVehicleRate" placeholder="Eg: 50 മിനിമം അല്ലെങ്കിൽ കിലോമീറ്ററിന് ₹15"
+                        <label style="font-size:11px;font-weight:700;color:#475569">ബേസ് നിരക്ക് / കിലോമീറ്റർ നിരക്ക് (₹
+                            Base Rate / Km)</label>
+                        <div
+                            style="display:flex;align-items:center;margin-top:3px;border:1px solid #D1D5DB;border-radius:8px;overflow:hidden;background:#fff">
+                            <span
+                                style="background:#F0FDF4;color:#047857;padding:8px 12px;font-weight:800;font-size:14px;border-right:1px solid #BBF7D0">₹</span>
+                            <input type="text" id="regVehicleRate"
+                                placeholder="Eg: 50 മിനിമം അല്ലെങ്കിൽ കിലോമീറ്ററിന് ₹15"
                                 onblur="if(this.value) this.value = formatPrice(this.value)"
                                 style="flex:1;padding:8px;border:none;font-size:12px;outline:none">
                         </div>
@@ -1713,9 +1779,12 @@
 
                 <!-- VISITING FEE -->
                 <div>
-                    <label style="font-size:12px;font-weight:700;color:#374151">വിസിറ്റിംഗ് നിരക്ക് / ഫീസ് (₹ Visiting Fee / Rate)</label>
-                    <div style="display:flex;align-items:center;margin-top:4px;border:1px solid #D1D5DB;border-radius:10px;overflow:hidden;background:#fff">
-                        <span style="background:#F0FDF4;color:#047857;padding:10px 14px;font-weight:800;font-size:15px;border-right:1px solid #BBF7D0">₹</span>
+                    <label style="font-size:12px;font-weight:700;color:#374151">വിസിറ്റിംഗ് നിരക്ക് / ഫീസ് (₹ Visiting
+                        Fee / Rate)</label>
+                    <div
+                        style="display:flex;align-items:center;margin-top:4px;border:1px solid #D1D5DB;border-radius:10px;overflow:hidden;background:#fff">
+                        <span
+                            style="background:#F0FDF4;color:#047857;padding:10px 14px;font-weight:800;font-size:15px;border-right:1px solid #BBF7D0">₹</span>
                         <input type="text" id="regServiceFee"
                             placeholder="Eg: 200 വിസിറ്റിംഗ് നിരക്ക് അല്ലെങ്കിൽ ചർച്ച ചെയ്യാം"
                             onblur="if(this.value) this.value = formatPrice(this.value)"
@@ -1865,8 +1934,10 @@
                     </div>
                     <div style="flex:1">
                         <label style="font-size:12px;font-weight:700;color:#374151">ശമ്പളം / വേതനം (₹ Salary)</label>
-                        <div style="display:flex;align-items:center;margin-top:3px;border:1px solid #CBD5E1;border-radius:10px;overflow:hidden;background:#fff">
-                            <span style="background:#F0F9FF;color:#0284C7;padding:9px 12px;font-weight:800;font-size:14px;border-right:1px solid #E0F2FE">₹</span>
+                        <div
+                            style="display:flex;align-items:center;margin-top:3px;border:1px solid #CBD5E1;border-radius:10px;overflow:hidden;background:#fff">
+                            <span
+                                style="background:#F0F9FF;color:#0284C7;padding:9px 12px;font-weight:800;font-size:14px;border-right:1px solid #E0F2FE">₹</span>
                             <input type="text" id="postJobSalary" placeholder="Eg: 18,000 - 22,000"
                                 onblur="if(this.value) this.value = formatPrice(this.value)"
                                 style="flex:1;padding:9px 12px;border:none;font-size:13px;outline:none">
@@ -2152,9 +2223,12 @@
 
                     <div style="display:flex;gap:8px">
                         <div style="flex:1">
-                            <label style="font-size:12px;font-weight:700;color:#374151">വിസിറ്റിംഗ് ചാർജ് (₹ Fee)</label>
-                            <div style="display:flex;align-items:center;margin-top:3px;border:1px solid #CBD5E1;border-radius:10px;overflow:hidden;background:#fff">
-                                <span style="background:#F0FDF4;color:#047857;padding:9px 12px;font-weight:800;font-size:14px;border-right:1px solid #BBF7D0">₹</span>
+                            <label style="font-size:12px;font-weight:700;color:#374151">വിസിറ്റിംഗ് ചാർജ് (₹
+                                Fee)</label>
+                            <div
+                                style="display:flex;align-items:center;margin-top:3px;border:1px solid #CBD5E1;border-radius:10px;overflow:hidden;background:#fff">
+                                <span
+                                    style="background:#F0FDF4;color:#047857;padding:9px 12px;font-weight:800;font-size:14px;border-right:1px solid #BBF7D0">₹</span>
                                 <input type="text" id="adminSvcFee" placeholder="Eg: 200 / സംസാരിക്കാം"
                                     onblur="if(this.value) this.value = formatPrice(this.value)"
                                     style="flex:1;padding:9px 12px;border:none;font-size:13px;outline:none">
@@ -2299,7 +2373,7 @@
                                 </div>
                             </div>
                             <div
-                                style="position:absolute;top:8px;right:10px;background:rgba(0,0,0,0.55);color:#fff;padding:2px 8px;border-radius:10px;font-size:9.5px;font-weight:800;z-index:4;backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.25)">
+                                style="position:absolute;top:8px;right:10px;background:rgba(0,0,0,0.7);color:#fff;padding:2px 8px;border-radius:10px;font-size:9.5px;font-weight:800;z-index:4;border:1px solid rgba(255,255,255,0.25)">
                                 ✨ പ്രധാന അറിയിപ്പ് / Ads
                             </div>
                         </div>
@@ -2660,14 +2734,18 @@
                 <button onclick="closeModal('modal-register-donor')"
                     style="background:none;border:none;font-size:20px;cursor:pointer">✕</button>
             </div>
-            
+
             <!-- STATUTORY LEGAL NOTICE (NATIONAL BLOOD POLICY & DRUGS AND COSMETICS ACT) -->
-            <div style="background:#FEF2F2;border:1.5px solid #FECACA;border-radius:12px;padding:10px 12px;margin-bottom:10px;font-size:11.5px;color:#991B1B;line-height:1.45">
+            <div
+                style="background:#FEF2F2;border:1.5px solid #FECACA;border-radius:12px;padding:10px 12px;margin-bottom:10px;font-size:11.5px;color:#991B1B;line-height:1.45">
                 <div style="font-weight:800;display:flex;align-items:center;gap:6px;margin-bottom:3px;color:#DC2626">
                     <span>⚖️ നിയമപരമായ നിബന്ധനകൾ (Statutory Guidelines)</span>
                 </div>
-                <div>• ദേശീയ രക്തനയവും ഇന്ത്യൻ ഡ്രഗ്സ് & കോസ്മെറ്റിക്സ് ആക്ടും പ്രകാരം രക്തദാനം <b>പൂർണ്ണമായും സൗജന്യവും സന്നദ്ധവുമാണ്</b>. രക്തത്തിനായി പണമോ മറ്റ് പാരിതോഷികങ്ങളോ വാങ്ങുന്നതും ആവശ്യപ്പെടുന്നതും നിയമവിരുദ്ധമാണ്.</div>
-                <div style="margin-top:3px">• <b>യോഗ്യത:</b> പ്രായം 18-65 | ഭാരം 45kg+ | അവസാനമായി രക്തം നൽകി കുറഞ്ഞത് 3 മാസം കഴിഞ്ഞിരിക്കണം.</div>
+                <div>• ദേശീയ രക്തനയവും ഇന്ത്യൻ ഡ്രഗ്സ് & കോസ്മെറ്റിക്സ് ആക്ടും പ്രകാരം രക്തദാനം <b>പൂർണ്ണമായും സൗജന്യവും
+                        സന്നദ്ധവുമാണ്</b>. രക്തത്തിനായി പണമോ മറ്റ് പാരിതോഷികങ്ങളോ വാങ്ങുന്നതും ആവശ്യപ്പെടുന്നതും
+                    നിയമവിരുദ്ധമാണ്.</div>
+                <div style="margin-top:3px">• <b>യോഗ്യത:</b> പ്രായം 18-65 | ഭാരം 45kg+ | അവസാനമായി രക്തം നൽകി കുറഞ്ഞത് 3
+                    മാസം കഴിഞ്ഞിരിക്കണം.</div>
             </div>
 
             <form onsubmit="submitDonorRegistration(event)" style="display:flex;flex-direction:column;gap:10px">
@@ -2712,9 +2790,13 @@
                 </div>
 
                 <!-- MANDATORY STATUTORY CONSENT CHECKBOX -->
-                <label style="display:flex;align-items:flex-start;gap:8px;font-size:11px;color:#374151;cursor:pointer;margin-top:2px">
-                    <input type="checkbox" id="regDonorConsent" required style="width:16px;height:16px;accent-color:#DC2626;margin-top:1px;flex-shrink:0">
-                    <span>ഞാൻ <b>പൂർണ്ണ സമ്മതത്തോടെ സന്നദ്ധ രക്തദാതാവായി</b> രജിസ്റ്റർ ചെയ്യുന്നു. രക്തത്തിന് പണമോ യാത്രാച്ചെലവോ ആവശ്യപ്പെടില്ലെന്നും മേൽപ്പറഞ്ഞ നിയമപരമായ യോഗ്യതകൾ പാലിക്കുന്നുവെന്നും സാക്ഷ്യപ്പെടുത്തുന്നു.</span>
+                <label
+                    style="display:flex;align-items:flex-start;gap:8px;font-size:11px;color:#374151;cursor:pointer;margin-top:2px">
+                    <input type="checkbox" id="regDonorConsent" required
+                        style="width:16px;height:16px;accent-color:#DC2626;margin-top:1px;flex-shrink:0">
+                    <span>ഞാൻ <b>പൂർണ്ണ സമ്മതത്തോടെ സന്നദ്ധ രക്തദാതാവായി</b> രജിസ്റ്റർ ചെയ്യുന്നു. രക്തത്തിന് പണമോ
+                        യാത്രാച്ചെലവോ ആവശ്യപ്പെടില്ലെന്നും മേൽപ്പറഞ്ഞ നിയമപരമായ യോഗ്യതകൾ പാലിക്കുന്നുവെന്നും
+                        സാക്ഷ്യപ്പെടുത്തുന്നു.</span>
                 </label>
 
                 <button type="submit"
@@ -2760,8 +2842,10 @@
                 </div>
                 <div>
                     <label style="font-size:12px;font-weight:700">വാടക തുക / വില (₹ Rent Rate or Price)</label>
-                    <div style="display:flex;align-items:center;margin-top:4px;border:1px solid #D1D5DB;border-radius:10px;overflow:hidden;background:#fff">
-                        <span style="background:#F0FDF4;color:#047857;padding:10px 14px;font-weight:800;font-size:15px;border-right:1px solid #BBF7D0">₹</span>
+                    <div
+                        style="display:flex;align-items:center;margin-top:4px;border:1px solid #D1D5DB;border-radius:10px;overflow:hidden;background:#fff">
+                        <span
+                            style="background:#F0FDF4;color:#047857;padding:10px 14px;font-weight:800;font-size:15px;border-right:1px solid #BBF7D0">₹</span>
                         <input type="text" id="rentRate" required
                             placeholder="Eg: 8,000 / മാസം or 500 / ദിവസം or 1,200 / ട്രിപ്പ്"
                             onblur="if(this.value) this.value = formatPrice(this.value)"
@@ -2882,8 +2966,7 @@
                     <div>
                         <h3 style="margin:0;color:#0F172A;font-size:17.5px;font-weight:900" data-i18n="editProfile">
                             എന്റെ പ്രൊഫൈൽ എഡിറ്റ് ചെയ്യാം</h3>
-                        <div id="profFormIdBadge"
-                            style="font-size:11px;color:#059669;font-weight:800;margin-top:1px">
+                        <div id="profFormIdBadge" style="font-size:11px;color:#059669;font-weight:800;margin-top:1px">
                             ✓ വെരിഫൈഡ് സിറ്റിസൺ പ്രൊഫൈൽ</div>
                     </div>
                 </div>
@@ -3251,9 +3334,9 @@
                     style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.75) 100%)">
                 </div>
                 <button type="button" onclick="closeModal('modal-ad-detail')"
-                    style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;width:32px;height:32px;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(6px);z-index:5">✕</button>
+                    style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.75);color:#fff;border:none;border-radius:50%;width:32px;height:32px;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5">✕</button>
                 <div
-                    style="position:absolute;top:14px;left:14px;background:rgba(16,185,129,0.9);color:#fff;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:800;backdrop-filter:blur(6px);z-index:5">
+                    style="position:absolute;top:14px;left:14px;background:#059669;color:#fff;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:800;z-index:5">
                     ✨ ഔദ്യോഗിക അറിയിപ്പ് / Ads
                 </div>
                 <div style="position:absolute;bottom:12px;left:16px;right:16px;z-index:5">

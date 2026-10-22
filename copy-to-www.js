@@ -15,7 +15,8 @@ const filesToCopy = [
     'admin.html',
     'privacy-policy.html',
     'manifest.json',
-    'sw.js'
+    'sw.js',
+    'NammudeNaadu.apk'
 ];
 
 const dirsToCopy = [
