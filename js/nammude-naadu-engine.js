@@ -9025,11 +9025,6 @@
     if (el) {
       el.style.display = 'flex';
       el.classList.add('active');
-      try {
-        if (!history.state || history.state.modalId !== modalId) {
-          history.pushState({ modalId }, '');
-        }
-      } catch (_) {}
     }
   }
   window.openModal = openModal;
@@ -9511,15 +9506,11 @@
     renderHomeScreen();
     renderCommunityFeed();
 
-    // Instant Back Button Support (Hardware Back & Browser Back - 0ms Latency)
+    // Safe Back Button Support
     window.addEventListener('popstate', () => {
       const activeModal = document.querySelector('.modal-overlay.active');
       if (activeModal) {
         closeModal(activeModal.id);
-        return;
-      }
-      if (APP_STATE.currentScreen && APP_STATE.currentScreen !== 'home') {
-        goBack();
       }
     });
 
