@@ -986,16 +986,6 @@
         splash.style.opacity = '';
         navTo('home');
 
-        // PROMPT ONBOARDING PROFILE SETUP: If user hasn't completed their profile yet (especially name, phone & blood group)
-        const profileDone = localStorage.getItem('nn_profile_completed');
-        const userPhone = APP_STATE.currentUser.phone ? APP_STATE.currentUser.phone.replace(/\D/g, '') : '';
-        const isDefaultName = !APP_STATE.currentUser.name || APP_STATE.currentUser.name === 'നാട്ടുകാരൻ';
-        if (!profileDone || !userPhone || isDefaultName) {
-          setTimeout(() => {
-            openEditProfileModal(true);
-          }, 350);
-        }
-
         // Auto-detect GPS non-blockingly upon first launch ONLY if no saved location exists
         const hasSavedLoc = localStorage.getItem('nn_curr_loc_name');
         if (!hasSavedLoc || hasSavedLoc === 'തത്സമയ ലൊക്കേഷൻ') {
@@ -1004,14 +994,6 @@
       }, 300);
     } else {
       navTo('home');
-      const profileDone = localStorage.getItem('nn_profile_completed');
-      const userPhone = APP_STATE.currentUser.phone ? APP_STATE.currentUser.phone.replace(/\D/g, '') : '';
-      const isDefaultName = !APP_STATE.currentUser.name || APP_STATE.currentUser.name === 'നാട്ടുകാരൻ';
-      if (!profileDone || !userPhone || isDefaultName) {
-        setTimeout(() => {
-          openEditProfileModal(true);
-        }, 350);
-      }
     }
   }
   window.enterAppFromSplash = enterAppFromSplash;
@@ -8903,6 +8885,14 @@
 
     const targetAvatar = APP_STATE.currentUser.avatar || DEFAULT_USER_AVATAR;
 
+    // Instantly close modal and give rapid haptic/toast feedback (0ms latency)
+    closeModal('modal-edit-profile');
+    toast(`🎉 സ്വാഗതം ${name}! വിവരങ്ങൾ വിജയകരമായി സേവ് ചെയ്തു.`);
+
+    if (typeof updateAdminUI === 'function') {
+      updateAdminUI();
+    }
+
     // Instantly update all avatar images in DOM
     ['#profileAvatarImg', '#homeHeaderAvatar', '#postingAsAvatar', '#profComposerMiniAvatar', '#desktopUserAvatar', '#desktopSidebarAvatar'].forEach(sel => {
       const el = document.querySelector(sel);
@@ -8915,32 +8905,35 @@
       if (el) el.textContent = name;
     });
 
-    // Update author name & avatar on all current user posts in feed
-    if (Array.isArray(APP_STATE.posts)) {
-      APP_STATE.posts.forEach(p => {
-        if (p.isCurrentUser || p.authorId === APP_STATE.currentUser.id || (p.authorPhone && p.authorPhone.replace(/\D/g, '').slice(-10) === cleanDigits)) {
-          p.authorName = name;
-          p.authorPhone = phone;
-          p.authorAvatar = targetAvatar;
-          p.authorLocation = loc;
-          p.authorBlood = blood;
-        }
-      });
-      savePosts();
-    }
+    // Run heavier feed updates and cloud sync asynchronously in next frame
+    requestAnimationFrame(() => {
+      renderProfileScreen();
+      updatePostingProfileBar();
+      if (APP_STATE.currentScreen === 'home') {
+        renderHomeScreen();
+      }
 
-    // Synchronize to Supabase Cloud Profiles
-    if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveUserProfile === 'function') {
-      window.NN_SUPABASE_SERVICES.saveUserProfile(APP_STATE.currentUser);
-    }
+      // Update author name & avatar on user posts in background
+      if (Array.isArray(APP_STATE.posts)) {
+        let postChanged = false;
+        APP_STATE.posts.forEach(p => {
+          if (p.isCurrentUser || p.authorId === APP_STATE.currentUser.id || (p.authorPhone && p.authorPhone.replace(/\D/g, '').slice(-10) === cleanDigits)) {
+            p.authorName = name;
+            p.authorPhone = phone;
+            p.authorAvatar = targetAvatar;
+            p.authorLocation = loc;
+            p.authorBlood = blood;
+            postChanged = true;
+          }
+        });
+        if (postChanged) savePosts();
+      }
 
-    closeModal('modal-edit-profile');
-    renderProfileScreen();
-    updatePostingProfileBar();
-    if (typeof renderCommunityFeed === 'function') renderCommunityFeed();
-    if (typeof renderHomeCommunityFeed === 'function') renderHomeCommunityFeed();
-    renderHomeScreen();
-    toast(`🎉 സ്വാഗതം ${name}! നിങ്ങളുടെ പ്രൊഫൈൽ വിവരങ്ങളും ഫോട്ടോയും അക്കൗണ്ടിൽ വിജയകരമായി ചേർത്തു.`);
+      // Synchronize to Supabase Cloud Profiles non-blockingly
+      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveUserProfile === 'function') {
+        window.NN_SUPABASE_SERVICES.saveUserProfile(APP_STATE.currentUser);
+      }
+    });
   }
   window.submitProfileUpdate = submitProfileUpdate;
 
