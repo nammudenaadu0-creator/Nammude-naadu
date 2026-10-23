@@ -2226,7 +2226,7 @@
             </a>
           ` : ''}
         </div>
-        <button onclick="closeModal('modal-author-profile'); viewUserProfile({ id: '${authorId || ''}', name: '${safeEscapedName}', phone: '${safeEscapedPhone}', avatar: '${avatar}', location: '${(loc || '').replace(/'/g, "\\'")}', bloodGroup: '${(blood || '').replace(/'/g, "\\'")}', chatKey: '${chatKey || ''}' }, '${fromChat ? 'chat' : 'community'}')" style="width:100%;background:linear-gradient(135deg, #1877F2 0%, #2563EB 100%);color:#fff;padding:12px;border:none;border-radius:14px;font-weight:800;font-size:13.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 8px rgba(37,99,235,0.25)">
+        <button onclick="closeModal('modal-author-profile'); viewUserProfile({ id: '${authorId || ''}', name: '${safeEscapedName}', phone: '${safeEscapedPhone}', avatar: '${avatar}', location: '${(loc || '').replace(/'/g, "\\'")}', bloodGroup: '${(blood || '').replace(/'/g, "\\'")}', chatKey: '${chatKey || ''}' }, '${fromChat ? 'chat' : 'community'}')" style="width:100%;background:linear-gradient(135deg, #065F46 0%, #047857 55%, #0D9488 100%);color:#fff;padding:12px;border:none;border-radius:14px;font-weight:800;font-size:13.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 3px 12px rgba(4,120,87,0.3)">
           <span>👤</span>
           <span>മുഴുവൻ പ്രൊഫൈൽ പേജിലേക്ക് പോകാം</span>
           <span>➔</span>
@@ -3208,15 +3208,15 @@
     if (thread.length === 0) {
       box.dataset.renderedKey = chatKey;
       box.innerHTML = `
-        <div style="text-align:center;padding:26px 18px;background:#FFFFFF;border-radius:20px;margin:24px auto;max-width:320px;box-shadow:0 4px 16px rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.06)">
-          <div style="width:58px;height:58px;border-radius:50%;background:#DCF8C6;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:28px;box-shadow:0 3px 8px rgba(0,0,0,0.08)">💬</div>
-          <div style="font-weight:800;font-size:15px;color:#111B21">${escapeHtml(APP_STATE.activeChatRecipient.name)}</div>
-          <p style="font-size:12px;color:#667781;margin:6px 0 0;line-height:1.5">നേരിട്ടുള്ള തത്സമയ സംഭാഷണം ആരംഭിക്കൂ. സന്ദേശങ്ങൾ ഇൻസ്റ്റന്റായി കൈമാറുന്നു.</p>
-          <div style="margin-top:14px;font-size:11px;font-weight:700;color:#075E54;background:#DCF8C6;display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:12px">
-            <span>🔒 എൻഡ്-ടു-എൻഡ് സുരക്ഷിത ചാറ്റ്</span>
+        <div style="text-align:center;padding:28px 20px;background:#FFFFFF;border-radius:22px;margin:24px auto;max-width:320px;box-shadow:0 8px 24px rgba(6,78,59,0.06);border:1.5px solid #D1FAE5">
+          <div style="width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);border:2px solid #A7F3D0;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:30px;box-shadow:0 4px 12px rgba(16,185,129,0.15)">💬</div>
+          <div style="font-weight:900;font-size:16px;color:#0F172A">${escapeHtml(APP_STATE.activeChatRecipient.name)}</div>
+          <p style="font-size:12px;color:#64748B;margin:6px 0 0;line-height:1.5">നമ്മുടെ നാട് തത്സമയ സംഭാഷണം ആരംഭിക്കൂ. സന്ദേശങ്ങൾ ക്ലൗഡിൽ സുരക്ഷിതമാണ്.</p>
+          <div style="margin-top:14px;font-size:11px;font-weight:800;color:#065F46;background:#ECFDF5;border:1px solid #A7F3D0;display:inline-flex;align-items:center;gap:4px;padding:5px 14px;border-radius:20px">
+            <span>🌿 ലൈവ് കണക്റ്റ്</span>
           </div>
-          <div style="margin-top:12px">
-            <button type="button" onclick="toggleChatStickers(true)" style="background:#ECFDF5;border:1.5px solid #10B981;color:#047857;padding:6px 14px;border-radius:999px;font-size:11.5px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:5px">
+          <div style="margin-top:14px">
+            <button type="button" onclick="toggleChatStickers(true)" style="background:linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);border:1.5px solid #10B981;color:#065F46;padding:8px 16px;border-radius:999px;font-size:12px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 2px 6px rgba(16,185,129,0.12)">
               <span>🎭</span> <span>മലയാളം സ്റ്റിക്കർ അയക്കൂ!</span>
             </button>
           </div>
@@ -7596,14 +7596,14 @@
       b.classList.remove('active');
       b.style.background = 'none';
       b.style.fontWeight = '700';
-      b.style.color = '#65676B';
+      b.style.color = '#64748B';
       b.style.boxShadow = 'none';
     });
     if (btn) {
       btn.classList.add('active');
       btn.style.background = '#FFFFFF';
       btn.style.fontWeight = '800';
-      btn.style.color = '#1877F2';
+      btn.style.color = '#047857';
       btn.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
     }
     renderProfileDashboard(tabName);
@@ -7881,14 +7881,14 @@
             <div style="font-size:38px;margin-bottom:8px">📝</div>
             <div style="font-size:14px;font-weight:800;color:#1E293B;margin-bottom:4px">പോസ്റ്റുകളൊന്നും ഇല്ല</div>
             <div style="font-size:12px;color:#64748B;margin-bottom:14px">നിങ്ങളുടെ നാട്ടിലെ വാർത്തകളും വിശേഷങ്ങളും ആദ്യമായി പങ്കുവെക്കൂ!</div>
-            <button onclick="navTo('add')" style="background:#1877F2;color:#fff;border:none;padding:10px 20px;border-radius:12px;font-weight:800;font-size:12.5px;cursor:pointer;box-shadow:0 2px 8px rgba(24,119,242,0.3)">➕ പുതിയ പോസ്റ്റ് ഇടാം</button>
+            <button onclick="navTo('add')" style="background:linear-gradient(135deg, #065F46 0%, #047857 55%, #0D9488 100%);color:#fff;border:none;padding:10px 20px;border-radius:12px;font-weight:800;font-size:12.5px;cursor:pointer;box-shadow:0 3px 10px rgba(4,120,87,0.3)">➕ പുതിയ പോസ്റ്റ് ഇടാം</button>
           </div>
         `;
       } else {
         container.innerHTML = `
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
             <span style="font-size:13px;font-weight:800;color:#1E293B">എന്റെ പോസ്റ്റുകൾ (${myPosts.length})</span>
-            <button onclick="navTo('add')" style="background:#EFF6FF;color:#1877F2;border:1px solid #BFDBFE;padding:5px 12px;border-radius:10px;font-weight:800;font-size:11.5px;cursor:pointer">➕ പുതിയ പോസ്റ്റ്</button>
+            <button onclick="navTo('add')" style="background:#ECFDF5;color:#047857;border:1px solid #A7F3D0;padding:5px 12px;border-radius:10px;font-weight:800;font-size:11.5px;cursor:pointer">➕ പുതിയ പോസ്റ്റ്</button>
           </div>
           ${myPosts.map(p => `
             <div style="background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 4px rgba(0,0,0,0.04)">
@@ -7901,7 +7901,7 @@
                   </div>
                 </div>
                 <div style="display:flex;gap:6px">
-                  <button onclick="openEditPostModal('${p.id}')" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;border-radius:8px;padding:4px 9px;font-size:11px;font-weight:800;cursor:pointer">✏️ എഡിറ്റ്</button>
+                  <button onclick="openEditPostModal('${p.id}')" style="background:#ECFDF5;color:#047857;border:1px solid #A7F3D0;border-radius:8px;padding:4px 9px;font-size:11px;font-weight:800;cursor:pointer">✏️ എഡിറ്റ്</button>
                   <button onclick="deletePost('${p.id}', event)" style="background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;border-radius:8px;padding:4px 9px;font-size:11px;font-weight:800;cursor:pointer">🗑️</button>
                 </div>
               </div>
@@ -7923,14 +7923,14 @@
             <div style="font-size:38px;margin-bottom:8px">🖼️</div>
             <div style="font-size:14px;font-weight:800;color:#1E293B;margin-bottom:4px">ഫോട്ടോകളൊന്നും ഇല്ല</div>
             <div style="font-size:12px;color:#64748B;margin-bottom:14px">നിങ്ങളുടെ മനോഹരമായ നാട്ടുകാഴ്ചകൾ ഫോട്ടോകളോടെ പോസ്റ്റ് ചെയ്യൂ!</div>
-            <button onclick="navTo('add')" style="background:#1877F2;color:#fff;border:none;padding:10px 20px;border-radius:12px;font-weight:800;font-size:12.5px;cursor:pointer">📷 ഫോട്ടോ പോസ്റ്റ് ചെയ്യാം</button>
+            <button onclick="navTo('add')" style="background:linear-gradient(135deg, #065F46 0%, #047857 55%, #0D9488 100%);color:#fff;border:none;padding:10px 20px;border-radius:12px;font-weight:800;font-size:12.5px;cursor:pointer;box-shadow:0 3px 10px rgba(4,120,87,0.3)">📷 ഫോട്ടോ പോസ്റ്റ് ചെയ്യാം</button>
           </div>
         `;
       } else {
         container.innerHTML = `
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
             <span style="font-size:13px;font-weight:800;color:#1E293B">ഫോട്ടോ ഗാലറി (${myPostsWithPhotos.length})</span>
-            <button onclick="navTo('add')" style="background:#EFF6FF;color:#1877F2;border:1px solid #BFDBFE;padding:5px 12px;border-radius:10px;font-weight:800;font-size:11.5px;cursor:pointer">➕ ഫോട്ടോ ചേർക്കാം</button>
+            <button onclick="navTo('add')" style="background:#ECFDF5;color:#047857;border:1px solid #A7F3D0;padding:5px 12px;border-radius:10px;font-weight:800;font-size:11.5px;cursor:pointer">➕ ഫോട്ടോ ചേർക്കാം</button>
           </div>
           <div class="fb-photos-grid">
             ${myPostsWithPhotos.map(p => `
@@ -8003,7 +8003,7 @@
           </div>
 
           <div style="margin-top:14px;padding-top:12px;border-top:1px solid #E2E8F0;display:flex;justify-content:flex-end">
-            <button onclick="openEditProfileModal()" style="background:#1877F2;color:#fff;border:none;padding:8px 16px;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer">✏️ വിവരങ്ങൾ തിരുത്താം</button>
+            <button onclick="openEditProfileModal()" style="background:linear-gradient(135deg, #065F46 0%, #047857 55%, #0D9488 100%);color:#fff;border:none;padding:8px 16px;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer;box-shadow:0 2px 6px rgba(4,120,87,0.25)">✏️ വിവരങ്ങൾ തിരുത്താം</button>
           </div>
         </div>
       `;
@@ -8018,7 +8018,7 @@
           <div style="background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
               <span style="font-size:13px;font-weight:800;color:#1E293B">🛠️ എന്റെ സർവീസുകൾ (${myServices.length})</span>
-              <button onclick="openAddServiceModal()" style="background:#EFF6FF;color:#1877F2;border:1px solid #BFDBFE;padding:4px 10px;border-radius:8px;font-weight:800;font-size:11px;cursor:pointer">➕ ചേർക്കാം</button>
+              <button onclick="openAddServiceModal()" style="background:#ECFDF5;color:#047857;border:1px solid #A7F3D0;padding:4px 10px;border-radius:8px;font-weight:800;font-size:11px;cursor:pointer">➕ ചേർക്കാം</button>
             </div>
             ${myServices.length === 0 ? '<div style="font-size:12px;color:#94A3B8;text-align:center;padding:12px">സർവീസുകളൊന്നും ലിസ്റ്റ് ചെയ്തിട്ടില്ല</div>' :
               myServices.map(s => `
@@ -8037,7 +8037,7 @@
           <div style="background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
               <span style="font-size:13px;font-weight:800;color:#1E293B">💼 ഞാൻ നൽകിയ തൊഴിലുകൾ (${myJobs.length})</span>
-              <button onclick="openPostJobModal()" style="background:#EFF6FF;color:#1877F2;border:1px solid #BFDBFE;padding:4px 10px;border-radius:8px;font-weight:800;font-size:11px;cursor:pointer">➕ തൊഴിൽ നൽകാം</button>
+              <button onclick="openPostJobModal()" style="background:#ECFDF5;color:#047857;border:1px solid #A7F3D0;padding:4px 10px;border-radius:8px;font-weight:800;font-size:11px;cursor:pointer">➕ തൊഴിൽ നൽകാം</button>
             </div>
             ${myJobs.length === 0 ? '<div style="font-size:12px;color:#94A3B8;text-align:center;padding:12px">തൊഴിൽ അവസരങ്ങളൊന്നും നൽകിയിട്ടില്ല</div>' :
               myJobs.map(j => `
@@ -8056,7 +8056,7 @@
           <div style="background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
               <span style="font-size:13px;font-weight:800;color:#1E293B">🏠 എന്റെ വാടക ലിസ്റ്റിംഗുകൾ (${myRentals.length})</span>
-              <button onclick="openAddRentalModal()" style="background:#EFF6FF;color:#1877F2;border:1px solid #BFDBFE;padding:4px 10px;border-radius:8px;font-weight:800;font-size:11px;cursor:pointer">➕ ലിസ്റ്റ് ചെയ്യാം</button>
+              <button onclick="openAddRentalModal()" style="background:#ECFDF5;color:#047857;border:1px solid #A7F3D0;padding:4px 10px;border-radius:8px;font-weight:800;font-size:11px;cursor:pointer">➕ ലിസ്റ്റ് ചെയ്യാം</button>
             </div>
             ${myRentals.length === 0 ? '<div style="font-size:12px;color:#94A3B8;text-align:center;padding:12px">വാടക ഇനങ്ങളൊന്നും ലിസ്റ്റ് ചെയ്തിട്ടില്ല</div>' :
               myRentals.map(r => `

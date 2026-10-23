@@ -346,12 +346,10 @@
    REALTIME 1-ON-1 IN-APP CHAT MODAL
    ============================================================== */
 .chat-modal-sheet {
-  background: #EFEAE2;
-  background-image: 
-    radial-gradient(#dfd8cc 0.8px, transparent 0.8px),
-    radial-gradient(#dfd8cc 0.8px, #EFEAE2 0.8px);
-  background-size: 24px 24px;
-  background-position: 0 0, 12px 12px;
+  background: #F8FAFC;
+  background: radial-gradient(circle at 50% 12%, #F0FDF4 0%, #F8FAFC 55%, #ECFDF5 100%);
+  background-image: radial-gradient(rgba(14, 112, 67, 0.05) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
   border-radius: 28px 28px 0 0;
   width: 100%;
   max-width: 520px;
@@ -361,7 +359,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 -8px 35px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 -8px 35px rgba(6, 78, 59, 0.16);
 }
 
 @keyframes chatSpin {
@@ -382,7 +380,8 @@
   #modal-chat.modal-overlay {
     padding: 0 !important;
     align-items: stretch !important;
-    background: #EFEAE2 !important;
+    background: #F8FAFC !important;
+    background: radial-gradient(circle at 50% 12%, #F0FDF4 0%, #F8FAFC 55%, #ECFDF5 100%) !important;
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
@@ -419,14 +418,14 @@
 .chat-modal-header {
   padding: 12px 14px;
   padding-top: max(14px, calc(env(safe-area-inset-top, 0px) + 10px));
-  background: linear-gradient(135deg, #075E54 0%, #0E7043 100%);
+  background: linear-gradient(135deg, #064E3B 0%, #065F46 45%, #0F766E 100%);
   color: #FFFFFF;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 16px rgba(6, 78, 59, 0.2);
   z-index: 10;
   box-sizing: border-box;
 }
@@ -517,8 +516,9 @@
   width: 11px;
   height: 11px;
   border-radius: 50%;
-  background: #25D366;
-  border: 2px solid #075E54;
+  background: #10B981;
+  border: 2px solid #064E3B;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
 }
 
 .chat-recipient-name {
@@ -751,33 +751,56 @@
   transition: all 0.15s ease;
 }
 
-/* Incoming bubble - Pure White with smooth modern rounded corners */
+/* Incoming bubble - Pristine Modern White with subtle border & soft depth */
 .chat-bubble.incoming {
-  background: #FFFFFF;
-  color: #111B21;
-  border-radius: 22px 22px 22px 6px;
+  background: #FFFFFF !important;
+  color: #0F172A !important;
+  border-radius: 20px 20px 20px 4px !important;
   margin-left: 2px;
+  border: 1.5px solid rgba(226, 232, 240, 0.9) !important;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04) !important;
 }
 
 .chat-bubble.incoming::before {
   display: none;
 }
 
-/* Outgoing bubble - Signature WhatsApp / Messenger Soft Green with smooth modern rounded corners */
+.chat-bubble.incoming .chat-bubble-content {
+  color: #0F172A !important;
+  font-weight: 500 !important;
+}
+
+.chat-bubble.incoming .chat-time-text {
+  color: #64748B !important;
+}
+
+/* Outgoing bubble - Signature Nammude Naadu Emerald & Teal Luxury Gradient */
 .chat-bubble.outgoing {
-  background: #D9FDD3;
-  color: #111B21;
-  border-radius: 22px 22px 6px 22px;
+  background: linear-gradient(135deg, #065F46 0%, #047857 55%, #0D9488 100%) !important;
+  color: #FFFFFF !important;
+  border-radius: 20px 20px 4px 20px !important;
   margin-right: 2px;
+  box-shadow: 0 4px 16px rgba(4, 120, 87, 0.22) !important;
+  border: none !important;
 }
 
 .chat-bubble.outgoing::after {
   display: none;
 }
 
+.chat-bubble.outgoing .chat-bubble-content {
+  color: #FFFFFF !important;
+  font-weight: 500 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.08) !important;
+}
+
+.chat-bubble.outgoing .chat-time-text {
+  color: rgba(255, 255, 255, 0.82) !important;
+  font-weight: 600 !important;
+}
+
 .chat-bubble-content {
   font-size: 14.5px;
-  color: #111B21;
   word-break: break-word;
   white-space: pre-wrap;
 }
@@ -787,7 +810,7 @@
   align-items: center;
   justify-content: flex-end;
   gap: 3px;
-  margin-top: 2px;
+  margin-top: 3px;
   float: right;
   margin-left: 10px;
   user-select: none;
@@ -795,8 +818,6 @@
 
 .chat-time-text {
   font-size: 10.5px;
-  color: #667781;
-  font-weight: 500;
   line-height: 1;
 }
 
@@ -809,36 +830,40 @@
   align-items: center;
   margin-left: 3px;
   vertical-align: middle;
-  color: #8696A0; /* Default delivered grey */
+  color: rgba(255, 255, 255, 0.65);
   transition: color 0.2s ease;
 }
 
+.chat-bubble.incoming .chat-ticks {
+  color: #94A3B8;
+}
+
 .chat-ticks.sent {
-  color: #8696A0;
+  color: rgba(255, 255, 255, 0.7);
   letter-spacing: 0;
 }
 
 .chat-ticks.delivered {
-  color: #8696A0;
+  color: rgba(255, 255, 255, 0.85);
   letter-spacing: -2px;
 }
 
 .chat-ticks.seen {
-  color: #53BDEB; /* WhatsApp Blue Double Checkmarks */
+  color: #FDE047 !important; /* Elegant Warm Gold double checkmarks */
   letter-spacing: -2px;
-  text-shadow: 0 0 1px rgba(83, 189, 235, 0.5);
+  text-shadow: 0 0 3px rgba(253, 224, 71, 0.6) !important;
 }
 
 .chat-seen-pill {
   display: inline-flex;
   align-items: center;
   gap: 2px;
-  font-size: 9.5px;
+  font-size: 9px;
   font-weight: 800;
-  color: #0369A1;
-  background: #E0F2FE;
-  padding: 1px 5px;
-  border-radius: 6px;
+  color: #065F46;
+  background: #D1FAE5;
+  padding: 1px 6px;
+  border-radius: 8px;
   margin-left: 4px;
   line-height: 1.2;
 }
@@ -858,72 +883,78 @@
 }
 
 .quick-chip {
-  padding: 6px 14px;
+  padding: 7px 15px;
   border-radius: 20px;
   background: #FFFFFF;
-  color: #075E54;
-  border: 1px solid #D1D5DB;
-  font-size: 11.5px;
+  color: #065F46;
+  border: 1.5px solid #D1FAE5;
+  font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
   cursor: pointer;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  transition: all 0.15s ease;
+  box-shadow: 0 2px 4px rgba(6, 95, 70, 0.05);
+  transition: all 0.2s ease;
 }
 
 .quick-chip:hover {
-  background: #E7FFDB;
-  border-color: #A7F3D0;
+  background: #ECFDF5;
+  border-color: #10B981;
+  color: #047857;
+  transform: translateY(-1px);
 }
 
 .chat-input-bar {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 12px max(10px, calc(env(safe-area-inset-bottom, 0px) + 8px));
-  background: #F0F2F5;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  gap: 10px;
+  padding: 10px 14px max(12px, calc(env(safe-area-inset-bottom, 0px) + 10px));
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1.5px solid rgba(14, 112, 67, 0.12);
+  box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.04);
 }
 
 .chat-text-input {
   flex: 1;
-  padding: 11px 18px;
-  border-radius: 26px;
-  border: 1px solid #D1D5DB;
-  font-size: 14px;
+  padding: 12px 18px;
+  border-radius: 24px;
+  border: 1.5px solid #E2E8F0;
+  font-size: 14.5px;
   outline: none;
-  background: #FFFFFF;
-  color: #111B21;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  background: #F8FAFC;
+  color: #0F172A;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
   font-family: inherit;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .chat-text-input:focus {
-  border-color: #0E7043;
-  box-shadow: 0 0 0 3px rgba(14, 112, 67, 0.15);
+  border-color: #059669;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 3.5px rgba(5, 150, 105, 0.16);
 }
 
 .chat-send-btn {
-  background: linear-gradient(135deg, #059669, #0E7043);
+  background: linear-gradient(135deg, #059669 0%, #047857 50%, #0D9488 100%);
   color: #FFFFFF;
   border: none;
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  font-size: 16px;
+  font-size: 17px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 3px 8px rgba(14, 112, 67, 0.35);
-  transition: transform 0.15s ease, background 0.15s ease;
+  box-shadow: 0 4px 14px rgba(4, 120, 87, 0.38);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
   flex-shrink: 0;
 }
 
 .chat-send-btn:hover {
-  background: #008f6f;
-  transform: scale(1.04);
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(4, 120, 87, 0.45);
 }
 
 .chat-send-btn:active {
