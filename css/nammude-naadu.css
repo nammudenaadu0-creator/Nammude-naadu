@@ -4542,3 +4542,144 @@
   font-family: 'Manjari', sans-serif;
   letter-spacing: -0.2px;
 }
+
+/* ==============================================================
+   TIER-1 PRO APP AGENCY FINISH & POLISH (CRED / SWIGGY / AIRBNB LEVEL)
+   ============================================================== */
+
+/* 1. Global High-End Antialiasing & Rendering */
+html, body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+input, textarea {
+  user-select: auto;
+  -webkit-user-select: auto;
+}
+
+/* 2. Glassmorphic Luxury Bottom Navigation Bar */
+.bottom-nav {
+  background: rgba(255, 255, 255, 0.94) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border-top: 1px solid rgba(16, 185, 129, 0.2) !important;
+  border-radius: 28px 28px 0 0 !important;
+  box-shadow: 0 -8px 32px rgba(6, 78, 59, 0.08), 0 -2px 6px rgba(0, 0, 0, 0.02) !important;
+  height: 68px !important;
+  padding-bottom: max(6px, env(safe-area-inset-bottom, 0px)) !important;
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 999 !important;
+}
+
+.bottom-nav .nav-item {
+  color: #64748B !important;
+  font-weight: 700 !important;
+  font-size: 11px !important;
+  position: relative !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  padding: 6px 0 !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.bottom-nav .nav-item:active {
+  transform: scale(0.92) !important;
+}
+
+.bottom-nav .nav-item.active {
+  color: #047857 !important;
+  font-weight: 900 !important;
+}
+
+.bottom-nav .nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 8px #10B981;
+  animation: navDotPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes navDotPulse {
+  0%, 100% { opacity: 0.8; transform: translateX(-50%) scale(1); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.3); }
+}
+
+.bottom-nav .nav-add-circle {
+  background: linear-gradient(135deg, #059669 0%, #047857 50%, #064E3B 100%) !important;
+  box-shadow: 0 8px 24px rgba(5, 150, 105, 0.38), inset 0 1px 2px rgba(255, 255, 255, 0.3) !important;
+  border: 3.5px solid #FFFFFF !important;
+  width: 48px !important;
+  height: 48px !important;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.bottom-nav .nav-add-btn-wrap:active .nav-add-circle {
+  transform: scale(0.88) rotate(45deg) !important;
+}
+
+/* 3. Ultra-Smooth Touch Feedback on All Cards */
+.kerala-cat-card,
+.home-3d-business-banner,
+.home-3d-community-card,
+.service-squircle-3d,
+.home-top-provider-card,
+.nearby-person-card,
+.feed-post-card,
+.job-card-modern,
+.rental-card-modern,
+.blood-donor-card {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.kerala-cat-card:active,
+.home-3d-business-banner:active,
+.home-3d-community-card:active,
+.service-squircle-3d:active,
+.home-top-provider-card:active,
+.nearby-person-card:active,
+.feed-post-card:active {
+  transform: scale(0.97) !important;
+}
+
+/* 4. Luxury Ambient Shadows for Content Cards */
+.home-top-provider-card,
+.nearby-person-card,
+.feed-post-card {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(226, 232, 240, 0.8) !important;
+  box-shadow: 0 4px 18px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+}
+
+/* 5. Shimmer Skeleton Loading Effect */
+@keyframes nnShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-loading {
+  background: linear-gradient(90deg, #F1F5F9 25%, #E2E8F0 50%, #F1F5F9 75%);
+  background-size: 200% 100%;
+  animation: nnShimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+/* 6. Mobile Safe Areas and Viewport Isolation */
+@media screen and (max-width: 768px) {
+  body {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
