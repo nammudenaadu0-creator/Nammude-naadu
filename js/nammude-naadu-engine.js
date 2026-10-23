@@ -3076,10 +3076,12 @@
             }
           });
 
-          APP_STATE.chats[chatKey].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
-          saveChats();
-          renderChatMessages();
-          markChatAsSeen(chatKey);
+          if (hasNewMessage) {
+            APP_STATE.chats[chatKey].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+            saveChats();
+            renderChatMessages();
+            markChatAsSeen(chatKey);
+          }
         }
       });
     }
@@ -7546,8 +7548,9 @@
 
     // Save rendered items to memory for completely safe, error-free click handling
     window._nearbyListItems = inRadiusItems;
+    const displayItems = inRadiusItems.slice(0, 40);
 
-    container.innerHTML = inRadiusItems.map((item, idx) => {
+    container.innerHTML = displayItems.map((item, idx) => {
       const isOnline = true;
       const typeBadgeColor = item.type === 'service' ? '#059669' : (item.type === 'donor' ? '#DC2626' : (item.type === 'citizen' ? '#2563EB' : '#D97706'));
       const typeBadgeBg = item.type === 'service' ? '#ECFDF5' : (item.type === 'donor' ? '#FEF2F2' : (item.type === 'citizen' ? '#EFF6FF' : '#FFFBEB'));
@@ -9176,10 +9179,11 @@
 
   function startAdRotation() {
     if (adRotateInterval) clearInterval(adRotateInterval);
-    // Every 4 seconds, rotate smoothly to next ad
+    // Rotate smoothly every 5 seconds only when user is actively on home screen
     adRotateInterval = setInterval(() => {
+      if (APP_STATE.currentScreen !== 'home' || (typeof document !== 'undefined' && document.hidden)) return;
       renderAdByIndex(currentAdIndex + 1);
-    }, 4000);
+    }, 5000);
   }
 
   function renderHomeVillageBanner() {

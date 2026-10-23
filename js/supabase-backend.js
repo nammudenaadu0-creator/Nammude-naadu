@@ -22,6 +22,13 @@
   let chatChannel = null;
   let postsChannel = null;
   let servicesChannel = null;
+  let jobsChannel = null;
+  let rentalsChannel = null;
+  let bloodChannel = null;
+  let emergencyChannel = null;
+  let isSettingUpChannels = false;
+  let realtimeRetryCount = 0;
+  let realtimeRetryTimer = null;
 
   const chatSubscribers = new Map(); // chatKey -> Set of callbacks
   const SESSION_CLIENT_ID = 'sess_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
@@ -52,101 +59,80 @@
     }
   }
 
-  // Setup broadcast channels for sub-50ms peer-to-peer delivery
+  // Setup broadcast channels for sub-50ms peer-to-peer delivery (Leak-Free & Safe)
   function setupRealtimeChannels() {
-    if (!client) return;
+    if (!client || isSettingUpChannels) return;
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+      return;
+    }
+    isSettingUpChannels = true;
 
-    // 1. CHAT CHANNEL (Sub-50ms peer delivery)
-    try {
-      if (chatChannel) {
-        try { chatChannel.unsubscribe(); } catch (_) {}
+    // Unsubscribe and tear down previous channels first
+    const previousChannels = [chatChannel, postsChannel, servicesChannel, jobsChannel, rentalsChannel, bloodChannel, emergencyChannel];
+    previousChannels.forEach(ch => {
+      if (ch) {
+        try { ch.unsubscribe(); } catch (_) {}
       }
-      chatChannel = client.channel('nn_community_chats', {
-        config: { broadcast: { self: false } }
-      });
-      chatChannel.on('broadcast', { event: 'chat_message' }, ({ payload }) => {
-        handleIncomingChatMessage(payload);
-      });
-      chatChannel.on('broadcast', { event: 'chat_seen' }, ({ payload }) => {
-        handleIncomingChatSeen(payload);
-      });
+    });
+
+    try {
+      chatChannel = client.channel('nn_community_chats', { config: { broadcast: { self: false } } });
+      chatChannel.on('broadcast', { event: 'chat_message' }, ({ payload }) => handleIncomingChatMessage(payload));
+      chatChannel.on('broadcast', { event: 'chat_seen' }, ({ payload }) => handleIncomingChatSeen(payload));
       chatChannel.subscribe((status) => {
-        console.info('💬 [Supabase Realtime Chat] Status:', status);
-        if (status === 'TIMED_OUT' || status === 'CHANNEL_ERROR') {
-          setTimeout(setupRealtimeChannels, 2000);
+        if (status === 'SUBSCRIBED') {
+          realtimeRetryCount = 0;
+          if (realtimeRetryTimer) { clearTimeout(realtimeRetryTimer); realtimeRetryTimer = null; }
+        } else if (status === 'TIMED_OUT' || status === 'CHANNEL_ERROR') {
+          if (realtimeRetryCount < 3) {
+            realtimeRetryCount++;
+            const backoff = Math.min(30000, 3000 * Math.pow(2, realtimeRetryCount));
+            if (!realtimeRetryTimer) {
+              realtimeRetryTimer = setTimeout(() => {
+                realtimeRetryTimer = null;
+                setupRealtimeChannels();
+              }, backoff);
+            }
+          }
         }
       });
+
+      postsChannel = client.channel('nn_community_posts', { config: { broadcast: { self: false } } });
+      postsChannel.on('broadcast', { event: 'new_post' }, ({ payload }) => handleIncomingPost(payload));
+      postsChannel.subscribe();
+
+      servicesChannel = client.channel('nn_community_services', { config: { broadcast: { self: false } } });
+      servicesChannel.on('broadcast', { event: 'new_service' }, ({ payload }) => handleIncomingService(payload));
+      servicesChannel.subscribe();
+
+      jobsChannel = client.channel('nn_community_jobs', { config: { broadcast: { self: false } } });
+      jobsChannel.on('broadcast', { event: 'new_job' }, ({ payload }) => {
+        if (payload && payload.job) handleIncomingJob(payload.job);
+      });
+      jobsChannel.subscribe();
+
+      rentalsChannel = client.channel('nn_community_rentals', { config: { broadcast: { self: false } } });
+      rentalsChannel.on('broadcast', { event: 'new_rental' }, ({ payload }) => {
+        if (payload && payload.rental) handleIncomingRental(payload.rental);
+      });
+      rentalsChannel.subscribe();
+
+      bloodChannel = client.channel('nn_community_blood', { config: { broadcast: { self: false } } });
+      bloodChannel.on('broadcast', { event: 'emergency_blood' }, ({ payload }) => {
+        if (payload && payload.bloodRequest) handleIncomingBloodRequest(payload.bloodRequest);
+      });
+      bloodChannel.subscribe();
+
+      emergencyChannel = client.channel('nn_community_emergency_contacts', { config: { broadcast: { self: false } } });
+      emergencyChannel.on('broadcast', { event: 'new_emergency_contact' }, ({ payload }) => {
+        if (payload && payload.contact) handleIncomingEmergencyContact(payload.contact);
+      });
+      emergencyChannel.subscribe();
     } catch (e) {
-      console.warn('⚠️ [Supabase Chat Channel Init Error]:', e);
+      console.warn('⚠️ [Supabase Realtime Setup Note]:', e.message);
+    } finally {
+      isSettingUpChannels = false;
     }
-
-    // 2. POSTS CHANNEL
-    postsChannel = client.channel('nn_community_posts', {
-      config: { broadcast: { self: false } }
-    });
-    postsChannel.on('broadcast', { event: 'new_post' }, ({ payload }) => {
-      handleIncomingPost(payload);
-    });
-    postsChannel.subscribe((status) => {
-      console.info('📢 [Supabase Realtime Posts] Status:', status);
-    });
-
-    // 3. SERVICES DIRECTORY CHANNEL
-    servicesChannel = client.channel('nn_community_services', {
-      config: { broadcast: { self: false } }
-    });
-    servicesChannel.on('broadcast', { event: 'new_service' }, ({ payload }) => {
-      handleIncomingService(payload);
-    });
-    servicesChannel.subscribe((status) => {
-      console.info('🛠️ [Supabase Realtime Services] Status:', status);
-    });
-
-    // 4. JOBS CHANNEL (Realtime broadcast across phones)
-    const jobsChannel = client.channel('nn_community_jobs', {
-      config: { broadcast: { self: false } }
-    });
-    jobsChannel.on('broadcast', { event: 'new_job' }, ({ payload }) => {
-      if (payload && payload.job) handleIncomingJob(payload.job);
-    });
-    jobsChannel.subscribe((status) => {
-      console.info('💼 [Supabase Realtime Jobs] Status:', status);
-    });
-
-    // 5. RENTALS CHANNEL (Realtime broadcast across phones)
-    const rentalsChannel = client.channel('nn_community_rentals', {
-      config: { broadcast: { self: false } }
-    });
-    rentalsChannel.on('broadcast', { event: 'new_rental' }, ({ payload }) => {
-      if (payload && payload.rental) handleIncomingRental(payload.rental);
-    });
-    rentalsChannel.subscribe((status) => {
-      console.info('🏠 [Supabase Realtime Rentals] Status:', status);
-    });
-
-    // 6. EMERGENCY BLOOD CHANNEL (sub-50ms peer-to-peer broadcast across phones)
-    const bloodChannel = client.channel('nn_community_blood', {
-      config: { broadcast: { self: false } }
-    });
-    bloodChannel.on('broadcast', { event: 'emergency_blood' }, ({ payload }) => {
-      if (payload && payload.bloodRequest) {
-        handleIncomingBloodRequest(payload.bloodRequest);
-      }
-    });
-    bloodChannel.subscribe((status) => {
-      console.info('🩸 [Supabase Realtime Blood] Status:', status);
-    });
-
-    // 7. EMERGENCY CONTACTS CHANNEL (Realtime broadcast across phones)
-    const emergencyChannel = client.channel('nn_community_emergency_contacts', {
-      config: { broadcast: { self: false } }
-    });
-    emergencyChannel.on('broadcast', { event: 'new_emergency_contact' }, ({ payload }) => {
-      if (payload && payload.contact) handleIncomingEmergencyContact(payload.contact);
-    });
-    emergencyChannel.subscribe((status) => {
-      console.info('🚨 [Supabase Realtime Emergency Contacts] Status:', status);
-    });
   }
 
   // Request Android / Browser notification permissions & initialize Web Push
@@ -1335,15 +1321,17 @@
     // Fast initial fetch on opening
     fetchThreadMessages();
 
-    // Smooth 3.5s adaptive polling fallback (WebSocket handles instant 0s updates)
+    // Adaptive 7s fallback polling only while the chat modal is actively open
     const pollInterval = setInterval(() => {
-      if (client && !document.hidden && chatSubscribers.has(chatKey) && chatSubscribers.get(chatKey).size > 0) {
+      const isChatOpen = typeof document !== 'undefined' && document.getElementById('modal-chat')?.classList.contains('active');
+      if (client && !document.hidden && isChatOpen && chatSubscribers.has(chatKey) && chatSubscribers.get(chatKey).size > 0) {
         fetchThreadMessages();
       }
-    }, 3500);
+    }, 7000);
 
     const onVisible = () => {
-      if (!document.hidden && client && chatSubscribers.has(chatKey)) {
+      const isChatOpen = typeof document !== 'undefined' && document.getElementById('modal-chat')?.classList.contains('active');
+      if (!document.hidden && isChatOpen && client && chatSubscribers.has(chatKey)) {
         fetchThreadMessages();
       }
     };
@@ -1532,18 +1520,27 @@
         });
 
         if (typeof APP_STATE !== 'undefined' && Array.isArray(APP_STATE.posts)) {
+          let hasNewPosts = false;
           mapped.forEach(cloudPost => {
             const idx = APP_STATE.posts.findIndex(p => p.id === cloudPost.id);
             if (idx >= 0) {
-              APP_STATE.posts[idx] = { ...APP_STATE.posts[idx], ...cloudPost };
+              if (APP_STATE.posts[idx].likes !== cloudPost.likes || APP_STATE.posts[idx].content !== cloudPost.content) {
+                APP_STATE.posts[idx] = { ...APP_STATE.posts[idx], ...cloudPost };
+                hasNewPosts = true;
+              }
             } else {
               APP_STATE.posts.unshift(cloudPost);
+              hasNewPosts = true;
             }
           });
-          if (typeof savePosts === 'function') savePosts();
-          if (typeof renderCommunityFeed === 'function') renderCommunityFeed();
-          if (typeof renderHomeCommunityFeed === 'function') renderHomeCommunityFeed();
-          if (typeof renderCommunityScreen === 'function') renderCommunityScreen();
+          if (hasNewPosts) {
+            if (typeof savePosts === 'function') savePosts();
+            if (APP_STATE.currentScreen === 'community' && typeof renderCommunityFeed === 'function') {
+              renderCommunityFeed();
+            } else if (APP_STATE.currentScreen === 'home' && typeof renderHomeCommunityFeed === 'function') {
+              renderHomeCommunityFeed();
+            }
+          }
         }
 
         if (typeof callback === 'function') callback(mapped);
@@ -1864,7 +1861,9 @@
           try {
             localStorage.setItem('nn_jobs', JSON.stringify(APP_STATE.jobs));
           } catch (_) {}
-          if (typeof renderJobsScreen === 'function') renderJobsScreen();
+          if (APP_STATE.currentScreen === 'jobs' && typeof renderJobsScreen === 'function') {
+            renderJobsScreen();
+          }
         }
 
         if (typeof callback === 'function') callback(mapped);
@@ -1950,7 +1949,9 @@
           try {
             localStorage.setItem('nn_rentals', JSON.stringify(APP_STATE.rentals));
           } catch (_) {}
-          if (typeof renderRentalsScreen === 'function') renderRentalsScreen();
+          if (APP_STATE.currentScreen === 'rentals' && typeof renderRentalsScreen === 'function') {
+            renderRentalsScreen();
+          }
         }
 
         if (typeof callback === 'function') callback(mapped);
