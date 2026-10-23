@@ -2763,31 +2763,54 @@
     if (typeof reconcileChatThreads === 'function') {
       reconcileChatThreads();
     }
+    const myCleanPhone = normalizePhone(APP_STATE.currentUser?.phone);
     let resolvedKey = chatKey;
-    if ((!APP_STATE.chats || !APP_STATE.chats[resolvedKey]) && (!APP_STATE.chatMeta || !APP_STATE.chatMeta[resolvedKey])) {
+    let targetPhone = '';
+
+    // Extract target phone from metadata or chatKey
+    const metaDirect = (APP_STATE.chatMeta && (APP_STATE.chatMeta[chatKey] || APP_STATE.chatMeta[resolvedKey])) || {};
+    if (metaDirect.phone) {
+      targetPhone = normalizePhone(metaDirect.phone);
+    }
+    if (!targetPhone) {
       const phones = String(chatKey).match(/\d{10}/g) || [];
-      if (phones.length > 0 && APP_STATE.chats) {
-        const matchKey = Object.keys(APP_STATE.chats).find(k => phones.some(p => k.includes(p)));
-        if (matchKey) resolvedKey = matchKey;
+      if (phones.length > 0) {
+        targetPhone = phones.find(p => p !== myCleanPhone) || phones[0];
       }
     }
+
+    // Always canonicalize if two phones exist
+    if (targetPhone && myCleanPhone && targetPhone !== myCleanPhone) {
+      const canonical = 'chat_' + [targetPhone, myCleanPhone].sort().join('_');
+      // If messages exist under chatKey or an old key, migrate to canonical
+      if (APP_STATE.chats) {
+        if (!APP_STATE.chats[canonical]) APP_STATE.chats[canonical] = [];
+        [chatKey, resolvedKey, 'chat_' + targetPhone].forEach(oldK => {
+          if (oldK && oldK !== canonical && APP_STATE.chats[oldK]) {
+            APP_STATE.chats[oldK].forEach(m => {
+              if (!APP_STATE.chats[canonical].some(e => e.id === m.id || (e.timestamp === m.timestamp && e.text === m.text))) {
+                APP_STATE.chats[canonical].push(m);
+              }
+            });
+            delete APP_STATE.chats[oldK];
+          }
+          if (oldK && oldK !== canonical && APP_STATE.chatMeta && APP_STATE.chatMeta[oldK]) {
+            APP_STATE.chatMeta[canonical] = Object.assign({}, APP_STATE.chatMeta[canonical] || {}, APP_STATE.chatMeta[oldK]);
+            delete APP_STATE.chatMeta[oldK];
+          }
+        });
+      }
+      resolvedKey = canonical;
+    }
+
     const meta = (APP_STATE.chatMeta && APP_STATE.chatMeta[resolvedKey]) || (APP_STATE.chatMeta && APP_STATE.chatMeta[chatKey]) || {};
     const msgs = (APP_STATE.chats && APP_STATE.chats[resolvedKey]) || (APP_STATE.chats && APP_STATE.chats[chatKey]) || [];
     let name = meta.name;
-    let phone = meta.phone || '';
+    let phone = meta.phone || targetPhone || '';
     let avatar = meta.avatar || '';
     let recipientId = meta.recipientId || '';
     let initialContext = meta.category || '';
     let type = meta.type || 'other';
-
-    if (!phone) {
-      const phones = String(resolvedKey).match(/\d{10}/g) || String(chatKey).match(/\d{10}/g) || [];
-      const myCleanPhone = normalizePhone(APP_STATE.currentUser?.phone);
-      if (phones.length > 0) {
-        const otherPhone = phones.find(p => p !== myCleanPhone);
-        phone = otherPhone || (phones[0] !== myCleanPhone ? phones[0] : '');
-      }
-    }
 
     if (!name || name === 'സുഹൃത്ത്' || name.startsWith('chat_')) {
       const themMsg = msgs.slice().reverse().find(m => m.sender !== 'me' && m.senderName);
@@ -2808,31 +2831,23 @@
     const safePhone = recipientPhone || '';
     const safeAvatar = (recipientAvatar && recipientAvatar !== DEFAULT_USER_AVATAR) ? recipientAvatar : '';
 
-    // Run reconciliation first to eliminate duplicate/fragmented threads
     if (typeof reconcileChatThreads === 'function') {
       reconcileChatThreads();
     }
 
-    // Retain explicit chat key if given
-    let chatKey = explicitChatKey;
+    const myCleanPhone = normalizePhone(APP_STATE.currentUser?.phone);
+    const targetCleanPhone = normalizePhone(safePhone) || (function() {
+      const phones = String(explicitChatKey || '').match(/\d{10}/g) || [];
+      return phones.find(p => p !== myCleanPhone) || '';
+    })();
 
-    if (!chatKey && safePhone) {
-      const cleanPhone = normalizePhone(safePhone);
-      const myClean = normalizePhone(APP_STATE.currentUser?.phone);
-      if (cleanPhone && myClean && cleanPhone !== myClean) {
-        chatKey = 'chat_' + [cleanPhone, myClean].sort().join('_');
-      } else if (cleanPhone) {
-        const existingKey = Object.keys(APP_STATE.chats || {}).find(k => {
-          const meta = APP_STATE.chatMeta && APP_STATE.chatMeta[k];
-          return (meta && normalizePhone(meta.phone) === cleanPhone) || (k.includes(cleanPhone) && k.split('_').length >= 3);
-        });
-        if (existingKey) {
-          chatKey = existingKey;
-        }
-      }
-    }
-
-    if (!chatKey) {
+    let chatKey = '';
+    // Priority 1: Canonical 2-phone sorted key (Universal)
+    if (targetCleanPhone && myCleanPhone && targetCleanPhone !== myCleanPhone) {
+      chatKey = 'chat_' + [targetCleanPhone, myCleanPhone].sort().join('_');
+    } else if (explicitChatKey) {
+      chatKey = explicitChatKey;
+    } else {
       chatKey = computeChatKey(
         APP_STATE.currentUser.id,
         APP_STATE.currentUser.phone,
@@ -2843,25 +2858,48 @@
       );
     }
 
+    // Merge any loose messages from explicitChatKey or phone fragments
+    if (!APP_STATE.chats) APP_STATE.chats = {};
     if (!APP_STATE.chatMeta) APP_STATE.chatMeta = {};
-    const existingMeta = (chatKey && APP_STATE.chatMeta[chatKey]) || {};
-    const resolvedAvatar = getRegisteredUserAvatar(safePhone || recipientId || safeName, safeAvatar || existingMeta.avatar || DEFAULT_USER_AVATAR);
+    if (!APP_STATE.chats[chatKey]) APP_STATE.chats[chatKey] = [];
+
+    const keysToMerge = new Set();
+    if (explicitChatKey && explicitChatKey !== chatKey) keysToMerge.add(explicitChatKey);
+    if (targetCleanPhone) {
+      Object.keys(APP_STATE.chats).forEach(k => {
+        if (k !== chatKey && k.includes(targetCleanPhone)) keysToMerge.add(k);
+      });
+      Object.keys(APP_STATE.chatMeta).forEach(k => {
+        if (k !== chatKey && (k.includes(targetCleanPhone) || normalizePhone(APP_STATE.chatMeta[k]?.phone) === targetCleanPhone)) keysToMerge.add(k);
+      });
+    }
+
+    keysToMerge.forEach(oldK => {
+      if (APP_STATE.chats[oldK] && APP_STATE.chats[oldK].length > 0) {
+        APP_STATE.chats[oldK].forEach(m => {
+          if (!APP_STATE.chats[chatKey].some(e => e.id === m.id || (e.timestamp === m.timestamp && e.text === m.text))) {
+            APP_STATE.chats[chatKey].push(m);
+          }
+        });
+        delete APP_STATE.chats[oldK];
+      }
+      if (APP_STATE.chatMeta[oldK]) {
+        APP_STATE.chatMeta[chatKey] = Object.assign({}, APP_STATE.chatMeta[chatKey] || {}, APP_STATE.chatMeta[oldK]);
+        delete APP_STATE.chatMeta[oldK];
+      }
+    });
+
+    const existingMeta = APP_STATE.chatMeta[chatKey] || {};
+    const finalPhone = targetCleanPhone || safePhone || existingMeta.phone || '';
+    const resolvedAvatar = getRegisteredUserAvatar(finalPhone || recipientId || safeName, safeAvatar || existingMeta.avatar || DEFAULT_USER_AVATAR);
 
     APP_STATE.activeChatRecipient = {
       name: (safeName && safeName !== 'പ്രാദേശിക സുഹൃത്ത്') ? safeName : (existingMeta.name || safeName),
-      phone: safePhone || existingMeta.phone || '',
+      phone: finalPhone,
       avatar: resolvedAvatar,
       id: recipientId || existingMeta.recipientId || '',
       key: chatKey
     };
-    if (!APP_STATE.activeChatRecipient.phone && chatKey) {
-      const pMatch = chatKey.match(/\d{10}/g);
-      if (pMatch && pMatch.length > 0) {
-        const myClean = normalizePhone(APP_STATE.currentUser?.phone);
-        const otherP = pMatch.find(p => p !== myClean);
-        if (otherP) APP_STATE.activeChatRecipient.phone = otherP;
-      }
-    }
 
     APP_STATE.chatMeta[chatKey] = {
       name: APP_STATE.activeChatRecipient.name,
@@ -2882,9 +2920,8 @@
       headerAvatar.onerror = function () { this.src = DEFAULT_USER_AVATAR; };
     }
     if (callBtn) {
-      const isEmergencyOrAmbulance = (chatType === 'ambulance' || (initialContext && (initialContext.includes('ആംബുലൻസ്') || initialContext.includes('അടിയന്തിരം') || initialContext.includes('Emergency'))));
-      if (isEmergencyOrAmbulance && safePhone) {
-        callBtn.href = 'tel:' + safePhone;
+      if (finalPhone) {
+        callBtn.href = 'tel:' + finalPhone;
         callBtn.style.display = 'flex';
       } else {
         callBtn.style.display = 'none';
@@ -2900,11 +2937,6 @@
       if (banner) banner.style.display = 'none';
     }
 
-    // Initialize thread in memory (real user-sent messages only, no auto-injected messages)
-    if (!APP_STATE.chats[chatKey]) {
-      APP_STATE.chats[chatKey] = [];
-    }
-
     const input = document.getElementById('chatInputMessage');
     if (input) {
       input.value = '';
@@ -2913,7 +2945,7 @@
     // Close stickers drawer on chat open
     if (typeof toggleChatStickers === 'function') toggleChatStickers(false);
 
-    // Dynamic Context Quick Reply Chips (Business vs General)
+    // Dynamic Context Quick Reply Chips
     const quickBar = document.querySelector('.quick-reply-bar');
     if (quickBar) {
       const isBiz = (chatType === 'business' || (initialContext && (initialContext.includes('🏪') || initialContext.includes('കട') || initialContext.includes('Shop'))));
@@ -2936,16 +2968,29 @@
       }
     }
 
-    renderChatMessages();
+    // High Speed Render: If local messages exist, display immediately (0ms latency).
+    // If empty, show ultra-fast loading placeholder while cloud fetches
+    const box = document.getElementById('chatMessagesBox');
+    if (APP_STATE.chats[chatKey] && APP_STATE.chats[chatKey].length > 0) {
+      renderChatMessages();
+    } else if (box) {
+      box.dataset.renderedKey = chatKey;
+      box.innerHTML = `
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:240px;gap:12px">
+          <div class="chat-loading-spinner"></div>
+          <div style="font-size:13px;font-weight:700;color:#0E7043">സന്ദേശങ്ങൾ ലോഡ് ചെയ്യുന്നു...</div>
+        </div>
+      `;
+    }
+
     openModal('modal-chat');
     markChatAsSeen(chatKey);
 
     setTimeout(() => {
-      const box = document.getElementById('chatMessagesBox');
       if (box) box.scrollTop = box.scrollHeight;
       const inp = document.getElementById('chatInputMessage');
       if (inp) inp.focus();
-    }, 200);
+    }, 180);
 
     // Subscribe to live Supabase Cloud messages for this thread
     if (typeof window._activeChatUnsubscribe === 'function') {
@@ -2958,7 +3003,13 @@
         if (Array.isArray(cloudMsgs)) {
           if (!APP_STATE.chats[chatKey]) APP_STATE.chats[chatKey] = [];
 
-          if (cloudMsgs.length === 0) return;
+          if (cloudMsgs.length === 0) {
+            // Cloud has 0 messages, remove spinner and show welcome screen
+            if (APP_STATE.chats[chatKey].length === 0) {
+              renderChatMessages();
+            }
+            return;
+          }
 
           const myId = APP_STATE.currentUser.id;
           const myCleanPhone = normalizePhone(APP_STATE.currentUser.phone);
@@ -3015,18 +3066,15 @@
             }
           });
 
-          if (hasNewMessage) {
-            APP_STATE.chats[chatKey].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
-            saveChats();
-            renderChatMessages();
-            markChatAsSeen(chatKey);
-          }
+          APP_STATE.chats[chatKey].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+          saveChats();
+          renderChatMessages();
+          markChatAsSeen(chatKey);
         }
       });
     }
 
     setTimeout(() => {
-      const box = document.getElementById('chatMessagesBox');
       if (box) box.scrollTop = box.scrollHeight;
     }, 150);
   }
@@ -9320,8 +9368,8 @@
   // 17. IN-APP INSTANT AUTO-UPDATE ENGINE (ZERO MANUAL RE-INSTALL)
   // ==============================================================
   const APP_BUILD_INFO = {
-    versionCode: 6,
-    versionName: "1.0.6",
+    versionCode: 7,
+    versionName: "1.0.7",
     buildDate: "2026-10-23"
   };
   window.APP_BUILD_INFO = APP_BUILD_INFO;

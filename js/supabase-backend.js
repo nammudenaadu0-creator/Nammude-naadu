@@ -851,14 +851,28 @@
       }
     }
 
-    if (chatSubscribers.has(chatKey)) {
-      const callbacks = chatSubscribers.get(chatKey);
-      callbacks.forEach(cb => {
-        try {
-          if (typeof APP_STATE !== 'undefined' && APP_STATE.chats[chatKey]) {
-            cb(APP_STATE.chats[chatKey]);
+    if (chatSubscribers.size > 0) {
+      chatSubscribers.forEach((callbacks, subKey) => {
+        let isMatch = (subKey === chatKey);
+        if (!isMatch) {
+          const subPhones = String(subKey).match(/\d{10}/g) || [];
+          const payPhones = String(chatKey).match(/\d{10}/g) || [];
+          if (subPhones.length === 2 && payPhones.length === 2) {
+            isMatch = subPhones.sort().join('_') === payPhones.sort().join('_');
+          } else if (subPhones.length > 0 && payPhones.length > 0) {
+            isMatch = subPhones.some(p => payPhones.includes(p));
           }
-        } catch (_) {}
+        }
+        if (isMatch) {
+          callbacks.forEach(cb => {
+            try {
+              if (typeof APP_STATE !== 'undefined' && APP_STATE.chats) {
+                const targetMsgs = APP_STATE.chats[subKey] || APP_STATE.chats[chatKey] || [];
+                cb(targetMsgs);
+              }
+            } catch (_) {}
+          });
+        }
       });
     }
   }
@@ -1259,14 +1273,20 @@
     function fetchThreadMessages() {
       if (!client) return;
       const phones = String(chatKey).match(/\d{10}/g) || [];
-      let query = client.from('messages')
-        .select('*')
-        .neq('text', '[read_receipt]');
+      const myCleanPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone) 
+        ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
+
+      let query = client.from('messages').select('*');
 
       if (phones.length >= 2) {
         const p1 = phones[0];
         const p2 = phones[1];
-        query = query.or(`chat_key.eq.${chatKey},chat_key.eq.chat_${p2}_${p1},and(sender_phone.eq.${p1},recipient_phone.eq.${p2}),and(sender_phone.eq.${p2},recipient_phone.eq.${p1})`);
+        query = query.or(`chat_key.eq.${chatKey},chat_key.eq.chat_${p1}_${p2},chat_key.eq.chat_${p2}_${p1},and(sender_phone.eq.${p1},recipient_phone.eq.${p2}),and(sender_phone.eq.${p2},recipient_phone.eq.${p1})`);
+      } else if (phones.length === 1 && myCleanPhone && myCleanPhone !== phones[0]) {
+        const p1 = phones[0];
+        const p2 = myCleanPhone;
+        const sortedKey = 'chat_' + [p1, p2].sort().join('_');
+        query = query.or(`chat_key.eq.${chatKey},chat_key.eq.${sortedKey},chat_key.eq.chat_${p1}_${p2},chat_key.eq.chat_${p2}_${p1},and(sender_phone.eq.${p1},recipient_phone.eq.${p2}),and(sender_phone.eq.${p2},recipient_phone.eq.${p1})`);
       } else {
         query = query.eq('chat_key', chatKey);
       }
@@ -1277,11 +1297,12 @@
             data.sort((a, b) => (Number(a.created_at) || 0) - (Number(b.created_at) || 0));
 
             const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser.id : '';
-            const myCleanPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone) 
-              ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
 
             const validRows = data.filter(m => m && m.text && m.text.trim() && m.text !== '[deleted]' && m.text !== '[read_receipt]' && m.chat_key !== 'purged_archive_cleared');
-            if (validRows.length === 0) return;
+            if (validRows.length === 0) {
+              onMessagesUpdate([]);
+              return;
+            }
 
             const mapped = validRows.map(m => {
               const mPhone = (m.sender_phone ? String(m.sender_phone).replace(/\D/g, '').slice(-10) : '');
@@ -1303,19 +1324,23 @@
               };
             });
             onMessagesUpdate(mapped);
+          } else {
+            onMessagesUpdate([]);
           }
-        }).catch(() => {});
+        }).catch(() => {
+          onMessagesUpdate([]);
+        });
     }
 
     // Fast initial fetch on opening
     fetchThreadMessages();
 
-    // Fast adaptive 2s polling while chat modal is actively viewed
+    // Smooth 3.5s adaptive polling fallback (WebSocket handles instant 0s updates)
     const pollInterval = setInterval(() => {
       if (client && !document.hidden && chatSubscribers.has(chatKey) && chatSubscribers.get(chatKey).size > 0) {
         fetchThreadMessages();
       }
-    }, 2000);
+    }, 3500);
 
     const onVisible = () => {
       if (!document.hidden && client && chatSubscribers.has(chatKey)) {
@@ -1342,26 +1367,37 @@
       const myPhone = myPhoneRaw.length >= 10 ? myPhoneRaw.slice(-10) : myPhoneRaw;
       const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser.id : '';
 
-      const { data, error } = await client.from('messages')
-        .select('*')
-        .neq('text', '[read_receipt]')
+      let query = client.from('messages').select('*');
+      if (myPhone) {
+        query = query.or(`sender_phone.eq.${myPhone},recipient_phone.eq.${myPhone},chat_key.ilike.%${myPhone}%`);
+      }
+      const { data, error } = await query
         .order('created_at', { ascending: false })
-        .limit(50);
+        .limit(80);
 
       if (!error && Array.isArray(data) && data.length > 0) {
         data.forEach(row => {
-          const key = row.chat_key;
-          if (!key || !row.text || row.text === '[deleted]' || (!row.sender_name && !row.sender_phone)) return;
+          let key = row.chat_key;
+          if (!key || !row.text || row.text === '[deleted]' || row.text === '[read_receipt]' || (!row.sender_name && !row.sender_phone)) return;
 
           const rowSenderPhone = row.sender_phone ? String(row.sender_phone).replace(/\D/g, '').slice(-10) : '';
           const rowRecipientPhone = row.recipient_phone ? String(row.recipient_phone).replace(/\D/g, '').slice(-10) : '';
+
+          // Canonicalize phone-based chat keys
+          const phones = String(key).match(/\d{10}/g) || [];
+          if (phones.length >= 2) {
+            key = 'chat_' + [...phones].sort().join('_');
+          } else if (rowSenderPhone && rowRecipientPhone && rowSenderPhone !== rowRecipientPhone) {
+            key = 'chat_' + [rowSenderPhone, rowRecipientPhone].sort().join('_');
+          }
 
           const myName = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.name)
             ? APP_STATE.currentUser.name.trim().toLowerCase() : '';
           const rowRecipientName = row.recipient_name ? String(row.recipient_name).trim().toLowerCase() : '';
           const rowSenderName = row.sender_name ? String(row.sender_name).trim().toLowerCase() : '';
 
-          const isForMe = (myId && (row.sender_id === myId || row.recipient_id === myId)) ||
+          const isForMe = (!myPhone && !myId) ||
+                          (myId && (row.sender_id === myId || row.recipient_id === myId)) ||
                           (myPhone && (rowSenderPhone === myPhone || rowRecipientPhone === myPhone || key.includes(myPhone))) ||
                           (myName && (rowSenderName === myName || rowRecipientName === myName || key.toLowerCase().includes(myName)));
 
@@ -1370,7 +1406,7 @@
           if (typeof APP_STATE !== 'undefined') {
             if (!APP_STATE.chats) APP_STATE.chats = {};
             if (!APP_STATE.chats[key]) APP_STATE.chats[key] = [];
-            const exists = APP_STATE.chats[key].some(m => m.id === row.id);
+            const exists = APP_STATE.chats[key].some(m => m.id === row.id || (m.timestamp === Number(row.created_at) && m.text === row.text));
             if (!exists) {
               const isMe = (row.sender_id === myId) || (myPhone && rowSenderPhone && myPhone === rowSenderPhone);
               APP_STATE.chats[key].push({
