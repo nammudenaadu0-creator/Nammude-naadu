@@ -788,7 +788,8 @@
   }
   window.saveServices = saveServices;
 
-  function saveChats() {
+  let _saveChatsTimer = null;
+  function _doFlushChats() {
     try {
       if (APP_STATE.chats) {
         Object.keys(APP_STATE.chats).forEach(k => {
@@ -816,9 +817,20 @@
         }
       } catch (_) {}
     }
+  }
+
+  function saveChats(immediate) {
     if (typeof updateChatBadgeCounter === 'function') {
-      updateChatBadgeCounter();
+      try { updateChatBadgeCounter(); } catch (_) {}
     }
+    if (immediate) {
+      if (_saveChatsTimer) clearTimeout(_saveChatsTimer);
+      _saveChatsTimer = null;
+      _doFlushChats();
+      return;
+    }
+    if (_saveChatsTimer) clearTimeout(_saveChatsTimer);
+    _saveChatsTimer = setTimeout(_doFlushChats, 250);
   }
 
   function updateChatBadgeCounter() {
@@ -2573,6 +2585,7 @@
     return { phone, recipientId, name, groupKey };
   }
 
+  let _lastReconcileFp = '';
   function reconcileChatThreads() {
     if (!APP_STATE.chats) APP_STATE.chats = {};
     if (!APP_STATE.chatMeta) APP_STATE.chatMeta = {};
@@ -2587,6 +2600,10 @@
     ]));
 
     if (allKeys.length === 0) return;
+
+    const fp = allKeys.length + ':' + (myPhone || '') + ':' + allKeys.slice(0, 8).join(',');
+    if (fp === _lastReconcileFp) return;
+    _lastReconcileFp = fp;
 
     // 2. Group keys by contact identity
     const groups = {};
@@ -3049,6 +3066,42 @@
     return d.toLocaleDateString('ml-IN', { day: 'numeric', month: 'short' });
   }
 
+  function renderSingleMessageHtml(msg, recipientAvatar) {
+    const isMe = msg.sender === 'me';
+    let innerContentHtml = '';
+    if (msg.type === 'sticker') {
+      innerContentHtml = `
+        <div class="chat-sticker-bubble">
+          <span class="cs-emoji">${escapeHtml(msg.stickerEmoji || '🔥')}</span>
+          <span class="cs-text">${escapeHtml(msg.stickerText || msg.text)}</span>
+        </div>
+      `;
+    } else {
+      innerContentHtml = `<div class="chat-bubble-content">${escapeHtml(msg.text)}</div>`;
+    }
+
+    return `
+      <div class="chat-message-row ${isMe ? 'outgoing-row' : 'incoming-row'}" data-msg-id="${escapeHtml(msg.id)}">
+        ${!isMe ? `
+          <img src="${escapeHtml(recipientAvatar)}" class="chat-bubble-avatar" alt="Avatar" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
+        ` : ''}
+        <div class="chat-bubble ${isMe ? 'outgoing' : 'incoming'} ${msg.type ? ('type-' + msg.type) : ''}">
+          ${innerContentHtml}
+          <div class="chat-bubble-meta">
+            <span class="chat-time-text">${escapeHtml(msg.time || '')}</span>
+            ${isMe ? (
+              (msg.status === 'seen' || msg.seen === true)
+                ? '<span class="chat-ticks seen" title="കണ്ടു (Seen)">✓✓</span><span class="chat-seen-pill">കണ്ടു</span>'
+                : ((msg.status === 'sent')
+                    ? '<span class="chat-ticks sent" title="അയച്ചു (Sent)">✓</span>'
+                    : '<span class="chat-ticks delivered" title="എത്തിച്ചേർന്നു (Delivered)">✓✓</span>')
+            ) : ''}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   function renderChatMessages() {
     const box = document.getElementById('chatMessagesBox');
     if (!box || !APP_STATE.activeChatRecipient) return;
@@ -3058,9 +3111,10 @@
     rawThread.sort((a, b) => (Number(a.timestamp) || 0) - (Number(b.timestamp) || 0));
     APP_STATE.chats[chatKey] = rawThread;
     const thread = rawThread;
-    const myId = (APP_STATE.currentUser && APP_STATE.currentUser.id) || 'local_user';
+    const recipientAvatar = (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.avatar) || DEFAULT_USER_AVATAR;
 
     if (thread.length === 0) {
+      box.dataset.renderedKey = chatKey;
       box.innerHTML = `
         <div style="text-align:center;padding:26px 18px;background:#FFFFFF;border-radius:20px;margin:24px auto;max-width:320px;box-shadow:0 4px 16px rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.06)">
           <div style="width:58px;height:58px;border-radius:50%;background:#DCF8C6;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:28px;box-shadow:0 3px 8px rgba(0,0,0,0.08)">💬</div>
@@ -3079,9 +3133,30 @@
       return;
     }
 
+    // Fast Incremental Render: If same thread is open and only new messages arrived
+    if (box.dataset.renderedKey === chatKey && box.children.length > 0 && !box.querySelector('[style*="text-align:center"]')) {
+      const existingRows = box.querySelectorAll('.chat-message-row');
+      const renderedIds = new Set();
+      existingRows.forEach(el => {
+        const id = el.getAttribute('data-msg-id');
+        if (id) renderedIds.add(id);
+      });
+
+      const newMsgs = thread.filter(m => !renderedIds.has(String(m.id)));
+      if (newMsgs.length > 0 && newMsgs.length <= 4) {
+        let appendHtml = '';
+        newMsgs.forEach(m => {
+          appendHtml += renderSingleMessageHtml(m, recipientAvatar);
+        });
+        box.insertAdjacentHTML('beforeend', appendHtml);
+        box.scrollTop = box.scrollHeight;
+        return;
+      }
+    }
+
+    box.dataset.renderedKey = chatKey;
     let lastDateStr = '';
     const messagesHtml = thread.map(msg => {
-      const isMe = msg.sender === 'me';
       const dateStr = formatChatDatePill(msg.timestamp);
       let dateDivider = '';
       if (dateStr !== lastDateStr) {
@@ -3092,50 +3167,11 @@
           </div>
         `;
       }
-
-      const recipientAvatar = (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.avatar) || DEFAULT_USER_AVATAR;
-
-      // 1. RENDER MESSAGE CONTENT (STICKER vs TEXT)
-      let innerContentHtml = '';
-      if (msg.type === 'sticker') {
-        innerContentHtml = `
-          <div class="chat-sticker-bubble">
-            <span class="cs-emoji">${escapeHtml(msg.stickerEmoji || '🔥')}</span>
-            <span class="cs-text">${escapeHtml(msg.stickerText || msg.text)}</span>
-          </div>
-        `;
-      } else {
-        innerContentHtml = `<div class="chat-bubble-content">${escapeHtml(msg.text)}</div>`;
-      }
-
-      return `
-        ${dateDivider}
-        <div class="chat-message-row ${isMe ? 'outgoing-row' : 'incoming-row'}" data-msg-id="${escapeHtml(msg.id)}">
-          ${!isMe ? `
-            <img src="${escapeHtml(recipientAvatar)}" class="chat-bubble-avatar" alt="Avatar" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
-          ` : ''}
-          <div class="chat-bubble ${isMe ? 'outgoing' : 'incoming'} ${msg.type ? ('type-' + msg.type) : ''}">
-            ${innerContentHtml}
-            <div class="chat-bubble-meta">
-              <span class="chat-time-text">${escapeHtml(msg.time || '')}</span>
-              ${isMe ? (
-                (msg.status === 'seen' || msg.seen === true)
-                  ? '<span class="chat-ticks seen" title="കണ്ടു (Seen)">✓✓</span><span class="chat-seen-pill">കണ്ടു</span>'
-                  : ((msg.status === 'sent')
-                      ? '<span class="chat-ticks sent" title="അയച്ചു (Sent)">✓</span>'
-                      : '<span class="chat-ticks delivered" title="എത്തിച്ചേർന്നു (Delivered)">✓✓</span>')
-              ) : ''}
-            </div>
-          </div>
-        </div>
-      `;
+      return dateDivider + renderSingleMessageHtml(msg, recipientAvatar);
     }).join('');
 
     box.innerHTML = messagesHtml;
     box.scrollTop = box.scrollHeight;
-    requestAnimationFrame(() => {
-      if (box) box.scrollTop = box.scrollHeight;
-    });
   }
 
   function sendChatMessage() {
@@ -3172,7 +3208,6 @@
       sender: 'me',
       status: 'sent'
     });
-    APP_STATE.chats[chatKey].sort((a, b) => (Number(a.timestamp) || 0) - (Number(b.timestamp) || 0));
 
     if (input) input.value = '';
     if (APP_STATE.chatMeta && APP_STATE.chatMeta[chatKey]) {
@@ -3180,9 +3215,6 @@
     }
     saveChats();
     updateChatBadgeCounter();
-    if (typeof renderChatListScreen === 'function') {
-      renderChatListScreen();
-    }
     renderChatMessages();
     if (typeof updateChatStreakUI === 'function') updateChatStreakUI(chatKey);
 
@@ -9167,9 +9199,9 @@
   // 17. IN-APP INSTANT AUTO-UPDATE ENGINE (ZERO MANUAL RE-INSTALL)
   // ==============================================================
   const APP_BUILD_INFO = {
-    versionCode: 2,
-    versionName: "1.0.2",
-    buildDate: "2026-10-22"
+    versionCode: 3,
+    versionName: "1.0.3",
+    buildDate: "2026-10-23"
   };
   window.APP_BUILD_INFO = APP_BUILD_INFO;
 

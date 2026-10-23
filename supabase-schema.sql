@@ -30,6 +30,12 @@ create policy "Allow public insert messages" on public.messages for insert with 
 create policy "Allow public update messages" on public.messages for update using (true);
 create policy "Allow public delete messages" on public.messages for delete using (true);
 
+-- High-performance indexes for sub-10ms chat retrieval
+create index if not exists idx_messages_chat_key on public.messages (chat_key);
+create index if not exists idx_messages_created_at on public.messages (created_at desc);
+create index if not exists idx_messages_sender_phone on public.messages (sender_phone);
+create index if not exists idx_messages_recipient_phone on public.messages (recipient_phone);
+
 -- 2. POSTS TABLE (Community News, Announcements & Media)
 create table if not exists public.posts (
   id text primary key,

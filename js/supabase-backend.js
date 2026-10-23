@@ -56,19 +56,29 @@
   function setupRealtimeChannels() {
     if (!client) return;
 
-    // 1. CHAT CHANNEL
-    chatChannel = client.channel('nn_community_chats', {
-      config: { broadcast: { self: false } }
-    });
-    chatChannel.on('broadcast', { event: 'chat_message' }, ({ payload }) => {
-      handleIncomingChatMessage(payload);
-    });
-    chatChannel.on('broadcast', { event: 'chat_seen' }, ({ payload }) => {
-      handleIncomingChatSeen(payload);
-    });
-    chatChannel.subscribe((status) => {
-      console.info('💬 [Supabase Realtime Chat] Status:', status);
-    });
+    // 1. CHAT CHANNEL (Sub-50ms peer delivery)
+    try {
+      if (chatChannel) {
+        try { chatChannel.unsubscribe(); } catch (_) {}
+      }
+      chatChannel = client.channel('nn_community_chats', {
+        config: { broadcast: { self: false } }
+      });
+      chatChannel.on('broadcast', { event: 'chat_message' }, ({ payload }) => {
+        handleIncomingChatMessage(payload);
+      });
+      chatChannel.on('broadcast', { event: 'chat_seen' }, ({ payload }) => {
+        handleIncomingChatSeen(payload);
+      });
+      chatChannel.subscribe((status) => {
+        console.info('💬 [Supabase Realtime Chat] Status:', status);
+        if (status === 'TIMED_OUT' || status === 'CHANNEL_ERROR') {
+          setTimeout(setupRealtimeChannels, 2000);
+        }
+      });
+    } catch (e) {
+      console.warn('⚠️ [Supabase Chat Channel Init Error]:', e);
+    }
 
     // 2. POSTS CHANNEL
     postsChannel = client.channel('nn_community_posts', {
@@ -733,17 +743,28 @@
       ? APP_STATE.currentUser.name.trim().toLowerCase() : '';
     const recName = (metaObj && metaObj.recipientName ? String(metaObj.recipientName).trim().toLowerCase() : '');
     const cleanMyId = myId ? myId.replace(/[^a-zA-Z0-9]/g, '') : '';
-    const isForMe = (!metaObj) ||
-      (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.key === chatKey) ||
+    const activeKey = APP_STATE.activeChatRecipient?.key;
+    const activeKeySymmetric = activeKey ? activeKey.replace('chat_', '').split('_').sort().join('_') : '';
+    const chatKeySymmetric = chatKey ? chatKey.replace('chat_', '').split('_').sort().join('_') : '';
+    const activePhone = APP_STATE.activeChatRecipient?.phone ? String(APP_STATE.activeChatRecipient.phone).replace(/\D/g, '').slice(-10) : '';
+    const incomingSenderPhone = msgObj.senderPhone ? String(msgObj.senderPhone).replace(/\D/g, '').slice(-10) : '';
+    const isCurrentChatActive = activeKey === chatKey || 
+      (activeKeySymmetric && chatKeySymmetric && activeKeySymmetric === chatKeySymmetric) ||
+      (activePhone && incomingSenderPhone && activePhone === incomingSenderPhone);
+
+    const phones = String(chatKey).match(/\d{10}/g) || [];
+    const isPhoneMatch = myPhone && phones.includes(myPhone);
+
+    const isForMe = (!metaObj) || isPhoneMatch ||
+      (APP_STATE.activeChatRecipient && isCurrentChatActive) ||
       (myPhone && recPhone && myPhone === recPhone) ||
       (myPhone && senderPhone && myPhone === senderPhone) ||
       (myId && recId && myId === recId) ||
-      (myPhone && chatKey.includes(myPhone)) ||
       (cleanMyId && chatKey.includes(cleanMyId)) ||
       (myName && recName && myName === recName) ||
       (myName && chatKey.toLowerCase().includes(myName)) ||
-      (APP_STATE.chats && APP_STATE.chats[chatKey]) ||
-      (APP_STATE.chatMeta && APP_STATE.chatMeta[chatKey]) ||
+      (APP_STATE.chats && (APP_STATE.chats[chatKey] || (activeKey && APP_STATE.chats[activeKey]))) ||
+      (APP_STATE.chatMeta && (APP_STATE.chatMeta[chatKey] || (activeKey && APP_STATE.chatMeta[activeKey]))) ||
       ((APP_STATE.services || []).some(s => s.id === recId && s.isCloud));
 
     if (!isForMe) {
@@ -786,11 +807,6 @@
         }
 
         // Active chat thread update
-        const activeKey = APP_STATE.activeChatRecipient?.key;
-        const activePhone = APP_STATE.activeChatRecipient?.phone ? String(APP_STATE.activeChatRecipient.phone).replace(/\D/g, '').slice(-10) : '';
-        const incomingSenderPhone = msgObj.senderPhone ? String(msgObj.senderPhone).replace(/\D/g, '').slice(-10) : '';
-        const isCurrentChatActive = activeKey === chatKey || (activePhone && incomingSenderPhone && activePhone === incomingSenderPhone);
-
         if (APP_STATE.activeChatRecipient && isCurrentChatActive) {
           if (activeKey && activeKey !== chatKey) {
             if (!APP_STATE.chats[activeKey]) APP_STATE.chats[activeKey] = [];
@@ -1159,21 +1175,22 @@
       msgObj.sessionId = SESSION_CLIENT_ID;
     }
 
-    if (chatChannel) {
-      try {
-        await chatChannel.send({
+    // Ensure chat channel is active
+    if (!chatChannel || chatChannel.state !== 'joined') {
+      try { setupRealtimeChannels(); } catch (_) {}
+    }
+
+    // Parallel broadcast (sub-50ms) + persistent DB insert
+    const broadcastPromise = chatChannel
+      ? chatChannel.send({
           type: 'broadcast',
           event: 'chat_message',
           payload: { chatKey, msgObj, metaObj }
-        });
-      } catch (err) {
-        console.warn('⚠️ [Supabase Chat Broadcast]', err.message);
-      }
-    }
+        }).catch(err => console.warn('⚠️ [Supabase Chat Broadcast]', err.message))
+      : Promise.resolve();
 
-    if (client) {
-      try {
-        await client.from('messages').insert({
+    const dbPromise = client
+      ? client.from('messages').insert({
           id: msgObj.id || ('msg_' + Date.now()),
           chat_key: chatKey,
           sender_id: msgObj.senderId || '',
@@ -1186,12 +1203,10 @@
           text: msgObj.text || '',
           time: msgObj.time || '',
           created_at: msgObj.timestamp || Date.now()
-        });
-        console.info('💾 [Supabase] Message saved to persistent database table');
-      } catch (e) {
-        console.info('ℹ️ [Supabase Messages Table note]:', e.message);
-      }
-    }
+        }).catch(e => console.info('ℹ️ [Supabase Messages Table note]:', e.message))
+      : Promise.resolve();
+
+    await Promise.allSettled([broadcastPromise, dbPromise]);
     return true;
   }
 
@@ -1229,23 +1244,6 @@
         console.warn('⚠️ [Supabase Chat Seen Broadcast]', err.message);
       }
     }
-
-    if (client) {
-      try {
-        const cleanKey = chatKey.replace(/[^a-zA-Z0-9_]/g, '');
-        const cleanReader = (readerPhone || readerId || 'anon').replace(/[^a-zA-Z0-9_]/g, '');
-        await client.from('messages').upsert({
-          id: 'seen_' + cleanKey + '_' + cleanReader,
-          chat_key: chatKey,
-          sender_phone: readerPhone || '',
-          sender_id: readerId || '',
-          text: '[read_receipt]',
-          created_at: seenAt
-        });
-      } catch (e) {
-        console.info('ℹ️ [Supabase Seen Upsert note]:', e.message);
-      }
-    }
     return true;
   }
 
@@ -1261,7 +1259,10 @@
     function fetchThreadMessages() {
       if (!client) return;
       const phones = String(chatKey).match(/\d{10}/g) || [];
-      let query = client.from('messages').select('*');
+      let query = client.from('messages')
+        .select('*')
+        .neq('text', '[read_receipt]');
+
       if (phones.length >= 2) {
         const p1 = phones[0];
         const p2 = phones[1];
@@ -1269,23 +1270,15 @@
       } else {
         query = query.eq('chat_key', chatKey);
       }
-      query.order('created_at', { ascending: true })
+      query.order('created_at', { ascending: false }).limit(60)
         .then(({ data, error }) => {
           if (!error && Array.isArray(data)) {
-            let maxSeenTimestamp = 0;
+            // Sort ascending for chronological order
+            data.sort((a, b) => (Number(a.created_at) || 0) - (Number(b.created_at) || 0));
+
             const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser.id : '';
             const myCleanPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone) 
               ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
-
-            data.forEach(r => {
-              if (r.text === '[read_receipt]') {
-                const rPhone = r.sender_phone ? String(r.sender_phone).replace(/\D/g, '').slice(-10) : '';
-                if (!myCleanPhone || rPhone !== myCleanPhone) {
-                  const t = Number(r.created_at) || 0;
-                  if (t > maxSeenTimestamp) maxSeenTimestamp = t;
-                }
-              }
-            });
 
             const validRows = data.filter(m => m && m.text && m.text.trim() && m.text !== '[deleted]' && m.text !== '[read_receipt]' && m.chat_key !== 'purged_archive_cleared');
             if (validRows.length === 0) return;
@@ -1294,7 +1287,6 @@
               const mPhone = (m.sender_phone ? String(m.sender_phone).replace(/\D/g, '').slice(-10) : '');
               const isMe = (m.sender_id === myId) || (myCleanPhone && mPhone && mPhone === myCleanPhone);
               const mTime = Number(m.created_at) || Date.now();
-              const isSeen = isMe && maxSeenTimestamp > 0 && mTime <= maxSeenTimestamp;
 
               return {
                 id: m.id,
@@ -1306,8 +1298,8 @@
                 text: m.text,
                 time: m.time || 'ഇപ്പോൾ',
                 timestamp: mTime,
-                status: isSeen ? 'seen' : (isMe ? 'delivered' : ''),
-                seen: isSeen
+                status: isMe ? 'delivered' : '',
+                seen: false
               };
             });
             onMessagesUpdate(mapped);
@@ -1318,15 +1310,23 @@
     // Fast initial fetch on opening
     fetchThreadMessages();
 
-    // Gentle fallback background poll every 6s (instead of lagging 1.2s interval)
+    // Fast adaptive 2s polling while chat modal is actively viewed
     const pollInterval = setInterval(() => {
-      if (client && chatSubscribers.has(chatKey) && chatSubscribers.get(chatKey).size > 0) {
+      if (client && !document.hidden && chatSubscribers.has(chatKey) && chatSubscribers.get(chatKey).size > 0) {
         fetchThreadMessages();
       }
-    }, 6000);
+    }, 2000);
+
+    const onVisible = () => {
+      if (!document.hidden && client && chatSubscribers.has(chatKey)) {
+        fetchThreadMessages();
+      }
+    };
+    document.addEventListener('visibilitychange', onVisible);
 
     return () => {
       if (pollInterval) clearInterval(pollInterval);
+      document.removeEventListener('visibilitychange', onVisible);
       if (chatSubscribers.has(chatKey)) {
         chatSubscribers.get(chatKey).delete(onMessagesUpdate);
       }
@@ -1344,8 +1344,9 @@
 
       const { data, error } = await client.from('messages')
         .select('*')
+        .neq('text', '[read_receipt]')
         .order('created_at', { ascending: false })
-        .limit(100);
+        .limit(50);
 
       if (!error && Array.isArray(data) && data.length > 0) {
         data.forEach(row => {
@@ -2252,6 +2253,22 @@
   window.NN_SUPABASE_SERVICES = api;
   // Seamless fallback alias so any legacy scripts continue without breaking
   window.NN_FIREBASE_SERVICES = api;
+
+  // Foreground Resume & Online Reconnection Trigger
+  if (typeof document !== 'undefined') {
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        if (!chatChannel || chatChannel.state !== 'joined') {
+          console.info('🔄 [Supabase] App active, re-ensuring Realtime Chat Channel...');
+          setupRealtimeChannels();
+        }
+      }
+    });
+    window.addEventListener('online', () => {
+      console.info('🌐 [Supabase] Network reconnected, re-establishing Realtime Channels...');
+      setupRealtimeChannels();
+    });
+  }
 
   // Auto-init on load
   if (document.readyState === 'loading') {

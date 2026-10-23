@@ -1,14 +1,14 @@
 {
-  "versionCode": 2,
-  "versionName": "1.0.2",
+  "versionCode": 3,
+  "versionName": "1.0.3",
   "minSupportedVersion": 1,
-  "releaseDate": "2026-10-22",
-  "title": "പുതിയ അപ്‌ഡേറ്റ് ലഭ്യമാണ്! (Version 1.0.2)",
+  "releaseDate": "2026-10-23",
+  "title": "പുതിയ അപ്‌ഡേറ്റ് ലഭ്യമാണ്! (Version 1.0.3)",
   "releaseNotes": [
-    "⚡ അതിവേഗ തത്സമയ ചാറ്റ് & മെച്ചപ്പെടുത്തിയ കണക്ഷൻ",
-    "✓✓ സന്ദേശം കണ്ടോ എന്നറിയാനുള്ള ടിക്ക് (Seen Status & Timestamp)",
-    "🛡️ 10 വർഷത്തെ ഡാറ്റാ സുരക്ഷയും ഓട്ടോമാറ്റിക് സ്റ്റോറേജ് മാനേജ്‌മെന്റും",
-    "🔄 ഇൻ-ആപ്പ് നേരിട്ടുള്ള അപ്‌ഡേറ്റ് സൗകര്യം (റീ-ഇൻസ്റ്റാൾ ചെയ്യേണ്ടതില്ല)"
+    "⚡ അതിവേഗ തത്സമയ ചാറ്റ് & ലാഗ് പൂർണ്ണമായും ഒഴിവാക്കി",
+    "🚀 തത്സമയ സന്ദേശ കൈമാറ്റം (Sub-50ms Fast Realtime Delivery)",
+    "✓✓ കൃത്യമായ ബ്ലൂ ടിക്ക് & റീഡ് റെസീപ്റ്റ് സ്റ്റാറ്റസ്",
+    "🔄 ഓട്ടോമാറ്റിക് റീകണക്റ്റ് & പെർഫോമൻസ് ഒപ്റ്റിമൈസേഷൻ"
   ],
   "apkUrl": "https://github.com/nammudenaadu0-creator/Nammude-naadu/raw/main/NammudeNaadu.apk",
   "webUrl": "https://nammudenaadu0-creator.github.io/Nammude-naadu/",
