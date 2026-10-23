@@ -722,36 +722,25 @@
       ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
     const senderPhone = (msgObj.senderPhone ? String(msgObj.senderPhone).replace(/\D/g, '').slice(-10) : '');
 
-    // Verify recipient so 1-on-1 chats only go to the intended participant
+    // Verify recipient so 1-on-1 chats ONLY go to the intended participant
     const recPhone = (metaObj && metaObj.recipientPhone ? String(metaObj.recipientPhone).replace(/\D/g, '').slice(-10) : '');
     const recId = (metaObj && metaObj.recipientId ? metaObj.recipientId : '');
-    const myName = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.name)
-      ? APP_STATE.currentUser.name.trim().toLowerCase() : '';
-    const recName = (metaObj && metaObj.recipientName ? String(metaObj.recipientName).trim().toLowerCase() : '');
     const cleanMyId = myId ? myId.replace(/[^a-zA-Z0-9]/g, '') : '';
     const activeKey = APP_STATE.activeChatRecipient?.key;
     const activeKeySymmetric = activeKey ? activeKey.replace('chat_', '').split('_').sort().join('_') : '';
     const chatKeySymmetric = chatKey ? chatKey.replace('chat_', '').split('_').sort().join('_') : '';
-    const activePhone = APP_STATE.activeChatRecipient?.phone ? String(APP_STATE.activeChatRecipient.phone).replace(/\D/g, '').slice(-10) : '';
-    const incomingSenderPhone = msgObj.senderPhone ? String(msgObj.senderPhone).replace(/\D/g, '').slice(-10) : '';
-    const isCurrentChatActive = activeKey === chatKey || 
-      (activeKeySymmetric && chatKeySymmetric && activeKeySymmetric === chatKeySymmetric) ||
-      (activePhone && incomingSenderPhone && activePhone === incomingSenderPhone);
+    const isCurrentChatActive = Boolean(activeKey && (activeKey === chatKey || (activeKeySymmetric && chatKeySymmetric && activeKeySymmetric === chatKeySymmetric)));
 
     const phones = String(chatKey).match(/\d{10}/g) || [];
-    const isPhoneMatch = myPhone && phones.includes(myPhone);
+    const isPhoneMatch = Boolean(myPhone && myPhone.length === 10 && phones.includes(myPhone));
+    const isRecPhoneMatch = Boolean(myPhone && recPhone && myPhone.length === 10 && myPhone === recPhone);
+    const isRecIdMatch = Boolean(myId && recId && myId === recId);
+    const isCleanIdInKey = Boolean(cleanMyId && cleanMyId.length >= 6 && chatKey.includes(cleanMyId));
+    const isSenderEcho = Boolean((myId && msgObj.senderId && myId === msgObj.senderId) || (myPhone && senderPhone && myPhone === senderPhone));
+    const isExistingLocalThread = Boolean(APP_STATE.chats && APP_STATE.chats[chatKey] && APP_STATE.chats[chatKey].length > 0);
 
-    const isForMe = (!metaObj) || isPhoneMatch ||
-      (APP_STATE.activeChatRecipient && isCurrentChatActive) ||
-      (myPhone && recPhone && myPhone === recPhone) ||
-      (myPhone && senderPhone && myPhone === senderPhone) ||
-      (myId && recId && myId === recId) ||
-      (cleanMyId && chatKey.includes(cleanMyId)) ||
-      (myName && recName && myName === recName) ||
-      (myName && chatKey.toLowerCase().includes(myName)) ||
-      (APP_STATE.chats && (APP_STATE.chats[chatKey] || (activeKey && APP_STATE.chats[activeKey]))) ||
-      (APP_STATE.chatMeta && (APP_STATE.chatMeta[chatKey] || (activeKey && APP_STATE.chatMeta[activeKey]))) ||
-      ((APP_STATE.services || []).some(s => s.id === recId && s.isCloud));
+    // Strictly ensure only the intended recipient or active thread participant receives the message
+    const isForMe = isPhoneMatch || isRecPhoneMatch || isRecIdMatch || isCleanIdInKey || (isCurrentChatActive && !isSenderEcho) || isExistingLocalThread;
 
     if (!isForMe) {
       return;
@@ -1379,15 +1368,8 @@
             key = 'chat_' + [rowSenderPhone, rowRecipientPhone].sort().join('_');
           }
 
-          const myName = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.name)
-            ? APP_STATE.currentUser.name.trim().toLowerCase() : '';
-          const rowRecipientName = row.recipient_name ? String(row.recipient_name).trim().toLowerCase() : '';
-          const rowSenderName = row.sender_name ? String(row.sender_name).trim().toLowerCase() : '';
-
-          const isForMe = (!myPhone && !myId) ||
-                          (myId && (row.sender_id === myId || row.recipient_id === myId)) ||
-                          (myPhone && (rowSenderPhone === myPhone || rowRecipientPhone === myPhone || key.includes(myPhone))) ||
-                          (myName && (rowSenderName === myName || rowRecipientName === myName || key.toLowerCase().includes(myName)));
+          const isForMe = Boolean((myId && (row.sender_id === myId || row.recipient_id === myId)) ||
+                          (myPhone && (rowSenderPhone === myPhone || rowRecipientPhone === myPhone || key.includes(myPhone))));
 
           if (!isForMe) return;
 
