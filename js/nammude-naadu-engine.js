@@ -175,7 +175,7 @@
   }
 
   const APP_STATE = {
-    currentScreen: 'splash',
+    currentScreen: 'home',
     previousScreen: 'home',
     currentUser: {
       id: currentCitizenId,
@@ -9149,13 +9149,8 @@
     }
     if (badgeEl) badgeEl.style.display = 'none';
 
-    if (fullImg) {
-      fullImg.style.transition = 'opacity 0.35s ease';
-      fullImg.style.opacity = '0.5';
-      setTimeout(() => {
-        fullImg.src = ad.art;
-        fullImg.style.opacity = '1';
-      }, 100);
+    if (fullImg && fullImg.src !== ad.art) {
+      fullImg.src = ad.art;
     }
     banner.style.setProperty('background-image', `url("${ad.art}")`, 'important');
 
@@ -10059,12 +10054,6 @@
       } catch (_) {}
     }, 1500);
 
-    // Auto-dismiss splash screen fast after 850ms if user didn't tap
-    setTimeout(() => {
-      if (APP_STATE.currentScreen === 'splash') {
-        enterAppFromSplash();
-      }
-    }, 850);
   });
 
 })();

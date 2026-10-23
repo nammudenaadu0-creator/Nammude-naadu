@@ -41,9 +41,9 @@
         </div>
 
         <!-- ============================================================== -->
-        <!-- SCREEN 0: SPLASH SCREEN                                        -->
+        <!-- SCREEN 0: SPLASH SCREEN (OPTIONAL / BACKGROUND)                -->
         <!-- ============================================================== -->
-        <section id="screen-splash" class="screen active" onclick="enterAppFromSplash()" style="cursor:pointer">
+        <section id="screen-splash" class="screen" onclick="enterAppFromSplash()" style="display:none">
             <div class="splash-fullscreen-wrapper" style="background:linear-gradient(180deg, #E0F9ED 0%, #D1FAE5 35%, #F0FDF4 70%, #FFFFFF 100%);justify-content:center;align-items:center;padding:24px 20px;text-align:center">
                 <!-- Decorative Subtle Background Glow -->
                 <div style="position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle, rgba(16,185,129,0.2) 0%, rgba(255,255,255,0) 70%);top:28%;left:50%;transform:translate(-50%,-50%);pointer-events:none"></div>
@@ -270,7 +270,7 @@
                 <!-- ============================================================== -->
                 <!-- SCREEN 1: HOME (MODERN 3D APP DESIGN & PROPER LOCATION/SEARCH) -->
                 <!-- ============================================================== -->
-                <section id="screen-home" class="screen home-3d-root">
+                <section id="screen-home" class="screen home-3d-root active">
                     <!-- KERALA BRAND & PROFILE TOP BAR (EXACT MATCH TO REFERENCE DESIGN) -->
                     <header class="home-top-navbar"
                         style="padding:10px 14px 10px;background:linear-gradient(180deg, #E0F9ED 0%, #EBFDF5 100%);border-bottom:1px solid rgba(16,185,129,0.12);display:flex;align-items:center;justify-content:space-between;width:100%;box-sizing:border-box;overflow:hidden">
@@ -1422,7 +1422,7 @@
         <!-- ============================================================== -->
         <!-- BOTTOM NAVIGATION BAR (Mobile Native Only)                     -->
         <!-- ============================================================== -->
-        <nav class="bottom-nav" id="bottomNav" style="display:none">
+        <nav class="bottom-nav" id="bottomNav" style="display:flex">
             <button class="nav-item active" data-page="home" onclick="navTo('home')">
                 <span style="font-size:20px">🏠</span>
                 <span>ഹോം</span>

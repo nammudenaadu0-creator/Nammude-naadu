@@ -141,97 +141,11 @@
   }
 
   /**
-   * Setup Mobile Native Touch Pull-To-Refresh
+   * Setup Mobile Native Touch Pull-To-Refresh (Disabled in favor of native 120Hz scrolling)
    */
   function setupTouchPullToRefresh() {
-    if (!('ontouchstart' in window)) return; // Only on touch-enabled devices
-
-    window.addEventListener('touchstart', (e) => {
-      if (isRefreshing) return;
-      if (e.touches.length !== 1) return;
-
-      // Don't pull-to-refresh if user has a modal open
-      const openModal = document.querySelector('.modal-overlay.active, .modal-overlay[style*="display: flex"], .modal-overlay[style*="display: block"]');
-      if (openModal) return;
-
-      // Check if user is scrolled to the absolute top of the page
-      const docScrollTop = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
-      if (docScrollTop <= 2) {
-        startY = e.touches[0].clientY;
-        isTrackingTouch = true;
-      }
-    }, { passive: true });
-
-    let touchRaf = null;
-
-    window.addEventListener('touchmove', (e) => {
-      if (!isTrackingTouch || isRefreshing) return;
-      currentY = e.touches[0].clientY;
-
-      if (touchRaf) return;
-      touchRaf = requestAnimationFrame(() => {
-        touchRaf = null;
-        if (!isTrackingTouch || isRefreshing) return;
-        if (!ptrPill) ptrPill = document.getElementById('pullToRefreshIndicator');
-        if (!ptrIcon) ptrIcon = document.getElementById('ptrIcon');
-        if (!ptrText) ptrText = document.getElementById('ptrText');
-        if (!ptrPill) return;
-
-        const rawDelta = currentY - startY;
-
-        // Only respond when pulling downwards from top
-        if (rawDelta > 0) {
-          const pullDistance = Math.min(MAX_PULL, rawDelta * 0.42);
-
-          if (pullDistance > 8) {
-            ptrPill.classList.add('pulling');
-            ptrPill.style.transform = `translate(-50%, ${pullDistance - 45}px)`;
-            ptrPill.style.opacity = Math.min(1, pullDistance / 40);
-
-            if (pullDistance >= PULL_THRESHOLD) {
-              if (ptrIcon) {
-                ptrIcon.textContent = '✨';
-                ptrIcon.style.transform = 'rotate(180deg)';
-              }
-              if (ptrText) ptrText.textContent = 'വിട്ടാൽ പുതുക്കും...';
-            } else {
-              if (ptrIcon) {
-                ptrIcon.textContent = '⬇️';
-                ptrIcon.style.transform = 'rotate(0deg)';
-              }
-              if (ptrText) ptrText.textContent = 'താഴേക്ക് വലിക്കുക...';
-            }
-          }
-        } else {
-          // Dragging upwards, cancel tracking
-          isTrackingTouch = false;
-          resetPill();
-        }
-      });
-    }, { passive: true });
-
-    window.addEventListener('touchend', () => {
-      if (!isTrackingTouch || isRefreshing) return;
-      isTrackingTouch = false;
-
-      const rawDelta = currentY - startY;
-      const pullDistance = Math.min(MAX_PULL, rawDelta * 0.42);
-
-      if (pullDistance >= PULL_THRESHOLD) {
-        // Trigger pull-to-refresh
-        if (ptrPill) {
-          ptrPill.classList.remove('pulling');
-          ptrPill.classList.add('refreshing');
-          if (ptrIcon) ptrIcon.textContent = '🔄';
-          if (ptrText) ptrText.textContent = 'വിവരങ്ങൾ പുതുക്കുന്നു...';
-        }
-        refreshActiveScreen();
-      } else {
-        resetPill();
-      }
-      startY = 0;
-      currentY = 0;
-    }, { passive: true });
+    // Pure native touch scrolling with zero event listener friction
+    return;
   }
 
   function resetPill() {
