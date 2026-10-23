@@ -4176,6 +4176,13 @@ body {
 }
 
 #modal-chat.modal-overlay {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+#modal-chat.modal-overlay.active {
   position: fixed !important;
   inset: 0 !important;
   width: 100vw !important;
@@ -4185,6 +4192,9 @@ body {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
   background: rgba(15, 23, 42, 0.8) !important;
   backdrop-filter: blur(8px) !important;
   -webkit-backdrop-filter: blur(8px) !important;
@@ -4207,7 +4217,7 @@ body {
 }
 
 @media (max-width: 500px) {
-  #modal-chat.modal-overlay {
+  #modal-chat.modal-overlay.active {
     align-items: stretch !important;
     padding: 0 !important;
     background: #F8FAFC !important;

@@ -9393,8 +9393,8 @@
   // 17. IN-APP INSTANT AUTO-UPDATE ENGINE (ZERO MANUAL RE-INSTALL)
   // ==============================================================
   const APP_BUILD_INFO = {
-    versionCode: 7,
-    versionName: "1.0.7",
+    versionCode: 8,
+    versionName: "1.0.8",
     buildDate: "2026-10-23"
   };
   window.APP_BUILD_INFO = APP_BUILD_INFO;
