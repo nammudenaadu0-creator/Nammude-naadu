@@ -295,8 +295,23 @@
                             </div>
                         </div>
 
-                        <!-- Top Right Actions: Bell Notification & Profile Icon (2 Items Only - Perfectly Spaced) -->
+                        <!-- Top Right Actions: Admin Shortcut, Settings & Profile -->
                         <div class="top-navbar-right-actions" style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:6px">
+
+                            <!-- Admin Shortcut Button: visible strictly for Admin 9605406699 -->
+                            <button id="homeAdminBtn" type="button" onclick="openAdminPortal()"
+                                title="അഡ്മിൻ കൺസോൾ (Admin Hub)"
+                                style="display:none;align-items:center;gap:4px;background:linear-gradient(135deg, #064E3B 0%, #0E7043 100%);color:#fff;border:none;border-radius:12px;padding:6px 10px;font-size:11.5px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(6,78,59,0.25)">
+                                <span>🔐</span>
+                                <span>അഡ്മിൻ</span>
+                            </button>
+
+                            <!-- Circular Settings Button -->
+                            <button type="button" onclick="openSettingsModal()"
+                                title="ക്രമീകരണങ്ങൾ (Settings)"
+                                style="width:38px;height:38px;border-radius:50%;background:#FFFFFF;border:1.5px solid rgba(226,232,240,0.85);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:transform 0.1s ease;flex-shrink:0">
+                                <span style="font-size:18px">⚙️</span>
+                            </button>
 
                             <!-- Circular Bell Button with Red Indicator Dot -->
                             <button type="button" onclick="navTo('community')"
@@ -2408,6 +2423,14 @@
             </div>
 
             <div style="flex:1;overflow-y:auto;padding:16px">
+                <!-- LINK TO FULL ADMIN PAGE -->
+                <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+                    <a href="admin.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#F0FDF4;border:1.5px solid #BBF7D0;color:#047857;padding:7px 12px;border-radius:10px;font-size:12px;font-weight:800;text-decoration:none;box-shadow:0 1px 3px rgba(0,0,0,0.04)">
+                        <span>🖥️</span>
+                        <span>ഫുൾ അഡ്മിൻ പേജ് തുറക്കുക (admin.html) ›</span>
+                    </a>
+                </div>
+
                 <!-- FORM 1: ADD SERVICE / WORKER -->
                 <form id="adminAddServiceForm" onsubmit="submitAdminAddService(event)"
                     style="display:flex;flex-direction:column;gap:11px">

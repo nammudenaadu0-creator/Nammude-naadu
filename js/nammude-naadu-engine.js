@@ -6336,6 +6336,12 @@
 
     const desktopNav = document.getElementById('desktopAdminNavLink');
     if (desktopNav) desktopNav.style.display = isAdmin ? 'flex' : 'none';
+
+    const homeAdminBtn = document.getElementById('homeAdminBtn');
+    if (homeAdminBtn) homeAdminBtn.style.display = isAdmin ? 'inline-flex' : 'none';
+
+    const settingsAdminRow = document.getElementById('settingsAdminHubRow');
+    if (settingsAdminRow) settingsAdminRow.style.display = isAdmin ? 'flex' : 'none';
   }
   window.updateAdminUI = updateAdminUI;
 
@@ -8995,7 +9001,7 @@
     // Admin visibility strictly locked to 9605406699
     const adminRow = document.getElementById('settingsAdminHubRow');
     if (adminRow) {
-      const isAdmin = user.phone === '9605406699' || (typeof isUserAdmin === 'function' && isUserAdmin());
+      const isAdmin = (typeof checkIsAdmin === 'function') ? checkIsAdmin() : (String(user.phone || '').replace(/\D/g, '').slice(-10) === '9605406699');
       adminRow.style.display = isAdmin ? 'flex' : 'none';
     }
 
@@ -9305,6 +9311,7 @@
     renderActiveServiceTracker();
     renderHomeVillageBanner();
     startQuickRequestAutoClose();
+    if (typeof updateAdminUI === 'function') updateAdminUI();
 
     const homeHeaderAvatar = document.getElementById('homeHeaderAvatar');
     if (homeHeaderAvatar) {
