@@ -2131,7 +2131,7 @@
       else if (chatKey) {
         const phones = String(chatKey).match(/\d{10}/g) || [];
         const myClean = normalizePhone(APP_STATE.currentUser?.phone);
-        phone = phones.find(p => p !== myClean) || phones[0] || '';
+        phone = phones.find(p => p !== myClean) || '';
       }
     }
 
@@ -2358,7 +2358,7 @@
       const phones = String(key).match(/\d{10}/g) || [];
       const myCleanPhone = normalizePhone(APP_STATE.currentUser?.phone);
       if (phones.length > 0) {
-        phone = phones.find(p => p !== myCleanPhone) || phones[0];
+        phone = phones.find(p => p !== myCleanPhone) || '';
       }
     }
 
@@ -2430,7 +2430,7 @@
       const phones = String(key).match(/\d{10}/g) || [];
       const myCleanPhone = normalizePhone(APP_STATE.currentUser?.phone);
       if (phones.length > 0) {
-        phone = phones.find(p => p !== myCleanPhone) || phones[0];
+        phone = phones.find(p => p !== myCleanPhone) || '';
       }
     }
 
@@ -2766,7 +2766,7 @@
     if (!targetPhone) {
       const phones = String(chatKey).match(/\d{10}/g) || [];
       if (phones.length > 0) {
-        targetPhone = phones.find(p => p !== myCleanPhone) || phones[0];
+        targetPhone = phones.find(p => p !== myCleanPhone) || '';
       }
     }
 
@@ -2856,7 +2856,7 @@
 
     const keysToMerge = new Set();
     if (explicitChatKey && explicitChatKey !== chatKey) keysToMerge.add(explicitChatKey);
-    if (targetCleanPhone) {
+    if (targetCleanPhone && targetCleanPhone !== myCleanPhone) {
       Object.keys(APP_STATE.chats).forEach(k => {
         if (k !== chatKey && k.includes(targetCleanPhone)) keysToMerge.add(k);
       });

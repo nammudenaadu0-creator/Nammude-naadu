@@ -712,17 +712,30 @@
     if (!payload || !payload.chatKey || !payload.msgObj) return;
     const { chatKey, msgObj, metaObj } = payload;
 
-    // Ignore duplicate if this exact browser tab was the sender (already locally rendered)
-    if (msgObj.sessionId && msgObj.sessionId === SESSION_CLIENT_ID) {
-      return;
-    }
-
     const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser.id : '';
     const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone)
       ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
     const senderPhone = (msgObj.senderPhone ? String(msgObj.senderPhone).replace(/\D/g, '').slice(-10) : '');
 
-    // Verify recipient so 1-on-1 chats ONLY go to the intended participant
+    // 1. SENDER ECHO CHECK: If current user sent this, NEVER process as incoming 'them' message!
+    const isSenderEcho = Boolean(
+      (msgObj.sessionId && msgObj.sessionId === SESSION_CLIENT_ID) ||
+      (myId && msgObj.senderId && myId === msgObj.senderId) ||
+      (myPhone && senderPhone && myPhone === senderPhone)
+    );
+    if (isSenderEcho) {
+      // Message was sent by me - ensure local status is 'sent' / 'delivered' and NEVER insert as 'them'
+      if (typeof APP_STATE !== 'undefined' && APP_STATE.chats && APP_STATE.chats[chatKey]) {
+        const localMsg = APP_STATE.chats[chatKey].find(m => m.id === msgObj.id || (m.timestamp === msgObj.timestamp && m.text === msgObj.text));
+        if (localMsg) {
+          localMsg.sender = 'me';
+          if (!localMsg.status || localMsg.status === 'sending') localMsg.status = 'sent';
+        }
+      }
+      return;
+    }
+
+    // 2. RECIPIENT VERIFICATION: Strictly ensure ONLY the intended recipient receives this message
     const recPhone = (metaObj && metaObj.recipientPhone ? String(metaObj.recipientPhone).replace(/\D/g, '').slice(-10) : '');
     const recId = (metaObj && metaObj.recipientId ? metaObj.recipientId : '');
     const cleanMyId = myId ? myId.replace(/[^a-zA-Z0-9]/g, '') : '';
@@ -736,17 +749,14 @@
     const isRecPhoneMatch = Boolean(myPhone && recPhone && myPhone.length === 10 && myPhone === recPhone);
     const isRecIdMatch = Boolean(myId && recId && myId === recId);
     const isCleanIdInKey = Boolean(cleanMyId && cleanMyId.length >= 6 && chatKey.includes(cleanMyId));
-    const isSenderEcho = Boolean((myId && msgObj.senderId && myId === msgObj.senderId) || (myPhone && senderPhone && myPhone === senderPhone));
-    const isExistingLocalThread = Boolean(APP_STATE.chats && APP_STATE.chats[chatKey] && APP_STATE.chats[chatKey].length > 0);
 
-    // Strictly ensure only the intended recipient or active thread participant receives the message
-    const isForMe = isPhoneMatch || isRecPhoneMatch || isRecIdMatch || isCleanIdInKey || (isCurrentChatActive && !isSenderEcho) || isExistingLocalThread;
-
+    // Strictly ensure message is for this user
+    const isForMe = isPhoneMatch || isRecPhoneMatch || isRecIdMatch || isCleanIdInKey;
     if (!isForMe) {
       return;
     }
 
-    console.info('📩 [Supabase] Incoming message for chat:', chatKey, msgObj.text);
+    console.info('📩 [Supabase] Incoming 1-on-1 message for chat:', chatKey, msgObj.text);
 
     if (typeof APP_STATE !== 'undefined') {
       if (!APP_STATE.chats) APP_STATE.chats = {};
@@ -834,8 +844,6 @@
           const payPhones = String(chatKey).match(/\d{10}/g) || [];
           if (subPhones.length === 2 && payPhones.length === 2) {
             isMatch = subPhones.sort().join('_') === payPhones.sort().join('_');
-          } else if (subPhones.length > 0 && payPhones.length > 0) {
-            isMatch = subPhones.some(p => payPhones.includes(p));
           }
         }
         if (isMatch) {
@@ -1344,9 +1352,13 @@
       const myPhone = myPhoneRaw.length >= 10 ? myPhoneRaw.slice(-10) : myPhoneRaw;
       const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser.id : '';
 
+      if (!myPhone && !myId) return;
+
       let query = client.from('messages').select('*');
       if (myPhone) {
         query = query.or(`sender_phone.eq.${myPhone},recipient_phone.eq.${myPhone},chat_key.ilike.%${myPhone}%`);
+      } else if (myId) {
+        query = query.or(`sender_id.eq.${myId},recipient_id.eq.${myId}`);
       }
       const { data, error } = await query
         .order('created_at', { ascending: false })
