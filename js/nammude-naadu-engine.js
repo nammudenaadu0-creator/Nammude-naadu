@@ -2555,7 +2555,9 @@
 
   function goToAllChatsInbox() {
     closeModal('modal-chat');
-    navTo('chat');
+    if (APP_STATE.currentScreen !== 'chat') {
+      navTo('chat');
+    }
   }
   window.goToAllChatsInbox = goToAllChatsInbox;
 
@@ -2589,7 +2591,14 @@
   }
 
   let _lastReconcileFp = '';
-  function reconcileChatThreads() {
+  let _lastReconcileTime = 0;
+  function reconcileChatThreads(force) {
+    const now = Date.now();
+    if (!force && _lastReconcileTime && (now - _lastReconcileTime < 10000)) {
+      return;
+    }
+    _lastReconcileTime = now;
+
     if (!APP_STATE.chats) APP_STATE.chats = {};
     if (!APP_STATE.chatMeta) APP_STATE.chatMeta = {};
 
@@ -2605,7 +2614,7 @@
     if (allKeys.length === 0) return;
 
     const fp = allKeys.length + ':' + (myPhone || '') + ':' + allKeys.slice(0, 8).join(',');
-    if (fp === _lastReconcileFp) return;
+    if (fp === _lastReconcileFp && !force) return;
     _lastReconcileFp = fp;
 
     // 2. Group keys by contact identity
@@ -2986,11 +2995,12 @@
     openModal('modal-chat');
     markChatAsSeen(chatKey);
 
-    setTimeout(() => {
+    if (box) box.scrollTop = box.scrollHeight;
+    requestAnimationFrame(() => {
       if (box) box.scrollTop = box.scrollHeight;
       const inp = document.getElementById('chatInputMessage');
       if (inp) inp.focus();
-    }, 180);
+    });
 
     // Subscribe to live Supabase Cloud messages for this thread
     if (typeof window._activeChatUnsubscribe === 'function') {
@@ -4020,14 +4030,25 @@
   }
   window.filterNewChatCategory = filterNewChatCategory;
 
+  let _cachedCommunityContacts = null;
+  let _lastCommunityContactsTime = 0;
+
   function getAllCommunityContacts(filterCategory) {
+    const now = Date.now();
+    if (_cachedCommunityContacts && (now - _lastCommunityContactsTime < 15000)) {
+      if (filterCategory && filterCategory !== 'all') {
+        return _cachedCommunityContacts.filter(item => item.type === filterCategory);
+      }
+      return _cachedCommunityContacts;
+    }
+
     const list = [];
     const seen = new Set();
-    const myPhone = normalizePhone(APP_STATE.currentUser.phone);
-    const myId = APP_STATE.currentUser.id;
+    const myPhone = normalizePhone(APP_STATE.currentUser?.phone);
+    const myId = APP_STATE.currentUser?.id;
 
-    // 0. Registered Citizens from Cloud Profiles
-    (APP_STATE.cloudProfiles || []).forEach(cp => {
+    // 0. Registered Citizens from Cloud Profiles (Top 35)
+    (APP_STATE.cloudProfiles || []).slice(0, 35).forEach(cp => {
       const cpPhone = normalizePhone(cp.phone);
       const cpKey = cpPhone || cp.id;
       if (cpKey && cpKey !== myPhone && cpKey !== myId && !seen.has(cpKey)) {
@@ -4044,8 +4065,8 @@
       }
     });
 
-    // 1. Community Post Authors (നാട്ടുകാർ & പോസ്റ്റ് ചെയ്തവർ)
-    (APP_STATE.posts || []).forEach(p => {
+    // 1. Community Post Authors (Top 25)
+    (APP_STATE.posts || []).slice(0, 25).forEach(p => {
       const pPhone = normalizePhone(p.authorPhone);
       const pKey = pPhone || p.authorId || p.authorName;
       if (pKey && pKey !== myPhone && pKey !== myId && !seen.has(pKey)) {
@@ -4062,8 +4083,8 @@
       }
     });
 
-    // 2. Service Providers (സേവനദാതാക്കൾ)
-    (APP_STATE.services || []).forEach(s => {
+    // 2. Service Providers (Top 25)
+    (APP_STATE.services || []).slice(0, 25).forEach(s => {
       const sPhone = normalizePhone(s.phone);
       const sKey = sPhone || s.id;
       if (sKey && sKey !== myPhone && sKey !== myId && !seen.has(sKey)) {
@@ -4080,8 +4101,8 @@
       }
     });
 
-    // 3. Blood Donors (രക്തദാതാക്കൾ)
-    (APP_STATE.bloodDonors || []).forEach(d => {
+    // 3. Blood Donors (Top 25)
+    (APP_STATE.bloodDonors || []).slice(0, 25).forEach(d => {
       const dPhone = normalizePhone(d.phone);
       const dKey = dPhone || d.name;
       if (dKey && dKey !== myPhone && !seen.has(dKey)) {
@@ -4098,8 +4119,8 @@
       }
     });
 
-    // 4. Job Employers (തൊഴിൽ ദാതാക്കൾ)
-    (APP_STATE.jobs || []).forEach(j => {
+    // 4. Job Employers (Top 15)
+    (APP_STATE.jobs || []).slice(0, 15).forEach(j => {
       const jPhone = normalizePhone(j.employerPhone);
       const jKey = jPhone || j.employer;
       if (jKey && jKey !== myPhone && !seen.has(jKey)) {
@@ -4116,8 +4137,8 @@
       }
     });
 
-    // 5. Rentals Owners (വാടക & വസ്തു)
-    (APP_STATE.rentals || []).forEach(r => {
+    // 5. Rentals Owners (Top 15)
+    (APP_STATE.rentals || []).slice(0, 15).forEach(r => {
       const rPhone = normalizePhone(r.ownerPhone);
       const rKey = rPhone || r.owner;
       if (rKey && rKey !== myPhone && !seen.has(rKey)) {
@@ -4134,8 +4155,8 @@
       }
     });
 
-    // 6. Local Businesses & Shops (കടകൾ & വ്യാപാരങ്ങൾ)
-    (APP_STATE.businesses || []).forEach(b => {
+    // 6. Local Businesses & Shops (Top 15)
+    (APP_STATE.businesses || []).slice(0, 15).forEach(b => {
       const bPhone = normalizePhone(b.phone);
       const bKey = bPhone || b.id;
       if (bKey && bKey !== myPhone && !seen.has(bKey)) {
@@ -4150,6 +4171,9 @@
         });
       }
     });
+
+    _cachedCommunityContacts = list;
+    _lastCommunityContactsTime = now;
 
     if (filterCategory && filterCategory !== 'all') {
       return list.filter(item => item.type === filterCategory);
@@ -9000,8 +9024,12 @@
     const el = document.getElementById(modalId);
     if (el) {
       el.style.display = 'flex';
-      // Trigger transition
-      setTimeout(() => el.classList.add('active'), 10);
+      el.classList.add('active');
+      try {
+        if (!history.state || history.state.modalId !== modalId) {
+          history.pushState({ modalId }, '');
+        }
+      } catch (_) {}
     }
   }
   window.openModal = openModal;
@@ -9016,9 +9044,7 @@
     const el = document.getElementById(modalId);
     if (el) {
       el.classList.remove('active');
-      setTimeout(() => {
-        el.style.display = 'none';
-      }, 250);
+      el.style.display = 'none';
     }
   }
   window.closeModal = closeModal;
@@ -9484,6 +9510,31 @@
     updateChatBadgeCounter();
     renderHomeScreen();
     renderCommunityFeed();
+
+    // Instant Back Button Support (Hardware Back & Browser Back - 0ms Latency)
+    window.addEventListener('popstate', () => {
+      const activeModal = document.querySelector('.modal-overlay.active');
+      if (activeModal) {
+        closeModal(activeModal.id);
+        return;
+      }
+      if (APP_STATE.currentScreen && APP_STATE.currentScreen !== 'home') {
+        goBack();
+      }
+    });
+
+    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+      window.Capacitor.Plugins.App.addListener('backButton', () => {
+        const activeModal = document.querySelector('.modal-overlay.active');
+        if (activeModal) {
+          closeModal(activeModal.id);
+        } else if (APP_STATE.currentScreen && APP_STATE.currentScreen !== 'home') {
+          goBack();
+        } else {
+          window.Capacitor.Plugins.App.exitApp();
+        }
+      });
+    }
 
     // Auto-prompt notification permission for real-time service enquiries & blood alerts
     setTimeout(() => {
