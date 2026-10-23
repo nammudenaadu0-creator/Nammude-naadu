@@ -3208,15 +3208,15 @@
     if (thread.length === 0) {
       box.dataset.renderedKey = chatKey;
       box.innerHTML = `
-        <div style="text-align:center;padding:28px 20px;background:#FFFFFF;border-radius:22px;margin:24px auto;max-width:320px;box-shadow:0 8px 24px rgba(6,78,59,0.06);border:1.5px solid #D1FAE5">
-          <div style="width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);border:2px solid #A7F3D0;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:30px;box-shadow:0 4px 12px rgba(16,185,129,0.15)">💬</div>
+        <div style="text-align:center;padding:28px 20px;background:#FFFFFF;border-radius:22px;margin:24px auto;max-width:320px;box-shadow:0 8px 24px rgba(79,70,229,0.08);border:1.5px solid #E0E7FF">
+          <div style="width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);border:2px solid #C7D2FE;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:30px;box-shadow:0 4px 12px rgba(99,102,241,0.18)">💬</div>
           <div style="font-weight:900;font-size:16px;color:#0F172A">${escapeHtml(APP_STATE.activeChatRecipient.name)}</div>
           <p style="font-size:12px;color:#64748B;margin:6px 0 0;line-height:1.5">നമ്മുടെ നാട് തത്സമയ സംഭാഷണം ആരംഭിക്കൂ. സന്ദേശങ്ങൾ ക്ലൗഡിൽ സുരക്ഷിതമാണ്.</p>
-          <div style="margin-top:14px;font-size:11px;font-weight:800;color:#065F46;background:#ECFDF5;border:1px solid #A7F3D0;display:inline-flex;align-items:center;gap:4px;padding:5px 14px;border-radius:20px">
-            <span>🌿 ലൈവ് കണക്റ്റ്</span>
+          <div style="margin-top:14px;font-size:11px;font-weight:800;color:#4338CA;background:#EEF2FF;border:1px solid #C7D2FE;display:inline-flex;align-items:center;gap:4px;padding:5px 14px;border-radius:20px">
+            <span>⚡ തത്സമയ കണക്റ്റ്</span>
           </div>
           <div style="margin-top:14px">
-            <button type="button" onclick="toggleChatStickers(true)" style="background:linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);border:1.5px solid #10B981;color:#065F46;padding:8px 16px;border-radius:999px;font-size:12px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 2px 6px rgba(16,185,129,0.12)">
+            <button type="button" onclick="toggleChatStickers(true)" style="background:linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);border:1.5px solid #6366F1;color:#4338CA;padding:8px 16px;border-radius:999px;font-size:12px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 2px 6px rgba(99,102,241,0.15)">
               <span>🎭</span> <span>മലയാളം സ്റ്റിക്കർ അയക്കൂ!</span>
             </button>
           </div>
