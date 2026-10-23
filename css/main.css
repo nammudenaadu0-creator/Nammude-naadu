@@ -5864,42 +5864,104 @@
 
 
 
-/* Safe Area & Mobile Notch Support (Universal) */
+/* Safe Area & Mobile Notch Support (Universal Top Bars & Screens) */
 :root {
     --sat: env(safe-area-inset-top, 0px);
     --sab: env(safe-area-inset-bottom, 0px);
 }
 
-.app-header {
-    padding-top: max(20px, calc(env(safe-area-inset-top, 0px) + 12px)) !important;
-}
-.profile-hero-card-pro {
-    padding-top: max(22px, calc(env(safe-area-inset-top, 0px) + 14px)) !important;
-}
-.jobs-blue-header {
-    padding-top: max(20px, calc(env(safe-area-inset-top, 0px) + 12px)) !important;
-}
+.home-top-navbar,
+.app-header,
+.nearby-header,
+.services-kerala-top-bar,
+.jobs-blue-header,
+.jobs-header,
+.rentals-header,
+.blood-header,
+.chat-screen-header,
+.profile-hero-card-pro,
 .subpage-header {
-    padding-top: max(10px, calc(env(safe-area-inset-top, 0px) + 6px)) !important;
+    padding-top: max(16px, calc(env(safe-area-inset-top, 0px) + 12px)) !important;
+    box-sizing: border-box !important;
 }
+
 .screen {
     padding-bottom: max(96px, calc(96px + env(safe-area-inset-bottom, 0px))) !important;
 }
+
 .bottom-nav {
     padding-bottom: max(6px, env(safe-area-inset-bottom, 0px)) !important;
     height: max(68px, calc(68px + env(safe-area-inset-bottom, 0px))) !important;
 }
 
 @media screen and (max-width: 480px) {
-    .app-header {
-        padding-top: max(32px, calc(env(safe-area-inset-top, 0px) + 12px)) !important;
-    }
+    .home-top-navbar,
+    .app-header,
+    .nearby-header,
+    .services-kerala-top-bar,
+    .jobs-blue-header,
+    .jobs-header,
+    .rentals-header,
+    .blood-header,
+    .chat-screen-header,
+    .subpage-header,
     .profile-hero-card-pro {
-        padding-top: max(36px, calc(env(safe-area-inset-top, 0px) + 14px)) !important;
+        padding-top: max(32px, calc(env(safe-area-inset-top, 0px) + 14px)) !important;
     }
-    .jobs-blue-header {
-        padding-top: max(34px, calc(env(safe-area-inset-top, 0px) + 12px)) !important;
-    }
+}
+
+/* Universal Touch Sizing for Modal Close Buttons & Round Controls */
+.modal-close-btn {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    min-height: 42px !important;
+    border-radius: 50% !important;
+    border: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 19px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    background: #F1F5F9 !important;
+    color: #475569 !important;
+    transition: transform 0.15s ease, background 0.15s ease !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+    flex-shrink: 0 !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08) !important;
+}
+
+.modal-close-btn:active {
+    transform: scale(0.92) !important;
+    background: #E2E8F0 !important;
+}
+
+.modal-close-btn-light {
+    background: rgba(255, 255, 255, 0.22) !important;
+    color: #FFFFFF !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.modal-close-btn-light:active {
+    background: rgba(255, 255, 255, 0.38) !important;
+    color: #FFFFFF !important;
+}
+
+/* Header Close Buttons in Modals - Ensure generous 42px touch hit targets */
+.modal-sheet > div:first-child button[onclick*="closeModal"]:not([class*="btn-"]),
+.modal-sheet > header button[onclick*="closeModal"]:not([class*="btn-"]) {
+    min-width: 42px !important;
+    min-height: 42px !important;
+    padding: 8px !important;
+    border-radius: 50% !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
 }
 
 /* ==============================================================

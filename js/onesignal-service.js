@@ -218,15 +218,139 @@
       } catch (e) {
         return false;
       }
+    },
+
+    // Check & show early notification permission prompt
+    checkAndPromptNotificationPermission: function (force = false) {
+      try {
+        const hasAsked = localStorage.getItem('nn_notif_prompt_shown');
+        const isGranted = (typeof Notification !== 'undefined' && Notification.permission === 'granted');
+
+        if (isGranted) return; // Already enabled
+
+        // If not asked yet or forced
+        if (!hasAsked || force) {
+          setTimeout(() => {
+            const modal = document.getElementById('modal-notif-permission');
+            if (modal) {
+              modal.style.display = 'flex';
+              modal.classList.add('active');
+            }
+          }, 1800);
+        }
+      } catch (_) {}
+    },
+
+    // Request notification permission smoothly
+    requestPermission: async function () {
+      let granted = false;
+
+      // 1. Native Capacitor OneSignal Plugin
+      if (typeof window !== 'undefined' && window.plugins && window.plugins.OneSignal) {
+        try {
+          const res = await window.plugins.OneSignal.Notifications.requestPermission(true);
+          granted = !!res;
+        } catch (_) {}
+      }
+
+      // 2. Browser / Webview Notification API
+      if (typeof Notification !== 'undefined' && typeof Notification.requestPermission === 'function') {
+        try {
+          const perm = await Notification.requestPermission();
+          if (perm === 'granted') granted = true;
+        } catch (_) {}
+      }
+
+      localStorage.setItem('nn_notif_prompt_shown', 'true');
+      if (granted) {
+        localStorage.setItem('nn_notif_enabled', 'true');
+        if (typeof window.showNotificationToast === 'function') {
+          window.showNotificationToast('✅ അറിയിപ്പുകൾ ഓണാക്കി! ഇനി സന്ദേശങ്ങൾ ഉടൻ ലഭിക്കും.');
+        }
+        this.syncUserIdentity();
+      }
+      return granted;
+    },
+
+    // Show native local notification when a message/event arrives
+    showLocalNotification: function (title, body, extraData = {}) {
+      try {
+        // Vibrate device if supported
+        if (navigator.vibrate) {
+          navigator.vibrate([100, 50, 100]);
+        }
+
+        if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+          const options = {
+            body: body || 'നിങ്ങൾക്ക് ഒരു പുതിയ സന്ദേശം വന്നിട്ടുണ്ട്',
+            icon: 'assets/kerala-logo-badge.jpg',
+            badge: 'assets/kerala-logo-badge.jpg',
+            tag: extraData.chatKey || 'nn-chat-msg',
+            renotify: true,
+            data: extraData
+          };
+
+          const notif = new Notification(title || 'നമ്മുടെ നാട് സന്ദേശം', options);
+          notif.onclick = function () {
+            window.focus();
+            if (extraData && extraData.chatKey && typeof window.openChatModal === 'function') {
+              window.openChatModal(
+                extraData.senderName || 'സുഹൃത്ത്',
+                extraData.senderPhone || '',
+                extraData.senderAvatar || '',
+                '',
+                extraData.senderId || '',
+                extraData.chatKey
+              );
+            }
+            notif.close();
+          };
+        }
+      } catch (err) {
+        console.info('Local notification note:', err.message);
+      }
+    }
+  };
+
+  // Global helper functions for UI modal buttons
+  window.confirmEnableNotifications = async function () {
+    const modal = document.getElementById('modal-notif-permission');
+    if (modal) {
+      modal.style.display = 'none';
+      modal.classList.remove('active');
+    }
+    if (window.NN_ONESIGNAL) {
+      await window.NN_ONESIGNAL.requestPermission();
+    }
+  };
+
+  window.dismissNotificationPrompt = function () {
+    const modal = document.getElementById('modal-notif-permission');
+    if (modal) {
+      modal.style.display = 'none';
+      modal.classList.remove('active');
+    }
+    localStorage.setItem('nn_notif_prompt_shown', 'true');
+  };
+
+  window.showLocalNotification = function (title, body, extraData) {
+    if (window.NN_ONESIGNAL && typeof window.NN_ONESIGNAL.showLocalNotification === 'function') {
+      window.NN_ONESIGNAL.showLocalNotification(title, body, extraData);
     }
   };
 
   // Auto-init on page/app load
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    setTimeout(() => window.NN_ONESIGNAL.init(), 1000);
+    setTimeout(() => {
+      window.NN_ONESIGNAL.init();
+      window.NN_ONESIGNAL.checkAndPromptNotificationPermission();
+    }, 1200);
   } else {
     document.addEventListener('DOMContentLoaded', () => {
-      setTimeout(() => window.NN_ONESIGNAL.init(), 1000);
+      setTimeout(() => {
+        window.NN_ONESIGNAL.init();
+        window.NN_ONESIGNAL.checkAndPromptNotificationPermission();
+      }, 1200);
     });
   }
 

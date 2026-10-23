@@ -3069,11 +3069,52 @@
   function renderSingleMessageHtml(msg, recipientAvatar) {
     const isMe = msg.sender === 'me';
     let innerContentHtml = '';
+
+    // Check if message is a voice note
+    let audioUrl = msg.audioUrl || '';
+    let voiceDuration = msg.duration || '0:05';
+    let isVoice = msg.type === 'voice' || !!audioUrl;
+
+    if (!isVoice && typeof msg.text === 'string' && msg.text.startsWith('[voice:')) {
+      const match = msg.text.match(/^\[voice:([^|]+)\|([^\]]+)\]$/);
+      if (match) {
+        isVoice = true;
+        audioUrl = match[1];
+        voiceDuration = match[2];
+      }
+    }
+
     if (msg.type === 'sticker') {
       innerContentHtml = `
         <div class="chat-sticker-bubble">
           <span class="cs-emoji">${escapeHtml(msg.stickerEmoji || '🔥')}</span>
           <span class="cs-text">${escapeHtml(msg.stickerText || msg.text)}</span>
+        </div>
+      `;
+    } else if (isVoice) {
+      innerContentHtml = `
+        <div class="chat-voice-bubble">
+          <button type="button" class="voice-play-btn" onclick="togglePlayVoice(this, '${escapeHtml(audioUrl)}')" title="പ്ലേ ചെയ്യുക">
+            <span class="play-icon">▶</span>
+          </button>
+          <div class="voice-wave-wrap">
+            <div class="voice-waveform-bars">
+              <span class="w-bar" style="height:10px"></span>
+              <span class="w-bar" style="height:18px"></span>
+              <span class="w-bar" style="height:12px"></span>
+              <span class="w-bar" style="height:22px"></span>
+              <span class="w-bar" style="height:14px"></span>
+              <span class="w-bar" style="height:24px"></span>
+              <span class="w-bar" style="height:16px"></span>
+              <span class="w-bar" style="height:20px"></span>
+              <span class="w-bar" style="height:10px"></span>
+              <span class="w-bar" style="height:16px"></span>
+            </div>
+            <div class="voice-progress-track">
+              <div class="voice-progress-fill" style="width:0%"></div>
+            </div>
+          </div>
+          <span class="voice-duration">${escapeHtml(voiceDuration)}</span>
         </div>
       `;
     } else {
@@ -3254,6 +3295,83 @@
     }
   }
   window.sendChatMessage = sendChatMessage;
+
+  function sendVoiceChatMessage(base64Audio, durationText = '0:05', durationSec = 5) {
+    if (!APP_STATE.activeChatRecipient || !base64Audio) return;
+
+    const chatKey = APP_STATE.activeChatRecipient.key;
+    if (!APP_STATE.chats[chatKey]) {
+      APP_STATE.chats[chatKey] = [];
+    }
+
+    const senderName = APP_STATE.currentUser.name || 'ഞാൻ';
+    const senderAvatar = APP_STATE.currentUser.avatar || DEFAULT_USER_AVATAR;
+    const timeStr = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+
+    // Pack voice data into compact payload
+    const encodedText = `[voice:${base64Audio}|${durationText}]`;
+    const msgObj = {
+      id: 'vmsg_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+      text: encodedText,
+      type: 'voice',
+      audioUrl: base64Audio,
+      duration: durationText,
+      durationSec: durationSec,
+      time: timeStr,
+      timestamp: Date.now(),
+      status: 'sent'
+    };
+
+    // Instant local echo
+    APP_STATE.chats[chatKey].push({
+      ...msgObj,
+      sender: 'me',
+      status: 'sent'
+    });
+
+    if (APP_STATE.chatMeta && APP_STATE.chatMeta[chatKey]) {
+      APP_STATE.chatMeta[chatKey].updatedAt = Date.now();
+    }
+    saveChats();
+    updateChatBadgeCounter();
+    renderChatMessages();
+
+    // Broadcast to Supabase Realtime Cloud (Instant cross-device delivery)
+    const metaObj = {
+      recipientId: APP_STATE.activeChatRecipient.id || '',
+      recipientName: APP_STATE.activeChatRecipient.name,
+      recipientPhone: APP_STATE.activeChatRecipient.phone,
+      recipientAvatar: APP_STATE.activeChatRecipient.avatar,
+      senderId: APP_STATE.currentUser.id,
+      senderName: senderName,
+      senderPhone: APP_STATE.currentUser.phone,
+      senderAvatar: senderAvatar
+    };
+
+    if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.sendChatMessage === 'function') {
+      window.NN_SUPABASE_SERVICES.sendChatMessage(chatKey, msgObj, metaObj);
+    }
+
+    // Closed-app background push delivery via OneSignal
+    if (typeof window !== 'undefined' && window.NN_ONESIGNAL && typeof window.NN_ONESIGNAL.sendPush === 'function') {
+      try {
+        window.NN_ONESIGNAL.sendPush(
+          APP_STATE.activeChatRecipient.phone,
+          `🎙️ വോയ്സ് സന്ദേശം: ${senderName}`,
+          `🎙️ വോയ്സ് നോട്ട് (${durationText})`,
+          {
+            type: 'chat',
+            chatKey: chatKey,
+            senderName: senderName,
+            senderPhone: APP_STATE.currentUser.phone || '',
+            senderAvatar: senderAvatar,
+            senderId: APP_STATE.currentUser.id
+          }
+        );
+      } catch (_) {}
+    }
+  }
+  window.sendVoiceChatMessage = sendVoiceChatMessage;
 
   // ==============================================================
   // MALAYALAM STICKERS MODULE (ചാറ്റ് മലയാളം സ്റ്റിക്കറുകൾ)
@@ -9199,8 +9317,8 @@
   // 17. IN-APP INSTANT AUTO-UPDATE ENGINE (ZERO MANUAL RE-INSTALL)
   // ==============================================================
   const APP_BUILD_INFO = {
-    versionCode: 3,
-    versionName: "1.0.3",
+    versionCode: 4,
+    versionName: "1.0.4",
     buildDate: "2026-10-23"
   };
   window.APP_BUILD_INFO = APP_BUILD_INFO;
