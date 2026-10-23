@@ -34,6 +34,12 @@
 
     <div class="app-container">
 
+        <!-- PULL TO REFRESH FLOATING INDICATOR PILL -->
+        <div id="pullToRefreshIndicator" class="pull-to-refresh-pill" aria-hidden="true">
+            <span class="ptr-icon" id="ptrIcon">⬇️</span>
+            <span class="ptr-text" id="ptrText">താഴേക്ക് വലിക്കുക...</span>
+        </div>
+
         <!-- ============================================================== -->
         <!-- SCREEN 0: SPLASH SCREEN                                        -->
         <!-- ============================================================== -->
@@ -131,6 +137,10 @@
 
                 <!-- Right: Quick Actions & Profile -->
                 <div class="desktop-header-actions">
+                    <button type="button" class="desktop-action-btn refresh" onclick="refreshActiveScreen(this)" style="background:#F0FDF4;color:#047857;border:1px solid rgba(16,185,129,0.3)" title="ഡാറ്റ പുതുക്കുക">
+                        <span class="refresh-spinner-icon">🔄</span>
+                        <span>പുതുക്കുക</span>
+                    </button>
                     <button type="button" class="desktop-action-btn post" onclick="navTo('add')">
                         <span>➕</span>
                         <span>പോസ്റ്റ്</span>
@@ -283,8 +293,15 @@
                             </div>
                         </div>
 
-                        <!-- Top Right Actions: Location Icon, Bell Notification & Profile Icon -->
+                        <!-- Top Right Actions: Refresh Icon, Bell Notification & Profile Icon -->
                         <div class="top-navbar-right-actions" style="display:flex;align-items:center;gap:8px">
+
+                            <!-- Circular Refresh Button with 42px touch target & smooth spin -->
+                            <button type="button" id="homeTopRefreshBtn" class="home-top-refresh-btn" onclick="refreshActiveScreen(this)"
+                                title="വിവരങ്ങൾ പുതുക്കുക" aria-label="Refresh"
+                                style="width:42px;height:42px;border-radius:50%;background:#FFFFFF;border:1.5px solid rgba(226,232,240,0.85);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.06);transition:transform 0.1s ease">
+                                <span class="refresh-spinner-icon" style="font-size:18px;display:inline-block">🔄</span>
+                            </button>
 
                             <!-- Circular Bell Button with Red Indicator Dot -->
                             <button type="button" onclick="navTo('community')"
@@ -3829,6 +3846,9 @@
 
     <!-- REALTIME VOICE CHAT & AUDIO NOTES -->
     <script src="js/voice-chat.js?v=1.0"></script>
+
+    <!-- PULL TO REFRESH & APP SYNC ENGINE -->
+    <script src="js/app-refresh.js?v=1.0"></script>
 
     <!-- MULTILINGUAL (i18n) ENGINE -->
     <script src="js/i18n-translations.js?v=1.0"></script>

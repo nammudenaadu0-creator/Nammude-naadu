@@ -883,7 +883,10 @@
   function navTo(screenId) {
     if (!screenId) return;
     if (APP_STATE.currentScreen === screenId) {
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (typeof window.refreshActiveScreen === 'function') {
+        window.refreshActiveScreen();
+      }
       return;
     }
     APP_STATE.previousScreen = APP_STATE.currentScreen;
@@ -9317,8 +9320,8 @@
   // 17. IN-APP INSTANT AUTO-UPDATE ENGINE (ZERO MANUAL RE-INSTALL)
   // ==============================================================
   const APP_BUILD_INFO = {
-    versionCode: 4,
-    versionName: "1.0.4",
+    versionCode: 5,
+    versionName: "1.0.5",
     buildDate: "2026-10-23"
   };
   window.APP_BUILD_INFO = APP_BUILD_INFO;
