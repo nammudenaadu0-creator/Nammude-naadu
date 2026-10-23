@@ -25,9 +25,9 @@
         rel="stylesheet">
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="css/main.css?v=2.3">
-    <link rel="stylesheet" href="css/jobs.css?v=2.3">
-    <link rel="stylesheet" href="css/nammude-naadu.css?v=2.3">
+    <link rel="stylesheet" href="css/main.css?v=2.6">
+    <link rel="stylesheet" href="css/jobs.css?v=2.6">
+    <link rel="stylesheet" href="css/nammude-naadu.css?v=2.6">
 </head>
 
 <body>
@@ -1442,9 +1442,9 @@
     <!-- ============================================================== -->
     <!-- MODAL: REALTIME 1-ON-1 IN-APP CHAT (WITH PREMIUM FUN ZONE)     -->
     <!-- ============================================================== -->
-    <div id="modal-chat" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-chat')">
-        <div class="chat-modal-sheet" id="chatModalSheet">
-            <div class="chat-modal-header">
+    <div id="modal-chat" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-chat')" style="backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);background:rgba(15,23,42,0.78)!important;">
+        <div class="chat-modal-sheet" id="chatModalSheet" style="background:#F8FAFC !important;background-color:#F8FAFC !important;box-shadow:0 25px 70px rgba(0,0,0,0.45) !important;">
+            <div class="chat-modal-header" style="background:linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4338CA 100%) !important;background-color:#1E1B4B !important;">
                 <button class="chat-back-to-inbox-btn" onclick="goToAllChatsInbox()"
                     title="ചാറ്റ് ബോക്സിലേക്ക് മടങ്ങാം">
                     <span>❮</span>
@@ -1476,11 +1476,11 @@
 
             <!-- INQUIRY CONTEXT BANNER -->
             <div id="chatInquiryBanner" class="chat-inquiry-banner"
-                style="display:none;background:#F0FDF4;border-left:4px solid #0E7043;padding:9px 14px;border-bottom:1px solid #DCFCE7;align-items:center;gap:10px">
+                style="display:none;background:#EEF2FF;border-left:4px solid #4F46E5;padding:9px 14px;border-bottom:1px solid #C7D2FE;align-items:center;gap:10px">
                 <span style="font-size:18px">📌</span>
                 <div style="flex:1;min-width:0">
                     <div
-                        style="font-size:10px;text-transform:uppercase;font-weight:800;color:#0E7043;letter-spacing:0.5px">
+                        style="font-size:10px;text-transform:uppercase;font-weight:800;color:#4338CA;letter-spacing:0.5px">
                         അന്വേഷണം / റഫറൻസ് (Inquiry Topic)</div>
                     <div id="chatInquiryTopic"
                         style="font-size:12.5px;font-weight:700;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
@@ -1489,10 +1489,10 @@
             </div>
 
             <!-- CHAT THREAD (CONTAINS MESSAGES AND STICKERS) -->
-            <div class="chat-thread-box" id="chatMessagesBox"></div>
+            <div class="chat-thread-box" id="chatMessagesBox" style="background:#F8FAFC !important;background-color:#F8FAFC !important;"></div>
 
             <!-- QUICK REPLY CHIPS -->
-            <div class="quick-reply-bar">
+            <div class="quick-reply-bar" style="background:#FFFFFF !important;background-color:#FFFFFF !important;">
                 <button class="quick-chip" onclick="sendQuickReply('ലഭ്യമാണോ?')">ലഭ്യമാണോ?</button>
                 <button class="quick-chip" onclick="sendQuickReply('സ്ഥലം എവിടെയാണ്?')">സ്ഥലം എവിടെയാണ്?</button>
                 <button class="quick-chip" onclick="sendQuickReply('റേറ്റ് എത്രയാണ്?')">റേറ്റ് എത്രയാണ്?</button>
@@ -1515,7 +1515,7 @@
             </div>
 
             <!-- INPUT BAR WITH 🎭 STICKER & 🎙️ VOICE CHAT BUTTON -->
-            <div class="chat-input-bar" id="chatInputBar">
+            <div class="chat-input-bar" id="chatInputBar" style="background:#FFFFFF !important;background-color:#FFFFFF !important;">
                 <button type="button" class="chat-sticker-btn" id="chatStickerBtn" onclick="toggleChatStickers()"
                     title="മലയാളം സ്റ്റിക്കറുകൾ അയക്കാം">
                     <span>🎭</span>
