@@ -2205,17 +2205,9 @@
 
         if (APP_STATE.currentScreen === 'nearby' && typeof renderNearbyScreen === 'function') {
           renderNearbyScreen();
-        }
-        if (APP_STATE.currentScreen === 'blood' && typeof renderBloodDonorsList === 'function') {
+        } else if (APP_STATE.currentScreen === 'blood' && typeof renderBloodDonorsList === 'function') {
           renderBloodDonorsList();
-        }
-        if (APP_STATE.currentScreen === 'home' && typeof renderHomeCommunityFeed === 'function') {
-          renderHomeCommunityFeed();
-        }
-        if (APP_STATE.currentScreen === 'community' && typeof renderCommunityFeed === 'function') {
-          renderCommunityFeed();
-        }
-        if (APP_STATE.currentScreen === 'chat' && typeof renderChatListScreen === 'function') {
+        } else if (APP_STATE.currentScreen === 'chat' && typeof renderChatListScreen === 'function') {
           renderChatListScreen();
         }
       }
