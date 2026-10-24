@@ -144,6 +144,30 @@
         if (check.display !== 'granted') {
           await window.Capacitor.Plugins.LocalNotifications.requestPermissions();
         }
+
+        // INSTANT TAP NAVIGATION (Just like Meesho / Flipkart): Direct deep-dive into the exact chat / order screen
+        if (!window._localNotifClickRegistered) {
+          window._localNotifClickRegistered = true;
+          window.Capacitor.Plugins.LocalNotifications.addListener('localNotificationActionPerformed', (action) => {
+            try {
+              const data = (action && action.notification && action.notification.extra) || {};
+              console.info('📲 [Capacitor LocalNotification Tapped]:', data);
+              if (data.chatKey && typeof window.openChatModalByKey === 'function') {
+                setTimeout(() => window.openChatModalByKey(data.chatKey), 200);
+              } else if (data.chatKey && typeof window.openChatModal === 'function') {
+                setTimeout(() => window.openChatModal(data.senderName || 'സുഹൃത്ത്', data.phone || data.senderPhone || '', '', '', data.senderId || '', data.chatKey), 200);
+              } else if (data.type === 'chat' && typeof window.navTo === 'function') {
+                window.navTo('chat');
+              } else if (data.type === 'blood' && typeof window.navTo === 'function') {
+                window.navTo('blood');
+              } else if (data.type === 'service' && typeof window.navTo === 'function') {
+                window.navTo('services');
+              }
+            } catch (err) {
+              console.warn('⚠️ [LocalNotification action error]:', err);
+            }
+          });
+        }
       } else if (typeof Notification !== 'undefined') {
         const perm = await Notification.requestPermission();
         if (perm === 'granted' && 'serviceWorker' in navigator) {
@@ -740,13 +764,21 @@
 
       const exists = APP_STATE.chats[chatKey].some(m => m.id === msgObj.id || (m.timestamp === msgObj.timestamp && m.text === msgObj.text));
       if (!exists) {
+        const partnerPhone = (msgObj.senderPhone ? String(msgObj.senderPhone).replace(/\D/g, '').slice(-10) : '') ||
+                             (metaObj && metaObj.senderPhone ? String(metaObj.senderPhone).replace(/\D/g, '').slice(-10) : '');
+        const partnerName = msgObj.senderName || (metaObj ? metaObj.senderName : 'സുഹൃത്ത്');
+        const partnerAvatar = msgObj.senderAvatar || (metaObj ? metaObj.senderAvatar : '');
+        const partnerId = msgObj.senderId || (metaObj ? metaObj.senderId : '');
+
         APP_STATE.chats[chatKey].push({
           id: msgObj.id || ('msg_' + Date.now()),
           sender: 'them',
-          senderId: msgObj.senderId || '',
-          senderPhone: msgObj.senderPhone || '',
-          senderName: msgObj.senderName || 'സുഹൃത്ത്',
-          senderAvatar: msgObj.senderAvatar || '',
+          senderId: partnerId,
+          senderPhone: partnerPhone,
+          senderName: partnerName,
+          senderAvatar: partnerAvatar,
+          recipientId: recId || myId || '',
+          recipientPhone: recPhone || myPhone || '',
           text: msgObj.text,
           time: msgObj.time || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           timestamp: msgObj.timestamp || Date.now()
@@ -754,17 +786,24 @@
         APP_STATE.chats[chatKey].sort((a, b) => (Number(a.timestamp) || 0) - (Number(b.timestamp) || 0));
 
         if (!APP_STATE.chatMeta) APP_STATE.chatMeta = {};
-        if (!APP_STATE.chatMeta[chatKey] || metaObj) {
-          APP_STATE.chatMeta[chatKey] = {
-            name: msgObj.senderName || (metaObj ? metaObj.senderName : 'സുഹൃത്ത്'),
-            phone: msgObj.senderPhone || (metaObj ? metaObj.senderPhone : ''),
-            avatar: msgObj.senderAvatar || (metaObj ? metaObj.senderAvatar : ''),
-            recipientId: msgObj.senderId || ''
-          };
-        }
+        APP_STATE.chatMeta[chatKey] = {
+          name: partnerName,
+          phone: partnerPhone,
+          avatar: partnerAvatar,
+          recipientId: partnerId,
+          partnerPhone: partnerPhone,
+          partnerName: partnerName,
+          myPhone: myPhone || recPhone || '',
+          myId: myId || recId || '',
+          senderPhone: partnerPhone,
+          recipientPhone: recPhone || myPhone || '',
+          category: (metaObj && metaObj.category) || (APP_STATE.chatMeta[chatKey]?.category) || '',
+          type: (metaObj && metaObj.type) || (APP_STATE.chatMeta[chatKey]?.type) || 'other',
+          updatedAt: Date.now()
+        };
 
         if (typeof saveChats === 'function') {
-          try { saveChats(); } catch (_) {}
+          try { saveChats(true); } catch (_) {}
         }
 
         // Active chat thread update
