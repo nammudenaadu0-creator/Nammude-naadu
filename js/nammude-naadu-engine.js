@@ -918,7 +918,10 @@
   }
 
   function updateChatBadgeCounter() {
-    const keys = Object.keys(APP_STATE.chats || {}).filter(k => APP_STATE.chats[k] && APP_STATE.chats[k].length > 0);
+    const keys = Object.keys(APP_STATE.chats || {}).filter(k => {
+      if (typeof isThreadBelongingToCurrentUser === 'function' && !isThreadBelongingToCurrentUser(k)) return false;
+      return APP_STATE.chats[k] && APP_STATE.chats[k].length > 0;
+    });
     const count = keys.length;
     const badge = document.getElementById('bottomNavChatBadge');
     if (badge) {
@@ -4374,6 +4377,61 @@
   }
   window.filterChatList = filterChatList;
 
+  // STRICT PRIVACY FILTER: Verify if a chat thread strictly belongs to the currently logged in user / account
+  function isThreadBelongingToCurrentUser(k) {
+    if (!k) return false;
+    const curUser = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser : null;
+    if (!curUser) return false;
+
+    const myCleanPhone = normalizePhone(curUser.phone);
+    const myId = String(curUser.id || '').trim();
+    const myEmail = String(curUser.email || '').trim().toLowerCase();
+
+    // If current session has neither phone nor id nor email, user has no private chats
+    if (!myCleanPhone && !myId && !myEmail) return false;
+
+    // 1. Check chat key for participant phone numbers or user ID
+    if (myCleanPhone && k.includes(myCleanPhone)) return true;
+    if (myId && k.includes(myId)) return true;
+
+    // 2. Check thread metadata participants
+    const meta = (APP_STATE.chatMeta && APP_STATE.chatMeta[k]) || {};
+    const metaRecPhone = normalizePhone(meta.recipientPhone);
+    const metaSendPhone = normalizePhone(meta.senderPhone);
+    const metaDirectPhone = normalizePhone(meta.phone);
+    const metaRecId = String(meta.recipientId || '').trim();
+    const metaSendId = String(meta.senderId || '').trim();
+
+    if (myCleanPhone) {
+      if ((metaRecPhone && metaRecPhone === myCleanPhone) || 
+          (metaSendPhone && metaSendPhone === myCleanPhone) || 
+          (metaDirectPhone && metaDirectPhone === myCleanPhone)) {
+        return true;
+      }
+    }
+    if (myId) {
+      if ((metaRecId && metaRecId === myId) || (metaSendId && metaSendId === myId)) {
+        return true;
+      }
+    }
+
+    // 3. Check individual messages inside thread for sender or recipient match
+    const msgs = (APP_STATE.chats && APP_STATE.chats[k]) || [];
+    for (let i = 0; i < msgs.length; i++) {
+      const m = msgs[i];
+      if (!m) continue;
+      if (m.sender === 'me') return true;
+      const sPhone = normalizePhone(m.senderPhone);
+      const rPhone = normalizePhone(m.recipientPhone);
+      if (myCleanPhone && ((sPhone && sPhone === myCleanPhone) || (rPhone && rPhone === myCleanPhone))) return true;
+      if (myId && ((m.senderId && m.senderId === myId) || (m.recipientId && m.recipientId === myId))) return true;
+      if (myEmail && ((m.senderEmail && m.senderEmail.toLowerCase() === myEmail) || (m.recipientEmail && m.recipientEmail.toLowerCase() === myEmail))) return true;
+    }
+
+    return false;
+  }
+  window.isThreadBelongingToCurrentUser = isThreadBelongingToCurrentUser;
+
   function renderChatListScreen() {
     const container = document.getElementById('chatThreadsList');
     if (!container) return;
@@ -4382,11 +4440,12 @@
       reconcileChatThreads();
     }
 
-    // Gather all chat keys with active messages
+    // Gather all chat keys with active messages that STRICTLY belong to currentUser
     const allKeys = Array.from(new Set([
       ...Object.keys(APP_STATE.chats || {}),
       ...Object.keys(APP_STATE.chatMeta || {})
     ])).filter(k => {
+      if (!isThreadBelongingToCurrentUser(k)) return false;
       const msgs = ((APP_STATE.chats && APP_STATE.chats[k]) || []).filter(m => m && m.text && m.text !== '[deleted]');
       return msgs.length > 0;
     });
@@ -9899,7 +9958,12 @@
         localStorage.removeItem('nn_user_is_donor');
         localStorage.removeItem('nn_user_cover');
         localStorage.removeItem('nn_user_bio');
+        localStorage.removeItem('nn_chats_store');
+        localStorage.removeItem('nn_chats_meta');
       } catch (_) {}
+
+      APP_STATE.chats = {};
+      APP_STATE.chatMeta = {};
 
       APP_STATE.currentUser = {
         id: 'usr_me_' + Math.random().toString(36).substring(2, 9),
@@ -9914,6 +9978,8 @@
       };
 
       if (typeof updateUserAuthUI === 'function') updateUserAuthUI();
+      if (typeof updateChatBadgeCounter === 'function') updateChatBadgeCounter();
+      if (typeof renderChatListScreen === 'function') renderChatListScreen();
       renderProfileScreen();
       updatePostingProfileBar();
       renderHomeScreen();
