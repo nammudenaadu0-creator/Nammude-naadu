@@ -6384,6 +6384,11 @@
   }
   window.openEmergencyModal = openEmergencyModal;
 
+  function openHealthAndAmbulanceModal() {
+    openEmergencyModal();
+  }
+  window.openHealthAndAmbulanceModal = openHealthAndAmbulanceModal;
+
   // ==============================================================
   // 11C. ADMIN PORTAL (SERVICES & EMERGENCY DIRECTORY MANAGEMENT)
   // Strictly restricted to official Admin Phone: 9605406699

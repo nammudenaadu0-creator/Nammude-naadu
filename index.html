@@ -480,14 +480,14 @@
                             <div class="kerala-cat-arrow-btn" style="background:#E11D48">➔</div>
                         </div>
 
-                        <!-- CARD 2: ആരോഗ്യ സേവനം (HEALTHCARE) -->
-                        <div class="kerala-cat-card" onclick="openEmergencyModal()"
+                        <!-- CARD 2: ആരോഗ്യം & ആംബുലൻസ് (HEALTHCARE & AMBULANCE) -->
+                        <div class="kerala-cat-card" onclick="openHealthAndAmbulanceModal()"
                             style="background:linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%);border:1.5px solid #FED7AA">
                             <div class="kerala-cat-img-box">
-                                <img src="assets/cat-health-3d.jpg" alt="ആരോഗ്യ സേവനം" class="kerala-cat-img">
+                                <img src="assets/cat-health-3d.jpg" alt="ആരോഗ്യം & ആംബുലൻസ്" class="kerala-cat-img">
                             </div>
-                            <div class="kerala-cat-title" style="color:#9A3412">ആരോഗ്യ സേവനം</div>
-                            <div class="kerala-cat-sub" style="color:#C2410C">ആരോഗ്യ വിവരം, ആശുപത്രികൾ...</div>
+                            <div class="kerala-cat-title" style="color:#9A3412">ആരോഗ്യം & ആംബുലൻസ്</div>
+                            <div class="kerala-cat-sub" style="color:#C2410C">ആശുപത്രികൾ, ആംബുലൻസ് 24x7...</div>
                             <div class="kerala-cat-arrow-btn" style="background:#EA580C">➔</div>
                         </div>
 
@@ -524,15 +524,15 @@
                             <div class="kerala-cat-arrow-btn" style="background:#16A34A">➔</div>
                         </div>
 
-                        <!-- CARD 6: ആംബുലൻസ് (AMBULANCE) -->
-                        <div class="kerala-cat-card" onclick="openAmbulanceModal()"
-                            style="background:linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 100%);border:1.5px solid #FECDD3">
+                        <!-- CARD 6: സമീപത്തുള്ളവർ (NEARBY DISCOVERY & LIVE HELP) -->
+                        <div class="kerala-cat-card" onclick="navTo('nearby')"
+                            style="background:linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);border:1.5px solid #A7F3D0">
                             <div class="kerala-cat-img-box">
-                                <img src="assets/cat-ambulance-3d.jpg" alt="ആംബുലൻസ്" class="kerala-cat-img">
+                                <img src="assets/cat-nearby-3d.jpg" alt="സമീപത്തുള്ളവർ" class="kerala-cat-img">
                             </div>
-                            <div class="kerala-cat-title" style="color:#DC2626">ആംബുലൻസ്</div>
-                            <div class="kerala-cat-sub" style="color:#E11D48">24x7 സേവനം വേഗത്തിൽ</div>
-                            <div class="kerala-cat-arrow-btn" style="background:#DC2626">➔</div>
+                            <div class="kerala-cat-title" style="color:#065F46">സമീപത്തുള്ളവർ</div>
+                            <div class="kerala-cat-sub" style="color:#047857">1-10 കി.മീ ആളുകൾ & ലൈവ് സഹായം</div>
+                            <div class="kerala-cat-arrow-btn" style="background:#059669">➔</div>
                         </div>
                     </div>
 
@@ -2523,10 +2523,10 @@
             <div
                 style="background:linear-gradient(135deg, #DC2626 0%, #991B1B 100%);padding:14px 16px;color:#fff;display:flex;align-items:center;justify-content:space-between">
                 <div style="display:flex;align-items:center;gap:10px">
-                    <span style="font-size:24px">🚨</span>
+                    <span style="font-size:24px">🏥</span>
                     <div>
-                        <h3 style="margin:0;font-size:16px;font-weight:800;color:#fff">അടിയന്തര & അവശ്യ സഹായം</h3>
-                        <div style="font-size:11px;color:rgba(255,255,255,0.85)">Emergency & Essential Helplines</div>
+                        <h3 style="margin:0;font-size:16px;font-weight:800;color:#fff">ആരോഗ്യം & ആംബുലൻസ് സർവീസ്</h3>
+                        <div style="font-size:11px;color:rgba(255,255,255,0.85)">ആശുപത്രികൾ, ഡോക്ടർമാർ & 24x7 ആംബുലൻസ്</div>
                     </div>
                 </div>
                 <div style="display:flex;align-items:center;gap:6px">
@@ -2539,6 +2539,25 @@
                 </div>
             </div>
 
+            <!-- PROMINENT 24x7 AMBULANCE CALL & DRIVERS CARD -->
+            <div style="margin:12px 14px 4px;background:linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 100%);border:1.5px solid #FECDD3;border-radius:14px;padding:11px 13px;display:flex;align-items:center;justify-content:space-between;gap:8px;box-shadow:0 2px 6px rgba(225,29,72,0.08)">
+                <div style="display:flex;align-items:center;gap:9px;min-width:0;flex:1">
+                    <span style="font-size:26px;flex-shrink:0">🚑</span>
+                    <div style="min-width:0;flex:1">
+                        <div style="font-weight:800;font-size:13px;color:#9F1239;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">24x7 ആംബുലൻസ് സർവീസ്</div>
+                        <div style="font-size:11px;color:#BE123C;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">സൗജന്യ 108 & സമീപ ഡ്രൈവർമാർ</div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:5px;flex-shrink:0">
+                    <a href="tel:108" style="background:#E11D48;color:#fff;text-decoration:none;font-weight:800;font-size:11.5px;padding:6px 11px;border-radius:12px;display:flex;align-items:center;gap:4px;box-shadow:0 2px 5px rgba(225,29,72,0.25)">
+                        <span>📞 108</span>
+                    </a>
+                    <button type="button" onclick="openAmbulanceModal()" style="background:#fff;color:#BE123C;border:1.5px solid #FECDD3;font-weight:800;font-size:11.5px;padding:6px 10px;border-radius:12px;cursor:pointer">
+                        ഡ്രൈവർമാർ ➔
+                    </button>
+                </div>
+            </div>
+
             <!-- SEARCH & FILTER -->
             <div style="padding:10px 14px;background:#F8FAFC;border-bottom:1px solid #E2E8F0">
                 <input type="text" id="emergencySearchInput" oninput="filterEmergencyContacts(this.value)"
@@ -2547,6 +2566,8 @@
                 <div style="display:flex;gap:6px;overflow-x:auto;padding-top:8px;scrollbar-width:none">
                     <button class="emg-filter-chip active" onclick="setEmergencyCategory('all', this)"
                         style="padding:4px 10px;border-radius:12px;border:none;background:#DC2626;color:#fff;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">എല്ലാം</button>
+                    <button class="emg-filter-chip" onclick="openAmbulanceModal()"
+                        style="padding:4px 10px;border-radius:12px;border:1px solid #FECDD3;background:#FFF1F2;color:#BE123C;font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap">🚑 ആംബുലൻസ് 24x7</button>
                     <button class="emg-filter-chip" onclick="setEmergencyCategory('അടിയന്തിരം', this)"
                         style="padding:4px 10px;border-radius:12px;border:1px solid #CBD5E1;background:#fff;color:#475569;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">🚨
                         അടിയന്തിരം</button>
