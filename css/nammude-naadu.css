@@ -1343,7 +1343,7 @@
     grid-template-rows: repeat(2, 74px);
     grid-auto-columns: 80px;
     gap: 7px 8px;
-    padding: 10px 12px;
+    padding: 10px 16px;
   }
 }
 
@@ -2393,14 +2393,15 @@
 .home-kerala-cat-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: clamp(6px, 1.8vw, 10px);
-  padding: 0 clamp(8px, 2.5vw, 16px);
+  gap: 8px;
+  padding: 0 16px !important;
   margin-bottom: 20px;
+  box-sizing: border-box;
 }
 
 .kerala-cat-card {
-  border-radius: clamp(14px, 3.5vw, 18px);
-  padding: 8px 4px 8px;
+  border-radius: 16px;
+  padding: 10px 4px 8px;
   min-height: clamp(118px, 32vw, 142px);
   text-align: center;
   position: relative;

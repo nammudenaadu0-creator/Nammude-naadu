@@ -4957,25 +4957,26 @@
       return matchesCategory && matchesQuery;
     });
 
-    allMatching.sort((a, b) => a._calculatedDist - b._calculatedDist);
+    // Automatically sort all matching service providers by distance (nearest first)
+    allMatching.sort((a, b) => {
+      const distA = (typeof a._calculatedDist === 'number') ? a._calculatedDist : 9999;
+      const distB = (typeof b._calculatedDist === 'number') ? b._calculatedDist : 9999;
+      return distA - distB;
+    });
 
-    // Strict radius filter: only show services within maxRadius (unless user explicitly picked All Kerala >= 1000)
-    let list = (maxRadius >= 1000) ? allMatching : allMatching.filter(srv => srv._calculatedDist <= maxRadius);
+    let list = allMatching;
 
     if (list.length === 0) {
-      const radiusLabel = (maxRadius >= 1000) ? '' : ` (${maxRadius} km)`;
       container.innerHTML = `
         <div style="text-align:center;padding:36px 16px;background:#fff;border-radius:18px;border:1px solid #E2E8F0">
-          <div style="font-size:36px;margin-bottom:8px">📍</div>
-          <h3 style="margin:0 0 6px;color:#111827;font-size:16px">ഈ പ്രദേശത്ത് സേവനങ്ങളൊന്നും കണ്ടെത്തിയില്ല</h3>
+          <div style="font-size:36px;margin-bottom:8px">🔍</div>
+          <h3 style="margin:0 0 6px;color:#111827;font-size:16px">സേവനങ്ങളൊന്നും കണ്ടെത്തിയില്ല</h3>
           <p style="font-size:13px;color:#64748B;margin:0 0 16px;line-height:1.5">
-            <b>${escapeHtml(APP_STATE.location.name)}</b> പരിസരത്ത്${radiusLabel} ലഭ്യമായ സർവീസുകൾ കണ്ടെത്തിയില്ല.<br>പരിധി വർദ്ധിപ്പിക്കുകയോ പുതിയ സേവനം രജിസ്റ്റർ ചെയ്യുകയോ ചെയ്യാം.
+            നിങ്ങൾ തിരഞ്ഞ വിഭാഗത്തിലോ വാക്കിലോ സേവനദാതാക്കൾ ലഭ്യമല്ല.<br>മറ്റൊരു വാക്ക് തിരയുകയോ പുതിയ സേവനം രജിസ്റ്റർ ചെയ്യുകയോ ചെയ്യാം.
           </p>
           <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-            <button onclick="setGlobalRadius(25, null)" style="padding:8px 14px;background:#ECFDF5;color:#0E7043;border:1px solid #A7F3D0;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">25 km പരിധി</button>
-            <button onclick="setGlobalRadius(50, null)" style="padding:8px 14px;background:#ECFDF5;color:#0E7043;border:1px solid #A7F3D0;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">50 km പരിധി</button>
-            <button onclick="setGlobalRadius(1000, null)" style="padding:8px 14px;background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">മുഴുവൻ കാണുക</button>
-            <button onclick="openAddServiceModal()" style="padding:8px 14px;background:#0E7043;color:#fff;border:none;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer">➕ പുതിയ സേവനം രജിസ്റ്റർ ചെയ്യാം</button>
+            <button onclick="filterServiceCategory('all')" style="padding:8px 14px;background:#ECFDF5;color:#0E7043;border:1px solid #A7F3D0;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">എല്ലാ സർവീസുകളും കാണുക</button>
+            <button onclick="openAddServiceModal()" style="padding:8px 14px;background:#0E7043;color:#fff;border:none;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer">➕ പുതിയ സേവനം ചേർക്കാം</button>
           </div>
         </div>
       `;
