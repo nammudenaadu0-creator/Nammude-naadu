@@ -1,6 +1,6 @@
 {
   "name": "nammude-naadu-test",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "",
   "main": "firebase-backend.js",
   "scripts": {
@@ -15,6 +15,7 @@
   "type": "commonjs",
   "dependencies": {
     "@capacitor/android": "^8.5.3",
+    "@capacitor/app": "^8.1.2",
     "@capacitor/cli": "^8.5.3",
     "@capacitor/core": "^8.5.3",
     "@capacitor/local-notifications": "^8.3.1",

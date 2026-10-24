@@ -9505,24 +9505,77 @@
     renderHomeScreen();
     renderCommunityFeed();
 
-    // Safe Back Button Support
-    window.addEventListener('popstate', () => {
-      const activeModal = document.querySelector('.modal-overlay.active');
-      if (activeModal) {
-        closeModal(activeModal.id);
+    // Safe Back Button & Hardware Navigation Support
+    let _lastBackActionTime = 0;
+    let _lastExitPromptTime = 0;
+
+    function handleAndroidHardwareBack() {
+      const now = Date.now();
+      // Debounce rapid double-triggers within 350ms
+      if (now - _lastBackActionTime < 350) {
+        return true;
       }
+      _lastBackActionTime = now;
+
+      // 1. Check for open modals (prioritizing chat modal)
+      const openModals = Array.from(document.querySelectorAll('.modal-overlay.active, .modal-overlay[style*="display: flex"], .modal-overlay[style*="display:flex"]'))
+        .filter(el => {
+          try {
+            const style = window.getComputedStyle(el);
+            return style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0';
+          } catch (_) {
+            return false;
+          }
+        });
+
+      if (openModals.length > 0) {
+        // If modal-chat is open, close it cleanly
+        const chatModal = openModals.find(m => m.id === 'modal-chat');
+        if (chatModal) {
+          closeModal('modal-chat');
+          return true;
+        }
+        // Otherwise close the topmost active modal
+        const topModal = openModals[openModals.length - 1];
+        if (topModal && topModal.id) {
+          closeModal(topModal.id);
+          return true;
+        }
+      }
+
+      // 2. If no modal is open, check if on a sub-screen (like chat, community, services, jobs, rentals, blood, profile)
+      if (APP_STATE.currentScreen && APP_STATE.currentScreen !== 'home') {
+        if (APP_STATE.previousScreen && APP_STATE.previousScreen !== 'splash' && APP_STATE.previousScreen !== APP_STATE.currentScreen) {
+          navTo(APP_STATE.previousScreen);
+        } else {
+          navTo('home');
+        }
+        return true;
+      }
+
+      // 3. If already on 'home' screen: Double-tap back within 2 seconds to exit app
+      if (now - _lastExitPromptTime < 2000) {
+        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+          try { window.Capacitor.Plugins.App.exitApp(); } catch (_) {}
+        }
+        return false; // allow Android activity to exit
+      } else {
+        _lastExitPromptTime = now;
+        if (typeof toast === 'function') {
+          toast('പുറത്തുകടക്കാൻ ഒരിക്കൽ കൂടി ബാക്ക് അമർത്തുക (Press back again to exit)');
+        }
+        return true; // handled, keep app open!
+      }
+    }
+    window.handleAndroidHardwareBack = handleAndroidHardwareBack;
+
+    window.addEventListener('popstate', () => {
+      handleAndroidHardwareBack();
     });
 
     if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
       window.Capacitor.Plugins.App.addListener('backButton', () => {
-        const activeModal = document.querySelector('.modal-overlay.active');
-        if (activeModal) {
-          closeModal(activeModal.id);
-        } else if (APP_STATE.currentScreen && APP_STATE.currentScreen !== 'home') {
-          goBack();
-        } else {
-          window.Capacitor.Plugins.App.exitApp();
-        }
+        handleAndroidHardwareBack();
       });
     }
 
