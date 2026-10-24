@@ -4409,10 +4409,10 @@
         /* Cards, Buttons, and Modal Sheets (Rounded Theme) */
         .modal-sheet {
             background: #ffffff !important;
-            border-top-left-radius: 28px !important;
-            border-top-right-radius: 28px !important;
-            max-height: 88vh !important;
-            padding: 20px 18px 84px !important;
+            border-top-left-radius: 24px !important;
+            border-top-right-radius: 24px !important;
+            max-height: 90vh !important;
+            padding: 0 !important;
             box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.25) !important;
             position: relative !important;
             z-index: 12001 !important;

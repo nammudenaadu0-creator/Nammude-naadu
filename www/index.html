@@ -3049,6 +3049,30 @@
             </div>
 
             <div style="padding:14px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:10px">
+                <!-- TOP 4 INSTANT EMERGENCY CALL GRID (POLICE 112, AMBULANCE 108, FIRE 101, KSEB 1912) -->
+                <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:6px">
+                    <a href="tel:112" style="background:#EFF6FF;border:1.5px solid #BFDBFE;border-radius:12px;padding:8px 2px;text-align:center;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:2px">
+                        <span style="font-size:18px">🚨</span>
+                        <span style="font-size:12.5px;font-weight:900;color:#1E3A8A">112</span>
+                        <span style="font-size:9.5px;font-weight:800;color:#2563EB">പോലീസ്</span>
+                    </a>
+                    <a href="tel:108" style="background:#FFF1F2;border:1.5px solid #FECDD3;border-radius:12px;padding:8px 2px;text-align:center;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:2px">
+                        <span style="font-size:18px">🚑</span>
+                        <span style="font-size:12.5px;font-weight:900;color:#9F1239">108</span>
+                        <span style="font-size:9.5px;font-weight:800;color:#E11D48">ആംബുലൻസ്</span>
+                    </a>
+                    <a href="tel:101" style="background:#FFF7ED;border:1.5px solid #FFEDD5;border-radius:12px;padding:8px 2px;text-align:center;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:2px">
+                        <span style="font-size:18px">🚒</span>
+                        <span style="font-size:12.5px;font-weight:900;color:#C2410C">101</span>
+                        <span style="font-size:9.5px;font-weight:800;color:#EA580C">ഫയർ ഫോഴ്സ്</span>
+                    </a>
+                    <a href="tel:1912" style="background:#FEFCE8;border:1.5px solid #FEF08A;border-radius:12px;padding:8px 2px;text-align:center;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:2px">
+                        <span style="font-size:18px">⚡</span>
+                        <span style="font-size:12.5px;font-weight:900;color:#854D0E">1912</span>
+                        <span style="font-size:9.5px;font-weight:800;color:#CA8A04">KSEB കരണ്ട്</span>
+                    </a>
+                </div>
+
                 <!-- SEGMENTED TABS: 1. ആംബുലൻസ് | 2. പോലീസ് (418+) | 3. ആശുപത്രികൾ -->
                 <div style="display:flex;background:#F1F5F9;padding:4px;border-radius:12px;gap:4px">
                     <button type="button" id="ambSubTabAmbulance" onclick="switchAmbHealthTab('ambulance')"
@@ -3118,6 +3142,43 @@
                     </div>
 
                     <div id="ambulanceDriversList" style="display:flex;flex-direction:column;gap:8px"></div>
+
+                    <!-- OTHER STATEWIDE EMERGENCY HELPLINES -->
+                    <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:14px;padding:12px;margin-top:6px">
+                        <div style="font-size:12px;font-weight:800;color:#334155;margin-bottom:8px">മറ്റ് അടിയന്തിര ഹെൽപ്പ്‌ലൈനുകൾ</div>
+                        <div style="display:flex;flex-direction:column;gap:6px">
+                            <div style="display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border:1px solid #E2E8F0;padding:8px 10px;border-radius:10px">
+                                <div style="display:flex;align-items:center;gap:8px">
+                                    <span style="font-size:16px">👩</span>
+                                    <div>
+                                        <div style="font-size:12px;font-weight:800;color:#0F172A">വനിതാ ഹെൽപ്പ്‌ലൈൻ (Women Helpline)</div>
+                                        <div style="font-size:10.5px;color:#64748B">സ്ത്രീകൾക്കുള്ള 24x7 സഹായം</div>
+                                    </div>
+                                </div>
+                                <a href="tel:1091" style="background:#7C3AED;color:#fff;text-decoration:none;font-weight:800;font-size:11.5px;padding:5px 12px;border-radius:8px">📞 1091</a>
+                            </div>
+                            <div style="display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border:1px solid #E2E8F0;padding:8px 10px;border-radius:10px">
+                                <div style="display:flex;align-items:center;gap:8px">
+                                    <span style="font-size:16px">👶</span>
+                                    <div>
+                                        <div style="font-size:12px;font-weight:800;color:#0F172A">ചൈൽഡ്‌ലൈൻ (Childline)</div>
+                                        <div style="font-size:10.5px;color:#64748B">കുട്ടികളുടെ സുരക്ഷയ്ക്കുള്ള സഹായം</div>
+                                    </div>
+                                </div>
+                                <a href="tel:1098" style="background:#0284C7;color:#fff;text-decoration:none;font-weight:800;font-size:11.5px;padding:5px 12px;border-radius:8px">📞 1098</a>
+                            </div>
+                            <div style="display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;border:1px solid #E2E8F0;padding:8px 10px;border-radius:10px">
+                                <div style="display:flex;align-items:center;gap:8px">
+                                    <span style="font-size:16px">🐍</span>
+                                    <div>
+                                        <div style="font-size:12px;font-weight:800;color:#0F172A">SARPA പാമ്പ് റെസ്ക്യൂ (Forest Dept)</div>
+                                        <div style="font-size:10.5px;color:#64748B">ടോൾ ഫ്രീ വനം വകുപ്പ് സഹായം</div>
+                                    </div>
+                                </div>
+                                <a href="tel:18004254733" style="background:#059669;color:#fff;text-decoration:none;font-weight:800;font-size:11.5px;padding:5px 12px;border-radius:8px">📞 വിളിക്കാം</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- TAB CONTENT 2: പോലീസ് സ്റ്റേഷനുകൾ (418+ KERALA POLICE STATIONS) -->

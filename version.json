@@ -1,14 +1,13 @@
 {
-  "versionCode": 12,
-  "versionName": "1.0.12",
+  "versionCode": 13,
+  "versionName": "1.0.13",
   "minSupportedVersion": 1,
   "releaseDate": "2026-10-24",
-  "title": "പുതിയ അപ്‌ഡേറ്റ് ലഭ്യമാണ്! (Version 1.0.12)",
+  "title": "പുതിയ അപ്‌ഡേറ്റ് ലഭ്യമാണ്! (Version 1.0.13)",
   "releaseNotes": [
-    "🔍 അതിവേഗ സ്മാർട്ട് സേർച്ച് ഓട്ടോ-ഫിൽ (Smart Search Auto-fill & Predictive Suggestions)",
-    "🔥 ട്രെൻഡിംഗ് പ്രാദേശിക സേവന നിർദ്ദേശങ്ങളും വൺ-ടാപ്പ് ഓട്ടോ-ഫിൽ സൗകര്യവും",
-    "🛠️ 500+ തരം തൊഴിൽ സേവനങ്ങൾ, അടിയന്തിര നമ്പറുകൾ, രക്തദാതാക്കൾ എന്നിവ എളുപ്പത്തിൽ തിരയാം",
-    "📱 100% പെർഫെക്റ്റ് മൊബൈൽ ഫോൺ ലേഔട്ടും സൂപ്പർ സ്പീഡും"
+    "🚨 അടിയന്തിര സഹായം മോഡൽ പൂർണ്ണമായി നവീകരിച്ചു (പോലീസ് 112, ആംബുലൻസ് 108, ഫയർ 101, KSEB 1912, ഹെൽപ്പ്‌ലൈനുകൾ)",
+    "💬 ചാറ്റ് ബോക്സിലെ അനാവശ്യ ഓട്ടോ-ഫിൽ ബാഡ്ജ് പൂർണ്ണമായി ഒഴിവാക്കി",
+    "📱 പെർഫെക്റ്റ് മൊബൈൽ ബോട്ടം-ഷീറ്റ് ലേഔട്ടും സൂപ്പർ സ്പീഡും"
   ],
   "apkUrl": "https://github.com/nammudenaadu0-creator/Nammude-naadu/raw/main/NammudeNaadu.apk",
   "webUrl": "https://nammudenaadu0-creator.github.io/Nammude-naadu/",

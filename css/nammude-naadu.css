@@ -3734,15 +3734,19 @@ body {
   }
 }
 
-/* Modal Overlay & Chat Sheet Alignment (Zero Backdrop Blur Lag) */
+/* Modal Overlay & Modal Sheet Alignment (Bottom Sheet Docking for Mobile) */
 .modal-overlay {
-  align-items: center !important;
-  justify-content: center !important;
+  position: fixed !important;
+  inset: 0 !important;
   background: rgba(15, 23, 42, 0.78) !important;
   display: none !important;
   opacity: 0 !important;
   pointer-events: none !important;
   visibility: hidden !important;
+  z-index: 10000 !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  transition: opacity 0.2s ease !important;
 }
 
 .modal-overlay.active {
@@ -3750,6 +3754,34 @@ body {
   opacity: 1 !important;
   pointer-events: auto !important;
   visibility: visible !important;
+}
+
+.modal-overlay .modal-sheet {
+  width: 100% !important;
+  max-width: 480px !important;
+  max-height: 90vh !important;
+  max-height: 90dvh !important;
+  border-top-left-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.35) !important;
+  background: #FFFFFF !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Ensure no legacy auto-fill badge or chip ever shows anywhere */
+.auto-filled-profile-chip,
+.profile-autofill-banner {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 #modal-chat.modal-overlay {
