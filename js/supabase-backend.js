@@ -80,6 +80,7 @@
       chatChannel = client.channel('nn_community_chats', { config: { broadcast: { self: false } } });
       chatChannel.on('broadcast', { event: 'chat_message' }, ({ payload }) => handleIncomingChatMessage(payload));
       chatChannel.on('broadcast', { event: 'chat_seen' }, ({ payload }) => handleIncomingChatSeen(payload));
+      chatChannel.on('broadcast', { event: 'chat_message_deleted' }, ({ payload }) => handleIncomingChatMessageDeleted(payload));
       chatChannel.subscribe((status) => {
         if (status === 'SUBSCRIBED') {
           realtimeRetryCount = 0;
@@ -638,9 +639,17 @@
             handleIncomingBloodRequest(payload.new);
           }
         })
-        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, payload => {
+          if (payload.eventType === 'DELETE' && payload.old) {
+            handleIncomingChatMessageDeleted({ msgId: payload.old.id });
+            return;
+          }
           if (payload && payload.new) {
             const row = payload.new;
+            if (row.text === '[deleted]') {
+              handleIncomingChatMessageDeleted({ chatKey: row.chat_key, msgId: row.id });
+              return;
+            }
             if (row.text === '[read_receipt]') {
               handleIncomingChatSeen({
                 chatKey: row.chat_key,
@@ -934,6 +943,40 @@
       }
     }
   }
+
+  // Handle incoming real-time message deletion (Delete for everyone)
+  function handleIncomingChatMessageDeleted(payload) {
+    if (!payload || !payload.msgId) return;
+    const { chatKey, msgId } = payload;
+    if (typeof APP_STATE !== 'undefined' && APP_STATE.chats) {
+      let updated = false;
+      if (chatKey && APP_STATE.chats[chatKey]) {
+        const prevLen = APP_STATE.chats[chatKey].length;
+        APP_STATE.chats[chatKey] = APP_STATE.chats[chatKey].filter(m => m && m.id !== msgId);
+        if (APP_STATE.chats[chatKey].length !== prevLen) updated = true;
+      } else {
+        Object.keys(APP_STATE.chats).forEach(k => {
+          if (Array.isArray(APP_STATE.chats[k])) {
+            const prevLen = APP_STATE.chats[k].length;
+            APP_STATE.chats[k] = APP_STATE.chats[k].filter(m => m && m.id !== msgId);
+            if (APP_STATE.chats[k].length !== prevLen) updated = true;
+          }
+        });
+      }
+      if (updated) {
+        if (typeof saveChats === 'function') {
+          try { saveChats(); } catch (_) {}
+        }
+        if (typeof renderChatMessages === 'function') {
+          try { renderChatMessages(); } catch (_) {}
+        }
+        if (typeof renderChatListScreen === 'function') {
+          try { renderChatListScreen(); } catch (_) {}
+        }
+      }
+    }
+  }
+  window.handleIncomingChatMessageDeleted = handleIncomingChatMessageDeleted;
 
   // Handle incoming post from another user
   function handleIncomingPost(payload) {
@@ -1254,6 +1297,31 @@
         });
       } catch (err) {
         console.warn('⚠️ [Supabase Chat Seen Broadcast]', err.message);
+      }
+    }
+    return true;
+  }
+
+  // Delete message for everyone from Supabase database & notify peer clients in realtime
+  async function deleteChatMessageForEveryone(chatKey, msgId) {
+    if (!msgId) return false;
+    initSupabase();
+    if (client) {
+      try {
+        await client.from('messages').delete().eq('id', msgId);
+      } catch (err) {
+        console.warn('⚠️ [Supabase Delete Message Error]:', err.message);
+      }
+    }
+    if (chatChannel) {
+      try {
+        await chatChannel.send({
+          type: 'broadcast',
+          event: 'chat_message_deleted',
+          payload: { chatKey, msgId, sessionId: SESSION_CLIENT_ID }
+        });
+      } catch (err) {
+        console.warn('⚠️ [Supabase Chat Deleted Broadcast Error]:', err.message);
       }
     }
     return true;
@@ -2344,6 +2412,8 @@
     broadcastChatEvent,
     subscribeChatThread,
     syncUserChats,
+    deleteChatMessageForEveryone,
+    deleteChatMessage: deleteChatMessageForEveryone,
     // Posts
     savePost,
     deletePost,

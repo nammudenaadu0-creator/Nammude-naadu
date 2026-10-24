@@ -3337,7 +3337,8 @@
         ${!isMe ? `
           <img src="${escapeHtml(recipientAvatar)}" class="chat-bubble-avatar" alt="Avatar" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
         ` : ''}
-        <div class="chat-bubble ${isMe ? 'outgoing' : 'incoming'} ${msg.type ? ('type-' + msg.type) : ''}">
+        <div class="chat-bubble ${isMe ? 'outgoing' : 'incoming'} ${msg.type ? ('type-' + msg.type) : ''}"
+          oncontextmenu="event.preventDefault(); promptDeleteChatMessage('${escapeHtml(msg.id)}'); return false;">
           ${innerContentHtml}
           <div class="chat-bubble-meta">
             <span class="chat-time-text">${escapeHtml(msg.time || '')}</span>
@@ -3348,11 +3349,83 @@
                     ? '<span class="chat-ticks sent" title="അയച്ചു (Sent)">✓</span>'
                     : '<span class="chat-ticks delivered" title="എത്തിച്ചേർന്നു (Delivered)">✓✓</span>')
             ) : ''}
+            <button type="button" class="chat-msg-options-btn" onclick="event.stopPropagation(); promptDeleteChatMessage('${escapeHtml(msg.id)}')" title="സന്ദേശം ഡിലീറ്റ് ചെയ്യുക">⋮</button>
           </div>
         </div>
       </div>
     `;
   }
+
+  let _activeMessageForDeletion = null;
+
+  function promptDeleteChatMessage(msgId) {
+    if (!APP_STATE.activeChatRecipient || !msgId) return;
+    const chatKey = APP_STATE.activeChatRecipient.key;
+    const thread = APP_STATE.chats[chatKey] || [];
+    const msg = thread.find(m => m && String(m.id) === String(msgId));
+    if (!msg) return;
+
+    _activeMessageForDeletion = {
+      msgId: String(msg.id),
+      chatKey: chatKey,
+      isMe: (msg.sender === 'me')
+    };
+
+    const modal = document.getElementById('modal-delete-chat-message');
+    if (!modal) return;
+
+    const previewEl = document.getElementById('deleteMsgPreviewText');
+    if (previewEl) {
+      let preview = msg.text || '';
+      if (preview.startsWith('[voice:')) preview = '🎙️ വോയ്‌സ് മെസ്സേജ് (Voice Message)';
+      else if (preview.length > 50) preview = preview.substring(0, 50) + '...';
+      previewEl.textContent = `"${preview}"`;
+    }
+
+    const everyoneBtn = document.getElementById('deleteForEveryoneBtn');
+    if (everyoneBtn) {
+      // Only the sender can delete for everyone
+      everyoneBtn.style.display = (msg.sender === 'me') ? 'flex' : 'none';
+    }
+
+    modal.style.display = 'flex';
+    modal.classList.add('active');
+  }
+  window.promptDeleteChatMessage = promptDeleteChatMessage;
+
+  async function executeDeleteChatMessage(mode) {
+    if (!_activeMessageForDeletion) return;
+    const { msgId, chatKey, isMe } = _activeMessageForDeletion;
+    closeModal('modal-delete-chat-message');
+
+    if (mode === 'everyone') {
+      if (!isMe) {
+        toast('⚠️ നിങ്ങളുടെ സ്വന്തം സന്ദേശങ്ങൾ മാത്രമേ എല്ലാവർക്കും ഡിലീറ്റ് ചെയ്യാനാകൂ.');
+        return;
+      }
+      // 1. Delete from local state
+      if (APP_STATE.chats[chatKey]) {
+        APP_STATE.chats[chatKey] = APP_STATE.chats[chatKey].filter(m => m && String(m.id) !== msgId);
+        saveChats();
+        renderChatMessages();
+      }
+      // 2. Cloud and broadcast delete via Supabase
+      if (typeof window.NN_SUPABASE_SERVICES?.deleteChatMessageForEveryone === 'function') {
+        await window.NN_SUPABASE_SERVICES.deleteChatMessageForEveryone(chatKey, msgId);
+      }
+      toast('🗑️ സന്ദേശം എല്ലാവർക്കുമായി ഡിലീറ്റ് ചെയ്തു (Deleted for everyone)');
+    } else if (mode === 'forme') {
+      // Delete for me only (local)
+      if (APP_STATE.chats[chatKey]) {
+        APP_STATE.chats[chatKey] = APP_STATE.chats[chatKey].filter(m => m && String(m.id) !== msgId);
+        saveChats();
+        renderChatMessages();
+      }
+      toast('📱 സന്ദേശം നിങ്ങൾക്ക് മാത്രമായി ഡിലീറ്റ് ചെയ്തു (Deleted for me)');
+    }
+    _activeMessageForDeletion = null;
+  }
+  window.executeDeleteChatMessage = executeDeleteChatMessage;
 
   function renderChatMessages() {
     const box = document.getElementById('chatMessagesBox');

@@ -1,13 +1,13 @@
 {
-  "versionCode": 17,
-  "versionName": "1.0.17",
+  "versionCode": 18,
+  "versionName": "1.0.18",
   "minSupportedVersion": 1,
   "releaseDate": "2026-10-24",
-  "title": "പുതിയ അപ്‌ഡേറ്റ് ലഭ്യമാണ്! (Version 1.0.17)",
+  "title": "പുതിയ അപ്‌ഡേറ്റ് ലഭ്യമാണ്! (Version 1.0.18)",
   "releaseNotes": [
-    "🧹 ഇതുവരെയുള്ള പഴയ അക്കൗണ്ടുകൾ പൂർണ്ണമായി മായ്ച്ചു (Clean Account Reset)",
-    "🔒 പുതിയ യൂസേഴ്സിന് നിർബന്ധിത രജിസ്ട്രേഷൻ ഗേറ്റ് (Mandatory Registration Gate)",
-    "📱 സ്ക്രീൻ ഓവർഫ്ലോ പൂർണ്ണമായി പരിഹരിച്ചു"
+    "💬 ചാറ്റിൽ 'Delete for me' & 'Delete for everyone' ഫീച്ചർ നൽകി",
+    "🔒 പുതിയ യൂസേഴ്സിന് നിർബന്ധിത രജിസ്ട്രേഷൻ ഗേറ്റ് (Mandatory Registration)",
+    "🧹 മുൻപുള്ള പഴയ അക്കൗണ്ടുകൾ പൂർണ്ണമായി മായ്ച്ച് ഫ്രഷ് സ്റ്റാർട്ട് നൽകി"
   ],
   "apkUrl": "https://github.com/nammudenaadu0-creator/Nammude-naadu/raw/main/NammudeNaadu.apk",
   "webUrl": "https://nammudenaadu0-creator.github.io/Nammude-naadu/",
