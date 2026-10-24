@@ -11,7 +11,8 @@
       let isPhoneAdmin = false;
       try {
         const phone = (localStorage.getItem('nn_user_phone') || localStorage.getItem('nn_permanent_phone') || '').replace(/\D/g, '').slice(-10);
-        if (phone === '9605406699') isPhoneAdmin = true;
+        const email = (localStorage.getItem('nn_user_email') || '').trim().toLowerCase();
+        if (phone === '9605406699' || email === 'admin@nammudenaadu.app') isPhoneAdmin = true;
       } catch(_) {}
 
       if (!isPhoneAdmin) {

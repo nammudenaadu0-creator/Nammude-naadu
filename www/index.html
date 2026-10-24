@@ -176,6 +176,14 @@
                             <span>🚪</span>
                             <span>ലോഗ് ഔട്ട്</span>
                         </button>
+
+                        <!-- Direct Admin Console Shortcut (Visible strictly for 9605406699) -->
+                        <a id="desktopAdminHeaderBtn" href="admin.html" class="desktop-action-btn admin-btn"
+                            style="display:none;background:linear-gradient(135deg, #064E3B 0%, #0E7043 100%);color:#fff;border:none;padding:7px 13px;border-radius:12px;font-size:12.5px;font-weight:800;cursor:pointer;text-decoration:none;box-shadow:0 3px 10px rgba(6,78,59,0.3);align-items:center;gap:5px"
+                            title="അഡ്മിൻ കൺസോൾ (Admin Console)">
+                            <span>👑</span>
+                            <span>അഡ്മിൻ കൺസോൾ</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -3375,6 +3383,19 @@
                             oninput="handleLoginPhoneLookup(this.value)">
                     </div>
                     <div id="loginPhoneStatusHint" style="font-size:11.5px;margin-top:5px;font-weight:700;color:#64748B;display:none"></div>
+                </div>
+
+                <!-- Email ID (Citizen Identification & Verification) -->
+                <div>
+                    <label style="font-size:12px;font-weight:800;color:#1E293B;display:block;margin-bottom:6px">
+                        ✉️ ഇമെയിൽ വിലാസം (Email ID - വെരിഫൈഡ് ഐഡന്റിഫിക്കേഷൻ)
+                    </label>
+                    <input type="email" id="citizenLoginEmail" placeholder="ഉദാ: citizen@gmail.com"
+                        style="width:100%;padding:12px 14px;border:1.5px solid #CBD5E1;border-radius:14px;font-size:14px;color:#0F172A;outline:none;background:#F8FAFC;box-sizing:border-box"
+                        oninput="handleLoginEmailCheck(this.value)">
+                    <div id="loginEmailStatusHint" style="font-size:11px;margin-top:4px;color:#059669;font-weight:700">
+                        ✓ ഇമെയിൽ ഐഡി നിങ്ങളുടെ സ്ഥിര തിരിച്ചറിയൽ ഐഡിയായി (Unique Citizen ID) സേവ് ചെയ്യപ്പെടും.
+                    </div>
                 </div>
 
                 <!-- Full Name -->

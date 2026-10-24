@@ -181,6 +181,7 @@
       id: currentCitizenId,
       name: savedUserName || 'നാട്ടുകാരൻ',
       phone: savedUserPhone || '',
+      email: localStorage.getItem('nn_user_email') || '',
       location: localStorage.getItem('nn_user_loc') || 'തത്സമയ ലൊക്കേഷൻ',
       bloodGroup: localStorage.getItem('nn_user_blood') || 'O+',
       avatar: savedUserAvatar || DEFAULT_USER_AVATAR,
@@ -6304,7 +6305,8 @@
   function checkIsAdmin() {
     const raw = (APP_STATE.currentUser?.phone || localStorage.getItem('nn_user_phone') || localStorage.getItem('nn_permanent_phone') || '');
     const userPhone = String(raw).replace(/\D/g, '').slice(-10);
-    return userPhone === ADMIN_PHONE;
+    const userEmail = (APP_STATE.currentUser?.email || localStorage.getItem('nn_user_email') || '').toLowerCase();
+    return userPhone === ADMIN_PHONE || userEmail === 'admin@nammudenaadu.app';
   }
   window.checkIsAdmin = checkIsAdmin;
 
@@ -6318,6 +6320,9 @@
 
     const desktopNav = document.getElementById('desktopAdminNavLink');
     if (desktopNav) desktopNav.style.display = isAdmin ? 'flex' : 'none';
+
+    const desktopAdminHeaderBtn = document.getElementById('desktopAdminHeaderBtn');
+    if (desktopAdminHeaderBtn) desktopAdminHeaderBtn.style.display = isAdmin ? 'inline-flex' : 'none';
 
     const homeAdminBtn = document.getElementById('homeAdminBtn');
     if (homeAdminBtn) homeAdminBtn.style.display = isAdmin ? 'inline-flex' : 'none';
@@ -8196,14 +8201,23 @@
         const badgeLabel = user.trade ? `✓ ${escapeHtml(user.trade)}` : '✓ അംഗം';
         nameEl.innerHTML = `${escapeHtml(displayName)} <span style="font-size:11px;background:#ECFDF5;color:#047857;padding:2px 8px;border-radius:10px;font-weight:700">${badgeLabel}</span>`;
       } else {
-        if (APP_STATE.currentUser.name && APP_STATE.currentUser.name !== 'നാട്ടുകാരൻ') {
+        const isAdmin = (typeof checkIsAdmin === 'function') ? checkIsAdmin() : false;
+        if (isAdmin) {
+          nameEl.innerHTML = `${escapeHtml(displayName)} <span style="font-size:11px;background:#FEF3C7;color:#92400E;border:1.5px solid #F59E0B;padding:2px 8px;border-radius:10px;font-weight:900">👑 സൂപ്പർ അഡ്മിൻ</span>`;
+        } else if (APP_STATE.currentUser.name && APP_STATE.currentUser.name !== 'നാട്ടുകാരൻ') {
           nameEl.innerHTML = `${escapeHtml(displayName)} <span style="font-size:11px;background:#ECFDF5;color:#047857;padding:2px 8px;border-radius:10px;font-weight:700">✓ അംഗം</span>`;
         } else {
           nameEl.innerHTML = `${escapeHtml(displayName)} <span onclick="openEditProfileModal()" style="font-size:11px;background:#FEF3C7;color:#B45309;padding:2px 8px;border-radius:10px;font-weight:700;cursor:pointer">✏️ പേര് നൽകുക</span>`;
         }
       }
     }
-    if (phoneEl) phoneEl.textContent = displayPhone;
+    if (phoneEl) {
+      if (!isOther && APP_STATE.currentUser.email) {
+        phoneEl.innerHTML = `${escapeHtml(displayPhone)} <span style="color:#CBD5E1">·</span> <span style="color:#0284C7;font-weight:700">✉️ ${escapeHtml(APP_STATE.currentUser.email)}</span>`;
+      } else {
+        phoneEl.textContent = displayPhone;
+      }
+    }
 
     if (idBadgeEl) {
       idBadgeEl.style.display = 'none';
@@ -8255,8 +8269,12 @@
       if (sidebarName) sidebarName.textContent = displayName;
       const sidebarSub = document.getElementById('desktopSidebarSub');
       if (sidebarSub) {
-        const myLoc = APP_STATE.currentUser.location || APP_STATE.location.name || 'കേരളം';
-        sidebarSub.textContent = `📍 ${myLoc} · പ്രൊഫൈൽ`;
+        if (typeof checkIsAdmin === 'function' && checkIsAdmin()) {
+          sidebarSub.innerHTML = '<span style="color:#B45309;font-weight:900">👑 സിസ്റ്റം അഡ്മിൻ (9605406699)</span>';
+        } else {
+          const myLoc = APP_STATE.currentUser.location || APP_STATE.location.name || 'കേരളം';
+          sidebarSub.textContent = `📍 ${myLoc} · പ്രൊഫൈൽ`;
+        }
       }
     }
 
@@ -9033,6 +9051,7 @@
     const modal = document.getElementById('modal-citizen-login');
     if (!modal) return;
     const phoneInput = document.getElementById('citizenLoginPhone');
+    const emailInput = document.getElementById('citizenLoginEmail');
     const nameInput = document.getElementById('citizenLoginName');
     const placeInput = document.getElementById('citizenLoginPlace');
     const districtInput = document.getElementById('citizenLoginDistrict');
@@ -9043,8 +9062,10 @@
 
     const user = (APP_STATE && APP_STATE.currentUser) || {};
     const existingPhone = user.phone ? user.phone.replace(/\D/g, '').slice(-10) : '';
+    const existingEmail = user.email || localStorage.getItem('nn_user_email') || '';
 
     if (phoneInput) phoneInput.value = existingPhone;
+    if (emailInput) emailInput.value = existingEmail;
     if (nameInput) nameInput.value = (user.name && user.name !== 'നാട്ടുകാരൻ') ? user.name : '';
     if (placeInput) placeInput.value = user.location || (APP_STATE.location && APP_STATE.location.name) || '';
     if (districtInput && (user.district || (APP_STATE.location && APP_STATE.location.district))) {
@@ -9078,6 +9099,7 @@
     const clean = String(val || '').replace(/\D/g, '').slice(-10);
     const hintEl = document.getElementById('loginPhoneStatusHint');
     const nameInput = document.getElementById('citizenLoginName');
+    const emailInput = document.getElementById('citizenLoginEmail');
     const placeInput = document.getElementById('citizenLoginPlace');
     const districtInput = document.getElementById('citizenLoginDistrict');
     const btnText = document.getElementById('loginSubmitBtnText');
@@ -9088,8 +9110,29 @@
       return;
     }
 
+    // SPECIAL SUPER ADMIN IDENTIFICATION: 9605406699
+    if (clean === ADMIN_PHONE) {
+      if (hintEl) {
+        hintEl.style.display = 'block';
+        hintEl.style.background = '#FEF3C7';
+        hintEl.style.color = '#92400E';
+        hintEl.style.padding = '8px 12px';
+        hintEl.style.borderRadius = '12px';
+        hintEl.style.border = '1.5px solid #F59E0B';
+        hintEl.innerHTML = '👑 <b>സൂപ്പർ അഡ്മിൻ പ്രൊഫൈൽ (9605406699)</b> — അഡ്മിൻ കൺസോൾ ആക്സസ് ഓണാകും!';
+      }
+      if (nameInput) nameInput.value = 'അഡ്മിൻ (നമ്മുടെ നാട്)';
+      if (emailInput && !emailInput.value) emailInput.value = 'admin@nammudenaadu.app';
+      if (placeInput && !placeInput.value) placeInput.value = 'കേരളം';
+      if (btnText) btnText.textContent = '👑 അഡ്മിനായി ലോഗിൻ ചെയ്യാം';
+      return;
+    }
+
     if (hintEl) {
       hintEl.style.display = 'block';
+      hintEl.style.background = 'transparent';
+      hintEl.style.border = 'none';
+      hintEl.style.padding = '0';
       hintEl.style.color = '#0284C7';
       hintEl.textContent = '🔍 പ്രൊഫൈൽ പരിശോധിക്കുന്നു...';
     }
@@ -9111,6 +9154,9 @@
         if (nameInput && (!nameInput.value || nameInput.value === 'നാട്ടുകാരൻ')) {
           nameInput.value = profile.name;
         }
+        if (emailInput && !emailInput.value && profile.email) {
+          emailInput.value = profile.email;
+        }
         if (placeInput && (!placeInput.value || placeInput.value === 'തത്സമയ ലൊക്കേഷൻ') && profile.place) {
           placeInput.value = profile.place;
         }
@@ -9124,7 +9170,7 @@
         if (hintEl) {
           hintEl.style.display = 'block';
           hintEl.style.color = '#047857';
-          hintEl.textContent = '✨ പുതിയ സിറ്റിസൺ രജിസ്ട്രേഷൻ (പേര് നൽകുക)';
+          hintEl.textContent = '✨ പുതിയ സിറ്റിസൺ രജിസ്ട്രേഷൻ (വിവരങ്ങൾ നൽകുക)';
         }
         if (btnText) {
           btnText.textContent = '🚀 രജിസ്റ്റർ ചെയ്ത് ലോഗിൻ ചെയ്യാം';
@@ -9134,10 +9180,35 @@
   }
   window.handleLoginPhoneLookup = handleLoginPhoneLookup;
 
+  function handleLoginEmailCheck(val) {
+    const hintEl = document.getElementById('loginEmailStatusHint');
+    const email = String(val || '').trim().toLowerCase();
+    if (!hintEl) return;
+    if (!email) {
+      hintEl.textContent = '✓ ഇമെയിൽ ഐഡി നിങ്ങളുടെ വെരിഫൈഡ് സിറ്റിസൺ പ്രൊഫൈൽ തിരിച്ചറിയലിനായി ഉപയോഗിക്കും.';
+      hintEl.style.color = '#059669';
+      return;
+    }
+    if (email.includes('@') && email.includes('.')) {
+      if (email === 'admin@nammudenaadu.app') {
+        hintEl.innerHTML = '👑 <b>അഡ്മിൻ ഇമെയിൽ ഐഡി തിരിച്ചറിഞ്ഞു</b>';
+        hintEl.style.color = '#D97706';
+      } else {
+        hintEl.innerHTML = `✅ സാധുവായ ഇമെയിൽ ഐഡി: <b>${escapeHtml(email)}</b>`;
+        hintEl.style.color = '#059669';
+      }
+    } else {
+      hintEl.textContent = 'ദയവായി ശരിയായ ഇമെയിൽ വിലാസം നൽകുക (ഉദാ: name@gmail.com)';
+      hintEl.style.color = '#64748B';
+    }
+  }
+  window.handleLoginEmailCheck = handleLoginEmailCheck;
+
   async function handleCitizenLoginSubmit(e) {
     if (e && e.preventDefault) e.preventDefault();
 
     const phoneInput = document.getElementById('citizenLoginPhone');
+    const emailInput = document.getElementById('citizenLoginEmail');
     const nameInput = document.getElementById('citizenLoginName');
     const placeInput = document.getElementById('citizenLoginPlace');
     const districtInput = document.getElementById('citizenLoginDistrict');
@@ -9146,6 +9217,7 @@
 
     const rawPhone = phoneInput ? phoneInput.value : '';
     const cleanPhone = String(rawPhone).replace(/\D/g, '').slice(-10);
+    const rawEmail = emailInput ? emailInput.value.trim().toLowerCase() : '';
 
     if (!cleanPhone || cleanPhone.length < 10) {
       alert('ദയവായി സാധുവായ 10-അക്ക മൊബൈൽ നമ്പർ നൽകുക.');
@@ -9153,7 +9225,9 @@
       return;
     }
 
-    const rawName = (nameInput && nameInput.value ? nameInput.value.trim() : '') || 'നാട്ടുകാരൻ';
+    const isAdmin = (cleanPhone === ADMIN_PHONE || rawEmail === 'admin@nammudenaadu.app');
+    const defaultName = isAdmin ? 'അഡ്മിൻ (നമ്മുടെ നാട്)' : 'നാട്ടുകാരൻ';
+    const rawName = (nameInput && nameInput.value ? nameInput.value.trim() : '') || defaultName;
     const place = (placeInput && placeInput.value ? placeInput.value.trim() : '') || (APP_STATE.location?.name || 'കേരളം');
     const district = (districtInput && districtInput.value ? districtInput.value : '') || (APP_STATE.location?.district || 'കണ്ണൂർ');
     const bloodGroup = (bloodInput && bloodInput.value ? bloodInput.value : 'O+');
@@ -9165,13 +9239,15 @@
       id: citizenId,
       name: rawName,
       phone: cleanPhone,
+      email: rawEmail,
       location: place,
       district: district,
       bloodGroup: bloodGroup,
       avatar: APP_STATE.currentUser?.avatar || DEFAULT_USER_AVATAR,
       cover: APP_STATE.currentUser?.cover || 'img/kerala-splash.jpg',
-      bio: APP_STATE.currentUser?.bio || 'നമ്മുടെ നാട് കൂട്ടായ്മ 🌿',
+      bio: APP_STATE.currentUser?.bio || (isAdmin ? 'നമ്മുടെ നാട് സിസ്റ്റം അഡ്മിനിസ്ട്രേറ്റർ 👑' : 'നമ്മുടെ നാട് കൂട്ടായ്മ 🌿'),
       isDonor: isDonor,
+      isAdmin: isAdmin,
       isCustomized: true
     };
 
@@ -9180,18 +9256,25 @@
       localStorage.setItem('nn_permanent_id', citizenId);
       localStorage.setItem('nn_permanent_phone', cleanPhone);
       localStorage.setItem('nn_user_phone', cleanPhone);
+      localStorage.setItem('nn_user_email', rawEmail);
       localStorage.setItem('nn_user_name', rawName);
       localStorage.setItem('nn_user_loc', place);
       localStorage.setItem('nn_curr_district', district);
       localStorage.setItem('nn_user_blood', bloodGroup);
       localStorage.setItem('nn_user_is_donor', isDonor ? 'true' : 'false');
       localStorage.setItem('nn_profile_completed', 'true');
+      if (isAdmin) {
+        localStorage.setItem('nn_is_admin', 'true');
+      } else {
+        localStorage.removeItem('nn_is_admin');
+      }
     } catch (_) {}
 
     // Close modal
     closeModal('modal-citizen-login');
 
     // Instantly update interface
+    updateAdminUI();
     updateUserAuthUI();
     renderProfileScreen();
     updatePostingProfileBar();
@@ -9199,7 +9282,11 @@
       renderHomeScreen();
     }
 
-    toast(`🎉 സ്വാഗതം ${rawName}! താങ്കൾ വിജയകരമായി ലോഗിൻ ചെയ്തു.`);
+    if (isAdmin) {
+      toast(`👑 സ്വാഗതം അഡ്മിൻ! അഡ്മിൻ കൺസോൾ ആക്സസ് വിജയകരമായി സജീവമായി.`);
+    } else {
+      toast(`🎉 സ്വാഗതം ${rawName}! താങ്കൾ വിജയകരമായി ലോഗിൻ ചെയ്തു.`);
+    }
 
     // Async cloud sync
     if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES) {
