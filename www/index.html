@@ -379,21 +379,23 @@
                     </header>
 
                     <!-- 2. KERALA PILL SEARCH CAPSULE BAR (EXACT POSITION DIRECTLY UNDER LOCATION) -->
-                    <div class="home-kerala-search-wrap" style="margin:8px 16px 12px">
-                        <div class="home-kerala-search-btn-icon" onclick="triggerHomeSearch()" title="തിരയുക">
-                            🔍
+                    <div class="home-kerala-search-container" id="homeSearchContainer" style="position:relative;margin:8px 16px 12px;z-index:90">
+                        <div class="home-kerala-search-wrap" style="margin:0">
+                            <div class="home-kerala-search-btn-icon" onclick="triggerHomeSearch()" title="തിരയുക">
+                                🔍
+                            </div>
+                            <input type="text" id="homeSearchInput" class="home-kerala-search-input"
+                                placeholder="സേവനങ്ങൾ, കടകൾ, ആളുകൾ തിരയുക..." autocomplete="off"
+                                style="border:none !important;border-width:0 !important;outline:none !important;box-shadow:none !important;background:transparent !important;-webkit-appearance:none !important;appearance:none !important;padding:8px 8px !important">
+                            <button type="button" class="home-kerala-search-action-btn" onclick="triggerHomeSearch()"
+                                title="തിരയുക">
+                                <span>തിരയുക</span>
+                                <span>➔</span>
+                            </button>
                         </div>
-                        <input type="text" id="homeSearchInput" class="home-kerala-search-input"
-                            placeholder="സേവനങ്ങൾ, കടകൾ, ആളുകൾ തിരയുക..." autocomplete="off"
-                            style="border:none !important;border-width:0 !important;outline:none !important;box-shadow:none !important;background:transparent !important;-webkit-appearance:none !important;appearance:none !important;padding:8px 8px !important">
-                        <button type="button" class="home-kerala-search-action-btn" onclick="triggerHomeSearch()"
-                            title="തിരയുക">
-                            <span>തിരയുക</span>
-                            <span>➔</span>
-                        </button>
+                        <!-- Interactive Real-time Search Dropdown -->
+                        <div id="homeSearchResultsDropdown" class="home-search-dropdown" style="display:none"></div>
                     </div>
-                    <!-- Interactive Real-time Search Dropdown -->
-                    <div id="homeSearchResultsDropdown" class="home-search-dropdown" style="display:none;margin:0 16px 12px"></div>
 
 
 

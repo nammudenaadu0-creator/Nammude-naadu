@@ -5704,7 +5704,7 @@
   }
   window.addSuggestedSkill = addSuggestedSkill;
 
-  // AUTO-SUGGESTIONS ON SERVICES SCREEN SEARCH BAR
+  // AUTO-SUGGESTIONS & AUTO-FILL ON SERVICES SCREEN SEARCH BAR
   function handleServicesSearchInput(query) {
     const dropdown = document.getElementById('servicesSearchSuggestions');
     if (!dropdown) return;
@@ -5712,45 +5712,76 @@
 
     renderServicesScreen();
 
+    const catalog = (window.TRADES_CATALOG_500 && Array.isArray(window.TRADES_CATALOG_500)) ? window.TRADES_CATALOG_500 : TRADES_CATALOG;
+
     if (!q) {
-      dropdown.style.display = 'none';
+      const topPicks = [
+        { name: 'ഇലക്ട്രീഷ്യൻ', icon: '⚡' },
+        { name: 'പ്ലംബർ', icon: '🔧' },
+        { name: 'ഡ്രൈവർ / ടാക്സി', icon: '🚗' },
+        { name: 'കാർപെന്റർ', icon: '🪵' },
+        { name: 'പെയിന്റർ', icon: '🎨' },
+        { name: 'ക്ലീനിംഗ് സർവീസ്', icon: '🧹' },
+        { name: 'എസി മെക്കാനിക്', icon: '❄️' },
+        { name: 'ബ്യൂട്ടീഷ്യൻ', icon: '💇' }
+      ];
+      dropdown.innerHTML = `
+        <div style="padding:6px 10px 4px;font-size:0.72rem;font-weight:800;color:#64748B;display:flex;justify-content:space-between">
+          <span>🔥 ജനപ്രിയ സർവീസുകൾ (Popular)</span>
+          <span style="color:#059669;font-weight:700">ഓട്ടോ-ഫിൽ</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;padding:6px 8px 10px">
+          ${topPicks.map(p => `
+            <div onclick="selectServiceSearchSuggestion('${escapeHtml(p.name)}')" style="display:inline-flex;align-items:center;gap:5px;background:#F8FAFC;border:1px solid #E2E8F0;color:#1E293B;font-size:0.75rem;font-weight:700;padding:5px 10px;border-radius:9999px;cursor:pointer">
+              <span>${p.icon}</span>
+              <span>${escapeHtml(p.name)}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      dropdown.style.display = 'block';
       return;
     }
 
-    const matchingTrades = TRADES_CATALOG.filter(t => t.name.toLowerCase().includes(q) || t.en.toLowerCase().includes(q)).slice(0, 3);
+    const matchingTrades = catalog.filter(t => 
+      (t.name && t.name.toLowerCase().includes(q)) || 
+      (t.en && t.en.toLowerCase().includes(q)) ||
+      (t.specs && t.specs.some(s => s.toLowerCase().includes(q)))
+    ).slice(0, 4);
+
     const matchingProviders = (APP_STATE.services || []).filter(s => 
-      s.name.toLowerCase().includes(q) || 
-      s.trade.toLowerCase().includes(q) || 
+      (s.name && s.name.toLowerCase().includes(q)) || 
+      (s.trade && s.trade.toLowerCase().includes(q)) || 
       (s.location && s.location.toLowerCase().includes(q))
     ).slice(0, 4);
 
     let html = '';
     if (matchingTrades.length > 0) {
       html += matchingTrades.map(t => `
-        <div class="trade-suggestion-item" onclick="selectServiceSearchSuggestion('${t.name}')">
-          <div style="display:flex;align-items:center">
-            <div class="trade-sugg-icon">${t.icon}</div>
+        <div class="trade-suggestion-item" style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;cursor:pointer">
+          <div style="display:flex;align-items:center;gap:8px;flex:1" onclick="selectServiceSearchSuggestion('${escapeHtml(t.name)}')">
+            <div class="trade-sugg-icon" style="font-size:1.1rem">${t.icon || '🛠️'}</div>
             <div>
-              <div class="trade-sugg-title">${t.name}</div>
-              <div class="trade-sugg-sub">വിഭാഗം • ${t.en}</div>
+              <div class="trade-sugg-title" style="font-size:0.85rem;font-weight:700;color:#1E293B">${highlightSearchQuery(t.name, q)}</div>
+              <div class="trade-sugg-sub" style="font-size:0.72rem;color:#64748B">${t.en || 'പ്രാദേശിക സേവനം'}</div>
             </div>
           </div>
-          <span style="font-size:11px;color:#059669;font-weight:700">തിരയുക ➔</span>
+          <button type="button" onclick="event.stopPropagation(); const s=document.getElementById('serviceSearchInput'); if(s){ s.value='${escapeHtml(t.name)}'; s.focus(); handleServicesSearchInput(s.value); }" style="background:#F1F5F9;border:1px solid #CBD5E1;color:#475569;border-radius:6px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer" title="ഓട്ടോ-ഫിൽ (Auto-fill)">↖</button>
         </div>
       `).join('');
     }
 
     if (matchingProviders.length > 0) {
       html += matchingProviders.map(p => `
-        <div class="trade-suggestion-item" onclick="openServiceDetailModal('${p.id}'); document.getElementById('servicesSearchSuggestions').style.display='none'">
-          <div style="display:flex;align-items:center">
-            <div class="trade-sugg-icon">${p.icon || '🛠️'}</div>
+        <div class="trade-suggestion-item" style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;cursor:pointer" onclick="openServiceDetailModal('${p.id}'); document.getElementById('servicesSearchSuggestions').style.display='none'">
+          <div style="display:flex;align-items:center;gap:8px;flex:1">
+            <div class="trade-sugg-icon" style="font-size:1.1rem">${p.icon || '🛠️'}</div>
             <div>
-              <div class="trade-sugg-title">${p.name}</div>
-              <div class="trade-sugg-sub">${p.trade} • 📍 ${p.location}</div>
+              <div class="trade-sugg-title" style="font-size:0.85rem;font-weight:700;color:#1E293B">${highlightSearchQuery(p.name, q)}</div>
+              <div class="trade-sugg-sub" style="font-size:0.72rem;color:#64748B">${escapeHtml(p.trade || 'സേവനം')} • 📍 ${escapeHtml(p.location || '')}</div>
             </div>
           </div>
-          <span style="font-size:11px;color:#059669;font-weight:700">കാണുക ➔</span>
+          <span style="font-size:11px;color:#059669;font-weight:700;flex-shrink:0">കാണുക ➔</span>
         </div>
       `).join('');
     }
@@ -10607,24 +10638,6 @@
           }
         });
       }
-
-      // 5. Visual Auto-fill indicator badge ONLY if container has an actual <form> (NEVER in chat)
-      if (container && container.classList && container.classList.contains('modal-overlay') && container.id !== 'modal-chat') {
-        const modalForm = container.querySelector('form');
-        if (modalForm && !container.querySelector('.auto-filled-profile-chip') && (phone || name)) {
-          const chip = document.createElement('div');
-          chip.className = 'auto-filled-profile-chip';
-          chip.style.cssText = 'background:linear-gradient(135deg, #ECFDF5 0%, #E0F2FE 100%);border:1px solid #A7F3D0;color:#047857;padding:6px 12px;border-radius:10px;font-size:11.5px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(16,185,129,0.1);width:100%;box-sizing:border-box;';
-          chip.innerHTML = `
-            <div style="display:flex;align-items:center;gap:6px">
-              <span>✨</span>
-              <span>നിങ്ങളുടെ പ്രൊഫൈൽ ഓട്ടോ-ഫിൽ ചെയ്തു: <b>${escapeHtml(name || phone)}</b></span>
-            </div>
-            <span style="font-size:10px;background:#10B981;color:#fff;padding:2px 6px;border-radius:6px">Auto-Filled</span>
-          `;
-          modalForm.insertBefore(chip, modalForm.firstChild);
-        }
-      }
     } catch (_) {}
   }
   window.autoFillRegisteredUserDetails = autoFillRegisteredUserDetails;
@@ -11207,6 +11220,54 @@
       });
     }
 
+    // ==============================================================
+    // SMART SEARCH AUTO-FILL & PREDICTIVE SUGGESTIONS ENGINE
+    // ==============================================================
+    function getRecentSearches() {
+      try {
+        const list = JSON.parse(localStorage.getItem('nn_recent_searches') || '[]');
+        return Array.isArray(list) ? list.slice(0, 6) : [];
+      } catch (_) { return []; }
+    }
+
+    function saveRecentSearch(q) {
+      try {
+        if (!q || !q.trim()) return;
+        const clean = q.trim();
+        let list = getRecentSearches().filter(item => item.toLowerCase() !== clean.toLowerCase());
+        list.unshift(clean);
+        localStorage.setItem('nn_recent_searches', JSON.stringify(list.slice(0, 8)));
+      } catch (_) {}
+    }
+
+    function clearRecentSearches() {
+      try {
+        localStorage.removeItem('nn_recent_searches');
+        const hInput = document.getElementById('homeSearchInput');
+        renderSearchAutoFillDropdown(hInput ? hInput.value : '');
+      } catch (_) {}
+    }
+    window.clearRecentSearches = clearRecentSearches;
+
+    function autoFillSearchInput(term, executeImmediate = true) {
+      const hInput = document.getElementById('homeSearchInput');
+      const dropdown = document.getElementById('homeSearchResultsDropdown');
+      if (!hInput) return;
+      hInput.value = term;
+      if (executeImmediate) {
+        if (dropdown) dropdown.style.display = 'none';
+        saveRecentSearch(term);
+        triggerHomeSearch();
+      } else {
+        hInput.focus();
+        if (typeof hInput.setSelectionRange === 'function') {
+          hInput.setSelectionRange(term.length, term.length);
+        }
+        renderSearchAutoFillDropdown(term);
+      }
+    }
+    window.autoFillSearchInput = autoFillSearchInput;
+
     // 3D Home Search Bar & Comprehensive Universal Search Engine
     function triggerHomeSearch() {
       const homeSearch = document.getElementById('homeSearchInput');
@@ -11218,6 +11279,7 @@
         showToast('ദയവായി എന്തെങ്കിലും തിരയുക (Please type to search)');
         return;
       }
+      saveRecentSearch(q);
       const qLower = q.toLowerCase();
 
       // 1. Emergency keywords & numbers
@@ -11318,6 +11380,340 @@
     }
     window.triggerDesktopSearch = triggerDesktopSearch;
 
+    // Helper: highlight query inside title text using safe substring
+    function highlightSearchQuery(text, query) {
+      if (!text) return '';
+      if (!query || query.length < 1) return escapeHtml(text);
+      const qLower = query.toLowerCase();
+      const tLower = text.toLowerCase();
+      const idx = tLower.indexOf(qLower);
+      if (idx === -1) return escapeHtml(text);
+      const before = text.slice(0, idx);
+      const match = text.slice(idx, idx + query.length);
+      const after = text.slice(idx + query.length);
+      return escapeHtml(before) + '<span style="color:#059669;font-weight:800;background:rgba(16,185,129,0.14);padding:0 3px;border-radius:4px">' + escapeHtml(match) + '</span>' + escapeHtml(after);
+    }
+
+    // Comprehensive Auto-Fill Dropdown Renderer
+    function renderSearchAutoFillDropdown(rawInput) {
+      const homeSearch = document.getElementById('homeSearchInput');
+      const homeDropdown = document.getElementById('homeSearchResultsDropdown');
+      if (!homeSearch || !homeDropdown) return;
+
+      const query = (rawInput !== undefined ? rawInput : homeSearch.value || '').trim().toLowerCase();
+
+      // CASE A: EMPTY QUERY -> SHOW TRENDING SUGGESTIONS & RECENT SEARCHES
+      if (!query) {
+        const recent = getRecentSearches();
+        const trendingTrades = [
+          { name: 'ഇലക്ട്രീഷ്യൻ', icon: '⚡' },
+          { name: 'പ്ലംബർ', icon: '🔧' },
+          { name: 'ടാക്സി / ഡ്രൈവർ', icon: '🚗' },
+          { name: 'രക്തദാതാക്കൾ', icon: '🩸' },
+          { name: 'ആംബുലൻസ് 108', icon: '🚑' },
+          { name: 'പുതിയ ജോലികൾ', icon: '💼' },
+          { name: 'വാടക വീടുകൾ', icon: '🏠' },
+          { name: 'പെയിന്റർ', icon: '🎨' },
+          { name: 'ക്ലീനിംഗ് സർവീസ്', icon: '🧹' },
+          { name: 'പോലീസ് 112', icon: '🚨' },
+          { name: 'കാർപെന്റർ', icon: '🪵' },
+          { name: 'KSEB 1912', icon: '⚡' }
+        ];
+
+        let out = '';
+
+        if (recent.length > 0) {
+          out += `
+            <div class="search-drop-section-header">
+              <span>🕒 സമീപകാല തിരച്ചിലുകൾ (Recent)</span>
+              <button type="button" onclick="clearRecentSearches()" style="background:none;border:none;color:#EF4444;font-size:0.7rem;font-weight:700;cursor:pointer">മായ്ക്കുക</button>
+            </div>
+            <div style="margin-bottom:8px">
+              ${recent.map(term => `
+                <div class="search-drop-item" style="padding:7px 10px">
+                  <div class="search-drop-left" style="flex:1" onclick="autoFillSearchInput('${escapeHtml(term)}', true)">
+                    <div class="search-drop-icon" style="width:28px;height:28px;font-size:0.95rem;background:#F1F5F9">🕒</div>
+                    <div class="search-drop-info">
+                      <div class="search-drop-title" style="font-size:0.83rem">${escapeHtml(term)}</div>
+                    </div>
+                  </div>
+                  <button type="button" class="search-autofill-btn" onclick="event.stopPropagation(); autoFillSearchInput('${escapeHtml(term)}', false)" title="ഓട്ടോ-ഫിൽ (Auto-Fill)">↖</button>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }
+
+        out += `
+          <div class="search-drop-section-header">
+            <span>🔥 ട്രെൻഡിംഗ് നിർദ്ദേശങ്ങൾ (Trending)</span>
+            <span style="font-size:0.65rem;color:#059669;font-weight:700">ഓട്ടോ-ഫിൽ</span>
+          </div>
+          <div class="search-trending-chips-grid">
+            ${trendingTrades.map(tr => `
+              <div class="search-trending-chip" onclick="autoFillSearchInput('${escapeHtml(tr.name)}', true)">
+                <span>${tr.icon}</span>
+                <span>${escapeHtml(tr.name)}</span>
+              </div>
+            `).join('')}
+          </div>
+        `;
+
+        homeDropdown.innerHTML = out;
+        homeDropdown.style.display = 'block';
+        return;
+      }
+
+      // CASE B: USER IS TYPING -> REAL-TIME AUTOCOMPLETE & AUTO-FILL MATCHES
+      const matches = [];
+
+      // 1. Emergency Helplines & Numbers
+      const emergencyList = [
+        { name: 'പോലീസ് എമർജൻസി (Police)', fillTerm: 'പോലീസ് 112', phone: '112', icon: '🚨', cat: 'police' },
+        { name: 'ആംബുലൻസ് (Ambulance 108)', fillTerm: 'ആംബുലൻസ് 108', phone: '108', icon: '🚑', cat: 'ambulance' },
+        { name: 'ഫയർ ഫോഴ്സ് (Fire Force 101)', fillTerm: 'ഫയർ ഫോഴ്സ് 101', phone: '101', icon: '🚒', cat: 'fire' },
+        { name: 'കെ.എസ്.ഇ.ബി ഇലക്ട്രിസിറ്റി (KSEB)', fillTerm: 'KSEB 1912', phone: '1912', icon: '⚡', cat: 'kseb' },
+        { name: 'വനിതാ ഹെൽപ്പ്‌ലൈൻ (Women Helpline)', fillTerm: 'വനിതാ ഹെൽപ്പ്‌ലൈൻ 1091', phone: '1091', icon: '👩', cat: 'women' },
+        { name: 'ചൈൽഡ്‌ലൈൻ (Childline)', fillTerm: 'ചൈൽഡ്‌ലൈൻ 1098', phone: '1098', icon: '👶', cat: 'child' },
+        { name: 'SARPA പാമ്പ് റെസ്ക്യൂ (Forest Dept)', fillTerm: 'പാമ്പ് റെസ്ക്യൂ SARPA', phone: '18004254733', icon: '🐍', cat: 'snake' }
+      ];
+
+      emergencyList.forEach(em => {
+        if (matches.length >= 10) return;
+        if (em.name.toLowerCase().includes(query) || em.cat.includes(query) || em.phone.includes(query) ||
+            ('അടിയന്തിരം emergency സഹായം പോലീസ് ambulance fire kseb കരണ്ട്'.includes(query) && query.length >= 2)) {
+          matches.push({
+            icon: em.icon,
+            rawTitle: em.name,
+            fillTerm: em.fillTerm,
+            sub: `അടിയന്തിര നമ്പർ: ${em.phone}`,
+            badge: 'അടിയന്തിരം',
+            badgeCls: 'badge-emergency',
+            action: () => { window.location.href = `tel:${em.phone}`; }
+          });
+        }
+      });
+
+      // 2. Blood Groups & Donors
+      const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
+      const matchedBg = bloodGroups.find(bg => query === bg.toLowerCase() || query === bg.toLowerCase().replace('+', ' positive') || query === bg.toLowerCase().replace('-', ' negative') || query === (bg.toLowerCase() + ' blood'));
+      if (matchedBg) {
+        matches.push({
+          icon: '🩸',
+          rawTitle: `${matchedBg} രക്തദാതാക്കൾ (${matchedBg} Blood Donors)`,
+          fillTerm: `${matchedBg} രക്തം`,
+          sub: `${matchedBg} രക്തഗ്രൂപ്പിലുള്ള നാട്ടുകാരെ കാണുക`,
+          badge: 'രക്തം',
+          badgeCls: 'badge-blood',
+          action: () => {
+            filterBloodGroup(matchedBg);
+            navTo('blood');
+          }
+        });
+      } else if ('രക്തദാനം blood donation donor രക്തം ദാതാവ്'.includes(query)) {
+        matches.push({
+          icon: '🩸',
+          rawTitle: 'രക്തദാനം (Blood Donor Directory)',
+          fillTerm: 'രക്തദാനം',
+          sub: 'അടിയന്തിര രക്തദാതാക്കളെ കണ്ടെത്തുക',
+          badge: 'രക്തം',
+          badgeCls: 'badge-blood',
+          action: () => openBloodModal()
+        });
+      }
+
+      // 3. 500+ Local Trades & Services Catalog (window.TRADES_CATALOG_500)
+      const catalog = (window.TRADES_CATALOG_500 && Array.isArray(window.TRADES_CATALOG_500)) ? window.TRADES_CATALOG_500 : (typeof TRADES_CATALOG !== 'undefined' ? TRADES_CATALOG : []);
+      let tradeCount = 0;
+      for (const tr of catalog) {
+        if (matches.length >= 10 || tradeCount >= 5) break;
+        const nameMatch = tr.name && tr.name.toLowerCase().includes(query);
+        const enMatch = tr.en && tr.en.toLowerCase().includes(query);
+        const specMatch = tr.specs && tr.specs.some(s => s.toLowerCase().includes(query));
+        if (nameMatch || enMatch || specMatch) {
+          tradeCount++;
+          matches.push({
+            icon: tr.icon || '🛠️',
+            rawTitle: `${tr.name}${tr.en ? ' (' + tr.en + ')' : ''}`,
+            fillTerm: tr.name,
+            sub: tr.specs ? tr.specs.slice(0, 3).join(', ') : 'പ്രാദേശിക സേവനം',
+            badge: 'തൊഴിൽ സേവനം',
+            badgeCls: 'badge-trade',
+            action: () => {
+              APP_STATE.activeServiceCategory = tr.category || 'all';
+              navTo('services');
+              const sInput = document.getElementById('serviceSearchInput');
+              if (sInput) {
+                sInput.value = tr.name;
+                renderServicesScreen();
+              }
+            }
+          });
+        }
+      }
+
+      // 4. Registered Local Services (APP_STATE.services)
+      (APP_STATE.services || []).forEach(s => {
+        if (matches.length >= 10) return;
+        if ((s.title && s.title.toLowerCase().includes(query)) ||
+            (s.name && s.name.toLowerCase().includes(query)) ||
+            (s.trade && s.trade.toLowerCase().includes(query)) ||
+            (s.location && s.location.toLowerCase().includes(query))) {
+          matches.push({
+            icon: s.icon || '🛠️',
+            rawTitle: s.name,
+            fillTerm: s.trade || s.name,
+            sub: `${s.trade || 'സേവനം'} • 📍 ${resolveItemLocation(s) || ''}`,
+            badge: 'സേവനം',
+            badgeCls: 'badge-service',
+            action: () => {
+              if (typeof openServiceDetailModal === 'function' && s.id) {
+                openServiceDetailModal(s.id);
+              } else {
+                navTo('services');
+                const sInput = document.getElementById('serviceSearchInput');
+                if (sInput) {
+                  sInput.value = s.trade || s.name;
+                  renderServicesScreen();
+                }
+              }
+            }
+          });
+        }
+      });
+
+      // 5. Jobs listings (APP_STATE.jobs)
+      (APP_STATE.jobs || []).forEach(j => {
+        if (matches.length >= 10) return;
+        if ((j.title && j.title.toLowerCase().includes(query)) ||
+            (j.employer && j.employer.toLowerCase().includes(query)) ||
+            (j.location && j.location.toLowerCase().includes(query))) {
+          matches.push({
+            icon: '💼',
+            rawTitle: j.title,
+            fillTerm: j.title,
+            sub: `${j.employer || 'സ്ഥാപനം'} • 📍 ${resolveItemLocation(j) || ''}`,
+            badge: 'തൊഴിൽ',
+            badgeCls: 'badge-job',
+            action: () => {
+              navTo('jobs');
+              const jInput = document.getElementById('jobSearchInput');
+              if (jInput) {
+                jInput.value = j.title;
+                renderJobsScreen();
+              }
+            }
+          });
+        }
+      });
+
+      // 6. Rentals listings (APP_STATE.rentals)
+      (APP_STATE.rentals || []).forEach(r => {
+        if (matches.length >= 10) return;
+        if ((r.title && r.title.toLowerCase().includes(query)) ||
+            (r.type && r.type.toLowerCase().includes(query)) ||
+            (r.location && r.location.toLowerCase().includes(query))) {
+          matches.push({
+            icon: '🏠',
+            rawTitle: r.title,
+            fillTerm: r.title,
+            sub: `${r.type || 'വാടക'}${r.rate ? ' • ₹' + r.rate : ''} • 📍 ${resolveItemLocation(r) || ''}`,
+            badge: 'വാടക',
+            badgeCls: 'badge-rental',
+            action: () => {
+              navTo('rentals');
+              const rInput = document.getElementById('rentalSearchInput');
+              if (rInput) {
+                rInput.value = r.title;
+                renderRentalsScreen();
+              }
+            }
+          });
+        }
+      });
+
+      // 7. Nearby Public Places & Facilities
+      const nearbyKeywords = ['പെട്രോൾ', 'petrol', 'atm', 'ബാങ്ക്', 'bank', 'മെഡിക്കൽ', 'pharmacy', 'റേഷൻ', 'ration', 'അക്ഷയ', 'akshaya', 'പഞ്ചായത്ത്', 'panchayath', 'വില്ലേജ്', 'village', 'ഹോട്ടൽ', 'hotel', 'ബസ്', 'bus'];
+      if (nearbyKeywords.some(kw => query.includes(kw))) {
+        matches.push({
+          icon: '📍',
+          rawTitle: `സമീപസ്ഥലങ്ങൾ: '${homeSearch.value}'`,
+          fillTerm: homeSearch.value.trim(),
+          sub: `${APP_STATE.location.name} പരിസരത്തെ സൗകര്യങ്ങൾ കാണുക`,
+          badge: 'സമീപം',
+          badgeCls: 'badge-nearby',
+          action: () => {
+            APP_STATE.nearbySearchQuery = homeSearch.value.trim();
+            navTo('nearby');
+            const nInput = document.getElementById('nearbySearchInput');
+            if (nInput) nInput.value = homeSearch.value.trim();
+            renderNearbyScreen();
+          }
+        });
+      }
+
+      if (matches.length === 0) {
+        homeDropdown.innerHTML = `
+          <div style="padding:14px;text-align:center;color:#64748B;font-size:0.86rem">
+            '<b>${escapeHtml(homeSearch.value)}</b>' എന്നതിൽ നേരിട്ട് ഫലങ്ങൾ കണ്ടെത്തിയില്ല.<br>
+            <div style="margin-top:10px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap">
+              <button type="button" onclick="autoFillSearchInput('${escapeHtml(homeSearch.value)}', true)" style="padding:7px 14px;background:#10B981;color:#FFFFFF;border:none;border-radius:10px;font-size:0.8rem;font-weight:800;cursor:pointer">
+                🔍 തിരയുക (Search Everywhere)
+              </button>
+            </div>
+          </div>
+        `;
+      } else {
+        homeDropdown.innerHTML = `
+          <div class="search-drop-section-header">
+            <span>✨ ഓട്ടോ-ഫിൽ നിർദ്ദേശങ്ങൾ (Suggestions)</span>
+            <span style="font-size:0.65rem;color:#059669;font-weight:700">${matches.length} കണ്ടെത്തി</span>
+          </div>
+          ${matches.slice(0, 8).map((m, idx) => `
+            <div class="search-drop-item" data-idx="${idx}">
+              <div class="search-drop-left" style="flex:1" data-idx="${idx}">
+                <div class="search-drop-icon">${m.icon}</div>
+                <div class="search-drop-info">
+                  <div class="search-drop-title">${highlightSearchQuery(m.rawTitle, query)}</div>
+                  <div class="search-drop-sub">${escapeHtml(m.sub)}</div>
+                </div>
+              </div>
+              <span class="search-drop-badge ${m.badgeCls}">${m.badge}</span>
+              <button type="button" class="search-autofill-btn" data-autofill="${escapeHtml(m.fillTerm || m.rawTitle)}" title="ഓട്ടോ-ഫിൽ (Auto-Fill)">↖</button>
+            </div>
+          `).join('')}
+        `;
+
+        // Bind auto-fill arrow buttons (populates search input without jumping)
+        homeDropdown.querySelectorAll('.search-autofill-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const term = btn.getAttribute('data-autofill');
+            if (term) autoFillSearchInput(term, false);
+          });
+        });
+
+        // Bind item click (auto-fills and runs action)
+        homeDropdown.querySelectorAll('.search-drop-item').forEach(el => {
+          el.addEventListener('click', (e) => {
+            if (e.target.closest('.search-autofill-btn')) return;
+            const idx = parseInt(el.getAttribute('data-idx'));
+            const target = matches[idx];
+            if (target) {
+              const term = target.fillTerm || target.rawTitle;
+              homeSearch.value = term;
+              saveRecentSearch(term);
+              homeDropdown.style.display = 'none';
+              if (target.action) target.action();
+            }
+          });
+        });
+      }
+
+      homeDropdown.style.display = 'block';
+    }
+    window.renderSearchAutoFillDropdown = renderSearchAutoFillDropdown;
+
     const homeSearch = document.getElementById('homeSearchInput');
     const homeDropdown = document.getElementById('homeSearchResultsDropdown');
 
@@ -11329,322 +11725,21 @@
       });
 
       homeSearch.addEventListener('input', () => {
-        const query = homeSearch.value.trim().toLowerCase();
-        if (!query) {
-          homeDropdown.style.display = 'none';
-          homeDropdown.innerHTML = '';
-          return;
-        }
+        renderSearchAutoFillDropdown(homeSearch.value);
+      });
 
-        const matches = [];
+      homeSearch.addEventListener('focus', () => {
+        renderSearchAutoFillDropdown(homeSearch.value);
+      });
 
-        // 1. Emergency Helplines & Numbers
-        const emergencyList = [
-          { name: 'പോലീസ് എമർജൻസി (Police)', phone: '112', icon: '🚨', cat: 'police' },
-          { name: 'ആംബുലൻസ് (Ambulance 108)', phone: '108', icon: '🚑', cat: 'ambulance' },
-          { name: 'ഫയർ ഫോഴ്സ് (Fire Force 101)', phone: '101', icon: '🚒', cat: 'fire' },
-          { name: 'കെ.എസ്.ഇ.ബി ഇലക്ട്രിസിറ്റി (KSEB)', phone: '1912', icon: '⚡', cat: 'kseb' },
-          { name: 'വനിതാ ഹെൽപ്പ്‌ലൈൻ (Women Helpline)', phone: '1091', icon: '👩', cat: 'women' },
-          { name: 'ചൈൽഡ്‌ലൈൻ (Childline)', phone: '1098', icon: '👶', cat: 'child' },
-          { name: 'SARPA പാമ്പ് റെസ്ക്യൂ (Forest Dept)', phone: '18004254733', icon: '🐍', cat: 'snake' }
-        ];
-
-        emergencyList.forEach(em => {
-          if (matches.length >= 12) return;
-          if (em.name.toLowerCase().includes(query) || em.cat.includes(query) || em.phone.includes(query) ||
-              ('അടിയന്തിരം emergency സഹായം പോലീസ് ambulance fire kseb കരണ്ട്'.includes(query) && query.length >= 3)) {
-            matches.push({
-              icon: em.icon,
-              title: em.name,
-              sub: `അടിയന്തിര നമ്പർ: ${em.phone}`,
-              badge: 'അടിയന്തിരം',
-              badgeCls: 'badge-emergency',
-              action: () => {
-                window.location.href = `tel:${em.phone}`;
-              }
-            });
-          }
-        });
-
-        // Check custom emergency contacts
-        (APP_STATE.emergencyContacts || []).forEach(ec => {
-          if (matches.length >= 12) return;
-          if ((ec.name && ec.name.toLowerCase().includes(query)) ||
-              (ec.category && ec.category.toLowerCase().includes(query)) ||
-              (ec.phone && ec.phone.includes(query))) {
-            matches.push({
-              icon: '🚨',
-              title: ec.name,
-              sub: `${ec.category || 'അടിയന്തിര സഹായം'} • ${ec.phone || ''}`,
-              badge: 'അടിയന്തിരം',
-              badgeCls: 'badge-emergency',
-              action: () => {
-                if (ec.phone) window.location.href = `tel:${ec.phone}`;
-                else openEmergencyModal();
-              }
-            });
-          }
-        });
-
-        // 2. Blood Groups & Donors
-        const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
-        const matchedBg = bloodGroups.find(bg => query === bg.toLowerCase() || query === bg.toLowerCase().replace('+', ' positive') || query === bg.toLowerCase().replace('-', ' negative') || query === (bg.toLowerCase() + ' blood'));
-        if (matchedBg) {
-          matches.push({
-            icon: '🩸',
-            title: `${matchedBg} രക്തദാതാക്കൾ (${matchedBg} Blood Donors)`,
-            sub: `${matchedBg} രക്തഗ്രൂപ്പിലുള്ള നാട്ടുകാരെ കാണുക`,
-            badge: 'രക്തം',
-            badgeCls: 'badge-blood',
-            action: () => {
-              filterBloodGroup(matchedBg);
-              navTo('blood');
-            }
-          });
-        } else if ('രക്തദാനം blood donation donor രക്തം ദാതാവ്'.includes(query)) {
-          matches.push({
-            icon: '🩸',
-            title: 'രക്തദാനം (Blood Donor Directory)',
-            sub: 'അടിയന്തിര രക്തദാതാക്കളെ കണ്ടെത്തുക',
-            badge: 'രക്തം',
-            badgeCls: 'badge-blood',
-            action: () => openBloodModal()
-          });
-        }
-
-        // Search in registered blood donors
-        (APP_STATE.bloodDonors || []).forEach(d => {
-          if (matches.length >= 12) return;
-          if ((d.name && d.name.toLowerCase().includes(query)) ||
-              (d.group && d.group.toLowerCase() === query) ||
-              (d.location && d.location.toLowerCase().includes(query))) {
-            matches.push({
-              icon: '🩸',
-              title: `${d.name || 'രക്തദാതാവ്'} (${d.group || 'O+'})`,
-              sub: `📍 ${resolveItemLocation(d) || APP_STATE.location.name}`,
-              badge: 'രക്തദാതാവ്',
-              badgeCls: 'badge-blood',
-              action: () => {
-                filterBloodGroup(d.group || 'all');
-                navTo('blood');
-              }
-            });
-          }
-        });
-
-        // 3. 500+ Local Trades & Services Catalog (window.TRADES_CATALOG_500)
-        if (window.TRADES_CATALOG_500 && Array.isArray(window.TRADES_CATALOG_500)) {
-          let tradeCount = 0;
-          for (const tr of window.TRADES_CATALOG_500) {
-            if (matches.length >= 12 || tradeCount >= 4) break;
-            const nameMatch = tr.name && tr.name.toLowerCase().includes(query);
-            const enMatch = tr.en && tr.en.toLowerCase().includes(query);
-            const specMatch = tr.specs && tr.specs.some(s => s.toLowerCase().includes(query));
-            if (nameMatch || enMatch || specMatch) {
-              tradeCount++;
-              matches.push({
-                icon: tr.icon || '🛠️',
-                title: `${tr.name}${tr.en ? ' (' + tr.en + ')' : ''}`,
-                sub: tr.specs ? tr.specs.slice(0, 3).join(', ') : 'പ്രാദേശിക സേവനം',
-                badge: 'തൊഴിൽ സേവനം',
-                badgeCls: 'badge-trade',
-                action: () => {
-                  APP_STATE.activeServiceCategory = tr.category || 'all';
-                  navTo('services');
-                  const sInput = document.getElementById('serviceSearchInput');
-                  if (sInput) {
-                    sInput.value = tr.name;
-                    renderServicesScreen();
-                  }
-                }
-              });
-            }
-          }
-        }
-
-        // 4. Service Categories
-        SERVICE_CATEGORIES.forEach(cat => {
-          if (matches.length >= 12) return;
-          if (cat.id !== 'all' && (cat.name.toLowerCase().includes(query) || cat.id.toLowerCase().includes(query))) {
-            matches.push({
-              icon: cat.icon || '🛠️',
-              title: cat.name,
-              sub: 'പ്രാദേശിക സേവന വിഭാഗം',
-              badge: 'സേവനം',
-              badgeCls: 'badge-service',
-              action: () => filterServiceAndOpen(cat.id)
-            });
-          }
-        });
-
-        // 5. Registered Local Services (APP_STATE.services)
-        (APP_STATE.services || []).forEach(s => {
-          if (matches.length >= 12) return;
-          if ((s.title && s.title.toLowerCase().includes(query)) ||
-              (s.name && s.name.toLowerCase().includes(query)) ||
-              (s.trade && s.trade.toLowerCase().includes(query)) ||
-              (s.location && s.location.toLowerCase().includes(query))) {
-            matches.push({
-              icon: '🛠️',
-              title: s.name,
-              sub: `${s.trade || 'സേവനം'} • 📍 ${resolveItemLocation(s) || ''}`,
-              badge: 'സേവനം',
-              badgeCls: 'badge-service',
-              action: () => {
-                if (typeof openServiceDetailModal === 'function' && s.id) {
-                  openServiceDetailModal(s.id);
-                } else {
-                  navTo('services');
-                  const sInput = document.getElementById('serviceSearchInput');
-                  if (sInput) {
-                    sInput.value = s.trade || s.name;
-                    renderServicesScreen();
-                  }
-                }
-              }
-            });
-          }
-        });
-
-        // 6. Jobs listings (APP_STATE.jobs)
-        (APP_STATE.jobs || []).forEach(j => {
-          if (matches.length >= 12) return;
-          if ((j.title && j.title.toLowerCase().includes(query)) ||
-              (j.employer && j.employer.toLowerCase().includes(query)) ||
-              (j.description && j.description.toLowerCase().includes(query)) ||
-              (j.location && j.location.toLowerCase().includes(query))) {
-            matches.push({
-              icon: '💼',
-              title: j.title,
-              sub: `${j.employer || 'സ്ഥാപനം'} • 📍 ${resolveItemLocation(j) || ''}${j.salary ? ' • ₹' + j.salary : ''}`,
-              badge: 'തൊഴിൽ',
-              badgeCls: 'badge-job',
-              action: () => {
-                navTo('jobs');
-                const jInput = document.getElementById('jobSearchInput');
-                if (jInput) {
-                  jInput.value = j.title;
-                  renderJobsScreen();
-                }
-              }
-            });
-          }
-        });
-
-        // 7. Rentals listings (APP_STATE.rentals)
-        (APP_STATE.rentals || []).forEach(r => {
-          if (matches.length >= 12) return;
-          if ((r.title && r.title.toLowerCase().includes(query)) ||
-              (r.type && r.type.toLowerCase().includes(query)) ||
-              (r.owner && r.owner.toLowerCase().includes(query)) ||
-              (r.description && r.description.toLowerCase().includes(query)) ||
-              (r.location && r.location.toLowerCase().includes(query))) {
-            matches.push({
-              icon: '🏠',
-              title: r.title,
-              sub: `${r.type || 'വാടക'}${r.rate ? ' • ₹' + r.rate : ''} • 📍 ${resolveItemLocation(r) || ''}`,
-              badge: 'വാടക',
-              badgeCls: 'badge-rental',
-              action: () => {
-                navTo('rentals');
-                const rInput = document.getElementById('rentalSearchInput');
-                if (rInput) {
-                  rInput.value = r.title;
-                  renderRentalsScreen();
-                }
-              }
-            });
-          }
-        });
-
-        // 8. Nearby Public Places & Facilities
-        const nearbyKeywords = ['പെട്രോൾ', 'petrol', 'atm', 'ബാങ്ക്', 'bank', 'മെഡിക്കൽ', 'pharmacy', 'റേഷൻ', 'ration', 'അക്ഷയ', 'akshaya', 'പഞ്ചായത്ത്', 'panchayath', 'വില്ലേജ്', 'village', 'ഹോട്ടൽ', 'hotel', 'ബസ്', 'bus'];
-        if (nearbyKeywords.some(kw => query.includes(kw))) {
-          matches.push({
-            icon: '📍',
-            title: `സമീപസ്ഥലങ്ങൾ: '${homeSearch.value}'`,
-            sub: `${APP_STATE.location.name} പരിസരത്തെ സൗകര്യങ്ങൾ കാണുക`,
-            badge: 'സമീപം',
-            badgeCls: 'badge-nearby',
-            action: () => {
-              APP_STATE.nearbySearchQuery = homeSearch.value.trim();
-              navTo('nearby');
-              const nInput = document.getElementById('nearbySearchInput');
-              if (nInput) nInput.value = homeSearch.value.trim();
-              renderNearbyScreen();
-            }
-          });
-        }
-
-        // 9. Community Posts & News (APP_STATE.posts)
-        (APP_STATE.posts || []).forEach(p => {
-          if (matches.length >= 12) return;
-          if ((p.content && p.content.toLowerCase().includes(query)) ||
-              (p.authorName && p.authorName.toLowerCase().includes(query))) {
-            const shortText = (p.content || '').substring(0, 35) + '...';
-            matches.push({
-              icon: '📢',
-              title: shortText,
-              sub: `${p.authorName || 'നാട്ടുകാരൻ'} • നാട്ടുവിശേഷങ്ങൾ`,
-              badge: 'നാട്ടുവാർത്ത',
-              badgeCls: 'badge-post',
-              action: () => {
-                navTo('community');
-              }
-            });
-          }
-        });
-
-        if (matches.length === 0) {
-          homeDropdown.innerHTML = `
-            <div style="padding:14px;text-align:center;color:#64748B;font-size:0.86rem">
-              ഫലങ്ങളൊന്നും കണ്ടെത്തിയില്ല.<br>
-              <div style="margin-top:10px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap">
-                <button onclick="navTo('services'); const s=document.getElementById('serviceSearchInput'); if(s) {s.value='${escapeHtml(homeSearch.value)}'; renderServicesScreen();}" style="padding:6px 12px;background:#ECFDF5;color:#0E7043;border:1px solid #A7F3D0;border-radius:10px;font-size:0.78rem;font-weight:700;cursor:pointer">
-                  🛠️ സർവീസിൽ തിരയുക
-                </button>
-                <button onclick="navTo('jobs'); const j=document.getElementById('jobSearchInput'); if(j) {j.value='${escapeHtml(homeSearch.value)}'; renderJobsScreen();}" style="padding:6px 12px;background:#FEF3C7;color:#92400E;border:1px solid #FDE68A;border-radius:10px;font-size:0.78rem;font-weight:700;cursor:pointer">
-                  💼 തൊഴിലിൽ തിരയുക
-                </button>
-                <button onclick="navTo('rentals'); const r=document.getElementById('rentalSearchInput'); if(r) {r.value='${escapeHtml(homeSearch.value)}'; renderRentalsScreen();}" style="padding:6px 12px;background:#E0E7FF;color:#3730A3;border:1px solid #C7D2FE;border-radius:10px;font-size:0.78rem;font-weight:700;cursor:pointer">
-                  🏠 വാടകയിൽ തിരയുക
-                </button>
-              </div>
-            </div>
-          `;
-        } else {
-          homeDropdown.innerHTML = matches.slice(0, 8).map((m, idx) => `
-            <div class="search-drop-item" data-idx="${idx}">
-              <div class="search-drop-left">
-                <div class="search-drop-icon">${m.icon}</div>
-                <div class="search-drop-info">
-                  <div class="search-drop-title">${escapeHtml(m.title)}</div>
-                  <div class="search-drop-sub">${escapeHtml(m.sub)}</div>
-                </div>
-              </div>
-              <span class="search-drop-badge ${m.badgeCls}">${m.badge}</span>
-            </div>
-          `).join('');
-
-          // Bind item clicks
-          homeDropdown.querySelectorAll('.search-drop-item').forEach(el => {
-            el.addEventListener('click', () => {
-              const idx = parseInt(el.getAttribute('data-idx'));
-              const target = matches[idx];
-              if (target && target.action) {
-                homeDropdown.style.display = 'none';
-                target.action();
-              }
-            });
-          });
-        }
-
-        homeDropdown.style.display = 'block';
+      homeSearch.addEventListener('click', (e) => {
+        e.stopPropagation();
+        renderSearchAutoFillDropdown(homeSearch.value);
       });
 
       // Close dropdown when tapping elsewhere
       document.addEventListener('click', (e) => {
-        if (!e.target.closest('.home-3d-search-container')) {
+        if (!e.target.closest('#homeSearchContainer') && !e.target.closest('#homeSearchResultsDropdown')) {
           homeDropdown.style.display = 'none';
         }
       });
