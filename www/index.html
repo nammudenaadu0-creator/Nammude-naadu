@@ -1763,33 +1763,29 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- MODAL: DELETE CHAT MESSAGE (DELETE FOR ME / DELETE FOR EVERYONE) -->
+    <!-- MODAL: DELETE CHAT MESSAGE (WHATSAPP-STYLE CLEAN POPUP)        -->
     <!-- ============================================================== -->
-    <div id="modal-delete-chat-message" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-delete-chat-message')" style="display:none;z-index:999999;align-items:flex-end">
-        <div class="modal-sheet" style="border-radius:24px 24px 0 0;padding:20px 18px 32px;max-width:440px;margin:0 auto;background:#FFFFFF;box-shadow:0 -10px 40px rgba(0,0,0,0.3)">
-            <div style="width:40px;height:4px;background:#CBD5E1;border-radius:2px;margin:0 auto 16px"></div>
-            <div style="text-align:center;margin-bottom:18px">
-                <div style="width:50px;height:50px;border-radius:50%;background:#FEE2E2;color:#DC2626;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:24px">🗑️</div>
-                <h3 style="font-size:16.5px;font-weight:900;color:#0F172A;margin:0 0 6px">സന്ദേശം ഡിലീറ്റ് ചെയ്യണോ?</h3>
-                <p id="deleteMsgPreviewText" style="font-size:12.5px;color:#64748B;margin:0;font-style:italic;word-break:break-word;max-height:48px;overflow:hidden">...</p>
-            </div>
+    <div id="modal-delete-chat-message" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-delete-chat-message')" style="display:none;z-index:999999;align-items:center;justify-content:center;background:rgba(15,23,42,0.65)!important">
+        <div style="width:86%;max-width:320px;background:#FFFFFF;border-radius:20px;padding:22px 18px 16px;box-shadow:0 20px 50px rgba(0,0,0,0.35);text-align:center">
+            <h3 style="font-size:16px;font-weight:900;color:#0F172A;margin:0 0 6px">സന്ദേശം ഡിലീറ്റ് ചെയ്യണോ?</h3>
+            <p id="deleteMsgPreviewText" style="font-size:12px;color:#64748B;margin:0 0 16px;font-style:italic;word-break:break-word;max-height:44px;overflow:hidden">...</p>
 
-            <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;flex-direction:column;gap:8px">
                 <!-- DELETE FOR EVERYONE (Only visible for sender) -->
                 <button type="button" id="deleteForEveryoneBtn" onclick="executeDeleteChatMessage('everyone')"
-                    style="width:100%;padding:14px;background:linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);color:#FFFFFF;border:none;border-radius:16px;font-weight:900;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(220,38,38,0.25)">
-                    <span>🗑️</span> <span>എല്ലാവർക്കും ഡിലീറ്റ് ചെയ്യുക (Delete for everyone)</span>
+                    style="width:100%;padding:12px;background:#DC2626;color:#FFFFFF;border:none;border-radius:12px;font-weight:900;font-size:13.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 3px 10px rgba(220,38,38,0.25)">
+                    <span>🗑️</span> <span>എല്ലാവർക്കും ഡിലീറ്റ് ചെയ്യുക</span>
                 </button>
 
                 <!-- DELETE FOR ME -->
                 <button type="button" id="deleteForMeBtn" onclick="executeDeleteChatMessage('forme')"
-                    style="width:100%;padding:14px;background:#F1F5F9;color:#1E293B;border:1.5px solid #CBD5E1;border-radius:16px;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
-                    <span>📱</span> <span>എനിക്ക് മാത്രം ഡിലീറ്റ് ചെയ്യുക (Delete for me)</span>
+                    style="width:100%;padding:12px;background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;border-radius:12px;font-weight:800;font-size:13.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+                    <span>📱</span> <span>എനിക്ക് മാത്രം ഡിലീറ്റ് ചെയ്യുക</span>
                 </button>
 
                 <!-- CANCEL -->
                 <button type="button" onclick="closeModal('modal-delete-chat-message')"
-                    style="width:100%;padding:12px;background:transparent;color:#64748B;border:none;font-weight:700;font-size:13.5px;cursor:pointer;margin-top:2px">
+                    style="width:100%;padding:9px;background:transparent;color:#64748B;border:none;font-weight:700;font-size:13px;cursor:pointer">
                     റദ്ദാക്കുക (Cancel)
                 </button>
             </div>

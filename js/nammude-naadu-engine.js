@@ -3338,7 +3338,9 @@
           <img src="${escapeHtml(recipientAvatar)}" class="chat-bubble-avatar" alt="Avatar" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
         ` : ''}
         <div class="chat-bubble ${isMe ? 'outgoing' : 'incoming'} ${msg.type ? ('type-' + msg.type) : ''}"
-          oncontextmenu="event.preventDefault(); promptDeleteChatMessage('${escapeHtml(msg.id)}'); return false;">
+          onclick="promptDeleteChatMessage('${escapeHtml(msg.id)}')"
+          oncontextmenu="event.preventDefault(); promptDeleteChatMessage('${escapeHtml(msg.id)}'); return false;"
+          style="cursor:pointer" title="ഡിലീറ്റ് ചെയ്യാൻ തൊടുക">
           ${innerContentHtml}
           <div class="chat-bubble-meta">
             <span class="chat-time-text">${escapeHtml(msg.time || '')}</span>
@@ -3349,7 +3351,6 @@
                     ? '<span class="chat-ticks sent" title="അയച്ചു (Sent)">✓</span>'
                     : '<span class="chat-ticks delivered" title="എത്തിച്ചേർന്നു (Delivered)">✓✓</span>')
             ) : ''}
-            <button type="button" class="chat-msg-options-btn" onclick="event.stopPropagation(); promptDeleteChatMessage('${escapeHtml(msg.id)}')" title="സന്ദേശം ഡിലീറ്റ് ചെയ്യുക">⋮</button>
           </div>
         </div>
       </div>
@@ -6218,38 +6219,24 @@
     renderActiveServiceTracker();
 
     toast(`🚀 നിങ്ങളുടെ ആവശ്യം അടുത്തുള്ള ${catInfo.name}മാർക്ക് അയച്ചു! ഉടൻ തിരിച്ചു വിളിക്കും.`);
-
-    // REALISTIC WORKER MATCH SIMULATION:
-    // After 4.5 seconds, matching nearby worker accepts the request!
-    setTimeout(() => {
-      const currentReq = (APP_STATE.serviceRequests || []).find(r => r.id === newReq.id);
-      if (currentReq && currentReq.status === 'broadcasting') {
-        // Find best matching worker
-        let matched = (APP_STATE.services || []).find(s => s.category === cat);
-        if (!matched) {
-          matched = (APP_STATE.services || [])[0] || {
-            id: 'srv_matched',
-            name: 'സുരേഷ് കുമാർ',
-            trade: `${catInfo.name} സർവീസ്`,
-            phone: '+91 98471 23456',
-            avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80',
-            rating: '4.9 (42)'
-          };
-        }
-
-        currentReq.status = 'accepted';
-        currentReq.worker = matched;
-
-        try {
-          localStorage.setItem('nn_service_requests', JSON.stringify(APP_STATE.serviceRequests));
-        } catch (_) {}
-
-        renderActiveServiceTracker();
-        toast(`🔔 ${matched.name} (${matched.trade}) നിങ്ങളുടെ റിക്വസ്റ്റ് സ്വീകരിച്ചു! [വിളിക്കുക/ചാറ്റ് ചെയ്യാം]`);
-      }
-    }, 4500);
   }
   window.submitQuickServiceRequest = submitQuickServiceRequest;
+
+  function acceptServiceRequestAsWorker(reqId, customerPhone, tradeName) {
+    const currentProfile = (typeof APP_STATE !== 'undefined' && APP_STATE.userProfile) ? APP_STATE.userProfile : {};
+    const myName = currentProfile.name || 'സർവീസ് പാർട്ണർ';
+    const myTrade = currentProfile.trade || tradeName || 'സർവീസ്';
+    const greeting = `നമസ്കാരം! ഞാൻ ${myName} (${myTrade}). താങ്കൾ ആവശ്യപ്പെട്ട ജോലി ചെയ്യാൻ ഞാൻ തയ്യാറാണ്. എപ്പോഴാണ് എത്തേണ്ടത് എന്ന് അറിയിക്കുക.`;
+    
+    if (typeof openChatModal === 'function') {
+      const recipientId = 'usr_' + (customerPhone ? customerPhone.replace(/\D/g, '') : 'cust');
+      openChatModal('കസ്റ്റമർ', customerPhone, '', greeting, recipientId, null, 'service');
+    }
+    if (typeof toast === 'function') {
+      toast('✅ റിക്വസ്റ്റ് സ്വീകരിച്ചു! കസ്റ്റമറോട് സംസാരിക്കാം.');
+    }
+  }
+  window.acceptServiceRequestAsWorker = acceptServiceRequestAsWorker;
 
   function renderActiveServiceTracker() {
     const container = document.getElementById('homeActiveServiceTracker');

@@ -99,6 +99,14 @@
         }
       });
 
+      if (!window._chatHeartbeatTimer) {
+        window._chatHeartbeatTimer = setInterval(() => {
+          if (chatChannel && chatChannel.state === 'joined') {
+            try { chatChannel.send({ type: 'broadcast', event: 'ping', payload: {} }); } catch (_) {}
+          }
+        }, 12000);
+      }
+
       postsChannel = client.channel('nn_community_posts', { config: { broadcast: { self: false } } });
       postsChannel.on('broadcast', { event: 'new_post' }, ({ payload }) => handleIncomingPost(payload));
       postsChannel.subscribe();
@@ -306,6 +314,9 @@
 
     const isEmergencyOrAmbulance = extraData.type === 'emergency' || extraData.type === 'ambulance';
     const phoneLink = (isEmergencyOrAmbulance && extraData.phone) ? ('<a href="tel:' + extraData.phone + '" class="inapp-banner-call-btn" onclick="event.stopPropagation()">📞 വിളിക്കുക</a>') : '';
+    const serviceAcceptBtn = (extraData.type === 'service' && extraData.phone)
+      ? `<button type="button" class="inapp-banner-accept-btn" onclick="event.stopPropagation(); if(typeof acceptServiceRequestAsWorker==='function'){ acceptServiceRequestAsWorker('${extraData.serviceId || ''}', '${extraData.phone}', '${extraData.trade || ''}'); } this.closest('.inapp-notification-banner')?.remove();" style="background:#16A34A;color:#FFFFFF;border:none;border-radius:10px;padding:6px 12px;font-size:11.5px;font-weight:900;cursor:pointer;white-space:nowrap;box-shadow:0 2px 6px rgba(22,163,74,0.3)">🟢 തയ്യാറാണ്</button>`
+      : '';
 
     banner.innerHTML = `
       <div class="inapp-banner-icon">${icon}</div>
@@ -315,6 +326,7 @@
       </div>
       <div class="inapp-banner-actions">
         ${phoneLink}
+        ${serviceAcceptBtn}
         <button class="inapp-banner-close-btn" onclick="event.stopPropagation(); this.closest('.inapp-notification-banner').remove();">✕</button>
       </div>
     `;
@@ -1230,7 +1242,19 @@
       msgObj.sessionId = SESSION_CLIENT_ID;
     }
 
-    // Ensure chat channel is active
+    // Direct peer thread broadcast (sub-50ms peer-to-peer delivery)
+    if (client) {
+      try {
+        const directThread = client.channel('th_' + chatKey);
+        directThread.send({
+          type: 'broadcast',
+          event: 'chat_message',
+          payload: { chatKey, msgObj, metaObj }
+        }).catch(() => {});
+      } catch (_) {}
+    }
+
+    // Ensure main chat channel is active
     if (!chatChannel || chatChannel.state !== 'joined') {
       try { setupRealtimeChannels(); } catch (_) {}
     }
@@ -1336,6 +1360,20 @@
     }
     chatSubscribers.get(chatKey).add(onMessagesUpdate);
 
+    // Direct sub-50ms peer thread channel
+    let thChannel = null;
+    if (client) {
+      try {
+        thChannel = client.channel('th_' + chatKey, { config: { broadcast: { self: false } } });
+        thChannel.on('broadcast', { event: 'chat_message' }, ({ payload }) => {
+          if (payload && payload.msgObj && typeof handleIncomingChatMessage === 'function') {
+            handleIncomingChatMessage(payload);
+          }
+        });
+        thChannel.subscribe();
+      } catch (_) {}
+    }
+
     function fetchThreadMessages() {
       if (!client) return;
       const phones = String(chatKey).match(/\d{10}/g) || [];
@@ -1347,16 +1385,11 @@
       if (phones.length >= 2) {
         const p1 = phones[0];
         const p2 = phones[1];
-        query = query.or(`chat_key.eq.${chatKey},chat_key.eq.chat_${p1}_${p2},chat_key.eq.chat_${p2}_${p1},and(sender_phone.eq.${p1},recipient_phone.eq.${p2}),and(sender_phone.eq.${p2},recipient_phone.eq.${p1})`);
-      } else if (phones.length === 1 && myCleanPhone && myCleanPhone !== phones[0]) {
-        const p1 = phones[0];
-        const p2 = myCleanPhone;
-        const sortedKey = 'chat_' + [p1, p2].sort().join('_');
-        query = query.or(`chat_key.eq.${chatKey},chat_key.eq.${sortedKey},chat_key.eq.chat_${p1}_${p2},chat_key.eq.chat_${p2}_${p1},and(sender_phone.eq.${p1},recipient_phone.eq.${p2}),and(sender_phone.eq.${p2},recipient_phone.eq.${p1})`);
+        query = query.or(`chat_key.eq.${chatKey},chat_key.eq.chat_${p1}_${p2},chat_key.eq.chat_${p2}_${p1}`);
       } else {
         query = query.eq('chat_key', chatKey);
       }
-      query.order('created_at', { ascending: false }).limit(60)
+      query.order('created_at', { ascending: false }).limit(35)
         .then(({ data, error }) => {
           if (!error && Array.isArray(data)) {
             // Sort ascending for chronological order
@@ -1401,13 +1434,13 @@
     // Fast initial fetch on opening
     fetchThreadMessages();
 
-    // High-speed 1.2s active polling only while the chat modal is actively open
+    // Ultra-fast 400ms micro-polling while the chat modal is actively open
     const pollInterval = setInterval(() => {
       const isChatOpen = typeof document !== 'undefined' && document.getElementById('modal-chat')?.classList.contains('active');
       if (client && !document.hidden && isChatOpen && chatSubscribers.has(chatKey) && chatSubscribers.get(chatKey).size > 0) {
         fetchThreadMessages();
       }
-    }, 1200);
+    }, 400);
 
     const onVisible = () => {
       const isChatOpen = typeof document !== 'undefined' && document.getElementById('modal-chat')?.classList.contains('active');
@@ -1419,6 +1452,9 @@
 
     return () => {
       if (pollInterval) clearInterval(pollInterval);
+      if (thChannel) {
+        try { thChannel.unsubscribe(); } catch (_) {}
+      }
       document.removeEventListener('visibilitychange', onVisible);
       if (chatSubscribers.has(chatKey)) {
         chatSubscribers.get(chatKey).delete(onMessagesUpdate);
