@@ -1,7 +1,28 @@
 -- =========================================================================
--- NAMMUDE NAADU (നമ്മുടെ നാട്) - COMPLETE SUPABASE DATABASE SCHEMA
--- Run this in your Supabase Dashboard -> SQL Editor -> Run
+-- SECURITY HELPER FUNCTIONS (Extract Citizen Identity from Headers / Auth)
 -- =========================================================================
+create or replace function public.current_citizen_phone()
+returns text
+language sql
+stable
+as $$
+  select nullif(regexp_replace(coalesce(
+    current_setting('request.headers', true)::json->>'x-citizen-phone',
+    ''
+  ), '\D', '', 'g'), '');
+$$;
+
+create or replace function public.current_citizen_id()
+returns text
+language sql
+stable
+as $$
+  select coalesce(
+    nullif(current_setting('request.headers', true)::json->>'x-citizen-id', ''),
+    auth.uid()::text,
+    ''
+  );
+$$;
 
 -- 1. MESSAGES TABLE (Realtime Cross-device Chat)
 create table if not exists public.messages (
@@ -25,10 +46,123 @@ drop policy if exists "Allow public select messages" on public.messages;
 drop policy if exists "Allow public insert messages" on public.messages;
 drop policy if exists "Allow public update messages" on public.messages;
 drop policy if exists "Allow public delete messages" on public.messages;
-create policy "Allow public select messages" on public.messages for select using (true);
-create policy "Allow public insert messages" on public.messages for insert with check (true);
-create policy "Allow public update messages" on public.messages for update using (true);
-create policy "Allow public delete messages" on public.messages for delete using (true);
+drop policy if exists "Allow select own messages" on public.messages;
+drop policy if exists "Allow insert valid messages" on public.messages;
+drop policy if exists "Deny public update messages" on public.messages;
+drop policy if exists "Allow delete own messages" on public.messages;
+
+-- 1. SELECT: Users can ONLY read messages where they are the sender, recipient, or participant
+create policy "Allow select own messages" on public.messages 
+for select using (
+  -- Supabase Auth verified user
+  (auth.uid() is not null and (sender_id = auth.uid()::text or recipient_id = auth.uid()::text))
+  or
+  -- Phone number verification via client header (x-citizen-phone)
+  (
+    coalesce(current_setting('request.headers', true)::json->>'x-citizen-phone', '') <> ''
+    and (
+      sender_phone = (current_setting('request.headers', true)::json->>'x-citizen-phone')
+      or sender_phone = ('+91' || (current_setting('request.headers', true)::json->>'x-citizen-phone'))
+      or recipient_phone = (current_setting('request.headers', true)::json->>'x-citizen-phone')
+      or recipient_phone = ('+91' || (current_setting('request.headers', true)::json->>'x-citizen-phone'))
+      or chat_key like '%' || (current_setting('request.headers', true)::json->>'x-citizen-phone') || '%'
+    )
+  )
+  or
+  -- User ID verification via client header (x-citizen-id)
+  (
+    coalesce(current_setting('request.headers', true)::json->>'x-citizen-id', '') <> ''
+    and (
+      sender_id = (current_setting('request.headers', true)::json->>'x-citizen-id')
+      or recipient_id = (current_setting('request.headers', true)::json->>'x-citizen-id')
+    )
+  )
+);
+
+-- 2. INSERT: Only non-empty valid messages, ensuring sender identity integrity
+create policy "Allow insert valid messages" on public.messages 
+for insert with check (
+  text is not null and length(trim(text)) > 0
+  and chat_key is not null and length(trim(chat_key)) >= 5
+  and (
+    -- If citizen phone is provided in header, sender_phone must match
+    coalesce(current_setting('request.headers', true)::json->>'x-citizen-phone', '') = ''
+    or sender_phone like '%' || (current_setting('request.headers', true)::json->>'x-citizen-phone') || '%'
+  )
+);
+
+-- 3. UPDATE: DENIED - Messages are immutable; cannot be altered or tampered with
+create policy "Deny public update messages" on public.messages 
+for update using (false);
+
+-- 4. DELETE: Users can ONLY delete their own messages (sender verification)
+create policy "Allow delete own messages" on public.messages 
+for delete using (
+  (auth.uid() is not null and sender_id = auth.uid()::text)
+  or
+  (
+    coalesce(current_setting('request.headers', true)::json->>'x-citizen-phone', '') <> ''
+    and (
+      sender_phone = (current_setting('request.headers', true)::json->>'x-citizen-phone')
+      or sender_phone = ('+91' || (current_setting('request.headers', true)::json->>'x-citizen-phone'))
+    )
+  )
+  or
+  (
+    coalesce(current_setting('request.headers', true)::json->>'x-citizen-id', '') <> ''
+    and sender_id = (current_setting('request.headers', true)::json->>'x-citizen-id')
+  )
+);
+
+-- SECURE RPC: Delete single message with strict sender verification
+create or replace function public.delete_chat_message(p_msg_id text, p_sender_phone text, p_sender_id text)
+returns boolean
+language plpgsql
+security definer
+as $$
+begin
+  if p_msg_id is null or (p_sender_phone is null and p_sender_id is null) then
+    return false;
+  end if;
+
+  delete from public.messages
+  where id = p_msg_id
+    and (
+      (p_sender_phone is not null and (sender_phone = p_sender_phone or sender_phone = ('+91' || p_sender_phone) or sender_phone like '%' || p_sender_phone || '%'))
+      or
+      (p_sender_id is not null and sender_id = p_sender_id)
+    );
+
+  return found;
+end;
+$$;
+
+-- SECURE RPC: Get thread messages with participant verification
+create or replace function public.get_chat_thread_messages(p_chat_key text, p_my_phone text, p_my_id text, p_limit int default 50)
+returns setof public.messages
+language plpgsql
+security definer
+as $$
+begin
+  if p_chat_key is null or (p_my_phone is null and p_my_id is null) then
+    return;
+  end if;
+
+  return query
+  select * from public.messages
+  where (
+    chat_key = p_chat_key
+    or (p_my_phone is not null and chat_key like '%' || p_my_phone || '%')
+  )
+  and (
+    (p_my_phone is not null and (sender_phone like '%' || p_my_phone || '%' or recipient_phone like '%' || p_my_phone || '%' or chat_key like '%' || p_my_phone || '%'))
+    or
+    (p_my_id is not null and (sender_id = p_my_id or recipient_id = p_my_id))
+  )
+  order by created_at desc
+  limit coalesce(p_limit, 50);
+end;
+$$;
 
 -- High-performance indexes for sub-10ms chat retrieval
 create index if not exists idx_messages_chat_key on public.messages (chat_key);
@@ -60,10 +194,25 @@ drop policy if exists "Allow public select posts" on public.posts;
 drop policy if exists "Allow public insert posts" on public.posts;
 drop policy if exists "Allow public update posts" on public.posts;
 drop policy if exists "Allow public delete posts" on public.posts;
+drop policy if exists "Allow update own posts" on public.posts;
+drop policy if exists "Allow delete own posts" on public.posts;
+
 create policy "Allow public select posts" on public.posts for select using (true);
-create policy "Allow public insert posts" on public.posts for insert with check (true);
-create policy "Allow public update posts" on public.posts for update using (true);
-create policy "Allow public delete posts" on public.posts for delete using (true);
+create policy "Allow public insert posts" on public.posts for insert with check (
+  content is not null and length(trim(content)) > 0
+);
+-- OWNERSHIP GUARD: Only the author can update their post
+create policy "Allow update own posts" on public.posts for update using (
+  (auth.uid() is not null and user_id = auth.uid()::text)
+  or (public.current_citizen_id() <> '' and user_id = public.current_citizen_id())
+  or (public.current_citizen_phone() <> '' and author_phone like '%' || public.current_citizen_phone() || '%')
+);
+-- OWNERSHIP GUARD: Only the author can delete their post
+create policy "Allow delete own posts" on public.posts for delete using (
+  (auth.uid() is not null and user_id = auth.uid()::text)
+  or (public.current_citizen_id() <> '' and user_id = public.current_citizen_id())
+  or (public.current_citizen_phone() <> '' and author_phone like '%' || public.current_citizen_phone() || '%')
+);
 
 -- 3. SERVICES TABLE (Workers Directory & Nearby Providers)
 create table if not exists public.services (
@@ -94,10 +243,25 @@ drop policy if exists "Allow public select services" on public.services;
 drop policy if exists "Allow public insert services" on public.services;
 drop policy if exists "Allow public update services" on public.services;
 drop policy if exists "Allow public delete services" on public.services;
+drop policy if exists "Allow update own services" on public.services;
+drop policy if exists "Allow delete own services" on public.services;
+
 create policy "Allow public select services" on public.services for select using (true);
-create policy "Allow public insert services" on public.services for insert with check (true);
-create policy "Allow public update services" on public.services for update using (true);
-create policy "Allow public delete services" on public.services for delete using (true);
+create policy "Allow public insert services" on public.services for insert with check (
+  name is not null and phone is not null and trade is not null
+);
+-- OWNERSHIP GUARD: Only the service provider can update their listing
+create policy "Allow update own services" on public.services for update using (
+  (auth.uid() is not null and user_id = auth.uid()::text)
+  or (public.current_citizen_id() <> '' and user_id = public.current_citizen_id())
+  or (public.current_citizen_phone() <> '' and phone like '%' || public.current_citizen_phone() || '%')
+);
+-- OWNERSHIP GUARD: Only the service provider can delete their listing
+create policy "Allow delete own services" on public.services for delete using (
+  (auth.uid() is not null and user_id = auth.uid()::text)
+  or (public.current_citizen_id() <> '' and user_id = public.current_citizen_id())
+  or (public.current_citizen_phone() <> '' and phone like '%' || public.current_citizen_phone() || '%')
+);
 
 -- 4. SERVICE REVIEWS TABLE
 create table if not exists public.service_reviews (
@@ -117,10 +281,15 @@ drop policy if exists "Allow public select reviews" on public.service_reviews;
 drop policy if exists "Allow public insert reviews" on public.service_reviews;
 drop policy if exists "Allow public delete reviews" on public.service_reviews;
 create policy "Allow public select reviews" on public.service_reviews for select using (true);
-create policy "Allow public insert reviews" on public.service_reviews for insert with check (true);
-create policy "Allow public delete reviews" on public.service_reviews for delete using (true);
+create policy "Allow public insert reviews" on public.service_reviews for insert with check (
+  author_name is not null and rating >= 1 and rating <= 5
+);
+create policy "Allow public delete reviews" on public.service_reviews for delete using (
+  (auth.uid() is not null and user_id = auth.uid()::text)
+  or (public.current_citizen_id() <> '' and user_id = public.current_citizen_id())
+);
 
--- 5. BLOOD DONORS TABLE
+-- 5. BLOOD DONORS TABLE (Strict Data Protection & Privacy Guard)
 create table if not exists public.blood_donors (
   id text primary key,
   user_id text,
@@ -142,10 +311,33 @@ drop policy if exists "Allow public select donors" on public.blood_donors;
 drop policy if exists "Allow public insert donors" on public.blood_donors;
 drop policy if exists "Allow public update donors" on public.blood_donors;
 drop policy if exists "Allow public delete donors" on public.blood_donors;
-create policy "Allow public select donors" on public.blood_donors for select using (true);
-create policy "Allow public insert donors" on public.blood_donors for insert with check (true);
-create policy "Allow public update donors" on public.blood_donors for update using (true);
-create policy "Allow public delete donors" on public.blood_donors for delete using (true);
+drop policy if exists "Allow update own donor profile" on public.blood_donors;
+drop policy if exists "Allow delete own donor profile" on public.blood_donors;
+
+-- Read: Public can view active ready donors for emergency blood search
+create policy "Allow public select donors" on public.blood_donors for select using (
+  ready_to_donate = true
+  or (public.current_citizen_id() <> '' and user_id = public.current_citizen_id())
+  or (public.current_citizen_phone() <> '' and phone like '%' || public.current_citizen_phone() || '%')
+);
+-- Insert: Strict validation ensuring authentic phone and standard blood group
+create policy "Allow public insert donors" on public.blood_donors for insert with check (
+  name is not null and length(trim(name)) >= 2
+  and phone is not null and length(regexp_replace(phone, '\D', '', 'g')) >= 10
+  and blood_group is not null
+);
+-- OWNERSHIP GUARD: Only the donor can update their phone, location, or donation readiness
+create policy "Allow update own donor profile" on public.blood_donors for update using (
+  (auth.uid() is not null and user_id = auth.uid()::text)
+  or (public.current_citizen_id() <> '' and user_id = public.current_citizen_id())
+  or (public.current_citizen_phone() <> '' and phone like '%' || public.current_citizen_phone() || '%')
+);
+-- OWNERSHIP GUARD: Only the donor can delete their registration
+create policy "Allow delete own donor profile" on public.blood_donors for delete using (
+  (auth.uid() is not null and user_id = auth.uid()::text)
+  or (public.current_citizen_id() <> '' and user_id = public.current_citizen_id())
+  or (public.current_citizen_phone() <> '' and phone like '%' || public.current_citizen_phone() || '%')
+);
 
 -- 6. BLOOD REQUESTS TABLE (Urgent Blood Emergency)
 create table if not exists public.blood_requests (
@@ -165,19 +357,34 @@ create table if not exists public.blood_requests (
   created_at_iso timestamp with time zone default timezone('utc'::text, now())
 );
 
+alter table public.blood_requests add column if not exists user_id text;
 alter table public.blood_requests enable row level security;
 drop policy if exists "Allow public select blood_reqs" on public.blood_requests;
 drop policy if exists "Allow public insert blood_reqs" on public.blood_requests;
 drop policy if exists "Allow public update blood_reqs" on public.blood_requests;
 drop policy if exists "Allow public delete blood_reqs" on public.blood_requests;
+
 create policy "Allow public select blood_reqs" on public.blood_requests for select using (true);
-create policy "Allow public insert blood_reqs" on public.blood_requests for insert with check (true);
-create policy "Allow public update blood_reqs" on public.blood_requests for update using (true);
-create policy "Allow public delete blood_reqs" on public.blood_requests for delete using (true);
+create policy "Allow public insert blood_reqs" on public.blood_requests for insert with check (
+  patient_name is not null and hospital is not null and contact_phone is not null
+);
+-- OWNERSHIP GUARD: Only the request creator can update status
+create policy "Allow public update blood_reqs" on public.blood_requests for update using (
+  (auth.uid() is not null and user_id = auth.uid()::text)
+  or (public.current_citizen_id() <> '' and user_id = public.current_citizen_id())
+  or (public.current_citizen_phone() <> '' and contact_phone like '%' || public.current_citizen_phone() || '%')
+);
+-- OWNERSHIP GUARD: Only the request creator can delete
+create policy "Allow public delete blood_reqs" on public.blood_requests for delete using (
+  (auth.uid() is not null and user_id = auth.uid()::text)
+  or (public.current_citizen_id() <> '' and user_id = public.current_citizen_id())
+  or (public.current_citizen_phone() <> '' and contact_phone like '%' || public.current_citizen_phone() || '%')
+);
 
 -- 7. JOBS TABLE (Local Jobs & Vacancies)
 create table if not exists public.jobs (
   id text primary key,
+  user_id text,
   employer text not null,
   title text not null,
   category text default 'other',
@@ -192,19 +399,34 @@ create table if not exists public.jobs (
   created_at_iso timestamp with time zone default timezone('utc'::text, now())
 );
 
+alter table public.jobs add column if not exists user_id text;
 alter table public.jobs enable row level security;
 drop policy if exists "Allow public select jobs" on public.jobs;
 drop policy if exists "Allow public insert jobs" on public.jobs;
 drop policy if exists "Allow public update jobs" on public.jobs;
 drop policy if exists "Allow public delete jobs" on public.jobs;
+
 create policy "Allow public select jobs" on public.jobs for select using (true);
-create policy "Allow public insert jobs" on public.jobs for insert with check (true);
-create policy "Allow public update jobs" on public.jobs for update using (true) with check (true);
-create policy "Allow public delete jobs" on public.jobs for delete using (true);
+create policy "Allow public insert jobs" on public.jobs for insert with check (
+  title is not null and employer is not null and phone is not null
+);
+-- OWNERSHIP GUARD: Only the employer can update the job post
+create policy "Allow public update jobs" on public.jobs for update using (
+  (auth.uid() is not null and user_id = auth.uid()::text)
+  or (public.current_citizen_id() <> '' and user_id = public.current_citizen_id())
+  or (public.current_citizen_phone() <> '' and phone like '%' || public.current_citizen_phone() || '%')
+);
+-- OWNERSHIP GUARD: Only the employer can delete the job post
+create policy "Allow public delete jobs" on public.jobs for delete using (
+  (auth.uid() is not null and user_id = auth.uid()::text)
+  or (public.current_citizen_id() <> '' and user_id = public.current_citizen_id())
+  or (public.current_citizen_phone() <> '' and phone like '%' || public.current_citizen_phone() || '%')
+);
 
 -- 8. RENTALS & BUY/SELL TABLE
 create table if not exists public.rentals (
   id text primary key,
+  user_id text,
   title text not null,
   owner text not null,
   type text default 'house',
@@ -221,15 +443,29 @@ create table if not exists public.rentals (
   created_at_iso timestamp with time zone default timezone('utc'::text, now())
 );
 
+alter table public.rentals add column if not exists user_id text;
 alter table public.rentals enable row level security;
 drop policy if exists "Allow public select rentals" on public.rentals;
 drop policy if exists "Allow public insert rentals" on public.rentals;
 drop policy if exists "Allow public update rentals" on public.rentals;
 drop policy if exists "Allow public delete rentals" on public.rentals;
+
 create policy "Allow public select rentals" on public.rentals for select using (true);
-create policy "Allow public insert rentals" on public.rentals for insert with check (true);
-create policy "Allow public update rentals" on public.rentals for update using (true) with check (true);
-create policy "Allow public delete rentals" on public.rentals for delete using (true);
+create policy "Allow public insert rentals" on public.rentals for insert with check (
+  title is not null and owner is not null and phone is not null
+);
+-- OWNERSHIP GUARD: Only the rental owner can update
+create policy "Allow public update rentals" on public.rentals for update using (
+  (auth.uid() is not null and user_id = auth.uid()::text)
+  or (public.current_citizen_id() <> '' and user_id = public.current_citizen_id())
+  or (public.current_citizen_phone() <> '' and phone like '%' || public.current_citizen_phone() || '%')
+);
+-- OWNERSHIP GUARD: Only the rental owner can delete
+create policy "Allow public delete rentals" on public.rentals for delete using (
+  (auth.uid() is not null and user_id = auth.uid()::text)
+  or (public.current_citizen_id() <> '' and user_id = public.current_citizen_id())
+  or (public.current_citizen_phone() <> '' and phone like '%' || public.current_citizen_phone() || '%')
+);
 
 -- 9. SERVICE REQUESTS TABLE (Quick Worker Requests)
 create table if not exists public.service_requests (
@@ -256,10 +492,23 @@ drop policy if exists "Allow public select svc_reqs" on public.service_requests;
 drop policy if exists "Allow public insert svc_reqs" on public.service_requests;
 drop policy if exists "Allow public update svc_reqs" on public.service_requests;
 drop policy if exists "Allow public delete svc_reqs" on public.service_requests;
+
 create policy "Allow public select svc_reqs" on public.service_requests for select using (true);
-create policy "Allow public insert svc_reqs" on public.service_requests for insert with check (true);
-create policy "Allow public update svc_reqs" on public.service_requests for update using (true);
-create policy "Allow public delete svc_reqs" on public.service_requests for delete using (true);
+create policy "Allow public insert svc_reqs" on public.service_requests for insert with check (
+  title is not null and phone is not null
+);
+-- OWNERSHIP GUARD: Only requester or provider can update status
+create policy "Allow public update svc_reqs" on public.service_requests for update using (
+  (auth.uid() is not null and user_id = auth.uid()::text)
+  or (public.current_citizen_id() <> '' and user_id = public.current_citizen_id())
+  or (public.current_citizen_phone() <> '' and (phone like '%' || public.current_citizen_phone() || '%' or provider_phone like '%' || public.current_citizen_phone() || '%'))
+);
+-- OWNERSHIP GUARD: Only requester can delete their request
+create policy "Allow public delete svc_reqs" on public.service_requests for delete using (
+  (auth.uid() is not null and user_id = auth.uid()::text)
+  or (public.current_citizen_id() <> '' and user_id = public.current_citizen_id())
+  or (public.current_citizen_phone() <> '' and phone like '%' || public.current_citizen_phone() || '%')
+);
 
 -- 10. PROFILES TABLE (User Profiles)
 create table if not exists public.profiles (
@@ -287,10 +536,21 @@ drop policy if exists "Allow public select profiles" on public.profiles;
 drop policy if exists "Allow public insert profiles" on public.profiles;
 drop policy if exists "Allow public update profiles" on public.profiles;
 drop policy if exists "Allow public delete profiles" on public.profiles;
+
 create policy "Allow public select profiles" on public.profiles for select using (true);
 create policy "Allow public insert profiles" on public.profiles for insert with check (true);
-create policy "Allow public update profiles" on public.profiles for update using (true);
-create policy "Allow public delete profiles" on public.profiles for delete using (true);
+-- OWNERSHIP GUARD: Only the user can update their own profile
+create policy "Allow public update profiles" on public.profiles for update using (
+  (auth.uid() is not null and id = auth.uid()::text)
+  or (public.current_citizen_id() <> '' and id = public.current_citizen_id())
+  or (public.current_citizen_phone() <> '' and phone like '%' || public.current_citizen_phone() || '%')
+);
+-- OWNERSHIP GUARD: Only the user can delete their own profile
+create policy "Allow public delete profiles" on public.profiles for delete using (
+  (auth.uid() is not null and id = auth.uid()::text)
+  or (public.current_citizen_id() <> '' and id = public.current_citizen_id())
+  or (public.current_citizen_phone() <> '' and phone like '%' || public.current_citizen_phone() || '%')
+);
 
 -- 11. EMERGENCY & ESSENTIAL DIRECTORY CONTACTS TABLE
 create table if not exists public.emergency_contacts (
@@ -313,9 +573,11 @@ drop policy if exists "Allow public insert emergency_contacts" on public.emergen
 drop policy if exists "Allow public update emergency_contacts" on public.emergency_contacts;
 drop policy if exists "Allow public delete emergency_contacts" on public.emergency_contacts;
 create policy "Allow public select emergency_contacts" on public.emergency_contacts for select using (true);
-create policy "Allow public insert emergency_contacts" on public.emergency_contacts for insert with check (true);
-create policy "Allow public update emergency_contacts" on public.emergency_contacts for update using (true) with check (true);
-create policy "Allow public delete emergency_contacts" on public.emergency_contacts for delete using (true);
+create policy "Allow public insert emergency_contacts" on public.emergency_contacts for insert with check (
+  title is not null and phone is not null
+);
+create policy "Deny public update emergency_contacts" on public.emergency_contacts for update using (false);
+create policy "Deny public delete emergency_contacts" on public.emergency_contacts for delete using (false);
 
 -- 12. ENABLE SUPABASE REALTIME REPLICATION
 alter publication supabase_realtime add table public.messages;

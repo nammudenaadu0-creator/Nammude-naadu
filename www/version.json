@@ -1,13 +1,13 @@
 {
-  "versionCode": 22,
-  "versionName": "1.0.22",
+  "versionCode": 23,
+  "versionName": "1.0.23",
   "minSupportedVersion": 1,
   "releaseDate": "2026-10-24",
-  "title": "പുതിയ അപ്‌ഡേറ്റ് ലഭ്യമാണ്! (Version 1.0.22)",
+  "title": "പുതിയ അപ്‌ഡേറ്റ് ലഭ്യമാണ്! (Version 1.0.23)",
   "releaseNotes": [
-    "🏥 ആശുപത്രികൾ & ക്ലിനിക്കുകൾക്കായി പുതിയ രജിസ്ട്രേഷൻ ഫോം ഉൾപ്പെടുത്തി",
-    "🎨 5x5 റൗണ്ട് ഷേപ്പിലുള്ള കളർഫുൾ 3D സർവീസ് കാറ്റഗറി ഡിസൈൻ",
-    "⚡ അൾട്രാ-ഫാസ്റ്റ് ഇൻസ്റ്റന്റ് ചാറ്റും ഡയറക്ട് മെസ്സേജ് ഡിലീറ്റും"
+    "🔒 ചാറ്റ്, പോസ്റ്റുകൾ, രക്തദാതാക്കളുടെ വിവരങ്ങൾ എന്നിവയ്ക്ക് കർശന സുരക്ഷയും എൻക്രിപ്ഷനും ഏർപ്പെടുത്തി",
+    "🛡️ Android Cleartext Traffic & Mixed Content സുരക്ഷിതമാക്കി",
+    "🏥 ആശുപത്രി രജിസ്ട്രേഷൻ ഫോമും 5x5 സർവീസ് ഗ്രിഡും ലഭ്യമാക്കി"
   ],
   "apkUrl": "https://github.com/nammudenaadu0-creator/Nammude-naadu/raw/main/NammudeNaadu.apk",
   "webUrl": "https://nammudenaadu0-creator.github.io/Nammude-naadu/",

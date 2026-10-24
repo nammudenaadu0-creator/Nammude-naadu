@@ -34,15 +34,61 @@
   const chatSubscribers = new Map(); // chatKey -> Set of callbacks
   const SESSION_CLIENT_ID = 'sess_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
 
+  function getCitizenHeaders() {
+    let phone = '';
+    let id = '';
+    try {
+      if (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) {
+        if (APP_STATE.currentUser.phone) {
+          phone = String(APP_STATE.currentUser.phone).replace(/\D/g, '').slice(-10);
+        }
+        if (APP_STATE.currentUser.id) {
+          id = String(APP_STATE.currentUser.id);
+        }
+      }
+      if (!phone && typeof localStorage !== 'undefined') {
+        phone = (localStorage.getItem('nn_user_phone') || '').replace(/\D/g, '').slice(-10);
+      }
+      if (!id && typeof localStorage !== 'undefined') {
+        id = localStorage.getItem('nn_user_id') || '';
+      }
+    } catch (_) {}
+    return {
+      'x-citizen-phone': phone || '',
+      'x-citizen-id': id || ''
+    };
+  }
+
+  function updateClientCitizenHeaders() {
+    if (!client) return;
+    try {
+      const hdrs = getCitizenHeaders();
+      if (client.rest && client.rest.headers) {
+        if (hdrs['x-citizen-phone']) client.rest.headers['x-citizen-phone'] = hdrs['x-citizen-phone'];
+        if (hdrs['x-citizen-id']) client.rest.headers['x-citizen-id'] = hdrs['x-citizen-id'];
+      }
+    } catch (_) {}
+  }
+  if (typeof window !== 'undefined') {
+    window.updateClientCitizenHeaders = updateClientCitizenHeaders;
+  }
+
   function initSupabase() {
-    if (client) return client;
+    if (client) {
+      updateClientCitizenHeaders();
+      return client;
+    }
     if (typeof window === 'undefined' || !window.supabase || typeof window.supabase.createClient !== 'function') {
       console.warn('⚠️ [Supabase SDK] Not loaded yet. Retrying in background...');
       return null;
     }
 
     try {
+      const citizenHeaders = getCitizenHeaders();
       client = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+        global: {
+          headers: citizenHeaders
+        },
         realtime: {
           params: {
             eventsPerSecond: 10
@@ -1330,9 +1376,28 @@
   async function deleteChatMessageForEveryone(chatKey, msgId) {
     if (!msgId) return false;
     initSupabase();
+    updateClientCitizenHeaders();
+
+    const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone)
+      ? String(APP_STATE.currentUser.phone).replace(/\D/g, '').slice(-10) : '';
+    const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? String(APP_STATE.currentUser.id) : '';
+
     if (client) {
       try {
-        await client.from('messages').delete().eq('id', msgId);
+        // 1. Try secure stored procedure with strict sender check
+        const { error: rpcErr } = await client.rpc('delete_chat_message', {
+          p_msg_id: msgId,
+          p_sender_phone: myPhone,
+          p_sender_id: myId
+        });
+        if (rpcErr) {
+          // 2. Fallback to direct DELETE (enforced by RLS)
+          let delQ = client.from('messages').delete().eq('id', msgId);
+          if (myPhone) {
+            delQ = delQ.or(`sender_phone.ilike.%${myPhone}%,sender_id.eq.${myId || 'none'}`);
+          }
+          await delQ;
+        }
       } catch (err) {
         console.warn('⚠️ [Supabase Delete Message Error]:', err.message);
       }
@@ -1376,6 +1441,8 @@
 
     function fetchThreadMessages() {
       if (!client) return;
+      updateClientCitizenHeaders();
+
       const phones = String(chatKey).match(/\d{10}/g) || [];
       const myCleanPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone) 
         ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
