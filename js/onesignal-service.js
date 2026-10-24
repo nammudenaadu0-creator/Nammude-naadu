@@ -165,8 +165,8 @@
           data: extraData || {},
           small_icon: 'ic_stat_onesignal_default',
           large_icon: 'https://nammudenaadu.web.app/assets/icon-192.png',
-          android_channel_id: 'nammude_naadu_alerts',
-          android_sound: 'notification',
+          android_channel_id: (extraData && (extraData.type === 'chat' || extraData.chatKey)) ? 'nammude_naadu_messages' : 'nammude_naadu_alerts',
+          android_sound: 'notification_sound',
           ios_sound: 'default',
           priority: 10
         };
@@ -203,8 +203,8 @@
           headings: { en: title || '📢 അടിയന്തിര അറിയിപ്പ്!' },
           contents: { en: message },
           data: extraData || {},
-          android_channel_id: 'nammude_naadu_alerts',
-          android_sound: 'notification',
+          android_channel_id: (extraData && (extraData.type === 'chat' || extraData.chatKey)) ? 'nammude_naadu_messages' : 'nammude_naadu_alerts',
+          android_sound: 'notification_sound',
           ios_sound: 'default',
           priority: 10
         };

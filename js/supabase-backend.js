@@ -200,6 +200,30 @@
           await window.Capacitor.Plugins.LocalNotifications.requestPermissions();
         }
 
+        // Register high-priority notification channels with custom sound & vibration
+        if (window.Capacitor.Plugins.LocalNotifications.createChannel) {
+          try {
+            await window.Capacitor.Plugins.LocalNotifications.createChannel({
+              id: 'nammude_naadu_messages',
+              name: 'സന്ദേശങ്ങൾ (Chat Messages)',
+              description: 'പുതിയ ചാറ്റ് സന്ദേശങ്ങൾക്കുള്ള തത്സമയ അറിയിപ്പുകൾ',
+              importance: 5,
+              visibility: 1,
+              vibration: true,
+              sound: 'notification_sound.wav'
+            });
+            await window.Capacitor.Plugins.LocalNotifications.createChannel({
+              id: 'nammude_naadu_alerts',
+              name: 'നമ്മുടെ നാട് അറിയിപ്പുകൾ (Alerts)',
+              description: 'സന്ദേശങ്ങളും തത്സമയ സഹായ അറിയിപ്പുകളും',
+              importance: 5,
+              visibility: 1,
+              vibration: true,
+              sound: 'notification_sound.wav'
+            });
+          } catch (_) {}
+        }
+
         // INSTANT TAP NAVIGATION (Just like Meesho / Flipkart): Direct deep-dive into the exact chat / order screen
         if (!window._localNotifClickRegistered) {
           window._localNotifClickRegistered = true;
@@ -873,7 +897,17 @@
           try { saveChats(true); } catch (_) {}
         }
 
-        // Active chat thread update
+        // Active chat thread update: determine if user is actively looking at this thread inside the open app
+        const activeKey = (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.key) ? APP_STATE.activeChatRecipient.key : '';
+        const activePhone = (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.phone)
+          ? String(APP_STATE.activeChatRecipient.phone).replace(/\D/g, '').slice(-10) : '';
+        const isAppInBackground = Boolean(typeof document !== 'undefined' && (document.hidden || document.visibilityState === 'hidden'));
+        const isCurrentChatActive = Boolean(
+          APP_STATE.activeChatRecipient &&
+          !isAppInBackground &&
+          (activeKey === chatKey || (activePhone && partnerPhone && activePhone === partnerPhone))
+        );
+
         if (APP_STATE.activeChatRecipient && isCurrentChatActive) {
           if (activeKey && activeKey !== chatKey) {
             if (!APP_STATE.chats[activeKey]) APP_STATE.chats[activeKey] = [];
