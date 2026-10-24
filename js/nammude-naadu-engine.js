@@ -2923,6 +2923,9 @@
   window.openChatModalByKey = openChatModalByKey;
 
   function openChatModal(recipientName, recipientPhone, recipientAvatar, initialContext, recipientId, explicitChatKey, chatType) {
+    try {
+      document.querySelectorAll('#modal-chat .auto-filled-profile-chip').forEach(c => c.remove());
+    } catch (_) {}
     const safeName = recipientName || 'പ്രാദേശിക സുഹൃത്ത്';
     const safePhone = recipientPhone || '';
     const safeAvatar = (recipientAvatar && recipientAvatar !== DEFAULT_USER_AVATAR) ? recipientAvatar : '';
@@ -10507,6 +10510,11 @@
   // ==============================================================
   function autoFillRegisteredUserDetails(container) {
     try {
+      if (!container) return;
+      // NEVER touch chat modal or profile viewer modals
+      if (container.id === 'modal-chat' || (typeof container.closest === 'function' && container.closest('#modal-chat')) || container.id === 'modal-author-profile' || container.id === 'modal-image-viewer') {
+        return;
+      }
       const root = container || document;
       const u = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) || {};
       const phone = (u.phone || localStorage.getItem('nn_user_phone') || localStorage.getItem('nn_permanent_phone') || '').trim();
@@ -10600,13 +10608,13 @@
         });
       }
 
-      // 5. Visual Auto-fill indicator badge if container is a modal
-      if (container && container.classList && container.classList.contains('modal-overlay')) {
-        const modalBody = container.querySelector('.modal-content, .modal-card, .form-card') || container;
-        if (modalBody && !container.querySelector('.auto-filled-profile-chip') && (phone || name)) {
+      // 5. Visual Auto-fill indicator badge ONLY if container has an actual <form> (NEVER in chat)
+      if (container && container.classList && container.classList.contains('modal-overlay') && container.id !== 'modal-chat') {
+        const modalForm = container.querySelector('form');
+        if (modalForm && !container.querySelector('.auto-filled-profile-chip') && (phone || name)) {
           const chip = document.createElement('div');
           chip.className = 'auto-filled-profile-chip';
-          chip.style.cssText = 'background:linear-gradient(135deg, #ECFDF5 0%, #E0F2FE 100%);border:1px solid #A7F3D0;color:#047857;padding:6px 12px;border-radius:10px;font-size:11.5px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(16,185,129,0.1)';
+          chip.style.cssText = 'background:linear-gradient(135deg, #ECFDF5 0%, #E0F2FE 100%);border:1px solid #A7F3D0;color:#047857;padding:6px 12px;border-radius:10px;font-size:11.5px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(16,185,129,0.1);width:100%;box-sizing:border-box;';
           chip.innerHTML = `
             <div style="display:flex;align-items:center;gap:6px">
               <span>✨</span>
@@ -10614,10 +10622,7 @@
             </div>
             <span style="font-size:10px;background:#10B981;color:#fff;padding:2px 6px;border-radius:6px">Auto-Filled</span>
           `;
-          const firstForm = modalBody.querySelector('form, .modal-body, .form-group') || modalBody.firstChild;
-          if (firstForm && firstForm.parentNode) {
-            firstForm.parentNode.insertBefore(chip, firstForm);
-          }
+          modalForm.insertBefore(chip, modalForm.firstChild);
         }
       }
     } catch (_) {}
