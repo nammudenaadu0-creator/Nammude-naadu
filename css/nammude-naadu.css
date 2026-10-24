@@ -399,17 +399,15 @@ html, body {
     right: 0 !important;
     bottom: 0 !important;
     width: 100vw !important;
-    height: 100vh !important;
-    height: 100dvh !important;
+    /* Use svh (small viewport) so input bar stays above keyboard */
+    height: 100svh !important;
     z-index: 99999 !important;
   }
   #modal-chat .chat-modal-sheet {
     width: 100vw !important;
     max-width: 100vw !important;
-    height: 100vh !important;
-    height: 100dvh !important;
-    max-height: 100vh !important;
-    max-height: 100dvh !important;
+    height: 100svh !important;
+    max-height: 100svh !important;
     border-radius: 0 !important;
     margin: 0 !important;
     box-shadow: none !important;
@@ -418,14 +416,26 @@ html, body {
     background: #F8FAFC !important;
     background-color: #F8FAFC !important;
     border: none !important;
+    /* Keyboard-aware: let the browser resize the sheet when soft keyboard appears */
+    overflow: hidden !important;
   }
   #modal-chat .chat-modal-header {
     border-radius: 0 !important;
     padding-top: max(14px, calc(env(safe-area-inset-top, 0px) + 8px)) !important;
     padding-bottom: 10px !important;
+    flex-shrink: 0 !important;
+  }
+  #modal-chat .chat-thread-box {
+    /* flex:1 with min-height:0 ensures correct shrink when keyboard opens */
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
   }
   #modal-chat .chat-input-bar {
     padding-bottom: max(12px, calc(env(safe-area-inset-bottom, 0px) + 8px)) !important;
+    flex-shrink: 0 !important;
   }
 }
 
@@ -864,16 +874,16 @@ html, body {
 }
 
 .chat-ticks {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 900;
   line-height: 1;
-  letter-spacing: -2px;
   display: inline-flex;
   align-items: center;
   margin-left: 3px;
   vertical-align: middle;
   color: rgba(255, 255, 255, 0.65);
-  transition: color 0.2s ease;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+  gap: -2px;
 }
 
 .chat-bubble.incoming .chat-ticks {
@@ -881,19 +891,23 @@ html, body {
 }
 
 .chat-ticks.sent {
-  color: rgba(255, 255, 255, 0.7);
-  letter-spacing: 0;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .chat-ticks.delivered {
-  color: rgba(255, 255, 255, 0.85);
-  letter-spacing: -2px;
+  color: rgba(255, 255, 255, 0.88);
 }
 
 .chat-ticks.seen {
-  color: #FDE047 !important; /* Elegant Warm Gold double checkmarks */
-  letter-spacing: -2px;
-  text-shadow: 0 0 3px rgba(253, 224, 71, 0.6) !important;
+  color: #5DBBF5 !important; /* WhatsApp-style blue seen ticks */
+  text-shadow: 0 0 4px rgba(93, 187, 245, 0.55) !important;
+  animation: seenTickPop 0.35s ease;
+}
+
+@keyframes seenTickPop {
+  0%   { transform: scale(0.8); opacity: 0.5; }
+  60%  { transform: scale(1.15); }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 .chat-seen-pill {
@@ -908,6 +922,131 @@ html, body {
   border-radius: 8px;
   margin-left: 4px;
   line-height: 1.2;
+}
+
+/* ======================================================
+   TYPING INDICATOR (WhatsApp-style animated dots)
+   ====================================================== */
+.chat-typing-indicator {
+  display: flex;
+  align-items: flex-end;
+  gap: 7px;
+  padding: 4px 0 8px;
+  animation: waMsgAppear 0.2s ease-out;
+}
+
+.chat-typing-bubble {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #FFFFFF !important;
+  border: 1.5px solid #CBD5E1 !important;
+  border-radius: 20px 20px 20px 4px !important;
+  padding: 10px 16px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+  min-width: 60px;
+}
+
+.typing-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #94A3B8;
+  animation: typingBounce 1.2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.typing-dot:nth-child(1) { animation-delay: 0s; }
+.typing-dot:nth-child(2) { animation-delay: 0.18s; }
+.typing-dot:nth-child(3) { animation-delay: 0.36s; }
+
+@keyframes typingBounce {
+  0%, 60%, 100% { transform: translateY(0); background: #94A3B8; }
+  30%            { transform: translateY(-5px); background: #6366F1; }
+}
+
+.chat-typing-name {
+  font-size: 11px;
+  color: #64748B;
+  font-weight: 700;
+  margin-left: 6px;
+  white-space: nowrap;
+}
+
+/* ======================================================
+   PHOTO ATTACH BUTTON IN CHAT INPUT BAR
+   ====================================================== */
+.chat-photo-btn {
+  background: #FFFFFF !important;
+  color: #4F46E5 !important;
+  border: 1px solid #CBD5E1 !important;
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px !important;
+  min-height: 42px !important;
+  border-radius: 50% !important;
+  font-size: 19px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+  transition: transform 0.15s ease, background 0.15s ease !important;
+  touch-action: manipulation !important;
+  flex-shrink: 0 !important;
+}
+
+.chat-photo-btn:active {
+  transform: scale(0.92) !important;
+  background: #EEF2FF !important;
+  border-color: #6366F1 !important;
+}
+
+/* Hidden file input for photo selection */
+#chatPhotoInput {
+  display: none !important;
+}
+
+/* Image message bubble */
+.chat-image-bubble {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 220px;
+}
+
+.chat-image-bubble img {
+  width: 100%;
+  max-width: 220px;
+  max-height: 240px;
+  border-radius: 12px;
+  object-fit: cover;
+  display: block;
+  cursor: pointer;
+}
+
+.chat-image-caption {
+  font-size: 13px;
+  color: inherit;
+  word-break: break-word;
+}
+
+/* Online/status indicator in header - pulsing green */
+.chat-online-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #10B981;
+  border: 2px solid white;
+  animation: onlinePulse 2.5s ease-in-out infinite;
+}
+
+@keyframes onlinePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+  50%       { box-shadow: 0 0 0 4px rgba(16, 185, 129, 0); }
 }
 
 .quick-reply-bar {
@@ -3858,9 +3997,10 @@ body {
   max-width: 100% !important;
 }
 
-/* Ensure no legacy auto-fill badge or chip ever shows anywhere */
+/* Ensure no legacy auto-fill badge, chip, or intrusive quick reply shows in chat */
 .auto-filled-profile-chip,
-.profile-autofill-banner {
+.profile-autofill-banner,
+.quick-reply-bar {
   display: none !important;
   visibility: hidden !important;
   height: 0 !important;

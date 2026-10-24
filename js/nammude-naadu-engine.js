@@ -3085,9 +3085,13 @@
       }
     }
 
+    // Ensure any open home search dropdown is immediately dismissed
+    const homeDrop = document.getElementById('homeSearchResultsDropdown');
+    if (homeDrop) homeDrop.style.display = 'none';
+
     const banner = document.getElementById('chatInquiryBanner');
     const topic = document.getElementById('chatInquiryTopic');
-    if (initialContext) {
+    if (initialContext && !initialContext.startsWith('ഹലോ') && initialContext.trim().length > 3) {
       if (topic) topic.textContent = initialContext;
       if (banner) banner.style.display = 'flex';
     } else {
@@ -3102,27 +3106,11 @@
     // Close stickers drawer on chat open
     if (typeof toggleChatStickers === 'function') toggleChatStickers(false);
 
-    // Dynamic Context Quick Reply Chips
+    // Disable and hide quick reply bar to prevent any auto-fill intrusion
     const quickBar = document.querySelector('.quick-reply-bar');
     if (quickBar) {
-      const isBiz = (chatType === 'business' || (initialContext && (initialContext.includes('🏪') || initialContext.includes('കട') || initialContext.includes('Shop'))));
-      if (isBiz) {
-        quickBar.innerHTML = `
-          <button class="quick-chip" onclick="sendQuickReply('സ്റ്റോക്ക് ഉണ്ടോ?')">സ്റ്റോക്ക് ഉണ്ടോ?</button>
-          <button class="quick-chip" onclick="sendQuickReply('ഹോം ഡെലിവറി ഉണ്ടോ?')">ഹോം ഡെലിവറി ഉണ്ടോ?</button>
-          <button class="quick-chip" onclick="sendQuickReply('ഇപ്പോൾ തുറന്നിട്ടുണ്ടോ?')">ഇപ്പോൾ തുറന്നിട്ടുണ്ടോ?</button>
-          <button class="quick-chip" onclick="sendQuickReply('വില എത്രയാണ്?')">വില എത്രയാണ്?</button>
-          <button class="quick-chip" onclick="sendQuickReply('സ്ഥലം എവിടെയാണ്?')">സ്ഥലം എവിടെയാണ്?</button>
-        `;
-      } else {
-        quickBar.innerHTML = `
-          <button class="quick-chip" onclick="sendQuickReply('ലഭ്യമാണോ?')">ലഭ്യമാണോ?</button>
-          <button class="quick-chip" onclick="sendQuickReply('സ്ഥലം എവിടെയാണ്?')">സ്ഥലം എവിടെയാണ്?</button>
-          <button class="quick-chip" onclick="sendQuickReply('റേറ്റ് എത്രയാണ്?')">റേറ്റ് എത്രയാണ്?</button>
-          <button class="quick-chip" onclick="sendQuickReply('നാളെ വരാമോ?')">നാളെ വരാമോ?</button>
-          <button class="quick-chip" onclick="sendQuickReply('ഫോൺ നമ്പർ തരാമോ?')">ഫോൺ നമ്പർ തരാമോ?</button>
-        `;
-      }
+      quickBar.style.display = 'none';
+      quickBar.innerHTML = '';
     }
 
     // High Speed Render: If local messages exist, display immediately (0ms latency).
@@ -3237,6 +3225,41 @@
     setTimeout(() => {
       if (box) box.scrollTop = box.scrollHeight;
     }, 150);
+
+    // Subscribe to typing & seen broadcasts for THIS thread (peer-to-peer)
+    if (typeof window._activeChatTypingChannel === 'object' && window._activeChatTypingChannel && typeof window._activeChatTypingChannel.unsubscribe === 'function') {
+      try { window._activeChatTypingChannel.unsubscribe(); } catch (_) {}
+    }
+    window._activeChatTypingChannel = null;
+
+    if (window.NN_SUPABASE_SERVICES && window.NN_SUPABASE_SERVICES.client) {
+      try {
+        const tchan = window.NN_SUPABASE_SERVICES.client.channel('th_' + chatKey, { config: { broadcast: { self: false } } });
+        tchan.on('broadcast', { event: 'chat_typing' }, ({ payload }) => {
+          if (!payload || !APP_STATE.activeChatRecipient || payload.chatKey !== APP_STATE.activeChatRecipient.key) return;
+          showChatTypingIndicator(payload.isTyping, payload.senderName, payload.senderAvatar);
+        });
+        tchan.on('broadcast', { event: 'chat_seen' }, ({ payload }) => {
+          if (!payload || !APP_STATE.activeChatRecipient || payload.chatKey !== APP_STATE.activeChatRecipient.key) return;
+          // Mark all OUR messages in this thread as seen
+          const thread = APP_STATE.chats[chatKey] || [];
+          let changed = false;
+          thread.forEach(m => {
+            if (m.sender === 'me' && !m.seen) {
+              m.seen = true;
+              m.status = 'seen';
+              changed = true;
+            }
+          });
+          if (changed) {
+            saveChats();
+            renderChatMessages();
+          }
+        });
+        tchan.subscribe();
+        window._activeChatTypingChannel = tchan;
+      } catch (_) {}
+    }
   }
 
   function markChatAsSeen(chatKey) {
@@ -3265,6 +3288,173 @@
   }
   window.markChatAsSeen = markChatAsSeen;
   window.openChatModal = openChatModal;
+
+  // ====================================================================
+  // TYPING INDICATOR – show/hide animated dots in chat thread
+  // ====================================================================
+  let _typingHideTimer = null;
+
+  function showChatTypingIndicator(isTyping, senderName, senderAvatar) {
+    const ind = document.getElementById('chatTypingIndicator');
+    if (!ind) return;
+
+    if (_typingHideTimer) { clearTimeout(_typingHideTimer); _typingHideTimer = null; }
+
+    if (isTyping) {
+      const nameEl = document.getElementById('chatTypingName');
+      const avatarEl = document.getElementById('chatTypingAvatar');
+      if (nameEl) nameEl.textContent = (senderName || 'സുഹൃത്ത്') + ' ടൈപ്പ് ചെയ്യുന്നു...';
+      if (avatarEl) avatarEl.src = senderAvatar || '';
+      ind.style.display = 'flex';
+      // Update header status
+      const statusEl = document.getElementById('chatRecipientStatus');
+      if (statusEl) statusEl.textContent = '✏️ ടൈപ്പ് ചെയ്യുന്നു...';
+      // Auto-hide after 4s of no updates
+      _typingHideTimer = setTimeout(() => hideChatTypingIndicator(), 4000);
+      // Scroll to show the indicator
+      const box = document.getElementById('chatMessagesBox');
+      if (box) box.scrollTop = box.scrollHeight + 60;
+    } else {
+      hideChatTypingIndicator();
+    }
+  }
+
+  function hideChatTypingIndicator() {
+    const ind = document.getElementById('chatTypingIndicator');
+    if (ind) ind.style.display = 'none';
+    const statusEl = document.getElementById('chatRecipientStatus');
+    if (statusEl) statusEl.textContent = '● ഓൺലൈൻ • പ്രൊഫൈൽ കാണാൻ തൊടുക';
+  }
+  window.showChatTypingIndicator = showChatTypingIndicator;
+
+  // ====================================================================
+  // TYPING BROADCAST – fires when user types in chat input
+  // ====================================================================
+  let _typingBroadcastTimer = null;
+  let _lastTypingState = false;
+
+  function onChatInputChange() {
+    if (!APP_STATE.activeChatRecipient || !window.NN_SUPABASE_SERVICES) return;
+    const chatKey = APP_STATE.activeChatRecipient.key;
+    const inp = document.getElementById('chatInputMessage');
+    const hasText = inp && inp.value.trim().length > 0;
+
+    // Debounce: broadcast typing=true immediately, then typing=false after 2s idle
+    if (hasText && !_lastTypingState) {
+      _lastTypingState = true;
+      broadcastTypingStatus(chatKey, true);
+    }
+
+    if (_typingBroadcastTimer) clearTimeout(_typingBroadcastTimer);
+    _typingBroadcastTimer = setTimeout(() => {
+      if (_lastTypingState) {
+        _lastTypingState = false;
+        broadcastTypingStatus(chatKey, false);
+      }
+    }, 2000);
+  }
+  window.onChatInputChange = onChatInputChange;
+
+  function broadcastTypingStatus(chatKey, isTyping) {
+    if (!chatKey || !window.NN_SUPABASE_SERVICES || !window.NN_SUPABASE_SERVICES.broadcastChatEvent) return;
+    window.NN_SUPABASE_SERVICES.broadcastChatEvent(chatKey, 'chat_typing', {
+      isTyping: isTyping,
+      senderName: APP_STATE.currentUser?.name || '',
+      senderAvatar: APP_STATE.currentUser?.avatar || '',
+      chatKey: chatKey
+    });
+  }
+
+  // ====================================================================
+  // PHOTO MESSAGE SEND
+  // ====================================================================
+  function sendChatPhoto(inputEl) {
+    if (!inputEl || !inputEl.files || !inputEl.files[0]) return;
+    const file = inputEl.files[0];
+    if (!APP_STATE.activeChatRecipient) return;
+    inputEl.value = ''; // reset so same file can be re-selected
+
+    const chatKey = APP_STATE.activeChatRecipient.key;
+    if (!APP_STATE.chats[chatKey]) APP_STATE.chats[chatKey] = [];
+
+    const senderName = APP_STATE.currentUser?.name || 'ഞാൻ';
+    const senderAvatar = APP_STATE.currentUser?.avatar || DEFAULT_USER_AVATAR;
+    const timeStr = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+    const msgId = 'img_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6);
+
+    // Compress to ≤800px, WebP preferred
+    const compressOptions = { maxDim: 800, quality: 0.78, preferWebP: true };
+
+    if (typeof compressImageFile === 'function') {
+      compressImageFile(file, compressOptions).then(dataUrl => {
+        if (!dataUrl) { toast('⚠️ ഫോട്ടോ ലോഡ് ചെയ്യാൻ കഴിഞ്ഞില്ല.'); return; }
+        _dispatchPhotoMessage(chatKey, msgId, dataUrl, senderName, senderAvatar, timeStr);
+      });
+    } else {
+      // Fallback: read raw
+      const reader = new FileReader();
+      reader.onload = e => {
+        if (e.target.result) _dispatchPhotoMessage(chatKey, msgId, e.target.result, senderName, senderAvatar, timeStr);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  window.sendChatPhoto = sendChatPhoto;
+
+  function _dispatchPhotoMessage(chatKey, msgId, dataUrl, senderName, senderAvatar, timeStr) {
+    const msgObj = {
+      id: msgId,
+      sender: 'me',
+      senderId: APP_STATE.currentUser?.id || '',
+      senderName: senderName,
+      senderPhone: APP_STATE.currentUser?.phone || '',
+      senderAvatar: senderAvatar,
+      type: 'image',
+      text: '[image:' + dataUrl + ']',
+      imageUrl: dataUrl,
+      time: timeStr,
+      timestamp: Date.now(),
+      status: 'sent'
+    };
+
+    // Instant local echo
+    APP_STATE.chats[chatKey].push(msgObj);
+    if (APP_STATE.chatMeta && APP_STATE.chatMeta[chatKey]) {
+      APP_STATE.chatMeta[chatKey].updatedAt = Date.now();
+    }
+    saveChats();
+    updateChatBadgeCounter();
+    renderChatMessages();
+
+    // Broadcast to cloud (realtime + DB)
+    const recPhone = normalizePhone(APP_STATE.activeChatRecipient?.phone);
+    const recId = APP_STATE.activeChatRecipient?.id || '';
+    const metaObj = {
+      recipientId: recId,
+      recipientName: APP_STATE.activeChatRecipient?.name || '',
+      recipientPhone: recPhone || '',
+      senderId: APP_STATE.currentUser?.id || '',
+      senderName: senderName,
+      senderPhone: APP_STATE.currentUser?.phone || '',
+      senderAvatar: senderAvatar
+    };
+
+    if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.sendChatMessage === 'function') {
+      window.NN_SUPABASE_SERVICES.sendChatMessage(chatKey, msgObj, metaObj);
+    }
+
+    // Push notification
+    if (window.NN_ONESIGNAL && typeof window.NN_ONESIGNAL.sendPush === 'function') {
+      try {
+        window.NN_ONESIGNAL.sendPush(
+          APP_STATE.activeChatRecipient?.phone,
+          `📷 ഫോട്ടോ: ${senderName}`,
+          '📷 ഒരു ഫോട്ടോ ഷെയർ ചെയ്തു',
+          { type: 'chat', chatKey, senderName, senderPhone: APP_STATE.currentUser?.phone || '', senderAvatar, senderId: APP_STATE.currentUser?.id || '' }
+        );
+      } catch (_) {}
+    }
+  }
 
   function formatChatDatePill(timestamp) {
     if (!timestamp) return 'ഇന്ന്';
@@ -3300,6 +3490,17 @@
         <div class="chat-sticker-bubble">
           <span class="cs-emoji">${escapeHtml(msg.stickerEmoji || '🔥')}</span>
           <span class="cs-text">${escapeHtml(msg.stickerText || msg.text)}</span>
+        </div>
+      `;
+    } else if (msg.type === 'image' || (typeof msg.text === 'string' && msg.text.startsWith('[image:'))) {
+      // Photo message bubble
+      let imgSrc = msg.imageUrl || '';
+      if (!imgSrc && typeof msg.text === 'string' && msg.text.startsWith('[image:')) {
+        imgSrc = msg.text.replace(/^\[image:/, '').replace(/\]$/, '');
+      }
+      innerContentHtml = `
+        <div class="chat-image-bubble">
+          <img src="${escapeHtml(imgSrc)}" alt="📷 ഫോട്ടോ" loading="lazy" onclick="event.stopPropagation(); window.open('${escapeHtml(imgSrc)}','_blank')" title="പൂർണ്ണ ഫോട്ടോ കാണാൻ ക്ലിക്ക് ചെയ്യൂ">
         </div>
       `;
     } else if (isVoice) {
@@ -3340,16 +3541,16 @@
         <div class="chat-bubble ${isMe ? 'outgoing' : 'incoming'} ${msg.type ? ('type-' + msg.type) : ''}"
           onclick="promptDeleteChatMessage('${escapeHtml(msg.id)}')"
           oncontextmenu="event.preventDefault(); promptDeleteChatMessage('${escapeHtml(msg.id)}'); return false;"
-          style="cursor:pointer" title="ഡിലീറ്റ് ചെയ്യാൻ തൊടുക">
+          style="cursor:pointer" title="ഡിലീറ്റ് ചെയ്യാൻ പിടിക്കൂ">
           ${innerContentHtml}
           <div class="chat-bubble-meta">
             <span class="chat-time-text">${escapeHtml(msg.time || '')}</span>
             ${isMe ? (
               (msg.status === 'seen' || msg.seen === true)
-                ? '<span class="chat-ticks seen" title="കണ്ടു (Seen)">✓✓</span><span class="chat-seen-pill">കണ്ടു</span>'
+                ? '<span class="chat-ticks seen" title="\u0d15\u0d23\u0d4d\u0d1f\u0d41 (Seen)">\u2714\u2714</span>'
                 : ((msg.status === 'sent')
-                    ? '<span class="chat-ticks sent" title="അയച്ചു (Sent)">✓</span>'
-                    : '<span class="chat-ticks delivered" title="എത്തിച്ചേർന്നു (Delivered)">✓✓</span>')
+                    ? '<span class="chat-ticks sent" title="\u0d05\u0d2f\u0d1a\u0d4d\u0d1a\u0d41 (Sent)">\u2714</span>'
+                    : '<span class="chat-ticks delivered" title="\u0d0e\u0d24\u0d4d\u0d24\u0d3f\u0d1a\u0d47\u0d7c\u0d28\u0d4d\u0d28\u0d41 (Delivered)">\u2714\u2714</span>')
             ) : ''}
           </div>
         </div>
