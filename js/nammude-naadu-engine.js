@@ -7328,7 +7328,7 @@
       activeAmbPoliceDistrict = district;
     } else {
       const select = document.getElementById('ambPoliceDistrictFilter');
-      if (select) activeAmbPoliceDistrict = select.value || 'all';
+      if (select && select.value) activeAmbPoliceDistrict = select.value;
     }
 
     const searchInput = document.getElementById('ambPoliceSearchInput');
@@ -7359,7 +7359,16 @@
       }
     });
 
-    // Filter by district
+    // User's location details for jurisdiction detection
+    const userDistrict = (APP_STATE.currentUser?.district || APP_STATE.location?.district || (typeof getNearestKeralaPreset === 'function' ? getNearestKeralaPreset(APP_STATE.location?.lat, APP_STATE.location?.lon)?.district : '') || '').trim();
+    const userPlace = (APP_STATE.currentUser?.location || APP_STATE.location?.name || '').trim();
+    const cleanTokens = userPlace
+      .replace(/[(),]/g, ' ')
+      .split(/\s+/)
+      .map(t => t.trim().toLowerCase())
+      .filter(t => t.length >= 3 && !['കേരളം', 'kerala', 'തത്സമയം', 'തത്സമയ', 'ലൊക്കേഷൻ', 'district', 'കേരള'].includes(t));
+
+    // Filter by district if selected
     let filtered = allPolice;
     if (activeAmbPoliceDistrict && activeAmbPoliceDistrict !== 'all') {
       filtered = filtered.filter(item => {
@@ -7369,7 +7378,7 @@
       });
     }
 
-    // Filter by search query
+    // Filter by search query if user typed
     if (q) {
       filtered = filtered.filter(item => {
         const name = (item.name || item.title || '').toLowerCase();
@@ -7380,6 +7389,30 @@
         return name.includes(q) || loc.includes(q) || dist.includes(q) || phone.includes(q) || desc.includes(q);
       });
     }
+
+    // Score stations to find user's exact jurisdiction station
+    function getStationJurisdictionScore(st) {
+      let score = 0;
+      const stName = (st.name || st.title || '').toLowerCase();
+      const stLoc = (st.location || '').toLowerCase();
+      const stDesc = (st.description || '').toLowerCase();
+      const stDist = (st.district || '').toLowerCase();
+
+      cleanTokens.forEach(tok => {
+        if (stName.includes(tok)) score += 100;
+        else if (stLoc.includes(tok)) score += 60;
+        else if (stDesc.includes(tok)) score += 35;
+      });
+
+      if (userDistrict && (stDist.includes(userDistrict.toLowerCase()) || userDistrict.toLowerCase().includes(stDist))) {
+        score += 10;
+      }
+
+      return score;
+    }
+
+    // Sort: stations with highest jurisdiction score come first
+    filtered.sort((a, b) => getStationJurisdictionScore(b) - getStationJurisdictionScore(a));
 
     const badge = document.getElementById('ambPoliceCountBadge');
     if (badge) badge.textContent = `${filtered.length} സ്റ്റേഷനുകൾ`;
@@ -7394,9 +7427,66 @@
       return;
     }
 
-    const displayList = filtered.slice(0, 100);
+    // Check if the top station is a high-confidence match for user's locality
+    const topStation = filtered[0];
+    const topScore = getStationJurisdictionScore(topStation);
+    const hasJurisdictionMatch = !q && topScore >= 45;
 
-    container.innerHTML = displayList.map(item => {
+    let html = '';
+
+    if (hasJurisdictionMatch) {
+      const cleanPhone = (topStation.phone || '').replace(/\D/g, '');
+      const displayName = topStation.name || topStation.title || 'പോലീസ് സ്റ്റേഷൻ';
+      const userLocLabel = userPlace && userPlace !== 'തത്സമയ ലൊക്കേഷൻ' ? userPlace : (topStation.location || topStation.district);
+
+      html += `
+        <!-- USER LOCAL JURISDICTION STATION SPOTLIGHT -->
+        <div style="background:linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);border:2px solid #2563EB;border-radius:16px;padding:14px;box-shadow:0 4px 14px rgba(37,99,235,0.15);display:flex;flex-direction:column;gap:10px;margin-bottom:6px">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:11px;font-weight:900;color:#1E3A8A;background:#BFDBFE;padding:3px 10px;border-radius:20px;display:flex;align-items:center;gap:4px">
+              📍 നിങ്ങളുടെ പരിധിയിലുള്ള സ്റ്റേഷൻ (${escapeHtml(userLocLabel)})
+            </span>
+            <span style="font-size:10px;font-weight:800;color:#166534;background:#DCFCE7;border:1px solid #86EFAC;padding:2px 8px;border-radius:10px">
+              🟢 24x7 അടിയന്തരം
+            </span>
+          </div>
+
+          <div style="display:flex;align-items:flex-start;gap:12px">
+            <div style="width:46px;height:46px;border-radius:14px;background:#1E3A8A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;box-shadow:0 3px 8px rgba(30,58,138,0.3)">
+              👮
+            </div>
+            <div style="min-width:0;flex:1">
+              <div style="font-size:15px;font-weight:900;color:#0F172A;line-height:1.25">${escapeHtml(displayName)}</div>
+              <div style="font-size:11.5px;color:#475569;margin-top:3px">
+                ${topStation.location ? `📍 ${escapeHtml(topStation.location)}` : ''} 
+                ${topStation.district ? `&bull; 🏛️ ${escapeHtml(topStation.district)}` : ''}
+              </div>
+              <div style="font-size:14px;font-weight:900;color:#1D4ED8;margin-top:4px;letter-spacing:0.5px">
+                ☎️ ${escapeHtml(topStation.phone)}
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:8px;margin-top:2px">
+            <a href="tel:${cleanPhone}" style="flex:2;background:linear-gradient(135deg, #1E3A8A 0%, #1D4ED8 100%);color:#fff;text-decoration:none;padding:10px 14px;border-radius:12px;font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 3px 10px rgba(30,58,138,0.3)">
+              <span>📞 നേരിട്ട് വിളിക്കാം</span>
+            </a>
+            <button type="button" onclick="navigator.clipboard?.writeText('${escapeHtml(topStation.phone)}'); if(typeof toast==='function')toast('📋 നമ്പർ കോപ്പി ചെയ്തു: ${escapeHtml(topStation.phone)}')" style="flex:1;background:#FFFFFF;color:#1E3A8A;border:1.5px solid #BFDBFE;padding:10px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px">
+              📋 കോപ്പി
+            </button>
+          </div>
+        </div>
+
+        <div style="font-size:12px;font-weight:800;color:#475569;margin:8px 0 2px;display:flex;align-items:center;justify-content:space-between">
+          <span>ജില്ലയിലെ മറ്റു പോലീസ് സ്റ്റേഷനുകൾ</span>
+          <span style="font-size:10.5px;color:#64748B">${filtered.length - 1} എണ്ണം</span>
+        </div>
+      `;
+    }
+
+    const restStations = hasJurisdictionMatch ? filtered.slice(1, 100) : filtered.slice(0, 100);
+
+    html += restStations.map(item => {
       const cleanPhone = (item.phone || '').replace(/\D/g, '');
       const displayName = item.name || item.title || 'പോലീസ് സ്റ്റേഷൻ';
       return `
@@ -7427,12 +7517,14 @@
     }).join('');
 
     if (filtered.length > 100) {
-      container.innerHTML += `
+      html += `
         <div style="text-align:center;padding:10px;color:#64748B;font-size:12px;font-weight:600">
           ആകെ ${filtered.length} സ്റ്റേഷനുകൾ. ജില്ല അല്ലെങ്കിൽ പേര് സെർച്ച് ചെയ്യാം.
         </div>
       `;
     }
+
+    container.innerHTML = html;
   }
   window.renderAmbPoliceList = renderAmbPoliceList;
 
