@@ -6994,8 +6994,90 @@
     renderAmbulanceDrivers(query);
   }
   window.filterAmbulances = filterAmbulances;
+
+  function switchAmbHealthTab(tab) {
+    const isAmb = tab === 'ambulance';
+    const tabAmb = document.getElementById('ambSubTabAmbulance');
+    const tabHosp = document.getElementById('ambSubTabHospital');
+    const contentAmb = document.getElementById('ambTabContentAmbulance');
+    const contentHosp = document.getElementById('ambTabContentHospital');
+
+    if (tabAmb) {
+      tabAmb.style.background = isAmb ? '#BE123C' : 'transparent';
+      tabAmb.style.color = isAmb ? '#fff' : '#475569';
+      tabAmb.style.fontWeight = isAmb ? '800' : '700';
+    }
+    if (tabHosp) {
+      tabHosp.style.background = !isAmb ? '#BE123C' : 'transparent';
+      tabHosp.style.color = !isAmb ? '#fff' : '#475569';
+      tabHosp.style.fontWeight = !isAmb ? '800' : '700';
+    }
+    if (contentAmb) contentAmb.style.display = isAmb ? 'flex' : 'none';
+    if (contentHosp) {
+      contentHosp.style.display = !isAmb ? 'flex' : 'none';
+      if (!isAmb) {
+        renderAmbHospitalsList();
+      }
+    }
+  }
+  window.switchAmbHealthTab = switchAmbHealthTab;
+
+  function renderAmbHospitalsList(query = '') {
+    const container = document.getElementById('ambHospitalsListContainer');
+    if (!container) return;
+
+    const q = String(query || '').trim().toLowerCase();
+    const contacts = (APP_STATE.emergencyContacts || []).filter(c => {
+      const isHealth = (c.category === 'ആരോഗ്യം' || c.category === 'healthcare' || (c.name && c.name.toLowerCase().includes('hospital')) || (c.name && c.name.includes('ആശുപത്രി')));
+      if (!isHealth) return false;
+      if (!q) return true;
+      return (c.name && c.name.toLowerCase().includes(q)) ||
+             (c.location && c.location.toLowerCase().includes(q)) ||
+             (c.phone && c.phone.includes(q));
+    });
+
+    const badge = document.getElementById('ambHospitalsCountBadge');
+    if (badge) badge.textContent = `${contacts.length} എണ്ണം`;
+
+    if (contacts.length === 0) {
+      container.innerHTML = `
+        <div style="text-align:center;padding:24px;background:#F8FAFC;border-radius:12px;color:#64748B;font-size:13px">
+          ആശുപത്രികൾ കണ്ടെത്തിയില്ല
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = contacts.map(c => {
+      const cleanPhone = (c.phone || '').replace(/\D/g, '');
+      return `
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+          <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1">
+            <span style="font-size:24px;flex-shrink:0">🏥</span>
+            <div style="min-width:0;flex:1">
+              <div style="font-weight:800;font-size:13.5px;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(c.name)}</div>
+              <div style="font-size:11px;color:#64748B;margin-top:2px">
+                ${c.location ? `📍 ${escapeHtml(c.location)} &bull; ` : ''}🟢 24x7 അടിയന്തര സേവനം
+              </div>
+            </div>
+          </div>
+          <a href="tel:${cleanPhone}" style="flex-shrink:0;background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#fff;text-decoration:none;padding:7px 12px;border-radius:10px;font-size:12px;font-weight:800;display:flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(5,150,105,0.25)">
+            <span>📞 വിളിക്കാം</span>
+          </a>
+        </div>
+      `;
+    }).join('');
+  }
+  window.renderAmbHospitalsList = renderAmbHospitalsList;
+
+  function filterAmbHospitals(val) {
+    renderAmbHospitalsList(val);
+  }
+  window.filterAmbHospitals = filterAmbHospitals;
+
   function openAmbulanceModal() {
     renderAmbulanceDrivers();
+    switchAmbHealthTab('ambulance');
     openModal('modal-ambulance');
   }
   window.openAmbulanceModal = openAmbulanceModal;
