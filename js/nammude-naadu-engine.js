@@ -9687,10 +9687,36 @@
       const location = (rawLoc && rawLoc !== 'തത്സമയ ലൊക്കേഷൻ') ? rawLoc.trim() : currentLoc;
       const blood = (u.bloodGroup || localStorage.getItem('nn_user_blood') || '').trim();
 
+      // 0. Setup dynamic datalists for native keyboard auto-suggestions
+      let dlPhones = document.getElementById('dl-user-phones');
+      if (!dlPhones) {
+        dlPhones = document.createElement('datalist');
+        dlPhones.id = 'dl-user-phones';
+        document.body.appendChild(dlPhones);
+      }
+      if (phone) dlPhones.innerHTML = `<option value="${phone}">നിങ്ങളുടെ നമ്പർ (${phone})</option>`;
+
+      let dlNames = document.getElementById('dl-user-names');
+      if (!dlNames) {
+        dlNames = document.createElement('datalist');
+        dlNames.id = 'dl-user-names';
+        document.body.appendChild(dlNames);
+      }
+      if (name) dlNames.innerHTML = `<option value="${name}">നിങ്ങളുടെ പേര് (${name})</option>`;
+
+      let dlPlaces = document.getElementById('dl-user-places');
+      if (!dlPlaces) {
+        dlPlaces = document.createElement('datalist');
+        dlPlaces.id = 'dl-user-places';
+        document.body.appendChild(dlPlaces);
+      }
+      if (location) dlPlaces.innerHTML = `<option value="${location}">നിങ്ങളുടെ പ്രദേശം (${location})</option>`;
+
       // 1. Phone Inputs (All types: tel, id/name containing phone/mobile/contact)
       if (phone) {
         const phoneInputs = root.querySelectorAll('input[type="tel"], input[id*="phone" i], input[name*="phone" i], input[id*="mobile" i], input[name*="mobile" i], input[id*="contact" i]');
         phoneInputs.forEach(input => {
+          input.setAttribute('list', 'dl-user-phones');
           if (!input.value || input.value.trim() === '') {
             input.value = phone;
             input.dispatchEvent(new Event('input', { bubbles: true }));
@@ -9704,6 +9730,7 @@
       if (name) {
         const nameInputs = root.querySelectorAll('#authorName, #quickReqName, #bReqPatient, #postAuthorName, #nearbyHelpUserName, #rentOwner, #jobEmployer, #servName');
         nameInputs.forEach(input => {
+          input.setAttribute('list', 'dl-user-names');
           if (!input.value || input.value.trim() === '') {
             input.value = name;
             input.dispatchEvent(new Event('input', { bubbles: true }));
@@ -9716,6 +9743,7 @@
       if (location) {
         const locInputs = root.querySelectorAll('input[id*="location" i], input[name*="location" i], input[id*="place" i], input[name*="place" i], #quickReqLocation, #nearbyHelpLocationInput');
         locInputs.forEach(input => {
+          input.setAttribute('list', 'dl-user-places');
           if (!input.value || input.value.trim() === '') {
             input.value = location;
             input.dispatchEvent(new Event('input', { bubbles: true }));
@@ -9738,6 +9766,27 @@
             }
           }
         });
+      }
+
+      // 5. Visual Auto-fill indicator badge if container is a modal
+      if (container && container.classList && container.classList.contains('modal-overlay')) {
+        const modalBody = container.querySelector('.modal-content, .modal-card, .form-card') || container;
+        if (modalBody && !container.querySelector('.auto-filled-profile-chip') && (phone || name)) {
+          const chip = document.createElement('div');
+          chip.className = 'auto-filled-profile-chip';
+          chip.style.cssText = 'background:linear-gradient(135deg, #ECFDF5 0%, #E0F2FE 100%);border:1px solid #A7F3D0;color:#047857;padding:6px 12px;border-radius:10px;font-size:11.5px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(16,185,129,0.1)';
+          chip.innerHTML = `
+            <div style="display:flex;align-items:center;gap:6px">
+              <span>✨</span>
+              <span>നിങ്ങളുടെ പ്രൊഫൈൽ ഓട്ടോ-ഫിൽ ചെയ്തു: <b>${escapeHtml(name || phone)}</b></span>
+            </div>
+            <span style="font-size:10px;background:#10B981;color:#fff;padding:2px 6px;border-radius:6px">Auto-Filled</span>
+          `;
+          const firstForm = modalBody.querySelector('form, .modal-body, .form-group') || modalBody.firstChild;
+          if (firstForm && firstForm.parentNode) {
+            firstForm.parentNode.insertBefore(chip, firstForm);
+          }
+        }
       }
     } catch (_) {}
   }
