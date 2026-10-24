@@ -734,6 +734,45 @@
       const storedServiceReqs = localStorage.getItem('nn_service_requests');
       APP_STATE.serviceRequests = storedServiceReqs ? JSON.parse(storedServiceReqs) : [];
 
+      const storedHelpReqs = localStorage.getItem('nn_nearby_help_requests');
+      try {
+        APP_STATE.nearbyHelpRequests = storedHelpReqs ? JSON.parse(storedHelpReqs) : [];
+      } catch (_) {
+        APP_STATE.nearbyHelpRequests = [];
+      }
+      if (!Array.isArray(APP_STATE.nearbyHelpRequests) || APP_STATE.nearbyHelpRequests.length === 0) {
+        APP_STATE.nearbyHelpRequests = [
+          {
+            id: 'help_seed_1',
+            userId: 'usr_volunteer_seed_1',
+            userName: 'അൻവർ സാദത്ത്',
+            userAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+            category: 'vehicle',
+            radius: 3,
+            description: 'ബൈക്ക് പഞ്ചറായി വഴിയിൽ നിൽക്കുകയാണ്, പമ്പ് വരെ എത്തിക്കാൻ ഒരു ലിഫ്റ്റ് വേണം.',
+            location: 'ടൗൺ ജംഗ്ഷൻ',
+            phone: '9847123987',
+            urgency: 'urgent',
+            created_at: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
+            isUserCreated: false
+          },
+          {
+            id: 'help_seed_2',
+            userId: 'usr_volunteer_seed_2',
+            userName: 'പ്രസന്നകുമാരി ടീച്ചർ',
+            userAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80',
+            category: 'medicine',
+            radius: 5,
+            description: 'പ്രായമായ അമ്മയ്ക്ക് ബിപിയുടെ മരുന്ന് മെഡിക്കൽ ഷോപ്പിൽ നിന്ന് എത്തിക്കാൻ സഹായം വേണം.',
+            location: 'മെയിൻ റോഡ്',
+            phone: '9447654321',
+            urgency: 'urgent',
+            created_at: new Date(Date.now() - 45 * 60 * 1000).toISOString(),
+            isUserCreated: false
+          }
+        ];
+      }
+
       // Enrich services with visiting fees, live availability, work hours & reviews
       (APP_STATE.services || []).forEach(srv => {
         if (!srv.visitingFee) {
@@ -1480,6 +1519,24 @@
         c.style.color = '#064E3B';
         c.style.borderColor = '#BBF7D0';
       }
+    });
+
+    // Synchronize compact Home screen km pills
+    document.querySelectorAll('.home-km-pill').forEach(btn => {
+      const pillKm = parseFloat(btn.textContent) || 0;
+      const isActive = (pillKm === r);
+      btn.classList.toggle('active', isActive);
+      btn.style.background = isActive ? '#059669' : '#fff';
+      btn.style.color = isActive ? '#fff' : '#065F46';
+      btn.style.borderColor = isActive ? '#059669' : '#6EE7B7';
+    });
+
+    // Synchronize Nearby Screen radius chips
+    document.querySelectorAll('.radius-chip').forEach(btn => {
+      const chipKm = parseFloat(btn.textContent) || 0;
+      const isAll = btn.textContent.includes('എല്ലാം');
+      const isActive = (isAll && r >= 1000) || (!isAll && chipKm === r);
+      btn.classList.toggle('active', isActive);
     });
 
     // Re-render all views with strict radius filter
@@ -7408,6 +7465,53 @@
     const seenPhones = new Set();
     if (myPhone) seenPhones.add(myPhone);
 
+    // 0. LIVE NEARBY HELP REQUESTS (1 to 10 km Community Help)
+    const allHelpReqs = (APP_STATE.nearbyHelpRequests || []).concat(APP_STATE.serviceRequests || []);
+    const seenReqIds = new Set();
+    allHelpReqs.forEach(req => {
+      if (!req || !req.id || seenReqIds.has(req.id)) return;
+      seenReqIds.add(req.id);
+      const isMine = isCurrentUserEntity(req.userId || req.id, req.phone, req.userName || req.name, false);
+      const dist = getItemDistanceKm(req, APP_STATE.location.lat, APP_STATE.location.lon);
+      req._calculatedDist = dist;
+
+      const catIcons = {
+        emergency: '🚨',
+        vehicle: '🛞',
+        medicine: '💊',
+        repair: '🛠️',
+        home: '📦',
+        other: '🤝'
+      };
+      const catIcon = catIcons[req.category] || '🆘';
+      const catTitles = {
+        emergency: 'അടിയന്തിരം',
+        vehicle: 'വാഹനം / ലിഫ്റ്റ്',
+        medicine: 'മരുന്ന് / ആരോഗ്യം',
+        repair: 'റിപ്പയർ / പണി',
+        home: 'വീട്ടുസഹായം',
+        other: 'സഹായം'
+      };
+      const catTitle = catTitles[req.category] || req.trade || 'സഹായം വേണം';
+
+      rawItems.push({
+        type: 'help',
+        id: req.id,
+        name: isMine ? 'നിങ്ങളുടെ സഹായ അഭ്യർത്ഥന' : (req.userName || req.name || 'സഹായം ആവശ്യമുള്ളയാൾ'),
+        subtitle: req.description || req.note || 'സഹായം ആവശ്യമുണ്ട്',
+        icon: catIcon,
+        avatar: isMine ? ((APP_STATE.currentUser && APP_STATE.currentUser.avatar) || window.DEFAULT_USER_AVATAR) : getRegisteredUserAvatar(req.phone || req.id, window.DEFAULT_USER_AVATAR),
+        phone: req.phone || '',
+        location: req.location || resolveItemLocation(req),
+        badge: isMine ? 'നിങ്ങളുടേത്' : (req.urgency === 'urgent' ? '🚨 അടിയന്തിരം' : '🆘 സഹായം'),
+        dist: dist,
+        isMine: isMine,
+        category: req.category || 'emergency',
+        catTitle: catTitle,
+        urgency: req.urgency || 'urgent'
+      });
+    });
+
     // 1. SERVICES & WORKERS (Exclude own service)
     (APP_STATE.services || []).forEach(s => {
       if (isCurrentUserEntity(s.userId || s.id, s.phone, s.name, s.isCurrentUser)) return;
@@ -7525,6 +7629,7 @@
     // Step A: Apply Category Filtering
     let filtered = rawItems.filter(item => {
       if (catFilter === 'all') return true;
+      if (catFilter === 'help') return item.type === 'help';
       return item.type === catFilter;
     });
 
@@ -7536,10 +7641,14 @@
       });
     }
 
-    // Step C: Sort strictly by Distance Ascending (Nearest people first)
+    // Step C: Sort strictly by Distance Ascending (Nearest people first, help items prioritized)
     filtered.sort((a, b) => {
       const distA = typeof a.dist === 'number' ? a.dist : (parseFloat(a.dist) || 0);
       const distB = typeof b.dist === 'number' ? b.dist : (parseFloat(b.dist) || 0);
+      if (Math.abs(distA - distB) < 0.4) {
+        if (a.type === 'help' && b.type !== 'help') return -1;
+        if (b.type === 'help' && a.type !== 'help') return 1;
+      }
       return distA - distB;
     });
 
@@ -7564,8 +7673,9 @@
           <h3 style="margin:0 0 6px;font-size:16px;font-weight:800;color:#0F172A">ഈ പ്രദേശത്ത് ആരെയും കണ്ടെത്തിയില്ല</h3>
           <p style="color:#64748B;margin:0 0 16px;font-size:12.5px"><b>${escapeHtml(userTown)}</b> പരിസരത്ത്${radiusLabel} ആരെയും കണ്ടെത്തിയില്ല.</p>
           <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-            <button onclick="setGlobalRadius(25, null)" style="background:#ECFDF5;color:#0E7043;border:1px solid #A7F3D0;padding:9px 14px;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">25 km പരിധി</button>
-            <button onclick="setGlobalRadius(1000, null)" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;padding:9px 14px;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">മുഴുവൻ കാണുക</button>
+            <button onclick="setGlobalRadius(5, null)" style="background:#ECFDF5;color:#0E7043;border:1px solid #A7F3D0;padding:9px 14px;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">5 km പരിധി</button>
+            <button onclick="setGlobalRadius(10, null)" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;padding:9px 14px;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">10 km പരിധി</button>
+            <button onclick="setGlobalRadius(1000, null)" style="background:#F8FAFC;color:#334155;border:1px solid #CBD5E1;padding:9px 14px;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">മുഴുവൻ കാണുക</button>
             <button onclick="setNearbyCategory('all', document.querySelector('.nearby-cat-chip:first-child'))" style="background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;padding:9px 14px;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">എല്ലാ വിഭാഗങ്ങളും</button>
           </div>
         </div>
@@ -7578,6 +7688,51 @@
     const displayItems = inRadiusItems.slice(0, 40);
 
     container.innerHTML = displayItems.map((item, idx) => {
+      // SPECIAL RENDERING FOR NEARBY HELP REQUESTS
+      if (item.type === 'help') {
+        const isMine = item.isMine;
+        return `
+          <div class="nearby-help-card" style="background:#ffffff;border-radius:16px;padding:14px;border:1.5px solid ${isMine ? '#10B981' : '#FECACA'};box-shadow:0 2px 8px rgba(220,38,38,0.06);margin-bottom:2px">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+              <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1">
+                <div style="width:42px;height:42px;border-radius:12px;background:#FEE2E2;border:1.5px solid #FCA5A5;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">
+                  ${item.icon || '🆘'}
+                </div>
+                <div style="min-width:0;flex:1">
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <span style="font-size:14px;font-weight:800;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(item.name)}</span>
+                    <span style="font-size:10px;font-weight:800;background:#FEF2F2;color:#DC2626;padding:2px 7px;border-radius:8px;border:1px solid #FECACA;flex-shrink:0">${escapeHtml(item.badge)}</span>
+                  </div>
+                  <div style="font-size:11.5px;font-weight:700;color:#64748B;margin-top:2px">
+                    📍 ${escapeHtml(item.location || 'സമീപത്ത്')} &bull; <strong style="color:#059669">${item.dist < 1 ? (Math.round(item.dist * 1000) + ' മീറ്റർ അകലെ') : (item.dist + ' km അകലെ')}</strong>
+                  </div>
+                </div>
+              </div>
+              <span style="font-size:10.5px;font-weight:800;color:#B91C1C;background:#FEE2E2;padding:3px 8px;border-radius:12px;flex-shrink:0">
+                ${escapeHtml(item.catTitle)}
+              </span>
+            </div>
+
+            <div style="margin:10px 0 12px;padding:9px 11px;background:#FFF5F5;border-left:3px solid #DC2626;border-radius:8px;font-size:13px;font-weight:700;color:#1F2937;line-height:1.4">
+              "${escapeHtml(item.subtitle)}"
+            </div>
+
+            <div style="display:flex;gap:8px;align-items:center" onclick="event.stopPropagation()">
+              ${item.phone ? `
+                <a href="tel:${escapeHtml(item.phone)}" style="flex:1;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:5px;background:#059669;color:#fff;padding:8px 10px;border-radius:10px;font-size:12px;font-weight:800;box-shadow:0 2px 4px rgba(5,150,105,0.2)">
+                  <span>📞</span>
+                  <span>വിളിക്കാം</span>
+                </a>
+              ` : ''}
+              <button type="button" onclick="openNearbyPersonChat(${idx})" style="flex:1.2;display:flex;align-items:center;justify-content:center;gap:5px;background:linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);color:#fff;border:none;padding:8px 10px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 2px 4px rgba(220,38,38,0.2)">
+                <span>💬</span>
+                <span>സഹായിക്കാം (ചാറ്റ്)</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
       const isOnline = true;
       const typeBadgeColor = item.type === 'service' ? '#059669' : (item.type === 'donor' ? '#DC2626' : (item.type === 'citizen' ? '#2563EB' : '#D97706'));
       const typeBadgeBg = item.type === 'service' ? '#ECFDF5' : (item.type === 'donor' ? '#FEF2F2' : (item.type === 'citizen' ? '#EFF6FF' : '#FFFBEB'));
@@ -7632,7 +7787,9 @@
     const safePhone = item.phone || '';
     const safeAvatar = (item.avatar && item.avatar !== window.DEFAULT_USER_AVATAR) ? item.avatar : '';
     const cleanSubtitle = (item.subtitle || '').replace(/[\r\n\t]+/g, ' ').trim();
-    const context = cleanSubtitle ? `${item.icon || '📍'} ${cleanSubtitle}` : 'സമീപവാസി';
+    const context = (item.type === 'help')
+      ? `🆘 സമീപ സഹായം: ${cleanSubtitle}`
+      : (cleanSubtitle ? `${item.icon || '📍'} ${cleanSubtitle}` : 'സമീപവാസി');
     const recipientId = item.id || ('nearby_' + (safePhone ? safePhone.replace(/\D/g, '') : index));
     const chatType = item.type || 'citizen';
 
@@ -7640,6 +7797,163 @@
     openChatModal(safeName, safePhone, safeAvatar, context, recipientId, null, chatType);
   }
   window.openNearbyPersonChat = openNearbyPersonChat;
+
+  // ==============================================================
+  // NEARBY HELP (സമീപ സഹായം 1-10 KM) HANDLERS
+  // ==============================================================
+  function quickFilterRadius(km, btn) {
+    const radius = parseFloat(km) || 5;
+    setGlobalRadius(radius, btn);
+    navTo('nearby');
+    if (typeof setNearbyCategory === 'function') {
+      const allChip = document.querySelector('.nearby-cat-chip[data-cat="all"]');
+      if (allChip) setNearbyCategory('all', allChip);
+    }
+  }
+  window.quickFilterRadius = quickFilterRadius;
+
+  function navToNearbyHelpFeed() {
+    navTo('nearby');
+    if (typeof setNearbyCategory === 'function') {
+      const helpChip = document.querySelector('.nearby-cat-chip[data-cat="help"]');
+      if (helpChip) setNearbyCategory('help', helpChip);
+    }
+  }
+  window.navToNearbyHelpFeed = navToNearbyHelpFeed;
+
+  function openNearbyHelpModal(category) {
+    const locInput = document.getElementById('nearbyHelpLocationInput');
+    if (locInput) {
+      locInput.value = (APP_STATE.location && APP_STATE.location.name) ? APP_STATE.location.name.split(',')[0].trim() : 'കേരളം';
+    }
+    const phoneInput = document.getElementById('nearbyHelpPhoneInput');
+    if (phoneInput && APP_STATE.currentUser && APP_STATE.currentUser.phone) {
+      phoneInput.value = APP_STATE.currentUser.phone;
+    }
+    if (category) {
+      const btn = document.querySelector(`#nearbyHelpCatGrid .nearby-help-cat-btn[data-cat="${category}"]`);
+      if (btn) selectNearbyHelpCat(category, btn);
+    }
+    const currentRad = (APP_STATE.radiusFilters && APP_STATE.radiusFilters.nearby) || 5;
+    const radBtn = document.querySelector(`#nearbyHelpRadiusGrid .nearby-help-rad-pill[data-km="${currentRad}"]`);
+    if (radBtn) {
+      selectNearbyHelpRadius(currentRad, radBtn);
+    }
+    openModal('modal-nearby-help-request');
+  }
+  window.openNearbyHelpModal = openNearbyHelpModal;
+
+  function selectNearbyHelpCat(category, btn) {
+    document.querySelectorAll('#nearbyHelpCatGrid .nearby-help-cat-btn').forEach(b => {
+      b.classList.remove('active');
+      b.style.borderColor = '#E2E8F0';
+      b.style.background = '#fff';
+      b.style.color = '#334155';
+    });
+    if (btn) {
+      btn.classList.add('active');
+      btn.style.borderColor = '#DC2626';
+      btn.style.background = '#FEF2F2';
+      btn.style.color = '#991B1B';
+    }
+    const input = document.getElementById('nearbyHelpSelectedCat');
+    if (input) input.value = category;
+  }
+  window.selectNearbyHelpCat = selectNearbyHelpCat;
+
+  function selectNearbyHelpRadius(km, btn) {
+    const r = parseFloat(km) || 5;
+    document.querySelectorAll('#nearbyHelpRadiusGrid .nearby-help-rad-pill').forEach(b => {
+      b.classList.remove('active');
+      b.style.borderColor = '#CBD5E1';
+      b.style.background = '#fff';
+      b.style.color = '#334155';
+    });
+    if (btn) {
+      btn.classList.add('active');
+      btn.style.borderColor = '#059669';
+      btn.style.background = '#059669';
+      btn.style.color = '#fff';
+    }
+    const input = document.getElementById('nearbyHelpSelectedRadius');
+    if (input) input.value = String(r);
+    const badge = document.getElementById('nearbyHelpRadiusBadge');
+    if (badge) badge.textContent = `${r} km പരിധി`;
+  }
+  window.selectNearbyHelpRadius = selectNearbyHelpRadius;
+
+  function submitNearbyHelpRequest(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const catInput = document.getElementById('nearbyHelpSelectedCat');
+    const radInput = document.getElementById('nearbyHelpSelectedRadius');
+    const noteInput = document.getElementById('nearbyHelpNote');
+    const locInput = document.getElementById('nearbyHelpLocationInput');
+    const phoneInput = document.getElementById('nearbyHelpPhoneInput');
+
+    const cat = (catInput && catInput.value) || 'emergency';
+    const rad = parseFloat((radInput && radInput.value) || '5') || 5;
+    const note = (noteInput && noteInput.value.trim()) || '';
+    const loc = (locInput && locInput.value.trim()) || ((APP_STATE.location && APP_STATE.location.name) || 'കേരളം');
+    const phone = (phoneInput && phoneInput.value.trim()) || ((APP_STATE.currentUser && APP_STATE.currentUser.phone) || '');
+
+    if (!note) {
+      toast('⚠️ ദയവായി സഹായ വിവരണം നൽകുക');
+      return;
+    }
+
+    const newHelp = {
+      id: 'help_' + Date.now(),
+      userId: APP_STATE.currentUser ? APP_STATE.currentUser.id : ('usr_' + Date.now()),
+      userName: (APP_STATE.currentUser && APP_STATE.currentUser.name) || 'നിങ്ങൾ',
+      userAvatar: (APP_STATE.currentUser && APP_STATE.currentUser.avatar) || window.DEFAULT_USER_AVATAR,
+      category: cat,
+      radius: rad,
+      description: note,
+      location: loc,
+      phone: phone,
+      urgency: 'urgent',
+      created_at: new Date().toISOString(),
+      lat: APP_STATE.location.lat,
+      lon: APP_STATE.location.lon,
+      isUserCreated: true
+    };
+
+    if (!APP_STATE.nearbyHelpRequests) APP_STATE.nearbyHelpRequests = [];
+    APP_STATE.nearbyHelpRequests.unshift(newHelp);
+
+    try {
+      localStorage.setItem('nn_nearby_help_requests', JSON.stringify(APP_STATE.nearbyHelpRequests));
+    } catch (_) {}
+
+    // Broadcast to Supabase service_requests table so nearby people are updated
+    if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveServiceRequest === 'function') {
+      window.NN_SUPABASE_SERVICES.saveServiceRequest({
+        id: newHelp.id,
+        userId: newHelp.userId,
+        trade: `🆘 സമീപ സഹായം (${cat})`,
+        category: cat,
+        description: note,
+        location: loc,
+        phone: phone,
+        urgency: 'urgent',
+        photo: ''
+      });
+    }
+
+    closeModal('modal-nearby-help-request');
+    if (noteInput) noteInput.value = '';
+
+    toast(`🚀 നിങ്ങളുടെ സഹായ അഭ്യർത്ഥന ${rad} km ചുറ്റളവിലുള്ളവരിലേക്ക് അയച്ചു!`);
+
+    // Switch to Nearby Screen with this radius and help tab
+    setGlobalRadius(rad, null);
+    navTo('nearby');
+    if (typeof setNearbyCategory === 'function') {
+      const helpChip = document.querySelector('.nearby-cat-chip[data-cat="help"]');
+      if (helpChip) setNearbyCategory('help', helpChip);
+    }
+  }
+  window.submitNearbyHelpRequest = submitNearbyHelpRequest;
 
   // ==============================================================
   // 15. PROFILE SCREEN & PERSONAL DASHBOARD (FACEBOOK STYLE)
