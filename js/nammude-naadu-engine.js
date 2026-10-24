@@ -154,25 +154,41 @@
     }
   } catch (_) {}
 
-  // Deterministic, Permanent User ID tied directly to Citizen Phone Number
+  // Deterministic, Permanent User ID tied directly to Citizen Phone Number or Email ID
+  function getPermanentUserId() {
+    const rawPhone = localStorage.getItem('nn_user_phone') || localStorage.getItem('nn_permanent_phone') || savedUserPhone || '';
+    const digits = String(rawPhone).replace(/\D/g, '').slice(-10);
+    if (digits && digits.length >= 10) {
+      return 'usr_' + digits;
+    }
+    const rawEmail = (localStorage.getItem('nn_user_email') || '').trim().toLowerCase();
+    if (rawEmail && rawEmail.includes('@')) {
+      return 'usr_em_' + rawEmail.replace(/[^a-z0-9]/g, '_');
+    }
+    let permId = localStorage.getItem('nn_permanent_id') || localStorage.getItem('nn_user_id') || '';
+    if (permId && !permId.startsWith('usr_')) {
+      permId = 'usr_' + permId;
+    }
+    if (!permId || permId.startsWith('usr_me_')) {
+      permId = 'usr_nn_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 8);
+    }
+    return permId;
+  }
+
   function generateUserIdFromPhone(rawPhone) {
     if (!rawPhone) return null;
     const digits = String(rawPhone).replace(/\D/g, '').slice(-10);
     return (digits && digits.length >= 10) ? ('usr_' + digits) : null;
   }
   window.generateUserIdFromPhone = generateUserIdFromPhone;
+  window.getPermanentUserId = getPermanentUserId;
 
-  const phoneBasedId = generateUserIdFromPhone(savedUserPhone);
-  const permanentSavedId = localStorage.getItem('nn_permanent_id') || localStorage.getItem('nn_user_id') || '';
-  const currentCitizenId = phoneBasedId || (permanentSavedId ? (permanentSavedId.startsWith('usr_') ? permanentSavedId : ('usr_' + permanentSavedId)) : ('usr_me_' + Math.random().toString(36).substring(2, 9)));
-
-  if (phoneBasedId) {
-    try {
-      localStorage.setItem('nn_user_id', phoneBasedId.replace('usr_', ''));
-      localStorage.setItem('nn_permanent_id', phoneBasedId);
-      localStorage.setItem('nn_permanent_phone', savedUserPhone);
-    } catch (_) {}
-  }
+  const currentCitizenId = getPermanentUserId();
+  try {
+    localStorage.setItem('nn_user_id', currentCitizenId.replace('usr_', ''));
+    localStorage.setItem('nn_permanent_id', currentCitizenId);
+    if (savedUserPhone) localStorage.setItem('nn_permanent_phone', savedUserPhone);
+  } catch (_) {}
 
   const APP_STATE = {
     currentScreen: 'home',
@@ -3276,12 +3292,19 @@
     const senderName = APP_STATE.currentUser.name || 'നാട്ടുകാരൻ';
     const senderAvatar = APP_STATE.currentUser.avatar || DEFAULT_USER_AVATAR;
 
+    const recPhone = normalizePhone(APP_STATE.activeChatRecipient.phone);
+    const recId = APP_STATE.activeChatRecipient.id || (recPhone ? ('usr_' + recPhone) : '');
+
     const msgObj = {
       id: msgId,
       senderId: APP_STATE.currentUser.id,
       senderName: senderName,
       senderPhone: APP_STATE.currentUser.phone || '',
+      senderEmail: APP_STATE.currentUser.email || '',
       senderAvatar: senderAvatar,
+      recipientId: recId,
+      recipientPhone: recPhone || '',
+      recipientEmail: APP_STATE.activeChatRecipient.email || '',
       type: 'text',
       text: text,
       time: timeStr,
@@ -3289,7 +3312,7 @@
       status: 'sent'
     };
 
-    // Instant local echo
+    // Instant local echo (0ms latency)
     APP_STATE.chats[chatKey].push({
       ...msgObj,
       sender: 'me',
@@ -3299,21 +3322,26 @@
     if (input) input.value = '';
     if (APP_STATE.chatMeta && APP_STATE.chatMeta[chatKey]) {
       APP_STATE.chatMeta[chatKey].updatedAt = Date.now();
+      if (!APP_STATE.chatMeta[chatKey].recipientId && recId) {
+        APP_STATE.chatMeta[chatKey].recipientId = recId;
+      }
     }
     saveChats();
     updateChatBadgeCounter();
     renderChatMessages();
     if (typeof updateChatStreakUI === 'function') updateChatStreakUI(chatKey);
 
-    // Broadcast to Supabase Realtime Cloud (Instant cross-device delivery)
+    // Broadcast to Supabase Realtime Cloud (Instant sub-second delivery)
     const metaObj = {
-      recipientId: APP_STATE.activeChatRecipient.id || '',
+      recipientId: recId,
       recipientName: APP_STATE.activeChatRecipient.name,
-      recipientPhone: APP_STATE.activeChatRecipient.phone,
+      recipientPhone: recPhone || '',
+      recipientEmail: APP_STATE.activeChatRecipient.email || '',
       recipientAvatar: APP_STATE.activeChatRecipient.avatar,
       senderId: APP_STATE.currentUser.id,
       senderName: senderName,
-      senderPhone: APP_STATE.currentUser.phone,
+      senderPhone: APP_STATE.currentUser.phone || '',
+      senderEmail: APP_STATE.currentUser.email || '',
       senderAvatar: senderAvatar
     };
 
@@ -4235,9 +4263,12 @@
       return;
     }
 
-    // 3. Open chat directly with this person's name
+    // 3. Open chat directly with this person's name or email identifier
     closeModal('modal-new-chat');
-    openChatModal(rawVal, '', DEFAULT_USER_AVATAR, '', 'usr_' + Date.now());
+    const deterministicId = rawVal.includes('@')
+      ? ('usr_em_' + rawVal.toLowerCase().replace(/[^a-z0-9]/g, '_'))
+      : ('usr_contact_' + rawVal.toLowerCase().replace(/[^a-z0-9]/g, '_'));
+    openChatModal(rawVal, '', DEFAULT_USER_AVATAR, '', deterministicId);
   }
   window.startDirectChatFromForm = startDirectChatFromForm;
 
@@ -4366,9 +4397,9 @@
       // Direct message action for the typed query
       const cleanDigits = activeChatSearchQuery.replace(/\D/g, '');
       const directTargetName = cleanDigits.length >= 10 ? 'പ്രാദേശിക സുഹൃത്ത്' : activeChatSearchQuery;
-      const directPhone = cleanDigits.length >= 10 ? cleanDigits.slice(-10) : '';
+      const directId = directPhone ? ('usr_' + directPhone) : ('usr_query_' + String(directTargetName).toLowerCase().replace(/[^a-z0-9]/g, '_'));
       html += `
-        <div onclick="openChatModal('${escapeHtml(directTargetName).replace(/'/g, "\\'")}', '${directPhone}', '', '', 'usr_${Date.now()}')"
+        <div onclick="openChatModal('${escapeHtml(directTargetName).replace(/'/g, "\\'")}', '${directPhone}', '', '', '${directId}')"
              style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#F0FDF4;border:1.5px dashed #86EFAC;border-radius:14px;cursor:pointer;margin-top:10px">
           <span style="font-size:22px">✉️</span>
           <div style="flex:1">
@@ -10460,6 +10491,24 @@
         }
       } catch (_) {}
     }, 1500);
+
+    // High-speed real-time sync (every 3s) for Community Posts and Chats when visible
+    setInterval(() => {
+      try {
+        if (typeof document !== 'undefined' && !document.hidden && typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES) {
+          if (APP_STATE.currentScreen === 'community' || APP_STATE.currentScreen === 'home') {
+            if (typeof window.NN_SUPABASE_SERVICES.syncPosts === 'function') {
+              window.NN_SUPABASE_SERVICES.syncPosts();
+            }
+          }
+          if (APP_STATE.currentScreen === 'chat') {
+            if (typeof window.NN_SUPABASE_SERVICES.syncUserChats === 'function') {
+              window.NN_SUPABASE_SERVICES.syncUserChats();
+            }
+          }
+        }
+      } catch (_) {}
+    }, 3000);
 
   });
 

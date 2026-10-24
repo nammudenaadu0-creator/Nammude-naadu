@@ -26,6 +26,7 @@
   let rentalsChannel = null;
   let bloodChannel = null;
   let emergencyChannel = null;
+  let dbChangesChannel = null;
   let isSettingUpChannels = false;
   let realtimeRetryCount = 0;
   let realtimeRetryTimer = null;
@@ -547,12 +548,14 @@
     }, FIVE_MINUTES_MS);
   }
 
-  // Database Row-Level Realtime Subscriptions (PostgreSQL CDC)
+  // Database Row-Level Realtime Subscriptions (Unified multiplexed channel for sub-second sync)
   function setupDatabaseListeners() {
     if (!client) return;
     try {
-      // Realtime listener for new posts inserted in the posts table
-      client.channel('public:posts')
+      if (dbChangesChannel) {
+        try { dbChangesChannel.unsubscribe(); } catch (_) {}
+      }
+      dbChangesChannel = client.channel('public:db_all_changes')
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, payload => {
           if (payload && payload.new) {
             const row = payload.new;
@@ -578,10 +581,6 @@
             handleIncomingPost({ post: mappedPost });
           }
         })
-        .subscribe();
-
-      // Realtime listener for new services inserted in the services table
-      client.channel('public:services')
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'services' }, payload => {
           if (payload && payload.new) {
             const row = payload.new;
@@ -608,28 +607,16 @@
             handleIncomingService({ service: mappedService });
           }
         })
-        .subscribe();
-
-      // Realtime listener for new service requests / provider enquiries
-      client.channel('public:service_requests')
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'service_requests' }, payload => {
           if (payload && payload.new) {
             handleIncomingServiceRequest(payload.new);
           }
         })
-        .subscribe();
-
-      // Realtime listener for emergency blood requests
-      client.channel('public:blood_requests')
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'blood_requests' }, payload => {
           if (payload && payload.new) {
             handleIncomingBloodRequest(payload.new);
           }
         })
-        .subscribe();
-
-      // Realtime listener for new chat messages inserted into messages table
-      client.channel('public:messages')
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
           if (payload && payload.new) {
             const row = payload.new;
@@ -665,37 +652,21 @@
             handleIncomingChatMessage({ chatKey, msgObj, metaObj });
           }
         })
-        .subscribe();
-
-      // Realtime listener for jobs inserted/updated into jobs table
-      client.channel('public:jobs')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'jobs' }, payload => {
           if (payload && payload.new) {
             handleIncomingJob(payload.new);
           }
         })
-        .subscribe();
-
-      // Realtime listener for rentals inserted/updated into rentals table
-      client.channel('public:rentals')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'rentals' }, payload => {
           if (payload && payload.new) {
             handleIncomingRental(payload.new);
           }
         })
-        .subscribe();
-
-      // Realtime listener for emergency contacts table
-      client.channel('public:emergency_contacts')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'emergency_contacts' }, payload => {
           if (payload && payload.new) {
             handleIncomingEmergencyContact(payload.new);
           }
         })
-        .subscribe();
-
-      // Realtime listener for citizen profiles registered/updated in profiles table
-      client.channel('public:profiles')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, payload => {
           if (payload && payload.new) {
             handleIncomingProfile(payload.new);
@@ -715,13 +686,19 @@
     const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser.id : '';
     const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone)
       ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
+    const myEmail = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.email)
+      ? APP_STATE.currentUser.email.trim().toLowerCase() : '';
+
     const senderPhone = (msgObj.senderPhone ? String(msgObj.senderPhone).replace(/\D/g, '').slice(-10) : '');
+    const senderId = msgObj.senderId || '';
+    const senderEmail = (msgObj.senderEmail ? String(msgObj.senderEmail).trim().toLowerCase() : '');
 
     // 1. SENDER ECHO CHECK: If current user sent this, NEVER process as incoming 'them' message!
     const isSenderEcho = Boolean(
       (msgObj.sessionId && msgObj.sessionId === SESSION_CLIENT_ID) ||
-      (myId && msgObj.senderId && myId === msgObj.senderId) ||
-      (myPhone && senderPhone && myPhone === senderPhone)
+      (myId && senderId && myId === senderId) ||
+      (myPhone && senderPhone && myPhone === senderPhone) ||
+      (myEmail && senderEmail && myEmail === senderEmail)
     );
     if (isSenderEcho) {
       // Message was sent by me - ensure local status is 'sent' / 'delivered' and NEVER insert as 'them'
@@ -735,23 +712,25 @@
       return;
     }
 
-    // 2. RECIPIENT VERIFICATION: Strictly ensure ONLY the intended recipient receives this message
-    const recPhone = (metaObj && metaObj.recipientPhone ? String(metaObj.recipientPhone).replace(/\D/g, '').slice(-10) : '');
-    const recId = (metaObj && metaObj.recipientId ? metaObj.recipientId : '');
-    const cleanMyId = myId ? myId.replace(/[^a-zA-Z0-9]/g, '') : '';
-    const activeKey = APP_STATE.activeChatRecipient?.key;
-    const activeKeySymmetric = activeKey ? activeKey.replace('chat_', '').split('_').sort().join('_') : '';
-    const chatKeySymmetric = chatKey ? chatKey.replace('chat_', '').split('_').sort().join('_') : '';
-    const isCurrentChatActive = Boolean(activeKey && (activeKey === chatKey || (activeKeySymmetric && chatKeySymmetric && activeKeySymmetric === chatKeySymmetric)));
+    // 2. RECIPIENT VERIFICATION: Strictly ensure ONLY the intended recipient receives this message!
+    const recPhone = (metaObj && metaObj.recipientPhone ? String(metaObj.recipientPhone).replace(/\D/g, '').slice(-10) : '') ||
+                    (msgObj.recipientPhone ? String(msgObj.recipientPhone).replace(/\D/g, '').slice(-10) : '');
+    const recId = (metaObj && metaObj.recipientId ? metaObj.recipientId : '') || (msgObj.recipientId || '');
+    const recEmail = (metaObj && metaObj.recipientEmail ? String(metaObj.recipientEmail).trim().toLowerCase() : '') ||
+                     (msgObj.recipientEmail ? String(msgObj.recipientEmail).trim().toLowerCase() : '');
 
     const phones = String(chatKey).match(/\d{10}/g) || [];
-    const isPhoneMatch = Boolean(myPhone && myPhone.length === 10 && phones.includes(myPhone));
     const isRecPhoneMatch = Boolean(myPhone && recPhone && myPhone.length === 10 && myPhone === recPhone);
+    const isPhoneInKeyMatch = Boolean(myPhone && myPhone.length === 10 && phones.length >= 2 && phones.includes(myPhone));
     const isRecIdMatch = Boolean(myId && recId && myId === recId);
-    const isCleanIdInKey = Boolean(cleanMyId && cleanMyId.length >= 6 && chatKey.includes(cleanMyId));
+    const isRecEmailMatch = Boolean(myEmail && recEmail && myEmail.includes('@') && myEmail === recEmail);
 
-    // Strictly ensure message is for this user
-    const isForMe = isPhoneMatch || isRecPhoneMatch || isRecIdMatch || isCleanIdInKey;
+    const cleanMyId = myId ? myId.replace(/[^a-zA-Z0-9]/g, '') : '';
+    const keyParts = String(chatKey).replace(/^chat_/, '').split('_');
+    const isIdInKeyMatch = Boolean(cleanMyId && keyParts.some(p => p === cleanMyId || (myId && p === myId)));
+
+    // STRICT PRIVACY: The message MUST be addressed to this user. Otherwise DISCARD completely!
+    const isForMe = isRecPhoneMatch || isPhoneInKeyMatch || isRecIdMatch || isRecEmailMatch || isIdInKeyMatch;
     if (!isForMe) {
       return;
     }
@@ -1318,13 +1297,13 @@
     // Fast initial fetch on opening
     fetchThreadMessages();
 
-    // Adaptive 7s fallback polling only while the chat modal is actively open
+    // High-speed 1.2s active polling only while the chat modal is actively open
     const pollInterval = setInterval(() => {
       const isChatOpen = typeof document !== 'undefined' && document.getElementById('modal-chat')?.classList.contains('active');
       if (client && !document.hidden && isChatOpen && chatSubscribers.has(chatKey) && chatSubscribers.get(chatKey).size > 0) {
         fetchThreadMessages();
       }
-    }, 7000);
+    }, 1200);
 
     const onVisible = () => {
       const isChatOpen = typeof document !== 'undefined' && document.getElementById('modal-chat')?.classList.contains('active');
