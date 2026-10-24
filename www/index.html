@@ -394,45 +394,7 @@
                     <!-- Interactive Real-time Search Dropdown -->
                     <div id="homeSearchResultsDropdown" class="home-search-dropdown" style="display:none;margin:0 16px 12px"></div>
 
-                    <!-- COMPACT NEARBY HELP STRIP (1 KM - 10 KM LIVE ASSIST) -->
-                    <div class="home-nearby-help-capsule" style="margin:0 16px 12px;background:linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%);border:1.5px solid #A7F3D0;border-radius:14px;padding:9px 12px;box-shadow:0 2px 8px rgba(16,185,129,0.07)">
-                        <!-- TOP ROW: TITLE & 1-10 KM QUICK TEST CHIPS -->
-                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px">
-                            <div style="display:flex;align-items:center;gap:6px">
-                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 0 3px rgba(16,185,129,0.25)"></span>
-                                <span style="font-size:12.5px;font-weight:800;color:#065F46">സമീപ സഹായം (Nearby Help)</span>
-                            </div>
-                            <div style="display:flex;gap:3px" id="homeKmChipsRow">
-                                <button type="button" class="home-km-pill" onclick="quickFilterRadius(1, this)" style="font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px;border:1px solid #6EE7B7;background:#fff;color:#065F46;cursor:pointer">1km</button>
-                                <button type="button" class="home-km-pill" onclick="quickFilterRadius(2, this)" style="font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px;border:1px solid #6EE7B7;background:#fff;color:#065F46;cursor:pointer">2km</button>
-                                <button type="button" class="home-km-pill" onclick="quickFilterRadius(3, this)" style="font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px;border:1px solid #6EE7B7;background:#fff;color:#065F46;cursor:pointer">3km</button>
-                                <button type="button" class="home-km-pill active" onclick="quickFilterRadius(5, this)" style="font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px;border:1px solid #059669;background:#059669;color:#fff;cursor:pointer">5km</button>
-                                <button type="button" class="home-km-pill" onclick="quickFilterRadius(10, this)" style="font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px;border:1px solid #6EE7B7;background:#fff;color:#065F46;cursor:pointer">10km</button>
-                            </div>
-                        </div>
 
-                        <!-- MIDDLE ROW: TWO MAIN ACTION PILLS (COMPACT) -->
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px">
-                            <button type="button" onclick="openNearbyHelpModal()" style="display:flex;align-items:center;justify-content:center;gap:5px;background:linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);color:#fff;border:none;padding:7px 8px;border-radius:9px;font-size:11.5px;font-weight:800;box-shadow:0 2px 4px rgba(220,38,38,0.2);cursor:pointer">
-                                <span>🆘</span>
-                                <span>സഹായം വേണം</span>
-                            </button>
-                            <button type="button" onclick="navToNearbyHelpFeed()" style="display:flex;align-items:center;justify-content:center;gap:5px;background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#fff;border:none;padding:7px 8px;border-radius:9px;font-size:11.5px;font-weight:800;box-shadow:0 2px 4px rgba(5,150,105,0.2);cursor:pointer">
-                                <span>🤝</span>
-                                <span>സഹായിക്കാം (ഫീഡ്)</span>
-                            </button>
-                        </div>
-
-                        <!-- BOTTOM ROW: QUICK CATEGORY MINI PILLS -->
-                        <div style="display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:1px">
-                            <button type="button" onclick="openNearbyHelpModal('emergency')" style="flex-shrink:0;background:#fff;border:1px solid #FECACA;color:#DC2626;font-size:10.5px;font-weight:700;padding:2.5px 7px;border-radius:12px;cursor:pointer">🚨 അടിയന്തിരം</button>
-                            <button type="button" onclick="openNearbyHelpModal('vehicle')" style="flex-shrink:0;background:#fff;border:1px solid #FED7AA;color:#C2410C;font-size:10.5px;font-weight:700;padding:2.5px 7px;border-radius:12px;cursor:pointer">🛞 വാഹനം</button>
-                            <button type="button" onclick="openNearbyHelpModal('medicine')" style="flex-shrink:0;background:#fff;border:1px solid #DDD6FE;color:#6D28D9;font-size:10.5px;font-weight:700;padding:2.5px 7px;border-radius:12px;cursor:pointer">💊 മരുന്ന്</button>
-                            <button type="button" onclick="openNearbyHelpModal('repair')" style="flex-shrink:0;background:#fff;border:1px solid #BAE6FD;color:#0369A1;font-size:10.5px;font-weight:700;padding:2.5px 7px;border-radius:12px;cursor:pointer">🛠️ റിപ്പയർ</button>
-                            <button type="button" onclick="openNearbyHelpModal('home')" style="flex-shrink:0;background:#fff;border:1px solid #A7F3D0;color:#047857;font-size:10.5px;font-weight:700;padding:2.5px 7px;border-radius:12px;cursor:pointer">📦 വീട്ടുസഹായം</button>
-                            <button type="button" onclick="openBloodModal()" style="flex-shrink:0;background:#fff;border:1px solid #FBCFE8;color:#BE185D;font-size:10.5px;font-weight:700;padding:2.5px 7px;border-radius:12px;cursor:pointer">🩸 രക്തം</button>
-                        </div>
-                    </div>
 
                     <!-- 3. ADMIN VILLAGE PROMO & ADVERTISEMENT BANNER (PURE POSTER IMAGE, NO OVERLAY TEXT) -->
                     <div class="home-kerala-hero-banner" id="homeVillagePromoBanner" onclick="openAdDetailModal()" style="cursor:pointer" title="വിശദാംശങ്ങൾ കാണാം">
