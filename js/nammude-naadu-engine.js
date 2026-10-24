@@ -536,7 +536,7 @@
     // If item was created by actual user on this device or Supabase, prioritize its real coordinates
     const isRealUserItem = item.isUserCreated || item._isCustom || item.isCurrentUser ||
       (item.authorId && String(item.authorId).startsWith('usr_me_')) ||
-      (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && item.phone && item.phone === APP_STATE.currentUser.phone);
+      (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && item.phone && normalizePhone(item.phone) === normalizePhone(APP_STATE.currentUser.phone));
 
     const coords = extractItemCoordinates(item);
     if (coords) {
@@ -4474,8 +4474,16 @@
         if (m.senderId && m.senderId === myId) return true;
         if (m.recipientId && m.recipientId === myId) return true;
       }
-      if (m.sender === 'them' && sPhone && sPhone !== myCleanPhone) {
-        return true;
+      if (m.sender === 'them') {
+        if (rPhone && myCleanPhone && rPhone !== myCleanPhone) {
+          continue;
+        }
+        if (sPhone && myCleanPhone && sPhone === myCleanPhone) {
+          return true;
+        }
+        if (sPhone && (!myCleanPhone || sPhone !== myCleanPhone)) {
+          return true;
+        }
       }
     }
 
@@ -9048,10 +9056,11 @@
           </div>
         </div>
       `;
-    } else if (tab === 'services') {
-      const myServices = APP_STATE.services.filter(s => s.phone === APP_STATE.currentUser.phone || s.name === APP_STATE.currentUser.name || s.isUserCreated);
-      const myJobs = APP_STATE.jobs.filter(j => j.employerPhone === APP_STATE.currentUser.phone || j.employer === APP_STATE.currentUser.name || j.isUserCreated);
-      const myRentals = APP_STATE.rentals.filter(r => r.ownerPhone === APP_STATE.currentUser.phone || r.owner === APP_STATE.currentUser.name || r.isUserCreated);
+      const myPhone = (APP_STATE.currentUser && APP_STATE.currentUser.phone) ? normalizePhone(APP_STATE.currentUser.phone) : '';
+      const myName = (APP_STATE.currentUser && APP_STATE.currentUser.name) || '';
+      const myServices = APP_STATE.services.filter(s => (myPhone && normalizePhone(s.phone) === myPhone) || (myName && s.name === myName) || s.isUserCreated);
+      const myJobs = APP_STATE.jobs.filter(j => (myPhone && normalizePhone(j.employerPhone || j.phone) === myPhone) || (myName && (j.employer === myName || j.authorName === myName)) || j.isUserCreated);
+      const myRentals = APP_STATE.rentals.filter(r => (myPhone && normalizePhone(r.ownerPhone || r.phone) === myPhone) || (myName && (r.owner === myName || r.authorName === myName)) || r.isUserCreated);
 
       container.innerHTML = `
         <div style="display:flex;flex-direction:column;gap:12px">

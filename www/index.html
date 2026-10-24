@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-        content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#0E7043">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -312,19 +312,19 @@
                     <header class="home-top-navbar"
                         style="padding:10px 14px 10px;background:linear-gradient(180deg, #E0F9ED 0%, #EBFDF5 100%);border-bottom:1px solid rgba(16,185,129,0.12);display:flex;align-items:center;justify-content:space-between;width:100%;box-sizing:border-box;overflow:hidden">
                         <!-- Brand Logo & Title -->
-                        <div class="home-brand-block" style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1 1 auto;overflow:hidden" onclick="openLocationModal()" title="ലൊക്കേഷൻ മാറ്റുക">
+                        <div class="home-brand-block" style="display:flex;align-items:center;gap:6px;cursor:pointer;min-width:0;flex:1 1 auto;overflow:hidden" onclick="openLocationModal()" title="ലൊക്കേഷൻ മാറ്റുക">
                             <img src="assets/kerala-logo-badge.jpg" alt="നമ്മുടെ നാട്"
-                                style="width:40px;height:40px;border-radius:12px;object-fit:cover;box-shadow:0 3px 10px rgba(14,112,67,0.18);border:2px solid #FFFFFF;flex-shrink:0">
+                                style="width:36px;height:36px;border-radius:10px;object-fit:cover;box-shadow:0 3px 10px rgba(14,112,67,0.18);border:2px solid #FFFFFF;flex-shrink:0">
                             <div style="min-width:0;overflow:hidden">
-                                <h1 style="margin:0;font-size:19px;font-weight:900;color:#0F5132;font-family:'Manjari', sans-serif;letter-spacing:-0.5px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+                                <h1 style="margin:0;font-size:clamp(14px, 4.1vw, 18px);font-weight:900;color:#0F5132;font-family:'Manjari', sans-serif;letter-spacing:-0.4px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
                                     നമ്മുടെ നാട്</h1>
                                 <div style="display:flex;align-items:center;gap:3px;margin-top:2px;white-space:nowrap;overflow:hidden" title="സ്ഥലം തിരഞ്ഞെടുക്കുക / മാറ്റുക">
                                     <span style="font-size:11px">📍</span>
                                     <span id="homeLiveLocText" class="user-live-city-name"
-                                        style="font-size:11px;font-weight:700;color:#065F46;max-width:95px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">തത്സമയം</span>
+                                        style="font-size:10.5px;font-weight:700;color:#065F46;max-width:85px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">തത്സമയം</span>
                                     <span style="font-size:8px;color:#059669">▼</span>
                                     <span id="homeLiveRadiusBadge"
-                                        style="font-size:9.5px;font-weight:800;background:rgba(5,150,105,0.12);color:#065F46;padding:1px 5px;border-radius:8px">5km</span>
+                                        style="font-size:9px;font-weight:800;background:rgba(5,150,105,0.12);color:#065F46;padding:1px 5px;border-radius:8px">5km</span>
                                     <span onclick="event.stopPropagation(); refreshActiveScreen(this);" title="വിവരങ്ങൾ പുതുക്കുക" style="font-size:11px;cursor:pointer;padding:0 2px;display:inline-flex;align-items:center">
                                         <span class="refresh-spinner-icon">🔄</span>
                                     </span>
@@ -333,12 +333,12 @@
                         </div>
 
                         <!-- Top Right Actions: Admin Shortcut, Settings & Profile -->
-                        <div class="top-navbar-right-actions" style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:6px">
+                        <div class="top-navbar-right-actions" style="display:flex;align-items:center;gap:5px;flex-shrink:0;margin-left:4px">
 
                             <!-- Admin Shortcut Button: visible strictly for Admin 9605406699 -->
                             <button id="homeAdminBtn" type="button" onclick="openAdminPortal()"
                                 title="അഡ്മിൻ കൺസോൾ (Admin Hub)"
-                                style="display:none;align-items:center;gap:4px;background:linear-gradient(135deg, #064E3B 0%, #0E7043 100%);color:#fff;border:none;border-radius:12px;padding:6px 10px;font-size:11.5px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(6,78,59,0.25)">
+                                style="display:none;align-items:center;gap:4px;background:linear-gradient(135deg, #064E3B 0%, #0E7043 100%);color:#fff;border:none;border-radius:10px;padding:5px 8px;font-size:11px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(6,78,59,0.25)">
                                 <span>🔐</span>
                                 <span>അഡ്മിൻ</span>
                             </button>
@@ -346,7 +346,7 @@
                             <!-- Mobile Login Chip: visible for Guest users -->
                             <button id="homeMobileLoginChip" type="button" onclick="openLoginModal()"
                                 title="ലോഗിൻ ചെയ്യാം"
-                                style="display:none;align-items:center;gap:4px;background:linear-gradient(135deg, #059669 0%, #10B981 100%);color:#fff;border:none;border-radius:12px;padding:6px 11px;font-size:11.5px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(16,185,129,0.3)">
+                                style="display:none;align-items:center;gap:3px;background:linear-gradient(135deg, #059669 0%, #10B981 100%);color:#fff;border:none;border-radius:10px;padding:5px 8px;font-size:11px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(16,185,129,0.3)">
                                 <span>🔑</span>
                                 <span>ലോഗിൻ</span>
                             </button>
@@ -354,23 +354,23 @@
                             <!-- Circular Settings Button -->
                             <button type="button" onclick="openSettingsModal()"
                                 title="ക്രമീകരണങ്ങൾ (Settings)"
-                                style="width:38px;height:38px;border-radius:50%;background:#FFFFFF;border:1.5px solid rgba(226,232,240,0.85);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:transform 0.1s ease;flex-shrink:0">
-                                <span style="font-size:18px">⚙️</span>
+                                style="width:34px;height:34px;border-radius:50%;background:#FFFFFF;border:1.5px solid rgba(226,232,240,0.85);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:transform 0.1s ease;flex-shrink:0">
+                                <span style="font-size:16px">⚙️</span>
                             </button>
 
                             <!-- Circular Bell Button with Red Indicator Dot -->
                             <button type="button" onclick="navTo('community')"
                                 title="അറിയിപ്പുകൾ"
-                                style="width:38px;height:38px;border-radius:50%;background:#FFFFFF;border:1.5px solid rgba(226,232,240,0.85);display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:transform 0.1s ease;flex-shrink:0">
-                                <span style="font-size:18px">🔔</span>
+                                style="width:34px;height:34px;border-radius:50%;background:#FFFFFF;border:1.5px solid rgba(226,232,240,0.85);display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:transform 0.1s ease;flex-shrink:0">
+                                <span style="font-size:16px">🔔</span>
                                 <span
-                                    style="position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:#EF4444;border:1.5px solid #FFFFFF"></span>
+                                    style="position:absolute;top:5px;right:5px;width:6px;height:6px;border-radius:50%;background:#EF4444;border:1px solid #FFFFFF"></span>
                             </button>
 
                             <!-- Circular User Profile Button (Clean Green Avatar on White Disc) -->
                             <div onclick="if(window._viewingOtherUser){window._viewingOtherUser=null;} navTo('profile')" title="എന്റെ പ്രൊഫൈൽ"
-                                style="width:38px;height:38px;border-radius:50%;background:#FFFFFF;border:1.5px solid rgba(226,232,240,0.85);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:transform 0.1s ease;flex-shrink:0">
-                                <div style="width:26px;height:26px;border-radius:50%;background:#059669;display:flex;align-items:center;justify-content:center;color:#FFFFFF;font-size:14px;overflow:hidden">
+                                style="width:34px;height:34px;border-radius:50%;background:#FFFFFF;border:1.5px solid rgba(226,232,240,0.85);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:transform 0.1s ease;flex-shrink:0">
+                                <div style="width:24px;height:24px;border-radius:50%;background:#059669;display:flex;align-items:center;justify-content:center;color:#FFFFFF;font-size:13px;overflow:hidden">
                                     <img id="homeHeaderAvatar" src="assets/kerala-logo-badge.jpg" alt="Profile" style="width:100%;height:100%;object-fit:cover;display:none" onload="this.style.display='block'">
                                     <span>👤</span>
                                 </div>
@@ -1608,16 +1608,16 @@
                 <div class="nav-add-label" style="font-size:10px;font-weight:800;color:#0E7043;margin-top:2px">പോസ്റ്റ്
                 </div>
             </div>
-            <button class="nav-item" data-page="chat" onclick="navTo('chat')" title="ചാറ്റ് ബോക്സ്">
+            <button class="nav-item" data-page="chat" onclick="navTo('chat')" title="ചാറ്റ്">
                 <div style="position:relative;display:inline-block">
                     <span style="font-size:20px">💬</span>
                     <span id="bottomNavChatBadge" class="nav-chat-badge" style="display:none">0</span>
                 </div>
-                <span>ചാറ്റ് ബോക്സ്</span>
+                <span style="font-size:10.5px;font-weight:700;white-space:nowrap">ചാറ്റ്</span>
             </button>
-            <button class="nav-item" data-page="community" onclick="navTo('community')" title="കമ്മ്യൂണിറ്റി പോസ്റ്റുകൾ">
+            <button class="nav-item" data-page="community" onclick="navTo('community')" title="നാട്ടുകൂട്ടം പോസ്റ്റുകൾ">
                 <span style="font-size:20px">📢</span>
-                <span style="font-size:9.5px;line-height:1.15;text-align:center;font-weight:700">കമ്മ്യൂണിറ്റി പോസ്റ്റ്</span>
+                <span style="font-size:10.5px;font-weight:700;white-space:nowrap">പോസ്റ്റുകൾ</span>
             </button>
         </nav>
 
