@@ -6479,17 +6479,31 @@
     if (Array.isArray(APP_STATE.emergencyContacts) && APP_STATE.emergencyContacts.length > 0) {
       custom = APP_STATE.emergencyContacts;
     }
+    const allPolice = (typeof window !== 'undefined' && Array.isArray(window.KERALA_ALL_POLICE_STATIONS)) ? window.KERALA_ALL_POLICE_STATIONS : [];
     const map = new Map();
-    [...custom, ...DEFAULT_EMERGENCY_CONTACTS].forEach(c => {
-      const k = c.id || (c.phone ? c.phone.replace(/\D/g, '') : c.name);
+    [...allPolice, ...DEFAULT_EMERGENCY_CONTACTS, ...custom].forEach(c => {
+      const k = c.id || (c.phone ? c.phone.replace(/\D/g, '') : (c.name || c.title));
       if (!map.has(k)) {
-        map.set(k, c);
+        map.set(k, {
+          ...c,
+          name: c.name || c.title,
+          title: c.title || c.name,
+          categoryName: c.categoryName || (c.category === 'police' ? 'പോലീസ് സ്റ്റേഷൻ' : 'സഹായ നമ്പർ')
+        });
       }
     });
     return Array.from(map.values());
   }
 
   let activeEmergencyCategory = 'all';
+  let activeEmergencyDistrict = 'all';
+
+  function setEmergencyDistrict(dist) {
+    activeEmergencyDistrict = dist || 'all';
+    const searchVal = document.getElementById('emergencySearchInput')?.value || '';
+    renderEmergencyModalList(searchVal, activeEmergencyCategory);
+  }
+  window.setEmergencyDistrict = setEmergencyDistrict;
 
   function setEmergencyCategory(cat, el) {
     activeEmergencyCategory = cat;
@@ -6511,6 +6525,8 @@
 
     let contacts = getAllEmergencyContacts();
     const cat = category || activeEmergencyCategory || 'all';
+
+    // 1. Category Filtering
     if (cat !== 'all') {
       contacts = contacts.filter(c => {
         if (!c.category && !c.categoryName) return false;
@@ -6536,12 +6552,24 @@
       });
     }
 
+    // 2. District Filtering
+    if (activeEmergencyDistrict && activeEmergencyDistrict !== 'all') {
+      const targetDist = activeEmergencyDistrict.trim();
+      contacts = contacts.filter(c => {
+        const itemDist = (c.district || c.location || '').trim();
+        return itemDist.includes(targetDist) || c.category === 'emergency';
+      });
+    }
+
+    // 3. Search Query Filtering
     const q = (query || '').toLowerCase().trim();
     if (q) {
       contacts = contacts.filter(c => 
         (c.name && c.name.toLowerCase().includes(q)) ||
+        (c.title && c.title.toLowerCase().includes(q)) ||
         (c.phone && c.phone.includes(q)) ||
         (c.categoryName && c.categoryName.toLowerCase().includes(q)) ||
+        (c.district && c.district.toLowerCase().includes(q)) ||
         (c.location && c.location.toLowerCase().includes(q)) ||
         (c.description && c.description.toLowerCase().includes(q))
       );
@@ -6557,7 +6585,7 @@
         <div style="text-align:center;padding:28px 16px;background:#F8FAFC;border-radius:14px;border:1px dashed #CBD5E1">
           <div style="font-size:32px;margin-bottom:8px">🚨</div>
           <div style="font-size:14px;font-weight:800;color:#334155">നമ്പറുകൾ കണ്ടെത്താനായില്ല</div>
-          <div style="font-size:12px;color:#64748B;margin-top:4px">തിരഞ്ഞ പദം മാറ്റി നോക്കുക</div>
+          <div style="font-size:12px;color:#64748B;margin-top:4px">മറ്റൊരു ജില്ല തിരഞ്ഞെടുക്കുകയോ തിരഞ്ഞ പദം മാറ്റുകയോ ചെയ്യാം</div>
           ${checkIsAdmin() ? `
           <button type="button" onclick="openAdminPortal('emergency')" style="margin-top:12px;background:#0E7043;color:#fff;border:none;padding:7px 16px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer">
             ➕ അഡ്മിൻ നമ്പർ ചേർക്കുക
@@ -6572,6 +6600,7 @@
       const cleanPhone = (c.phone || '').replace(/\D/g, '');
       const icon = c.icon || getEmergencyCategoryIcon(c.category);
       const catName = c.categoryName || getEmergencyCategoryNameMalayalam(c.category);
+      const displayName = c.name || c.title || 'സഹായ നമ്പർ';
 
       return `
         <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:12px 14px;box-shadow:0 1px 3px rgba(0,0,0,0.04);display:flex;flex-direction:column;gap:8px">
@@ -6581,11 +6610,12 @@
                 ${icon}
               </div>
               <div>
-                <div style="font-weight:800;font-size:14px;color:#0F172A">${escapeHtml(c.name)}</div>
-                <div style="display:flex;align-items:center;gap:6px;margin-top:2px">
+                <div style="font-weight:800;font-size:14px;color:#0F172A">${escapeHtml(displayName)}</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-top:2px;flex-wrap:wrap">
                   <span style="font-size:11px;font-weight:800;color:#DC2626;background:#FEF2F2;border:1px solid #FCA5A5;padding:1px 6px;border-radius:6px">
                     ${escapeHtml(catName)}
                   </span>
+                  ${c.district ? `<span style="font-size:11px;font-weight:700;color:#1E3A8A;background:#EFF6FF;padding:1px 6px;border-radius:6px">🏛️ ${escapeHtml(c.district)}</span>` : ''}
                   ${c.location ? `<span style="font-size:11px;color:#64748B">📍 ${escapeHtml(c.location)}</span>` : ''}
                 </div>
               </div>
@@ -6612,10 +6642,24 @@
   window.renderEmergencyModalList = renderEmergencyModalList;
 
   function openEmergencyModal() {
+    const distSelect = document.getElementById('emergencyDistrictFilter');
+    if (distSelect && typeof APP_STATE !== 'undefined') {
+      const userDist = APP_STATE.currentUser?.district || APP_STATE.location?.district || '';
+      if (userDist) {
+        for (let i = 0; i < distSelect.options.length; i++) {
+          if (distSelect.options[i].value && userDist.includes(distSelect.options[i].value)) {
+            distSelect.selectedIndex = i;
+            activeEmergencyDistrict = distSelect.options[i].value;
+            break;
+          }
+        }
+      }
+    }
     renderEmergencyModalList();
     if (typeof updateAdminUI === 'function') updateAdminUI();
     openModal('modal-emergency');
   }
+  window.openEmergencyModal = openEmergencyModal;
   window.openEmergencyModal = openEmergencyModal;
 
   function openHealthAndAmbulanceModal() {

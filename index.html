@@ -384,7 +384,8 @@
                             🔍
                         </div>
                         <input type="text" id="homeSearchInput" class="home-kerala-search-input"
-                            placeholder="സേവനങ്ങൾ, കടകൾ, ആളുകൾ തിരയുക..." autocomplete="off">
+                            placeholder="സേവനങ്ങൾ, കടകൾ, ആളുകൾ തിരയുക..." autocomplete="off"
+                            style="border:none !important;border-width:0 !important;outline:none !important;box-shadow:none !important;background:transparent !important;-webkit-appearance:none !important;appearance:none !important;padding:8px 8px !important">
                         <button type="button" class="home-kerala-search-action-btn" onclick="triggerHomeSearch()"
                             title="തിരയുക">
                             <span>തിരയുക</span>
@@ -2525,6 +2526,30 @@
                 <input type="text" id="emergencySearchInput" oninput="filterEmergencyContacts(this.value)"
                     placeholder="🔍 പോലീസ് സ്റ്റേഷൻ, സ്ഥലം, KSEB, ഹോസ്പിറ്റൽ തിരയുക..."
                     style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;background:#fff">
+                
+                <!-- DISTRICT SELECTOR DROPDOWN -->
+                <div style="display:flex;align-items:center;gap:6px;margin-top:7px">
+                    <span style="font-size:12px">📍</span>
+                    <select id="emergencyDistrictFilter" onchange="setEmergencyDistrict(this.value)"
+                        style="flex:1;padding:7px 10px;border:1.5px solid #CBD5E1;border-radius:10px;font-size:12px;font-weight:700;color:#0F172A;background:#FFFFFF;outline:none">
+                        <option value="all">എല്ലാ ജില്ലകളും (All Kerala Districts - 400+ Stations)</option>
+                        <option value="കണ്ണൂർ">കണ്ണൂർ (Kannur)</option>
+                        <option value="കാസർഗോഡ്">കാസർഗോഡ് (Kasaragod)</option>
+                        <option value="കോഴിക്കോട്">കോഴിക്കോട് (Kozhikode)</option>
+                        <option value="വയനാട്">വയനാട് (Wayanad)</option>
+                        <option value="മലപ്പുറം">മലപ്പുറം (Malappuram)</option>
+                        <option value="പാലക്കാട്">പാലക്കാട് (Palakkad)</option>
+                        <option value="തൃശ്ശൂർ">തൃശ്ശൂർ (Thrissur)</option>
+                        <option value="എറണാകുളം">എറണാകുളം / കൊച്ചി (Ernakulam / Kochi)</option>
+                        <option value="ഇടുക്കി">ഇടുക്കി (Idukki)</option>
+                        <option value="കോട്ടയം">കോട്ടയം (Kottayam)</option>
+                        <option value="ആലപ്പുഴ">ആലപ്പുഴ (Alappuzha)</option>
+                        <option value="പത്തനംതിട്ട">പത്തനംതിട്ട (Pathanamthitta)</option>
+                        <option value="കൊല്ലം">കൊല്ലം (Kollam)</option>
+                        <option value="തിരുവനന്തപുരം">തിരുവനന്തപുരം (Thiruvananthapuram)</option>
+                    </select>
+                </div>
+
                 <div style="display:flex;gap:6px;overflow-x:auto;padding-top:8px;scrollbar-width:none">
                     <button class="emg-filter-chip active" onclick="setEmergencyCategory('all', this)"
                         style="padding:4px 10px;border-radius:12px;border:none;background:#DC2626;color:#fff;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">എല്ലാം</button>
@@ -4355,6 +4380,7 @@
     <script src="js/i18n-translations.js?v=1.0"></script>
 
     <!-- APPLICATION ENGINES -->
+    <script src="js/kerala-police-stations-data.js?v=1.0"></script>
     <script src="js/trades-catalog-500.js?v=2.5"></script>
     <script src="js/nammude-naadu-engine.js?v=3.7"></script>
 </body>

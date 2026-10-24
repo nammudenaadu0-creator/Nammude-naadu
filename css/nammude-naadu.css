@@ -2436,16 +2436,34 @@
   cursor: pointer;
 }
 
-.home-kerala-search-input {
-  flex: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: 12.5px;
-  font-weight: 700;
-  color: #1E293B;
-  min-width: 0;
-  font-family: inherit;
+.home-kerala-search-input,
+.home-kerala-search-wrap input,
+#homeSearchInput {
+  flex: 1 !important;
+  border: none !important;
+  border-width: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: #1E293B !important;
+  min-width: 0 !important;
+  font-family: inherit !important;
+  padding: 8px 6px !important;
+}
+
+.home-kerala-search-input:focus,
+.home-kerala-search-wrap input:focus,
+#homeSearchInput:focus {
+  border: none !important;
+  border-width: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
 }
 
 .home-kerala-search-action-btn {
