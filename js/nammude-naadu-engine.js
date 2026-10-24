@@ -8895,6 +8895,9 @@
     if (typeof updateAdminUI === 'function') {
       updateAdminUI();
     }
+    if (typeof updateUserAuthUI === 'function') {
+      updateUserAuthUI();
+    }
 
     // Instantly update all avatar images in DOM
     ['#profileAvatarImg', '#homeHeaderAvatar', '#postingAsAvatar', '#profComposerMiniAvatar', '#desktopUserAvatar', '#desktopSidebarAvatar'].forEach(sel => {
@@ -8965,14 +8968,273 @@
         isCustomized: false
       };
 
+      if (typeof updateUserAuthUI === 'function') updateUserAuthUI();
       renderProfileScreen();
       updatePostingProfileBar();
       renderHomeScreen();
       toast('🚪 വിജയകരമായി ലോഗ് ഔട്ട് ചെയ്തു.');
-      openEditProfileModal();
     }
   }
   window.handleProfileLogout = handleProfileLogout;
+
+  function updateUserAuthUI() {
+    const user = (APP_STATE && APP_STATE.currentUser) || {};
+    const cleanPhone = (user.phone || '').replace(/\D/g, '').slice(-10);
+    const isLoggedIn = Boolean(cleanPhone && cleanPhone.length === 10 && user.isCustomized);
+    const displayName = (user.name && user.name !== 'നാട്ടുകാരൻ') ? user.name : (isLoggedIn ? 'സിറ്റിസൺ' : 'അതിഥി (Guest)');
+    const currentAvatar = user.avatar || DEFAULT_USER_AVATAR;
+
+    // Desktop Header elements
+    const desktopLoginBtn = document.getElementById('desktopLoginBtn');
+    const desktopLogoutBtn = document.getElementById('desktopLogoutBtn');
+    const desktopUserName = document.getElementById('desktopUserName');
+    const desktopUserAvatar = document.getElementById('desktopUserAvatar');
+
+    if (desktopUserName) desktopUserName.textContent = displayName;
+    if (desktopUserAvatar) desktopUserAvatar.src = currentAvatar;
+
+    if (desktopLoginBtn) {
+      desktopLoginBtn.style.display = isLoggedIn ? 'none' : 'inline-flex';
+    }
+    if (desktopLogoutBtn) {
+      desktopLogoutBtn.style.display = isLoggedIn ? 'inline-flex' : 'none';
+    }
+
+    // Desktop Left Sidebar elements
+    const sidebarAvatar = document.getElementById('desktopSidebarAvatar');
+    const sidebarName = document.getElementById('desktopSidebarName');
+    const sidebarSub = document.getElementById('desktopSidebarSub');
+    const sidebarPrompt = document.getElementById('desktopSidebarLoginPrompt');
+
+    if (sidebarAvatar) sidebarAvatar.src = currentAvatar;
+    if (sidebarName) sidebarName.textContent = displayName;
+    if (sidebarSub) {
+      const loc = user.location || (APP_STATE.location && APP_STATE.location.name) || 'കേരളം';
+      sidebarSub.textContent = isLoggedIn ? `📍 ${loc} · പ്രൊഫൈൽ` : 'ലോഗിൻ ചെയ്യാൻ തൊടുക ➔';
+    }
+    if (sidebarPrompt) {
+      sidebarPrompt.style.display = isLoggedIn ? 'none' : 'block';
+    }
+
+    // Mobile Top Bar
+    const mobileLoginChip = document.getElementById('homeMobileLoginChip');
+    if (mobileLoginChip) {
+      mobileLoginChip.style.display = isLoggedIn ? 'none' : 'inline-flex';
+    }
+
+    // Update Admin UI
+    if (typeof updateAdminUI === 'function') {
+      updateAdminUI();
+    }
+  }
+  window.updateUserAuthUI = updateUserAuthUI;
+
+  function openLoginModal() {
+    const modal = document.getElementById('modal-citizen-login');
+    if (!modal) return;
+    const phoneInput = document.getElementById('citizenLoginPhone');
+    const nameInput = document.getElementById('citizenLoginName');
+    const placeInput = document.getElementById('citizenLoginPlace');
+    const districtInput = document.getElementById('citizenLoginDistrict');
+    const bloodInput = document.getElementById('citizenLoginBlood');
+    const donorInput = document.getElementById('citizenLoginDonor');
+    const hintEl = document.getElementById('loginPhoneStatusHint');
+    const btnText = document.getElementById('loginSubmitBtnText');
+
+    const user = (APP_STATE && APP_STATE.currentUser) || {};
+    const existingPhone = user.phone ? user.phone.replace(/\D/g, '').slice(-10) : '';
+
+    if (phoneInput) phoneInput.value = existingPhone;
+    if (nameInput) nameInput.value = (user.name && user.name !== 'നാട്ടുകാരൻ') ? user.name : '';
+    if (placeInput) placeInput.value = user.location || (APP_STATE.location && APP_STATE.location.name) || '';
+    if (districtInput && (user.district || (APP_STATE.location && APP_STATE.location.district))) {
+      districtInput.value = user.district || APP_STATE.location.district;
+    }
+    if (bloodInput && user.bloodGroup) bloodInput.value = user.bloodGroup;
+    if (donorInput) donorInput.checked = (user.isDonor !== false);
+
+    if (hintEl) {
+      hintEl.style.display = 'none';
+      hintEl.textContent = '';
+    }
+    if (btnText) {
+      btnText.textContent = existingPhone ? 'ലോഗിൻ ചെയ്യാം / തുടരാം' : 'ലോഗിൻ ചെയ്യാം (Login Now)';
+    }
+
+    modal.style.display = 'flex';
+    modal.classList.add('active');
+
+    if (existingPhone) {
+      handleLoginPhoneLookup(existingPhone);
+    } else if (phoneInput) {
+      setTimeout(() => phoneInput.focus(), 150);
+    }
+  }
+  window.openLoginModal = openLoginModal;
+
+  let _loginPhoneLookupTimer = null;
+  function handleLoginPhoneLookup(val) {
+    clearTimeout(_loginPhoneLookupTimer);
+    const clean = String(val || '').replace(/\D/g, '').slice(-10);
+    const hintEl = document.getElementById('loginPhoneStatusHint');
+    const nameInput = document.getElementById('citizenLoginName');
+    const placeInput = document.getElementById('citizenLoginPlace');
+    const districtInput = document.getElementById('citizenLoginDistrict');
+    const btnText = document.getElementById('loginSubmitBtnText');
+
+    if (clean.length < 10) {
+      if (hintEl) hintEl.style.display = 'none';
+      if (btnText) btnText.textContent = 'ലോഗിൻ ചെയ്യാം (Login Now)';
+      return;
+    }
+
+    if (hintEl) {
+      hintEl.style.display = 'block';
+      hintEl.style.color = '#0284C7';
+      hintEl.textContent = '🔍 പ്രൊഫൈൽ പരിശോധിക്കുന്നു...';
+    }
+
+    _loginPhoneLookupTimer = setTimeout(async () => {
+      let profile = null;
+      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.fetchUserProfile === 'function') {
+        try {
+          profile = await window.NN_SUPABASE_SERVICES.fetchUserProfile(clean);
+        } catch (_) {}
+      }
+
+      if (profile && profile.name) {
+        if (hintEl) {
+          hintEl.style.display = 'block';
+          hintEl.style.color = '#059669';
+          hintEl.innerHTML = `✅ പ്രൊഫൈൽ കണ്ടെത്തി: <b>${escapeHtml(profile.name)}</b> (📍 ${escapeHtml(profile.place || 'കേരളം')})`;
+        }
+        if (nameInput && (!nameInput.value || nameInput.value === 'നാട്ടുകാരൻ')) {
+          nameInput.value = profile.name;
+        }
+        if (placeInput && (!placeInput.value || placeInput.value === 'തത്സമയ ലൊക്കേഷൻ') && profile.place) {
+          placeInput.value = profile.place;
+        }
+        if (districtInput && profile.district) {
+          districtInput.value = profile.district;
+        }
+        if (btnText) {
+          btnText.textContent = `🚀 ലോഗിൻ ചെയ്യാം (${profile.name})`;
+        }
+      } else {
+        if (hintEl) {
+          hintEl.style.display = 'block';
+          hintEl.style.color = '#047857';
+          hintEl.textContent = '✨ പുതിയ സിറ്റിസൺ രജിസ്ട്രേഷൻ (പേര് നൽകുക)';
+        }
+        if (btnText) {
+          btnText.textContent = '🚀 രജിസ്റ്റർ ചെയ്ത് ലോഗിൻ ചെയ്യാം';
+        }
+      }
+    }, 280);
+  }
+  window.handleLoginPhoneLookup = handleLoginPhoneLookup;
+
+  async function handleCitizenLoginSubmit(e) {
+    if (e && e.preventDefault) e.preventDefault();
+
+    const phoneInput = document.getElementById('citizenLoginPhone');
+    const nameInput = document.getElementById('citizenLoginName');
+    const placeInput = document.getElementById('citizenLoginPlace');
+    const districtInput = document.getElementById('citizenLoginDistrict');
+    const bloodInput = document.getElementById('citizenLoginBlood');
+    const donorInput = document.getElementById('citizenLoginDonor');
+
+    const rawPhone = phoneInput ? phoneInput.value : '';
+    const cleanPhone = String(rawPhone).replace(/\D/g, '').slice(-10);
+
+    if (!cleanPhone || cleanPhone.length < 10) {
+      alert('ദയവായി സാധുവായ 10-അക്ക മൊബൈൽ നമ്പർ നൽകുക.');
+      if (phoneInput) phoneInput.focus();
+      return;
+    }
+
+    const rawName = (nameInput && nameInput.value ? nameInput.value.trim() : '') || 'നാട്ടുകാരൻ';
+    const place = (placeInput && placeInput.value ? placeInput.value.trim() : '') || (APP_STATE.location?.name || 'കേരളം');
+    const district = (districtInput && districtInput.value ? districtInput.value : '') || (APP_STATE.location?.district || 'കണ്ണൂർ');
+    const bloodGroup = (bloodInput && bloodInput.value ? bloodInput.value : 'O+');
+    const isDonor = donorInput ? donorInput.checked : true;
+
+    const citizenId = 'usr_' + cleanPhone;
+
+    APP_STATE.currentUser = {
+      id: citizenId,
+      name: rawName,
+      phone: cleanPhone,
+      location: place,
+      district: district,
+      bloodGroup: bloodGroup,
+      avatar: APP_STATE.currentUser?.avatar || DEFAULT_USER_AVATAR,
+      cover: APP_STATE.currentUser?.cover || 'img/kerala-splash.jpg',
+      bio: APP_STATE.currentUser?.bio || 'നമ്മുടെ നാട് കൂട്ടായ്മ 🌿',
+      isDonor: isDonor,
+      isCustomized: true
+    };
+
+    try {
+      localStorage.setItem('nn_user_id', cleanPhone);
+      localStorage.setItem('nn_permanent_id', citizenId);
+      localStorage.setItem('nn_permanent_phone', cleanPhone);
+      localStorage.setItem('nn_user_phone', cleanPhone);
+      localStorage.setItem('nn_user_name', rawName);
+      localStorage.setItem('nn_user_loc', place);
+      localStorage.setItem('nn_curr_district', district);
+      localStorage.setItem('nn_user_blood', bloodGroup);
+      localStorage.setItem('nn_user_is_donor', isDonor ? 'true' : 'false');
+      localStorage.setItem('nn_profile_completed', 'true');
+    } catch (_) {}
+
+    // Close modal
+    closeModal('modal-citizen-login');
+
+    // Instantly update interface
+    updateUserAuthUI();
+    renderProfileScreen();
+    updatePostingProfileBar();
+    if (APP_STATE.currentScreen === 'home') {
+      renderHomeScreen();
+    }
+
+    toast(`🎉 സ്വാഗതം ${rawName}! താങ്കൾ വിജയകരമായി ലോഗിൻ ചെയ്തു.`);
+
+    // Async cloud sync
+    if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES) {
+      if (typeof window.NN_SUPABASE_SERVICES.saveUserProfile === 'function') {
+        window.NN_SUPABASE_SERVICES.saveUserProfile(APP_STATE.currentUser);
+      }
+      if (typeof window.NN_SUPABASE_SERVICES.syncUserChats === 'function') {
+        window.NN_SUPABASE_SERVICES.syncUserChats();
+      }
+    }
+    if (typeof window !== 'undefined' && window.NN_ONESIGNAL?.syncUserIdentity) {
+      window.NN_ONESIGNAL.syncUserIdentity();
+    }
+  }
+  window.handleCitizenLoginSubmit = handleCitizenLoginSubmit;
+
+  function handleDesktopProfileClick() {
+    const cleanPhone = (APP_STATE?.currentUser?.phone || '').replace(/\D/g, '').slice(-10);
+    if (!cleanPhone || cleanPhone.length < 10) {
+      openLoginModal();
+    } else {
+      navTo('profile');
+    }
+  }
+  window.handleDesktopProfileClick = handleDesktopProfileClick;
+
+  function handleSidebarUserCardClick() {
+    const cleanPhone = (APP_STATE?.currentUser?.phone || '').replace(/\D/g, '').slice(-10);
+    if (!cleanPhone || cleanPhone.length < 10) {
+      openLoginModal();
+    } else {
+      navTo('profile');
+    }
+  }
+  window.handleSidebarUserCardClick = handleSidebarUserCardClick;
 
   function openSettingsModal() {
     const user = (APP_STATE && APP_STATE.currentUser) || {};
@@ -9504,6 +9766,7 @@
     try { localStorage.removeItem('nn_is_admin'); } catch (_) {}
     initData();
     if (typeof updateAdminUI === 'function') updateAdminUI();
+    if (typeof updateUserAuthUI === 'function') updateUserAuthUI();
     updateChatBadgeCounter();
     renderHomeScreen();
     renderCommunityFeed();
@@ -10101,6 +10364,7 @@
                 renderProfileScreen();
                 updatePostingProfileBar();
                 renderHomeScreen();
+                if (typeof updateUserAuthUI === 'function') updateUserAuthUI();
                 if (typeof renderCommunityFeed === 'function') renderCommunityFeed();
                 if (typeof renderHomeCommunityFeed === 'function') renderHomeCommunityFeed();
               }

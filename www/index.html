@@ -154,10 +154,28 @@
                         <span>സേവനം</span>
                     </button>
 
-                    <div class="desktop-user-profile-chip" onclick="navTo('profile')" title="എന്റെ പ്രൊഫൈൽ">
-                        <img id="desktopUserAvatar" src="img/kerala-splash.jpg" alt="Profile"
-                            class="desktop-user-avatar">
-                        <span id="desktopUserName" class="desktop-user-name">പ്രൊഫൈൽ</span>
+                    <div id="desktopAuthWrap" style="display:flex;align-items:center;gap:8px">
+                        <!-- Login Button (Visible when NOT logged in) -->
+                        <button type="button" id="desktopLoginBtn" class="desktop-action-btn login-btn" onclick="openLoginModal()"
+                            style="background:linear-gradient(135deg, #059669 0%, #10B981 100%);color:#fff;border:none;padding:8px 16px;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 3px 10px rgba(16,185,129,0.3)">
+                            <span>🔑</span>
+                            <span>ലോഗിൻ</span>
+                        </button>
+
+                        <!-- Profile Chip (Always available) -->
+                        <div class="desktop-user-profile-chip" id="desktopUserProfileChip" onclick="handleDesktopProfileClick()" title="എന്റെ പ്രൊഫൈൽ">
+                            <img id="desktopUserAvatar" src="img/kerala-splash.jpg" alt="Profile"
+                                class="desktop-user-avatar">
+                            <span id="desktopUserName" class="desktop-user-name">പ്രൊഫൈൽ</span>
+                        </div>
+
+                        <!-- Direct Logout Button (Visible when logged in) -->
+                        <button type="button" id="desktopLogoutBtn" onclick="handleProfileLogout()"
+                            style="display:none;background:#FEF2F2;color:#DC2626;border:1px solid #FECDD3;padding:7px 11px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;align-items:center;gap:4px"
+                            title="ലോഗ് ഔട്ട് ചെയ്യാം (Logout)">
+                            <span>🚪</span>
+                            <span>ലോഗ് ഔട്ട്</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -171,13 +189,24 @@
             <!-- 1. LEFT NAVIGATION & PROFILE SIDEBAR -->
             <aside class="desktop-sidebar-left" id="webLeftSidebar">
                 <!-- User mini hero -->
-                <div class="desktop-card desktop-user-hero-mini" onclick="navTo('profile')">
+                <div class="desktop-card desktop-user-hero-mini" id="desktopSidebarUserCard" onclick="handleSidebarUserCardClick()" style="cursor:pointer">
                     <img id="desktopSidebarAvatar" src="img/kerala-splash.jpg" alt="User"
                         class="desktop-sidebar-avatar">
-                    <div class="desktop-sidebar-user-info">
+                    <div class="desktop-sidebar-user-info" style="flex:1">
                         <h4 id="desktopSidebarName">നമ്മുടെ ഉപയോക്താവ്</h4>
                         <p id="desktopSidebarSub">📍 കേരളം · പ്രൊഫൈൽ കാണാം</p>
                     </div>
+                </div>
+
+                <!-- Guest Login Promo Card in Sidebar (shows when NOT logged in) -->
+                <div id="desktopSidebarLoginPrompt" class="desktop-card" style="display:none;background:linear-gradient(135deg, #ECFDF5 0%, #F0FDF4 100%);border:1.5px solid #A7F3D0;text-align:center;padding:16px 14px">
+                    <div style="font-size:24px;margin-bottom:4px">🌴 🔑</div>
+                    <div style="font-weight:900;color:#064E3B;font-size:14px;margin-bottom:3px">നമ്മുടെ നാടിലേക്ക് സ്വാഗതം!</div>
+                    <p style="font-size:11.5px;color:#047857;margin:0 0 12px;line-height:1.4">സേവനങ്ങൾ ഉപയോഗിക്കാനും സംസാരിക്കാനും ലോഗിൻ ചെയ്യൂ.</p>
+                    <button type="button" onclick="openLoginModal()"
+                        style="width:100%;background:linear-gradient(135deg, #059669 0%, #10B981 100%);color:#fff;border:none;padding:10px;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(16,185,129,0.25);display:flex;align-items:center;justify-content:center;gap:6px">
+                        <span>🔑</span> <span>ലോഗിൻ / രജിസ്റ്റർ</span>
+                    </button>
                 </div>
 
                 <!-- Navigation List -->
@@ -304,6 +333,14 @@
                                 style="display:none;align-items:center;gap:4px;background:linear-gradient(135deg, #064E3B 0%, #0E7043 100%);color:#fff;border:none;border-radius:12px;padding:6px 10px;font-size:11.5px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(6,78,59,0.25)">
                                 <span>🔐</span>
                                 <span>അഡ്മിൻ</span>
+                            </button>
+
+                            <!-- Mobile Login Chip: visible for Guest users -->
+                            <button id="homeMobileLoginChip" type="button" onclick="openLoginModal()"
+                                title="ലോഗിൻ ചെയ്യാം"
+                                style="display:none;align-items:center;gap:4px;background:linear-gradient(135deg, #059669 0%, #10B981 100%);color:#fff;border:none;border-radius:12px;padding:6px 11px;font-size:11.5px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(16,185,129,0.3)">
+                                <span>🔑</span>
+                                <span>ലോഗിൻ</span>
                             </button>
 
                             <!-- Circular Settings Button -->
@@ -1489,6 +1526,8 @@
                             തിരുവനന്തപുരം · കൊല്ലം · പത്തനംതിട്ട · ആലപ്പുഴ · കോട്ടയം · ഇടുക്കി · എറണാകുളം · തൃശൂർ · പാലക്കാട് · മലപ്പുറം · കോഴിക്കോട് · വയനാട് · കണ്ണൂർ · കാസർഗോഡ്
                         </p>
                         <div class="desktop-footer-legal-links">
+                            <a href="javascript:void(0)" onclick="openLoginModal()" style="font-weight:700;color:#6EE7B7">🔑 ലോഗിൻ / രജിസ്റ്റർ</a>
+                            <span class="sep">·</span>
                             <a href="privacy-policy.html">സ്വകാര്യതാ നയം (Privacy Policy)</a>
                             <span class="sep">·</span>
                             <a onclick="openSettingsModal()">സെറ്റിംഗ്സ്</a>
@@ -3296,8 +3335,120 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- MODAL: EDIT USER PROFILE                                       -->
+    <!-- MODAL: DEDICATED CITIZEN LOGIN & REGISTRATION DIALOG           -->
     <!-- ============================================================== -->
+    <div id="modal-citizen-login" class="modal-overlay"
+        onclick="if(event.target===this)closeModal('modal-citizen-login')">
+        <div class="modal-sheet"
+            style="max-height:92vh;overflow-y:auto;padding:24px 20px 28px;border-radius:24px;box-shadow:0 12px 40px rgba(0,0,0,0.25);max-width:480px;margin:auto">
+            
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div style="display:flex;align-items:center;gap:10px">
+                    <div
+                        style="width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);color:#0E7043;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 2px 8px rgba(16,185,129,0.2)">
+                        🔑</div>
+                    <div>
+                        <h3 style="margin:0;color:#0F172A;font-size:18px;font-weight:900">സിറ്റിസൺ ലോഗിൻ / രജിസ്റ്റർ</h3>
+                        <div style="font-size:11.5px;color:#059669;font-weight:700;margin-top:1px">
+                            🌴 നമ്മുടെ നാട് കമ്മ്യൂണിറ്റി പോർട്ടൽ
+                        </div>
+                    </div>
+                </div>
+                <button type="button" onclick="closeModal('modal-citizen-login')" class="modal-close-btn"
+                    title="ക്ലോസ് ചെയ്യാം">✕</button>
+            </div>
+
+            <p style="font-size:12.5px;color:#64748B;margin:0 0 16px;line-height:1.45">
+                നിങ്ങളുടെ 10-അക്ക മൊബൈൽ നമ്പർ നൽകി നേരിട്ട് ലോഗിൻ ചെയ്യാം. ഒടിപി അല്ലെങ്കിൽ പാസ്‌വേഡ് ആവശ്യമില്ല.
+            </p>
+
+            <form id="citizenLoginForm" onsubmit="handleCitizenLoginSubmit(event)" style="display:flex;flex-direction:column;gap:14px">
+                <!-- Phone Number -->
+                <div>
+                    <label style="font-size:12px;font-weight:800;color:#1E293B;display:block;margin-bottom:6px">
+                        📱 മൊബൈൽ നമ്പർ (10 Digits) *
+                    </label>
+                    <div style="display:flex;align-items:center;background:#F8FAFC;border:1.5px solid #CBD5E1;border-radius:14px;overflow:hidden">
+                        <span style="padding:12px 14px;background:#F1F5F9;color:#334155;font-weight:800;font-size:14px;border-right:1px solid #CBD5E1">+91</span>
+                        <input type="tel" id="citizenLoginPhone" placeholder="9447000000" maxlength="10" required
+                            style="flex:1;padding:12px 14px;border:none;background:transparent;font-size:15px;font-weight:700;color:#0F172A;outline:none"
+                            oninput="handleLoginPhoneLookup(this.value)">
+                    </div>
+                    <div id="loginPhoneStatusHint" style="font-size:11.5px;margin-top:5px;font-weight:700;color:#64748B;display:none"></div>
+                </div>
+
+                <!-- Full Name -->
+                <div>
+                    <label style="font-size:12px;font-weight:800;color:#1E293B;display:block;margin-bottom:6px">
+                        👤 നിങ്ങളുടെ പൂർണ്ണ നാമം (Name) *
+                    </label>
+                    <input type="text" id="citizenLoginName" placeholder="ഉദാ: രാഹുൽ കെ." required
+                        style="width:100%;padding:12px 14px;border:1.5px solid #CBD5E1;border-radius:14px;font-size:14px;color:#0F172A;outline:none;background:#F8FAFC;box-sizing:border-box">
+                </div>
+
+                <!-- Location / Place & District -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                    <div>
+                        <label style="font-size:12px;font-weight:800;color:#1E293B;display:block;margin-bottom:6px">
+                            📍 നാട് / സ്ഥലം (Place)
+                        </label>
+                        <input type="text" id="citizenLoginPlace" placeholder="ഉദാ: പയ്യന്നൂർ"
+                            style="width:100%;padding:11px 12px;border:1.5px solid #CBD5E1;border-radius:14px;font-size:13px;color:#0F172A;outline:none;background:#F8FAFC;box-sizing:border-box">
+                    </div>
+                    <div>
+                        <label style="font-size:12px;font-weight:800;color:#1E293B;display:block;margin-bottom:6px">
+                            🗺️ ജില്ല (District)
+                        </label>
+                        <select id="citizenLoginDistrict"
+                            style="width:100%;padding:11px 10px;border:1.5px solid #CBD5E1;border-radius:14px;font-size:13px;font-weight:700;color:#0F172A;outline:none;background:#F8FAFC;box-sizing:border-box">
+                            <option value="കണ്ണൂർ">കണ്ണൂർ (Kannur)</option>
+                            <option value="കാസർഗോഡ്">കാസർഗോഡ് (Kasaragod)</option>
+                            <option value="കോഴിക്കോട്">കോഴിക്കോട് (Kozhikode)</option>
+                            <option value="വയനാട്">വയനാട് (Wayanad)</option>
+                            <option value="മലപ്പുറം">മലപ്പുറം (Malappuram)</option>
+                            <option value="പാലക്കാട്">പാലക്കാട് (Palakkad)</option>
+                            <option value="തൃശ്ശൂർ">തൃശ്ശൂർ (Thrissur)</option>
+                            <option value="എറണാകുളം">എറണാകുളം (Ernakulam)</option>
+                            <option value="ഇടുക്കി">ഇടുക്കി (Idukki)</option>
+                            <option value="കോട്ടയം">കോട്ടയം (Kottayam)</option>
+                            <option value="ആലപ്പുഴ">ആലപ്പുഴ (Alappuzha)</option>
+                            <option value="പത്തനംതിട്ട">പത്തനംതിട്ട (Pathanamthitta)</option>
+                            <option value="കൊല്ലം">കൊല്ലം (Kollam)</option>
+                            <option value="തിരുവനന്തപുരം">തിരുവനന്തപുരം (Trivandrum)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Blood Group & Donor Checkbox -->
+                <div style="background:#FFF5F5;border:1px solid #FECDD3;border-radius:14px;padding:12px">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                        <label style="font-size:12px;font-weight:800;color:#9F1239">🩸 രക്തഗ്രൂപ്പ് (Blood Group)</label>
+                        <select id="citizenLoginBlood" style="padding:4px 8px;border-radius:8px;border:1px solid #FDA4AF;font-weight:800;font-size:12px;color:#881337">
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                        </select>
+                    </div>
+                    <label style="display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;color:#881337;cursor:pointer">
+                        <input type="checkbox" id="citizenLoginDonor" checked style="accent-color:#E11D48;width:16px;height:16px">
+                        <span>അടിയന്തിര ഘട്ടത്തിൽ രക്തദാതാവായി സേവനം ചെയ്യാൻ താല്പര്യമുണ്ട്</span>
+                    </label>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="citizenLoginSubmitBtn"
+                    style="background:linear-gradient(135deg, #059669 0%, #10B981 100%);color:#fff;border:none;padding:14px;border-radius:16px;font-weight:900;font-size:15px;cursor:pointer;margin-top:4px;box-shadow:0 4px 14px rgba(16,185,129,0.35);display:flex;align-items:center;justify-content:center;gap:8px">
+                    <span>🚀</span> <span id="loginSubmitBtnText">ലോഗിൻ ചെയ്യാം (Login Now)</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- ============================================================== -->
     <!-- MODAL: MODERN CITIZEN PROFILE FORM & SETTINGS                  -->
     <!-- ============================================================== -->

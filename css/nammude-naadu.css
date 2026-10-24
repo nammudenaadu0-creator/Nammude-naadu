@@ -3712,6 +3712,19 @@
   transform: translateY(-1px);
 }
 
+.desktop-action-btn.login-btn {
+  background: linear-gradient(135deg, #059669 0%, #10B981 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35) !important;
+  font-weight: 800;
+}
+
+.desktop-action-btn.login-btn:hover {
+  background: linear-gradient(135deg, #047857 0%, #059669 100%) !important;
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.45) !important;
+}
+
 .desktop-action-btn.blood {
   background: #FEE2E2;
   color: #DC2626;
