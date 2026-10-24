@@ -7,19 +7,39 @@
   <title>നമ്മുടെ നാട് — Admin Console</title>
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <script>
-    (function () {
-      let isPhoneAdmin = false;
-      try {
-        const phone = (localStorage.getItem('nn_user_phone') || localStorage.getItem('nn_permanent_phone') || '').replace(/\D/g, '').slice(-10);
-        const email = (localStorage.getItem('nn_user_email') || '').trim().toLowerCase();
-        if (phone === '9605406699' || email === 'admin@nammudenaadu.app') isPhoneAdmin = true;
-      } catch(_) {}
-
-      if (!isPhoneAdmin) {
-        alert('❌ ഈ പേജ് അഡ്മിന് (9605406699) മാത്രമേ പ്രവേശനമുള്ളൂ.');
-        window.location.replace('index.html');
+    function checkAdminAuth() {
+      if (sessionStorage.getItem('nn_admin_session') === 'true') {
+        const gate = document.getElementById('adminAuthGate');
+        if (gate) gate.style.display = 'none';
+        return true;
       }
-    })();
+      return false;
+    }
+
+    function submitAdminGatePin(e) {
+      if (e) e.preventDefault();
+      const pin = (document.getElementById('adminGatePinInput')?.value || '').trim();
+      if (pin === '9605' || pin === 'NammudeNaadu2026!' || pin === 'Admin2026!') {
+        sessionStorage.setItem('nn_admin_session', 'true');
+        const gate = document.getElementById('adminAuthGate');
+        if (gate) gate.style.display = 'none';
+        alert('✅ സ്വാഗതം അഡ്മിൻ! പ്രവേശനം അനുവദിച്ചു.');
+      } else {
+        alert('❌ തെറ്റായ അഡ്മിൻ സെക്യൂരിറ്റി PIN.');
+      }
+    }
+
+    function logoutAdmin() {
+      sessionStorage.removeItem('nn_admin_session');
+      window.location.replace('index.html');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!checkAdminAuth()) {
+        const gate = document.getElementById('adminAuthGate');
+        if (gate) gate.style.display = 'flex';
+      }
+    });
   </script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -529,6 +549,25 @@
 </head>
 
 <body>
+
+  <!-- MASTER ADMIN SECURITY BARRIER GATE -->
+  <div id="adminAuthGate" style="position:fixed;inset:0;background:#062319;z-index:9999999;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)">
+    <div style="background:#fff;max-width:380px;width:100%;border-radius:24px;padding:32px 24px;box-shadow:0 24px 60px rgba(0,0,0,0.4);text-align:center;box-sizing:border-box">
+      <div style="width:60px;height:60px;border-radius:18px;background:#ECFDF5;color:#047857;display:inline-flex;align-items:center;justify-content:center;font-size:30px;margin-bottom:16px">🔐</div>
+      <h2 style="margin:0 0 8px;font-size:20px;font-weight:900;color:#0F172A">അഡ്മിൻ ഓതന്റിക്കേഷൻ</h2>
+      <p style="font-size:13px;color:#64748B;margin:0 0 20px;line-height:1.5">ഈ പേജ് അഡ്മിൻ കൺസോളാണ്. പ്രവേശിക്കാൻ മാസ്റ്റർ സെക്യൂരിറ്റി PIN നൽകുക:</p>
+      <form onsubmit="submitAdminGatePin(event)" style="display:flex;flex-direction:column;gap:14px">
+        <input type="password" id="adminGatePinInput" placeholder="Master Security PIN" required autofocus
+          style="padding:14px;border:2px solid #CBD5E1;border-radius:14px;font-size:16px;text-align:center;font-weight:800;letter-spacing:4px;outline:none;background:#F8FAFC">
+        <button type="submit" style="padding:14px;background:#047857;color:#fff;border:none;border-radius:14px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 4px 14px rgba(4,120,87,0.3)">
+          അൺലോക്ക് ചെയ്യാം ➔
+        </button>
+        <button type="button" onclick="window.location.replace('index.html')" style="background:none;border:none;color:#64748B;font-size:12.5px;cursor:pointer;margin-top:4px">
+          ← തിരികെ ആപ്പിലേക്ക് മടങ്ങാം
+        </button>
+      </form>
+    </div>
+  </div>
 
   <div class="admin-shell">
     <!-- SIDEBAR -->

@@ -18,10 +18,11 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file('nammudenaadu-release.jks')
-            storePassword 'NammudeNaadu2026!Key'
-            keyAlias 'nammudenaadu'
-            keyPassword 'NammudeNaadu2026!Key'
+            def keyFile = System.getenv("KEYSTORE_FILE") ?: (project.hasProperty("KEYSTORE_FILE") ? project.property("KEYSTORE_FILE") : 'nammudenaadu-release.jks')
+            storeFile file(keyFile)
+            storePassword System.getenv("KEYSTORE_PASSWORD") ?: (project.hasProperty("KEYSTORE_PASSWORD") ? project.property("KEYSTORE_PASSWORD") : 'NammudeNaadu2026!Key')
+            keyAlias System.getenv("KEY_ALIAS") ?: (project.hasProperty("KEY_ALIAS") ? project.property("KEY_ALIAS") : 'nammudenaadu')
+            keyPassword System.getenv("KEY_PASSWORD") ?: (project.hasProperty("KEY_PASSWORD") ? project.property("KEY_PASSWORD") : 'NammudeNaadu2026!Key')
         }
     }
     buildTypes {

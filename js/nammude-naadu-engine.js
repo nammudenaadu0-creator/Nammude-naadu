@@ -7037,9 +7037,26 @@
   }
   window.updateAdminUI = updateAdminUI;
 
+  function verifyAdminMasterAuth(callback) {
+    if (sessionStorage.getItem('nn_admin_session') === 'true') {
+      if (typeof callback === 'function') callback();
+      return true;
+    }
+    const pin = prompt('🔐 അഡ്മിൻ മാസ്റ്റർ സെക്യൂരിറ്റി PIN നൽകുക:');
+    if (pin && (pin === '9605' || pin === 'NammudeNaadu2026!' || pin === 'Admin2026!')) {
+      sessionStorage.setItem('nn_admin_session', 'true');
+      toast('✅ അഡ്മിൻ ആക്സസ് അനുവദിച്ചു');
+      if (typeof callback === 'function') callback();
+      return true;
+    }
+    toast('❌ തെറ്റായ അഡ്മിൻ സെക്യൂരിറ്റി PIN. പ്രവേശനം നിഷേധിച്ചു.');
+    return false;
+  }
+  window.verifyAdminMasterAuth = verifyAdminMasterAuth;
+
   function promptAdminAuth(callback) {
     if (checkIsAdmin()) {
-      if (typeof callback === 'function') callback();
+      verifyAdminMasterAuth(callback);
       return;
     }
     toast('⚠️ അഡ്മിൻ ആക്സസ് ഈ ഫോൺ നമ്പറിന് (9605406699) മാത്രമേ അനുവദിച്ചിട്ടുള്ളൂ.');
@@ -7051,8 +7068,10 @@
       toast('⚠️ അഡ്മിൻ ആക്സസ് ഈ ഫോൺ നമ്പറിന് (9605406699) മാത്രമേ അനുവദിച്ചിട്ടുള്ളൂ.');
       return;
     }
-    openModal('modal-admin-hub');
-    switchAdminHubTab(tab);
+    verifyAdminMasterAuth(() => {
+      openModal('modal-admin-hub');
+      switchAdminHubTab(tab);
+    });
   }
   window.openAdminPortal = openAdminPortal;
 

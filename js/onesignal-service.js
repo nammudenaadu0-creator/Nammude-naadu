@@ -4,9 +4,10 @@
 (function () {
   'use strict';
 
-  // Configurable App ID: Stored in localStorage or default App ID
-  const DEFAULT_APP_ID = localStorage.getItem('nn_onesignal_app_id') || 'ba99bc43-e77b-4db1-90ac-d3cab11c8e3b';
-  const DEFAULT_REST_KEY = localStorage.getItem('nn_onesignal_rest_key') || '';
+  // OneSignal Public App ID (Safe for client-side use)
+  const DEFAULT_APP_ID = 'ba99bc43-e77b-4db1-90ac-d3cab11c8e3b';
+  // Note: REST API Key must NEVER be stored in public localStorage
+  const DEFAULT_REST_KEY = '';
 
   window.NN_ONESIGNAL = {
     appId: DEFAULT_APP_ID,
@@ -140,7 +141,7 @@
     // Send instant push notification to recipient's phone via OneSignal REST API
     sendPush: async function (recipientPhone, title, message, extraData) {
       const activeAppId = localStorage.getItem('nn_onesignal_app_id') || this.appId;
-      const activeRestKey = localStorage.getItem('nn_onesignal_rest_key') || this.restApiKey;
+      const activeRestKey = sessionStorage.getItem('nn_admin_onesignal_rest_key') || this.restApiKey || '';
 
       if (!activeAppId || activeAppId === 'YOUR_ONESIGNAL_APP_ID' || !activeRestKey) {
         return false;
@@ -189,7 +190,7 @@
     // Broadcast emergency/news notification to all app users in a district
     broadcastDistrictAlert: async function (title, message, district, extraData) {
       const activeAppId = localStorage.getItem('nn_onesignal_app_id') || this.appId;
-      const activeRestKey = localStorage.getItem('nn_onesignal_rest_key') || this.restApiKey;
+      const activeRestKey = sessionStorage.getItem('nn_admin_onesignal_rest_key') || this.restApiKey || '';
       if (!activeAppId || !activeRestKey) return false;
 
       try {

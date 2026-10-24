@@ -51,20 +51,39 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Stale-While-Revalidate strategy for local static assets (Instant sub-50ms load)
+  // Stale-While-Revalidate strategy with safe offline fallback
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      const fetchPromise = fetch(event.request).then((networkResponse) => {
+    caches.match(event.request).then(async (cachedResponse) => {
+      if (cachedResponse) {
+        // Revalidate in background if online
+        fetch(event.request).then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200 && event.request.url.startsWith('http')) {
+            const clone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+        }).catch(() => {});
+        return cachedResponse;
+      }
+
+      try {
+        const networkResponse = await fetch(event.request);
         if (networkResponse && networkResponse.status === 200 && event.request.url.startsWith('http')) {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
+          const clone = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         }
         return networkResponse;
-      }).catch(() => null);
-
-      return cachedResponse || fetchPromise || caches.match('./index.html');
+      } catch (err) {
+        // Offline recovery: fallback to cached index.html for navigation or clear offline message
+        if (event.request.mode === 'navigate') {
+          const fallback = await caches.match('./index.html');
+          if (fallback) return fallback;
+        }
+        return new Response('Offline: ഇന്റർനെറ്റ് കണക്ഷൻ ലഭ്യമല്ല.', {
+          status: 503,
+          statusText: 'Service Unavailable',
+          headers: new Headers({ 'Content-Type': 'text/plain; charset=utf-8' })
+        });
+      }
     })
   );
 });
