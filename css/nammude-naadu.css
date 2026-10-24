@@ -2695,49 +2695,57 @@ html, body {
   gap: 4px;
 }
 
-/* 5x5 3D POPULAR SERVICES GRID */
+/* 5x5 ROUND VIBRANT 3D SERVICES GRID */
 .home-3d-services-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 8px 4px;
-  padding: 0 clamp(6px, 2vw, 12px);
-  margin-bottom: 20px;
+  gap: 12px 2px;
+  padding: 14px 6px;
+  margin: 0 clamp(8px, 2.5vw, 14px) 22px;
+  background: #FFFFFF;
+  border-radius: 22px;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05);
+  border: 1px solid #E2E8F0;
 }
 
+.service-round-item,
 .service-squircle-3d {
-  background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 100%);
-  border-radius: 14px;
-  padding: 8px 2px 6px;
+  background: transparent;
+  border: none;
+  padding: 2px;
   text-align: center;
-  border: 1px solid #BBF7D0;
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.06);
   cursor: pointer;
-  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  user-select: none;
+  box-shadow: none;
 }
 
+.service-round-item:active,
 .service-squircle-3d:active {
-  transform: scale(0.93);
+  transform: scale(0.90);
 }
 
+.service-round-avatar,
 .squircle-3d-icon-wrap {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #E6FBF0 0%, #DCFCE7 100%);
-  border: 1px solid #86EFAC;
-  margin: 0 auto 4px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 21px;
-  box-shadow: 0 3px 8px rgba(16, 185, 129, 0.12);
+  font-size: 22px;
+  margin: 0 auto 5px;
+  border: 2px solid #FFFFFF;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), inset 0 2px 4px rgba(255, 255, 255, 0.7);
 }
 
+.service-round-label,
 .squircle-3d-label {
   font-size: 10px;
   font-weight: 800;
@@ -2752,6 +2760,33 @@ html, body {
   overflow: hidden;
   max-width: 100%;
 }
+
+/* Category Colorful Theme Gradients */
+.avatar-theme-vehicles   { background: linear-gradient(135deg, #BAE6FD 0%, #38BDF8 100%); box-shadow: 0 4px 12px rgba(56, 189, 248, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-electrician{ background: linear-gradient(135deg, #FEF08A 0%, #FBBF24 100%); box-shadow: 0 4px 12px rgba(251, 191, 36, 0.38), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-plumber    { background: linear-gradient(135deg, #A5F3FC 0%, #22D3EE 100%); box-shadow: 0 4px 12px rgba(34, 211, 238, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-acrepair   { background: linear-gradient(135deg, #C7D2FE 0%, #818CF8 100%); box-shadow: 0 4px 12px rgba(129, 140, 248, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-carpenter  { background: linear-gradient(135deg, #FED7AA 0%, #FB923C 100%); box-shadow: 0 4px 12px rgba(251, 146, 60, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-painter    { background: linear-gradient(135deg, #FBCFE8 0%, #F472B6 100%); box-shadow: 0 4px 12px rgba(244, 114, 182, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-cleaning   { background: linear-gradient(135deg, #A7F3D0 0%, #34D399 100%); box-shadow: 0 4px 12px rgba(52, 211, 153, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-mason      { background: linear-gradient(135deg, #FECACA 0%, #F87171 100%); box-shadow: 0 4px 12px rgba(248, 113, 113, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-gardening  { background: linear-gradient(135deg, #BBF7D0 0%, #4ADE80 100%); box-shadow: 0 4px 12px rgba(74, 222, 128, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-mechanic   { background: linear-gradient(135deg, #E2E8F0 0%, #94A3B8 100%); box-shadow: 0 4px 12px rgba(148, 163, 184, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-welding    { background: linear-gradient(135deg, #FFEDD5 0%, #FB923C 100%); box-shadow: 0 4px 12px rgba(251, 146, 60, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-cctv       { background: linear-gradient(135deg, #DDD6FE 0%, #A78BFA 100%); box-shadow: 0 4px 12px rgba(167, 139, 250, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-beautician { background: linear-gradient(135deg, #FECDD3 0%, #FB7185 100%); box-shadow: 0 4px 12px rgba(251, 113, 133, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-catering   { background: linear-gradient(135deg, #FEF08A 0%, #FACC15 100%); box-shadow: 0 4px 12px rgba(250, 204, 21, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-tailoring  { background: linear-gradient(135deg, #E9D5FF 0%, #C084FC 100%); box-shadow: 0 4px 12px rgba(192, 132, 252, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-nursing    { background: linear-gradient(135deg, #FFE4E6 0%, #FDA4AF 100%); box-shadow: 0 4px 12px rgba(253, 164, 175, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-electronics{ background: linear-gradient(135deg, #BFDBFE 0%, #60A5FA 100%); box-shadow: 0 4px 12px rgba(96, 165, 250, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-tiles      { background: linear-gradient(135deg, #99F6E4 0%, #2DD4BF 100%); box-shadow: 0 4px 12px rgba(45, 212, 191, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-roofing    { background: linear-gradient(135deg, #FED7AA 0%, #F87171 100%); box-shadow: 0 4px 12px rgba(248, 113, 113, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-aluminium  { background: linear-gradient(135deg, #BAE6FD 0%, #7DD3FC 100%); box-shadow: 0 4px 12px rgba(125, 211, 252, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-packers    { background: linear-gradient(135deg, #FDE68A 0%, #F59E0B 100%); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-thekku     { background: linear-gradient(135deg, #D9F99D 0%, #84CC16 100%); box-shadow: 0 4px 12px rgba(132, 204, 22, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-kinar      { background: linear-gradient(135deg, #BAE6FD 0%, #0284C7 100%); box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-solar      { background: linear-gradient(135deg, #FEF08A 0%, #F59E0B 100%); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.38), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-all        { background: linear-gradient(135deg, #10B981 0%, #059669 100%); box-shadow: 0 4px 14px rgba(16, 185, 129, 0.45), inset 0 2px 4px rgba(255,255,255,0.5); color: #FFFFFF !important; }
 
 /* 3D COMMUNITY TEASER BANNER */
 .home-3d-community-card {
