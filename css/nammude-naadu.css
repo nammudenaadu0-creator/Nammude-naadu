@@ -3,6 +3,18 @@
    Tailored for Kerala Local Discovery, Facebook-style Feed, Realtime Chat
    ============================================================== */
 
+*, *::before, *::after {
+  box-sizing: border-box !important;
+}
+
+html, body {
+  width: 100% !important;
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 :root {
   --nn-primary: #0E7043;
   --nn-primary-light: #E8F5E9;
@@ -3766,13 +3778,22 @@ body {
   border-top-right-radius: 24px !important;
   border-bottom-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  overflow: hidden !important;
+  padding: 20px 18px 44px !important;
+  margin: 0 auto !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  box-sizing: border-box !important;
   box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.35) !important;
   background: #FFFFFF !important;
-  display: flex !important;
-  flex-direction: column !important;
+  display: block !important;
+}
+
+.modal-overlay .modal-sheet input,
+.modal-overlay .modal-sheet select,
+.modal-overlay .modal-sheet textarea,
+.modal-overlay .modal-sheet button {
+  box-sizing: border-box !important;
+  max-width: 100% !important;
 }
 
 /* Ensure no legacy auto-fill badge or chip ever shows anywhere */

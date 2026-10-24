@@ -1969,7 +1969,7 @@
                     വാഹനം / ട്രാൻസ്പോർട്ട്</button>
             </div>
 
-            <form onsubmit="submitServiceRegistration(event)" style="display:flex;flex-direction:column;gap:12px">
+            <form id="addServiceForm" novalidate onsubmit="submitServiceRegistration(event)" style="display:flex;flex-direction:column;gap:12px">
                 <!-- NAME -->
                 <div>
                     <label style="font-size:12px;font-weight:700;color:#374151" id="regServiceNameLabel">പൂർണ്ണ നാമം / സ്ഥാപനപ്പേര്</label>
@@ -2236,8 +2236,8 @@
                         style="width:100%;padding:10px;border:1px solid #D1D5DB;border-radius:10px;font-size:13px;outline:none;margin-top:4px">
                 </div>
 
-                <button type="submit"
-                    style="background:#0E7043;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;margin-top:6px;box-shadow:0 4px 12px rgba(14,112,67,0.25)">🚀
+                <button type="button" onclick="submitServiceRegistration(event)"
+                    style="background:#0E7043;color:#fff;border:none;padding:14px;border-radius:14px;font-weight:800;font-size:15px;cursor:pointer;margin-top:10px;margin-bottom:24px;box-shadow:0 4px 12px rgba(14,112,67,0.25);width:100%;touch-action:manipulation">🚀
                     സേവനം രജിസ്റ്റർ ചെയ്യാം</button>
             </form>
         </div>
@@ -3391,7 +3391,7 @@
                     മാസം കഴിഞ്ഞിരിക്കണം.</div>
             </div>
 
-            <form onsubmit="submitDonorRegistration(event)" style="display:flex;flex-direction:column;gap:10px">
+            <form id="registerDonorForm" novalidate onsubmit="submitDonorRegistration(event)" style="display:flex;flex-direction:column;gap:10px">
                 <div>
                     <label style="font-size:12px;font-weight:700">പൂർണ്ണ നാമം (Full Name)</label>
                     <input type="text" id="regDonorName" required placeholder="നിങ്ങളുടെ പേര്"
@@ -3442,8 +3442,8 @@
                         സാക്ഷ്യപ്പെടുത്തുന്നു.</span>
                 </label>
 
-                <button type="submit"
-                    style="background:#DC2626;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;margin-top:4px">രജിസ്റ്റർ
+                <button type="button" onclick="submitDonorRegistration(event)"
+                    style="background:#DC2626;color:#fff;border:none;padding:14px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;margin-top:8px;margin-bottom:24px;width:100%;touch-action:manipulation">രജിസ്റ്റർ
                     ചെയ്യാം</button>
             </form>
         </div>
@@ -3622,7 +3622,7 @@
                 നിങ്ങളുടെ 10-അക്ക മൊബൈൽ നമ്പർ നൽകി നേരിട്ട് ലോഗിൻ ചെയ്യാം. ഒടിപി അല്ലെങ്കിൽ പാസ്‌വേഡ് ആവശ്യമില്ല.
             </p>
 
-            <form id="citizenLoginForm" onsubmit="handleCitizenLoginSubmit(event)" style="display:flex;flex-direction:column;gap:14px">
+            <form id="citizenLoginForm" novalidate onsubmit="handleCitizenLoginSubmit(event)" style="display:flex;flex-direction:column;gap:14px">
                 <!-- Phone Number -->
                 <div>
                     <label style="font-size:12px;font-weight:800;color:#1E293B;display:block;margin-bottom:6px">
@@ -3714,8 +3714,8 @@
                 </div>
 
                 <!-- Submit Button -->
-                <button type="submit" id="citizenLoginSubmitBtn"
-                    style="background:linear-gradient(135deg, #059669 0%, #10B981 100%);color:#fff;border:none;padding:14px;border-radius:16px;font-weight:900;font-size:15px;cursor:pointer;margin-top:4px;box-shadow:0 4px 14px rgba(16,185,129,0.35);display:flex;align-items:center;justify-content:center;gap:8px">
+                <button type="button" id="citizenLoginSubmitBtn" onclick="handleCitizenLoginSubmit(event)"
+                    style="background:linear-gradient(135deg, #059669 0%, #10B981 100%);color:#fff;border:none;padding:14px;border-radius:16px;font-weight:900;font-size:15px;cursor:pointer;margin-top:8px;margin-bottom:24px;box-shadow:0 4px 14px rgba(16,185,129,0.35);display:flex;align-items:center;justify-content:center;gap:8px;width:100%;touch-action:manipulation">
                     <span>🚀</span> <span id="loginSubmitBtnText">ലോഗിൻ ചെയ്യാം (Login Now)</span>
                 </button>
             </form>

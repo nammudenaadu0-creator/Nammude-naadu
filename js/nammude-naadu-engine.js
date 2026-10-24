@@ -5434,10 +5434,20 @@
     // Initialize 500 Quick Trade Chips and Category Navigation
     initQuickTradeChipsUI();
 
-    // Pre-fill location if empty
+    // Pre-fill location, user name & phone if empty
     const locInput = document.getElementById('regServiceLoc');
     if (locInput && !locInput.value && APP_STATE.location && APP_STATE.location.name) {
       locInput.value = APP_STATE.location.name;
+    }
+    if (APP_STATE && APP_STATE.currentUser) {
+      const nameInput = document.getElementById('regServiceName');
+      if (nameInput && !nameInput.value && APP_STATE.currentUser.name && APP_STATE.currentUser.name !== 'നാട്ടുകാരൻ') {
+        nameInput.value = APP_STATE.currentUser.name;
+      }
+      const phoneInput = document.getElementById('regServicePhone');
+      if (phoneInput && !phoneInput.value && APP_STATE.currentUser.phone) {
+        phoneInput.value = APP_STATE.currentUser.phone;
+      }
     }
 
     // Reset default icon
@@ -5809,17 +5819,20 @@
   // SUBMIT SERVICE REGISTRATION WITH CUSTOM TYPED TRADE & MINI ICON
   function submitServiceRegistration(e) {
     if (e) e.preventDefault();
-    const name = document.getElementById('regServiceName').value.trim();
-    const typedTrade = (document.getElementById('regServiceTrade') ? document.getElementById('regServiceTrade').value.trim() : '');
+    const nameEl = document.getElementById('regServiceName');
+    const name = nameEl ? nameEl.value.trim() : '';
+    const tradeEl = document.getElementById('regServiceTrade');
+    const typedTrade = tradeEl ? tradeEl.value.trim() : '';
     const selectedIcon = (document.getElementById('regSelectedIcon') ? document.getElementById('regSelectedIcon').value.trim() : '🛠️') || '🛠️';
     const categoryKey = (document.getElementById('regServiceCategoryKey') ? document.getElementById('regServiceCategoryKey').value : 'other') || 'other';
-    const phone = document.getElementById('regServicePhone').value.trim();
+    const phoneEl = document.getElementById('regServicePhone');
+    const phone = phoneEl ? phoneEl.value.trim() : '';
     const rawFee = (document.getElementById('regServiceFee') ? document.getElementById('regServiceFee').value.trim() : '');
     const fee = rawFee ? formatPrice(rawFee) : '₹200 വിസിറ്റിംഗ് നിരക്ക്';
     const hours = (document.getElementById('regServiceHours') ? document.getElementById('regServiceHours').value.trim() : '') || '8:00 AM - 7:00 PM';
     const rawSpecs = (document.getElementById('regServiceSpecs') ? document.getElementById('regServiceSpecs').value.trim() : '');
     const avail = (document.getElementById('regServiceAvail') ? document.getElementById('regServiceAvail').value : 'available');
-    const exp = document.getElementById('regServiceExp').value.trim() || 'പരിചയസമ്പന്നൻ';
+    const exp = (document.getElementById('regServiceExp') ? document.getElementById('regServiceExp').value.trim() : '') || 'പരിചയസമ്പന്നൻ';
     let loc = (document.getElementById('regServiceLoc') ? document.getElementById('regServiceLoc').value.trim() : '');
     if (!loc || loc === 'തത്സമയ ലൊക്കേഷൻ' || loc.includes('കണ്ണൂർ')) {
       loc = (APP_STATE.location.name && !APP_STATE.location.name.includes('കണ്ണൂർ') && APP_STATE.location.name !== 'തത്സമയ ലൊക്കേഷൻ')
@@ -5828,8 +5841,29 @@
     }
     if (!loc) loc = APP_STATE.location.name || 'തത്സമയ ലൊക്കേഷൻ';
     const resolvedDistrict = APP_STATE.location.district || getNearestKeralaPreset(APP_STATE.location.lat, APP_STATE.location.lon).district || '';
-    if (!name || !typedTrade || !phone) {
-      toast('⚠️ ദയവായി പേര്, തൊഴിൽ, ഫോൺ നമ്പർ എന്നിവ നൽകുക.');
+
+    if (!name) {
+      toast('⚠️ ദയവായി പൂർണ്ണ നാമം അല്ലെങ്കിൽ സ്ഥാപനപ്പേര് നൽകുക.');
+      if (nameEl) {
+        nameEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        nameEl.focus();
+      }
+      return;
+    }
+    if (!typedTrade) {
+      toast('⚠️ ദയവായി തൊഴിൽ / സേവനം തിരഞ്ഞെടുക്കുക അല്ലെങ്കിൽ നൽകുക.');
+      if (tradeEl) {
+        tradeEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        tradeEl.focus();
+      }
+      return;
+    }
+    if (!phone) {
+      toast('⚠️ ദയവായി ബന്ധപ്പെടാനുള്ള മൊബൈൽ നമ്പർ നൽകുക.');
+      if (phoneEl) {
+        phoneEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        phoneEl.focus();
+      }
       return;
     }
     const vModel = (document.getElementById('regVehicleModel') ? document.getElementById('regVehicleModel').value.trim() : '');
@@ -10386,8 +10420,11 @@
     const rawEmail = emailInput ? emailInput.value.trim().toLowerCase() : '';
 
     if (!cleanPhone || cleanPhone.length < 10) {
-      alert('ദയവായി സാധുവായ 10-അക്ക മൊബൈൽ നമ്പർ നൽകുക.');
-      if (phoneInput) phoneInput.focus();
+      toast('⚠️ ദയവായി സാധുവായ 10-അക്ക മൊബൈൽ നമ്പർ നൽകുക.');
+      if (phoneInput) {
+        phoneInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        phoneInput.focus();
+      }
       return;
     }
 
