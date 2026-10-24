@@ -31,12 +31,12 @@ runTest('Versions are synchronized across all configuration files', () => {
   const versionJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../version.json'), 'utf8'));
   const buildGradle = fs.readFileSync(path.join(__dirname, '../android/app/build.gradle'), 'utf8');
 
-  const expectedVersion = '1.0.23';
+  const expectedVersion = '1.0.24';
   assert.strictEqual(pkg.version, expectedVersion, `package.json version is ${pkg.version}`);
   assert.strictEqual(pkgLock.version, expectedVersion, `package-lock.json version is ${pkgLock.version}`);
   assert.strictEqual(versionJson.versionName, expectedVersion, `version.json versionName is ${versionJson.versionName}`);
   assert.ok(buildGradle.includes(`versionName "${expectedVersion}"`), 'build.gradle versionName matches');
-  assert.ok(buildGradle.includes(`versionCode 23`), 'build.gradle versionCode is 23');
+  assert.ok(buildGradle.includes(`versionCode 24`), 'build.gradle versionCode is 24');
 });
 
 // 2. Android Security Settings

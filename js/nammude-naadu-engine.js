@@ -958,29 +958,56 @@
   }
 
   function updateChatBadgeCounter() {
+    // Count threads that have UNREAD incoming messages (unseen 'them' messages)
     const keys = Object.keys(APP_STATE.chats || {}).filter(k => {
       if (typeof isThreadBelongingToCurrentUser === 'function' && !isThreadBelongingToCurrentUser(k)) return false;
       return APP_STATE.chats[k] && APP_STATE.chats[k].length > 0;
     });
-    const count = keys.length;
-    const badge = document.getElementById('bottomNavChatBadge');
-    if (badge) {
+    // Unread = thread has at least one 'them' message that is NOT seen
+    const unreadCount = keys.filter(k => {
+      const msgs = APP_STATE.chats[k] || [];
+      return msgs.some(m => m.sender !== 'me' && !m.seen && m.text && m.text !== '[deleted]');
+    }).length;
+    // Also update per-thread unread counts stored in APP_STATE
+    if (!APP_STATE.threadUnread) APP_STATE.threadUnread = {};
+    keys.forEach(k => {
+      const msgs = APP_STATE.chats[k] || [];
+      APP_STATE.threadUnread[k] = msgs.filter(m => m.sender !== 'me' && !m.seen && m.text && m.text !== '[deleted]').length;
+    });
+
+    const setBadge = (el, count) => {
+      if (!el) return;
       if (count > 0) {
-        badge.textContent = count > 99 ? '99+' : String(count);
-        badge.style.display = 'inline-flex';
+        el.textContent = count > 99 ? '99+' : String(count);
+        el.style.display = 'inline-flex';
       } else {
-        badge.style.display = 'none';
+        el.style.display = 'none';
       }
-    }
-    const desktopBadge = document.getElementById('desktopNavChatBadge');
-    if (desktopBadge) {
-      if (count > 0) {
-        desktopBadge.textContent = count > 99 ? '99+' : String(count);
-        desktopBadge.style.display = 'inline-flex';
-      } else {
-        desktopBadge.style.display = 'none';
-      }
-    }
+    };
+    setBadge(document.getElementById('bottomNavChatBadge'), unreadCount);
+    setBadge(document.getElementById('desktopNavChatBadge'), unreadCount);
+  }
+
+  // Returns unread count for a single thread key
+  function getThreadUnreadCount(k) {
+    if (APP_STATE.threadUnread && APP_STATE.threadUnread[k] != null) return APP_STATE.threadUnread[k];
+    const msgs = (APP_STATE.chats && APP_STATE.chats[k]) || [];
+    return msgs.filter(m => m.sender !== 'me' && !m.seen && m.text && m.text !== '[deleted]').length;
+  }
+
+  // Format chat list timestamp (WhatsApp-style)
+  function formatChatListTime(ts) {
+    if (!ts) return '';
+    const d = new Date(typeof ts === 'number' ? ts : Number(ts));
+    if (isNaN(d.getTime())) return '';
+    const now = new Date();
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const msgStart  = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const diff = (todayStart - msgStart) / 86400000;
+    if (diff < 1)  return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+    if (diff < 2)  return 'ഇന്നലെ';
+    if (diff < 7)  return ['ഞായർ','തിങ്കൾ','ചൊവ്വ','ബുധൻ','വ്യാഴം','വെള്ളി','ശനി'][d.getDay()];
+    return d.toLocaleDateString('ml-IN', { day: 'numeric', month: 'short' });
   }
   window.updateChatBadgeCounter = updateChatBadgeCounter;
 
@@ -4845,7 +4872,7 @@
       return msgs.length > 0;
     });
 
-    // Sort active threads by latest message / timestamp descending
+    // Sort active threads: unread first, then by latest message descending
     const getThreadLatestTimestamp = (k) => {
       const msgs = (APP_STATE.chats && APP_STATE.chats[k]) || [];
       let latestT = 0;
@@ -4856,7 +4883,12 @@
       return latestT || ((APP_STATE.chatMeta && APP_STATE.chatMeta[k]?.updatedAt) || 0);
     };
 
-    allKeys.sort((a, b) => getThreadLatestTimestamp(b) - getThreadLatestTimestamp(a));
+    allKeys.sort((a, b) => {
+      const ua = getThreadUnreadCount(a) > 0 ? 1 : 0;
+      const ub = getThreadUnreadCount(b) > 0 ? 1 : 0;
+      if (ub !== ua) return ub - ua; // unread threads bubble up
+      return getThreadLatestTimestamp(b) - getThreadLatestTimestamp(a);
+    });
 
     // Apply category & search filtering for active threads
     const filteredKeys = allKeys.filter(k => {
@@ -5023,68 +5055,125 @@
 
   function renderChatThreadCard(k) {
     const thread = (APP_STATE.chats && APP_STATE.chats[k]) || [];
+    const visibleMsgs = thread.filter(m => m && m.text && m.text !== '[deleted]');
     const meta = (APP_STATE.chatMeta && APP_STATE.chatMeta[k]) || {
       name: k.replace('chat_', ''),
       phone: '',
       avatar: DEFAULT_USER_AVATAR
     };
-    const lastMsg = thread[thread.length - 1] || { text: 'സംഭാഷണം ആരംഭിച്ചു...', time: 'ഇപ്പോൾ' };
+    const lastMsg = visibleMsgs[visibleMsgs.length - 1] || { text: 'സംഭാഷണം ആരംഭിച്ചു...', timestamp: 0 };
+    const unread = getThreadUnreadCount(k);
+    const isUnread = unread > 0;
 
-    let badgeLabel = '💬 ചാറ്റ്';
-    let badgeBg = '#F3F4F6';
-    let badgeColor = '#4B5563';
-    const catText = (meta.category || meta.type || '').toLowerCase();
-    if (catText.includes('സേവന') || catText.includes('service') || (meta.recipientId && meta.recipientId.startsWith('srv_'))) {
-      badgeLabel = '🛠️ സർവീസ്';
-      badgeBg = '#ECFDF5';
-      badgeColor = '#059669';
-    } else if (catText.includes('രക്ത') || catText.includes('blood') || (meta.recipientId && meta.recipientId.startsWith('donor_'))) {
-      badgeLabel = '🩸 രക്തദാനം';
-      badgeBg = '#FEF2F2';
-      badgeColor = '#DC2626';
-    } else if (catText.includes('വാടക') || catText.includes('rent') || (meta.recipientId && meta.recipientId.startsWith('rent_'))) {
-      badgeLabel = '🏠 വാടക';
-      badgeBg = '#FFFBEB';
-      badgeColor = '#D97706';
-    } else if (catText.includes('തൊഴിൽ') || catText.includes('job') || (meta.recipientId && meta.recipientId.startsWith('job_'))) {
-      badgeLabel = '💼 തൊഴിൽ';
-      badgeBg = '#EFF6FF';
-      badgeColor = '#2563EB';
-    } else if (catText.includes('പോസ്റ്റ്') || (meta.recipientId && meta.recipientId.startsWith('post_'))) {
-      badgeLabel = '📢 പോസ്റ്റ്';
-      badgeBg = '#F5F3FF';
-      badgeColor = '#7C3AED';
+    // Smart last-message preview text
+    let previewText = '';
+    if (lastMsg.type === 'image' || (typeof lastMsg.text === 'string' && lastMsg.text.startsWith('[image:'))) {
+      previewText = '📷 ഫോട്ടോ';
+    } else if (lastMsg.type === 'voice') {
+      previewText = '🎙️ വോയ്‌സ് മെസ്സേജ്';
+    } else if (lastMsg.type === 'sticker') {
+      previewText = lastMsg.stickerEmoji ? lastMsg.stickerEmoji + ' ' + (lastMsg.stickerText || 'സ്റ്റിക്കർ') : '🎭 സ്റ്റിക്കർ';
     } else {
-      badgeLabel = '👥 നാട്ടുകാരൻ';
-      badgeBg = '#F1F5F9';
-      badgeColor = '#475569';
+      previewText = lastMsg.text || 'സംഭാഷണം ആരംഭിച്ചു...';
     }
+
+    // Smart timestamp for chat list (WhatsApp-style)
+    const smartTime = formatChatListTime(lastMsg.timestamp) || lastMsg.time || '';
+
+    // Category badge config
+    const catText = (meta.category || meta.type || '').toLowerCase();
+    let badgeLabel, badgeBg, badgeColor;
+    if (catText.includes('സേവന') || catText.includes('service') || (meta.recipientId && meta.recipientId.startsWith('srv_'))) {
+      badgeLabel = '🛠️'; badgeBg = '#ECFDF5'; badgeColor = '#059669';
+    } else if (catText.includes('രക്ത') || catText.includes('blood') || (meta.recipientId && meta.recipientId.startsWith('donor_'))) {
+      badgeLabel = '🩸'; badgeBg = '#FEF2F2'; badgeColor = '#DC2626';
+    } else if (catText.includes('വാടക') || catText.includes('rent') || (meta.recipientId && meta.recipientId.startsWith('rent_'))) {
+      badgeLabel = '🏠'; badgeBg = '#FFFBEB'; badgeColor = '#D97706';
+    } else if (catText.includes('തൊഴിൽ') || catText.includes('job') || (meta.recipientId && meta.recipientId.startsWith('job_'))) {
+      badgeLabel = '💼'; badgeBg = '#EFF6FF'; badgeColor = '#2563EB';
+    } else if (catText.includes('പോസ്റ്റ്') || (meta.recipientId && meta.recipientId.startsWith('post_'))) {
+      badgeLabel = '📢'; badgeBg = '#F5F3FF'; badgeColor = '#7C3AED';
+    } else {
+      badgeLabel = '👤'; badgeBg = '#F1F5F9'; badgeColor = '#475569';
+    }
+
+    // Tick marks for outgoing last message
+    let tickHtml = '';
+    if (lastMsg.sender === 'me') {
+      if (lastMsg.status === 'seen' || lastMsg.seen === true) {
+        tickHtml = '<span style="color:#53BDEB;font-weight:900;margin-right:3px;font-size:12px;letter-spacing:-1px">✓✓</span>';
+      } else if (lastMsg.status === 'sent') {
+        tickHtml = '<span style="color:#94A3B8;font-weight:900;margin-right:3px;font-size:12px">✓</span>';
+      } else {
+        tickHtml = '<span style="color:#94A3B8;font-weight:900;margin-right:3px;font-size:12px;letter-spacing:-1px">✓✓</span>';
+      }
+    }
+
+    const avatarSrc = getRegisteredUserAvatar(meta.phone || meta.recipientId || meta.name, meta.avatar);
 
     return `
       <div onclick="openChatModalByKey('${k}')"
-           style="display:flex;align-items:center;gap:12px;padding:12px 15px;background:#fff;border-radius:20px;border:1px solid #E2E8F0;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.03);transition:all 0.15s ease;margin-bottom:8px">
+           style="display:flex;align-items:center;gap:13px;padding:13px 14px;
+                  background:${isUnread ? '#F0FDF4' : '#FFFFFF'};
+                  border-radius:18px;
+                  border:1.5px solid ${isUnread ? '#A7F3D0' : '#E2E8F0'};
+                  cursor:pointer;
+                  box-shadow:${isUnread ? '0 2px 10px rgba(16,185,129,0.12)' : '0 1px 4px rgba(0,0,0,0.03)'};
+                  transition:all 0.18s ease;
+                  margin-bottom:8px;
+                  position:relative">
+
+        <!-- Avatar with online dot -->
         <div onclick="event.stopPropagation(); viewChatRecipientFullProfile('${k}')"
-             title="മുഴുവൻ പ്രൊഫൈൽ പേജ് കാണാം"
+             title="പ്രൊഫൈൽ കാണാം"
              style="position:relative;flex-shrink:0;cursor:pointer">
-          <img src="${getRegisteredUserAvatar(meta.phone || meta.recipientId || meta.name, meta.avatar)}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #E2E8F0" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
-          <span style="position:absolute;bottom:1px;right:1px;width:12px;height:12px;border-radius:50%;background:#10B981;border:2px solid #fff"></span>
+          <img src="${escapeHtml(avatarSrc)}" loading="lazy"
+               style="width:50px;height:50px;border-radius:50%;object-fit:cover;
+                      border:2.5px solid ${isUnread ? '#34D399' : '#E2E8F0'};
+                      box-shadow:0 1px 4px rgba(0,0,0,0.1)"
+               onerror="this.src=window.DEFAULT_USER_AVATAR||''">
+          <span style="position:absolute;bottom:1px;right:1px;width:13px;height:13px;
+                       border-radius:50%;background:#10B981;border:2px solid #fff;
+                       box-shadow:0 0 0 1px #10B981"></span>
         </div>
+
+        <!-- Content -->
         <div style="flex:1;min-width:0">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px">
-            <span style="font-weight:800;font-size:14.5px;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(meta.name)}</span>
-            <span style="font-size:11px;color:#64748B;font-weight:600;flex-shrink:0">${lastMsg.time}</span>
+
+          <!-- Row 1: Name + Time -->
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px">
+            <span style="font-weight:${isUnread ? '900' : '800'};
+                         font-size:14.5px;
+                         color:${isUnread ? '#065F46' : '#0F172A'};
+                         white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+                         max-width:calc(100% - 80px)">${escapeHtml(meta.name)}</span>
+            <span style="font-size:11px;
+                         color:${isUnread ? '#059669' : '#94A3B8'};
+                         font-weight:${isUnread ? '800' : '600'};
+                         flex-shrink:0;margin-left:8px">${smartTime}</span>
           </div>
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
-            <span style="font-size:10px;font-weight:800;background:${badgeBg};color:${badgeColor};padding:2px 8px;border-radius:12px">${badgeLabel}</span>
-            ${(meta.type === 'ambulance' || meta.category?.includes('ആംബുലൻസ്')) && meta.phone ? `<span style="font-size:11px;color:#94A3B8">📞 ${meta.phone}</span>` : ''}
-          </div>
-          <div style="font-size:12.5px;color:#64748B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center">
-            ${lastMsg.sender === 'me' ? (
-              (lastMsg.status === 'seen' || lastMsg.seen === true)
-                ? '<span style="color:#53BDEB;font-weight:900;margin-right:4px;letter-spacing:-1.5px;font-size:11px" title="കണ്ടു (Seen)">✓✓</span>'
-                : '<span style="color:#8696A0;font-weight:900;margin-right:4px;letter-spacing:-1.5px;font-size:11px" title="എത്തി (Delivered)">✓✓</span>'
-            ) : ''}
-            <span style="overflow:hidden;text-overflow:ellipsis">${escapeHtml(lastMsg.text)}</span>
+
+          <!-- Row 2: Preview + Unread badge -->
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+            <div style="display:flex;align-items:center;flex:1;min-width:0">
+              <span style="font-size:11px;font-weight:800;background:${badgeBg};color:${badgeColor};
+                           padding:1px 6px;border-radius:8px;flex-shrink:0;margin-right:5px">${badgeLabel}</span>
+              ${tickHtml}
+              <span style="font-size:12.5px;
+                           color:${isUnread ? '#0F172A' : '#64748B'};
+                           font-weight:${isUnread ? '700' : '500'};
+                           white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(previewText)}</span>
+            </div>
+            ${isUnread ? `
+              <span style="background:#059669;color:#fff;
+                           font-size:10.5px;font-weight:900;
+                           min-width:20px;height:20px;
+                           border-radius:10px;
+                           display:inline-flex;align-items:center;justify-content:center;
+                           padding:0 5px;flex-shrink:0;
+                           box-shadow:0 1px 4px rgba(5,150,105,0.4)">
+                ${unread > 99 ? '99+' : unread}
+              </span>` : ''}
           </div>
         </div>
       </div>
