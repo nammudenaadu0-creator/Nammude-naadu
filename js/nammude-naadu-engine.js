@@ -255,6 +255,21 @@
     localStorage.setItem('nn_user_id', APP_STATE.currentUser.id.replace('usr_me_', ''));
   }
 
+  // Registration Validation Engine: Determines if citizen has registered with phone & name
+  function isUserRegistered() {
+    try {
+      const u = (typeof APP_STATE !== 'undefined' && APP_STATE && APP_STATE.currentUser) ? APP_STATE.currentUser : {};
+      const phone = (u.phone || localStorage.getItem('nn_user_phone') || localStorage.getItem('nn_permanent_phone') || '').replace(/\D/g, '').slice(-10);
+      const name = (u.name || localStorage.getItem('nn_user_name') || '').trim();
+      const isCompleted = localStorage.getItem('nn_profile_completed') === 'true';
+      const isDummyName = (!name || name === 'നാട്ടുകാരൻ' || name === 'അജിത് കുമാർ' || name === 'അജയകുമാർ' || name.toLowerCase() === 'ajith kumar');
+      return phone.length === 10 && (isCompleted || !isDummyName);
+    } catch (_) {
+      return false;
+    }
+  }
+  window.isUserRegistered = isUserRegistered;
+
   // Central Helper: Resolve true profile picture of any registered citizen or entity
   function getRegisteredUserAvatar(identifier, fallback) {
     const defaultAvatar = window.DEFAULT_USER_AVATAR || DEFAULT_USER_AVATAR;
@@ -969,6 +984,12 @@
   // ==============================================================
   function navTo(screenId) {
     if (!screenId) return;
+    if (screenId !== 'splash' && typeof isUserRegistered === 'function' && !isUserRegistered()) {
+      if (typeof openMandatoryRegisterModal === 'function') {
+        openMandatoryRegisterModal();
+      }
+      return;
+    }
     if (APP_STATE.currentScreen === screenId) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       if (typeof window.refreshActiveScreen === 'function') {
@@ -1071,7 +1092,13 @@
       setTimeout(() => {
         splash.classList.remove('active');
         splash.style.opacity = '';
-        navTo('home');
+        if (typeof isUserRegistered === 'function' && !isUserRegistered()) {
+          if (typeof openMandatoryRegisterModal === 'function') {
+            openMandatoryRegisterModal();
+          }
+        } else {
+          navTo('home');
+        }
 
         // Auto-detect GPS non-blockingly upon first launch ONLY if no saved location exists
         const hasSavedLoc = localStorage.getItem('nn_curr_loc_name');
@@ -1080,7 +1107,13 @@
         }
       }, 300);
     } else {
-      navTo('home');
+      if (typeof isUserRegistered === 'function' && !isUserRegistered()) {
+        if (typeof openMandatoryRegisterModal === 'function') {
+          openMandatoryRegisterModal();
+        }
+      } else {
+        navTo('home');
+      }
     }
   }
   window.enterAppFromSplash = enterAppFromSplash;
@@ -10247,7 +10280,7 @@
   }
   window.updateUserAuthUI = updateUserAuthUI;
 
-  function openLoginModal() {
+  function openLoginModal(isMandatory) {
     const modal = document.getElementById('modal-citizen-login');
     if (!modal) return;
     const phoneInput = document.getElementById('citizenLoginPhone');
@@ -10259,6 +10292,24 @@
     const donorInput = document.getElementById('citizenLoginDonor');
     const hintEl = document.getElementById('loginPhoneStatusHint');
     const btnText = document.getElementById('loginSubmitBtnText');
+    const closeBtn = document.getElementById('citizenLoginCloseBtn');
+    const headerTitle = document.getElementById('citizenLoginHeaderTitle');
+    const headerSub = document.getElementById('citizenLoginHeaderSubtitle');
+
+    const registered = (typeof isUserRegistered === 'function' && isUserRegistered());
+    const mandatory = (isMandatory === true || !registered);
+
+    if (closeBtn) {
+      closeBtn.style.display = mandatory ? 'none' : 'flex';
+    }
+    if (headerTitle) {
+      headerTitle.textContent = mandatory ? '✨ രജിസ്ട്രേഷൻ (Mandatory Registration)' : 'സിറ്റിസൺ ലോഗിൻ / പ്രൊഫൈൽ';
+    }
+    if (headerSub) {
+      headerSub.textContent = mandatory
+        ? 'നമ്മുടെ നാട് ആപ്പ് ഉപയോഗിക്കാൻ ദയവായി നിങ്ങളുടെ പേരും മൊബൈൽ നമ്പറും നൽകി രജിസ്റ്റർ ചെയ്യുക.'
+        : 'നിങ്ങളുടെ 10-അക്ക മൊബൈൽ നമ്പർ നൽകി നേരിട്ട് ലോഗിൻ ചെയ്യാം.';
+    }
 
     const user = (APP_STATE && APP_STATE.currentUser) || {};
     const existingPhone = user.phone ? user.phone.replace(/\D/g, '').slice(-10) : '';
@@ -10279,7 +10330,7 @@
       hintEl.textContent = '';
     }
     if (btnText) {
-      btnText.textContent = existingPhone ? 'ലോഗിൻ ചെയ്യാം / തുടരാം' : 'ലോഗിൻ ചെയ്യാം (Login Now)';
+      btnText.textContent = mandatory ? 'രജിസ്റ്റർ ചെയ്യാം (Register Now)' : (existingPhone ? 'ലോഗിൻ ചെയ്യാം / തുടരാം' : 'ലോഗിൻ ചെയ്യാം (Login Now)');
     }
 
     modal.style.display = 'flex';
@@ -10292,6 +10343,11 @@
     }
   }
   window.openLoginModal = openLoginModal;
+
+  function openMandatoryRegisterModal() {
+    openLoginModal(true);
+  }
+  window.openMandatoryRegisterModal = openMandatoryRegisterModal;
 
   let _loginPhoneLookupTimer = null;
   function handleLoginPhoneLookup(val) {
@@ -10306,7 +10362,7 @@
 
     if (clean.length < 10) {
       if (hintEl) hintEl.style.display = 'none';
-      if (btnText) btnText.textContent = 'ലോഗിൻ ചെയ്യാം (Login Now)';
+      if (btnText) btnText.textContent = (typeof isUserRegistered === 'function' && isUserRegistered()) ? 'ലോഗിൻ ചെയ്യാം (Login Now)' : 'രജിസ്റ്റർ ചെയ്യാം (Register Now)';
       return;
     }
 
@@ -10429,8 +10485,18 @@
     }
 
     const isAdmin = (cleanPhone === ADMIN_PHONE || rawEmail === 'admin@nammudenaadu.app');
-    const defaultName = isAdmin ? 'അഡ്മിൻ (നമ്മുടെ നാട്)' : 'നാട്ടുകാരൻ';
-    const rawName = (nameInput && nameInput.value ? nameInput.value.trim() : '') || defaultName;
+    const rawName = (nameInput && nameInput.value ? nameInput.value.trim() : '');
+
+    if (!isAdmin && (!rawName || rawName === 'നാട്ടുകാരൻ')) {
+      toast('⚠️ ദയവായി നിങ്ങളുടെ പേര് നൽകുക (Enter your name)');
+      if (nameInput) {
+        nameInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        nameInput.focus();
+      }
+      return;
+    }
+
+    const defaultName = isAdmin ? 'അഡ്മിൻ (നമ്മുടെ നാട്)' : rawName;
     const place = (placeInput && placeInput.value ? placeInput.value.trim() : '') || (APP_STATE.location?.name || 'കേരളം');
     const district = (districtInput && districtInput.value ? districtInput.value : '') || (APP_STATE.location?.district || 'കണ്ണൂർ');
     const bloodGroup = (bloodInput && bloodInput.value ? bloodInput.value : 'O+');
@@ -10440,7 +10506,7 @@
 
     APP_STATE.currentUser = {
       id: citizenId,
-      name: rawName,
+      name: defaultName,
       phone: cleanPhone,
       email: rawEmail,
       location: place,
@@ -10460,7 +10526,7 @@
       localStorage.setItem('nn_permanent_phone', cleanPhone);
       localStorage.setItem('nn_user_phone', cleanPhone);
       localStorage.setItem('nn_user_email', rawEmail);
-      localStorage.setItem('nn_user_name', rawName);
+      localStorage.setItem('nn_user_name', defaultName);
       localStorage.setItem('nn_user_loc', place);
       localStorage.setItem('nn_curr_district', district);
       localStorage.setItem('nn_user_blood', bloodGroup);
@@ -10473,22 +10539,25 @@
       }
     } catch (_) {}
 
-    // Close modal
-    closeModal('modal-citizen-login');
+    // Force close modal now that isUserRegistered() is true
+    const modalEl = document.getElementById('modal-citizen-login');
+    if (modalEl) {
+      modalEl.classList.remove('active');
+      modalEl.style.display = 'none';
+    }
 
     // Instantly update interface
     updateAdminUI();
     updateUserAuthUI();
     renderProfileScreen();
     updatePostingProfileBar();
-    if (APP_STATE.currentScreen === 'home') {
-      renderHomeScreen();
-    }
+    navTo('home');
+    renderHomeScreen();
 
     if (isAdmin) {
       toast(`👑 സ്വാഗതം അഡ്മിൻ! അഡ്മിൻ കൺസോൾ ആക്സസ് വിജയകരമായി സജീവമായി.`);
     } else {
-      toast(`🎉 സ്വാഗതം ${rawName}! താങ്കൾ വിജയകരമായി ലോഗിൻ ചെയ്തു.`);
+      toast(`🎉 സ്വാഗതം ${defaultName}! താങ്കൾ വിജയകരമായി രജിസ്റ്റർ ചെയ്തു.`);
     }
 
     // Async cloud sync
@@ -10691,6 +10760,12 @@
   window.openModal = openModal;
 
   function closeModal(modalId) {
+    if (modalId === 'modal-citizen-login' && typeof isUserRegistered === 'function' && !isUserRegistered()) {
+      if (typeof toast === 'function') {
+        toast('⚠️ ഹോംപേജ് ഉപയോഗിക്കാൻ ദയവായി അക്കൗണ്ട് രജിസ്റ്റർ ചെയ്യുക');
+      }
+      return;
+    }
     if (modalId === 'modal-chat') {
       if (typeof window._activeChatUnsubscribe === 'function') {
         try { window._activeChatUnsubscribe(); } catch (_) {}
@@ -11165,6 +11240,13 @@
     renderHomeScreen();
     renderCommunityFeed();
 
+    // Mandatory Registration Gate on App Launch
+    setTimeout(() => {
+      if (typeof isUserRegistered === 'function' && !isUserRegistered()) {
+        openMandatoryRegisterModal();
+      }
+    }, 120);
+
     // Safe Back Button & Hardware Navigation Support
     let _lastBackActionTime = 0;
     let _lastExitPromptTime = 0;
@@ -11176,6 +11258,22 @@
         return true;
       }
       _lastBackActionTime = now;
+
+      // Unregistered users cannot bypass registration modal using back button
+      if (typeof isUserRegistered === 'function' && !isUserRegistered()) {
+        if (now - _lastExitPromptTime < 2000) {
+          if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+            try { window.Capacitor.Plugins.App.exitApp(); } catch (_) {}
+          }
+          return false;
+        } else {
+          _lastExitPromptTime = now;
+          if (typeof toast === 'function') {
+            toast('പുറത്തുകടക്കാൻ ഒരിക്കൽ കൂടി ബാക്ക് അമർത്തുക (Press back again to exit)');
+          }
+          return true;
+        }
+      }
 
       // 1. Check for open modals (prioritizing chat modal)
       const openModals = Array.from(document.querySelectorAll('.modal-overlay.active, .modal-overlay[style*="display: flex"], .modal-overlay[style*="display:flex"]'))

@@ -1,13 +1,13 @@
 {
-  "versionCode": 15,
-  "versionName": "1.0.15",
+  "versionCode": 16,
+  "versionName": "1.0.16",
   "minSupportedVersion": 1,
   "releaseDate": "2026-10-24",
-  "title": "പുതിയ അപ്‌ഡേറ്റ് ലഭ്യമാണ്! (Version 1.0.15)",
+  "title": "പുതിയ അപ്‌ഡേറ്റ് ലഭ്യമാണ്! (Version 1.0.16)",
   "releaseNotes": [
-    "✅ രജിസ്ട്രേഷൻ ഫോമുകളിലെ സബ്മിറ്റ് ബട്ടൺ പൂർണ്ണമായി ശരിയാക്കി (Scrollable Sheet & Smooth Submit)",
-    "📱 സ്ക്രീനിന് പുറത്തേക്ക് പേജുകൾ പോകുന്നത് തടഞ്ഞ് പെർഫെക്റ്റ് ബോർഡർ ഫിറ്റ് നൽകി (Zero Overflow)",
-    "✨ സേവന രജിസ്ട്രേഷനിൽ ഓട്ടോ-ഫില്ലും ഇൻസ്റ്റന്റ് വാലിഡേഷൻ സഹായങ്ങളും"
+    "🔒 പുതിയ യൂസേഴ്സിന് നിർബന്ധിത രജിസ്ട്രേഷൻ ഗേറ്റ് (Mandatory Registration Gate)",
+    "✅ രജിസ്റ്റർ ചെയ്യാതെ ഹോംപേജും സേവനങ്ങളും കാണുന്നത് തടഞ്ഞു",
+    "📱 സ്ക്രീൻ ഓവർഫ്ലോ പൂർണ്ണമായി പരിഹരിച്ച് സുഗമമായ സ്ക്രോളിംഗ് ഉറപ്പാക്കി"
   ],
   "apkUrl": "https://github.com/nammudenaadu0-creator/Nammude-naadu/raw/main/NammudeNaadu.apk",
   "webUrl": "https://nammudenaadu0-creator.github.io/Nammude-naadu/",
