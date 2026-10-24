@@ -25,9 +25,9 @@
         rel="stylesheet">
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="css/main.css?v=2.7">
-    <link rel="stylesheet" href="css/jobs.css?v=2.7">
-    <link rel="stylesheet" href="css/nammude-naadu.css?v=2.7">
+    <link rel="stylesheet" href="css/main.css?v=3.0">
+    <link rel="stylesheet" href="css/jobs.css?v=3.0">
+    <link rel="stylesheet" href="css/nammude-naadu.css?v=3.0">
 </head>
 
 <body>
@@ -1592,32 +1592,37 @@
         <!-- ============================================================== -->
         <!-- BOTTOM NAVIGATION BAR (Mobile Native Only)                     -->
         <!-- ============================================================== -->
-        <nav class="bottom-nav" id="bottomNav" style="display:flex">
-            <button class="nav-item active" data-page="home" onclick="navTo('home')" title="ഹോം">
-                <span style="font-size:20px">🏠</span>
-                <span>ഹോം</span>
+        <nav class="bottom-nav" id="bottomNav"
+            style="display:flex !important;position:fixed !important;bottom:0 !important;left:50% !important;transform:translateX(-50%) !important;width:100% !important;max-width:480px !important;height:calc(64px + env(safe-area-inset-bottom, 0px)) !important;padding:2px 4px max(6px, env(safe-area-inset-bottom, 0px)) !important;background:#FFFFFF !important;border-top:1.5px solid #E2E8F0 !important;border-radius:20px 20px 0 0 !important;box-shadow:0 -4px 20px rgba(0,0,0,0.08) !important;z-index:10000 !important;box-sizing:border-box !important;align-items:center !important;justify-content:space-around !important;">
+            <button class="nav-item active" data-page="home" onclick="navTo('home')" title="ഹോം"
+                style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;padding:6px 2px;min-width:0;">
+                <span style="font-size:20px;line-height:1">🏠</span>
+                <span style="font-size:11px;font-weight:800;margin-top:2px;white-space:nowrap">ഹോം</span>
             </button>
-            <button class="nav-item" data-page="services" onclick="navTo('services')" title="നാട്ടിലെ സേവനങ്ങൾ">
-                <span style="font-size:20px">⚡</span>
-                <span>സേവനങ്ങൾ</span>
+            <button class="nav-item" data-page="services" onclick="navTo('services')" title="നാട്ടിലെ സേവനങ്ങൾ"
+                style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;padding:6px 2px;min-width:0;">
+                <span style="font-size:20px;line-height:1">⚡</span>
+                <span style="font-size:11px;font-weight:800;margin-top:2px;white-space:nowrap">സേവനങ്ങൾ</span>
             </button>
-            <div class="nav-add-btn-wrap" onclick="navTo('add')" title="പുതിയ പോസ്റ്റ് ഇടാം">
+            <div class="nav-add-btn-wrap" onclick="navTo('add')" title="പുതിയ പോസ്റ്റ് ഇടാം"
+                style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;min-width:0;">
                 <div class="nav-add-circle"
-                    style="background:#0E7043;color:#fff;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 12px rgba(14,112,67,0.35)">
+                    style="background:#0E7043;color:#fff;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 12px rgba(14,112,67,0.35);border:3px solid #fff;margin-top:-14px">
                     ➕</div>
-                <div class="nav-add-label" style="font-size:10px;font-weight:800;color:#0E7043;margin-top:2px">പോസ്റ്റ്
-                </div>
+                <div class="nav-add-label" style="font-size:10px;font-weight:800;color:#0E7043;margin-top:2px;white-space:nowrap">പോസ്റ്റ്</div>
             </div>
-            <button class="nav-item" data-page="chat" onclick="navTo('chat')" title="ചാറ്റ്">
+            <button class="nav-item" data-page="chat" onclick="navTo('chat')" title="ചാറ്റ്"
+                style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;padding:6px 2px;min-width:0;">
                 <div style="position:relative;display:inline-block">
-                    <span style="font-size:20px">💬</span>
+                    <span style="font-size:20px;line-height:1">💬</span>
                     <span id="bottomNavChatBadge" class="nav-chat-badge" style="display:none">0</span>
                 </div>
-                <span style="font-size:10.5px;font-weight:700;white-space:nowrap">ചാറ്റ്</span>
+                <span style="font-size:11px;font-weight:800;margin-top:2px;white-space:nowrap">ചാറ്റ്</span>
             </button>
-            <button class="nav-item" data-page="community" onclick="navTo('community')" title="നാട്ടുകൂട്ടം പോസ്റ്റുകൾ">
-                <span style="font-size:20px">📢</span>
-                <span style="font-size:10.5px;font-weight:700;white-space:nowrap">പോസ്റ്റുകൾ</span>
+            <button class="nav-item" data-page="community" onclick="navTo('community')" title="നാട്ടുകൂട്ടം പോസ്റ്റുകൾ"
+                style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;padding:6px 2px;min-width:0;">
+                <span style="font-size:20px;line-height:1">📢</span>
+                <span style="font-size:11px;font-weight:800;margin-top:2px;white-space:nowrap">പോസ്റ്റുകൾ</span>
             </button>
         </nav>
 

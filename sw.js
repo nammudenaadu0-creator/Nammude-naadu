@@ -1,14 +1,14 @@
 // High-Performance Service Worker for Nammude Naadu PWA
-const CACHE_NAME = 'nammude-naadu-v6';
+const CACHE_NAME = 'nammude-naadu-v7';
 const STATIC_ASSETS = [
   './',
   './index.html',
   './version.json',
   './assets/icon-192.png',
   './assets/icon-512.png',
-  './css/main.css?v=2.3',
-  './css/jobs.css?v=2.3',
-  './css/nammude-naadu.css?v=2.3',
+  './css/main.css?v=3.0',
+  './css/jobs.css?v=3.0',
+  './css/nammude-naadu.css?v=3.0',
   './img/kerala-splash.jpg',
   './js/trades-catalog-500.js?v=2.5',
   './js/nammude-naadu-engine.js?v=2.6',

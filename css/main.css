@@ -2214,31 +2214,55 @@
             min-height: 100vh !important;
         }
 
-        /* Responsive App Shell: Full screen on Mobile APK, Spacious Adaptive Layout on Web */
+        /* Mobile Application Shell: Strict Mobile Phone Size (max-width: 480px) Everywhere */
+        body {
+            background: #F1F5F9 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
         .app-container {
-            background-color: transparent !important;
-            max-width: 1360px !important;
+            background-color: #FFFFFF !important;
+            max-width: 480px !important;
             width: 100% !important;
             min-height: 100vh !important;
-            box-shadow: none !important;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.12) !important;
             position: relative !important;
             display: flex !important;
             flex-direction: column !important;
             overflow-x: hidden !important;
             border-radius: 0 !important;
             margin: 0 auto !important;
+            box-sizing: border-box !important;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 480px) {
             body {
-                background: #F8FAF7 !important;
+                background: #FFFFFF !important;
             }
             .app-container {
-                max-width: 100% !important;
-                border-radius: 0 !important;
+                max-width: 100vw !important;
+                width: 100% !important;
                 margin: 0 !important;
                 box-shadow: none !important;
             }
+        }
+
+        /* Strict Elimination of Desktop Web Sidebars & Headers - Mobile Phone Only */
+        .desktop-web-header,
+        .desktop-sidebar-left,
+        .desktop-sidebar-right,
+        .desktop-web-footer {
+            display: none !important;
+        }
+
+        .desktop-main-layout,
+        .desktop-center-content {
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
         }
 
         .screen {
