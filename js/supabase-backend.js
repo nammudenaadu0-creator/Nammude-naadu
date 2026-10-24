@@ -1374,7 +1374,7 @@
 
   // Delete message for everyone from Supabase database & notify peer clients in realtime
   async function deleteChatMessageForEveryone(chatKey, msgId) {
-    if (!msgId) return false;
+    if (!msgId) return { success: false, error: 'Message ID is required' };
     initSupabase();
     updateClientCitizenHeaders();
 
@@ -1382,26 +1382,48 @@
       ? String(APP_STATE.currentUser.phone).replace(/\D/g, '').slice(-10) : '';
     const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? String(APP_STATE.currentUser.id) : '';
 
+    let dbDeleted = false;
+    let deleteError = null;
+
     if (client) {
       try {
         // 1. Try secure stored procedure with strict sender check
-        const { error: rpcErr } = await client.rpc('delete_chat_message', {
+        const { data: rpcRes, error: rpcErr } = await client.rpc('delete_chat_message', {
           p_msg_id: msgId,
           p_sender_phone: myPhone,
           p_sender_id: myId
         });
-        if (rpcErr) {
+        if (!rpcErr && rpcRes && rpcRes.success !== false) {
+          dbDeleted = true;
+        } else {
           // 2. Fallback to direct DELETE (enforced by RLS)
           let delQ = client.from('messages').delete().eq('id', msgId);
           if (myPhone) {
             delQ = delQ.or(`sender_phone.ilike.%${myPhone}%,sender_id.eq.${myId || 'none'}`);
           }
-          await delQ;
+          const { error: directErr } = await delQ;
+          if (!directErr) {
+            dbDeleted = true;
+          } else {
+            deleteError = directErr.message || (rpcErr && rpcErr.message);
+            console.warn('⚠️ [Supabase Direct Delete Failed]:', deleteError);
+          }
         }
       } catch (err) {
-        console.warn('⚠️ [Supabase Delete Message Error]:', err.message);
+        deleteError = err.message;
+        console.warn('⚠️ [Supabase Delete Message Exception]:', err.message);
       }
+    } else {
+      // Local demo mode fallback
+      dbDeleted = true;
     }
+
+    if (!dbDeleted) {
+      console.error('❌ [Supabase] Message delete failed on database. Broadcast skipped to maintain integrity.');
+      return { success: false, error: deleteError || 'Failed to delete message from database' };
+    }
+
+    // Only broadcast real-time delete event once database deletion is confirmed
     if (chatChannel) {
       try {
         await chatChannel.send({
@@ -1413,7 +1435,7 @@
         console.warn('⚠️ [Supabase Chat Deleted Broadcast Error]:', err.message);
       }
     }
-    return true;
+    return { success: true };
   }
 
   function subscribeChatThread(chatKey, onMessagesUpdate) {
@@ -2354,53 +2376,267 @@
     }
   }
 
-  // 10. COMPLETE ACCOUNT & DATA PURGE FROM SUPABASE CLOUD
+  // 10. COMPLETE ACCOUNT & DATA PURGE FROM SUPABASE CLOUD (SAFE & ATOMIC)
   async function deleteEntireUserAccount(userId, phone, email) {
     const client = initSupabase();
-    if (!client) return false;
+    if (!client) return { success: false, error: 'Database connection unavailable' };
 
     try {
       const cleanPhone = phone ? String(phone).replace(/\D/g, '').slice(-10) : '';
       const cleanEmail = email ? String(email).trim().toLowerCase() : '';
-      console.info('🗑️ [Supabase] Initiating COMPLETE Account Deletion for:', { userId, cleanPhone, cleanEmail });
+      const validUserId = (userId && String(userId).trim()) || '';
 
-      const delPromises = [];
-
-      // A. Delete Profile Record
-      if (userId) delPromises.push(client.from('profiles').delete().eq('id', userId));
-      if (cleanPhone) delPromises.push(client.from('profiles').delete().ilike('phone', `%${cleanPhone}%`));
-      if (cleanEmail) delPromises.push(client.from('profiles').delete().eq('email', cleanEmail));
-
-      // B. Delete Community Posts
-      if (userId) delPromises.push(client.from('posts').delete().eq('user_id', userId));
-      if (cleanPhone) delPromises.push(client.from('posts').delete().ilike('author_phone', `%${cleanPhone}%`));
-
-      // C. Delete Services / Listings
-      if (userId) delPromises.push(client.from('services').delete().eq('user_id', userId));
-      if (cleanPhone) delPromises.push(client.from('services').delete().ilike('phone', `%${cleanPhone}%`));
-
-      // D. Delete Jobs Posted
-      if (cleanPhone) delPromises.push(client.from('jobs').delete().ilike('phone', `%${cleanPhone}%`));
-
-      // E. Delete Rentals & Classifieds
-      if (cleanPhone) delPromises.push(client.from('rentals').delete().ilike('phone', `%${cleanPhone}%`));
-
-      // F. Delete Blood Donor Registry & Emergency Requests
-      if (cleanPhone) {
-        delPromises.push(client.from('blood_donors').delete().ilike('phone', `%${cleanPhone}%`));
-        delPromises.push(client.from('blood_requests').delete().ilike('contact_phone', `%${cleanPhone}%`));
-        delPromises.push(client.from('service_requests').delete().ilike('phone', `%${cleanPhone}%`));
+      // Strict Validation: Prevent accidental mass deletions
+      if (!validUserId && (!cleanPhone || cleanPhone.length < 10) && (!cleanEmail || cleanEmail.length < 5)) {
+        console.error('❌ [Supabase] Account purge aborted: Invalid or insufficiently specific parameters:', { userId, phone, email });
+        return { success: false, error: 'Invalid identifier for account deletion. A valid 10-digit mobile number, User ID, or email is required.' };
       }
 
-      // G. Delete Chat Messages
-      if (userId) delPromises.push(client.from('messages').delete().eq('sender_id', userId));
-      if (cleanPhone) delPromises.push(client.from('messages').delete().ilike('sender_phone', `%${cleanPhone}%`));
+      console.info('🗑️ [Supabase] Initiating SAFE & VERIFIED Account Deletion for:', { validUserId, cleanPhone, cleanEmail });
 
-      const results = await Promise.allSettled(delPromises);
-      console.info('✅ [Supabase] Account and all related data purged completely from database.', results);
-      return true;
+      // 1. Try atomic database stored procedure first
+      const { data: rpcRes, error: rpcErr } = await client.rpc('delete_user_account_secure', {
+        p_user_id: validUserId || null,
+        p_phone: cleanPhone || null,
+        p_email: cleanEmail || null
+      });
+
+      if (!rpcErr && rpcRes && rpcRes.success === true) {
+        console.info('✅ [Supabase] Atomic Account Purge RPC Succeeded:', rpcRes);
+        return { success: true, method: 'rpc', details: rpcRes };
+      }
+
+      if (rpcErr) {
+        console.warn('ℹ️ [Supabase RPC Note, falling back to direct secure queries]:', rpcErr.message);
+      }
+
+      // 2. Fallback: Execute explicit individual queries with strict conditions
+      const queries = [];
+      const queryNames = [];
+
+      // A. Profile Record
+      if (validUserId) {
+        queries.push(client.from('profiles').delete().eq('id', validUserId));
+        queryNames.push('profiles_by_id');
+      }
+      if (cleanPhone && cleanPhone.length === 10) {
+        queries.push(client.from('profiles').delete().ilike('phone', `%${cleanPhone}`));
+        queryNames.push('profiles_by_phone');
+      }
+      if (cleanEmail) {
+        queries.push(client.from('profiles').delete().eq('email', cleanEmail));
+        queryNames.push('profiles_by_email');
+      }
+
+      // B. Community Posts
+      if (validUserId) {
+        queries.push(client.from('posts').delete().eq('user_id', validUserId));
+        queryNames.push('posts_by_uid');
+      }
+      if (cleanPhone && cleanPhone.length === 10) {
+        queries.push(client.from('posts').delete().ilike('author_phone', `%${cleanPhone}`));
+        queryNames.push('posts_by_phone');
+      }
+
+      // C. Services / Listings
+      if (validUserId) {
+        queries.push(client.from('services').delete().eq('user_id', validUserId));
+        queryNames.push('services_by_uid');
+      }
+      if (cleanPhone && cleanPhone.length === 10) {
+        queries.push(client.from('services').delete().ilike('phone', `%${cleanPhone}`));
+        queryNames.push('services_by_phone');
+      }
+
+      // D. Jobs
+      if (cleanPhone && cleanPhone.length === 10) {
+        queries.push(client.from('jobs').delete().ilike('phone', `%${cleanPhone}`));
+        queryNames.push('jobs_by_phone');
+      }
+
+      // E. Rentals
+      if (cleanPhone && cleanPhone.length === 10) {
+        queries.push(client.from('rentals').delete().ilike('phone', `%${cleanPhone}`));
+        queryNames.push('rentals_by_phone');
+      }
+
+      // F. Blood Registry & Requests
+      if (cleanPhone && cleanPhone.length === 10) {
+        queries.push(client.from('blood_donors').delete().ilike('phone', `%${cleanPhone}`));
+        queryNames.push('blood_donors_by_phone');
+        queries.push(client.from('blood_requests').delete().ilike('contact_phone', `%${cleanPhone}`));
+        queryNames.push('blood_requests_by_phone');
+        queries.push(client.from('service_requests').delete().ilike('phone', `%${cleanPhone}`));
+        queryNames.push('service_requests_by_phone');
+      }
+
+      // G. Messages
+      if (validUserId) {
+        queries.push(client.from('messages').delete().eq('sender_id', validUserId));
+        queryNames.push('messages_by_uid');
+      }
+      if (cleanPhone && cleanPhone.length === 10) {
+        queries.push(client.from('messages').delete().ilike('sender_phone', `%${cleanPhone}`));
+        queryNames.push('messages_by_phone');
+      }
+
+      const results = await Promise.all(queries);
+      const errors = [];
+      results.forEach((res, idx) => {
+        if (res && res.error) {
+          errors.push({ target: queryNames[idx], error: res.error.message });
+        }
+      });
+
+      if (errors.length > 0) {
+        console.warn('⚠️ [Supabase] Account purge completed with partial warnings:', errors);
+        return { success: false, errors };
+      }
+
+      console.info('✅ [Supabase] Account and all related data purged completely from database.');
+      return { success: true, method: 'direct' };
     } catch (err) {
       console.error('❌ [Supabase] Account purge error:', err);
+      return { success: false, error: err.message };
+    }
+  }
+
+  // 11. ADMIN MODERATION & DASHBOARD REAL-TIME FUNCTIONS
+  async function approveServiceProvider(serviceId, phone) {
+    const client = initSupabase();
+    if (!client) return { success: false, error: 'Database unavailable' };
+    try {
+      if (serviceId) {
+        await client.from('services').update({ verified: true, status: 'approved' }).eq('id', serviceId);
+      }
+      const cleanPhone = phone ? String(phone).replace(/\D/g, '').slice(-10) : '';
+      if (cleanPhone) {
+        await client.from('services').update({ verified: true, status: 'approved' }).ilike('phone', `%${cleanPhone}%`);
+        await client.from('profiles').update({ verified_provider: true }).ilike('phone', `%${cleanPhone}%`);
+      }
+      await addAdminAuditLog(`Approved KYC & issued badge for provider (${serviceId || cleanPhone})`, serviceId || cleanPhone);
+      return { success: true };
+    } catch (err) {
+      console.warn('⚠️ [Supabase] approveServiceProvider error:', err);
+      return { success: false, error: err.message };
+    }
+  }
+
+  async function rejectServiceProvider(serviceId, phone) {
+    const client = initSupabase();
+    if (!client) return { success: false, error: 'Database unavailable' };
+    try {
+      if (serviceId) {
+        await client.from('services').update({ verified: false, status: 'rejected' }).eq('id', serviceId);
+      }
+      const cleanPhone = phone ? String(phone).replace(/\D/g, '').slice(-10) : '';
+      if (cleanPhone) {
+        await client.from('services').update({ verified: false, status: 'rejected' }).ilike('phone', `%${cleanPhone}%`);
+      }
+      await addAdminAuditLog(`Rejected KYC for provider (${serviceId || cleanPhone})`, serviceId || cleanPhone);
+      return { success: true };
+    } catch (err) {
+      console.warn('⚠️ [Supabase] rejectServiceProvider error:', err);
+      return { success: false, error: err.message };
+    }
+  }
+
+  async function banUserAccount(phoneOrId) {
+    const client = initSupabase();
+    if (!client) return { success: false, error: 'Database unavailable' };
+    try {
+      const cleanPhone = String(phoneOrId).replace(/\D/g, '').slice(-10);
+      if (cleanPhone && cleanPhone.length === 10) {
+        await client.from('profiles').update({ is_banned: true, status: 'banned' }).ilike('phone', `%${cleanPhone}%`);
+      } else {
+        await client.from('profiles').update({ is_banned: true, status: 'banned' }).eq('id', phoneOrId);
+      }
+      await addAdminAuditLog(`Banned user account (${phoneOrId})`, phoneOrId);
+      return { success: true };
+    } catch (err) {
+      console.warn('⚠️ [Supabase] banUserAccount error:', err);
+      return { success: false, error: err.message };
+    }
+  }
+
+  async function addAdminAuditLog(actionText, targetItem, adminName) {
+    const client = initSupabase();
+    if (!client) return false;
+    try {
+      const hash = 'sha256:' + Math.random().toString(36).substring(2, 10);
+      await client.from('admin_audit_logs').insert({
+        action: actionText,
+        admin_user: adminName || 'Admin Console',
+        target_item: targetItem || 'General',
+        legal_basis: 'DPDP Act 2023 Sec 11',
+        hash: hash
+      });
+      return true;
+    } catch (err) {
+      console.warn('ℹ️ [Admin Audit Note]:', err.message);
+      return false;
+    }
+  }
+
+  async function fetchAdminDashboardStats() {
+    const client = initSupabase();
+    if (!client) return null;
+    try {
+      const [donorsRes, servicesRes, jobsRes, postsRes, profilesRes, grievancesRes] = await Promise.allSettled([
+        client.from('blood_donors').select('*', { count: 'exact', head: true }),
+        client.from('services').select('*', { count: 'exact', head: true }),
+        client.from('jobs').select('*', { count: 'exact', head: true }),
+        client.from('posts').select('*', { count: 'exact', head: true }),
+        client.from('profiles').select('*', { count: 'exact', head: true }),
+        client.from('admin_grievances').select('*', { count: 'exact', head: true })
+      ]);
+
+      return {
+        donors: (donorsRes.status === 'fulfilled' && donorsRes.value.count != null) ? donorsRes.value.count : null,
+        services: (servicesRes.status === 'fulfilled' && servicesRes.value.count != null) ? servicesRes.value.count : null,
+        jobs: (jobsRes.status === 'fulfilled' && jobsRes.value.count != null) ? jobsRes.value.count : null,
+        posts: (postsRes.status === 'fulfilled' && postsRes.value.count != null) ? postsRes.value.count : null,
+        profiles: (profilesRes.status === 'fulfilled' && profilesRes.value.count != null) ? profilesRes.value.count : null,
+        grievances: (grievancesRes.status === 'fulfilled' && grievancesRes.value.count != null) ? grievancesRes.value.count : null
+      };
+    } catch (err) {
+      console.warn('⚠️ [Supabase Stats Fetch Error]:', err);
+      return null;
+    }
+  }
+
+  async function fetchAdminAuditLogs(limitCount = 20) {
+    const client = initSupabase();
+    if (!client) return [];
+    try {
+      const { data, error } = await client.from('admin_audit_logs').select('*').order('created_at', { ascending: false }).limit(limitCount);
+      if (error) return [];
+      return data || [];
+    } catch (err) {
+      return [];
+    }
+  }
+
+  async function fetchAdminGrievances(limitCount = 20) {
+    const client = initSupabase();
+    if (!client) return [];
+    try {
+      const { data, error } = await client.from('admin_grievances').select('*').order('created_at', { ascending: false }).limit(limitCount);
+      if (error) return [];
+      return data || [];
+    } catch (err) {
+      return [];
+    }
+  }
+
+  async function updateAdminGrievance(ticketId, actionTaken, status = 'RESOLVED') {
+    const client = initSupabase();
+    if (!client) return false;
+    try {
+      await client.from('admin_grievances').update({ action_taken: actionTaken, status: status }).eq('ticket_id', ticketId);
+      await addAdminAuditLog(`Grievance ticket ${ticketId} action: ${actionTaken} (${status})`, ticketId);
+      return true;
+    } catch (err) {
       return false;
     }
   }
@@ -2543,7 +2779,16 @@
     saveAmbulanceDriver,
     // Emergency & Helpline Directory
     saveEmergencyContact,
-    syncEmergencyContacts
+    syncEmergencyContacts,
+    // Admin Moderation & Live Operations
+    approveServiceProvider,
+    rejectServiceProvider,
+    banUserAccount,
+    addAdminAuditLog,
+    fetchAdminDashboardStats,
+    fetchAdminAuditLogs,
+    fetchAdminGrievances,
+    updateAdminGrievance
   };
 
   window.NN_SUPABASE_SERVICES = api;

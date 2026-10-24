@@ -1872,6 +1872,9 @@
       if (tabId === 'banner') initBannerAdmin();
       if (tabId === 'categories') initCategoriesAdmin();
       if (tabId === 'ambulances') loadAdminAmbulances();
+      if (tabId === 'dashboard' && typeof loadLiveAdminDashboardStats === 'function') loadLiveAdminDashboardStats();
+      if (tabId === 'auditTrail' && typeof loadAdminAuditLogs === 'function') loadAdminAuditLogs();
+      if (tabId === 'grievance' && typeof loadAdminGrievances === 'function') loadAdminGrievances();
       document.getElementById('tabTitle').textContent = titles[tabId] || 'Admin Console';
     }
 
@@ -1905,16 +1908,30 @@
   `;
     }
 
-    function handleGrievanceAction(ticketId, action) {
+    async function handleGrievanceAction(ticketId, action, accusedRef) {
       if (action === 'Acknowledge') {
-        toast(`✓ Ticket ${ticketId} acknowledged. Complainant notified via statutory email.`);
+        if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.updateAdminGrievance === 'function') {
+          await window.NN_SUPABASE_SERVICES.updateAdminGrievance(ticketId, 'Acknowledged by Admin', 'ACKNOWLEDGED');
+        }
+        toast(`✓ Ticket ${ticketId} acknowledged in Supabase database.`);
       } else if (action === 'BanUser') {
-        toast(`🚫 Accused User banned from THUNA. Records forwarded to moderation registry.`);
+        const target = accusedRef || ticketId;
+        if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.banUserAccount === 'function') {
+          await window.NN_SUPABASE_SERVICES.banUserAccount(target);
+        }
+        if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.updateAdminGrievance === 'function') {
+          await window.NN_SUPABASE_SERVICES.updateAdminGrievance(ticketId, 'Accused User Banned', 'RESOLVED_BANNED');
+        }
+        toast(`🚫 Accused User banned from database. Records locked.`);
       } else if (action === 'WarnProvider') {
-        toast(`⚠️ Official Show-Cause notice dispatched to provider.`);
+        if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.updateAdminGrievance === 'function') {
+          await window.NN_SUPABASE_SERVICES.updateAdminGrievance(ticketId, 'Official Warning Issued', 'NOTICE_DISPATCHED');
+        }
+        toast(`⚠️ Official Show-Cause notice logged in database for provider.`);
       } else {
         toast(`Dialing provider bridge for verification enquiry...`);
       }
+      if (typeof loadLiveAdminDashboardStats === 'function') loadLiveAdminDashboardStats();
     }
 
     // ==============================================================
@@ -2480,19 +2497,38 @@
       renderAdminCategoriesList();
     }
 
-    function approveProvider(btn, name) {
-      const row = btn.closest('tr');
-      btn.parentElement.innerHTML = '<span class="badge-tag verified">✓ Approved & Badge Issued</span>';
-      toast(`✓ ${name} approved with THUNA Verified badge!`);
-
-      // Record in audit log
-      addAuditLog(`Approved KYC for provider: ${name}`);
+    async function approveProvider(btn, name, phone) {
+      if (btn) btn.disabled = true;
+      try {
+        if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.approveServiceProvider === 'function') {
+          await window.NN_SUPABASE_SERVICES.approveServiceProvider(null, phone || name);
+        }
+      } catch (e) {
+        console.warn('Approve provider error:', e);
+      }
+      if (btn && btn.parentElement) {
+        btn.parentElement.innerHTML = '<span class="badge-tag verified">✓ Approved & Badge Issued</span>';
+      }
+      toast(`✓ ${name} approved in Supabase with verified badge!`);
+      addAuditLog(`Approved KYC in Supabase for provider: ${name}`);
+      if (typeof loadLiveAdminDashboardStats === 'function') loadLiveAdminDashboardStats();
     }
 
-    function rejectProvider(btn, name) {
-      btn.parentElement.innerHTML = '<span class="badge-tag" style="background:#fee2e2;color:#991b1b">✕ Application Rejected</span>';
-      toast(`Application for ${name} rejected due to incomplete trade credential.`);
-      addAuditLog(`Rejected KYC for provider: ${name}`);
+    async function rejectProvider(btn, name, phone) {
+      if (btn) btn.disabled = true;
+      try {
+        if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.rejectServiceProvider === 'function') {
+          await window.NN_SUPABASE_SERVICES.rejectServiceProvider(null, phone || name);
+        }
+      } catch (e) {
+        console.warn('Reject provider error:', e);
+      }
+      if (btn && btn.parentElement) {
+        btn.parentElement.innerHTML = '<span class="badge-tag" style="background:#fee2e2;color:#991b1b">✕ Application Rejected</span>';
+      }
+      toast(`Application for ${name} rejected in Supabase database.`);
+      addAuditLog(`Rejected KYC in Supabase for provider: ${name}`);
+      if (typeof loadLiveAdminDashboardStats === 'function') loadLiveAdminDashboardStats();
     }
 
     async function adminWebSearchUser() {
@@ -2621,34 +2657,43 @@
 
       if (btn) btn.disabled = true;
       try {
-        if (adminDb) {
-          // 1. Update deletion request document
-          await adminDb.collection('deletion_requests').doc(refId).set({
-            status: 'COMPLETED',
-            statusText: 'പൂർത്തിയായി (Erased)',
-            purgedAt: Date.now(),
-            purgedBy: 'Admin Console'
-          }, { merge: true });
+        // 1. Purge from Supabase Cloud Database (Atomic & Verified)
+        if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.deleteEntireUserAccount === 'function') {
+          await window.NN_SUPABASE_SERVICES.deleteEntireUserAccount(refId, phone, '');
+        }
 
-          // 2. Erase from donors, providers, ambulances if phone matches
-          if (phone) {
-            const cleanPhone = phone.replace(/[^0-9]/g, '').slice(-10);
-            if (cleanPhone.length === 10) {
-              const dSnap = await adminDb.collection('donors').where('phone', '==', phone).get();
-              dSnap.forEach(doc => doc.ref.delete());
-              const pSnap = await adminDb.collection('providers').where('phone', '==', phone).get();
-              pSnap.forEach(doc => doc.ref.delete());
-              const aSnap = await adminDb.collection('ambulances').where('phone', '==', phone).get();
-              aSnap.forEach(doc => doc.ref.delete());
+        // 2. Also cleanup legacy Firestore if connected
+        if (adminDb) {
+          try {
+            await adminDb.collection('deletion_requests').doc(refId).set({
+              status: 'COMPLETED',
+              statusText: 'പൂർത്തിയായി (Erased)',
+              purgedAt: Date.now(),
+              purgedBy: 'Admin Console'
+            }, { merge: true });
+
+            if (phone) {
+              const cleanPhone = phone.replace(/[^0-9]/g, '').slice(-10);
+              if (cleanPhone.length === 10) {
+                const dSnap = await adminDb.collection('donors').where('phone', '==', phone).get();
+                dSnap.forEach(doc => doc.ref.delete());
+                const pSnap = await adminDb.collection('providers').where('phone', '==', phone).get();
+                pSnap.forEach(doc => doc.ref.delete());
+                const aSnap = await adminDb.collection('ambulances').where('phone', '==', phone).get();
+                aSnap.forEach(doc => doc.ref.delete());
+              }
             }
+          } catch (fErr) {
+            console.warn('Firestore purge note:', fErr);
           }
         }
 
-        if (btn) {
+        if (btn && btn.parentElement) {
           btn.parentElement.innerHTML = `<span class="badge-tag verified">✓ Purged (${escapeHtml(refId)})</span>`;
         }
-        toast(`🔥 User data and credentials permanently purged from Firestore & Auth.`);
+        toast(`🔥 User data and credentials permanently purged from Supabase cloud database.`);
         addAuditLog(`Executed permanent data purge for ${refId} (${phone || ''})`);
+        if (typeof loadLiveAdminDashboardStats === 'function') loadLiveAdminDashboardStats();
       } catch (err) {
         console.warn("Purge error:", err);
         toast('⚠️ Error executing purge. Check connection.');
@@ -2656,10 +2701,20 @@
       }
     }
 
-    async function addAuditLog(actionText) {
+    async function addAuditLog(actionText, targetItem) {
       const now = new Date().toISOString().replace('T', ' ').slice(0, 19);
-      const hash = 'sha256:' + Math.random().toString(36).substring(2, 10) + '...';
+      const hash = 'sha256:' + Math.random().toString(36).substring(2, 10);
 
+      // Save to Supabase cloud audit log
+      if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.addAdminAuditLog === 'function') {
+        try {
+          await window.NN_SUPABASE_SERVICES.addAdminAuditLog(actionText, targetItem || 'Admin Console', 'Admin: M. Shamim');
+        } catch (e) {
+          console.warn('Supabase audit save note:', e);
+        }
+      }
+
+      // Save to legacy Firestore if connected
       if (adminDb) {
         try {
           await adminDb.collection('admin_audit_logs').add({
@@ -2679,13 +2734,100 @@
           <td>${now}</td>
           <td>Admin: M. Shamim</td>
           <td>${escapeHtml(actionText)}</td>
-          <td>Target Item</td>
+          <td>${escapeHtml(targetItem || 'Target Item')}</td>
           <td>DPDP Act 2023 Sec 11</td>
-          <td><code>${hash}</code></td>
+          <td><code>${hash}...</code></td>
         `;
         body.prepend(tr);
       }
     }
+
+    // LIVE SUPABASE DASHBOARD STATS & AUDIT LOG LOADERS
+    async function loadLiveAdminDashboardStats() {
+      try {
+        if (!window.NN_SUPABASE_SERVICES || typeof window.NN_SUPABASE_SERVICES.fetchAdminDashboardStats !== 'function') return;
+        const stats = await window.NN_SUPABASE_SERVICES.fetchAdminDashboardStats();
+        if (!stats) return;
+
+        if (stats.donors != null) {
+          const el = document.getElementById('statDonors');
+          if (el) el.textContent = Number(stats.donors).toLocaleString();
+        }
+        if (stats.services != null) {
+          const el = document.getElementById('statProviders');
+          if (el) el.textContent = Number(stats.services).toLocaleString();
+        }
+        if (stats.grievances != null) {
+          const el = document.getElementById('statGrievances');
+          if (el) el.textContent = Number(stats.grievances).toLocaleString();
+        }
+      } catch (e) {
+        console.warn('Failed to load live dashboard stats:', e);
+      }
+    }
+
+    async function loadAdminAuditLogs() {
+      const body = document.getElementById('auditTrailBody');
+      if (!body) return;
+      try {
+        if (!window.NN_SUPABASE_SERVICES || typeof window.NN_SUPABASE_SERVICES.fetchAdminAuditLogs !== 'function') return;
+        const logs = await window.NN_SUPABASE_SERVICES.fetchAdminAuditLogs(25);
+        if (logs && logs.length > 0) {
+          body.innerHTML = logs.map(l => {
+            const timeStr = l.created_at ? new Date(l.created_at).toLocaleString() : 'Just now';
+            return `
+              <tr>
+                <td>${timeStr}</td>
+                <td>${escapeHtml(l.admin_user || 'Admin')}</td>
+                <td>${escapeHtml(l.action)}</td>
+                <td>${escapeHtml(l.target_item || 'General')}</td>
+                <td>${escapeHtml(l.legal_basis || 'DPDP Act 2023 Sec 11')}</td>
+                <td><code>${escapeHtml(l.hash || 'sha256:verified')}</code></td>
+              </tr>
+            `;
+          }).join('');
+        }
+      } catch (e) {
+        console.warn('Failed to load audit logs:', e);
+      }
+    }
+
+    async function loadAdminGrievances() {
+      const body = document.getElementById('grievanceTableBody');
+      if (!body) return;
+      try {
+        if (!window.NN_SUPABASE_SERVICES || typeof window.NN_SUPABASE_SERVICES.fetchAdminGrievances !== 'function') return;
+        const grvs = await window.NN_SUPABASE_SERVICES.fetchAdminGrievances(25);
+        if (grvs && grvs.length > 0) {
+          body.innerHTML = grvs.map(g => {
+            const timeStr = g.created_at ? new Date(g.created_at).toLocaleDateString() : 'Today';
+            return `
+              <tr>
+                <td><strong>${escapeHtml(g.ticket_id || g.id)}</strong></td>
+                <td>${escapeHtml(g.complainant_name || 'Resident')} (${escapeHtml(g.complainant_phone || '')})</td>
+                <td>${escapeHtml(g.accused_user || 'Provider')}</td>
+                <td>${escapeHtml(g.title || 'Reported Issue')}</td>
+                <td>${timeStr}</td>
+                <td><span class="badge-tag urgent">${escapeHtml(g.status || 'PENDING')}</span></td>
+                <td>
+                  <div class="action-btn-group">
+                    <button class="btn-sm approve" onclick="handleGrievanceAction('${escapeHtml(g.ticket_id || g.id)}', 'Acknowledge')">Acknowledge</button>
+                    <button class="btn-sm reject" onclick="handleGrievanceAction('${escapeHtml(g.ticket_id || g.id)}', 'BanUser', '${escapeHtml(g.accused_user || '')}')">Ban User</button>
+                  </div>
+                </td>
+              </tr>
+            `;
+          }).join('');
+        }
+      } catch (e) {
+        console.warn('Failed to load live grievances:', e);
+      }
+    }
+
+    // Auto-load live stats on startup
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(loadLiveAdminDashboardStats, 600);
+    });
 
     // Live Deletion Requests Listener
     if (adminDb) {

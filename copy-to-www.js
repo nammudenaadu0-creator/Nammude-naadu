@@ -32,12 +32,13 @@ function minifyCss(css) {
 async function buildProductionWww() {
     console.log('🚀 Preparing production www directory with safe optimizations...');
 
-    // 1. Copy top-level files
+    // 1. Copy top-level files with strict missing file assertion
     filesToCopy.forEach(file => {
         const src = path.join(srcDir, file);
-        if (fs.existsSync(src)) {
-            fs.copyFileSync(src, path.join(destDir, file));
+        if (!fs.existsSync(src)) {
+            throw new Error(`CRITICAL BUILD ERROR: Missing required build file "${file}" in root!`);
         }
+        fs.copyFileSync(src, path.join(destDir, file));
     });
 
     // 2. Process CSS with clean minification
@@ -46,7 +47,7 @@ async function buildProductionWww() {
     fs.mkdirSync(destCssDir, { recursive: true });
 
     if (fs.existsSync(srcCssDir)) {
-        const cssFiles = fs.readdirSync(srcCssDir);
+        const cssFiles = fs.readdirSync(srcCssDir).filter(f => !f.startsWith('.') && f !== '__MACOSX');
         for (const file of cssFiles) {
             const srcPath = path.join(srcCssDir, file);
             const destPath = path.join(destCssDir, file);
@@ -67,7 +68,7 @@ async function buildProductionWww() {
     fs.mkdirSync(destJsDir, { recursive: true });
 
     if (fs.existsSync(srcJsDir)) {
-        const jsFiles = fs.readdirSync(srcJsDir);
+        const jsFiles = fs.readdirSync(srcJsDir).filter(f => !f.startsWith('.') && f !== '__MACOSX');
         for (const file of jsFiles) {
             const srcPath = path.join(srcJsDir, file);
             const destPath = path.join(destJsDir, file);
@@ -97,16 +98,31 @@ async function buildProductionWww() {
         }
     }
 
-    // 4. Copy static assets directories
+    // 4. Copy static assets directories with strict filtering of __MACOSX and .DS_Store
     const staticDirs = ['img', 'assets'];
     staticDirs.forEach(dir => {
         const src = path.join(srcDir, dir);
         if (fs.existsSync(src)) {
-            fs.cpSync(src, path.join(destDir, dir), { recursive: true });
+            fs.cpSync(src, path.join(destDir, dir), {
+                recursive: true,
+                filter: (srcPath) => {
+                    const base = path.basename(srcPath);
+                    return base !== '.DS_Store' && base !== '__MACOSX' && !base.startsWith('._');
+                }
+            });
         }
     });
 
-    console.log('✅ Successfully optimized and prepared www directory for Capacitor build!');
+    // 5. Sanity check verified build
+    const requiredBuildOutputs = ['index.html', 'admin.html', 'manifest.json', 'sw.js', 'js/supabase-backend.js'];
+    for (const out of requiredBuildOutputs) {
+        const checkPath = path.join(destDir, out);
+        if (!fs.existsSync(checkPath) || fs.statSync(checkPath).size === 0) {
+            throw new Error(`CRITICAL BUILD VERIFICATION FAILED: "${out}" was not produced in www!`);
+        }
+    }
+
+    console.log('✅ Successfully optimized and verified www directory for Capacitor build!');
 }
 
 buildProductionWww().catch(err => {

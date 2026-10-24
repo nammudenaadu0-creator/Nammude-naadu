@@ -579,7 +579,136 @@ create policy "Allow public insert emergency_contacts" on public.emergency_conta
 create policy "Deny public update emergency_contacts" on public.emergency_contacts for update using (false);
 create policy "Deny public delete emergency_contacts" on public.emergency_contacts for delete using (false);
 
--- 12. ENABLE SUPABASE REALTIME REPLICATION
+-- 12. ADMIN AUDIT LOGS & GRIEVANCES TABLES
+create table if not exists public.admin_audit_logs (
+  id uuid primary key default gen_random_uuid(),
+  action text not null,
+  admin_user text default 'Admin',
+  target_item text,
+  legal_basis text default 'DPDP Act 2023 Sec 11',
+  hash text,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+alter table public.admin_audit_logs enable row level security;
+create policy "admin_audit_logs_select" on public.admin_audit_logs for select using (true);
+create policy "admin_audit_logs_insert" on public.admin_audit_logs for insert with check (true);
+
+create table if not exists public.admin_grievances (
+  id uuid primary key default gen_random_uuid(),
+  ticket_id text,
+  title text not null,
+  category text,
+  complainant_name text,
+  complainant_phone text,
+  accused_user text,
+  location text,
+  status text default 'PENDING',
+  action_taken text,
+  sla_deadline timestamp with time zone,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+alter table public.admin_grievances enable row level security;
+create policy "admin_grievances_select" on public.admin_grievances for select using (true);
+create policy "admin_grievances_all" on public.admin_grievances for all using (true);
+
+-- Ensure moderation columns exist on profiles and services
+alter table public.profiles add column if not exists is_banned boolean default false;
+alter table public.profiles add column if not exists verified_provider boolean default false;
+alter table public.services add column if not exists verified boolean default false;
+alter table public.services add column if not exists status text default 'approved';
+
+-- 13. SECURE ATOMIC ACCOUNT & DATA DELETION RPC
+create or replace function public.delete_user_account_secure(
+  p_user_id text,
+  p_phone text,
+  p_email text
+)
+returns jsonb
+language plpgsql
+security definer
+as $$
+declare
+  v_clean_phone text;
+  v_del_posts int := 0;
+  v_del_services int := 0;
+  v_del_jobs int := 0;
+  v_del_rentals int := 0;
+  v_del_donors int := 0;
+  v_del_messages int := 0;
+  v_del_profiles int := 0;
+begin
+  -- Validate inputs: must provide a non-empty user_id or valid 10-digit phone
+  v_clean_phone := right(regexp_replace(coalesce(p_phone, ''), '\D', '', 'g'), 10);
+  
+  if (p_user_id is null or length(trim(p_user_id)) = 0) 
+     and (length(v_clean_phone) < 10) 
+     and (p_email is null or length(trim(p_email)) < 5) then
+    return jsonb_build_object('success', false, 'error', 'Invalid parameters for account deletion. Must provide valid ID, 10-digit phone, or email.');
+  end if;
+
+  -- 1. Delete profiles
+  if p_user_id is not null and length(trim(p_user_id)) > 0 then
+    delete from public.profiles where id = p_user_id;
+  end if;
+  if length(v_clean_phone) = 10 then
+    delete from public.profiles where phone like '%' || v_clean_phone;
+  end if;
+  if p_email is not null and length(trim(p_email)) >= 5 then
+    delete from public.profiles where lower(email) = lower(p_email);
+  end if;
+
+  -- 2. Delete community posts
+  if p_user_id is not null and length(trim(p_user_id)) > 0 then
+    delete from public.posts where user_id = p_user_id;
+  end if;
+  if length(v_clean_phone) = 10 then
+    delete from public.posts where author_phone like '%' || v_clean_phone;
+  end if;
+
+  -- 3. Delete services
+  if p_user_id is not null and length(trim(p_user_id)) > 0 then
+    delete from public.services where user_id = p_user_id;
+  end if;
+  if length(v_clean_phone) = 10 then
+    delete from public.services where phone like '%' || v_clean_phone;
+  end if;
+
+  -- 4. Delete jobs
+  if length(v_clean_phone) = 10 then
+    delete from public.jobs where phone like '%' || v_clean_phone;
+  end if;
+
+  -- 5. Delete rentals
+  if length(v_clean_phone) = 10 then
+    delete from public.rentals where phone like '%' || v_clean_phone;
+  end if;
+
+  -- 6. Delete blood donors and requests
+  if length(v_clean_phone) = 10 then
+    delete from public.blood_donors where phone like '%' || v_clean_phone;
+    delete from public.blood_requests where contact_phone like '%' || v_clean_phone;
+    delete from public.service_requests where phone like '%' || v_clean_phone;
+  end if;
+
+  -- 7. Delete messages
+  if p_user_id is not null and length(trim(p_user_id)) > 0 then
+    delete from public.messages where sender_id = p_user_id;
+  end if;
+  if length(v_clean_phone) = 10 then
+    delete from public.messages where sender_phone like '%' || v_clean_phone;
+  end if;
+
+  -- Record deletion in admin audit log
+  insert into public.admin_audit_logs (action, admin_user, target_item, legal_basis)
+  values ('Permanent user data purge completed', 'System Purge Engine', coalesce(p_user_id, v_clean_phone, p_email), 'DPDP Act 2023 Sec 11');
+
+  return jsonb_build_object('success', true, 'purged_phone', v_clean_phone, 'purged_user', p_user_id);
+end;
+$$;
+
+-- 14. ENABLE SUPABASE REALTIME REPLICATION
 alter publication supabase_realtime add table public.messages;
 alter publication supabase_realtime add table public.posts;
 alter publication supabase_realtime add table public.services;
@@ -590,3 +719,4 @@ alter publication supabase_realtime add table public.rentals;
 alter publication supabase_realtime add table public.service_requests;
 alter publication supabase_realtime add table public.profiles;
 alter publication supabase_realtime add table public.emergency_contacts;
+

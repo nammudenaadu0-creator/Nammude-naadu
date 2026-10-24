@@ -71,6 +71,49 @@ runTest('OneSignal REST API key is not stored in public localStorage', () => {
   assert.ok(!onesignal.includes("localStorage.getItem('nn_onesignal_rest_key')"), 'Insecure REST key retrieval removed');
 });
 
+// 6. Account Deletion Safety & Atomic Verification
+runTest('Account deletion uses atomic validation preventing partial or wildcard deletion', () => {
+  const schema = fs.readFileSync(path.join(__dirname, '../supabase-schema.sql'), 'utf8');
+  const backend = fs.readFileSync(path.join(__dirname, '../js/supabase-backend.js'), 'utf8');
+  assert.ok(schema.includes('function public.delete_user_account_secure'), 'Secure atomic account deletion stored procedure exists in SQL');
+  assert.ok(backend.includes("cleanPhone.length < 10"), 'Backend strictly validates 10-digit phone before purging');
+  assert.ok(backend.includes("delete_user_account_secure"), 'Backend calls atomic RPC delete_user_account_secure');
+});
+
+// 7. Chat Message Deletion Integrity
+runTest('Chat message deletion verifies database success before broadcasting delete event', () => {
+  const backend = fs.readFileSync(path.join(__dirname, '../js/supabase-backend.js'), 'utf8');
+  assert.ok(backend.includes('if (!dbDeleted)'), 'Backend checks dbDeleted flag');
+  assert.ok(backend.includes('Message delete failed on database. Broadcast skipped to maintain integrity'), 'Broadcast skipped on database delete failure');
+});
+
+// 8. Admin Panel Live Supabase Integration
+runTest('Admin panel operations are connected to live Supabase backend', () => {
+  const adminHtml = fs.readFileSync(path.join(__dirname, '../admin.html'), 'utf8');
+  const backend = fs.readFileSync(path.join(__dirname, '../js/supabase-backend.js'), 'utf8');
+  assert.ok(adminHtml.includes('approveServiceProvider'), 'admin.html connects provider approval to Supabase');
+  assert.ok(adminHtml.includes('rejectServiceProvider'), 'admin.html connects provider rejection to Supabase');
+  assert.ok(adminHtml.includes('banUserAccount'), 'admin.html connects user banning to Supabase');
+  assert.ok(adminHtml.includes('loadLiveAdminDashboardStats'), 'admin.html loads live dashboard statistics');
+  assert.ok(backend.includes('approveServiceProvider'), 'supabase-backend.js provides approveServiceProvider');
+  assert.ok(backend.includes('fetchAdminDashboardStats'), 'supabase-backend.js provides fetchAdminDashboardStats');
+});
+
+// 9. Build Script Strict Assertion & macOS System File Filtering
+runTest('Build script copy-to-www.js validates required files and filters __MACOSX / .DS_Store', () => {
+  const copyScript = fs.readFileSync(path.join(__dirname, '../copy-to-www.js'), 'utf8');
+  assert.ok(copyScript.includes('CRITICAL BUILD ERROR'), 'copy-to-www.js throws error on missing files');
+  assert.ok(copyScript.includes(".filter(f => !f.startsWith('.') && f !== '__MACOSX')"), 'copy-to-www.js filters hidden and __MACOSX files');
+  assert.ok(copyScript.includes("base !== '.DS_Store' && base !== '__MACOSX'"), 'copy-to-www.js filters macOS system files in assets');
+});
+
+// 10. Admin Authentication Security Gate
+runTest('Admin panel protects sensitive consoles with Master PIN Barrier', () => {
+  const adminHtml = fs.readFileSync(path.join(__dirname, '../admin.html'), 'utf8');
+  assert.ok(adminHtml.includes('id="adminAuthGate"'), 'adminAuthGate barrier element exists in admin.html');
+  assert.ok(adminHtml.includes('submitAdminGatePin'), 'PIN verification function exists in admin.html');
+});
+
 console.log(`\n========================================`);
 console.log(`🏁 Test Results: ${passedTests} passed, ${failedTests} failed.`);
 console.log(`========================================\n`);
