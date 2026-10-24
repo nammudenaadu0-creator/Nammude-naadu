@@ -8040,6 +8040,7 @@
 
   function openHospitalRegisterModal() {
     closeModal('modal-ambulance');
+    closeModal('modal-add-service');
     if (APP_STATE && APP_STATE.location) {
       const locInput = document.getElementById('regHospLocation');
       if (locInput && !locInput.value) {

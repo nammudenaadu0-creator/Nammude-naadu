@@ -2778,6 +2778,7 @@ html, body {
 .avatar-theme-catering   { background: linear-gradient(135deg, #FEF08A 0%, #FACC15 100%); box-shadow: 0 4px 12px rgba(250, 204, 21, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
 .avatar-theme-tailoring  { background: linear-gradient(135deg, #E9D5FF 0%, #C084FC 100%); box-shadow: 0 4px 12px rgba(192, 132, 252, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
 .avatar-theme-nursing    { background: linear-gradient(135deg, #FFE4E6 0%, #FDA4AF 100%); box-shadow: 0 4px 12px rgba(253, 164, 175, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
+.avatar-theme-hospital   { background: linear-gradient(135deg, #FECDD3 0%, #E11D48 100%); box-shadow: 0 4px 14px rgba(225, 29, 72, 0.45), inset 0 2px 4px rgba(255,255,255,0.7); }
 .avatar-theme-electronics{ background: linear-gradient(135deg, #BFDBFE 0%, #60A5FA 100%); box-shadow: 0 4px 12px rgba(96, 165, 250, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
 .avatar-theme-tiles      { background: linear-gradient(135deg, #99F6E4 0%, #2DD4BF 100%); box-shadow: 0 4px 12px rgba(45, 212, 191, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
 .avatar-theme-roofing    { background: linear-gradient(135deg, #FED7AA 0%, #F87171 100%); box-shadow: 0 4px 12px rgba(248, 113, 113, 0.35), inset 0 2px 4px rgba(255,255,255,0.7); }
