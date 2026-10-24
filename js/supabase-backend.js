@@ -2084,14 +2084,41 @@
     try {
       const rawPhone = userObj.phone || '';
       const cleanPhone = rawPhone.replace(/\D/g, '').slice(-10);
+      const cleanEmail = (userObj.email ? String(userObj.email).trim().toLowerCase() : '');
       const userId = userObj.id || (cleanPhone ? ('usr_' + cleanPhone) : ('usr_me_' + Date.now()));
       const lat = (userObj.lat != null) ? userObj.lat : (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.lat : null);
       const lon = (userObj.lon != null) ? userObj.lon : (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.lon : null);
+
+      // SINGLE ACCOUNT ENFORCEMENT: Only ONE account allowed per phone number & email ID
+      if (cleanPhone && cleanPhone.length >= 10) {
+        const { data: existingByPhone } = await client
+          .from('profiles')
+          .select('id, name, phone, email, place, avatar, blood_group')
+          .ilike('phone', `%${cleanPhone}%`)
+          .limit(1);
+        if (existingByPhone && existingByPhone.length > 0 && existingByPhone[0].id !== userId) {
+          console.warn('⚠️ [Supabase] Account already registered with phone:', cleanPhone);
+          return { duplicate: true, field: 'phone', profile: existingByPhone[0] };
+        }
+      }
+
+      if (cleanEmail) {
+        const { data: existingByEmail } = await client
+          .from('profiles')
+          .select('id, name, phone, email, place, avatar, blood_group')
+          .eq('email', cleanEmail)
+          .limit(1);
+        if (existingByEmail && existingByEmail.length > 0 && existingByEmail[0].id !== userId) {
+          console.warn('⚠️ [Supabase] Account already registered with email:', cleanEmail);
+          return { duplicate: true, field: 'email', profile: existingByEmail[0] };
+        }
+      }
 
       const payload = {
         id: userId,
         name: userObj.name || 'നാട്ടുകാരൻ',
         phone: rawPhone,
+        email: cleanEmail,
         place: userObj.location || '',
         avatar: userObj.avatar || '',
         blood_group: userObj.bloodGroup || 'O+',
@@ -2110,9 +2137,60 @@
         return false;
       }
       console.info('✅ [Supabase] User profile synced to cloud with ID and coordinates:', userId, lat, lon);
-      return true;
+      return { success: true, id: userId };
     } catch (err) {
       console.error('❌ [Supabase] Profile save error:', err);
+      return false;
+    }
+  }
+
+  // 10. COMPLETE ACCOUNT & DATA PURGE FROM SUPABASE CLOUD
+  async function deleteEntireUserAccount(userId, phone, email) {
+    const client = initSupabase();
+    if (!client) return false;
+
+    try {
+      const cleanPhone = phone ? String(phone).replace(/\D/g, '').slice(-10) : '';
+      const cleanEmail = email ? String(email).trim().toLowerCase() : '';
+      console.info('🗑️ [Supabase] Initiating COMPLETE Account Deletion for:', { userId, cleanPhone, cleanEmail });
+
+      const delPromises = [];
+
+      // A. Delete Profile Record
+      if (userId) delPromises.push(client.from('profiles').delete().eq('id', userId));
+      if (cleanPhone) delPromises.push(client.from('profiles').delete().ilike('phone', `%${cleanPhone}%`));
+      if (cleanEmail) delPromises.push(client.from('profiles').delete().eq('email', cleanEmail));
+
+      // B. Delete Community Posts
+      if (userId) delPromises.push(client.from('posts').delete().eq('user_id', userId));
+      if (cleanPhone) delPromises.push(client.from('posts').delete().ilike('author_phone', `%${cleanPhone}%`));
+
+      // C. Delete Services / Listings
+      if (userId) delPromises.push(client.from('services').delete().eq('user_id', userId));
+      if (cleanPhone) delPromises.push(client.from('services').delete().ilike('phone', `%${cleanPhone}%`));
+
+      // D. Delete Jobs Posted
+      if (cleanPhone) delPromises.push(client.from('jobs').delete().ilike('phone', `%${cleanPhone}%`));
+
+      // E. Delete Rentals & Classifieds
+      if (cleanPhone) delPromises.push(client.from('rentals').delete().ilike('phone', `%${cleanPhone}%`));
+
+      // F. Delete Blood Donor Registry & Emergency Requests
+      if (cleanPhone) {
+        delPromises.push(client.from('blood_donors').delete().ilike('phone', `%${cleanPhone}%`));
+        delPromises.push(client.from('blood_requests').delete().ilike('contact_phone', `%${cleanPhone}%`));
+        delPromises.push(client.from('service_requests').delete().ilike('phone', `%${cleanPhone}%`));
+      }
+
+      // G. Delete Chat Messages
+      if (userId) delPromises.push(client.from('messages').delete().eq('sender_id', userId));
+      if (cleanPhone) delPromises.push(client.from('messages').delete().ilike('sender_phone', `%${cleanPhone}%`));
+
+      const results = await Promise.allSettled(delPromises);
+      console.info('✅ [Supabase] Account and all related data purged completely from database.', results);
+      return true;
+    } catch (err) {
+      console.error('❌ [Supabase] Account purge error:', err);
       return false;
     }
   }
@@ -2124,7 +2202,13 @@
 
     try {
       const cleanDigits = String(phoneOrId).replace(/\D/g, '').slice(-10);
+      const isEmail = String(phoneOrId).includes('@');
       const targetId = String(phoneOrId).startsWith('usr_') ? String(phoneOrId) : (cleanDigits ? ('usr_' + cleanDigits) : phoneOrId);
+
+      if (isEmail) {
+        const { data } = await client.from('profiles').select('*').eq('email', String(phoneOrId).trim().toLowerCase()).maybeSingle();
+        if (data) return data;
+      }
 
       // Search by ID first
       let { data, error } = await client
@@ -2213,6 +2297,7 @@
     // Profile
     saveUserProfile,
     fetchUserProfile,
+    deleteEntireUserAccount,
     syncProfiles,
     // Chat
     sendChatMessage,

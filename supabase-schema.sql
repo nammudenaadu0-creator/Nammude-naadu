@@ -278,6 +278,9 @@ create table if not exists public.profiles (
 
 alter table public.profiles add column if not exists latitude double precision;
 alter table public.profiles add column if not exists longitude double precision;
+alter table public.profiles add column if not exists email text;
+create index if not exists idx_profiles_email on public.profiles(email);
+create index if not exists idx_profiles_phone on public.profiles(phone);
 
 alter table public.profiles enable row level security;
 drop policy if exists "Allow public select profiles" on public.profiles;

@@ -3651,6 +3651,16 @@
                         <div style="font-size:10.5px;color:#64748B;margin-top:3px">💡 ഈ നമ്പർ വെച്ചാണ് നിങ്ങളുടെ പൗരത്വ
                             ഐഡിയും ക്ലൗഡ് അക്കൗണ്ടും പ്രവർത്തിക്കുന്നത്.</div>
                     </div>
+
+                    <!-- Email Address (Strictly 1 Account per Email/Mobile) -->
+                    <div style="margin-top:10px">
+                        <label
+                            style="font-size:11.5px;font-weight:800;color:#334155;display:block;margin-bottom:4px">ഇമെയിൽ വിലാസം (Email ID)</label>
+                        <input type="email" id="editProfEmail"
+                            placeholder="നിങ്ങളുടെ ഇമെയിൽ നൽകുക (name@example.com)..."
+                            style="width:100%;padding:11px 12px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13.5px;outline:none;color:#0F172A">
+                        <div style="font-size:10.5px;color:#64748B;margin-top:3px">🔒 ഒരു മൊബൈൽ നമ്പറിലും ഇമെയിലിലും ഒരു അക്കൗണ്ട് മാത്രമേ അനുവദിക്കൂ.</div>
+                    </div>
                 </div>
 
                 <!-- CARD 2: LOCATION & AREA -->
@@ -3800,6 +3810,17 @@
                     style="background:#FFF1F2;color:#E11D48;border:1px solid #FECDD3;padding:11px;border-radius:14px;font-weight:800;font-size:12.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
                     <span>🚪</span> <span>മറ്റൊരു അക്കൗണ്ടിലേക്ക് മാറ്റാം / ലോഗ് ഔട്ട്</span>
                 </button>
+
+                <!-- DANGER ZONE: PERMANENT ACCOUNT DELETION FROM SUPABASE -->
+                <div style="margin-top:6px;padding-top:12px;border-top:1.5px dashed #FECDD3;text-align:center">
+                    <button type="button" onclick="handleDeleteUserAccount()"
+                        style="width:100%;background:#FFF5F5;color:#DC2626;border:1.5px solid #FCA5A5;padding:12px;border-radius:14px;font-weight:900;font-size:12.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+                        <span>🗑️</span> <span>അക്കൗണ്ട് ശാശ്വതമായി ഡിലീറ്റ് ചെയ്യാം (Delete Account)</span>
+                    </button>
+                    <div style="font-size:10.5px;color:#991B1B;margin-top:5px;line-height:1.4;font-weight:600">
+                        ⚠️ അക്കൗണ്ട് ഡിലീറ്റ് ചെയ്താൽ നിങ്ങളുടെ പ്രൊഫൈൽ, പോസ്റ്റുകൾ, സർവീസുകൾ, മെസ്സേജുകൾ എന്നിവ Supabase ക്ലൗഡിൽ നിന്നും പൂർണ്ണമായി മായ്ക്കപ്പെടും.
+                    </div>
+                </div>
             </form>
         </div>
     </div>

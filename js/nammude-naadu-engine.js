@@ -9202,6 +9202,7 @@
   function openEditProfileModal(isOnboarding = false) {
     const nameEl = document.getElementById('editProfName');
     const phoneEl = document.getElementById('editProfPhone');
+    const emailEl = document.getElementById('editProfEmail');
     const locEl = document.getElementById('editProfLoc');
     const distEl = document.getElementById('editProfDistrict');
     const tradeEl = document.getElementById('editProfTrade');
@@ -9220,6 +9221,7 @@
 
     const curName = (APP_STATE.currentUser.name && APP_STATE.currentUser.name !== 'നാട്ടുകാരൻ') ? APP_STATE.currentUser.name : '';
     const curPhone = APP_STATE.currentUser.phone || '';
+    const curEmail = APP_STATE.currentUser.email || localStorage.getItem('nn_user_email') || '';
     const curBlood = APP_STATE.currentUser.bloodGroup || localStorage.getItem('nn_user_blood') || 'O+';
     const curLoc = (APP_STATE.currentUser.location && APP_STATE.currentUser.location !== 'തത്സമയ ലൊക്കേഷൻ') ? APP_STATE.currentUser.location : (APP_STATE.location.name && APP_STATE.location.name !== 'തത്സമയ ലൊക്കേഷൻ' ? APP_STATE.location.name : '');
     const curDistrict = APP_STATE.currentUser.district || localStorage.getItem('nn_user_district') || APP_STATE.location.district || 'കണ്ണൂർ';
@@ -9228,6 +9230,7 @@
 
     if (nameEl) nameEl.value = curName;
     if (phoneEl) phoneEl.value = curPhone;
+    if (emailEl) emailEl.value = curEmail;
     if (locEl) locEl.value = curLoc;
     if (tradeEl) tradeEl.value = curTrade;
     if (bioEl) bioEl.value = curBio;
@@ -9331,6 +9334,7 @@
     if (e) e.preventDefault();
     const name = (document.getElementById('editProfName').value || '').trim();
     const phone = (document.getElementById('editProfPhone').value || '').trim();
+    const email = (document.getElementById('editProfEmail')?.value || '').trim().toLowerCase();
     const loc = (document.getElementById('editProfLoc').value || '').trim() || APP_STATE.location.name || 'കേരളം';
     const district = document.getElementById('editProfDistrict')?.value || 'കണ്ണൂർ';
     const trade = (document.getElementById('editProfTrade')?.value || '').trim();
@@ -9347,10 +9351,15 @@
       toast('⚠️ ദയവായി 10 അക്ക മൊബൈൽ നമ്പർ നൽകുക.');
       return;
     }
+    if (email && (!email.includes('@') || !email.includes('.'))) {
+      toast('⚠️ ദയവായി സാധുവായ ഇമെയിൽ വിലാസം നൽകുക.');
+      return;
+    }
 
     APP_STATE.currentUser.id = 'usr_' + cleanDigits;
     APP_STATE.currentUser.name = name;
     APP_STATE.currentUser.phone = phone;
+    APP_STATE.currentUser.email = email;
     APP_STATE.currentUser.location = loc;
     APP_STATE.currentUser.district = district;
     APP_STATE.currentUser.trade = trade;
@@ -9363,6 +9372,9 @@
       localStorage.setItem('nn_user_id', cleanDigits);
       localStorage.setItem('nn_user_name', name);
       localStorage.setItem('nn_user_phone', phone);
+      localStorage.setItem('nn_permanent_phone', phone);
+      if (email) localStorage.setItem('nn_user_email', email);
+      else localStorage.removeItem('nn_user_email');
       localStorage.setItem('nn_user_loc', loc);
       localStorage.setItem('nn_user_district', district);
       if (trade) localStorage.setItem('nn_user_trade', trade);
@@ -9458,9 +9470,13 @@
         if (postChanged) savePosts();
       }
 
-      // Synchronize to Supabase Cloud Profiles non-blockingly
+      // Synchronize to Supabase Cloud Profiles non-blockingly (Enforce Single Account per Phone & Email)
       if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveUserProfile === 'function') {
-        window.NN_SUPABASE_SERVICES.saveUserProfile(APP_STATE.currentUser);
+        window.NN_SUPABASE_SERVICES.saveUserProfile(APP_STATE.currentUser).then(res => {
+          if (res && res.duplicate) {
+            toast(`🔒 ഈ ${res.field === 'phone' ? 'മൊബൈൽ നമ്പറിൽ' : 'ഇമെയിൽ വിലാസത്തിൽ'} ഇതിനകം ഒരു അക്കൗണ്ടുണ്ട്. ഒരൊറ്റ അക്കൗണ്ടായി ക്രമീകരിച്ചു.`);
+          }
+        }).catch(err => console.warn('Cloud sync error:', err));
       }
     });
   }
@@ -9471,7 +9487,9 @@
       try {
         localStorage.removeItem('nn_user_name');
         localStorage.removeItem('nn_user_phone');
+        localStorage.removeItem('nn_permanent_phone');
         localStorage.removeItem('nn_user_id');
+        localStorage.removeItem('nn_user_email');
         localStorage.removeItem('nn_user_avatar');
         localStorage.removeItem('nn_user_loc');
         localStorage.removeItem('nn_user_blood');
@@ -9484,6 +9502,7 @@
         id: 'usr_me_' + Math.random().toString(36).substring(2, 9),
         name: 'നാട്ടുകാരൻ',
         phone: '',
+        email: '',
         location: 'തത്സമയ ലൊക്കേഷൻ',
         bloodGroup: 'O+',
         avatar: DEFAULT_USER_AVATAR,
@@ -9499,6 +9518,84 @@
     }
   }
   window.handleProfileLogout = handleProfileLogout;
+
+  // COMPLETE ACCOUNT & DATA PURGE (Supabase Cloud + Local Storage)
+  async function handleDeleteUserAccount() {
+    const user = (APP_STATE && APP_STATE.currentUser) || {};
+    const userId = user.id;
+    const phone = user.phone || localStorage.getItem('nn_user_phone') || localStorage.getItem('nn_permanent_phone') || '';
+    const email = user.email || localStorage.getItem('nn_user_email') || '';
+
+    const confirmed = confirm(
+      '⚠️ നിങ്ങളുടെ അക്കൗണ്ട് ശാശ്വതമായി ഡിലീറ്റ് ചെയ്യണോ?\n\n' +
+      'നിങ്ങളുടെ പ്രൊഫൈൽ, പോസ്റ്റുകൾ, സർവീസുകൾ, ജോബ് പരസ്യങ്ങൾ, വാടക വിവരങ്ങൾ, രക്തദാതാവ് രജിസ്ട്രേഷൻ, മെസ്സേജുകൾ എന്നിവ Supabase ക്ലൗഡിൽ നിന്നും ഉപകരണത്തിൽ നിന്നും പൂർണ്ണമായി മായ്ക്കപ്പെടും.\n\n' +
+      'ഈ പ്രവർത്തനം ഒരിക്കലും തിരിച്ചെടുക്കാൻ കഴിയില്ല!'
+    );
+
+    if (!confirmed) return;
+
+    toast('⏳ അക്കൗണ്ടും എല്ലാ വിവരങ്ങളും Supabase-ൽ നിന്ന് ഡിലീറ്റ് ചെയ്യുന്നു...');
+
+    try {
+      if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.deleteEntireUserAccount === 'function') {
+        await window.NN_SUPABASE_SERVICES.deleteEntireUserAccount(userId, phone, email);
+      }
+    } catch (err) {
+      console.warn('⚠️ [Delete Account] Supabase purge warning:', err);
+    }
+
+    try {
+      localStorage.removeItem('nn_user_name');
+      localStorage.removeItem('nn_user_phone');
+      localStorage.removeItem('nn_permanent_phone');
+      localStorage.removeItem('nn_user_id');
+      localStorage.removeItem('nn_permanent_id');
+      localStorage.removeItem('nn_user_email');
+      localStorage.removeItem('nn_user_avatar');
+      localStorage.removeItem('nn_user_loc');
+      localStorage.removeItem('nn_user_district');
+      localStorage.removeItem('nn_user_trade');
+      localStorage.removeItem('nn_user_blood');
+      localStorage.removeItem('nn_user_bio');
+      localStorage.removeItem('nn_user_is_donor');
+      localStorage.removeItem('nn_user_cover');
+      localStorage.removeItem('nn_profile_completed');
+      localStorage.removeItem('nn_user_chats');
+      localStorage.removeItem('nn_my_posts');
+    } catch (_) {}
+
+    APP_STATE.currentUser = {
+      id: 'usr_me_' + Math.random().toString(36).substring(2, 9),
+      name: 'നാട്ടുകാരൻ',
+      phone: '',
+      email: '',
+      location: 'തത്സമയ ലൊക്കേഷൻ',
+      bloodGroup: 'O+',
+      avatar: DEFAULT_USER_AVATAR,
+      isDonor: false,
+      isCustomized: false
+    };
+
+    closeModal('modal-edit-profile');
+
+    if (typeof updateUserAuthUI === 'function') updateUserAuthUI();
+    if (typeof updateAdminUI === 'function') updateAdminUI();
+    if (typeof updatePostingProfileBar === 'function') updatePostingProfileBar();
+    if (typeof renderProfileScreen === 'function') renderProfileScreen();
+    if (typeof renderHomeScreen === 'function') renderHomeScreen();
+
+    ['#profileAvatarImg', '#homeHeaderAvatar', '#postingAsAvatar', '#profComposerMiniAvatar', '#desktopUserAvatar', '#desktopSidebarAvatar'].forEach(sel => {
+      const el = document.querySelector(sel);
+      if (el) el.src = DEFAULT_USER_AVATAR;
+    });
+    ['#postingAsName', '#desktopUserName', '#desktopSidebarName'].forEach(sel => {
+      const el = document.querySelector(sel);
+      if (el) el.textContent = 'നാട്ടുകാരൻ';
+    });
+
+    toast('✅ നിങ്ങളുടെ അക്കൗണ്ടും എല്ലാ വിവരങ്ങളും Supabase-ൽ നിന്നും ആപ്പിൽ നിന്നും പൂർണ്ണമായി മായ്ച്ചു.');
+  }
+  window.handleDeleteUserAccount = handleDeleteUserAccount;
 
   function updateUserAuthUI() {
     const user = (APP_STATE && APP_STATE.currentUser) || {};
