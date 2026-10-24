@@ -161,6 +161,12 @@
   // Synthesized audio chimes for phone alerts
   function playNotificationSound(type) {
     try {
+      const audio = new Audio('assets/notification.wav');
+      audio.volume = 0.85;
+      audio.play().catch(() => {});
+    } catch (_) {}
+
+    try {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
       if (!AudioCtx) return;
       const ctx = new AudioCtx();
@@ -170,35 +176,25 @@
       osc.connect(gain);
       gain.connect(ctx.destination);
 
-      if (type === 'blood') {
+      if (type === 'blood' || type === 'emergency') {
         // High priority alarm tone
         osc.type = 'sawtooth';
         osc.frequency.setValueAtTime(880, ctx.currentTime);
         osc.frequency.setValueAtTime(700, ctx.currentTime + 0.15);
         osc.frequency.setValueAtTime(880, ctx.currentTime + 0.3);
-        gain.gain.setValueAtTime(0.35, ctx.currentTime);
+        gain.gain.setValueAtTime(0.4, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.65);
         osc.start(ctx.currentTime);
         osc.stop(ctx.currentTime + 0.65);
-      } else if (type === 'service') {
-        // Pleasant bell chime for service request
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(523.25, ctx.currentTime);
-        osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.12);
-        osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.24);
-        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+      } else {
+        // Pleasant bell chime for message / help alert
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(783.99, ctx.currentTime);
+        osc.frequency.setValueAtTime(1046.50, ctx.currentTime + 0.12);
+        gain.gain.setValueAtTime(0.35, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.55);
         osc.start(ctx.currentTime);
         osc.stop(ctx.currentTime + 0.55);
-      } else {
-        // Chat chime
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(587.33, ctx.currentTime);
-        osc.frequency.setValueAtTime(880, ctx.currentTime + 0.12);
-        gain.gain.setValueAtTime(0.25, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.45);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.45);
       }
     } catch (_) {}
   }
@@ -218,8 +214,9 @@
                 body: body,
                 id: Math.floor(Math.random() * 900000) + 100000,
                 schedule: { at: new Date(Date.now() + 50) },
+                channelId: 'nammude_naadu_alerts',
                 smallIcon: 'ic_launcher',
-                sound: 'res://raw/beep.wav',
+                sound: 'notification_sound.wav',
                 extra: extraData
               }
             ]

@@ -161,6 +161,9 @@
           data: extraData || {},
           small_icon: 'ic_stat_onesignal_default',
           large_icon: 'https://nammudenaadu.web.app/assets/icon-192.png',
+          android_channel_id: 'nammude_naadu_alerts',
+          android_sound: 'notification',
+          ios_sound: 'default',
           priority: 10
         };
 
@@ -196,6 +199,9 @@
           headings: { en: title || '📢 അടിയന്തിര അറിയിപ്പ്!' },
           contents: { en: message },
           data: extraData || {},
+          android_channel_id: 'nammude_naadu_alerts',
+          android_sound: 'notification',
+          ios_sound: 'default',
           priority: 10
         };
 
