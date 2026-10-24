@@ -70,12 +70,16 @@
         'nn_permanent_phone',
         'nn_permanent_id',
         'nn_user_id',
+        'nn_user_email',
+        'nn_profile_completed',
         'nn_user_avatar',
         'nn_user_bio',
         'nn_user_blood',
         'nn_user_is_donor',
         'nn_user_cover',
         'nn_user_loc',
+        'nn_curr_district',
+        'nn_is_admin',
         'nn_cloud_profiles',
         'nn_blood_donors',
         'nn_posts',
@@ -89,18 +93,39 @@
         'nn_service_user',
         'nn_saved_services',
         'nn_notifications',
-        'nn_liked_posts'
+        'nn_liked_posts',
+        'nn_my_posts',
+        'thuna_user_phone',
+        'thuna_user_name',
+        'thuna_user_id',
+        'thuna_user_location',
+        'thuna_user_coordinates',
+        'nn_fresh_start_clean_v3'
       ];
       keysToRemove.forEach(k => {
         try { localStorage.removeItem(k); } catch (_) {}
       });
-      localStorage.setItem('nn_fresh_start_clean_v3', 'true');
+      localStorage.setItem('nn_all_accounts_deleted_v6', 'true');
       if (typeof APP_STATE !== 'undefined') {
+        APP_STATE.currentUser = {
+          id: 'usr_guest',
+          name: '',
+          phone: '',
+          email: '',
+          location: 'തത്സമയ ലൊക്കേഷൻ',
+          bloodGroup: 'O+',
+          avatar: DEFAULT_USER_AVATAR,
+          cover: 'img/kerala-splash.jpg',
+          bio: 'നമ്മുടെ നാട് കൂട്ടായ്മ 🌿',
+          isDonor: false,
+          isAdmin: false,
+          isCustomized: false
+        };
         APP_STATE.chats = {};
         APP_STATE.chatMeta = {};
         APP_STATE.cloudProfiles = [];
       }
-      console.info('🧹 [Nammude Naadu] All local profiles, chats & storage cleared. Fresh state initialized.');
+      console.info('🧹 [Nammude Naadu] All accounts created so far have been completely deleted. Fresh state initialized.');
       if (reload && typeof window !== 'undefined' && window.location) {
         window.location.reload();
       }
@@ -108,9 +133,9 @@
   }
   window.resetAppToFreshState = resetAppToFreshState;
 
-  // Run one-time clean-slate purge on startup to remove any old registered profiles & chats
+  // Run one-time clean-slate purge on startup to remove ALL previous accounts created so far
   try {
-    if (!localStorage.getItem('nn_fresh_start_clean_v3')) {
+    if (!localStorage.getItem('nn_all_accounts_deleted_v6')) {
       resetAppToFreshState(false);
     }
   } catch (_) {}
@@ -10225,6 +10250,11 @@
     });
 
     toast('✅ നിങ്ങളുടെ അക്കൗണ്ടും എല്ലാ വിവരങ്ങളും Supabase-ൽ നിന്നും ആപ്പിൽ നിന്നും പൂർണ്ണമായി മായ്ച്ചു.');
+    setTimeout(() => {
+      if (typeof openMandatoryRegisterModal === 'function') {
+        openMandatoryRegisterModal();
+      }
+    }, 450);
   }
   window.handleDeleteUserAccount = handleDeleteUserAccount;
 
