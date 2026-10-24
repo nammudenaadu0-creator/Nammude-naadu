@@ -769,6 +769,34 @@
             urgency: 'urgent',
             created_at: new Date(Date.now() - 45 * 60 * 1000).toISOString(),
             isUserCreated: false
+          },
+          {
+            id: 'help_seed_3',
+            userId: 'usr_volunteer_seed_3',
+            userName: 'ഷിഹാബ് കോട്ടക്കൽ',
+            userAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
+            category: 'repair',
+            radius: 2,
+            description: 'വീട്ടിൽ പ്രധാന വാട്ടർ പൈപ്പ് പൊട്ടി വെള്ളം ഒഴുകുന്നു, പെട്ടെന്ന് ഒരു പൈപ്പ് റെഞ്ച് അല്ലെങ്കിൽ ടാപ്പ് അടയ്ക്കാൻ സഹായിക്കാമോ?',
+            location: 'പള്ളിപ്പടി',
+            phone: '9745112233',
+            urgency: 'urgent',
+            created_at: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
+            isUserCreated: false
+          },
+          {
+            id: 'help_seed_4',
+            userId: 'usr_volunteer_seed_4',
+            userName: 'വിപിൻ ദാസ്',
+            userAvatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=200&q=80',
+            category: 'home',
+            radius: 3,
+            description: 'വീട്ടുസാധനങ്ങൾ വണ്ടിയിലേക്ക് കയറ്റാൻ 1 മണിക്കൂർ ചെറിയൊരു സഹായം ആവശ്യമുണ്ട്, അടുത്തുള്ളവർ സഹായിക്കാമോ?',
+            location: 'കവല പരിസരം',
+            phone: '9895001122',
+            urgency: 'normal',
+            created_at: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
+            isUserCreated: false
           }
         ];
       }
@@ -7599,143 +7627,25 @@
       });
     });
 
-    // 1. SERVICES & WORKERS (Exclude own service)
-    (APP_STATE.services || []).forEach(s => {
-      if (isCurrentUserEntity(s.userId || s.id, s.phone, s.name, s.isCurrentUser)) return;
-      const dist = getItemDistanceKm(s, APP_STATE.location.lat, APP_STATE.location.lon);
-      s._calculatedDist = dist;
-      const resolvedAvatar = getRegisteredUserAvatar(s.phone || s.id, s.avatar);
-      rawItems.push({
-        type: 'service',
-        id: s.id,
-        name: s.name,
-        subtitle: s.trade,
-        icon: s.icon || '🛠️',
-        avatar: resolvedAvatar,
-        phone: s.phone || '',
-        location: resolveItemLocation(s),
-        badge: s.rating ? `★ ${s.rating}` : 'വെരിഫൈഡ്',
-        dist: dist
-      });
-    });
-
-    // 2. CITIZENS & POST AUTHORS (Exclude self)
-    const seenAuthors = new Set();
-    (APP_STATE.posts || []).forEach(p => {
-      if (isCurrentUserEntity(p.authorId, p.authorPhone, p.authorName, p.isCurrentUser)) return;
-      const authorKey = p.authorName || p.authorId;
-      const pPhone = normalizePhone(p.authorPhone);
-      if (pPhone && seenPhones.has(pPhone)) return;
-      if (authorKey && !seenAuthors.has(authorKey)) {
-        seenAuthors.add(authorKey);
-        if (pPhone) seenPhones.add(pPhone);
-        const dist = getItemDistanceKm(p, APP_STATE.location.lat, APP_STATE.location.lon);
-        p._calculatedDist = dist;
-        const resolvedAvatar = getRegisteredUserAvatar(p.authorPhone || p.authorId, p.authorAvatar);
-        rawItems.push({
-          type: 'citizen',
-          id: p.authorId || ('citizen_' + p.id),
-          name: p.authorName || 'നാട്ടുകാരൻ',
-          subtitle: p.content ? (p.content.slice(0, 32) + '...') : 'കമ്മ്യൂണിറ്റി പോസ്റ്റ്',
-          icon: '👥',
-          avatar: resolvedAvatar,
-          phone: p.authorPhone || '',
-          location: resolveItemLocation(p),
-          badge: 'നാട്ടുകാരൻ',
-          dist: dist
-        });
-      }
-    });
-
-    // 3. REGISTERED CITIZENS (From Supabase cloud profiles)
-    (APP_STATE.cloudProfiles || []).forEach(cp => {
-      if (isCurrentUserEntity(cp.id, cp.phone, cp.full_name || cp.name, false)) return;
-      const cpPhone = normalizePhone(cp.phone);
-      if (cpPhone && seenPhones.has(cpPhone)) return;
-      if (cp.id && seenAuthors.has(cp.id)) return;
-      if (cpPhone) seenPhones.add(cpPhone);
-      if (cp.id) seenAuthors.add(cp.id);
-
-      const dist = getItemDistanceKm(cp, APP_STATE.location.lat, APP_STATE.location.lon);
-      cp._calculatedDist = dist;
-      const resolvedAvatar = getRegisteredUserAvatar(cp.phone || cp.id, cp.avatar_url || cp.avatar);
-      rawItems.push({
-        type: 'citizen',
-        id: cp.id || ('usr_' + (cpPhone || Math.random())),
-        name: cp.full_name || cp.name || 'രജിസ്റ്റർ ചെയ്ത അംഗം',
-        subtitle: cp.status || cp.bio || 'നാട്ടിലെ അംഗം',
-        icon: '👤',
-        avatar: resolvedAvatar,
-        phone: cp.phone || '',
-        location: resolveItemLocation(cp) || 'കേരളം',
-        badge: 'രജിസ്റ്റർ ചെയ്തയാൾ',
-        dist: dist
-      });
-    });
-
-    // 4. BLOOD DONORS (Exclude self)
-    (APP_STATE.bloodDonors || []).forEach(d => {
-      if (isCurrentUserEntity(d.id, d.phone, d.name, false)) return;
-      const dist = getItemDistanceKm(d, APP_STATE.location.lat, APP_STATE.location.lon);
-      d._calculatedDist = dist;
-      const resolvedAvatar = getRegisteredUserAvatar(d.phone || d.id, d.avatar);
-      rawItems.push({
-        type: 'donor',
-        id: 'donor_' + (d.phone ? d.phone.replace(/\D/g, '') : d.name),
-        name: d.name,
-        subtitle: `രക്തദാതാവ് (${d.group || 'All'})`,
-        icon: '🩸',
-        avatar: resolvedAvatar,
-        phone: d.phone || '',
-        location: resolveItemLocation(d),
-        badge: d.group || 'O+',
-        dist: dist
-      });
-    });
-
-    // 5. RENTALS & LOCAL BUSINESSES (Exclude self)
-    (APP_STATE.rentals || []).forEach(r => {
-      if (isCurrentUserEntity(r.userId || r.id, r.ownerPhone, r.owner, false)) return;
-      const dist = getItemDistanceKm(r, APP_STATE.location.lat, APP_STATE.location.lon);
-      r._calculatedDist = dist;
-      const resolvedAvatar = r.image || getRegisteredUserAvatar(r.ownerPhone || r.userId, DEFAULT_USER_AVATAR);
-      rawItems.push({
-        type: 'rental',
-        id: r.id,
-        name: r.owner || r.title,
-        subtitle: r.title,
-        icon: '🏠',
-        avatar: resolvedAvatar,
-        phone: r.ownerPhone || '',
-        location: resolveItemLocation(r),
-        badge: r.rate || 'വാടകയ്ക്ക്',
-        dist: dist
-      });
-    });
-
-    // Step A: Apply Category Filtering
+    // Step A: Apply Category Filtering strictly for help categories
     let filtered = rawItems.filter(item => {
-      if (catFilter === 'all') return true;
-      if (catFilter === 'help') return item.type === 'help';
-      return item.type === catFilter;
+      if (!catFilter || catFilter === 'all' || catFilter === 'help') return true;
+      return item.category === catFilter;
     });
 
-    // Step B: Apply Text Search Query (Matches Name & Profession only)
+    // Step B: Apply Text Search Query (Matches help description, category title, or user name)
     if (query) {
       filtered = filtered.filter(item => {
         return (item.name && item.name.toLowerCase().includes(query)) ||
-               (item.subtitle && item.subtitle.toLowerCase().includes(query));
+               (item.subtitle && item.subtitle.toLowerCase().includes(query)) ||
+               (item.catTitle && item.catTitle.toLowerCase().includes(query));
       });
     }
 
-    // Step C: Sort strictly by Distance Ascending (Nearest people first, help items prioritized)
+    // Step C: Sort strictly by Distance Ascending (Nearest help requests first)
     filtered.sort((a, b) => {
       const distA = typeof a.dist === 'number' ? a.dist : (parseFloat(a.dist) || 0);
       const distB = typeof b.dist === 'number' ? b.dist : (parseFloat(b.dist) || 0);
-      if (Math.abs(distA - distB) < 0.4) {
-        if (a.type === 'help' && b.type !== 'help') return -1;
-        if (b.type === 'help' && a.type !== 'help') return 1;
-      }
       return distA - distB;
     });
 
@@ -7749,21 +7659,20 @@
     const countBadge = document.getElementById('nearbyFoundCountText');
     if (countBadge) {
       const radiusLabel = maxRadius >= 1000 ? 'മുഴുവൻ' : (maxRadius + ' km പരിധിയിൽ');
-      countBadge.textContent = `📍 ${inRadiusItems.length} പേരെ സമീപത്ത് കണ്ടെത്തി (${radiusLabel})`;
+      countBadge.textContent = `🆘 ${inRadiusItems.length} സഹായ അഭ്യർത്ഥനകൾ (${radiusLabel})`;
     }
 
     if (inRadiusItems.length === 0) {
       const radiusLabel = maxRadius >= 1000 ? '' : ` (${maxRadius} km)`;
       container.innerHTML = `
         <div style="text-align:center;padding:40px 16px;background:#fff;border-radius:16px;border:1px solid #E2E8F0">
-          <div style="font-size:42px;margin-bottom:10px">📍</div>
-          <h3 style="margin:0 0 6px;font-size:16px;font-weight:800;color:#0F172A">ഈ പ്രദേശത്ത് ആരെയും കണ്ടെത്തിയില്ല</h3>
-          <p style="color:#64748B;margin:0 0 16px;font-size:12.5px"><b>${escapeHtml(userTown)}</b> പരിസരത്ത്${radiusLabel} ആരെയും കണ്ടെത്തിയില്ല.</p>
+          <div style="font-size:42px;margin-bottom:10px">🤝</div>
+          <h3 style="margin:0 0 6px;font-size:16px;font-weight:800;color:#0F172A">ഈ പരിധിയിൽ പുതിയ സഹായങ്ങളൊന്നുമില്ല</h3>
+          <p style="color:#64748B;margin:0 0 16px;font-size:12.5px"><b>${escapeHtml(userTown)}</b> പരിസരത്ത്${radiusLabel} ആരും സഹായം ചോദിച്ചിട്ടില്ല. നിങ്ങൾക്ക് സഹായം വേണമെങ്കിൽ താഴെ ക്ലിക്ക് ചെയ്ത് പോസ്റ്റ് ചെയ്യാം.</p>
           <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-            <button onclick="setGlobalRadius(5, null)" style="background:#ECFDF5;color:#0E7043;border:1px solid #A7F3D0;padding:9px 14px;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">5 km പരിധി</button>
-            <button onclick="setGlobalRadius(10, null)" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;padding:9px 14px;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">10 km പരിധി</button>
-            <button onclick="setGlobalRadius(1000, null)" style="background:#F8FAFC;color:#334155;border:1px solid #CBD5E1;padding:9px 14px;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">മുഴുവൻ കാണുക</button>
-            <button onclick="setNearbyCategory('all', document.querySelector('.nearby-cat-chip:first-child'))" style="background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;padding:9px 14px;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">എല്ലാ വിഭാഗങ്ങളും</button>
+            <button onclick="openNearbyHelpModal()" style="background:linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);color:#fff;border:none;padding:10px 16px;border-radius:10px;font-weight:800;font-size:12.5px;cursor:pointer;box-shadow:0 2px 6px rgba(220,38,38,0.25)">🆘 സഹായം ചോദിക്കാം</button>
+            <button onclick="setRadiusFilter('nearby', 10, document.querySelector('.radius-chip:nth-child(6)'))" style="background:#ECFDF5;color:#0E7043;border:1px solid #A7F3D0;padding:10px 16px;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">10 km പരിധി കാണുക</button>
+            <button onclick="setRadiusFilter('nearby', 99999, document.querySelector('.radius-chip:last-child'))" style="background:#F8FAFC;color:#334155;border:1px solid #CBD5E1;padding:10px 16px;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">മുഴുവൻ കാണുക</button>
           </div>
         </div>
       `;
@@ -7775,86 +7684,44 @@
     const displayItems = inRadiusItems.slice(0, 40);
 
     container.innerHTML = displayItems.map((item, idx) => {
-      // SPECIAL RENDERING FOR NEARBY HELP REQUESTS
-      if (item.type === 'help') {
-        const isMine = item.isMine;
-        return `
-          <div class="nearby-help-card" style="background:#ffffff;border-radius:16px;padding:14px;border:1.5px solid ${isMine ? '#10B981' : '#FECACA'};box-shadow:0 2px 8px rgba(220,38,38,0.06);margin-bottom:2px">
-            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
-              <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1">
-                <div style="width:42px;height:42px;border-radius:12px;background:#FEE2E2;border:1.5px solid #FCA5A5;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">
-                  ${item.icon || '🆘'}
-                </div>
-                <div style="min-width:0;flex:1">
-                  <div style="display:flex;align-items:center;gap:6px">
-                    <span style="font-size:14px;font-weight:800;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(item.name)}</span>
-                    <span style="font-size:10px;font-weight:800;background:#FEF2F2;color:#DC2626;padding:2px 7px;border-radius:8px;border:1px solid #FECACA;flex-shrink:0">${escapeHtml(item.badge)}</span>
-                  </div>
-                  <div style="font-size:11.5px;font-weight:700;color:#64748B;margin-top:2px">
-                    📍 ${escapeHtml(item.location || 'സമീപത്ത്')} &bull; <strong style="color:#059669">${item.dist < 1 ? (Math.round(item.dist * 1000) + ' മീറ്റർ അകലെ') : (item.dist + ' km അകലെ')}</strong>
-                  </div>
-                </div>
-              </div>
-              <span style="font-size:10.5px;font-weight:800;color:#B91C1C;background:#FEE2E2;padding:3px 8px;border-radius:12px;flex-shrink:0">
-                ${escapeHtml(item.catTitle)}
-              </span>
-            </div>
-
-            <div style="margin:10px 0 12px;padding:9px 11px;background:#FFF5F5;border-left:3px solid #DC2626;border-radius:8px;font-size:13px;font-weight:700;color:#1F2937;line-height:1.4">
-              "${escapeHtml(item.subtitle)}"
-            </div>
-
-            <div style="display:flex;gap:8px;align-items:center" onclick="event.stopPropagation()">
-              ${item.phone ? `
-                <a href="tel:${escapeHtml(item.phone)}" style="flex:1;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:5px;background:#059669;color:#fff;padding:8px 10px;border-radius:10px;font-size:12px;font-weight:800;box-shadow:0 2px 4px rgba(5,150,105,0.2)">
-                  <span>📞</span>
-                  <span>വിളിക്കാം</span>
-                </a>
-              ` : ''}
-              <button type="button" onclick="openNearbyPersonChat(${idx})" style="flex:1.2;display:flex;align-items:center;justify-content:center;gap:5px;background:linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);color:#fff;border:none;padding:8px 10px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 2px 4px rgba(220,38,38,0.2)">
-                <span>💬</span>
-                <span>സഹായിക്കാം (ചാറ്റ്)</span>
-              </button>
-            </div>
-          </div>
-        `;
-      }
-
-      const isOnline = true;
-      const typeBadgeColor = item.type === 'service' ? '#059669' : (item.type === 'donor' ? '#DC2626' : (item.type === 'citizen' ? '#2563EB' : '#D97706'));
-      const typeBadgeBg = item.type === 'service' ? '#ECFDF5' : (item.type === 'donor' ? '#FEF2F2' : (item.type === 'citizen' ? '#EFF6FF' : '#FFFBEB'));
-
+      const isMine = item.isMine;
       return `
-        <div class="nearby-person-card" onclick="openNearbyPersonChat(${idx})" style="background:#ffffff;border-radius:16px;padding:14px;border:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,0.03);cursor:pointer;transition:transform 0.15s ease,box-shadow 0.15s ease">
-          <div style="display:flex;align-items:center;gap:12px;min-width:0;flex:1">
-            <div style="position:relative;flex-shrink:0">
-              <img src="${item.avatar || window.DEFAULT_USER_AVATAR}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #E2E8F0" onerror="this.src=window.DEFAULT_USER_AVATAR||''" alt="${escapeHtml(item.name)}">
-              ${isOnline ? '<span style="position:absolute;bottom:1px;right:1px;width:12px;height:12px;border-radius:50%;background:#10B981;border:2px solid #fff"></span>' : ''}
-            </div>
-
-            <div style="min-width:0;flex:1">
-              <div style="display:flex;align-items:center;gap:6px">
-                <span style="font-weight:800;font-size:14.5px;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(item.name)}</span>
-                <span style="font-size:10px;font-weight:800;color:${typeBadgeColor};background:${typeBadgeBg};padding:2px 7px;border-radius:8px;flex-shrink:0">${escapeHtml(item.badge)}</span>
+        <div class="nearby-help-card" style="background:#ffffff;border-radius:16px;padding:14px;border:1.5px solid ${isMine ? '#10B981' : '#FECACA'};box-shadow:0 2px 8px rgba(220,38,38,0.06);margin-bottom:2px">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+            <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1">
+              <div style="width:42px;height:42px;border-radius:12px;background:#FEE2E2;border:1.5px solid #FCA5A5;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">
+                ${item.icon || '🆘'}
               </div>
-              <div style="font-size:12px;color:#0F766E;font-weight:700;margin-top:2px;display:flex;align-items:center;gap:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
-                <span>${item.icon || '📍'}</span>
-                <span>${escapeHtml(item.subtitle)}</span>
-              </div>
-              <div style="font-size:11.5px;color:#059669;font-weight:800;margin-top:4px;display:flex;align-items:center;gap:4px">
-                <span style="background:#ECFDF5;border:1px solid #A7F3D0;padding:2px 8px;border-radius:8px;display:inline-flex;align-items:center;gap:4px">
-                  <span>📍</span>
-                  <span>${item.dist < 1 ? (Math.round(item.dist * 1000) + ' മീറ്റർ അകലെ') : (item.dist + ' km അകലെ')}</span>
-                </span>
+              <div style="min-width:0;flex:1">
+                <div style="display:flex;align-items:center;gap:6px">
+                  <span style="font-size:14px;font-weight:800;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(item.name)}</span>
+                  <span style="font-size:10px;font-weight:800;background:#FEF2F2;color:#DC2626;padding:2px 7px;border-radius:8px;border:1px solid #FECACA;flex-shrink:0">${escapeHtml(item.badge)}</span>
+                </div>
+                <div style="font-size:11.5px;font-weight:700;color:#64748B;margin-top:2px">
+                  📍 ${escapeHtml(item.location || 'സമീപത്ത്')} &bull; <strong style="color:#059669">${item.dist < 1 ? (Math.round(item.dist * 1000) + ' മീറ്റർ അകലെ') : (item.dist + ' km അകലെ')}</strong>
+                </div>
               </div>
             </div>
+            <span style="font-size:10.5px;font-weight:800;color:#B91C1C;background:#FEE2E2;padding:3px 8px;border-radius:12px;flex-shrink:0">
+              ${escapeHtml(item.catTitle)}
+            </span>
           </div>
 
-          <div style="display:flex;gap:6px;flex-shrink:0;margin-left:8px" onclick="event.stopPropagation()">
-            ${item.type === 'service' ? `
-              <button type="button" onclick="openServiceDetailModal('${item.id}')" style="background:#F8FAFC;color:#334155;border:1px solid #CBD5E1;padding:8px 10px;border-radius:12px;font-size:11.5px;font-weight:700;cursor:pointer" title="സേവന വിവരങ്ങൾ">ℹ️ വിവരങ്ങൾ</button>
+          <div style="margin:10px 0 12px;padding:10px 12px;background:#FFF5F5;border-left:3.5px solid #DC2626;border-radius:8px;font-size:13.5px;font-weight:700;color:#1F2937;line-height:1.45">
+            "${escapeHtml(item.subtitle)}"
+          </div>
+
+          <div style="display:flex;gap:8px;align-items:center" onclick="event.stopPropagation()">
+            ${item.phone ? `
+              <a href="tel:${escapeHtml(item.phone)}" style="flex:1;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:5px;background:#059669;color:#fff;padding:8px 10px;border-radius:10px;font-size:12px;font-weight:800;box-shadow:0 2px 4px rgba(5,150,105,0.2)">
+                <span>📞</span>
+                <span>വിളിക്കാം</span>
+              </a>
             ` : ''}
-            <button type="button" onclick="openNearbyPersonChat(${idx})" style="background:#0E7043;color:#fff;border:none;padding:8px 12px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:4px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 2px 6px rgba(14,112,67,0.25)" title="ചാറ്റ് ചെയ്യാം">💬 ചാറ്റ്</button>
+            <button type="button" onclick="openNearbyPersonChat(${idx})" style="flex:1.3;display:flex;align-items:center;justify-content:center;gap:5px;background:linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);color:#fff;border:none;padding:8px 10px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 2px 4px rgba(220,38,38,0.2)">
+              <span>💬</span>
+              <span>സഹായിക്കാം (മെസ്സേജ്)</span>
+            </button>
           </div>
         </div>
       `;

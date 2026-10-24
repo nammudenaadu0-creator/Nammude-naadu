@@ -678,7 +678,7 @@
                             style="display:flex;align-items:center;background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:12px;padding:8px 12px;gap:8px">
                             <span style="font-size:15px;color:#64748B">🔍</span>
                             <input type="text" id="nearbySearchInput"
-                                placeholder="പേരോ ജോലിയോ തിരയുക (Search nearby)..."
+                                placeholder="സഹായങ്ങൾ തിരയുക (Search help requests)..."
                                 oninput="filterNearbyPeople(this.value)"
                                 style="border:none;background:transparent;outline:none;width:100%;font-size:13px;font-weight:600;color:#0F172A">
                             <button id="nearbyClearSearchBtn" onclick="clearNearbySearch()"
@@ -686,21 +686,21 @@
                         </div>
                     </div>
 
-                    <!-- CATEGORY FILTER CHIPS -->
+                    <!-- CATEGORY FILTER CHIPS (PURE HELP CATEGORIES) -->
                     <div class="nearby-category-tabs"
                         style="display:flex;gap:6px;padding:10px 16px;background:#fff;border-bottom:1px solid #E5E7EB;overflow-x:auto;scrollbar-width:none">
                         <button class="nearby-cat-chip active" data-cat="all"
-                            onclick="setNearbyCategory('all', this)">🌟 എല്ലാവരും</button>
-                        <button class="nearby-cat-chip" data-cat="help"
-                            onclick="setNearbyCategory('help', this)" style="color:#DC2626;font-weight:800">🆘 ലൈവ് സഹായം</button>
-                        <button class="nearby-cat-chip" data-cat="citizen"
-                            onclick="setNearbyCategory('citizen', this)">👥 നാട്ടുകാർ</button>
-                        <button class="nearby-cat-chip" data-cat="service"
-                            onclick="setNearbyCategory('service', this)">🛠️ സേവനങ്ങൾ</button>
-                        <button class="nearby-cat-chip" data-cat="donor" onclick="setNearbyCategory('donor', this)">🩸
-                            രക്തദാതാക്കൾ</button>
-                        <button class="nearby-cat-chip" data-cat="rental" onclick="setNearbyCategory('rental', this)">🏠
-                            വാടക/വിൽപന</button>
+                            onclick="setNearbyCategory('all', this)">🌟 എല്ലാ സഹായങ്ങളും</button>
+                        <button class="nearby-cat-chip" data-cat="emergency"
+                            onclick="setNearbyCategory('emergency', this)" style="color:#DC2626;font-weight:800">🚨 അടിയന്തിരം</button>
+                        <button class="nearby-cat-chip" data-cat="vehicle"
+                            onclick="setNearbyCategory('vehicle', this)">🛞 വാഹനം</button>
+                        <button class="nearby-cat-chip" data-cat="medicine"
+                            onclick="setNearbyCategory('medicine', this)">💊 മരുന്ന്</button>
+                        <button class="nearby-cat-chip" data-cat="repair"
+                            onclick="setNearbyCategory('repair', this)">🛠️ റിപ്പയർ</button>
+                        <button class="nearby-cat-chip" data-cat="home"
+                            onclick="setNearbyCategory('home', this)">📦 വീട്ടുസഹായം</button>
                     </div>
 
                     <!-- RADIUS FILTER CHIPS (1km, 2km, 3km, 5km, 10km, All) -->
@@ -722,7 +722,7 @@
                         style="padding:8px 16px 2px;display:flex;align-items:center;justify-content:space-between;gap:8px">
                         <span id="nearbyFoundCountText"
                             style="font-size:11.5px;font-weight:800;color:#059669;background:#ECFDF5;padding:3px 10px;border-radius:20px;border:1px solid #A7F3D0">📍
-                            സമീപത്തുള്ളവരെ കണ്ടെത്തുന്നു...</span>
+                            സമീപത്തുള്ള സഹായങ്ങൾ കണ്ടെത്തുന്നു...</span>
                         <button type="button" onclick="openNearbyHelpModal()"
                             style="background:linear-gradient(135deg,#DC2626,#B91C1C);color:#fff;border:none;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:800;cursor:pointer;flex-shrink:0;box-shadow:0 2px 4px rgba(220,38,38,0.2)">
                             🆘 സഹായം ചോദിക്കാം
