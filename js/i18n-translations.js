@@ -15,7 +15,7 @@
       navServices: 'സേവനങ്ങൾ',
       navAdd: 'പോസ്റ്റ്',
       navChat: 'ചാറ്റ്',
-      navProfile: 'പ്രൊഫൈൽ',
+      navCommunity: 'കമ്മ്യൂണിറ്റി പോസ്റ്റ്',
       searchPlaceholder: 'നാട്ടിലെ സേവനങ്ങളും ആളുകളും തിരയുക...',
       radiusNearby: 'സമീപം',
       liveLocation: 'തത്സമയ ലൊക്കേഷൻ',
@@ -66,7 +66,7 @@
       navServices: 'Services',
       navAdd: 'Post',
       navChat: 'Chat',
-      navProfile: 'Profile',
+      navCommunity: 'Community Posts',
       searchPlaceholder: 'Search village services and people...',
       radiusNearby: 'Nearby',
       liveLocation: 'Live Location',
@@ -117,7 +117,7 @@
       navServices: 'सेवाएं',
       navAdd: 'पोस्ट',
       navChat: 'चैट',
-      navProfile: 'प्रोफ़ाइल',
+      navCommunity: 'कम्युनिटी पोस्ट',
       searchPlaceholder: 'गांव की सेवाएं और लोगों को खोजें...',
       radiusNearby: 'आस-पास',
       liveLocation: 'लाइव लोकेशन',
@@ -233,8 +233,8 @@
     const navChat = document.querySelector('.nav-item[data-page="chat"] span:last-child');
     if (navChat) navChat.textContent = dict.navChat;
 
-    const navProfile = document.querySelector('.nav-item[data-page="profile"] span:last-child');
-    if (navProfile) navProfile.textContent = dict.navProfile;
+    const navCommunity = document.querySelector('.nav-item[data-page="community"] span:last-child');
+    if (navCommunity) navCommunity.textContent = dict.navCommunity || 'കമ്മ്യൂണിറ്റി പോസ്റ്റ്';
 
     // 2. Search Bar placeholder
     const searchInput = document.getElementById('homeGlobalSearchInput');
