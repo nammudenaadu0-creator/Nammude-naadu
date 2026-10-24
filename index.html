@@ -3323,6 +3323,21 @@
                             <span>📞 1056</span>
                         </a>
                     </div>
+ 
+                    <!-- HOSPITAL REGISTRATION PROMO BANNER -->
+                    <div onclick="openHospitalRegisterModal()"
+                        style="background:linear-gradient(135deg, #047857 0%, #065F46 100%);color:#fff;padding:12px 14px;border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 10px rgba(4,120,87,0.25)">
+                        <div style="display:flex;align-items:center;gap:10px">
+                            <span style="font-size:24px">🏥</span>
+                            <div>
+                                <div style="font-weight:800;font-size:13px">ആശുപത്രി / ക്ലിനിക് നടത്തുന്നവരാണോ?</div>
+                                <div style="font-size:10.5px;color:rgba(255,255,255,0.85)">നിങ്ങളുടെ ആശുപത്രിയുടെ പേരും കാഷ്വാലിറ്റി നമ്പറും ഇവിടെ ചേർക്കാം</div>
+                            </div>
+                        </div>
+                        <span
+                            style="background:#fff;color:#047857;font-weight:800;font-size:11px;padding:5px 12px;border-radius:20px;white-space:nowrap">➕
+                            രജിസ്റ്റർ</span>
+                    </div>
 
                     <!-- HOSPITAL SEARCH INPUT -->
                     <div style="position:relative">
@@ -3450,6 +3465,125 @@
                     <button type="submit"
                         style="margin-top:8px;padding:12px;background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(5,150,105,0.3);display:flex;align-items:center;justify-content:center;gap:6px">
                         <span>🚑 ആംബുലൻസ് ഡ്രൈവറായി രജിസ്റ്റർ ചെയ്യാം</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: HOSPITAL / CLINIC REGISTRATION FORM                     -->
+    <!-- ============================================================== -->
+    <div id="modal-register-hospital" class="modal-overlay"
+        onclick="if(event.target===this)closeModal('modal-register-hospital')">
+        <div class="modal-sheet" style="max-height:92vh;display:flex;flex-direction:column;padding:0;overflow:hidden">
+            <!-- HEADER -->
+            <div
+                style="background:linear-gradient(135deg, #059669 0%, #047857 100%);padding:14px 16px;color:#fff;display:flex;align-items:center;justify-content:space-between">
+                <div style="display:flex;align-items:center;gap:10px">
+                    <span style="font-size:24px">🏥</span>
+                    <div>
+                        <h3 style="margin:0;font-size:16px;font-weight:800;color:#fff">ആശുപത്രി / ക്ലിനിക് രജിസ്ട്രേഷൻ</h3>
+                        <div style="font-size:11px;color:rgba(255,255,255,0.85)">നാട്ടുകാരുടെ അടിയന്തര ആവശ്യങ്ങൾക്ക് വിവരങ്ങൾ നൽകാം</div>
+                    </div>
+                </div>
+                <button onclick="closeModal('modal-register-hospital'); openAmbulanceModal(); switchAmbHealthTab('hospital');" class="modal-close-btn modal-close-btn-light"
+                    title="ക്ലോസ് ചെയ്യാം">✕</button>
+            </div>
+
+            <div style="padding:14px;overflow-y:auto;flex:1">
+                <form onsubmit="submitHospitalRegistration(event)"
+                    style="display:flex;flex-direction:column;gap:11px">
+
+                    <!-- HOSPITAL NAME -->
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">ആശുപത്രി / ക്ലിനിക്കിന്റെ പേര് *</label>
+                        <input type="text" id="regHospName" required placeholder="ഉദാ: ജനറൽ ആശുപത്രി / മിഷൻ ഹോസ്പിറ്റൽ"
+                            style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                    </div>
+
+                    <!-- HOSPITAL TYPE -->
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">സ്ഥാപനത്തിന്റെ തരം (Category / Type) *</label>
+                        <select id="regHospType" required
+                            style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px;background:#fff">
+                            <option value="മൾട്ടി സ്പെഷ്യാലിറ്റി ആശുപത്രി">🏥 മൾട്ടി സ്പെഷ്യാലിറ്റി ആശുപത്രി (Multi-Speciality)</option>
+                            <option value="ജനറൽ ആശുപത്രി / താലൂക്ക് ആശുപത്രി">🏥 ജനറൽ / താലൂക്ക് ആശുപത്രി (General Hospital)</option>
+                            <option value="24x7 ക്ലിനിക് & കാഷ്വാലിറ്റി">🩺 24x7 ക്ലിനിക് & കാഷ്വാലിറ്റി (24x7 Clinic)</option>
+                            <option value="കുടുംബാരോഗ്യ കേന്ദ്രം (FHC / CHC / PHC)">🏥 കുടുംബാരോഗ്യ കേന്ദ്രം (FHC / CHC / PHC)</option>
+                            <option value="ഡെന്റൽ ക്ലിനിക്">🦷 ഡെന്റൽ ക്ലിനിക് (Dental Care)</option>
+                            <option value="ആയുർവേദ ആശുപത്രി">🌿 ആയുർവേദ ആശുപത്രി (Ayurveda)</option>
+                            <option value="ഹോമിയോപ്പതി ഡിസ്പെൻസറി">🌱 ഹോമിയോപ്പതി (Homeopathy)</option>
+                            <option value="ഡയഗ്നോസ്റ്റിക് & ലാബ് സെന്റർ">🔬 ഡയഗ്നോസ്റ്റിക് & ലാബ് (Lab & Scan)</option>
+                        </select>
+                    </div>
+
+                    <!-- EMERGENCY / CASUALTY PHONE -->
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">അടിയന്തര കാഷ്വാലിറ്റി / ഫോൺ നമ്പർ *</label>
+                        <input type="tel" id="regHospPhone" required placeholder="ഫോൺ നമ്പർ (ലാൻഡ്‌ഫോൺ അല്ലെങ്കിൽ മൊബൈൽ)"
+                            style="width:100%;padding:9px 12px;border:1.5px solid #10B981;border-radius:10px;font-size:13px;outline:none;margin-top:3px;background:#F0FDF4;font-weight:700">
+                    </div>
+
+                    <!-- SECONDARY / AMBULANCE NUMBER -->
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">മറ്റ് ഫോൺ നമ്പർ / ആംബുലൻസ് നമ്പർ</label>
+                        <input type="tel" id="regHospAltPhone" placeholder="മറ്റൊരു നമ്പർ ഉണ്ടെങ്കിൽ നൽകുക"
+                            style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                    </div>
+
+                    <!-- DISTRICT SELECTOR -->
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">ജില്ല (District) *</label>
+                        <select id="regHospDistrict" required
+                            style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px;background:#fff">
+                            <option value="കണ്ണൂർ">കണ്ണൂർ (Kannur)</option>
+                            <option value="കാസർഗോഡ്">കാസർഗോഡ് (Kasaragod)</option>
+                            <option value="കോഴിക്കോട്">കോഴിക്കോട് (Kozhikode)</option>
+                            <option value="വയനാട്">വയനാട് (Wayanad)</option>
+                            <option value="മലപ്പുറം">മലപ്പുറം (Malappuram)</option>
+                            <option value="പാലക്കാട്">പാലക്കാട് (Palakkad)</option>
+                            <option value="തൃശ്ശൂർ">തൃശ്ശൂർ (Thrissur)</option>
+                            <option value="എറണാകുളം">എറണാകുളം (Ernakulam)</option>
+                            <option value="ഇടുക്കി">ഇടുക്കി (Idukki)</option>
+                            <option value="കോട്ടയം">കോട്ടയം (Kottayam)</option>
+                            <option value="ആലപ്പുഴ">ആലപ്പുഴ (Alappuzha)</option>
+                            <option value="പത്തനംതിട്ട">പത്തനംതിട്ട (Pathanamthitta)</option>
+                            <option value="കൊല്ലം">കൊല്ലം (Kollam)</option>
+                            <option value="തിരുവനന്തപുരം">തിരുവനന്തപുരം (Thiruvananthapuram)</option>
+                        </select>
+                    </div>
+
+                    <!-- PLACE / LOCATION -->
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">സ്ഥലം / ടൗൺ / പഞ്ചായത്ത് *</label>
+                        <input type="text" id="regHospLocation" required placeholder="ഉദാ: തലശ്ശേരി, പഴയങ്ങാടി, പയ്യന്നൂർ..."
+                            style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                    </div>
+
+                    <!-- 24x7 EMERGENCY & ICU FACILITIES -->
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">ലഭ്യത & സൗകര്യങ്ങൾ (Facilities)</label>
+                        <select id="regHospAvailability"
+                            style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px;background:#fff">
+                            <option value="🟢 24x7 കാഷ്വാലിറ്റി & എമർജൻസി കെയർ">🟢 24x7 കാഷ്വാലിറ്റി & എമർജൻസി കെയർ</option>
+                            <option value="🟢 24x7 ഐസിയു & ആംബുലൻസ് സൗകര്യം">🟢 24x7 ഐസിയു & ആംബുലൻസ് സൗകര്യം</option>
+                            <option value="☀️ ഒപി സമയം മാത്രം (Day OPD Only)">☀️ ഒപി സമയം മാത്രം (Day OPD Only)</option>
+                            <option value="🕒 രാവിലെ 9 മുതൽ രാത്രി 9 വരെ">🕒 രാവിലെ 9 മുതൽ രാത്രി 9 വരെ</option>
+                        </select>
+                    </div>
+
+                    <!-- SPECIALTIES / DEPARTMENTS -->
+                    <div>
+                        <label style="font-size:12px;font-weight:700;color:#374151">പ്രധാന വിഭാഗങ്ങൾ (Specialities / Doctors)</label>
+                        <input type="text" id="regHospSpecialties" placeholder="ഉദാ: കാർഡിയോളജി, പീഡിയാട്രിക്സ്, ഗൈനക്കോളജി, ലാബ്..."
+                            style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;margin-top:3px">
+                    </div>
+
+                    <!-- SUBMIT BUTTON -->
+                    <button type="submit"
+                        style="margin-top:8px;background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#fff;border:none;padding:12px;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 3px 10px rgba(5,150,105,0.3)">
+                        <span>🏥 ആശുപത്രി രജിസ്റ്റർ ചെയ്യാം</span>
                     </button>
                 </form>
             </div>

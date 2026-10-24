@@ -7982,12 +7982,14 @@
 
     const q = String(query || '').trim().toLowerCase();
     const contacts = (APP_STATE.emergencyContacts || []).filter(c => {
-      const isHealth = (c.category === 'ആരോഗ്യം' || c.category === 'healthcare' || (c.name && c.name.toLowerCase().includes('hospital')) || (c.name && c.name.includes('ആശുപത്രി')));
+      const hName = String(c.name || c.title || '');
+      const isHealth = (c.category === 'ആരോഗ്യം' || c.category === 'healthcare' || hName.toLowerCase().includes('hospital') || hName.includes('ആശുപത്രി') || hName.includes('ക്ലിനിക്'));
       if (!isHealth) return false;
       if (!q) return true;
-      return (c.name && c.name.toLowerCase().includes(q)) ||
+      return (hName.toLowerCase().includes(q)) ||
              (c.location && c.location.toLowerCase().includes(q)) ||
-             (c.phone && c.phone.includes(q));
+             (c.phone && c.phone.includes(q)) ||
+             (c.district && c.district.toLowerCase().includes(q));
     });
 
     const badge = document.getElementById('ambHospitalsCountBadge');
@@ -8004,15 +8006,22 @@
 
     container.innerHTML = contacts.map(c => {
       const cleanPhone = (c.phone || '').replace(/\D/g, '');
+      const displayName = c.name || c.title || 'ആശുപത്രി';
+      const badgeText = c.badge || '🟢 24x7 അടിയന്തര സേവനം';
+      const locText = c.location ? `📍 ${escapeHtml(c.location)}` : '';
+      const distText = c.district ? `(${escapeHtml(c.district)})` : '';
+      const descText = c.description ? `<div style="font-size:10.5px;color:#059669;margin-top:2px;font-weight:700">✨ ${escapeHtml(c.description)}</div>` : '';
+
       return `
         <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
           <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1">
             <span style="font-size:24px;flex-shrink:0">🏥</span>
             <div style="min-width:0;flex:1">
-              <div style="font-weight:800;font-size:13.5px;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(c.name)}</div>
+              <div style="font-weight:800;font-size:13.5px;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(displayName)}</div>
               <div style="font-size:11px;color:#64748B;margin-top:2px">
-                ${c.location ? `📍 ${escapeHtml(c.location)} &bull; ` : ''}🟢 24x7 അടിയന്തര സേവനം
+                ${locText} ${distText} &bull; <span style="color:#059669;font-weight:700">${escapeHtml(badgeText)}</span>
               </div>
+              ${descText}
             </div>
           </div>
           <a href="tel:${cleanPhone}" style="flex-shrink:0;background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#fff;text-decoration:none;padding:7px 12px;border-radius:10px;font-size:12px;font-weight:800;display:flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(5,150,105,0.25)">
@@ -8028,6 +8037,86 @@
     renderAmbHospitalsList(val);
   }
   window.filterAmbHospitals = filterAmbHospitals;
+
+  function openHospitalRegisterModal() {
+    closeModal('modal-ambulance');
+    if (APP_STATE && APP_STATE.location) {
+      const locInput = document.getElementById('regHospLocation');
+      if (locInput && !locInput.value) {
+        locInput.value = (APP_STATE.location.name && !APP_STATE.location.name.includes('കണ്ണൂർ') && APP_STATE.location.name !== 'തത്സമയ ലൊക്കേഷൻ')
+          ? APP_STATE.location.name : '';
+      }
+      const distSelect = document.getElementById('regHospDistrict');
+      if (distSelect && APP_STATE.location.district) {
+        for (let opt of distSelect.options) {
+          if (opt.value && APP_STATE.location.district.includes(opt.value)) {
+            distSelect.value = opt.value;
+            break;
+          }
+        }
+      }
+    }
+    openModal('modal-register-hospital');
+  }
+  window.openHospitalRegisterModal = openHospitalRegisterModal;
+
+  function submitHospitalRegistration(e) {
+    if (e) e.preventDefault();
+    const name = (document.getElementById('regHospName')?.value || '').trim();
+    const type = (document.getElementById('regHospType')?.value || 'ആശുപത്രി').trim();
+    const phone = (document.getElementById('regHospPhone')?.value || '').trim();
+    const altPhone = (document.getElementById('regHospAltPhone')?.value || '').trim();
+    const district = (document.getElementById('regHospDistrict')?.value || 'കണ്ണൂർ').trim();
+    const location = (document.getElementById('regHospLocation')?.value || '').trim();
+    const availability = (document.getElementById('regHospAvailability')?.value || '🟢 24x7 കാഷ്വാലിറ്റി & എമർജൻസി കെയർ').trim();
+    const specialties = (document.getElementById('regHospSpecialties')?.value || '').trim();
+
+    if (!name || !phone || !location) {
+      toast('⚠️ ദയവായി ആശുപത്രിയുടെ പേര്, ഫോൺ നമ്പർ, സ്ഥലം എന്നിവ നൽകുക.');
+      return;
+    }
+
+    const newHosp = {
+      id: 'hosp_' + Date.now(),
+      name: name,
+      title: name,
+      category: 'ആരോഗ്യം',
+      phone: phone,
+      altPhone: altPhone,
+      district: district,
+      location: location,
+      badge: availability,
+      description: specialties || type,
+      icon: '🏥',
+      lat: (APP_STATE.location && APP_STATE.location.lat) ? APP_STATE.location.lat : 11.8745,
+      lon: (APP_STATE.location && APP_STATE.location.lon) ? APP_STATE.location.lon : 75.3704,
+      createdAt: Date.now(),
+      isCloud: true
+    };
+
+    if (!Array.isArray(APP_STATE.emergencyContacts)) {
+      APP_STATE.emergencyContacts = [];
+    }
+    APP_STATE.emergencyContacts.unshift(newHosp);
+
+    try {
+      localStorage.setItem('nn_emergency_contacts', JSON.stringify(APP_STATE.emergencyContacts));
+    } catch (_) {}
+
+    // Cloud sync to Supabase table emergency_contacts
+    if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveEmergencyContact === 'function') {
+      window.NN_SUPABASE_SERVICES.saveEmergencyContact(newHosp);
+    }
+
+    closeModal('modal-register-hospital');
+    openAmbulanceModal();
+    if (typeof switchAmbHealthTab === 'function') {
+      switchAmbHealthTab('hospital');
+    }
+    renderAmbHospitalsList();
+    toast('🏥 ആശുപത്രി വിജയകരമായി രജിസ്റ്റർ ചെയ്തു! പട്ടികയിൽ ഉൾപ്പെടുത്തി.');
+  }
+  window.submitHospitalRegistration = submitHospitalRegistration;
 
   function openAmbulanceModal(tab) {
     const distSelect = document.getElementById('ambPoliceDistrictFilter');
