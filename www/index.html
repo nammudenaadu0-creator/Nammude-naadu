@@ -653,6 +653,25 @@
                             ✏️</button>
                     </div>
 
+                    <!-- TWO MAIN ROLES: എന്തു സഹായം വേണം? VS ഞാൻ സഹായിക്കാം -->
+                    <div style="padding:12px 16px 8px;display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#fff">
+                        <!-- BUTTON 1: എന്തു സഹായം വേണം? (സഹായം ചോദിക്കാൻ) -->
+                        <div onclick="openNearbyHelpModal()"
+                            style="background:linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);border:1.5px solid #FCA5A5;border-radius:14px;padding:12px 10px;cursor:pointer;text-align:center;box-shadow:0 2px 8px rgba(220,38,38,0.08)">
+                            <div style="font-size:24px;margin-bottom:4px">🆘</div>
+                            <div style="font-size:13px;font-weight:800;color:#DC2626">എന്തു സഹായം വേണം?</div>
+                            <div style="font-size:10.5px;color:#991B1B;font-weight:700;margin-top:2px">സഹായം ചോദിക്കാം ➔</div>
+                        </div>
+
+                        <!-- BUTTON 2: ഞാൻ സഹായിക്കാം (സഹായങ്ങൾ നൽകാൻ) -->
+                        <div onclick="setNearbyCategory('help')"
+                            style="background:linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);border:1.5px solid #86EFAC;border-radius:14px;padding:12px 10px;cursor:pointer;text-align:center;box-shadow:0 2px 8px rgba(16,185,129,0.08)">
+                            <div style="font-size:24px;margin-bottom:4px">🤝</div>
+                            <div style="font-size:13px;font-weight:800;color:#047857">ഞാൻ സഹായിക്കാം</div>
+                            <div style="font-size:10.5px;color:#065F46;font-weight:700;margin-top:2px">ആവശ്യങ്ങൾ കാണാം ➔</div>
+                        </div>
+                    </div>
+
                     <!-- LIVE SEARCH BAR -->
                     <div style="padding:10px 16px 0;background:#fff">
                         <div
