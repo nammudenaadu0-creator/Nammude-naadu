@@ -6261,7 +6261,192 @@
       icon: '⚠️',
       location: 'ജില്ലാ തലത്തിൽ',
       description: 'പ്രകൃതി ദുരന്തങ്ങൾ, മുന്നറിയിപ്പുകൾ, സഹായം'
-    }
+    },
+
+    // ==============================================================
+    // KERALA POLICE STATIONS DIRECTORY (ALL 14 DISTRICTS LANDLINES)
+    // ==============================================================
+    // 1. THIRUVANANTHAPURAM
+    { id: 'pol_tvm_cr', name: 'തിരുവനന്തപുരം സിറ്റി പോലീസ് കൺട്രോൾ റൂം', phone: '0471-2335400', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'തിരുവനന്തപുരം സിറ്റി', description: '24 മണിക്കൂർ സിറ്റി പോലീസ് കൺട്രോൾ റൂം ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_tvm_rural_cr', name: 'തിരുവനന്തപുരം റൂറൽ പോലീസ് കൺട്രോൾ റൂം', phone: '0471-2313626', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'തിരുവനന്തപുരം റൂറൽ', description: 'തിരുവനന്തപുരം റൂറൽ ജില്ലാ പോലീസ് കൺട്രോൾ റൂം' },
+    { id: 'pol_tvm_cant', name: 'കന്റോൺമെന്റ് പോലീസ് സ്റ്റേഷൻ', phone: '0471-2330343', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'തിരുവനന്തപുരം നഗരം', description: 'കന്റോൺമെന്റ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ (24x7)' },
+    { id: 'pol_tvm_thampanoor', name: 'തമ്പാനൂർ പോലീസ് സ്റ്റേഷൻ', phone: '0471-2326543', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'തമ്പാനൂർ, തിരുവനന്തപുരം', description: 'തമ്പാനൂർ റെയിൽവേ സ്റ്റേഷൻ / ബസ് സ്റ്റാൻഡ് പരിസരം' },
+    { id: 'pol_tvm_museum', name: 'മ്യൂസിയം പോലീസ് സ്റ്റേഷൻ', phone: '0471-2315096', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'മ്യൂസിയം, തിരുവനന്തപുരം', description: 'മ്യൂസിയം പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_tvm_fort', name: 'ഫോർട്ട് പോലീസ് സ്റ്റേഷൻ', phone: '0471-2473839', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കിഴക്കേക്കോട്ട, തിരുവനന്തപുരം', description: 'ഫോർട്ട് പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_tvm_med', name: 'മെഡിക്കൽ കോളേജ് പോലീസ് സ്റ്റേഷൻ', phone: '0471-2443040', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'മെഡിക്കൽ കോളേജ്, തിരുവനന്തപുരം', description: 'മെഡിക്കൽ കോളേജ് പോലീസ് ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_tvm_peroorkada', name: 'പേരൂർക്കട പോലീസ് സ്റ്റേഷൻ', phone: '0471-2433840', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'പേരൂർക്കട, തിരുവനന്തപുരം', description: 'പേരൂർക്കട പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_tvm_kazhakkoottam', name: 'കഴക്കൂട്ടം പോലീസ് സ്റ്റേഷൻ', phone: '0471-2418231', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കഴക്കൂട്ടം, ടെക്നോപാർക്ക്', description: 'കഴക്കൂട്ടം & ടെക്നോപാർക്ക് പരിധി' },
+    { id: 'pol_tvm_nedumangad', name: 'നെടുമങ്ങാട് പോലീസ് സ്റ്റേഷൻ', phone: '0472-2802225', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'നെടുമങ്ങാട്, തിരുവനന്തപുരം', description: 'നെടുമങ്ങാട് പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_tvm_neyyattinkara', name: 'നെയ്യാറ്റിൻകര പോലീസ് സ്റ്റേഷൻ', phone: '0471-2222223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'നെയ്യാറ്റിൻകര, തിരുവനന്തപുരം', description: 'നെയ്യാറ്റിൻകര പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_tvm_attingal', name: 'ആറ്റിങ്ങൽ പോലീസ് സ്റ്റേഷൻ', phone: '0470-2622026', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ആറ്റിങ്ങൽ, തിരുവനന്തപുരം', description: 'ആറ്റിങ്ങൽ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_tvm_varkala', name: 'വർക്കല പോലീസ് സ്റ്റേഷൻ', phone: '0470-2602333', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'വർക്കല, തിരുവനന്തപുരം', description: 'വർക്കല തീരദേശ & ടൂറിസം പോലീസ്' },
+    { id: 'pol_tvm_nemom', name: 'നേമം പോലീസ് സ്റ്റേഷൻ', phone: '0471-2390234', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'നേമം, തിരുവനന്തപുരം', description: 'നേമം പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+
+    // 2. KOLLAM
+    { id: 'pol_klm_city_cr', name: 'കൊല്ലം സിറ്റി പോലീസ് കൺട്രോൾ റൂം', phone: '0474-2764477', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കൊല്ലം സിറ്റി', description: 'കൊല്ലം സിറ്റി കൺട്രോൾ റൂം ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_klm_rural_cr', name: 'കൊല്ലം റൂറൽ കൺട്രോൾ റൂം (കൊട്ടാരക്കര)', phone: '0474-2454522', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കൊട്ടാരക്കര, കൊല്ലം', description: 'കൊല്ലം റൂറൽ ജില്ലാ പോലീസ് കൺട്രോൾ റൂം' },
+    { id: 'pol_klm_east', name: 'കൊല്ലം ഈസ്റ്റ് പോലീസ് സ്റ്റേഷൻ', phone: '0474-2742263', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കൊല്ലം നഗരം', description: 'കൊല്ലം ഈസ്റ്റ് പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_klm_west', name: 'കൊല്ലം വെസ്റ്റ് പോലീസ് സ്റ്റേഷൻ', phone: '0474-2794333', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കൊല്ലം വെസ്റ്റ്', description: 'കൊല്ലം വെസ്റ്റ് പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_klm_eravipuram', name: 'ഇരവിപുരം പോലീസ് സ്റ്റേഷൻ', phone: '0474-2725450', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ഇരവിപുരം, കൊല്ലം', description: 'ഇരവിപുരം പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_klm_karunagappally', name: 'കരുനാഗപ്പള്ളി പോലീസ് സ്റ്റേഷൻ', phone: '0476-2620240', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കരുനാഗപ്പള്ളി, കൊല്ലം', description: 'കരുനാഗപ്പള്ളി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_klm_kottarakkara', name: 'കൊട്ടാരക്കര പോലീസ് സ്റ്റേഷൻ', phone: '0474-2454222', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കൊട്ടാരക്കര, കൊല്ലം', description: 'കൊട്ടാരക്കര പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_klm_punalur', name: 'പുനലൂർ പോലീസ് സ്റ്റേഷൻ', phone: '0475-2222223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'പുനലൂർ, കൊല്ലം', description: 'പുനലൂർ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_klm_sasthamcotta', name: 'ശാസ്താംകോട്ട പോലീസ് സ്റ്റേഷൻ', phone: '0476-2830230', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ശാസ്താംകോട്ട, കൊല്ലം', description: 'ശാസ്താംകോട്ട പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_klm_chavara', name: 'ചവറ പോലീസ് സ്റ്റേഷൻ', phone: '0476-2680234', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ചവറ, കൊല്ലം', description: 'ചവറ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_klm_paravur', name: 'പരവൂർ പോലീസ് സ്റ്റേഷൻ', phone: '0474-2512233', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'പരവൂർ, കൊല്ലം', description: 'പരവൂർ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_klm_anchal', name: 'അഞ്ചൽ പോലീസ് സ്റ്റേഷൻ', phone: '0475-2270233', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'അഞ്ചൽ, കൊല്ലം', description: 'അഞ്ചൽ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+
+    // 3. PATHANAMTHITTA
+    { id: 'pol_pta_cr', name: 'പത്തനംതിട്ട ജില്ലാ പോലീസ് കൺട്രോൾ റൂം', phone: '0468-2222227', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'പത്തനംതിട്ട (Pathanamthitta)', description: 'ജില്ലാ പോലീസ് കൺട്രോൾ റൂം ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_pta_town', name: 'പത്തനംതിട്ട പോലീസ് സ്റ്റേഷൻ', phone: '0468-2222223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'പത്തനംതിട്ട നഗരം', description: 'പത്തനംതിട്ട ടൗൺ പോലീസ് സ്റ്റേഷൻ' },
+    { id: 'pol_pta_adoor', name: 'അടൂർ പോലീസ് സ്റ്റേഷൻ', phone: '04734-224823', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'അടൂർ, പത്തനംതിട്ട', description: 'അടൂർ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_pta_thiruvalla', name: 'തിരുവല്ല പോലീസ് സ്റ്റേഷൻ', phone: '0469-2601222', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'തിരുവല്ല, പത്തനംതിട്ട', description: 'തിരുവല്ല പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_pta_ranni', name: 'റാന്നി പോലീസ് സ്റ്റേഷൻ', phone: '04735-227223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'റാന്നി, പത്തനംതിട്ട', description: 'റാന്നി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_pta_konni', name: 'കോന്നി പോലീസ് സ്റ്റേഷൻ', phone: '0468-2244223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കോന്നി, പത്തനംതിട്ട', description: 'കോന്നി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_pta_pandalam', name: 'പന്തളം പോലീസ് സ്റ്റേഷൻ', phone: '04734-252223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'പന്തളം, പത്തനംതിട്ട', description: 'പന്തളം പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_pta_kozhencherry', name: 'കോഴഞ്ചേരി പോലീസ് സ്റ്റേഷൻ', phone: '0468-2212223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കോഴഞ്ചേരി, പത്തനംതിട്ട', description: 'കോഴഞ്ചേരി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+
+    // 4. ALAPPUZHA
+    { id: 'pol_alp_cr', name: 'ആലപ്പുഴ ജില്ലാ പോലീസ് കൺട്രോൾ റൂം', phone: '0477-2230804', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ആലപ്പുഴ (Alappuzha)', description: 'ആലപ്പുഴ കൺട്രോൾ റൂം ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_alp_south', name: 'ആലപ്പുഴ സൗത്ത് പോലീസ് സ്റ്റേഷൻ', phone: '0477-2251336', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ആലപ്പുഴ നഗരം', description: 'ആലപ്പുഴ സൗത്ത് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_alp_north', name: 'ആലപ്പുഴ നോർത്ത് പോലീസ് സ്റ്റേഷൻ', phone: '0477-2251222', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ആലപ്പുഴ നോർത്ത്', description: 'ആലപ്പുഴ നോർത്ത് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_alp_cherthala', name: 'ചേർത്തല പോലീസ് സ്റ്റേഷൻ', phone: '0478-2813233', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ചേർത്തല, ആലപ്പുഴ', description: 'ചേർത്തല പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_alp_kayamkulam', name: 'കായംകുളം പോലീസ് സ്റ്റേഷൻ', phone: '0479-2442223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കായംകുളം, ആലപ്പുഴ', description: 'കായംകുളം പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_alp_mavelikkara', name: 'മാവേലിക്കര പോലീസ് സ്റ്റേഷൻ', phone: '0479-2302223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'മാവേലിക്കര, ആലപ്പുഴ', description: 'മാവേലിക്കര പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_alp_chengannur', name: 'ചെങ്ങന്നൂർ പോലീസ് സ്റ്റേഷൻ', phone: '0479-2452223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ചെങ്ങന്നൂർ, ആലപ്പുഴ', description: 'ചെങ്ങന്നൂർ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_alp_ambalappuzha', name: 'അമ്പലപ്പുഴ പോലീസ് സ്റ്റേഷൻ', phone: '0477-2272223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'അമ്പലപ്പുഴ, ആലപ്പുഴ', description: 'അമ്പലപ്പുഴ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_alp_harippad', name: 'ഹരിപ്പാട് പോലീസ് സ്റ്റേഷൻ', phone: '0479-2412233', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ഹരിപ്പാട്, ആലപ്പുഴ', description: 'ഹരിപ്പാട് പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_alp_aroor', name: 'അരൂർ പോലീസ് സ്റ്റേഷൻ', phone: '0478-2872223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'അരൂർ, ആലപ്പുഴ', description: 'അരൂർ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+
+    // 5. KOTTAYAM
+    { id: 'pol_ktm_cr', name: 'കോട്ടയം ജില്ലാ പോലീസ് കൺട്രോൾ റൂം', phone: '0481-2562222', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കോട്ടയം (Kottayam)', description: 'കോട്ടയം കൺട്രോൾ റൂം ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ktm_west', name: 'കോട്ടയം വെസ്റ്റ് പോലീസ് സ്റ്റേഷൻ', phone: '0481-2560317', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കോട്ടയം ടൗൺ', description: 'കോട്ടയം വെസ്റ്റ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ktm_east', name: 'കോട്ടയം ഈസ്റ്റ് പോലീസ് സ്റ്റേഷൻ', phone: '0481-2563333', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കോട്ടയം ഈസ്റ്റ്', description: 'കോട്ടയം ഈസ്റ്റ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ktm_changanassery', name: 'ചങ്ങനാശ്ശേരി പോലീസ് സ്റ്റേഷൻ', phone: '0481-2420100', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ചങ്ങനാശ്ശേരി, കോട്ടയം', description: 'ചങ്ങനാശ്ശേരി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ktm_pala', name: 'പാലാ പോലീസ് സ്റ്റേഷൻ', phone: '04822-212223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'പാലാ, കോട്ടയം', description: 'പാലാ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ktm_kanjirappally', name: 'കാഞ്ഞിരപ്പള്ളി പോലീസ് സ്റ്റേഷൻ', phone: '04828-202223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കാഞ്ഞിരപ്പള്ളി, കോട്ടയം', description: 'കാഞ്ഞിരപ്പള്ളി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ktm_vaikom', name: 'വൈക്കം പോലീസ് സ്റ്റേഷൻ', phone: '04829-215823', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'വൈക്കം, കോട്ടയം', description: 'വൈക്കം പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ktm_ettumanoor', name: 'ഏറ്റുമാനൂർ പോലീസ് സ്റ്റേഷൻ', phone: '0481-2535544', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ഏറ്റുമാനൂർ, കോട്ടയം', description: 'ഏറ്റുമാനൂർ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ktm_erattupetta', name: 'ഈരാറ്റുപേട്ട പോലീസ് സ്റ്റേഷൻ', phone: '04822-272223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ഈരാറ്റുപേട്ട, കോട്ടയം', description: 'ഈരാറ്റുപേട്ട പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ktm_gandhinagar', name: 'ഗാന്ധിനഗർ (മെഡിക്കൽ കോളേജ്) പോലീസ് സ്റ്റേഷൻ', phone: '0481-2597233', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ഗാന്ധിനഗർ, കോട്ടയം', description: 'കോട്ടയം മെഡിക്കൽ കോളേജ് പോലീസ്' },
+
+    // 6. IDUKKI
+    { id: 'pol_idk_cr', name: 'ഇടുക്കി ജില്ലാ പോലീസ് കൺട്രോൾ റൂം', phone: '04862-232323', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ഇടുക്കി (Idukki)', description: 'ഇടുക്കി ജില്ലാ കൺട്രോൾ റൂം ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_idk_thodupuzha', name: 'തൊടുപുഴ പോലീസ് സ്റ്റേഷൻ', phone: '04862-222223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'തൊടുപുഴ, ഇടുക്കി', description: 'തൊടുപുഴ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_idk_kattappana', name: 'കട്ടപ്പന പോലീസ് സ്റ്റേഷൻ', phone: '04868-272223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കട്ടപ്പന, ഇടുക്കി', description: 'കട്ടപ്പന പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_idk_munnar', name: 'മൂന്നാർ പോലീസ് സ്റ്റേഷൻ', phone: '04865-230321', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'മൂന്നാർ, ഇടുക്കി', description: 'മൂന്നാർ ടൂറിസം & പോലീസ് സ്റ്റേഷൻ' },
+    { id: 'pol_idk_adimali', name: 'അടിമാലി പോലീസ് സ്റ്റേഷൻ', phone: '04864-222223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'അടിമാലി, ഇടുക്കി', description: 'അടിമാലി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_idk_nedumkandam', name: 'നെടുങ്കണ്ടം പോലീസ് സ്റ്റേഷൻ', phone: '04868-232123', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'നെടുങ്കണ്ടം, ഇടുക്കി', description: 'നെടുങ്കണ്ടം പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_idk_painavu', name: 'പൈനാവ് / ഇടുക്കി പോലീസ് സ്റ്റേഷൻ', phone: '04862-232233', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'പൈനാവ്, ഇടുക്കി', description: 'ഇടുക്കി കളക്ടറേറ്റ് & പൈനാവ് പോലീസ്' },
+    { id: 'pol_idk_peerumade', name: 'പീരുമേട് പോലീസ് സ്റ്റേഷൻ', phone: '04869-232223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'പീരുമേട്, ഇടുക്കി', description: 'പീരുമേട് പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_idk_vandiperiyar', name: 'വണ്ടിപ്പെരിയാർ പോലീസ് സ്റ്റേഷൻ', phone: '04869-252223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'വണ്ടിപ്പെരിയാർ, ഇടുക്കി', description: 'വണ്ടിപ്പെരിയാർ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+
+    // 7. ERNAKULAM
+    { id: 'pol_ekm_city_cr', name: 'കൊച്ചി സിറ്റി പോലീസ് കൺട്രോൾ റൂം', phone: '0484-2394200', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കൊച്ചി സിറ്റി (Kochi City)', description: 'കൊച്ചി സിറ്റി കൺട്രോൾ റൂം ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ekm_rural_cr', name: 'എറണാകുളം റൂറൽ കൺട്രോൾ റൂം (ആലുവ)', phone: '0484-2623788', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ആലുവ, എറണാകുളം', description: 'എറണാകുളം റൂറൽ ജില്ലാ കൺട്രോൾ റൂം' },
+    { id: 'pol_ekm_central', name: 'എറണാകുളം സെൻട്രൽ പോലീസ് സ്റ്റേഷൻ', phone: '0484-2394500', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'എറണാകുളം എം.ജി റോഡ്', description: 'എറണാകുളം സെൻട്രൽ സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ekm_south', name: 'എറണാകുളം സൗത്ത് പോലീസ് സ്റ്റേഷൻ', phone: '0484-2359100', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'എറണാകുളം സൗത്ത്', description: 'സൗത്ത് റെയിൽവേ സ്റ്റേഷൻ പരിസരം' },
+    { id: 'pol_ekm_north', name: 'എറണാകുളം നോർത്ത് പോലീസ് സ്റ്റേഷൻ', phone: '0484-2390100', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'എറണാകുളം നോർത്ത്', description: 'കലൂർ / നോർത്ത് പോലീസ് സ്റ്റേഷൻ' },
+    { id: 'pol_ekm_fortkochi', name: 'ഫോർട്ട് കൊച്ചി പോലീസ് സ്റ്റേഷൻ', phone: '0484-2215055', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ഫോർട്ട് കൊച്ചി', description: 'ഫോർട്ട് കൊച്ചി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ekm_mattancherry', name: 'മട്ടാഞ്ചേരി പോലീസ് സ്റ്റേഷൻ', phone: '0484-2224040', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'മട്ടാഞ്ചേരി, കൊച്ചി', description: 'മട്ടാഞ്ചേരി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ekm_thrikkakara', name: 'തൃക്കാക്കര പോലീസ് സ്റ്റേഷൻ', phone: '0484-2422226', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'തൃക്കാക്കര, കാക്കനാട്', description: 'കാക്കനാട് ഇൻഫോപാർക്ക് & കളക്ടറേറ്റ്' },
+    { id: 'pol_ekm_kalamassery', name: 'കളമശ്ശേരി പോലീസ് സ്റ്റേഷൻ', phone: '0484-2541010', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കളമശ്ശേരി, കൊച്ചി', description: 'കളമശ്ശേരി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ekm_palarivattom', name: 'പാലാരിവട്ടം പോലീസ് സ്റ്റേഷൻ', phone: '0484-2337770', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'പാലാരിവട്ടം, കൊച്ചി', description: 'പാലാരിവട്ടം പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ekm_aluva', name: 'ആലുവ പോലീസ് സ്റ്റേഷൻ', phone: '0484-2624023', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ആലുവ, എറണാകുളം', description: 'ആലുവ ടൗൺ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ekm_angamaly', name: 'അങ്കമാലി പോലീസ് സ്റ്റേഷൻ', phone: '0484-2452323', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'അങ്കമാലി (നെടുമ്പാശ്ശേരി)', description: 'അങ്കമാലി & എയർപോർട്ട് പരിധി' },
+    { id: 'pol_ekm_perumbavoor', name: 'പെരുമ്പാവൂർ പോലീസ് സ്റ്റേഷൻ', phone: '0484-2523220', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'പെരുമ്പാവൂർ, എറണാകുളം', description: 'പെരുമ്പാവൂർ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ekm_muvattupuzha', name: 'മൂവാറ്റുപുഴ പോലീസ് സ്റ്റേഷൻ', phone: '0485-2832304', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'മൂവാറ്റുപുഴ, എറണാകുളം', description: 'മൂവാറ്റുപുഴ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ekm_kothamangalam', name: 'കോതമംഗലം പോലീസ് സ്റ്റേഷൻ', phone: '0485-2862329', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കോതമംഗലം, എറണാകുളം', description: 'കോതമംഗലം പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ekm_paravur', name: 'നോർത്ത് പറവൂർ പോലീസ് സ്റ്റേഷൻ', phone: '0484-2442223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'നോർത്ത് പറവൂർ, എറണാകുളം', description: 'പറവൂർ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ekm_tripunithura', name: 'തൃപ്പൂണിത്തുറ പോലീസ് സ്റ്റേഷൻ', phone: '0484-2777233', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'തൃപ്പൂണിത്തുറ, കൊച്ചി', description: 'തൃപ്പൂണിത്തുറ ഹിൽപാലസ് പോലീസ്' },
+
+    // 8. THRISSUR
+    { id: 'pol_tsr_city_cr', name: 'തൃശ്ശൂർ സിറ്റി പോലീസ് കൺട്രോൾ റൂം', phone: '0487-2424193', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'തൃശ്ശൂർ സിറ്റി (Thrissur City)', description: 'തൃശ്ശൂർ സിറ്റി കൺട്രോൾ റൂം ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_tsr_rural_cr', name: 'തൃശ്ശൂർ റൂറൽ കൺട്രോൾ റൂം', phone: '0487-2361000', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'തൃശ്ശൂർ റൂറൽ', description: 'തൃശ്ശൂർ റൂറൽ ജില്ലാ കൺട്രോൾ റൂം' },
+    { id: 'pol_tsr_east', name: 'തൃശ്ശൂർ ഈസ്റ്റ് പോലീസ് സ്റ്റേഷൻ', phone: '0487-2424193', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'തൃശ്ശൂർ നഗരം', description: 'തൃശ്ശൂർ ഈസ്റ്റ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_tsr_west', name: 'തൃശ്ശൂർ വെസ്റ്റ് പോലീസ് സ്റ്റേഷൻ', phone: '0487-2360220', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'തൃശ്ശൂർ വെസ്റ്റ്', description: 'തൃശ്ശൂർ വെസ്റ്റ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_tsr_guruvayur', name: 'ഗുരുവായൂർ പോലീസ് സ്റ്റേഷൻ', phone: '0487-2556333', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ഗുരുവായൂർ, തൃശ്ശൂർ', description: 'ഗുരുവായൂർ ക്ഷേത്ര നഗരം പോലീസ്' },
+    { id: 'pol_tsr_kunnamkulam', name: 'കുന്നംകുളം പോലീസ് സ്റ്റേഷൻ', phone: '04885-222223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കുന്നംകുളം, തൃശ്ശൂർ', description: 'കുന്നംകുളം പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_tsr_chalakudy', name: 'ചാലക്കുടി പോലീസ് സ്റ്റേഷൻ', phone: '0480-2701223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ചാലക്കുടി, തൃശ്ശൂർ', description: 'ചാലക്കുടി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_tsr_kodungallur', name: 'കൊടുങ്ങല്ലൂർ പോലീസ് സ്റ്റേഷൻ', phone: '0480-2802223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കൊടുങ്ങല്ലൂർ, തൃശ്ശൂർ', description: 'കൊടുങ്ങല്ലൂർ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_tsr_irinjalakuda', name: 'ഇരിഞ്ഞാലക്കുട പോലീസ് സ്റ്റേഷൻ', phone: '0480-2825223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ഇരിഞ്ഞാലക്കുട, തൃശ്ശൂർ', description: 'ഇരിഞ്ഞാലക്കുട പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_tsr_wadakkanchery', name: 'വടക്കാഞ്ചേരി പോലീസ് സ്റ്റേഷൻ', phone: '04884-232223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'വടക്കാഞ്ചേരി, തൃശ്ശൂർ', description: 'വടക്കാഞ്ചേരി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_tsr_chavakkad', name: 'ചാവക്കാട് പോലീസ് സ്റ്റേഷൻ', phone: '0487-2507233', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ചാവക്കാട്, തൃശ്ശൂർ', description: 'ചാവക്കാട് കോസ്റ്റൽ & ടൗൺ പോലീസ്' },
+    { id: 'pol_tsr_ollur', name: 'ഒല്ലൂർ പോലീസ് സ്റ്റേഷൻ', phone: '0487-2352223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ഒല്ലൂർ, തൃശ്ശൂർ', description: 'ഒല്ലൂർ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+
+    // 9. PALAKKAD
+    { id: 'pol_pkd_cr', name: 'പാലക്കാട് ജില്ലാ പോലീസ് കൺട്രോൾ റൂം', phone: '0491-2534011', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'പാലക്കാട് (Palakkad)', description: 'പാലക്കാട് ജില്ലാ കൺട്രോൾ റൂം ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_pkd_south', name: 'പാലക്കാട് ടൗൺ സൗത്ത് പോലീസ് സ്റ്റേഷൻ', phone: '0491-2533240', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'പാലക്കാട് ടൗൺ', description: 'പാലക്കാട് ടൗൺ സൗത്ത് സ്റ്റേഷൻ' },
+    { id: 'pol_pkd_north', name: 'പാലക്കാട് ടൗൺ നോർത്ത് പോലീസ് സ്റ്റേഷൻ', phone: '0491-2522340', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'പാലക്കാട് ടൗൺ നോർത്ത്', description: 'പാലക്കാട് ടൗൺ നോർത്ത് സ്റ്റേഷൻ' },
+    { id: 'pol_pkd_ottapalam', name: 'ഒറ്റപ്പാലം പോലീസ് സ്റ്റേഷൻ', phone: '0466-2244223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ഒറ്റപ്പാലം, പാലക്കാട്', description: 'ഒറ്റപ്പാലം പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_pkd_shornur', name: 'ഷൊർണ്ണൂർ പോലീസ് സ്റ്റേഷൻ', phone: '0466-2222223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ഷൊർണ്ണൂർ, പാലക്കാട്', description: 'ഷൊർണ്ണൂർ റെയിൽവേ & ടൗൺ പോലീസ്' },
+    { id: 'pol_pkd_mannarkkad', name: 'മണ്ണാർക്കാട് പോലീസ് സ്റ്റേഷൻ', phone: '04924-222223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'മണ്ണാർക്കാട്, പാലക്കാട്', description: 'മണ്ണാർക്കാട് പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_pkd_alathur', name: 'ആലത്തൂർ പോലീസ് സ്റ്റേഷൻ', phone: '04922-222223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ആലത്തൂർ, പാലക്കാട്', description: 'ആലത്തൂർ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_pkd_chittur', name: 'ചിറ്റൂർ പോലീസ് സ്റ്റേഷൻ', phone: '04923-222223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ചിറ്റൂർ, പാലക്കാട്', description: 'ചിറ്റൂർ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_pkd_pattambi', name: 'പട്ടാമ്പി പോലീസ് സ്റ്റേഷൻ', phone: '0466-2212223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'പട്ടാമ്പി, പാലക്കാട്', description: 'പട്ടാമ്പി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_pkd_cherpulassery', name: 'ചെർപ്പുളശ്ശേരി പോലീസ് സ്റ്റേഷൻ', phone: '0466-2282223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ചെർപ്പുളശ്ശേരി, പാലക്കാട്', description: 'ചെർപ്പുളശ്ശേരി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+
+    // 10. MALAPPURAM
+    { id: 'pol_mlp_cr', name: 'മലപ്പുറം ജില്ലാ പോലീസ് കൺട്രോൾ റൂം', phone: '0483-2734993', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'മലപ്പുറം (Malappuram)', description: 'മലപ്പുറം ജില്ലാ കൺട്രോൾ റൂം ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_mlp_town', name: 'മലപ്പുറം ടൗൺ പോലീസ് സ്റ്റേഷൻ', phone: '0483-2734993', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'മലപ്പുറം ടൗൺ', description: 'മലപ്പുറം ടൗൺ പോലീസ് സ്റ്റേഷൻ' },
+    { id: 'pol_mlp_manjeri', name: 'മഞ്ചേരി പോലീസ് സ്റ്റേഷൻ', phone: '0483-2766822', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'മഞ്ചേരി, മലപ്പുറം', description: 'മഞ്ചേരി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_mlp_perinthalmanna', name: 'പെരിന്തൽമണ്ണ പോലീസ് സ്റ്റേഷൻ', phone: '04933-227223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'പെരിന്തൽമണ്ണ, മലപ്പുറം', description: 'പെരിന്തൽമണ്ണ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_mlp_tirur', name: 'തിരൂർ പോലീസ് സ്റ്റേഷൻ', phone: '0494-2422223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'തിരൂർ, മലപ്പുറം', description: 'തിരൂർ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_mlp_ponnani', name: 'പൊന്നാനി പോലീസ് സ്റ്റേഷൻ', phone: '0494-2666038', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'പൊന്നാനി, മലപ്പുറം', description: 'പൊന്നാനി കോസ്റ്റൽ & ടൗൺ പോലീസ്' },
+    { id: 'pol_mlp_nilambur', name: 'നിലമ്പൂർ പോലീസ് സ്റ്റേഷൻ', phone: '04931-220237', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'നിലമ്പൂർ, മലപ്പുറം', description: 'നിലമ്പൂർ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_mlp_kondotty', name: 'കൊണ്ടോട്ടി പോലീസ് സ്റ്റേഷൻ', phone: '0483-2712030', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കൊണ്ടോട്ടി, മലപ്പുറം', description: 'കൊണ്ടോട്ടി & കരിപ്പൂർ എയർപോർട്ട് പരിധി' },
+    { id: 'pol_mlp_kottakkal', name: 'കോട്ടക്കൽ പോലീസ് സ്റ്റേഷൻ', phone: '0483-2742223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കോട്ടക്കൽ, മലപ്പുറം', description: 'കോട്ടക്കൽ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_mlp_tanur', name: 'താനൂർ പോലീസ് സ്റ്റേഷൻ', phone: '0494-2440230', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'താനൂർ, മലപ്പുറം', description: 'താനൂർ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_mlp_valanchery', name: 'വളാഞ്ചേരി പോലീസ് സ്റ്റേഷൻ', phone: '0494-2644233', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'വളാഞ്ചേരി, മലപ്പുറം', description: 'വളാഞ്ചേരി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+
+    // 11. KOZHIKODE
+    { id: 'pol_clt_city_cr', name: 'കോഴിക്കോട് സിറ്റി പോലീസ് കൺട്രോൾ റൂം', phone: '0495-2721011', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കോഴിക്കോട് സിറ്റി (Kozhikode City)', description: 'കോഴിക്കോട് സിറ്റി കൺട്രോൾ റൂം ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_clt_rural_cr', name: 'കോഴിക്കോട് റൂറൽ കൺട്രോൾ റൂം (വടകര)', phone: '0496-2523031', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'വടകര, കോഴിക്കോട്', description: 'കോഴിക്കോട് റൂറൽ ജില്ലാ കൺട്രോൾ റൂം' },
+    { id: 'pol_clt_town', name: 'കോഴിക്കോട് ടൗൺ പോലീസ് സ്റ്റേഷൻ', phone: '0495-2720100', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കോഴിക്കോട് ടൗൺ', description: 'കോഴിക്കോട് ടൗൺ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_clt_kasaba', name: 'കസബ പോലീസ് സ്റ്റേഷൻ', phone: '0495-2701445', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കസബ, കോഴിക്കോട്', description: 'കസബ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_clt_nadakkavu', name: 'നടക്കാവ് പോലീസ് സ്റ്റേഷൻ', phone: '0495-2766014', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'നടക്കാവ്, കോഴിക്കോട്', description: 'നടക്കാവ് പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_clt_med', name: 'മെഡിക്കൽ കോളേജ് പോലീസ് സ്റ്റേഷൻ', phone: '0495-2356500', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'മെഡിക്കൽ കോളേജ്, കോഴിക്കോട്', description: 'കോഴിക്കോട് മെഡിക്കൽ കോളേജ് പോലീസ്' },
+    { id: 'pol_clt_feroke', name: 'ഫറോക്ക് പോലീസ് സ്റ്റേഷൻ', phone: '0495-2482223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ഫറോക്ക്, കോഴിക്കോട്', description: 'ഫറോക്ക് പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_clt_vadakara', name: 'വടകര പോലീസ് സ്റ്റേഷൻ', phone: '0496-2524223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'വടകര, കോഴിക്കോട്', description: 'വടകര പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_clt_koyilandy', name: 'കൊയിലാണ്ടി പോലീസ് സ്റ്റേഷൻ', phone: '0496-2620223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കൊയിലാണ്ടി, കോഴിക്കോട്', description: 'കൊയിലാണ്ടി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_clt_thamarassery', name: 'താമരശ്ശേരി പോലീസ് സ്റ്റേഷൻ', phone: '0495-2222223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'താമരശ്ശേരി ചുരം, കോഴിക്കോട്', description: 'താമരശ്ശേരി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_clt_balussery', name: 'ബാലുശ്ശേരി പോലീസ് സ്റ്റേഷൻ', phone: '0496-2642023', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ബാലുശ്ശേരി, കോഴിക്കോട്', description: 'ബാലുശ്ശേരി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_clt_koduvally', name: 'കൊടുവള്ളി പോലീസ് സ്റ്റേഷൻ', phone: '0495-2210223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കൊടുവള്ളി, കോഴിക്കോട്', description: 'കൊടുവള്ളി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+
+    // 12. WAYANAD
+    { id: 'pol_wyd_cr', name: 'വയനാട് ജില്ലാ പോലീസ് കൺട്രോൾ റൂം', phone: '04936-202525', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'വയനാട് (Wayanad)', description: 'വയനാട് ജില്ലാ കൺട്രോൾ റൂം ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_wyd_kalpetta', name: 'കൽപ്പറ്റ പോലീസ് സ്റ്റേഷൻ', phone: '04936-202223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കൽപ്പറ്റ, വയനാട്', description: 'കൽപ്പറ്റ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_wyd_mananthavady', name: 'മാനന്തവാടി പോലീസ് സ്റ്റേഷൻ', phone: '04935-240223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'മാനന്തവാടി, വയനാട്', description: 'മാനന്തവാടി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_wyd_sulthan_bathery', name: 'സുൽത്താൻ ബത്തേരി പോലീസ് സ്റ്റേഷൻ', phone: '04936-220223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'സുൽത്താൻ ബത്തേരി, വയനാട്', description: 'സുൽത്താൻ ബത്തേരി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_wyd_vythiri', name: 'വൈത്തിരി പോലീസ് സ്റ്റേഷൻ', phone: '04936-255223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'വൈത്തിരി, വയനാട്', description: 'വൈത്തിരി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_wyd_meenangadi', name: 'മീനങ്ങാടി പോലീസ് സ്റ്റേഷൻ', phone: '04936-247223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'മീനങ്ങാടി, വയനാട്', description: 'മീനങ്ങാടി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_wyd_ambalavayal', name: 'അമ്പലവയൽ പോലീസ് സ്റ്റേഷൻ', phone: '04936-260223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'അമ്പലവയൽ, വയനാട്', description: 'അമ്പലവയൽ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_wyd_panamaram', name: 'പനമരം പോലീസ് സ്റ്റേഷൻ', phone: '04935-220233', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'പനമരം, വയനാട്', description: 'പനമരം പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+
+    // 13. KANNUR
+    { id: 'pol_knr_city_cr', name: 'കണ്ണൂർ സിറ്റി പോലീസ് കൺട്രോൾ റൂം', phone: '0497-2763331', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കണ്ണൂർ സിറ്റി (Kannur City)', description: 'കണ്ണൂർ സിറ്റി കൺട്രോൾ റൂം ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_knr_rural_cr', name: 'കണ്ണൂർ റൂറൽ കൺട്രോൾ റൂം', phone: '0497-2704200', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കണ്ണൂർ റൂറൽ', description: 'കണ്ണൂർ റൂറൽ ജില്ലാ കൺട്രോൾ റൂം' },
+    { id: 'pol_knr_town', name: 'കണ്ണൂർ ടൗൺ പോലീസ് സ്റ്റേഷൻ', phone: '0497-2763337', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കണ്ണൂർ ടൗൺ', description: 'കണ്ണൂർ ടൗൺ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_knr_city', name: 'കണ്ണൂർ സിറ്റി പോലീസ് സ്റ്റേഷൻ', phone: '0497-2731233', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കണ്ണൂർ സിറ്റി', description: 'കണ്ണൂർ സിറ്റി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_knr_thalassery', name: 'തലശ്ശേരി പോലീസ് സ്റ്റേഷൻ', phone: '0490-2322223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'തലശ്ശേരി, കണ്ണൂർ', description: 'തലശ്ശേരി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_knr_payyannur', name: 'പയ്യന്നൂർ പോലീസ് സ്റ്റേഷൻ', phone: '04985-202223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'പയ്യന്നൂർ, കണ്ണൂർ', description: 'പയ്യന്നൂർ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_knr_taliparamba', name: 'തളിപ്പറമ്പ് പോലീസ് സ്റ്റേഷൻ', phone: '0460-2202223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'തളിപ്പറമ്പ്, കണ്ണൂർ', description: 'തളിപ്പറമ്പ് പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_knr_iritty', name: 'ഇരിട്ടി പോലീസ് സ്റ്റേഷൻ', phone: '0490-2491223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ഇരിട്ടി, കണ്ണൂർ', description: 'ഇരിട്ടി പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_knr_mattannur', name: 'മട്ടന്നൂർ പോലീസ് സ്റ്റേഷൻ', phone: '0490-2471223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'മട്ടന്നൂർ, കണ്ണൂർ എയർപോർട്ട്', description: 'മട്ടന്നൂർ & കണ്ണൂർ എയർപോർട്ട് പരിധി' },
+    { id: 'pol_knr_koothuparamba', name: 'കൂത്തുപറമ്പ് പോലീസ് സ്റ്റേഷൻ', phone: '0490-2362223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കൂത്തുപറമ്പ്, കണ്ണൂർ', description: 'കൂത്തുപറമ്പ് പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_knr_valapattanam', name: 'വളപട്ടണം പോലീസ് സ്റ്റേഷൻ', phone: '0497-2778223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'വളപട്ടണം, കണ്ണൂർ', description: 'വളപട്ടണം പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+
+    // 14. KASARAGOD
+    { id: 'pol_ksd_cr', name: 'കാസർഗോഡ് ജില്ലാ പോലീസ് കൺട്രോൾ റൂം', phone: '04994-222950', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കാസർഗോഡ് (Kasaragod)', description: 'കാസർഗോഡ് ജില്ലാ കൺട്രോൾ റൂം ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ksd_town', name: 'കാസർഗോഡ് ടൗൺ പോലീസ് സ്റ്റേഷൻ', phone: '04994-220223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കാസർഗോഡ് ടൗൺ', description: 'കാസർഗോഡ് ടൗൺ പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ksd_hosdurg', name: 'ഹോസ്ദുർഗ്ഗ് / കാഞ്ഞങ്ങാട് പോലീസ് സ്റ്റേഷൻ', phone: '0467-2202223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കാഞ്ഞങ്ങാട്, കാസർഗോഡ്', description: 'ഹോസ്ദുർഗ്ഗ് & കാഞ്ഞങ്ങാട് പോലീസ് ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ksd_bekal', name: 'ബേക്കൽ പോലീസ് സ്റ്റേഷൻ', phone: '0467-2236223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ബേക്കൽ, കാസർഗോഡ്', description: 'ബേക്കൽ കോസ്റ്റൽ & ഫോർട്ട് പോലീസ്' },
+    { id: 'pol_ksd_nileshwar', name: 'നീലേശ്വരം പോലീസ് സ്റ്റേഷൻ', phone: '0467-2280223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'നീലേശ്വരം, കാസർഗോഡ്', description: 'നീലേശ്വരം പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ksd_manjeshwar', name: 'മഞ്ചേശ്വരം പോലീസ് സ്റ്റേഷൻ', phone: '04998-272223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'മഞ്ചേശ്വരം, കാസർഗോഡ്', description: 'മഞ്ചേശ്വരം അതിർത്തി പോലീസ് സ്റ്റേഷൻ' },
+    { id: 'pol_ksd_kumbla', name: 'കുമ്പള പോലീസ് സ്റ്റേഷൻ', phone: '04998-214223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'കുമ്പള, കാസർഗോഡ്', description: 'കുമ്പള പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ksd_vidyanagar', name: 'വിദ്യാനഗർ പോലീസ് സ്റ്റേഷൻ', phone: '04994-230223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'വിദ്യാനഗർ, കാസർഗോഡ്', description: 'വിദ്യാനഗർ & കളക്ടറേറ്റ് പരിസരം' },
+    { id: 'pol_ksd_badiadka', name: 'ബദിയടുക്ക പോലീസ് സ്റ്റേഷൻ', phone: '04998-284223', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'ബദിയടുക്ക, കാസർഗോഡ്', description: 'ബദിയടുക്ക പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' },
+    { id: 'pol_ksd_vellarikundu', name: 'വെള്ളരിക്കുണ്ട് പോലീസ് സ്റ്റേഷൻ', phone: '0467-2242233', category: 'police', categoryName: 'പോലീസ് സ്റ്റേഷൻ', icon: '👮', location: 'വെള്ളരിക്കുണ്ട്, കാസർഗോഡ്', description: 'വെള്ളരിക്കുണ്ട് പോലീസ് സ്റ്റേഷൻ ലാൻഡ്‌ഫോൺ' }
   ];
 
   function getEmergencyCategoryIcon(cat) {
@@ -6327,7 +6512,28 @@
     let contacts = getAllEmergencyContacts();
     const cat = category || activeEmergencyCategory || 'all';
     if (cat !== 'all') {
-      contacts = contacts.filter(c => c.category === cat);
+      contacts = contacts.filter(c => {
+        if (!c.category && !c.categoryName) return false;
+        const cCat = (c.category || '').toLowerCase();
+        const cCatName = (c.categoryName || '').toLowerCase();
+        const target = cat.toLowerCase();
+        if (target === 'police' || target === 'പോലീസ്') {
+          return cCat === 'police' || cCat === 'പോലീസ്' || cCatName.includes('പോലീസ്');
+        }
+        if (target === 'medical' || target === 'ആരോഗ്യം') {
+          return cCat === 'medical' || cCat === 'ആരോഗ്യം' || cCatName.includes('ആരോഗ്യം');
+        }
+        if (target === 'emergency' || target === 'അടിയന്തിരം') {
+          return cCat === 'emergency' || cCat === 'അടിയന്തിരം' || cCat === 'police' || cCat === 'medical' || cCat === 'fire' || cCatName.includes('അടിയന്തിരം');
+        }
+        if (target.includes('വൈദ്യുതി') || target.includes('കുടിവെള്ളം') || target === 'utility') {
+          return cCat === 'utility' || cCat.includes('വൈദ്യുതി') || cCatName.includes('വൈദ്യുതി') || cCatName.includes('kseb');
+        }
+        if (target.includes('സർക്കാർ') || target === 'gov') {
+          return cCat.includes('സർക്കാർ') || cCat === 'gov' || cCatName.includes('സർക്കാർ');
+        }
+        return cCat === target || cCatName.includes(target);
+      });
     }
 
     const q = (query || '').toLowerCase().trim();

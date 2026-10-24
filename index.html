@@ -2523,11 +2523,14 @@
             <!-- SEARCH & FILTER -->
             <div style="padding:10px 14px;background:#F8FAFC;border-bottom:1px solid #E2E8F0">
                 <input type="text" id="emergencySearchInput" oninput="filterEmergencyContacts(this.value)"
-                    placeholder="🔍 KSEB, പോലീസ്, ഹോസ്പിറ്റൽ, ഓഫീസ് തിരയുക..."
+                    placeholder="🔍 പോലീസ് സ്റ്റേഷൻ, സ്ഥലം, KSEB, ഹോസ്പിറ്റൽ തിരയുക..."
                     style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;background:#fff">
                 <div style="display:flex;gap:6px;overflow-x:auto;padding-top:8px;scrollbar-width:none">
                     <button class="emg-filter-chip active" onclick="setEmergencyCategory('all', this)"
                         style="padding:4px 10px;border-radius:12px;border:none;background:#DC2626;color:#fff;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">എല്ലാം</button>
+                    <button class="emg-filter-chip" onclick="setEmergencyCategory('പോലീസ്', this)"
+                        style="padding:4px 10px;border-radius:12px;border:1px solid #CBD5E1;background:#fff;color:#1E3A8A;font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap">👮
+                        പോലീസ് സ്റ്റേഷനുകൾ</button>
                     <button class="emg-filter-chip" onclick="setEmergencyCategory('അടിയന്തിരം', this)"
                         style="padding:4px 10px;border-radius:12px;border:1px solid #CBD5E1;background:#fff;color:#475569;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">🚨
                         അടിയന്തിരം</button>
