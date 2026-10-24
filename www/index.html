@@ -245,8 +245,8 @@
                             <span>രക്തദാനം (Blood Network)</span>
                         </a>
                         <a class="desktop-nav-item" data-dest="nearby" onclick="navTo('nearby')">
-                            <span class="desktop-nav-icon">📍</span>
-                            <span>അടുത്തുള്ളവർ (Nearby)</span>
+                            <span class="desktop-nav-icon">🤝</span>
+                            <span>എന്തു സഹായം വേണം? (Nearby)</span>
                         </a>
                         <a class="desktop-nav-item" data-dest="chat" onclick="navTo('chat')">
                             <span class="desktop-nav-icon">💬</span>
@@ -394,6 +394,46 @@
                     <!-- Interactive Real-time Search Dropdown -->
                     <div id="homeSearchResultsDropdown" class="home-search-dropdown" style="display:none;margin:0 16px 12px"></div>
 
+                    <!-- COMPACT NEARBY HELP STRIP (1 KM - 10 KM LIVE ASSIST) -->
+                    <div class="home-nearby-help-capsule" style="margin:0 16px 12px;background:linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%);border:1.5px solid #A7F3D0;border-radius:14px;padding:9px 12px;box-shadow:0 2px 8px rgba(16,185,129,0.07)">
+                        <!-- TOP ROW: TITLE & 1-10 KM QUICK TEST CHIPS -->
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px">
+                            <div style="display:flex;align-items:center;gap:6px">
+                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 0 3px rgba(16,185,129,0.25)"></span>
+                                <span style="font-size:12.5px;font-weight:800;color:#065F46">സമീപ സഹായം (Nearby Help)</span>
+                            </div>
+                            <div style="display:flex;gap:3px" id="homeKmChipsRow">
+                                <button type="button" class="home-km-pill" onclick="quickFilterRadius(1, this)" style="font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px;border:1px solid #6EE7B7;background:#fff;color:#065F46;cursor:pointer">1km</button>
+                                <button type="button" class="home-km-pill" onclick="quickFilterRadius(2, this)" style="font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px;border:1px solid #6EE7B7;background:#fff;color:#065F46;cursor:pointer">2km</button>
+                                <button type="button" class="home-km-pill" onclick="quickFilterRadius(3, this)" style="font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px;border:1px solid #6EE7B7;background:#fff;color:#065F46;cursor:pointer">3km</button>
+                                <button type="button" class="home-km-pill active" onclick="quickFilterRadius(5, this)" style="font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px;border:1px solid #059669;background:#059669;color:#fff;cursor:pointer">5km</button>
+                                <button type="button" class="home-km-pill" onclick="quickFilterRadius(10, this)" style="font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px;border:1px solid #6EE7B7;background:#fff;color:#065F46;cursor:pointer">10km</button>
+                            </div>
+                        </div>
+
+                        <!-- MIDDLE ROW: TWO MAIN ACTION PILLS (COMPACT) -->
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px">
+                            <button type="button" onclick="openNearbyHelpModal()" style="display:flex;align-items:center;justify-content:center;gap:5px;background:linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);color:#fff;border:none;padding:7px 8px;border-radius:9px;font-size:11.5px;font-weight:800;box-shadow:0 2px 4px rgba(220,38,38,0.2);cursor:pointer">
+                                <span>🆘</span>
+                                <span>സഹായം വേണം</span>
+                            </button>
+                            <button type="button" onclick="navToNearbyHelpFeed()" style="display:flex;align-items:center;justify-content:center;gap:5px;background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#fff;border:none;padding:7px 8px;border-radius:9px;font-size:11.5px;font-weight:800;box-shadow:0 2px 4px rgba(5,150,105,0.2);cursor:pointer">
+                                <span>🤝</span>
+                                <span>സഹായിക്കാം (ഫീഡ്)</span>
+                            </button>
+                        </div>
+
+                        <!-- BOTTOM ROW: QUICK CATEGORY MINI PILLS -->
+                        <div style="display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:1px">
+                            <button type="button" onclick="openNearbyHelpModal('emergency')" style="flex-shrink:0;background:#fff;border:1px solid #FECACA;color:#DC2626;font-size:10.5px;font-weight:700;padding:2.5px 7px;border-radius:12px;cursor:pointer">🚨 അടിയന്തിരം</button>
+                            <button type="button" onclick="openNearbyHelpModal('vehicle')" style="flex-shrink:0;background:#fff;border:1px solid #FED7AA;color:#C2410C;font-size:10.5px;font-weight:700;padding:2.5px 7px;border-radius:12px;cursor:pointer">🛞 വാഹനം</button>
+                            <button type="button" onclick="openNearbyHelpModal('medicine')" style="flex-shrink:0;background:#fff;border:1px solid #DDD6FE;color:#6D28D9;font-size:10.5px;font-weight:700;padding:2.5px 7px;border-radius:12px;cursor:pointer">💊 മരുന്ന്</button>
+                            <button type="button" onclick="openNearbyHelpModal('repair')" style="flex-shrink:0;background:#fff;border:1px solid #BAE6FD;color:#0369A1;font-size:10.5px;font-weight:700;padding:2.5px 7px;border-radius:12px;cursor:pointer">🛠️ റിപ്പയർ</button>
+                            <button type="button" onclick="openNearbyHelpModal('home')" style="flex-shrink:0;background:#fff;border:1px solid #A7F3D0;color:#047857;font-size:10.5px;font-weight:700;padding:2.5px 7px;border-radius:12px;cursor:pointer">📦 വീട്ടുസഹായം</button>
+                            <button type="button" onclick="openBloodModal()" style="flex-shrink:0;background:#fff;border:1px solid #FBCFE8;color:#BE185D;font-size:10.5px;font-weight:700;padding:2.5px 7px;border-radius:12px;cursor:pointer">🩸 രക്തം</button>
+                        </div>
+                    </div>
+
                     <!-- 3. ADMIN VILLAGE PROMO & ADVERTISEMENT BANNER (PURE POSTER IMAGE, NO OVERLAY TEXT) -->
                     <div class="home-kerala-hero-banner" id="homeVillagePromoBanner" onclick="openAdDetailModal()" style="cursor:pointer" title="വിശദാംശങ്ങൾ കാണാം">
                         <img id="homeVillageBannerFullImg" src="img/kerala_houseboat_hero.jpg" alt="പരസ്യം"
@@ -440,15 +480,15 @@
                             <div class="kerala-cat-arrow-btn" style="background:#E11D48">➔</div>
                         </div>
 
-                        <!-- CARD 2: ആരോഗ്യ സേവനം (HEALTHCARE) -->
-                        <div class="kerala-cat-card" onclick="openEmergencyModal()"
-                            style="background:linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%);border:1.5px solid #FED7AA">
+                        <!-- CARD 2: ആംബുലൻസ് & ആരോഗ്യം (AMBULANCE & HEALTHCARE) -->
+                        <div class="kerala-cat-card" onclick="openAmbulanceModal()"
+                            style="background:linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 100%);border:1.5px solid #FECDD3">
                             <div class="kerala-cat-img-box">
-                                <img src="assets/cat-health-3d.jpg" alt="ആരോഗ്യ സേവനം" class="kerala-cat-img">
+                                <img src="assets/cat-ambulance-3d.jpg" alt="ആംബുലൻസ് & ആരോഗ്യം" class="kerala-cat-img">
                             </div>
-                            <div class="kerala-cat-title" style="color:#9A3412">ആരോഗ്യ സേവനം</div>
-                            <div class="kerala-cat-sub" style="color:#C2410C">ആരോഗ്യ വിവരം, ആശുപത്രികൾ...</div>
-                            <div class="kerala-cat-arrow-btn" style="background:#EA580C">➔</div>
+                            <div class="kerala-cat-title" style="color:#DC2626">ആംബുലൻസ് & ആരോഗ്യം</div>
+                            <div class="kerala-cat-sub" style="color:#E11D48">24x7 ആംബുലൻസ്, ആശുപത്രികൾ...</div>
+                            <div class="kerala-cat-arrow-btn" style="background:#DC2626">➔</div>
                         </div>
 
                         <!-- CARD 3: സേവനങ്ങൾ (SERVICES / TRADES) -->
@@ -484,15 +524,15 @@
                             <div class="kerala-cat-arrow-btn" style="background:#16A34A">➔</div>
                         </div>
 
-                        <!-- CARD 6: ആംബുലൻസ് (AMBULANCE) -->
-                        <div class="kerala-cat-card" onclick="openAmbulanceModal()"
-                            style="background:linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 100%);border:1.5px solid #FECDD3">
+                        <!-- CARD 6: എന്തു സഹായം വേണം? (NEARBY DISCOVERY & LIVE HELP) -->
+                        <div class="kerala-cat-card" onclick="navTo('nearby')"
+                            style="background:linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);border:1.5px solid #A7F3D0">
                             <div class="kerala-cat-img-box">
-                                <img src="assets/cat-ambulance-3d.jpg" alt="ആംബുലൻസ്" class="kerala-cat-img">
+                                <img src="assets/cat-nearby-3d.jpg" alt="എന്തു സഹായം വേണം?" class="kerala-cat-img">
                             </div>
-                            <div class="kerala-cat-title" style="color:#DC2626">ആംബുലൻസ്</div>
-                            <div class="kerala-cat-sub" style="color:#E11D48">24x7 സേവനം വേഗത്തിൽ</div>
-                            <div class="kerala-cat-arrow-btn" style="background:#DC2626">➔</div>
+                            <div class="kerala-cat-title" style="color:#065F46">എന്തു സഹായം വേണം?</div>
+                            <div class="kerala-cat-sub" style="color:#047857">1-10 കി.മീ സഹായങ്ങളും ആളുകളും</div>
+                            <div class="kerala-cat-arrow-btn" style="background:#059669">➔</div>
                         </div>
                     </div>
 
@@ -605,7 +645,7 @@
                             <span
                                 style="font-size:0.75rem;font-weight:700;color:#059669;cursor:pointer;background:#ECFDF5;padding:5px 12px;border-radius:20px;border:1px solid #A7F3D0"
                                 onclick="navTo('nearby')">
-                                📍 സമീപത്തുള്ളവർ &rsaquo;
+                                🤝 സഹായങ്ങൾ &rsaquo;
                             </span>
                         </div>
                         <div id="homeTopProvidersList" style="display:flex;flex-direction:column;gap:12px"></div>
@@ -626,7 +666,7 @@
                         <button class="round-back-btn" onclick="navTo('home')" aria-label="Back">❮</button>
                         <div class="nearby-header-center" style="text-align:center">
                             <h2 class="nearby-header-title" style="margin:0;font-size:16px;font-weight:800">
-                                സമീപത്തുള്ളവർ (Nearby)</h2>
+                                എന്തു സഹായം വേണം? (Nearby)</h2>
                             <div class="nearby-header-sub" style="font-size:12px;color:#0E7043;font-weight:700">
                                 📍 <span class="user-live-city-name">തത്സമയ ലൊക്കേഷൻ</span>
                             </div>
@@ -670,6 +710,8 @@
                         style="display:flex;gap:6px;padding:10px 16px;background:#fff;border-bottom:1px solid #E5E7EB;overflow-x:auto;scrollbar-width:none">
                         <button class="nearby-cat-chip active" data-cat="all"
                             onclick="setNearbyCategory('all', this)">🌟 എല്ലാവരും</button>
+                        <button class="nearby-cat-chip" data-cat="help"
+                            onclick="setNearbyCategory('help', this)" style="color:#DC2626;font-weight:800">🆘 ലൈവ് സഹായം</button>
                         <button class="nearby-cat-chip" data-cat="citizen"
                             onclick="setNearbyCategory('citizen', this)">👥 നാട്ടുകാർ</button>
                         <button class="nearby-cat-chip" data-cat="service"
@@ -680,25 +722,30 @@
                             വാടക/വിൽപന</button>
                     </div>
 
-                    <!-- RADIUS FILTER CHIPS (1km, 5km, 15km, 50km, All) -->
+                    <!-- RADIUS FILTER CHIPS (1km, 2km, 3km, 5km, 10km, All) -->
                     <div class="radius-filter-container"
                         style="background:#F8FAFC;padding:10px 16px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;gap:6px;overflow-x:auto">
                         <span class="radius-filter-label"
                             style="font-size:11.5px;font-weight:800;color:#475569;white-space:nowrap">🎯 പരിധി:</span>
                         <button class="radius-chip" onclick="setRadiusFilter('nearby', 1, this)">1 km</button>
+                        <button class="radius-chip" onclick="setRadiusFilter('nearby', 2, this)">2 km</button>
+                        <button class="radius-chip" onclick="setRadiusFilter('nearby', 3, this)">3 km</button>
                         <button class="radius-chip active" onclick="setRadiusFilter('nearby', 5, this)">5 km</button>
-                        <button class="radius-chip" onclick="setRadiusFilter('nearby', 15, this)">15 km</button>
-                        <button class="radius-chip" onclick="setRadiusFilter('nearby', 50, this)">50 km</button>
+                        <button class="radius-chip" onclick="setRadiusFilter('nearby', 10, this)">10 km</button>
                         <button class="radius-chip" onclick="setRadiusFilter('nearby', 99999, this)">എല്ലാം
                             (All)</button>
                     </div>
 
-                    <!-- RESULT COUNT PILL -->
+                    <!-- RESULT COUNT & QUICK REQUEST ACTION BAR -->
                     <div id="nearbyResultStatsBar"
-                        style="padding:8px 16px 2px;display:flex;align-items:center;justify-content:space-between">
+                        style="padding:8px 16px 2px;display:flex;align-items:center;justify-content:space-between;gap:8px">
                         <span id="nearbyFoundCountText"
                             style="font-size:11.5px;font-weight:800;color:#059669;background:#ECFDF5;padding:3px 10px;border-radius:20px;border:1px solid #A7F3D0">📍
                             സമീപത്തുള്ളവരെ കണ്ടെത്തുന്നു...</span>
+                        <button type="button" onclick="openNearbyHelpModal()"
+                            style="background:linear-gradient(135deg,#DC2626,#B91C1C);color:#fff;border:none;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:800;cursor:pointer;flex-shrink:0;box-shadow:0 2px 4px rgba(220,38,38,0.2)">
+                            🆘 സഹായം ചോദിക്കാം
+                        </button>
                     </div>
 
                     <div id="nearbyPeopleListContainer"
@@ -1802,20 +1849,20 @@
                     </div>
                     <!-- Radius Chips Grid -->
                     <div id="modalRadiusChipsList" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:8px">
+                        <button type="button" class="modal-rad-chip" data-rad="1" onclick="setGlobalRadius(1, this)"
+                            style="padding:8px 4px;border:1.5px solid #BBF7D0;background:#fff;border-radius:10px;font-size:12px;font-weight:800;color:#064E3B;cursor:pointer">1
+                            km</button>
                         <button type="button" class="modal-rad-chip" data-rad="2" onclick="setGlobalRadius(2, this)"
                             style="padding:8px 4px;border:1.5px solid #BBF7D0;background:#fff;border-radius:10px;font-size:12px;font-weight:800;color:#064E3B;cursor:pointer">2
+                            km</button>
+                        <button type="button" class="modal-rad-chip" data-rad="3" onclick="setGlobalRadius(3, this)"
+                            style="padding:8px 4px;border:1.5px solid #BBF7D0;background:#fff;border-radius:10px;font-size:12px;font-weight:800;color:#064E3B;cursor:pointer">3
                             km</button>
                         <button type="button" class="modal-rad-chip" data-rad="5" onclick="setGlobalRadius(5, this)"
                             style="padding:8px 4px;border:1.5px solid #0E7043;background:#0E7043;border-radius:10px;font-size:12px;font-weight:800;color:#fff;cursor:pointer">5
                             km</button>
                         <button type="button" class="modal-rad-chip" data-rad="10" onclick="setGlobalRadius(10, this)"
                             style="padding:8px 4px;border:1.5px solid #BBF7D0;background:#fff;border-radius:10px;font-size:12px;font-weight:800;color:#064E3B;cursor:pointer">10
-                            km</button>
-                        <button type="button" class="modal-rad-chip" data-rad="25" onclick="setGlobalRadius(25, this)"
-                            style="padding:8px 4px;border:1.5px solid #BBF7D0;background:#fff;border-radius:10px;font-size:12px;font-weight:800;color:#064E3B;cursor:pointer">25
-                            km</button>
-                        <button type="button" class="modal-rad-chip" data-rad="50" onclick="setGlobalRadius(50, this)"
-                            style="padding:8px 4px;border:1.5px solid #BBF7D0;background:#fff;border-radius:10px;font-size:12px;font-weight:800;color:#064E3B;cursor:pointer">50
                             km</button>
                         <button type="button" class="modal-rad-chip" data-rad="1000"
                             onclick="setGlobalRadius(1000, this)"
@@ -2943,9 +2990,8 @@
                 <div style="display:flex;align-items:center;gap:10px">
                     <span style="font-size:24px">🚑</span>
                     <div>
-                        <h3 style="margin:0;font-size:16px;font-weight:800;color:#fff">ആംബുലൻസ് സർവീസ് (24x7)</h3>
-                        <div style="font-size:11px;color:rgba(255,255,255,0.85)">അടിയന്തര സേവനത്തിന് ഡ്രൈവർമാരെ ഉടൻ
-                            വിളിക്കാം</div>
+                        <h3 style="margin:0;font-size:16px;font-weight:800;color:#fff">ആംബുലൻസ് & ആരോഗ്യം (24x7)</h3>
+                        <div style="font-size:11px;color:rgba(255,255,255,0.85)">ആംബുലൻസ് സർവീസുകളും ആശുപത്രികളും ഉടൻ വിളിക്കാം</div>
                     </div>
                 </div>
                 <button onclick="closeModal('modal-ambulance')" class="modal-close-btn modal-close-btn-light"
@@ -2953,57 +2999,110 @@
             </div>
 
             <div style="padding:14px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:10px">
-                <!-- 108 TOLL-FREE CARD -->
-                <div
-                    style="background:#FFF1F2;border:1.5px solid #FECDD3;border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:space-between">
-                    <div style="display:flex;align-items:center;gap:10px">
-                        <span style="font-size:26px">🚨</span>
-                        <div>
-                            <div style="font-weight:800;font-size:13.5px;color:#9F1239">കേരള സർക്കാർ സൗജന്യ ആംബുലൻസ്
+                <!-- SEGMENTED TABS: 1. ആംബുലൻസ് (ആദ്യം) | 2. ആശുപത്രികൾ -->
+                <div style="display:flex;background:#F1F5F9;padding:4px;border-radius:12px;gap:4px">
+                    <button type="button" id="ambSubTabAmbulance" onclick="switchAmbHealthTab('ambulance')"
+                        style="flex:1;padding:8px;border-radius:9px;border:none;background:#BE123C;color:#fff;font-size:12px;font-weight:800;cursor:pointer;transition:all 0.15s ease">
+                        🚑 ആംബുലൻസ് (24x7)
+                    </button>
+                    <button type="button" id="ambSubTabHospital" onclick="switchAmbHealthTab('hospital')"
+                        style="flex:1;padding:8px;border-radius:9px;border:none;background:transparent;color:#475569;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.15s ease">
+                        🏥 ആശുപത്രികൾ & ക്ലിനിക്
+                    </button>
+                </div>
+
+                <!-- TAB CONTENT 1: ആംബുലൻസ് (DEFAULT ACTIVE) -->
+                <div id="ambTabContentAmbulance" style="display:flex;flex-direction:column;gap:10px">
+                    <!-- 108 TOLL-FREE CARD -->
+                    <div
+                        style="background:#FFF1F2;border:1.5px solid #FECDD3;border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:space-between">
+                        <div style="display:flex;align-items:center;gap:10px">
+                            <span style="font-size:26px">🚨</span>
+                            <div>
+                                <div style="font-weight:800;font-size:13.5px;color:#9F1239">കേരള സർക്കാർ സൗജന്യ ആംബുലൻസ്
+                                </div>
+                                <div style="font-size:11px;color:#881337">Toll-Free 108 Emergency Life Support</div>
                             </div>
-                            <div style="font-size:11px;color:#881337">Toll-Free 108 Emergency Life Support</div>
                         </div>
+                        <a href="tel:108"
+                            style="background:#E11D48;color:#fff;text-decoration:none;font-weight:800;font-size:12px;padding:8px 14px;border-radius:20px;box-shadow:0 2px 8px rgba(225,29,72,0.3);display:flex;align-items:center;gap:4px">
+                            <span>📞 108</span>
+                        </a>
                     </div>
-                    <a href="tel:108"
-                        style="background:#E11D48;color:#fff;text-decoration:none;font-weight:800;font-size:12px;padding:8px 14px;border-radius:20px;box-shadow:0 2px 8px rgba(225,29,72,0.3);display:flex;align-items:center;gap:4px">
-                        <span>📞 108</span>
-                    </a>
-                </div>
 
-                <!-- DRIVER REGISTRATION PROMO BANNER -->
-                <div onclick="openAmbulanceDriverRegister()"
-                    style="background:linear-gradient(135deg, #065F46 0%, #047857 100%);color:#fff;padding:12px 14px;border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 10px rgba(6,95,70,0.2)">
-                    <div style="display:flex;align-items:center;gap:10px">
-                        <span style="font-size:22px">🚑</span>
-                        <div>
-                            <div style="font-weight:800;font-size:13px">ആംബുലൻസ് ഡ്രൈവറാണോ?</div>
-                            <div style="font-size:10.5px;color:rgba(255,255,255,0.85)">നിങ്ങളുടെ നമ്പറും വാഹനവും ഇവിടെ
-                                രജിസ്റ്റർ ചെയ്യാം</div>
+                    <!-- DRIVER REGISTRATION PROMO BANNER -->
+                    <div onclick="openAmbulanceDriverRegister()"
+                        style="background:linear-gradient(135deg, #065F46 0%, #047857 100%);color:#fff;padding:12px 14px;border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 10px rgba(6,95,70,0.2)">
+                        <div style="display:flex;align-items:center;gap:10px">
+                            <span style="font-size:22px">🚑</span>
+                            <div>
+                                <div style="font-weight:800;font-size:13px">ആംബുലൻസ് ഡ്രൈവറാണോ?</div>
+                                <div style="font-size:10.5px;color:rgba(255,255,255,0.85)">നിങ്ങളുടെ നമ്പറും വാഹനവും ഇവിടെ
+                                    രജിസ്റ്റർ ചെയ്യാം</div>
+                            </div>
                         </div>
+                        <span
+                            style="background:#fff;color:#065F46;font-weight:800;font-size:11px;padding:5px 12px;border-radius:20px">➕
+                            രജിസ്റ്റർ</span>
                     </div>
-                    <span
-                        style="background:#fff;color:#065F46;font-weight:800;font-size:11px;padding:5px 12px;border-radius:20px">➕
-                        രജിസ്റ്റർ</span>
+
+                    <!-- SEARCH & FILTER -->
+                    <div style="position:relative">
+                        <input type="text" id="ambulanceSearchInput" oninput="filterAmbulances(this.value)"
+                            placeholder="🔍 സ്ഥലം, ഹോസ്പിറ്റൽ അല്ലെങ്കിൽ ഡ്രൈവറെ തിരയുക..."
+                            style="width:100%;padding:9px 12px 9px 32px;border:1px solid #E2E8F0;border-radius:10px;font-size:12.5px;outline:none;background:#F8FAFC">
+                        <span
+                            style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;color:#94A3B8;pointer-events:none">🔍</span>
+                    </div>
+
+                    <!-- DRIVERS LIST CONTAINER -->
+                    <div
+                        style="font-size:12px;font-weight:800;color:#334151;margin-top:2px;display:flex;justify-content:space-between;align-items:center">
+                        <span>സമീപത്തെ ആംബുലൻസ് ഡ്രൈവർമാർ</span>
+                        <span id="ambDriversCountBadge"
+                            style="font-size:10.5px;color:#059669;background:#ECFDF5;padding:2px 8px;border-radius:10px;border:1px solid #A7F3D0">ലഭ്യമാണ്</span>
+                    </div>
+
+                    <div id="ambulanceDriversList" style="display:flex;flex-direction:column;gap:8px"></div>
                 </div>
 
-                <!-- SEARCH & FILTER -->
-                <div style="position:relative">
-                    <input type="text" id="ambulanceSearchInput" oninput="filterAmbulances(this.value)"
-                        placeholder="🔍 സ്ഥലം, ഹോസ്പിറ്റൽ അല്ലെങ്കിൽ ഡ്രൈവറെ തിരയുക..."
-                        style="width:100%;padding:9px 12px 9px 32px;border:1px solid #E2E8F0;border-radius:10px;font-size:12.5px;outline:none;background:#F8FAFC">
-                    <span
-                        style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;color:#94A3B8;pointer-events:none">🔍</span>
-                </div>
+                <!-- TAB CONTENT 2: ആശുപത്രികളും ക്ലിനിക്കുകളും -->
+                <div id="ambTabContentHospital" style="display:none;flex-direction:column;gap:10px">
+                    <!-- DISHA 1056 TOLL FREE -->
+                    <div
+                        style="background:#ECFDF5;border:1.5px solid #A7F3D0;border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:space-between">
+                        <div style="display:flex;align-items:center;gap:10px">
+                            <span style="font-size:26px">🏥</span>
+                            <div>
+                                <div style="font-weight:800;font-size:13.5px;color:#065F46">ദിശ 24x7 ആരോഗ്യ ഹെൽപ്പ്‌ലൈൻ</div>
+                                <div style="font-size:11px;color:#047857">Toll-Free 1056 Health Advisory Helpline</div>
+                            </div>
+                        </div>
+                        <a href="tel:1056"
+                            style="background:#059669;color:#fff;text-decoration:none;font-weight:800;font-size:12px;padding:8px 14px;border-radius:20px;box-shadow:0 2px 8px rgba(5,150,105,0.3);display:flex;align-items:center;gap:4px">
+                            <span>📞 1056</span>
+                        </a>
+                    </div>
 
-                <!-- DRIVERS LIST CONTAINER -->
-                <div
-                    style="font-size:12px;font-weight:800;color:#334151;margin-top:2px;display:flex;justify-content:space-between;align-items:center">
-                    <span>സമീപത്തെ ആംബുലൻസ് ഡ്രൈവർമാർ</span>
-                    <span id="ambDriversCountBadge"
-                        style="font-size:10.5px;color:#059669;background:#ECFDF5;padding:2px 8px;border-radius:10px;border:1px solid #A7F3D0">ലഭ്യമാണ്</span>
-                </div>
+                    <!-- HOSPITAL SEARCH INPUT -->
+                    <div style="position:relative">
+                        <input type="text" id="ambHospitalSearchInput" oninput="filterAmbHospitals(this.value)"
+                            placeholder="🔍 ആശുപത്രി, ക്ലിനിക് അല്ലെങ്കിൽ സ്ഥലം തിരയുക..."
+                            style="width:100%;padding:9px 12px 9px 32px;border:1px solid #E2E8F0;border-radius:10px;font-size:12.5px;outline:none;background:#F8FAFC">
+                        <span
+                            style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;color:#94A3B8;pointer-events:none">🔍</span>
+                    </div>
 
-                <div id="ambulanceDriversList" style="display:flex;flex-direction:column;gap:8px"></div>
+                    <!-- HOSPITALS LIST CONTAINER -->
+                    <div
+                        style="font-size:12px;font-weight:800;color:#334151;margin-top:2px;display:flex;justify-content:space-between;align-items:center">
+                        <span>ലഭ്യമായ ആശുപത്രികളും ക്ലിനിക്കുകളും</span>
+                        <span id="ambHospitalsCountBadge"
+                            style="font-size:10.5px;color:#059669;background:#ECFDF5;padding:2px 8px;border-radius:10px;border:1px solid #A7F3D0">24x7 സേവനം</span>
+                    </div>
+
+                    <div id="ambHospitalsListContainer" style="display:flex;flex-direction:column;gap:8px"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -3854,6 +3953,105 @@
                 <button type="submit"
                     style="background:linear-gradient(135deg, #064E3B 0%, #0E7043 100%);color:#fff;border:none;padding:14px;border-radius:14px;font-weight:800;font-size:15px;cursor:pointer;margin-top:4px;box-shadow:0 4px 14px rgba(14,112,67,0.3)">
                     🚀 അടുത്തുള്ള വർക്കർമാരെ അറിയിക്കാം
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: 1-10 KM LIVE NEARBY HELP REQUEST (സമീപ സഹായം)            -->
+    <!-- ============================================================== -->
+    <div id="modal-nearby-help-request" class="modal-overlay"
+        onclick="if(event.target===this)closeModal('modal-nearby-help-request')">
+        <div class="modal-sheet" style="max-height:90vh;overflow-y:auto">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                <div style="display:flex;align-items:center;gap:8px">
+                    <span style="font-size:24px">🆘</span>
+                    <div>
+                        <div style="font-size:11px;background:#FEE2E2;color:#991B1B;padding:2px 8px;border-radius:10px;font-weight:800;display:inline-block">1 - 10 KM ലൈവ് ഹെൽപ്പ്</div>
+                        <h3 style="margin:2px 0 0;font-size:17px;font-weight:800;color:#0F172A">സമീപ സഹായം ചോദിക്കാം</h3>
+                    </div>
+                </div>
+                <button type="button" onclick="closeModal('modal-nearby-help-request')" class="modal-close-btn" title="ക്ലോസ്">✕</button>
+            </div>
+            <p style="font-size:12px;color:#64748B;margin:0 0 14px">1 മുതൽ 10 കി.മീ ചുറ്റളവിലുള്ള സമീപവാസികളിലേക്കും വോളന്റിയർമാരിലേക്കും നിങ്ങളുടെ ആവശ്യം ഉടൻ എത്തും.</p>
+
+            <form onsubmit="submitNearbyHelpRequest(event)" style="display:flex;flex-direction:column;gap:12px">
+                <!-- 1. CATEGORY -->
+                <div>
+                    <label style="font-size:12px;font-weight:800;color:#334155;display:block;margin-bottom:6px">1. ഏത് കാര്യത്തിലാണ് സഹായം?</label>
+                    <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:6px" id="nearbyHelpCatGrid">
+                        <button type="button" class="nearby-help-cat-btn active" data-cat="emergency" onclick="selectNearbyHelpCat('emergency', this)" style="padding:8px 4px;border:1.5px solid #DC2626;background:#FEF2F2;border-radius:10px;font-size:11.5px;font-weight:800;color:#991B1B;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px">
+                            <span style="font-size:18px">🚨</span>
+                            <span>അടിയന്തിരം</span>
+                        </button>
+                        <button type="button" class="nearby-help-cat-btn" data-cat="vehicle" onclick="selectNearbyHelpCat('vehicle', this)" style="padding:8px 4px;border:1.5px solid #E2E8F0;background:#fff;border-radius:10px;font-size:11.5px;font-weight:700;color:#334155;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px">
+                            <span style="font-size:18px">🛞</span>
+                            <span>വാഹനം/ലിഫ്റ്റ്</span>
+                        </button>
+                        <button type="button" class="nearby-help-cat-btn" data-cat="medicine" onclick="selectNearbyHelpCat('medicine', this)" style="padding:8px 4px;border:1.5px solid #E2E8F0;background:#fff;border-radius:10px;font-size:11.5px;font-weight:700;color:#334155;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px">
+                            <span style="font-size:18px">💊</span>
+                            <span>മരുന്ന്/ആരോഗ്യം</span>
+                        </button>
+                        <button type="button" class="nearby-help-cat-btn" data-cat="repair" onclick="selectNearbyHelpCat('repair', this)" style="padding:8px 4px;border:1.5px solid #E2E8F0;background:#fff;border-radius:10px;font-size:11.5px;font-weight:700;color:#334155;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px">
+                            <span style="font-size:18px">🛠️</span>
+                            <span>റിപ്പയർ/പണി</span>
+                        </button>
+                        <button type="button" class="nearby-help-cat-btn" data-cat="home" onclick="selectNearbyHelpCat('home', this)" style="padding:8px 4px;border:1.5px solid #E2E8F0;background:#fff;border-radius:10px;font-size:11.5px;font-weight:700;color:#334155;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px">
+                            <span style="font-size:18px">📦</span>
+                            <span>വീട്ടുസഹായം</span>
+                        </button>
+                        <button type="button" class="nearby-help-cat-btn" data-cat="other" onclick="selectNearbyHelpCat('other', this)" style="padding:8px 4px;border:1.5px solid #E2E8F0;background:#fff;border-radius:10px;font-size:11.5px;font-weight:700;color:#334155;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px">
+                            <span style="font-size:18px">🤝</span>
+                            <span>മറ്റുള്ളവ</span>
+                        </button>
+                    </div>
+                    <input type="hidden" id="nearbyHelpSelectedCat" value="emergency">
+                </div>
+
+                <!-- 2. RADIUS SELECTOR (1 KM - 10 KM) -->
+                <div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                        <label style="font-size:12px;font-weight:800;color:#334155">2. എത്ര ദൂരപരിധിയിലാണ് അറിയിക്കേണ്ടത്?</label>
+                        <span id="nearbyHelpRadiusBadge" style="font-size:11px;font-weight:800;color:#059669;background:#ECFDF5;padding:2px 7px;border-radius:8px">5 km പരിധി</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(5, 1fr);gap:5px" id="nearbyHelpRadiusGrid">
+                        <button type="button" class="nearby-help-rad-pill" data-km="1" onclick="selectNearbyHelpRadius(1, this)" style="padding:7px 2px;border:1.5px solid #CBD5E1;background:#fff;border-radius:8px;font-size:11.5px;font-weight:800;color:#334155;cursor:pointer">1 km</button>
+                        <button type="button" class="nearby-help-rad-pill" data-km="2" onclick="selectNearbyHelpRadius(2, this)" style="padding:7px 2px;border:1.5px solid #CBD5E1;background:#fff;border-radius:8px;font-size:11.5px;font-weight:800;color:#334155;cursor:pointer">2 km</button>
+                        <button type="button" class="nearby-help-rad-pill" data-km="3" onclick="selectNearbyHelpRadius(3, this)" style="padding:7px 2px;border:1.5px solid #CBD5E1;background:#fff;border-radius:8px;font-size:11.5px;font-weight:800;color:#334155;cursor:pointer">3 km</button>
+                        <button type="button" class="nearby-help-rad-pill active" data-km="5" onclick="selectNearbyHelpRadius(5, this)" style="padding:7px 2px;border:1.5px solid #059669;background:#059669;border-radius:8px;font-size:11.5px;font-weight:800;color:#fff;cursor:pointer">5 km</button>
+                        <button type="button" class="nearby-help-rad-pill" data-km="10" onclick="selectNearbyHelpRadius(10, this)" style="padding:7px 2px;border:1.5px solid #CBD5E1;background:#fff;border-radius:8px;font-size:11.5px;font-weight:800;color:#334155;cursor:pointer">10 km</button>
+                    </div>
+                    <input type="hidden" id="nearbyHelpSelectedRadius" value="5">
+                </div>
+
+                <!-- 3. DESCRIPTION NOTE -->
+                <div>
+                    <label style="font-size:12px;font-weight:800;color:#334155;display:block;margin-bottom:4px">3. സഹായ വിവരണം (Short Note)</label>
+                    <textarea id="nearbyHelpNote" required rows="2"
+                        placeholder="ആവശ്യം ചുരുക്കി എഴുതാം (e.g. കാർ പഞ്ചറായി സഹായി വേണം, അല്ലെങ്കിൽ പ്രായമായവർക്ക് പെട്ടെന്ന് മരുന്ന് എത്തിക്കണം...)"
+                        style="width:100%;padding:10px;border:1.5px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;resize:none;background:#F8FAFC"></textarea>
+                </div>
+
+                <!-- 4. LOCATION & PHONE -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                    <div>
+                        <label style="font-size:11px;font-weight:700;color:#475569">നിങ്ങളുടെ സ്ഥലം</label>
+                        <input type="text" id="nearbyHelpLocationInput"
+                            style="width:100%;padding:8px 10px;border:1px solid #CBD5E1;border-radius:10px;font-size:12px;outline:none;background:#F8FAFC">
+                    </div>
+                    <div>
+                        <label style="font-size:11px;font-weight:700;color:#475569">ഫോൺ നമ്പർ</label>
+                        <input type="tel" id="nearbyHelpPhoneInput" required
+                            style="width:100%;padding:8px 10px;border:1px solid #CBD5E1;border-radius:10px;font-size:12px;outline:none;background:#F8FAFC">
+                    </div>
+                </div>
+
+                <!-- SUBMIT BUTTON -->
+                <button type="submit"
+                    style="background:linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);color:#fff;border:none;padding:13px;border-radius:12px;font-weight:800;font-size:14.5px;cursor:pointer;margin-top:4px;box-shadow:0 4px 14px rgba(220,38,38,0.25);display:flex;align-items:center;justify-content:center;gap:6px">
+                    <span>🚀</span>
+                    <span>സഹായം ചോദിക്കാം (1-10km ചുറ്റളവിൽ)</span>
                 </button>
             </form>
         </div>
