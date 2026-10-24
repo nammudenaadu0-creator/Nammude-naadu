@@ -4014,17 +4014,21 @@
                         style="width:100%;padding:10px;border:1.5px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;resize:none;background:#F8FAFC"></textarea>
                 </div>
 
-                <!-- 4. LOCATION & PHONE -->
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-                    <div>
-                        <label style="font-size:11px;font-weight:700;color:#475569">നിങ്ങളുടെ സ്ഥലം</label>
-                        <input type="text" id="nearbyHelpLocationInput"
-                            style="width:100%;padding:8px 10px;border:1px solid #CBD5E1;border-radius:10px;font-size:12px;outline:none;background:#F8FAFC">
+                <!-- 4. LOCATION & PHONE (AUTO-FILLED FROM REGISTERED PROFILE) -->
+                <div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+                        <label style="font-size:11px;font-weight:700;color:#475569">4. ബന്ധപ്പെടാനുള്ള വിവരങ്ങൾ</label>
+                        <span style="font-size:10px;font-weight:800;color:#059669;background:#ECFDF5;padding:1px 6px;border-radius:6px;border:1px solid #A7F3D0">✨ പ്രൊഫൈലിൽ നിന്ന് ഓട്ടോ ഫിൽ</span>
                     </div>
-                    <div>
-                        <label style="font-size:11px;font-weight:700;color:#475569">ഫോൺ നമ്പർ</label>
-                        <input type="tel" id="nearbyHelpPhoneInput" required
-                            style="width:100%;padding:8px 10px;border:1px solid #CBD5E1;border-radius:10px;font-size:12px;outline:none;background:#F8FAFC">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                        <div>
+                            <input type="text" id="nearbyHelpLocationInput" placeholder="നിങ്ങളുടെ സ്ഥലം" autocomplete="address-level2"
+                                style="width:100%;padding:8px 10px;border:1px solid #CBD5E1;border-radius:10px;font-size:12px;outline:none;background:#F8FAFC">
+                        </div>
+                        <div>
+                            <input type="tel" id="nearbyHelpPhoneInput" required placeholder="ഫോൺ നമ്പർ" autocomplete="tel" inputmode="tel"
+                                style="width:100%;padding:8px 10px;border:1px solid #CBD5E1;border-radius:10px;font-size:12px;outline:none;background:#F8FAFC">
+                        </div>
                     </div>
                 </div>
 

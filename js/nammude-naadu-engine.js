@@ -9671,13 +9671,84 @@
   window.clearAppCacheAndRefresh = clearAppCacheAndRefresh;
 
   // ==============================================================
-  // 16. MODAL UTILITIES (OPEN & CLOSE)
+  // 16. AUTOMATIC PROFILE AUTO-FILL & AUTO-SUGGESTION FOR ALL FORMS
   // ==============================================================
+  function autoFillRegisteredUserDetails(container) {
+    try {
+      const root = container || document;
+      const u = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) || {};
+      const phone = (u.phone || localStorage.getItem('nn_user_phone') || localStorage.getItem('nn_permanent_phone') || '').trim();
+      const rawName = u.name || localStorage.getItem('nn_user_name') || '';
+      const name = (rawName && rawName !== 'നാട്ടുകാരൻ' && rawName !== 'അതിഥി (Guest)') ? rawName.trim() : '';
+      const currentLoc = (typeof APP_STATE !== 'undefined' && APP_STATE.location && APP_STATE.location.name)
+        ? APP_STATE.location.name.split(',')[0].trim()
+        : '';
+      const rawLoc = u.location || localStorage.getItem('nn_user_loc') || currentLoc || '';
+      const location = (rawLoc && rawLoc !== 'തത്സമയ ലൊക്കേഷൻ') ? rawLoc.trim() : currentLoc;
+      const blood = (u.bloodGroup || localStorage.getItem('nn_user_blood') || '').trim();
+
+      // 1. Phone Inputs (All types: tel, id/name containing phone/mobile/contact)
+      if (phone) {
+        const phoneInputs = root.querySelectorAll('input[type="tel"], input[id*="phone" i], input[name*="phone" i], input[id*="mobile" i], input[name*="mobile" i], input[id*="contact" i]');
+        phoneInputs.forEach(input => {
+          if (!input.value || input.value.trim() === '') {
+            input.value = phone;
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+          input.setAttribute('autocomplete', 'tel');
+          input.setAttribute('inputmode', 'tel');
+        });
+      }
+
+      // 2. Name / Author Inputs
+      if (name) {
+        const nameInputs = root.querySelectorAll('#authorName, #quickReqName, #bReqPatient, #postAuthorName, #nearbyHelpUserName, #rentOwner, #jobEmployer, #servName');
+        nameInputs.forEach(input => {
+          if (!input.value || input.value.trim() === '') {
+            input.value = name;
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+          input.setAttribute('autocomplete', 'name');
+        });
+      }
+
+      // 3. Location / Town Inputs
+      if (location) {
+        const locInputs = root.querySelectorAll('input[id*="location" i], input[name*="location" i], input[id*="place" i], input[name*="place" i], #quickReqLocation, #nearbyHelpLocationInput');
+        locInputs.forEach(input => {
+          if (!input.value || input.value.trim() === '') {
+            input.value = location;
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+          input.setAttribute('autocomplete', 'address-level2');
+        });
+      }
+
+      // 4. Blood Group Dropdown
+      if (blood) {
+        const bloodSelects = root.querySelectorAll('select[id*="blood" i], select[name*="blood" i], select[id*="group" i], #bReqGroup, #donorGroup');
+        bloodSelects.forEach(sel => {
+          if (sel && (!sel.value || sel.value === '')) {
+            for (let i = 0; i < sel.options.length; i++) {
+              if (sel.options[i].value === blood || sel.options[i].text.includes(blood)) {
+                sel.selectedIndex = i;
+                sel.dispatchEvent(new Event('change', { bubbles: true }));
+                break;
+              }
+            }
+          }
+        });
+      }
+    } catch (_) {}
+  }
+  window.autoFillRegisteredUserDetails = autoFillRegisteredUserDetails;
+
   function openModal(modalId) {
     const el = document.getElementById(modalId);
     if (el) {
       el.style.display = 'flex';
       el.classList.add('active');
+      autoFillRegisteredUserDetails(el);
     }
   }
   window.openModal = openModal;
