@@ -914,6 +914,18 @@
               Users who requested deletion through the public web portal (delete-account.html) or in-app settings. Data
               must be permanently purged within 48 hours with cryptographic audit logging.
             </p>
+
+            <!-- LIVE ADMIN USER PURGE TOOL -->
+            <div style="background:#FEF2F2;border:1.5px solid #FECACA;border-radius:16px;padding:18px;margin-bottom:20px">
+              <h3 style="margin:0 0 6px;color:#991B1B;font-size:15px;font-weight:800">⚡ Live User Search & Account Deletion (Admin Purge)</h3>
+              <p style="font-size:12.5px;color:#7F1D1D;margin:0 0 12px">Search any user by mobile number or name to permanently purge their account, posts, services, blood requests, and messages from Supabase cloud.</p>
+              <div style="display:flex;gap:10px;max-width:600px">
+                <input type="text" id="adminWebUserSearchInput" placeholder="Enter 10-digit mobile number or name..." style="flex:1;padding:10px 14px;border:1.5px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;background:#fff" onkeydown="if(event.key==='Enter')adminWebSearchUser()">
+                <button type="button" onclick="adminWebSearchUser()" class="btn-action green" style="white-space:nowrap;padding:10px 18px">🔍 Search User</button>
+              </div>
+              <div id="adminWebUserSearchResults" style="margin-top:14px"></div>
+            </div>
+
             <div class="table-wrap">
               <table>
                 <thead>
@@ -2442,6 +2454,90 @@
       btn.parentElement.innerHTML = '<span class="badge-tag" style="background:#fee2e2;color:#991b1b">✕ Application Rejected</span>';
       toast(`Application for ${name} rejected due to incomplete trade credential.`);
       addAuditLog(`Rejected KYC for provider: ${name}`);
+    }
+
+    async function adminWebSearchUser() {
+      const q = (document.getElementById('adminWebUserSearchInput')?.value || '').trim();
+      const container = document.getElementById('adminWebUserSearchResults');
+      if (!container) return;
+      if (!q) {
+        toast('Please enter mobile number or name to search.');
+        return;
+      }
+
+      container.innerHTML = '<div style="color:var(--muted);padding:10px">Searching Supabase profiles...</div>';
+
+      try {
+        const client = (typeof window.initSupabase === 'function') ? window.initSupabase() : (window.supabaseClient || null);
+        if (!client) {
+          container.innerHTML = '<div style="color:var(--red);padding:10px">Supabase client unavailable.</div>';
+          return;
+        }
+
+        const cleanDigits = q.replace(/\D/g, '').slice(-10);
+        let qb = client.from('profiles').select('*');
+        if (cleanDigits && cleanDigits.length >= 4) {
+          qb = qb.ilike('phone', `%${cleanDigits}%`);
+        } else {
+          qb = qb.ilike('name', `%${q}%`);
+        }
+
+        const { data, error } = await qb.limit(10);
+        if (error || !data || data.length === 0) {
+          container.innerHTML = `<div style="padding:12px;background:#fff;border-radius:10px;border:1px solid #CBD5E1;color:var(--muted);font-size:13px">No users found for "${q}".</div>`;
+          return;
+        }
+
+        container.innerHTML = data.map(u => {
+          const ph = u.phone || 'No phone';
+          const nm = u.name || 'Citizen';
+          const av = u.avatar || 'img/default-avatar.png';
+          const loc = u.location || u.district || 'Kerala';
+          const uid = u.id || '';
+
+          return `
+            <div style="background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:12px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <img src="${av}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:1px solid #CBD5E1" onerror="this.src='img/default-avatar.png'">
+                <div>
+                  <div style="font-weight:800;font-size:14px;color:var(--ink)">${nm}</div>
+                  <div style="font-size:12px;font-weight:700;color:var(--blue)">📱 ${ph} &bull; 📍 ${loc}</div>
+                </div>
+              </div>
+              <button type="button" class="btn-sm reject" onclick="adminWebExecutePurge('${uid}', '${ph}', '${nm}')">
+                🔥 Purge Entire Account
+              </button>
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        container.innerHTML = `<div style="color:var(--red);padding:10px">Error: ${err.message}</div>`;
+      }
+    }
+
+    async function adminWebExecutePurge(uid, phone, name) {
+      if (!confirm(`Are you ABSOLUTELY sure you want to PERMANENTLY PURGE user "${name}" (${phone}) and ALL their posts, services, listings, and messages from Supabase cloud?\n\nThis action cannot be undone.`)) {
+        return;
+      }
+
+      toast(`Purging user "${name}" from Supabase...`);
+
+      try {
+        if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.deleteEntireUserAccount === 'function') {
+          const ok = await window.NN_SUPABASE_SERVICES.deleteEntireUserAccount(uid, phone, '');
+          if (ok) {
+            toast(`✓ Account for "${name}" (${phone}) purged successfully.`);
+            addAuditLog(`Purged user account: ${name} (${phone})`);
+            adminWebSearchUser();
+          } else {
+            toast('Failed to purge account.');
+          }
+        } else {
+          toast('Supabase delete service unavailable.');
+        }
+      } catch (e) {
+        toast('Purge error: ' + e.message);
+      }
     }
   </script>
 

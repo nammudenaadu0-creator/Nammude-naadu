@@ -2601,19 +2601,23 @@
             <!-- TAB SWITCHER -->
             <div style="display:flex;border-bottom:1px solid #E2E8F0;background:#F8FAFC">
                 <button id="adminTabBtnServices" onclick="switchAdminHubTab('services')"
-                    style="flex:1;padding:12px 6px;border:none;background:#fff;color:#0E7043;font-weight:800;font-size:12px;cursor:pointer;border-bottom:2px solid #0E7043">
+                    style="flex:1;padding:12px 4px;border:none;background:#fff;color:#0E7043;font-weight:800;font-size:11.5px;cursor:pointer;border-bottom:2px solid #0E7043">
                     🛠️ സർവീസ്
                 </button>
                 <button id="adminTabBtnNumbers" onclick="switchAdminHubTab('numbers')"
-                    style="flex:1;padding:12px 6px;border:none;background:none;color:#64748B;font-weight:700;font-size:12px;cursor:pointer">
+                    style="flex:1;padding:12px 4px;border:none;background:none;color:#64748B;font-weight:700;font-size:11.5px;cursor:pointer">
                     🚨 നമ്പറുകൾ
                 </button>
+                <button id="adminTabBtnUsers" onclick="switchAdminHubTab('users')"
+                    style="flex:1;padding:12px 4px;border:none;background:none;color:#64748B;font-weight:700;font-size:11.5px;cursor:pointer">
+                    👤 അക്കൗണ്ട് ഡിലീറ്റ്
+                </button>
                 <button id="adminTabBtnHomeBanner" onclick="switchAdminHubTab('homeBanner')"
-                    style="flex:1;padding:12px 6px;border:none;background:none;color:#64748B;font-weight:700;font-size:12px;cursor:pointer">
+                    style="flex:1;padding:12px 4px;border:none;background:none;color:#64748B;font-weight:700;font-size:11.5px;cursor:pointer">
                     🏡 ഹോം ചിത്രം
                 </button>
                 <button id="adminTabBtnSplash" onclick="switchAdminHubTab('splash')"
-                    style="flex:1;padding:12px 6px;border:none;background:none;color:#64748B;font-weight:700;font-size:12px;cursor:pointer">
+                    style="flex:1;padding:12px 4px;border:none;background:none;color:#64748B;font-weight:700;font-size:11.5px;cursor:pointer">
                     🖼️ ഓപ്പണിംഗ്
                 </button>
             </div>
@@ -2982,6 +2986,36 @@
                             style="flex:1;background:#F1F5F9;color:#475569;border:1px solid #CBD5E1;padding:12px;border-radius:12px;font-weight:700;font-size:12px;cursor:pointer">
                             🔄 ഡിഫോൾട്ട്
                         </button>
+                    </div>
+                </div>
+
+                <!-- SECTION 5: ADMIN USER MANAGEMENT & COMPLETE ACCOUNT PURGE -->
+                <div id="adminTabContentUsers" style="display:none;flex-direction:column;gap:12px">
+                    <div
+                        style="background:linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);border:1.5px solid #FECACA;border-radius:14px;padding:12px;display:flex;align-items:center;gap:10px">
+                        <span style="font-size:26px">🛡️</span>
+                        <div>
+                            <div style="font-size:13px;font-weight:800;color:#991B1B">യൂസർ മാനേജ്‌മെന്റ് (Admin Account Delete & Purge)</div>
+                            <div style="font-size:11px;color:#7F1D1D;margin-top:2px">വ്യാജ പ്രൊഫൈലുകൾ, മോശം പോസ്റ്റുകൾ എന്നിവ ചെയ്യുന്ന യൂസറുടെ അക്കൗണ്ടും എല്ലാ വിവരങ്ങളും Supabase ക്ലൗഡിൽ നിന്ന് പൂർണ്ണമായി ഡിലീറ്റ് ചെയ്യാം.</div>
+                        </div>
+                    </div>
+
+                    <!-- SEARCH INPUT -->
+                    <div style="display:flex;gap:8px">
+                        <input type="text" id="adminUserSearchInput" placeholder="🔍 മൊബൈൽ നമ്പർ അല്ലെങ്കിൽ പേര് നൽകുക..."
+                            onkeydown="if(event.key==='Enter')adminSearchUserAccount()"
+                            style="flex:1;padding:10px 12px;border:1.5px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none;background:#FFFFFF">
+                        <button type="button" onclick="adminSearchUserAccount()"
+                            style="background:#0F172A;color:#fff;border:none;padding:10px 16px;border-radius:10px;font-weight:800;font-size:12.5px;cursor:pointer;white-space:nowrap">
+                            🔍 കണ്ടെത്തുക
+                        </button>
+                    </div>
+
+                    <!-- SEARCH RESULTS CONTAINER -->
+                    <div id="adminUserSearchResults" style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+                        <div style="text-align:center;padding:24px;background:#F8FAFC;border-radius:12px;border:1px dashed #CBD5E1;color:#64748B;font-size:12.5px">
+                            ഡിലീറ്റ് ചെയ്യേണ്ട യൂസറുടെ 10 അക്ക മൊബൈൽ നമ്പറോ പേരോ നൽകി "കണ്ടെത്തുക" ക്ലിക്ക് ചെയ്യുക.
+                        </div>
                     </div>
                 </div>
             </div>

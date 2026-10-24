@@ -6728,16 +6728,18 @@
   function switchAdminHubTab(tab) {
     const btnSrv = document.getElementById('adminTabBtnServices');
     const btnNum = document.getElementById('adminTabBtnNumbers') || document.getElementById('adminTabBtnEmergency');
+    const btnUsers = document.getElementById('adminTabBtnUsers');
     const btnHome = document.getElementById('adminTabBtnHomeBanner');
     const btnSpl = document.getElementById('adminTabBtnSplash');
 
     const formSrv = document.getElementById('adminAddServiceForm') || document.getElementById('adminTabContentServices');
     const formNum = document.getElementById('adminAddNumberForm') || document.getElementById('adminTabContentEmergency');
+    const secUsers = document.getElementById('adminTabContentUsers');
     const secHome = document.getElementById('adminHomeBannerSection');
     const secSpl = document.getElementById('adminSplashPhotoSection');
 
     // Reset buttons
-    [btnSrv, btnNum, btnHome, btnSpl].forEach(b => {
+    [btnSrv, btnNum, btnUsers, btnHome, btnSpl].forEach(b => {
       if (b) {
         b.style.background = 'none';
         b.style.color = '#64748B';
@@ -6749,6 +6751,7 @@
     // Hide all
     if (formSrv) formSrv.style.display = 'none';
     if (formNum) formNum.style.display = 'none';
+    if (secUsers) secUsers.style.display = 'none';
     if (secHome) secHome.style.display = 'none';
     if (secSpl) secSpl.style.display = 'none';
 
@@ -6768,6 +6771,14 @@
         btnNum.style.fontWeight = '800';
       }
       if (formNum) formNum.style.display = 'flex';
+    } else if (tab === 'users') {
+      if (btnUsers) {
+        btnUsers.style.background = '#fff';
+        btnUsers.style.color = '#DC2626';
+        btnUsers.style.borderBottom = '2px solid #DC2626';
+        btnUsers.style.fontWeight = '800';
+      }
+      if (secUsers) secUsers.style.display = 'flex';
     } else if (tab === 'homeBanner') {
       if (btnHome) {
         btnHome.style.background = '#fff';
@@ -6813,6 +6824,101 @@
     }
   }
   window.switchAdminHubTab = switchAdminHubTab;
+
+  async function adminSearchUserAccount() {
+    const query = (document.getElementById('adminUserSearchInput')?.value || '').trim();
+    const container = document.getElementById('adminUserSearchResults');
+    if (!container) return;
+
+    if (!query) {
+      toast('⚠️ തിരയാൻ ഫോൺ നമ്പറോ പേരോ നൽകുക.');
+      return;
+    }
+
+    container.innerHTML = '<div style="text-align:center;padding:20px;color:#64748B;font-size:13px">⏳ ഉപയോക്താവിനെ തിരയുന്നു...</div>';
+
+    try {
+      const client = (typeof window.initSupabase === 'function') ? window.initSupabase() : (window.supabaseClient || null);
+      if (!client) {
+        container.innerHTML = '<div style="color:#DC2626;padding:12px">Supabase കണക്ഷൻ ലഭ്യമല്ല</div>';
+        return;
+      }
+
+      const cleanDigits = query.replace(/\D/g, '').slice(-10);
+      let queryBuilder = client.from('profiles').select('*');
+
+      if (cleanDigits && cleanDigits.length >= 4) {
+        queryBuilder = queryBuilder.ilike('phone', `%${cleanDigits}%`);
+      } else {
+        queryBuilder = queryBuilder.ilike('name', `%${query}%`);
+      }
+
+      const { data, error } = await queryBuilder.limit(20);
+
+      if (error || !data || data.length === 0) {
+        container.innerHTML = `
+          <div style="text-align:center;padding:24px;background:#F8FAFC;border-radius:12px;color:#64748B;font-size:13px">
+            🔍 "${escapeHtml(query)}" എന്നതിൽ ഉപയോക്താക്കളെ കണ്ടെത്തിയില്ല.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = data.map(u => {
+        const phone = u.phone || 'ഫോൺ ലഭ്യമല്ല';
+        const name = u.name || 'നാട്ടുകാരൻ';
+        const avatar = u.avatar || DEFAULT_USER_AVATAR;
+        const place = u.location || u.district || 'കേരളം';
+        const uid = u.id || '';
+
+        return `
+          <div style="background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,0.03);display:flex;align-items:center;justify-content:space-between;gap:10px">
+            <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1">
+              <img src="${avatar}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;border:1.5px solid #CBD5E1;flex-shrink:0" onerror="this.src='img/default-avatar.png'">
+              <div style="min-width:0;flex:1">
+                <div style="font-weight:800;font-size:13.5px;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(name)}</div>
+                <div style="font-size:11.5px;font-weight:700;color:#1E40AF;margin-top:2px">📱 ${escapeHtml(phone)}</div>
+                <div style="font-size:11px;color:#64748B;margin-top:2px">📍 ${escapeHtml(place)}</div>
+              </div>
+            </div>
+            <button type="button" onclick="executeAdminDeleteAccount('${escapeHtml(uid)}', '${escapeHtml(phone)}', '${escapeHtml(name)}')" style="background:#DC2626;color:#fff;border:none;padding:8px 12px;border-radius:10px;font-size:11.5px;font-weight:800;cursor:pointer;white-space:nowrap;box-shadow:0 2px 6px rgba(220,38,38,0.25)">
+              🗑️ അക്കൗണ്ട് ഡിലീറ്റ് ചെയ്യാം
+            </button>
+          </div>
+        `;
+      }).join('');
+    } catch (e) {
+      container.innerHTML = `<div style="color:#DC2626;padding:12px">പിശക്: ${escapeHtml(e.message)}</div>`;
+    }
+  }
+  window.adminSearchUserAccount = adminSearchUserAccount;
+
+  async function executeAdminDeleteAccount(userId, phone, name) {
+    if (!checkIsAdmin()) {
+      toast('⚠️ അഡ്മിന് മാത്രമേ ഈ അനുവാദമുള്ളൂ.');
+      return;
+    }
+
+    const conf = confirm(`⚠️ അഡ്മിൻ സ്ഥിരീകരണം:\n\n"${name}" (${phone}) എന്ന യൂസറുടെ അക്കൗണ്ടും അവരുടെ എല്ലാ പോസ്റ്റുകളും സർവീസുകളും Supabase-ൽ നിന്ന് പൂർണ്ണമായി ശാശ്വതമായി ഡിലീറ്റ് ചെയ്യണോ?\n\nഈ പ്രവർത്തനം ഒരിക്കലും തിരിച്ചെടുക്കാൻ കഴിയില്ല!`);
+    if (!conf) return;
+
+    toast(`⏳ "${name}" എന്ന യൂസറുടെ അക്കൗണ്ട് ഡിലീറ്റ് ചെയ്യുന്നു...`);
+
+    try {
+      if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.deleteEntireUserAccount === 'function') {
+        const ok = await window.NN_SUPABASE_SERVICES.deleteEntireUserAccount(userId, phone, '');
+        if (ok) {
+          toast(`✅ "${name}" (${phone}) അക്കൗണ്ട് വിജയകരമായി ഡിലീറ്റ് ചെയ്തു.`);
+          adminSearchUserAccount();
+        } else {
+          toast('⚠️ അക്കൗണ്ട് ഡിലീറ്റ് ചെയ്യുന്നതിൽ തടസ്സം നേരിട്ടു.');
+        }
+      }
+    } catch (err) {
+      toast('❌ പിശക്: ' + err.message);
+    }
+  }
+  window.executeAdminDeleteAccount = executeAdminDeleteAccount;
 
   let tempAdminHomeBannerBase64 = null;
 

@@ -4699,20 +4699,21 @@
   box-shadow: 0 4px 12px rgba(5, 150, 105, 0.32) !important;
 }
 
-/* 5. Inputs & Search Fields Across All Screens */
+/* 5. Inputs & Search Fields Across All Screens: Seamless, clean without inner green box */
 #nearbySearchInput,
 #serviceSearchInput,
 #jobSearchInput,
 #rentalSearchInput,
 #chatSearchInput {
-  border: 1.5px solid #86EFAC !important;
-  border-radius: 9999px !important;
-  background: #FFFFFF !important;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.08) !important;
+  border: none !important;
+  border-width: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
   font-weight: 600 !important;
-  padding: 10px 16px !important;
   color: #1E293B !important;
   outline: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
 }
 
 #nearbySearchInput:focus,
@@ -4720,8 +4721,10 @@
 #jobSearchInput:focus,
 #rentalSearchInput:focus,
 #chatSearchInput:focus {
-  border-color: #10B981 !important;
-  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.2) !important;
+  border: none !important;
+  border-width: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* 6. Cards and Feeds Across All Screens */
