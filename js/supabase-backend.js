@@ -293,7 +293,7 @@
                 body: body,
                 id: Math.floor(Math.random() * 900000) + 100000,
                 schedule: { at: new Date(Date.now() + 50) },
-                channelId: 'nammude_naadu_alerts',
+                channelId: (extraData && (extraData.type === 'chat' || extraData.chatKey)) ? 'nammude_naadu_messages' : 'nammude_naadu_alerts',
                 smallIcon: 'ic_launcher',
                 sound: 'notification_sound.wav',
                 extra: extraData

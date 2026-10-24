@@ -22,6 +22,9 @@
         return;
       }
 
+      // Ensure Android high-priority Notification Channels exist for background alerts
+      this.initNotificationChannels();
+
       // 1. CAPACITOR ANDROID / IOS NATIVE MODE
       if (typeof window !== 'undefined' && window.plugins && window.plugins.OneSignal) {
         try {
@@ -279,6 +282,35 @@
       return granted;
     },
 
+    // Register high-priority Android notification channels (Android 8.0 - 15)
+    initNotificationChannels: async function () {
+      if (typeof window !== 'undefined' && window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) {
+        try {
+          await window.Capacitor.Plugins.LocalNotifications.createChannel({
+            id: 'nammude_naadu_messages',
+            name: 'സന്ദേശങ്ങൾ (Chat Messages)',
+            description: 'പുതിയ ചാറ്റ് സന്ദേശങ്ങൾക്കുള്ള തത്സമയ അറിയിപ്പുകൾ',
+            importance: 5,
+            visibility: 1,
+            vibration: true,
+            sound: 'notification_sound.wav'
+          });
+          await window.Capacitor.Plugins.LocalNotifications.createChannel({
+            id: 'nammude_naadu_alerts',
+            name: 'നമ്മുടെ നാട് അറിയിപ്പുകൾ (Alerts)',
+            description: 'അടിയന്തിര അറിയിപ്പുകളും പുതിയ സർവീസുകളും',
+            importance: 5,
+            visibility: 1,
+            vibration: true,
+            sound: 'notification_sound.wav'
+          });
+          console.info('🔔 [Android] High-priority notification channels registered');
+        } catch (e) {
+          console.warn('⚠️ [Channel registration note]:', e.message);
+        }
+      }
+    },
+
     // Show native local notification when a message/event arrives
     showLocalNotification: function (title, body, extraData = {}) {
       try {
@@ -295,8 +327,11 @@
                 {
                   title: title || 'നമ്മുടെ നാട് സന്ദേശം',
                   body: body || 'നിങ്ങൾക്ക് ഒരു പുതിയ സന്ദേശം വന്നിട്ടുണ്ട്',
-                  id: Math.floor(Date.now() % 100000),
+                  id: Math.floor(Math.random() * 900000) + 100000,
+                  schedule: { at: new Date(Date.now() + 50) },
                   channelId: 'nammude_naadu_messages',
+                  smallIcon: 'ic_stat_onesignal_default',
+                  sound: 'notification_sound.wav',
                   extra: extraData
                 }
               ]

@@ -100,12 +100,19 @@
         'thuna_user_id',
         'thuna_user_location',
         'thuna_user_coordinates',
-        'nn_fresh_start_clean_v3'
+        'nn_fresh_start_clean_v3',
+        'nn_all_accounts_deleted_v6',
+        'currentUser',
+        'nn_registered_user',
+        'nn_current_user_profile',
+        'nn_chat_active_thread',
+        'nn_thread_unread',
+        'all_registered_users'
       ];
       keysToRemove.forEach(k => {
         try { localStorage.removeItem(k); } catch (_) {}
       });
-      localStorage.setItem('nn_all_accounts_deleted_v6', 'true');
+      localStorage.setItem('nn_all_accounts_deleted_v7', 'true');
       if (typeof APP_STATE !== 'undefined') {
         APP_STATE.currentUser = {
           id: 'usr_guest',
@@ -124,8 +131,9 @@
         APP_STATE.chats = {};
         APP_STATE.chatMeta = {};
         APP_STATE.cloudProfiles = [];
+        APP_STATE.threadUnread = {};
       }
-      console.info('🧹 [Nammude Naadu] All accounts created so far have been completely deleted. Fresh state initialized.');
+      console.info('🧹 [Nammude Naadu] All accounts created so far have been completely deleted. Fresh state initialized (v7).');
       if (reload && typeof window !== 'undefined' && window.location) {
         window.location.reload();
       }
@@ -135,7 +143,7 @@
 
   // Run one-time clean-slate purge on startup to remove ALL previous accounts created so far
   try {
-    if (!localStorage.getItem('nn_all_accounts_deleted_v6')) {
+    if (!localStorage.getItem('nn_all_accounts_deleted_v7')) {
       resetAppToFreshState(false);
     }
   } catch (_) {}
@@ -3566,9 +3574,11 @@
           <img src="${escapeHtml(recipientAvatar)}" class="chat-bubble-avatar" alt="Avatar" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
         ` : ''}
         <div class="chat-bubble ${isMe ? 'outgoing' : 'incoming'} ${msg.type ? ('type-' + msg.type) : ''}"
-          onclick="promptDeleteChatMessage('${escapeHtml(msg.id)}')"
           oncontextmenu="event.preventDefault(); promptDeleteChatMessage('${escapeHtml(msg.id)}'); return false;"
-          style="cursor:pointer" title="ഡിലീറ്റ് ചെയ്യാൻ പിടിക്കൂ">
+          ontouchstart="handleChatBubbleTouchStart(event, '${escapeHtml(msg.id)}')"
+          ontouchend="handleChatBubbleTouchEnd(event)"
+          ontouchcancel="handleChatBubbleTouchEnd(event)"
+          title="ഡിലീറ്റ് ചെയ്യാൻ അമർത്തിപ്പിടിക്കൂ (Long press to delete)">
           ${innerContentHtml}
           <div class="chat-bubble-meta">
             <span class="chat-time-text">${escapeHtml(msg.time || '')}</span>
@@ -3586,6 +3596,23 @@
   }
 
   let _activeMessageForDeletion = null;
+  let _chatBubbleLongPressTimer = null;
+
+  function handleChatBubbleTouchStart(e, msgId) {
+    clearTimeout(_chatBubbleLongPressTimer);
+    _chatBubbleLongPressTimer = setTimeout(() => {
+      if (navigator.vibrate) {
+        try { navigator.vibrate(50); } catch (_) {}
+      }
+      promptDeleteChatMessage(msgId);
+    }, 600);
+  }
+  window.handleChatBubbleTouchStart = handleChatBubbleTouchStart;
+
+  function handleChatBubbleTouchEnd() {
+    clearTimeout(_chatBubbleLongPressTimer);
+  }
+  window.handleChatBubbleTouchEnd = handleChatBubbleTouchEnd;
 
   function promptDeleteChatMessage(msgId) {
     if (!APP_STATE.activeChatRecipient || !msgId) return;
