@@ -6324,6 +6324,9 @@
 
     const settingsAdminRow = document.getElementById('settingsAdminHubRow');
     if (settingsAdminRow) settingsAdminRow.style.display = isAdmin ? 'flex' : 'none';
+
+    const footerAdmin = document.getElementById('footerAdminLink');
+    if (footerAdmin) footerAdmin.style.display = isAdmin ? 'inline' : 'none';
   }
   window.updateAdminUI = updateAdminUI;
 
