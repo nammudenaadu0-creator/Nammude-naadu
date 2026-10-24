@@ -443,14 +443,14 @@
                             <div class="kerala-cat-arrow-btn" style="background:#E11D48">➔</div>
                         </div>
 
-                        <!-- CARD 2: ആംബുലൻസ് & ആരോഗ്യം (AMBULANCE & HEALTHCARE) -->
+                        <!-- CARD 2: അടിയന്തിരം & പോലീസ് (EMERGENCY & POLICE) -->
                         <div class="kerala-cat-card" onclick="openAmbulanceModal()"
                             style="background:linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 100%);border:1.5px solid #FECDD3">
                             <div class="kerala-cat-img-box">
-                                <img src="assets/cat-ambulance-3d.jpg" alt="ആംബുലൻസ് & ആരോഗ്യം" class="kerala-cat-img">
+                                <img src="assets/cat-ambulance-3d.jpg" alt="അടിയന്തിരം & പോലീസ്" class="kerala-cat-img">
                             </div>
-                            <div class="kerala-cat-title" style="color:#DC2626">ആംബുലൻസ് & ആരോഗ്യം</div>
-                            <div class="kerala-cat-sub" style="color:#E11D48">24x7 ആംബുലൻസ്, ആശുപത്രികൾ...</div>
+                            <div class="kerala-cat-title" style="color:#DC2626">അടിയന്തിരം & പോലീസ്</div>
+                            <div class="kerala-cat-sub" style="color:#E11D48">പോലീസ്, ആംബുലൻസ്, ആശുപത്രികൾ...</div>
                             <div class="kerala-cat-arrow-btn" style="background:#DC2626">➔</div>
                         </div>
 
@@ -2997,10 +2997,10 @@
             <div
                 style="background:linear-gradient(135deg, #BE123C 0%, #9F1239 100%);padding:14px 16px;color:#fff;display:flex;align-items:center;justify-content:space-between">
                 <div style="display:flex;align-items:center;gap:10px">
-                    <span style="font-size:24px">🚑</span>
+                    <span style="font-size:24px">🚨</span>
                     <div>
-                        <h3 style="margin:0;font-size:16px;font-weight:800;color:#fff">ആംബുലൻസ് & ആരോഗ്യം (24x7)</h3>
-                        <div style="font-size:11px;color:rgba(255,255,255,0.85)">ആംബുലൻസ് സർവീസുകളും ആശുപത്രികളും ഉടൻ വിളിക്കാം</div>
+                        <h3 style="margin:0;font-size:16px;font-weight:800;color:#fff">അടിയന്തിര സഹായം (24x7 Emergency)</h3>
+                        <div style="font-size:11px;color:rgba(255,255,255,0.85)">പോലീസ്, ആംബുലൻസ്, ആശുപത്രികൾ ഉടൻ വിളിക്കാം</div>
                     </div>
                 </div>
                 <button onclick="closeModal('modal-ambulance')" class="modal-close-btn modal-close-btn-light"
@@ -3008,15 +3008,19 @@
             </div>
 
             <div style="padding:14px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:10px">
-                <!-- SEGMENTED TABS: 1. ആംബുലൻസ് (ആദ്യം) | 2. ആശുപത്രികൾ -->
+                <!-- SEGMENTED TABS: 1. ആംബുലൻസ് | 2. പോലീസ് (418+) | 3. ആശുപത്രികൾ -->
                 <div style="display:flex;background:#F1F5F9;padding:4px;border-radius:12px;gap:4px">
                     <button type="button" id="ambSubTabAmbulance" onclick="switchAmbHealthTab('ambulance')"
-                        style="flex:1;padding:8px;border-radius:9px;border:none;background:#BE123C;color:#fff;font-size:12px;font-weight:800;cursor:pointer;transition:all 0.15s ease">
-                        🚑 ആംബുലൻസ് (24x7)
+                        style="flex:1;padding:8px 4px;border-radius:9px;border:none;background:#BE123C;color:#fff;font-size:11.5px;font-weight:800;cursor:pointer;transition:all 0.15s ease">
+                        🚑 ആംബുലൻസ്
+                    </button>
+                    <button type="button" id="ambSubTabPolice" onclick="switchAmbHealthTab('police')"
+                        style="flex:1;padding:8px 4px;border-radius:9px;border:none;background:transparent;color:#475569;font-size:11.5px;font-weight:700;cursor:pointer;transition:all 0.15s ease">
+                        👮 പോലീസ് (418+)
                     </button>
                     <button type="button" id="ambSubTabHospital" onclick="switchAmbHealthTab('hospital')"
-                        style="flex:1;padding:8px;border-radius:9px;border:none;background:transparent;color:#475569;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.15s ease">
-                        🏥 ആശുപത്രികൾ & ക്ലിനിക്
+                        style="flex:1;padding:8px 4px;border-radius:9px;border:none;background:transparent;color:#475569;font-size:11.5px;font-weight:700;cursor:pointer;transition:all 0.15s ease">
+                        🏥 ആശുപത്രികൾ
                     </button>
                 </div>
 
@@ -3075,7 +3079,69 @@
                     <div id="ambulanceDriversList" style="display:flex;flex-direction:column;gap:8px"></div>
                 </div>
 
-                <!-- TAB CONTENT 2: ആശുപത്രികളും ക്ലിനിക്കുകളും -->
+                <!-- TAB CONTENT 2: പോലീസ് സ്റ്റേഷനുകൾ (418+ KERALA POLICE STATIONS) -->
+                <div id="ambTabContentPolice" style="display:none;flex-direction:column;gap:10px">
+                    <!-- 112 EMERGENCY HELPLINE CARD -->
+                    <div
+                        style="background:#EFF6FF;border:1.5px solid #BFDBFE;border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:space-between">
+                        <div style="display:flex;align-items:center;gap:10px">
+                            <span style="font-size:26px">🚨</span>
+                            <div>
+                                <div style="font-weight:800;font-size:13.5px;color:#1E3A8A">കേരള പോലീസ് കൺട്രോൾ റൂം</div>
+                                <div style="font-size:11px;color:#2563EB">Toll-Free 112 / 100 Emergency Helpline</div>
+                            </div>
+                        </div>
+                        <a href="tel:112"
+                            style="background:#1D4ED8;color:#fff;text-decoration:none;font-weight:800;font-size:12px;padding:8px 14px;border-radius:20px;box-shadow:0 2px 8px rgba(29,78,216,0.3);display:flex;align-items:center;gap:4px">
+                            <span>📞 112</span>
+                        </a>
+                    </div>
+
+                    <!-- POLICE DISTRICT FILTER SELECTOR -->
+                    <div style="display:flex;align-items:center;gap:6px">
+                        <span style="font-size:12px">📍</span>
+                        <select id="ambPoliceDistrictFilter" onchange="filterAmbPoliceDistrict(this.value)"
+                            style="flex:1;padding:8px 10px;border:1.5px solid #CBD5E1;border-radius:10px;font-size:12px;font-weight:700;color:#0F172A;background:#FFFFFF;outline:none">
+                            <option value="all">എല്ലാ ജില്ലകളും (All Kerala Districts - 418+ Stations)</option>
+                            <option value="കണ്ണൂർ">കണ്ണൂർ (Kannur)</option>
+                            <option value="കാസർഗോഡ്">കാസർഗോഡ് (Kasaragod)</option>
+                            <option value="കോഴിക്കോട്">കോഴിക്കോട് (Kozhikode)</option>
+                            <option value="വയനാട്">വയനാട് (Wayanad)</option>
+                            <option value="മലപ്പുറം">മലപ്പുറം (Malappuram)</option>
+                            <option value="പാലക്കാട്">പാലക്കാട് (Palakkad)</option>
+                            <option value="തൃശ്ശൂർ">തൃശ്ശൂർ (Thrissur)</option>
+                            <option value="എറണാകുളം">എറണാകുളം / കൊച്ചി (Ernakulam / Kochi)</option>
+                            <option value="ഇടുക്കി">ഇടുക്കി (Idukki)</option>
+                            <option value="കോട്ടയം">കോട്ടയം (Kottayam)</option>
+                            <option value="ആലപ്പുഴ">ആലപ്പുഴ (Alappuzha)</option>
+                            <option value="പത്തനംതിട്ട">പത്തനംതിട്ട (Pathanamthitta)</option>
+                            <option value="കൊല്ലം">കൊല്ലം (Kollam)</option>
+                            <option value="തിരുവനന്തപുരം">തിരുവനന്തപുരം (Thiruvananthapuram)</option>
+                        </select>
+                    </div>
+
+                    <!-- SEARCH INPUT -->
+                    <div style="position:relative">
+                        <input type="text" id="ambPoliceSearchInput" oninput="filterAmbPolice(this.value)"
+                            placeholder="🔍 പോലീസ് സ്റ്റേഷൻ അല്ലെങ്കിൽ സ്ഥലം തിരയുക..."
+                            style="width:100%;padding:9px 12px 9px 32px;border:1px solid #E2E8F0;border-radius:10px;font-size:12.5px;outline:none;background:#F8FAFC">
+                        <span
+                            style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;color:#94A3B8;pointer-events:none">🔍</span>
+                    </div>
+
+                    <!-- POLICE STATIONS COUNT BADGE & HEADER -->
+                    <div
+                        style="font-size:12px;font-weight:800;color:#334151;margin-top:2px;display:flex;justify-content:space-between;align-items:center">
+                        <span>പോലീസ് സ്റ്റേഷനുകൾ (ലാൻഡ്‌ഫോൺ)</span>
+                        <span id="ambPoliceCountBadge"
+                            style="font-size:10.5px;color:#1E3A8A;background:#EFF6FF;padding:2px 8px;border-radius:10px;border:1px solid #BFDBFE">418 സ്റ്റേഷനുകൾ</span>
+                    </div>
+
+                    <!-- POLICE LIST CONTAINER -->
+                    <div id="ambPoliceListContainer" style="display:flex;flex-direction:column;gap:8px"></div>
+                </div>
+
+                <!-- TAB CONTENT 3: ആശുപത്രികളും ക്ലിനിക്കുകളും -->
                 <div id="ambTabContentHospital" style="display:none;flex-direction:column;gap:10px">
                     <!-- DISHA 1056 TOLL FREE -->
                     <div

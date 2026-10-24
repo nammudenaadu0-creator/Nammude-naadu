@@ -7273,11 +7273,19 @@
   }
   window.filterAmbulances = filterAmbulances;
 
+  let activeAmbPoliceDistrict = 'all';
+
   function switchAmbHealthTab(tab) {
     const isAmb = tab === 'ambulance';
+    const isPolice = tab === 'police';
+    const isHosp = tab === 'hospital';
+
     const tabAmb = document.getElementById('ambSubTabAmbulance');
+    const tabPolice = document.getElementById('ambSubTabPolice');
     const tabHosp = document.getElementById('ambSubTabHospital');
+
     const contentAmb = document.getElementById('ambTabContentAmbulance');
+    const contentPolice = document.getElementById('ambTabContentPolice');
     const contentHosp = document.getElementById('ambTabContentHospital');
 
     if (tabAmb) {
@@ -7285,20 +7293,159 @@
       tabAmb.style.color = isAmb ? '#fff' : '#475569';
       tabAmb.style.fontWeight = isAmb ? '800' : '700';
     }
-    if (tabHosp) {
-      tabHosp.style.background = !isAmb ? '#BE123C' : 'transparent';
-      tabHosp.style.color = !isAmb ? '#fff' : '#475569';
-      tabHosp.style.fontWeight = !isAmb ? '800' : '700';
+    if (tabPolice) {
+      tabPolice.style.background = isPolice ? '#1E3A8A' : 'transparent';
+      tabPolice.style.color = isPolice ? '#fff' : '#475569';
+      tabPolice.style.fontWeight = isPolice ? '800' : '700';
     }
+    if (tabHosp) {
+      tabHosp.style.background = isHosp ? '#059669' : 'transparent';
+      tabHosp.style.color = isHosp ? '#fff' : '#475569';
+      tabHosp.style.fontWeight = isHosp ? '800' : '700';
+    }
+
     if (contentAmb) contentAmb.style.display = isAmb ? 'flex' : 'none';
+    if (contentPolice) {
+      contentPolice.style.display = isPolice ? 'flex' : 'none';
+      if (isPolice) {
+        renderAmbPoliceList();
+      }
+    }
     if (contentHosp) {
-      contentHosp.style.display = !isAmb ? 'flex' : 'none';
-      if (!isAmb) {
+      contentHosp.style.display = isHosp ? 'flex' : 'none';
+      if (isHosp) {
         renderAmbHospitalsList();
       }
     }
   }
   window.switchAmbHealthTab = switchAmbHealthTab;
+
+  function renderAmbPoliceList(query = '', district = null) {
+    const container = document.getElementById('ambPoliceListContainer');
+    if (!container) return;
+
+    if (district !== null && district !== undefined) {
+      activeAmbPoliceDistrict = district;
+    } else {
+      const select = document.getElementById('ambPoliceDistrictFilter');
+      if (select) activeAmbPoliceDistrict = select.value || 'all';
+    }
+
+    const searchInput = document.getElementById('ambPoliceSearchInput');
+    const q = String(query !== null && query !== undefined && query !== '' ? query : (searchInput ? searchInput.value : '')).trim().toLowerCase();
+
+    // Source 1: 418 Kerala Police Stations
+    const staticStations = (typeof window !== 'undefined' && Array.isArray(window.KERALA_ALL_POLICE_STATIONS))
+      ? window.KERALA_ALL_POLICE_STATIONS
+      : [];
+
+    // Source 2: Dynamic emergency contacts
+    const dynamicPolice = (APP_STATE.emergencyContacts || []).filter(c => {
+      const cat = (c.category || '').toLowerCase();
+      const name = (c.name || c.title || '').toLowerCase();
+      return cat === 'police' || cat === 'പോലീസ്' || name.includes('പോലീസ്') || name.includes('police');
+    });
+
+    // Merge and deduplicate by clean phone
+    const seenPhones = new Set();
+    const allPolice = [];
+
+    [...dynamicPolice, ...staticStations].forEach(item => {
+      const clean = (item.phone || '').replace(/\D/g, '');
+      if (!clean) return;
+      if (!seenPhones.has(clean)) {
+        seenPhones.add(clean);
+        allPolice.push(item);
+      }
+    });
+
+    // Filter by district
+    let filtered = allPolice;
+    if (activeAmbPoliceDistrict && activeAmbPoliceDistrict !== 'all') {
+      filtered = filtered.filter(item => {
+        const itemDist = (item.district || '').toLowerCase();
+        const targetDist = activeAmbPoliceDistrict.toLowerCase();
+        return itemDist.includes(targetDist) || targetDist.includes(itemDist);
+      });
+    }
+
+    // Filter by search query
+    if (q) {
+      filtered = filtered.filter(item => {
+        const name = (item.name || item.title || '').toLowerCase();
+        const loc = (item.location || '').toLowerCase();
+        const dist = (item.district || '').toLowerCase();
+        const phone = (item.phone || '').toLowerCase();
+        const desc = (item.description || '').toLowerCase();
+        return name.includes(q) || loc.includes(q) || dist.includes(q) || phone.includes(q) || desc.includes(q);
+      });
+    }
+
+    const badge = document.getElementById('ambPoliceCountBadge');
+    if (badge) badge.textContent = `${filtered.length} സ്റ്റേഷനുകൾ`;
+
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div style="text-align:center;padding:28px 16px;background:#F8FAFC;border-radius:14px;border:1px dashed #CBD5E1;color:#64748B;font-size:13px">
+          🔍 പോലീസ് സ്റ്റേഷൻ കണ്ടെത്തിയില്ല.<br>
+          <span style="font-size:11px;color:#94A3B8;margin-top:4px;display:block">വേറെ ജില്ല തിരഞ്ഞെടുക്കുകയോ തിരച്ചിൽ മാറ്റുകയോ ചെയ്യാം</span>
+        </div>
+      `;
+      return;
+    }
+
+    const displayList = filtered.slice(0, 100);
+
+    container.innerHTML = displayList.map(item => {
+      const cleanPhone = (item.phone || '').replace(/\D/g, '');
+      const displayName = item.name || item.title || 'പോലീസ് സ്റ്റേഷൻ';
+      return `
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
+          <div style="display:flex;align-items:flex-start;gap:10px;min-width:0;flex:1">
+            <span style="font-size:24px;flex-shrink:0;margin-top:2px">👮</span>
+            <div style="min-width:0;flex:1">
+              <div style="font-weight:800;font-size:13.5px;color:#0F172A;line-height:1.3">${escapeHtml(displayName)}</div>
+              <div style="display:flex;align-items:center;gap:6px;margin-top:3px;flex-wrap:wrap">
+                ${item.district ? `<span style="font-size:10.5px;font-weight:700;color:#1E3A8A;background:#EFF6FF;padding:1px 6px;border-radius:6px;border:1px solid #BFDBFE">🏛️ ${escapeHtml(item.district)}</span>` : ''}
+                ${item.location ? `<span style="font-size:11px;color:#64748B">📍 ${escapeHtml(item.location)}</span>` : ''}
+              </div>
+              <div style="font-size:12px;font-weight:800;color:#2563EB;margin-top:4px;letter-spacing:0.3px">
+                ☎️ ${escapeHtml(item.phone)}
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+            <a href="tel:${cleanPhone}" style="background:linear-gradient(135deg, #1E3A8A 0%, #1D4ED8 100%);color:#fff;text-decoration:none;padding:7px 12px;border-radius:10px;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 2px 6px rgba(30,58,138,0.25)">
+              <span>📞 വിളിക്കാം</span>
+            </a>
+            <button type="button" onclick="navigator.clipboard?.writeText('${escapeHtml(item.phone)}'); if(typeof toast==='function')toast('📋 നമ്പർ കോപ്പി ചെയ്തു: ${escapeHtml(item.phone)}')" style="background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;padding:5px 8px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer">
+              📋 കോപ്പി
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    if (filtered.length > 100) {
+      container.innerHTML += `
+        <div style="text-align:center;padding:10px;color:#64748B;font-size:12px;font-weight:600">
+          ആകെ ${filtered.length} സ്റ്റേഷനുകൾ. ജില്ല അല്ലെങ്കിൽ പേര് സെർച്ച് ചെയ്യാം.
+        </div>
+      `;
+    }
+  }
+  window.renderAmbPoliceList = renderAmbPoliceList;
+
+  function filterAmbPolice(val) {
+    renderAmbPoliceList(val);
+  }
+  window.filterAmbPolice = filterAmbPolice;
+
+  function filterAmbPoliceDistrict(dist) {
+    activeAmbPoliceDistrict = dist;
+    renderAmbPoliceList();
+  }
+  window.filterAmbPoliceDistrict = filterAmbPoliceDistrict;
 
   function renderAmbHospitalsList(query = '') {
     const container = document.getElementById('ambHospitalsListContainer');
@@ -7353,12 +7500,26 @@
   }
   window.filterAmbHospitals = filterAmbHospitals;
 
-  function openAmbulanceModal() {
+  function openAmbulanceModal(tab) {
+    const distSelect = document.getElementById('ambPoliceDistrictFilter');
+    if (distSelect && typeof APP_STATE !== 'undefined') {
+      const userDist = APP_STATE.currentUser?.district || APP_STATE.location?.district || '';
+      if (userDist) {
+        for (let i = 0; i < distSelect.options.length; i++) {
+          if (distSelect.options[i].value && userDist.includes(distSelect.options[i].value)) {
+            distSelect.selectedIndex = i;
+            activeAmbPoliceDistrict = distSelect.options[i].value;
+            break;
+          }
+        }
+      }
+    }
     renderAmbulanceDrivers();
-    switchAmbHealthTab('ambulance');
+    switchAmbHealthTab(tab || 'ambulance');
     openModal('modal-ambulance');
   }
   window.openAmbulanceModal = openAmbulanceModal;
+  window.openEmergencyHubModal = openAmbulanceModal;
   function openAmbulanceDriverRegister() {
     closeModal('modal-ambulance');
     const nameInput = document.getElementById('ambDriverName');

@@ -286,6 +286,26 @@
           navigator.vibrate([100, 50, 100]);
         }
 
+        // 1. Capacitor Native Local Notification (works on Android with sound & heads-up)
+        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) {
+          try {
+            window.Capacitor.Plugins.LocalNotifications.schedule({
+              notifications: [
+                {
+                  title: title || 'നമ്മുടെ നാട് സന്ദേശം',
+                  body: body || 'നിങ്ങൾക്ക് ഒരു പുതിയ സന്ദേശം വന്നിട്ടുണ്ട്',
+                  id: Math.floor(Date.now() % 100000),
+                  channelId: 'nammude_naadu_messages',
+                  extra: extraData
+                }
+              ]
+            });
+          } catch (e) {
+            console.warn('LocalNotifications schedule error:', e);
+          }
+        }
+
+        // 2. Standard Web/WebView Notification API
         if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
           const options = {
             body: body || 'നിങ്ങൾക്ക് ഒരു പുതിയ സന്ദേശം വന്നിട്ടുണ്ട്',
