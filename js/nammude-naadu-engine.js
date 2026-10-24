@@ -5076,7 +5076,33 @@
           );
         }
       } else {
-        matchesCategory = (srvCat === APP_STATE.activeServiceCategory);
+        const targetCat = APP_STATE.activeServiceCategory;
+        const srvTrade = (srv.trade || '').toLowerCase();
+        const srvSpecial = Array.isArray(srv.specializations) ? srv.specializations.join(' ').toLowerCase() : '';
+        const catDef = (SERVICE_CATEGORIES || []).find(c => c.id === targetCat);
+        const catName = catDef ? catDef.name.toLowerCase() : '';
+
+        matchesCategory = (srvCat === targetCat) ||
+          (srvCat && srvCat.toLowerCase().includes(targetCat)) ||
+          (catName && (srvTrade.includes(catName.split(' ')[0]) || srvSpecial.includes(catName.split(' ')[0])));
+
+        if (!matchesCategory) {
+          if (targetCat === 'mechanic' && (srvTrade.includes('വർക്ക്‌ഷോപ്പ്') || srvTrade.includes('മെക്കാനിക്') || srvTrade.includes('garage') || srvTrade.includes('റിപ്പയർ'))) matchesCategory = true;
+          else if (targetCat === 'welding' && (srvTrade.includes('വെൽഡി') || srvTrade.includes('ഗ്രിൽ') || srvTrade.includes('ഫാബ്രിക്കേഷൻ'))) matchesCategory = true;
+          else if (targetCat === 'cctv' && (srvTrade.includes('സിസിടിവി') || srvTrade.includes('cctv') || srvTrade.includes('ക്യാമറ'))) matchesCategory = true;
+          else if (targetCat === 'beautician' && (srvTrade.includes('ബ്യൂട്ടി') || srvTrade.includes('മേക്കപ്പ്') || srvTrade.includes('പാർലർ'))) matchesCategory = true;
+          else if (targetCat === 'catering' && (srvTrade.includes('കാറ്ററിംഗ്') || srvTrade.includes('പാചകം') || srvTrade.includes('കുക്ക്') || srvTrade.includes('സദ്യ'))) matchesCategory = true;
+          else if (targetCat === 'tailoring' && (srvTrade.includes('തയ്യൽ') || srvTrade.includes('ടൈലർ') || srvTrade.includes('സ്റ്റിച്ചിങ്'))) matchesCategory = true;
+          else if (targetCat === 'nursing' && (srvTrade.includes('നഴ്സി') || srvTrade.includes('കെയർ') || srvTrade.includes('ഹോം നഴ്സ്'))) matchesCategory = true;
+          else if (targetCat === 'electronics' && (srvTrade.includes('ടിവി') || srvTrade.includes('ഇലക്ട്രോണിക്സ്') || srvTrade.includes('വാഷിംഗ് മെഷീൻ'))) matchesCategory = true;
+          else if (targetCat === 'tiles' && (srvTrade.includes('ടൈൽ') || srvTrade.includes('മാർബിൾ') || srvTrade.includes('ഗ്രാനൈറ്റ്'))) matchesCategory = true;
+          else if (targetCat === 'roofing' && (srvTrade.includes('റൂഫിംഗ്') || srvTrade.includes('ട്രസ്സ്') || srvTrade.includes('ഷീറ്റ്'))) matchesCategory = true;
+          else if (targetCat === 'aluminium' && (srvTrade.includes('അലുമിനിയം') || srvTrade.includes('ഫാബ്രിക്കേഷൻ') || srvTrade.includes('ഗ്ലാസ്'))) matchesCategory = true;
+          else if (targetCat === 'packers' && (srvTrade.includes('പാക്കേഴ്സ്') || srvTrade.includes('മൂവേഴ്സ്') || srvTrade.includes('ഷിഫ്റ്റിംഗ്'))) matchesCategory = true;
+          else if (targetCat === 'thekku' && (srvTrade.includes('തെങ്ങ്') || srvTrade.includes('കയറ്റം') || srvTrade.includes('മരം'))) matchesCategory = true;
+          else if (targetCat === 'kinar' && (srvTrade.includes('കിണർ') || srvTrade.includes('വെള്ളം') || srvTrade.includes('കുഴിക്കൽ'))) matchesCategory = true;
+          else if (targetCat === 'solar' && (srvTrade.includes('സോളാർ') || srvTrade.includes('solar') || srvTrade.includes('ഇൻവെർട്ടർ'))) matchesCategory = true;
+        }
       }
       const vDetailsStr = srv.vehicleDetails ? JSON.stringify(srv.vehicleDetails).toLowerCase() : '';
       const matchesQuery = !query || 
