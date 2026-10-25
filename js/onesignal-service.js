@@ -40,6 +40,15 @@
           // Set user alias / external ID so direct messages can target their phone number
           this.syncUserIdentity();
 
+          // Suppress redundant status bar alert while app is actively in foreground (Supabase Realtime handles in-app delivery)
+          try {
+            window.plugins.OneSignal.Notifications.addEventListener('foregroundWillDisplay', (event) => {
+              if (event && typeof event.preventDefault === 'function') {
+                event.preventDefault();
+              }
+            });
+          } catch (_) {}
+
           // Handle click when user taps notification while app was closed or in background
           window.plugins.OneSignal.Notifications.addEventListener('click', (event) => {
             try {
@@ -313,6 +322,9 @@
 
     // Show native local notification when a message/event arrives
     showLocalNotification: function (title, body, extraData = {}) {
+      if (typeof window !== 'undefined' && typeof window.sendNativePhoneNotification === 'function') {
+        return window.sendNativePhoneNotification(title, body, extraData);
+      }
       try {
         // Vibrate device if supported
         if (navigator.vibrate) {

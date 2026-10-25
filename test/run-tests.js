@@ -114,6 +114,51 @@ runTest('Admin panel protects sensitive consoles with Master PIN Barrier', () =>
   assert.ok(adminHtml.includes('submitAdminGatePin'), 'PIN verification function exists in admin.html');
 });
 
+// 11. Native FCM Push Notification Service
+runTest('FCM Push Notification Service provides complete native background registration & tap handling', () => {
+  const fcmService = fs.readFileSync(path.join(__dirname, '../js/fcm-push-service.js'), 'utf8');
+  assert.ok(fcmService.includes("window.NN_FCM = {"), 'NN_FCM global service defined');
+  assert.ok(fcmService.includes("nammude_naadu_messages"), 'Chat messages channel defined');
+  assert.ok(fcmService.includes("nammude_naadu_alerts"), 'Alerts channel defined');
+  assert.ok(fcmService.includes("pushNotificationActionPerformed"), 'System tray notification tap listener registered');
+  assert.ok(fcmService.includes("syncTokenWithSupabase"), 'Supabase profile token sync implemented');
+  assert.ok(fcmService.includes("handleLogout"), 'FCM token logout detachment handler implemented');
+});
+
+// 12. Capacitor Local Notifications Configuration
+runTest('Capacitor configuration enables LocalNotifications with sound and icon', () => {
+  const capConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../capacitor.config.json'), 'utf8'));
+  assert.ok(capConfig.plugins.LocalNotifications, 'LocalNotifications plugin configured');
+  assert.strictEqual(capConfig.plugins.LocalNotifications.sound, 'notification_sound.wav', 'Sound asset is configured');
+});
+
+// 13. Android Native MainActivity Channels & Notification Intent Forwarding
+runTest('MainActivity configures high-importance notification channels and handles onNewIntent', () => {
+  const mainActivity = fs.readFileSync(path.join(__dirname, '../android/app/src/main/java/com/nammudenaadu/app/MainActivity.java'), 'utf8');
+  assert.ok(mainActivity.includes('nammude_naadu_messages'), 'MainActivity contains nammude_naadu_messages channel');
+  assert.ok(mainActivity.includes('nammude_naadu_alerts'), 'MainActivity contains nammude_naadu_alerts channel');
+  assert.ok(mainActivity.includes('onNewIntent'), 'MainActivity implements onNewIntent to refresh notification click intents');
+  assert.ok(mainActivity.includes('setIntent(intent)'), 'MainActivity calls setIntent to preserve latest notification data');
+});
+
+// 14. Supabase Schema FCM Migration & RLS Security
+runTest('Supabase schema contains fcm_token and hardened notifications audit table with RLS', () => {
+  const schema = fs.readFileSync(path.join(__dirname, '../supabase-schema.sql'), 'utf8');
+  assert.ok(schema.includes('alter table public.profiles add column if not exists fcm_token text;'), 'fcm_token column in schema');
+  assert.ok(schema.includes('create table if not exists public.notifications'), 'notifications table in schema');
+  assert.ok(schema.includes('create policy "Allow select own notifications" on public.notifications'), 'Notifications table has RLS select policy');
+  assert.ok(schema.includes('create policy "Allow service insert notifications" on public.notifications'), 'Notifications table has RLS insert policy');
+});
+
+// 15. Supabase Edge Function FCM HTTP v1 Implementation
+runTest('Supabase Edge Function implements secure FCM HTTP v1 without leaking secrets', () => {
+  const edgeFn = fs.readFileSync(path.join(__dirname, '../supabase/functions/send-push-notification/index.ts'), 'utf8');
+  assert.ok(edgeFn.includes('fcm.googleapis.com/v1/projects'), 'Edge Function targets FCM HTTP v1 API');
+  assert.ok(edgeFn.includes('getGoogleAccessToken'), 'Edge Function generates OAuth2 access token via RS256 JWT');
+  assert.ok(edgeFn.includes('UNREGISTERED') && edgeFn.includes('fcm_token: null'), 'Edge Function purges expired/dead tokens from profiles');
+  assert.ok(edgeFn.includes('idempotencyKey'), 'Edge Function protects against duplicate sends');
+});
+
 console.log(`\n========================================`);
 console.log(`🏁 Test Results: ${passedTests} passed, ${failedTests} failed.`);
 console.log(`========================================\n`);
@@ -123,3 +168,4 @@ if (failedTests > 0) {
 } else {
   process.exit(0);
 }
+

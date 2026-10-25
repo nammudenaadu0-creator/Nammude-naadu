@@ -720,3 +720,62 @@ alter publication supabase_realtime add table public.service_requests;
 alter publication supabase_realtime add table public.profiles;
 alter publication supabase_realtime add table public.emergency_contacts;
 
+-- 15. BACKGROUND PUSH NOTIFICATIONS & FCM TOKENS
+alter table public.profiles add column if not exists fcm_token text;
+alter table public.profiles add column if not exists fcm_updated_at timestamp with time zone default timezone('utc'::text, now());
+alter table public.profiles add column if not exists notifications_enabled boolean default true;
+create index if not exists idx_profiles_fcm_token on public.profiles(fcm_token);
+
+create table if not exists public.notifications (
+  id text primary key,
+  user_id text,
+  recipient_phone text,
+  title text not null,
+  body text not null,
+  type text default 'general',
+  data jsonb default '{}'::jsonb,
+  is_read boolean default false,
+  fcm_status text default 'pending',
+  error_message text,
+  created_at timestamp with time zone default timezone('utc'::text, now())
+);
+
+create index if not exists idx_notifications_user_id on public.notifications(user_id);
+create index if not exists idx_notifications_recipient_phone on public.notifications(recipient_phone);
+create index if not exists idx_notifications_created_at on public.notifications(created_at desc);
+
+alter table public.notifications enable row level security;
+drop policy if exists "Allow select own notifications" on public.notifications;
+drop policy if exists "Allow service insert notifications" on public.notifications;
+drop policy if exists "Allow update own notifications" on public.notifications;
+drop policy if exists "Allow delete own notifications" on public.notifications;
+
+create policy "Allow select own notifications" on public.notifications
+for select using (
+  (auth.uid() is not null and user_id = auth.uid()::text)
+  or (public.current_citizen_id() <> '' and user_id = public.current_citizen_id())
+  or (public.current_citizen_phone() <> '' and recipient_phone like '%' || public.current_citizen_phone() || '%')
+  or (auth.role() = 'service_role')
+);
+
+create policy "Allow service insert notifications" on public.notifications
+for insert with check (true);
+
+create policy "Allow update own notifications" on public.notifications
+for update using (
+  (auth.uid() is not null and user_id = auth.uid()::text)
+  or (public.current_citizen_id() <> '' and user_id = public.current_citizen_id())
+  or (public.current_citizen_phone() <> '' and recipient_phone like '%' || public.current_citizen_phone() || '%')
+  or (auth.role() = 'service_role')
+);
+
+create policy "Allow delete own notifications" on public.notifications
+for delete using (
+  (auth.uid() is not null and user_id = auth.uid()::text)
+  or (public.current_citizen_id() <> '' and user_id = public.current_citizen_id())
+  or (public.current_citizen_phone() <> '' and recipient_phone like '%' || public.current_citizen_phone() || '%')
+  or (auth.role() = 'service_role')
+);
+
+alter publication supabase_realtime add table public.notifications;
+

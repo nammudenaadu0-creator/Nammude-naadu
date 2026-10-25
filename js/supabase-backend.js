@@ -34,6 +34,30 @@
   const chatSubscribers = new Map(); // chatKey -> Set of callbacks
   const SESSION_CLIENT_ID = 'sess_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
 
+  // Global Deduplication Registries: Prevent multiple duplicate notifications for the same message
+  const _processedIncomingMessageIds = new Map(); // msgId -> timestamp
+  const _notifiedMessageIds = new Map(); // notifKey -> timestamp
+
+  function getDeterministicNotifId(str) {
+    if (!str) return Math.floor(Math.random() * 800000) + 100000;
+    let hash = 0;
+    const s = String(str);
+    for (let i = 0; i < s.length; i++) {
+      hash = ((hash << 5) - hash) + s.charCodeAt(i);
+      hash |= 0;
+    }
+    return (Math.abs(hash) % 800000) + 100000;
+  }
+
+  function parseTimestampSafe(val) {
+    if (!val) return Date.now();
+    if (typeof val === 'number' && !isNaN(val)) return val;
+    const num = Number(val);
+    if (!isNaN(num) && num > 1000000000) return num;
+    const parsed = new Date(val).getTime();
+    return (!isNaN(parsed) && parsed > 1000000000) ? parsed : Date.now();
+  }
+
   function getCitizenHeaders() {
     let phone = '';
     let id = '';
@@ -306,16 +330,40 @@
   async function sendNativePhoneNotification(title, body, extraData = {}) {
     const type = extraData.type || 'info';
 
+    // Global Multi-layer Deduplication: Prevent duplicate alerts within 60 seconds
+    const cleanBodySnippet = String(body || '').trim().substring(0, 40);
+    const senderSnippet = String(extraData.phone || extraData.senderPhone || '').replace(/\D/g, '').slice(-10);
+    const contentKey = `${senderSnippet}:${cleanBodySnippet}`;
+    const notifKey = extraData.msgId || extraData.id || (extraData.chatKey ? `${extraData.chatKey}:${cleanBodySnippet}` : contentKey);
+
+    const now = Date.now();
+    if (_notifiedMessageIds.has(notifKey) || (contentKey && _notifiedMessageIds.has(contentKey))) {
+      const last1 = _notifiedMessageIds.get(notifKey) || 0;
+      const last2 = contentKey ? (_notifiedMessageIds.get(contentKey) || 0) : 0;
+      if (now - Math.max(last1, last2) < 60000) {
+        console.info('🔕 [Supabase] Suppressed duplicate native notification for key:', notifKey);
+        return;
+      }
+    }
+    _notifiedMessageIds.set(notifKey, now);
+    if (contentKey) _notifiedMessageIds.set(contentKey, now);
+    if (_notifiedMessageIds.size > 200) {
+      for (const [k, v] of _notifiedMessageIds.entries()) {
+        if (now - v > 120000) _notifiedMessageIds.delete(k);
+      }
+    }
+
     // 1. Android Native Status-Bar / Web Push Notification
     if (!extraData.skipNativeSchedule) {
       try {
+        const notifId = getDeterministicNotifId(contentKey || notifKey);
         if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) {
           await window.Capacitor.Plugins.LocalNotifications.schedule({
             notifications: [
               {
                 title: title,
                 body: body,
-                id: Math.floor(Math.random() * 900000) + 100000,
+                id: notifId,
                 schedule: { at: new Date(Date.now() + 50) },
                 channelId: (extraData && (extraData.type === 'chat' || extraData.chatKey)) ? 'nammude_naadu_messages' : 'nammude_naadu_alerts',
                 smallIcon: 'ic_launcher',
@@ -334,14 +382,14 @@
               badge: 'img/kerala-splash.jpg',
               vibrate: type === 'blood' ? [400, 200, 400, 200, 400] : [300, 150, 300],
               data: extraData,
-              tag: extraData.tag || ('nn_' + Date.now()),
-              renotify: true
+              tag: String(contentKey || notifKey),
+              renotify: false
             });
           } else {
-            new Notification(title, { body: body, icon: 'img/kerala-splash.jpg' });
+            new Notification(title, { body: body, icon: 'img/kerala-splash.jpg', tag: String(contentKey || notifKey) });
           }
         } else if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
-          new Notification(title, { body: body, icon: 'img/kerala-splash.jpg' });
+          new Notification(title, { body: body, icon: 'img/kerala-splash.jpg', tag: String(contentKey || notifKey) });
         }
       } catch (e) {
         console.warn('Native notification trigger note:', e.message);
@@ -737,11 +785,12 @@
                 chatKey: row.chat_key,
                 readerPhone: row.sender_phone,
                 readerId: row.sender_id,
-                seenAt: Number(row.created_at) || Date.now()
+                seenAt: parseTimestampSafe(row.created_at)
               });
               return;
             }
             const chatKey = row.chat_key;
+            const ts = parseTimestampSafe(row.created_at);
             const msgObj = {
               id: row.id,
               senderId: row.sender_id,
@@ -749,8 +798,8 @@
               senderPhone: row.sender_phone || '',
               senderAvatar: row.sender_avatar || '',
               text: row.text,
-              time: row.time || new Date(Number(row.created_at) || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-              timestamp: Number(row.created_at) || Date.now()
+              time: row.time || new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              timestamp: ts
             };
             const metaObj = {
               recipientId: row.recipient_id || '',
@@ -847,13 +896,50 @@
       return;
     }
 
+    // 3. MULTI-CHANNEL DEDUPLICATION: Drop duplicate message transmissions (direct thread, global broadcast, db change)
+    const cleanText = String(msgObj.text || '').trim();
+    const cleanSender = String(msgObj.senderPhone || msgObj.senderId || '').replace(/\D/g, '').slice(-10) || String(msgObj.senderName || '');
+    const contentFingerprint = `${cleanSender}:${cleanText}`;
+    const uniqueMsgId = msgObj.id ? String(msgObj.id) : null;
+    const now = Date.now();
+
+    if (uniqueMsgId && _processedIncomingMessageIds.has(uniqueMsgId)) {
+      const lastSeen = _processedIncomingMessageIds.get(uniqueMsgId);
+      if (now - lastSeen < 60000) {
+        return;
+      }
+    }
+    if (contentFingerprint && _processedIncomingMessageIds.has(contentFingerprint)) {
+      const lastSeen = _processedIncomingMessageIds.get(contentFingerprint);
+      if (now - lastSeen < 45000) {
+        return;
+      }
+    }
+    if (uniqueMsgId) _processedIncomingMessageIds.set(uniqueMsgId, now);
+    if (contentFingerprint) _processedIncomingMessageIds.set(contentFingerprint, now);
+    if (_processedIncomingMessageIds.size > 200) {
+      for (const [k, v] of _processedIncomingMessageIds.entries()) {
+        if (now - v > 120000) _processedIncomingMessageIds.delete(k);
+      }
+    }
+
     console.info('📩 [Supabase] Incoming 1-on-1 message for chat:', chatKey, msgObj.text);
 
     if (typeof APP_STATE !== 'undefined') {
       if (!APP_STATE.chats) APP_STATE.chats = {};
       if (!APP_STATE.chats[chatKey]) APP_STATE.chats[chatKey] = [];
 
-      const exists = APP_STATE.chats[chatKey].some(m => m.id === msgObj.id || (m.timestamp === msgObj.timestamp && m.text === msgObj.text));
+      const exists = APP_STATE.chats[chatKey].some(m => {
+        if (m.id && msgObj.id && m.id === msgObj.id) return true;
+        const mText = String(m.text || '').trim();
+        if (mText && mText === cleanText) {
+          const mTime = Number(m.timestamp) || 0;
+          const incomingTime = Number(msgObj.timestamp) || 0;
+          if (mTime && incomingTime && Math.abs(mTime - incomingTime) < 45000) return true;
+          if (!mTime || !incomingTime) return true;
+        }
+        return false;
+      });
       if (!exists) {
         const partnerPhone = (msgObj.senderPhone ? String(msgObj.senderPhone).replace(/\D/g, '').slice(-10) : '') ||
                              (metaObj && metaObj.senderPhone ? String(metaObj.senderPhone).replace(/\D/g, '').slice(-10) : '');
@@ -898,45 +984,81 @@
         }
 
         // Active chat thread update: determine if user is actively looking at this thread inside the open app
-        const activeKey = (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.key) ? APP_STATE.activeChatRecipient.key : '';
-        const activePhone = (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.phone)
-          ? String(APP_STATE.activeChatRecipient.phone).replace(/\D/g, '').slice(-10) : '';
+        const activeRecipient = APP_STATE.activeChatRecipient;
+        const activeKey = activeRecipient ? activeRecipient.key : '';
+        const activePhone = activeRecipient && activeRecipient.phone ? String(activeRecipient.phone).replace(/\D/g, '').slice(-10) : '';
+        const activeId = activeRecipient ? String(activeRecipient.id || '') : '';
+
+        const chatModalEl = typeof document !== 'undefined' ? document.getElementById('modal-chat') : null;
+        const isChatModalOpen = Boolean(
+          chatModalEl &&
+          (chatModalEl.classList.contains('active') ||
+           chatModalEl.style.display === 'flex' ||
+           chatModalEl.style.display === 'block') &&
+          getComputedStyle(chatModalEl).display !== 'none'
+        );
         const isAppInBackground = Boolean(typeof document !== 'undefined' && (document.hidden || document.visibilityState === 'hidden'));
+
+        let isMatchingThread = false;
+        if (activeRecipient && isChatModalOpen) {
+          if (activeKey && activeKey === chatKey) {
+            isMatchingThread = true;
+          } else {
+            const actPhones = String(activeKey || '').match(/\d{10}/g) || [];
+            const inPhones = String(chatKey || '').match(/\d{10}/g) || [];
+            if (actPhones.length >= 2 && inPhones.length >= 2 && actPhones.sort().join('_') === inPhones.sort().join('_')) {
+              isMatchingThread = true;
+            } else if (activePhone && partnerPhone && activePhone === partnerPhone) {
+              isMatchingThread = true;
+            } else if (activePhone && (chatKey.includes(activePhone) || (msgObj.senderPhone && String(msgObj.senderPhone).includes(activePhone)))) {
+              isMatchingThread = true;
+            } else if (activeId && (partnerId === activeId || msgObj.senderId === activeId || chatKey.includes(activeId))) {
+              isMatchingThread = true;
+            }
+          }
+        }
+
         const isCurrentChatActive = Boolean(
-          APP_STATE.activeChatRecipient &&
+          activeRecipient &&
+          isChatModalOpen &&
           !isAppInBackground &&
-          (activeKey === chatKey || (activePhone && partnerPhone && activePhone === partnerPhone))
+          isMatchingThread
         );
 
-        if (APP_STATE.activeChatRecipient && isCurrentChatActive) {
-          if (activeKey && activeKey !== chatKey) {
+        if (isCurrentChatActive) {
+          // 1. Immediately ensure message is in the open active thread's array
+          if (activeKey) {
             if (!APP_STATE.chats[activeKey]) APP_STATE.chats[activeKey] = [];
             const activeExists = APP_STATE.chats[activeKey].some(m => m.id === msgObj.id || (m.timestamp === msgObj.timestamp && m.text === msgObj.text));
             if (!activeExists) {
-              APP_STATE.chats[activeKey].push({ ...APP_STATE.chats[chatKey][APP_STATE.chats[chatKey].length - 1] });
+              const latestMsg = APP_STATE.chats[chatKey] ? APP_STATE.chats[chatKey][APP_STATE.chats[chatKey].length - 1] : msgObj;
+              APP_STATE.chats[activeKey].push({ ...latestMsg });
             }
           }
+
+          // 2. Instant Live UI Re-render in the open chat screen
           if (typeof renderChatMessages === 'function') {
             try { renderChatMessages(); } catch (_) {}
           }
-          // Recipient is viewing this thread right now: send immediate read receipt!
-          markChatSeen(chatKey, myPhone, myId);
-        } else {
-          // Update chat badge and central inbox list
-          if (typeof updateChatBadgeCounter === 'function') {
-            try { updateChatBadgeCounter(); } catch (_) {}
-          }
-          if (typeof renderChatListScreen === 'function') {
-            try { renderChatListScreen(); } catch (_) {}
-          }
-          // Prominent Toast Notification with sender details
-          if (typeof toast === 'function') {
-            const senderDisplayName = msgObj.senderName || 'സുഹൃത്ത്';
-            const shortMsg = String(msgObj.text || '').substring(0, 32);
-            toast(`💬 ${senderDisplayName}: "${shortMsg}" (Chat തുറന്ന് മറുപടി നൽകാം)`);
+
+          // 3. Auto-scroll to bottom of conversation
+          const box = document.getElementById('chatMessagesBox');
+          if (box) {
+            box.scrollTop = box.scrollHeight;
+            requestAnimationFrame(() => { if (box) box.scrollTop = box.scrollHeight; });
           }
 
-          // Trigger native phone notification, vibration and chime
+          // 4. Play gentle WhatsApp incoming message chime
+          try {
+            if (typeof window.playChatAudioEffect === 'function') {
+              window.playChatAudioEffect('received');
+            }
+          } catch (_) {}
+
+          // 5. Recipient is viewing this thread right now: send immediate read receipt (Double Blue Ticks)
+          markChatSeen(chatKey, myPhone, myId);
+        } else {
+          // Trigger SINGLE native phone notification (handles Heads-Up banner + vibration + status bar notification with deduplication)
           const isServiceEnquiry = msgObj.text && (msgObj.text.includes('സേവന') || msgObj.text.includes('അന്വേഷണം') || msgObj.text.includes('സർവീസ്'));
           const notifTitle = isServiceEnquiry
             ? `🛠️ പുതിയ സർവീസ് അന്വേഷണം! (${msgObj.senderName || 'നാട്ടുകാരൻ'})`
@@ -946,8 +1068,17 @@
           sendNativePhoneNotification(notifTitle, notifBody, {
             type: isServiceEnquiry ? 'service' : 'chat',
             phone: msgObj.senderPhone,
-            chatKey: chatKey
+            chatKey: chatKey,
+            msgId: uniqueMsgId || msgObj.id
           });
+        }
+
+        // ALWAYS update chat badge counter and live chat list screen whenever ANY message arrives
+        if (typeof updateChatBadgeCounter === 'function') {
+          try { updateChatBadgeCounter(); } catch (_) {}
+        }
+        if (typeof renderChatListScreen === 'function') {
+          try { renderChatListScreen(); } catch (_) {}
         }
       }
     }
@@ -1318,11 +1449,22 @@
     if (!chatKey || !msgObj) return false;
     initSupabase();
 
+    if (!msgObj.id) {
+      msgObj.id = 'msg_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
+    }
+    if (!msgObj.timestamp) {
+      msgObj.timestamp = Date.now();
+    }
     if (!msgObj.sessionId) {
       msgObj.sessionId = SESSION_CLIENT_ID;
     }
 
-    // Direct peer thread broadcast (sub-50ms peer-to-peer delivery)
+    // Ensure main chat channel is active
+    if (!chatChannel || chatChannel.state !== 'joined') {
+      try { setupRealtimeChannels(); } catch (_) {}
+    }
+
+    // Direct peer thread broadcast (sub-50ms peer-to-peer delivery to open chat window)
     if (client) {
       try {
         const directThread = client.channel('th_' + chatKey);
@@ -1331,12 +1473,21 @@
           event: 'chat_message',
           payload: { chatKey, msgObj, metaObj }
         }).catch(() => {});
-      } catch (_) {}
-    }
 
-    // Ensure main chat channel is active
-    if (!chatChannel || chatChannel.state !== 'joined') {
-      try { setupRealtimeChannels(); } catch (_) {}
+        // If chatKey contains two phones, also broadcast on sorted canonical key
+        const phones = String(chatKey).match(/\d{10}/g) || [];
+        if (phones.length >= 2) {
+          const sortedKey = 'chat_' + [...phones].sort().join('_');
+          if (sortedKey !== chatKey) {
+            const sortedThread = client.channel('th_' + sortedKey);
+            sortedThread.send({
+              type: 'broadcast',
+              event: 'chat_message',
+              payload: { chatKey: sortedKey, msgObj, metaObj }
+            }).catch(() => {});
+          }
+        }
+      } catch (_) {}
     }
 
     // Parallel broadcast (sub-50ms) + persistent DB insert
@@ -1350,7 +1501,7 @@
 
     const dbPromise = client
       ? client.from('messages').insert({
-          id: msgObj.id || ('msg_' + Date.now()),
+          id: msgObj.id,
           chat_key: chatKey,
           sender_id: msgObj.senderId || '',
           sender_name: msgObj.senderName || '',
@@ -1361,11 +1512,12 @@
           recipient_phone: metaObj ? metaObj.recipientPhone : '',
           text: msgObj.text || '',
           time: msgObj.time || '',
-          created_at: msgObj.timestamp || Date.now()
+          created_at: msgObj.timestamp
         }).catch(e => console.info('ℹ️ [Supabase Messages Table note]:', e.message))
       : Promise.resolve();
 
     await Promise.allSettled([broadcastPromise, dbPromise]);
+
     return true;
   }
 
@@ -1483,6 +1635,7 @@
 
     // Direct sub-50ms peer thread channel
     let thChannel = null;
+    let thCanonicalChannel = null;
     if (client) {
       try {
         thChannel = client.channel('th_' + chatKey, { config: { broadcast: { self: false } } });
@@ -1492,11 +1645,27 @@
           }
         });
         thChannel.subscribe();
+
+        const phones = String(chatKey).match(/\d{10}/g) || [];
+        if (phones.length >= 2) {
+          const canonical = 'chat_' + [...phones].sort().join('_');
+          if (canonical !== chatKey) {
+            thCanonicalChannel = client.channel('th_' + canonical, { config: { broadcast: { self: false } } });
+            thCanonicalChannel.on('broadcast', { event: 'chat_message' }, ({ payload }) => {
+              if (payload && payload.msgObj && typeof handleIncomingChatMessage === 'function') {
+                handleIncomingChatMessage(payload);
+              }
+            });
+            thCanonicalChannel.subscribe();
+          }
+        }
       } catch (_) {}
     }
 
+    let _isFetching = false;
     function fetchThreadMessages() {
-      if (!client) return;
+      if (!client || _isFetching) return;
+      _isFetching = true;
       updateClientCitizenHeaders();
 
       const phones = String(chatKey).match(/\d{10}/g) || [];
@@ -1514,9 +1683,10 @@
       }
       query.order('created_at', { ascending: false }).limit(35)
         .then(({ data, error }) => {
+          _isFetching = false;
           if (!error && Array.isArray(data)) {
             // Sort ascending for chronological order
-            data.sort((a, b) => (Number(a.created_at) || 0) - (Number(b.created_at) || 0));
+            data.sort((a, b) => parseTimestampSafe(a.created_at) - parseTimestampSafe(b.created_at));
 
             const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser.id : '';
 
@@ -1529,7 +1699,7 @@
             const mapped = validRows.map(m => {
               const mPhone = (m.sender_phone ? String(m.sender_phone).replace(/\D/g, '').slice(-10) : '');
               const isMe = (m.sender_id === myId) || (myCleanPhone && mPhone && mPhone === myCleanPhone);
-              const mTime = Number(m.created_at) || Date.now();
+              const mTime = parseTimestampSafe(m.created_at);
 
               return {
                 id: m.id,
@@ -1550,6 +1720,7 @@
             onMessagesUpdate([]);
           }
         }).catch(() => {
+          _isFetching = false;
           onMessagesUpdate([]);
         });
     }
@@ -1557,13 +1728,13 @@
     // Fast initial fetch on opening
     fetchThreadMessages();
 
-    // Ultra-fast 400ms micro-polling while the chat modal is actively open
+    // Fast 1000ms safety heartbeat (guarantees sub-1s real-time sync while modal is open)
     const pollInterval = setInterval(() => {
       const isChatOpen = typeof document !== 'undefined' && document.getElementById('modal-chat')?.classList.contains('active');
       if (client && !document.hidden && isChatOpen && chatSubscribers.has(chatKey) && chatSubscribers.get(chatKey).size > 0) {
         fetchThreadMessages();
       }
-    }, 400);
+    }, 1000);
 
     const onVisible = () => {
       const isChatOpen = typeof document !== 'undefined' && document.getElementById('modal-chat')?.classList.contains('active');
@@ -1578,6 +1749,9 @@
       if (thChannel) {
         try { thChannel.unsubscribe(); } catch (_) {}
       }
+      if (thCanonicalChannel) {
+        try { thCanonicalChannel.unsubscribe(); } catch (_) {}
+      }
       document.removeEventListener('visibilitychange', onVisible);
       if (chatSubscribers.has(chatKey)) {
         chatSubscribers.get(chatKey).delete(onMessagesUpdate);
@@ -1589,6 +1763,7 @@
     initSupabase();
     if (!client) return;
     try {
+      updateClientCitizenHeaders();
       const myPhoneRaw = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone)
         ? APP_STATE.currentUser.phone.replace(/\D/g, '') : '';
       const myPhone = myPhoneRaw.length >= 10 ? myPhoneRaw.slice(-10) : myPhoneRaw;
@@ -1598,7 +1773,7 @@
 
       let query = client.from('messages').select('*');
       if (myPhone) {
-        query = query.or(`sender_phone.eq.${myPhone},recipient_phone.eq.${myPhone},chat_key.ilike.%${myPhone}%`);
+        query = query.or(`sender_phone.ilike.%${myPhone}%,recipient_phone.ilike.%${myPhone}%,chat_key.ilike.%${myPhone}%`);
       } else if (myId) {
         query = query.or(`sender_id.eq.${myId},recipient_id.eq.${myId}`);
       }
@@ -1630,7 +1805,18 @@
           if (typeof APP_STATE !== 'undefined') {
             if (!APP_STATE.chats) APP_STATE.chats = {};
             if (!APP_STATE.chats[key]) APP_STATE.chats[key] = [];
-            const exists = APP_STATE.chats[key].some(m => m.id === row.id || (m.timestamp === Number(row.created_at) && m.text === row.text));
+            const rowTime = parseTimestampSafe(row.created_at);
+            const rowText = String(row.text || '').trim();
+            const exists = APP_STATE.chats[key].some(m => {
+              if (m.id && row.id && m.id === row.id) return true;
+              const mText = String(m.text || '').trim();
+              if (mText && mText === rowText) {
+                const mTime = Number(m.timestamp) || 0;
+                if (mTime && rowTime && Math.abs(mTime - rowTime) < 45000) return true;
+                if (!mTime || !rowTime) return true;
+              }
+              return false;
+            });
             if (!exists) {
               const isMe = (row.sender_id === myId) || (myPhone && rowSenderPhone && myPhone === rowSenderPhone);
               APP_STATE.chats[key].push({
@@ -1641,8 +1827,8 @@
                 senderName: row.sender_name,
                 senderAvatar: row.sender_avatar,
                 text: row.text,
-                time: row.time || 'ഇപ്പോൾ',
-                timestamp: Number(row.created_at) || Date.now()
+                time: row.time || new Date(rowTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                timestamp: rowTime
               });
             }
 
@@ -2380,6 +2566,7 @@
         }
       }
 
+      const fcmToken = (typeof localStorage !== 'undefined') ? localStorage.getItem('nn_fcm_token') : null;
       const payload = {
         id: userId,
         name: userObj.name || 'നാട്ടുകാരൻ',
@@ -2393,6 +2580,10 @@
         longitude: lon,
         updated_at: Date.now()
       };
+      if (fcmToken) {
+        payload.fcm_token = fcmToken;
+        payload.fcm_updated_at = new Date().toISOString();
+      }
 
       const { data, error } = await client
         .from('profiles')
@@ -2406,6 +2597,79 @@
       return { success: true, id: userId };
     } catch (err) {
       console.error('❌ [Supabase] Profile save error:', err);
+      return false;
+    }
+  }
+
+  // 9B. FCM PUSH NOTIFICATION TOKEN SYNC & REVOCATION
+  async function updateFcmToken(userIdOrPhone, token) {
+    if (!userIdOrPhone || !token) return false;
+    initSupabase();
+    if (!client) return false;
+
+    try {
+      const cleanPhone = String(userIdOrPhone).replace(/\D/g, '').slice(-10);
+      const isPhone = cleanPhone && cleanPhone.length === 10;
+      const validUserId = String(userIdOrPhone).trim();
+
+      const updateData = {
+        fcm_token: token,
+        fcm_updated_at: new Date().toISOString()
+      };
+
+      // Try update by User ID first, then by Phone
+      let res = await client
+        .from('profiles')
+        .update(updateData)
+        .eq('id', validUserId);
+
+      if (res.error || !res.data) {
+        if (isPhone) {
+          await client
+            .from('profiles')
+            .update(updateData)
+            .ilike('phone', `%${cleanPhone}%`);
+        }
+      }
+
+      console.info('🔔 [Supabase] FCM token synced for citizen:', userIdOrPhone);
+      return true;
+    } catch (err) {
+      console.warn('⚠️ [Supabase] FCM token update error:', err);
+      return false;
+    }
+  }
+
+  async function clearFcmToken(userIdOrPhone) {
+    if (!userIdOrPhone) return false;
+    initSupabase();
+    if (!client) return false;
+
+    try {
+      const cleanPhone = String(userIdOrPhone).replace(/\D/g, '').slice(-10);
+      const isPhone = cleanPhone && cleanPhone.length === 10;
+      const validUserId = String(userIdOrPhone).trim();
+
+      const clearData = {
+        fcm_token: null,
+        fcm_updated_at: new Date().toISOString()
+      };
+
+      await client
+        .from('profiles')
+        .update(clearData)
+        .eq('id', validUserId);
+
+      if (isPhone) {
+        await client
+          .from('profiles')
+          .update(clearData)
+          .ilike('phone', `%${cleanPhone}%`);
+      }
+
+      console.info('🚪 [Supabase] FCM token cleared for citizen:', userIdOrPhone);
+      return true;
+    } catch (_) {
       return false;
     }
   }
@@ -2805,6 +3069,8 @@
     saveServiceRequest,
     sendNativePhoneNotification,
     requestNotificationPermission,
+    updateFcmToken,
+    clearFcmToken,
     // Jobs & Rentals
     saveJob,
     syncJobs,

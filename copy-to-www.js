@@ -114,7 +114,7 @@ async function buildProductionWww() {
     });
 
     // 5. Sanity check verified build
-    const requiredBuildOutputs = ['index.html', 'admin.html', 'manifest.json', 'sw.js', 'js/supabase-backend.js'];
+    const requiredBuildOutputs = ['index.html', 'admin.html', 'manifest.json', 'sw.js', 'js/supabase-backend.js', 'js/fcm-push-service.js'];
     for (const out of requiredBuildOutputs) {
         const checkPath = path.join(destDir, out);
         if (!fs.existsSync(checkPath) || fs.statSync(checkPath).size === 0) {

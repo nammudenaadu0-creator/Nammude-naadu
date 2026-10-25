@@ -3148,27 +3148,17 @@
       quickBar.innerHTML = '';
     }
 
-    // High Speed Render: If local messages exist, display immediately (0ms latency).
-    // If empty, show ultra-fast loading placeholder while cloud fetches
-    const box = document.getElementById('chatMessagesBox');
-    if (APP_STATE.chats[chatKey] && APP_STATE.chats[chatKey].length > 0) {
-      renderChatMessages();
-    } else if (box) {
-      box.dataset.renderedKey = chatKey;
-      box.innerHTML = `
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:240px;gap:12px">
-          <div class="chat-loading-spinner"></div>
-          <div style="font-size:13px;font-weight:700;color:#0E7043">സന്ദേശങ്ങൾ ലോഡ് ചെയ്യുന്നു...</div>
-        </div>
-      `;
-    }
+    // Instant 0ms Render: Render immediately from cache or empty starter UI without blocking spinner
+    renderChatMessages();
 
     openModal('modal-chat');
     markChatAsSeen(chatKey);
 
+    const box = document.getElementById('chatMessagesBox');
     if (box) box.scrollTop = box.scrollHeight;
     requestAnimationFrame(() => {
-      if (box) box.scrollTop = box.scrollHeight;
+      const activeBox = document.getElementById('chatMessagesBox');
+      if (activeBox) activeBox.scrollTop = activeBox.scrollHeight;
       const inp = document.getElementById('chatInputMessage');
       if (inp) inp.focus();
     });
@@ -3200,7 +3190,18 @@
             if (!m || !m.text || m.text === '[deleted]') return;
             const mPhone = normalizePhone(m.senderPhone || m.sender_phone);
             const isMe = m.sender === 'me' || (m.senderId && m.senderId === myId) || (myCleanPhone && mPhone && mPhone === myCleanPhone);
-            const exists = APP_STATE.chats[chatKey].some(local => local.id === m.id || (local.timestamp === m.timestamp && local.text === m.text));
+            const mText = String(m.text || '').trim();
+            const mTime = Number(m.timestamp) || 0;
+            const exists = APP_STATE.chats[chatKey].some(local => {
+              if (local.id && m.id && local.id === m.id) return true;
+              const lText = String(local.text || '').trim();
+              if (lText && lText === mText) {
+                const lTime = Number(local.timestamp) || 0;
+                if (lTime && mTime && Math.abs(lTime - mTime) < 45000) return true;
+                if (!lTime || !mTime) return true;
+              }
+              return false;
+            });
             if (!exists) {
               hasNewMessage = true;
               APP_STATE.chats[chatKey].push({
@@ -3222,7 +3223,11 @@
                 seen: m.seen || (m.status === 'seen')
               });
             } else {
-              const localMsg = APP_STATE.chats[chatKey].find(local => local.id === m.id || (local.timestamp === m.timestamp && local.text === m.text));
+              const localMsg = APP_STATE.chats[chatKey].find(local => {
+                if (local.id && m.id && local.id === m.id) return true;
+                const lText = String(local.text || '').trim();
+                return (lText && lText === mText);
+              });
               if (localMsg) {
                 if (isMe) localMsg.sender = 'me';
                 if (m.status && m.status !== localMsg.status) {
@@ -3247,7 +3252,9 @@
             }
           });
 
-          if (hasNewMessage) {
+          const box = document.getElementById('chatMessagesBox');
+          const renderedCount = box ? box.querySelectorAll('.chat-message-row').length : 0;
+          if (hasNewMessage || renderedCount < APP_STATE.chats[chatKey].length) {
             APP_STATE.chats[chatKey].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
             saveChats();
             renderChatMessages();
@@ -3369,10 +3376,28 @@
   let _lastTypingState = false;
 
   function onChatInputChange() {
+    const inp = document.getElementById('chatInputMessage');
+    const sendBtn = document.getElementById('chatSendBtn');
+    const voiceBtn = document.getElementById('chatVoiceBtn');
+    const hasText = !!(inp && inp.value.trim().length > 0);
+
+    // Responsive send button guarantee on mobile
+    if (sendBtn) {
+      sendBtn.style.display = 'flex';
+      sendBtn.style.opacity = '1';
+      sendBtn.style.pointerEvents = 'auto';
+      sendBtn.style.transform = hasText ? 'scale(1.06)' : 'scale(1)';
+    }
+    if (voiceBtn) {
+      if (window.innerWidth <= 420 && hasText) {
+        voiceBtn.style.display = 'none';
+      } else {
+        voiceBtn.style.display = 'flex';
+      }
+    }
+
     if (!APP_STATE.activeChatRecipient || !window.NN_SUPABASE_SERVICES) return;
     const chatKey = APP_STATE.activeChatRecipient.key;
-    const inp = document.getElementById('chatInputMessage');
-    const hasText = inp && inp.value.trim().length > 0;
 
     // Debounce: broadcast typing=true immediately, then typing=false after 2s idle
     if (hasText && !_lastTypingState) {
@@ -3458,8 +3483,16 @@
       APP_STATE.chatMeta[chatKey].updatedAt = Date.now();
     }
     saveChats();
-    updateChatBadgeCounter();
-    renderChatMessages();
+    // Instant 0ms Optimistic DOM Render
+    const box = document.getElementById('chatMessagesBox');
+    if (box && box.dataset.renderedKey === chatKey && box.children.length > 0 && !box.querySelector('[style*="text-align:center"]')) {
+      const recipientAvatar = (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.avatar) || DEFAULT_USER_AVATAR;
+      const singleHtml = renderSingleMessageHtml(msgObj, recipientAvatar);
+      box.insertAdjacentHTML('beforeend', singleHtml);
+      box.scrollTop = box.scrollHeight;
+    } else {
+      renderChatMessages();
+    }
 
     // Broadcast to cloud (realtime + DB)
     const recPhone = normalizePhone(APP_STATE.activeChatRecipient?.phone);
@@ -3614,6 +3647,64 @@
   }
   window.handleChatBubbleTouchEnd = handleChatBubbleTouchEnd;
 
+  // Web Audio API WhatsApp-style sound feedback
+  let _chatAudioCtx = null;
+  function getChatAudioCtx() {
+    try {
+      if (!_chatAudioCtx) {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (AudioCtx) _chatAudioCtx = new AudioCtx();
+      }
+      if (_chatAudioCtx && _chatAudioCtx.state === 'suspended') {
+        _chatAudioCtx.resume().catch(() => {});
+      }
+      return _chatAudioCtx;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function playChatAudioEffect(type) {
+    try {
+      const ctx = getChatAudioCtx();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      if (type === 'sent') {
+        // WhatsApp sent pop sound
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, now);
+        osc.frequency.exponentialRampToValueAtTime(1400, now + 0.04);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.05);
+      } else if (type === 'received') {
+        // WhatsApp incoming chime (2 gentle tones)
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc1.type = 'sine';
+        osc2.type = 'sine';
+        osc1.frequency.setValueAtTime(659.25, now);
+        osc2.frequency.setValueAtTime(987.77, now + 0.04);
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(ctx.destination);
+        osc1.start(now);
+        osc1.stop(now + 0.06);
+        osc2.start(now + 0.04);
+        osc2.stop(now + 0.13);
+      }
+    } catch (_) {}
+  }
+  window.playChatAudioEffect = playChatAudioEffect;
+
   function promptDeleteChatMessage(msgId) {
     if (!APP_STATE.activeChatRecipient || !msgId) return;
     const chatKey = APP_STATE.activeChatRecipient.key;
@@ -3624,35 +3715,71 @@
     _activeMessageForDeletion = {
       msgId: String(msg.id),
       chatKey: chatKey,
-      isMe: (msg.sender === 'me')
+      isMe: (msg.sender === 'me'),
+      text: msg.text || ''
     };
 
+    // Highlight the selected message bubble with WhatsApp selection glow
+    document.querySelectorAll('.chat-message-row.selected-bubble').forEach(el => el.classList.remove('selected-bubble'));
+    const rowEl = document.querySelector(`.chat-message-row[data-msg-id="${escapeHtml(msg.id)}"]`);
+    if (rowEl) rowEl.classList.add('selected-bubble');
+
+    // In-chat action sheet (nested STRICTLY inside chatModalSheet)
+    const sheet = document.getElementById('chatMessageActionSheet');
+    if (sheet) {
+      const previewEl = document.getElementById('cmasPreviewText');
+      if (previewEl) {
+        let preview = msg.text || '';
+        if (preview.startsWith('[voice:')) preview = '🎙️ വോയ്‌സ് മെസ്സേജ് (Voice Message)';
+        else if (preview.length > 50) preview = preview.substring(0, 50) + '...';
+        previewEl.textContent = `"${preview}"`;
+      }
+
+      const everyoneBtn = document.getElementById('cmasDeleteEveryoneBtn');
+      if (everyoneBtn) {
+        everyoneBtn.style.display = (msg.sender === 'me') ? 'flex' : 'none';
+      }
+
+      sheet.style.display = 'flex';
+      return;
+    }
+
+    // Fallback if sheet element not found
     const modal = document.getElementById('modal-delete-chat-message');
-    if (!modal) return;
-
-    const previewEl = document.getElementById('deleteMsgPreviewText');
-    if (previewEl) {
-      let preview = msg.text || '';
-      if (preview.startsWith('[voice:')) preview = '🎙️ വോയ്‌സ് മെസ്സേജ് (Voice Message)';
-      else if (preview.length > 50) preview = preview.substring(0, 50) + '...';
-      previewEl.textContent = `"${preview}"`;
+    if (modal) {
+      modal.style.display = 'flex';
+      modal.classList.add('active');
     }
-
-    const everyoneBtn = document.getElementById('deleteForEveryoneBtn');
-    if (everyoneBtn) {
-      // Only the sender can delete for everyone
-      everyoneBtn.style.display = (msg.sender === 'me') ? 'flex' : 'none';
-    }
-
-    modal.style.display = 'flex';
-    modal.classList.add('active');
   }
   window.promptDeleteChatMessage = promptDeleteChatMessage;
+
+  function dismissChatMessageActionSheet() {
+    const sheet = document.getElementById('chatMessageActionSheet');
+    if (sheet) sheet.style.display = 'none';
+    document.querySelectorAll('.chat-message-row.selected-bubble').forEach(el => el.classList.remove('selected-bubble'));
+    closeModal('modal-delete-chat-message');
+  }
+  window.dismissChatMessageActionSheet = dismissChatMessageActionSheet;
+
+  function copyActiveChatMessageText() {
+    if (!_activeMessageForDeletion || !_activeMessageForDeletion.text) {
+      dismissChatMessageActionSheet();
+      return;
+    }
+    const txt = _activeMessageForDeletion.text;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(() => {
+        toast('📋 സന്ദേശം കോപ്പി ചെയ്തു (Copied)');
+      }).catch(() => {});
+    }
+    dismissChatMessageActionSheet();
+  }
+  window.copyActiveChatMessageText = copyActiveChatMessageText;
 
   async function executeDeleteChatMessage(mode) {
     if (!_activeMessageForDeletion) return;
     const { msgId, chatKey, isMe } = _activeMessageForDeletion;
-    closeModal('modal-delete-chat-message');
+    dismissChatMessageActionSheet();
 
     if (mode === 'everyone') {
       if (!isMe) {
@@ -3683,15 +3810,55 @@
   }
   window.executeDeleteChatMessage = executeDeleteChatMessage;
 
+  function deduplicateChatThread(thread) {
+    if (!Array.isArray(thread) || thread.length <= 1) return thread || [];
+    const cleanList = [];
+    const seenIds = new Set();
+
+    for (let i = 0; i < thread.length; i++) {
+      const m = thread[i];
+      if (!m || !m.text || m.text === '[deleted]') continue;
+
+      const mId = m.id ? String(m.id) : '';
+      if (mId && seenIds.has(mId)) continue;
+
+      const text = String(m.text || '').trim();
+      const time = Number(m.timestamp) || 0;
+      const sender = m.sender || (m.senderPhone ? String(m.senderPhone).replace(/\D/g, '').slice(-10) : '');
+
+      const isDuplicate = cleanList.some(prev => {
+        if (mId && prev.id && String(prev.id) === mId) return true;
+        const prevText = String(prev.text || '').trim();
+        if (prevText && prevText === text) {
+          const prevTime = Number(prev.timestamp) || 0;
+          const prevSender = prev.sender || (prev.senderPhone ? String(prev.senderPhone).replace(/\D/g, '').slice(-10) : '');
+          if (!sender || !prevSender || sender === prevSender) {
+            if (time && prevTime && Math.abs(time - prevTime) < 45000) return true;
+            if (!time || !prevTime) return true;
+          }
+        }
+        return false;
+      });
+
+      if (!isDuplicate) {
+        if (mId) seenIds.add(mId);
+        cleanList.push(m);
+      }
+    }
+    return cleanList;
+  }
+  window.deduplicateChatThread = deduplicateChatThread;
+
   function renderChatMessages() {
     const box = document.getElementById('chatMessagesBox');
     if (!box || !APP_STATE.activeChatRecipient) return;
 
     const chatKey = APP_STATE.activeChatRecipient.key;
     const rawThread = (APP_STATE.chats[chatKey] || []).filter(m => m && m.text && m.text !== '[deleted]');
-    rawThread.sort((a, b) => (Number(a.timestamp) || 0) - (Number(b.timestamp) || 0));
-    APP_STATE.chats[chatKey] = rawThread;
-    const thread = rawThread;
+    const dedupedThread = deduplicateChatThread(rawThread);
+    dedupedThread.sort((a, b) => (Number(a.timestamp) || 0) - (Number(b.timestamp) || 0));
+    APP_STATE.chats[chatKey] = dedupedThread;
+    const thread = dedupedThread;
     const recipientAvatar = (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.avatar) || DEFAULT_USER_AVATAR;
 
     if (thread.length === 0) {
@@ -3775,6 +3942,7 @@
 
     const msgObj = {
       id: msgId,
+      sessionId: (window.NN_SUPABASE_SERVICES && window.NN_SUPABASE_SERVICES.SESSION_CLIENT_ID) || '',
       senderId: APP_STATE.currentUser.id,
       senderName: senderName,
       senderPhone: APP_STATE.currentUser.phone || '',
@@ -3791,23 +3959,41 @@
     };
 
     // Instant local echo (0ms latency)
-    APP_STATE.chats[chatKey].push({
+    const localMsg = {
       ...msgObj,
       sender: 'me',
       status: 'sent'
-    });
+    };
+    APP_STATE.chats[chatKey].push(localMsg);
 
-    if (input) input.value = '';
+    if (input) {
+      input.value = '';
+      onChatInputChange();
+    }
     if (APP_STATE.chatMeta && APP_STATE.chatMeta[chatKey]) {
       APP_STATE.chatMeta[chatKey].updatedAt = Date.now();
       if (!APP_STATE.chatMeta[chatKey].recipientId && recId) {
         APP_STATE.chatMeta[chatKey].recipientId = recId;
       }
     }
+
+    // Instant 0ms Optimistic DOM Render: Direct append without whole-thread re-render
+    const box = document.getElementById('chatMessagesBox');
+    if (box && box.dataset.renderedKey === chatKey && box.children.length > 0 && !box.querySelector('[style*="text-align:center"]')) {
+      const recipientAvatar = (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.avatar) || DEFAULT_USER_AVATAR;
+      const singleHtml = renderSingleMessageHtml(localMsg, recipientAvatar);
+      box.insertAdjacentHTML('beforeend', singleHtml);
+      box.scrollTop = box.scrollHeight;
+    } else {
+      renderChatMessages();
+    }
+
     saveChats();
     updateChatBadgeCounter();
-    renderChatMessages();
     if (typeof updateChatStreakUI === 'function') updateChatStreakUI(chatKey);
+    try {
+      if (typeof playChatAudioEffect === 'function') playChatAudioEffect('sent');
+    } catch (_) {}
 
     // Broadcast to Supabase Realtime Cloud (Instant sub-second delivery)
     const metaObj = {
@@ -3824,7 +4010,14 @@
     };
 
     if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.sendChatMessage === 'function') {
-      window.NN_SUPABASE_SERVICES.sendChatMessage(chatKey, msgObj, metaObj);
+      window.NN_SUPABASE_SERVICES.sendChatMessage(chatKey, msgObj, metaObj).then(() => {
+        const tickEl = document.querySelector(`.chat-message-row[data-msg-id="${msgId}"] .chat-ticks`);
+        if (tickEl && !tickEl.classList.contains('seen')) {
+          tickEl.className = 'chat-ticks delivered';
+          tickEl.title = 'എത്തിച്ചേർന്നു (Delivered)';
+          tickEl.textContent = '✔✔';
+        }
+      }).catch(() => {});
     }
 
     // Closed-app background push delivery via OneSignal
@@ -10646,6 +10839,10 @@
   function handleProfileLogout() {
     if (confirm('നിങ്ങളുടെ പ്രൊഫൈലിൽ നിന്ന് ലോഗ് ഔട്ട് ചെയ്യണോ? (പുതിയ ഫോൺ നമ്പർ നൽകി ഏതുസമയത്തും തിരികെ ലോഗിൻ ചെയ്യാം)')) {
       try {
+        const oldId = APP_STATE.currentUser?.id || localStorage.getItem('nn_user_id');
+        if (window.NN_FCM && typeof window.NN_FCM.handleLogout === 'function') {
+          window.NN_FCM.handleLogout(oldId);
+        }
         localStorage.removeItem('nn_user_name');
         localStorage.removeItem('nn_user_phone');
         localStorage.removeItem('nn_permanent_phone');

@@ -242,7 +242,7 @@
         /* Jobs List / Grid Container */
         #jobsListContainer.grid-mode {
             display: grid !important;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+            grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr)) !important;
             gap: 12px !important;
         }
 
