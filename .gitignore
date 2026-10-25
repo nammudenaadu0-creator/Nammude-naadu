@@ -3,4 +3,3 @@ node_modules/
 *.log
 android/.gradle/
 android/app/build/
-scratch/

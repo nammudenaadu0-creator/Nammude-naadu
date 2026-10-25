@@ -382,137 +382,7 @@ html, body {
 }
 
 /* In-Chat Message Action Bottom Sheet (Strictly bounded inside chat sheet) */
-.chat-msg-action-sheet {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  z-index: 1000 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: flex-end !important;
-  pointer-events: auto !important;
-  border-radius: inherit !important;
-  overflow: hidden !important;
-}
 
-.chat-msg-action-sheet .cmas-backdrop {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(15, 23, 42, 0.5);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  animation: cmasFadeIn 0.2s ease-out;
-}
-
-.chat-msg-action-sheet .cmas-card {
-  position: relative;
-  z-index: 2;
-  background: #FFFFFF;
-  border-radius: 24px 24px 0 0;
-  padding: 16px 18px max(18px, env(safe-area-inset-bottom, 0px));
-  box-shadow: 0 -10px 35px rgba(0, 0, 0, 0.25);
-  border-top: 1.5px solid #E2E8F0;
-  animation: cmasSlideUp 0.24s cubic-bezier(0.16, 1, 0.3, 1);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-@keyframes cmasFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes cmasSlideUp {
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
-}
-
-.cmas-drag-handle {
-  width: 38px;
-  height: 4.5px;
-  background: #CBD5E1;
-  border-radius: 999px;
-  margin: 0 auto 4px;
-}
-
-.cmas-title {
-  font-size: 14px;
-  font-weight: 900;
-  color: #0F172A;
-  text-align: center;
-}
-
-.cmas-preview {
-  font-size: 12.5px;
-  color: #475569;
-  background: #F1F5F9;
-  border: 1px solid #E2E8F0;
-  border-radius: 12px;
-  padding: 8px 12px;
-  font-style: italic;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
-}
-
-.cmas-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 2px;
-}
-
-.cmas-btn {
-  width: 100%;
-  padding: 11px 14px;
-  border-radius: 13px;
-  border: none;
-  font-size: 13.5px;
-  font-weight: 800;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: all 0.15s ease;
-  box-sizing: border-box;
-}
-
-.cmas-btn-danger {
-  background: #FEE2E2;
-  color: #DC2626;
-  border: 1.5px solid #FECACA;
-}
-.cmas-btn-danger:active {
-  background: #DC2626;
-  color: #FFFFFF;
-}
-
-.cmas-btn-neutral {
-  background: #F8FAFC;
-  color: #1E293B;
-  border: 1.5px solid #E2E8F0;
-}
-.cmas-btn-neutral:active {
-  background: #E2E8F0;
-}
-
-.cmas-btn-cancel {
-  background: transparent;
-  color: #64748B;
-  font-weight: 700;
-  padding: 7px;
-  font-size: 13px;
-}
 
 @keyframes chatSpin {
   0% { transform: rotate(0deg); }
@@ -4687,30 +4557,26 @@ input, textarea {
   -webkit-user-select: auto;
 }
 
-/* ==============================================================
-   2. ROYAL EMERALD VELVET LUXURY DOCK (ANIMATED BOTTOM NAVIGATION)
-   ============================================================== */
+/* 2. Crisp Luxury Bottom Navigation Bar (High Performance, 0ms Blur Cost) */
 .bottom-nav {
-  display: flex !important;
+  background: #FFFFFF !important;
+  border-top: 1.5px solid #E2E8F0 !important;
+  border-radius: 20px 20px 0 0 !important;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08) !important;
+  height: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
+  padding: 2px 4px max(6px, env(safe-area-inset-bottom, 0px)) !important;
   position: fixed !important;
   bottom: 0 !important;
   left: 50% !important;
+  right: auto !important;
   transform: translateX(-50%) !important;
   width: 100% !important;
   max-width: 480px !important;
-  height: calc(66px + env(safe-area-inset-bottom, 0px)) !important;
-  padding: 4px 6px max(8px, env(safe-area-inset-bottom, 0px)) !important;
-  background: linear-gradient(180deg, #092B20 0%, #031710 100%) !important;
-  border-top: 1.5px solid rgba(52, 211, 153, 0.42) !important;
-  border-radius: 24px 24px 0 0 !important;
-  box-shadow: 0 -8px 30px rgba(4, 120, 87, 0.35), 0 -2px 10px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
+  margin: 0 auto !important;
   z-index: 10000 !important;
   box-sizing: border-box !important;
   align-items: center !important;
   justify-content: space-around !important;
-  overflow: visible !important;
 }
 
 @media screen and (max-width: 480px) {
@@ -4724,232 +4590,48 @@ input, textarea {
   }
 }
 
-/* Glowing Top Laser Rim Line */
-.bottom-nav::before {
-  content: '' !important;
-  position: absolute !important;
-  top: -1px !important;
-  left: 12% !important;
-  right: 12% !important;
-  height: 1.5px !important;
-  background: linear-gradient(90deg, transparent 0%, #34D399 50%, transparent 100%) !important;
-  opacity: 0.85 !important;
-  filter: drop-shadow(0 0 6px #10B981) !important;
-  pointer-events: none !important;
-}
-
-/* Nav Items Base */
 .bottom-nav .nav-item {
-  flex: 1 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: transparent !important;
-  border: none !important;
-  cursor: pointer !important;
-  padding: 4px 2px !important;
-  min-width: 0 !important;
-  position: relative !important;
-  color: #94A3B8 !important;
-  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-  -webkit-tap-highlight-color: transparent !important;
-  border-radius: 16px !important;
-}
-
-.bottom-nav .nav-item .nav-icon {
-  font-size: 20px !important;
-  line-height: 1 !important;
-  display: inline-block !important;
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s ease !important;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
-}
-
-.bottom-nav .nav-item .nav-label {
-  font-size: 10.5px !important;
+  color: #64748B !important;
   font-weight: 700 !important;
-  margin-top: 3px !important;
-  white-space: nowrap !important;
-  color: #94A3B8 !important;
-  transition: color 0.2s ease, font-weight 0.2s ease !important;
-  letter-spacing: -0.1px !important;
-}
-
-/* Active Nav Item with Glowing Neon Aura and Floating Bounce */
-.bottom-nav .nav-item.active {
-  background: rgba(16, 185, 129, 0.12) !important;
-}
-
-.bottom-nav .nav-item.active .nav-icon {
-  transform: translateY(-2.5px) scale(1.18) !important;
-  filter: drop-shadow(0 0 8px rgba(52, 211, 153, 0.75)) !important;
-  animation: navIconFloat 1.8s ease-in-out infinite alternate !important;
-}
-
-.bottom-nav .nav-item.active .nav-label {
-  color: #34D399 !important;
-  font-weight: 900 !important;
-  text-shadow: 0 0 10px rgba(52, 211, 153, 0.5) !important;
-}
-
-/* Animated Neon Glowing Dot Indicator under active label */
-.bottom-nav .nav-item.active::after {
-  content: '' !important;
-  position: absolute !important;
-  bottom: 2px !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  width: 5px !important;
-  height: 5px !important;
-  border-radius: 50% !important;
-  background: #34D399 !important;
-  box-shadow: 0 0 6px #34D399, 0 0 12px #10B981 !important;
-  animation: navDotPulse 1.6s ease-in-out infinite alternate !important;
+  font-size: 11px !important;
+  position: relative !important;
+  transition: color 0.15s ease !important;
+  padding: 6px 0 !important;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 .bottom-nav .nav-item:active {
-  transform: scale(0.92) !important;
+  transform: scale(0.94) !important;
 }
 
-/* Center Floating Post (+) Button Wrap */
-.bottom-nav .nav-add-btn-wrap {
-  flex: 1 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  cursor: pointer !important;
-  min-width: 0 !important;
-  position: relative !important;
-  margin-top: -16px !important;
-}
-
-/* Pulsing Sonar Ring Animation behind (+) Button */
-.bottom-nav .nav-add-pulse-ring {
-  position: absolute !important;
-  top: 0px !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  width: 48px !important;
-  height: 48px !important;
-  border-radius: 50% !important;
-  border: 2px solid rgba(52, 211, 153, 0.6) !important;
-  box-shadow: 0 0 14px rgba(16, 185, 129, 0.4) !important;
-  pointer-events: none !important;
-  animation: navRingSonar 2.2s cubic-bezier(0.2, 0.8, 0.2, 1) infinite !important;
-  z-index: 1 !important;
-}
-
-/* The Vibrant Radial Emerald Floating (+) Circle */
-.bottom-nav .nav-add-circle {
-  background: linear-gradient(135deg, #10B981 0%, #059669 45%, #047857 100%) !important;
-  color: #FFFFFF !important;
-  width: 48px !important;
-  height: 48px !important;
-  border-radius: 50% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-size: 20px !important;
+.bottom-nav .nav-item.active {
+  color: #047857 !important;
   font-weight: 900 !important;
-  box-shadow: 0 6px 20px rgba(5, 150, 105, 0.6), 0 0 14px rgba(52, 211, 153, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.45) !important;
-  border: 3.5px solid #06281E !important;
-  outline: 1.5px solid rgba(52, 211, 153, 0.6) !important;
-  position: relative !important;
-  z-index: 2 !important;
-  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
 }
 
-.bottom-nav .nav-add-circle span {
-  display: inline-block !important;
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+.bottom-nav .nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #10B981;
+}
+
+.bottom-nav .nav-add-circle {
+  background: linear-gradient(135deg, #059669 0%, #047857 50%, #064E3B 100%) !important;
+  box-shadow: 0 8px 24px rgba(5, 150, 105, 0.38), inset 0 1px 2px rgba(255, 255, 255, 0.3) !important;
+  border: 3.5px solid #FFFFFF !important;
+  width: 48px !important;
+  height: 48px !important;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
 }
 
 .bottom-nav .nav-add-btn-wrap:active .nav-add-circle {
-  transform: scale(0.9) !important;
-  box-shadow: 0 2px 10px rgba(5, 150, 105, 0.8) !important;
-}
-
-.bottom-nav .nav-add-btn-wrap:active .nav-add-circle span {
-  transform: rotate(90deg) !important;
-}
-
-.bottom-nav .nav-add-label {
-  font-size: 10px !important;
-  font-weight: 800 !important;
-  color: #34D399 !important;
-  margin-top: 3px !important;
-  white-space: nowrap !important;
-  text-shadow: 0 0 8px rgba(52, 211, 153, 0.4) !important;
-  position: relative !important;
-  z-index: 2 !important;
-}
-
-/* Chat Badge Floating Glow */
-.bottom-nav .nav-chat-badge {
-  position: absolute !important;
-  top: -4px !important;
-  right: -8px !important;
-  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%) !important;
-  color: #FFFFFF !important;
-  font-size: 10px !important;
-  font-weight: 900 !important;
-  padding: 1px 5px !important;
-  border-radius: 10px !important;
-  min-width: 14px !important;
-  text-align: center !important;
-  border: 1.5px solid #092B20 !important;
-  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.6), 0 0 8px rgba(239, 68, 68, 0.8) !important;
-  animation: badgePulseGlow 2s ease-in-out infinite alternate !important;
-}
-
-/* Keyframe Animations for Bottom Navigation */
-@keyframes navRingSonar {
-  0% {
-    transform: translateX(-50%) scale(0.95);
-    opacity: 0.85;
-  }
-  60% {
-    transform: translateX(-50%) scale(1.35);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(-50%) scale(1.4);
-    opacity: 0;
-  }
-}
-
-@keyframes navIconFloat {
-  0% {
-    transform: translateY(-2px) scale(1.16);
-  }
-  100% {
-    transform: translateY(-4px) scale(1.22);
-  }
-}
-
-@keyframes navDotPulse {
-  0% {
-    transform: translateX(-50%) scale(0.85);
-    opacity: 0.7;
-    box-shadow: 0 0 4px #34D399;
-  }
-  100% {
-    transform: translateX(-50%) scale(1.2);
-    opacity: 1;
-    box-shadow: 0 0 8px #34D399, 0 0 16px #10B981;
-  }
-}
-
-@keyframes badgePulseGlow {
-  0% {
-    transform: scale(0.95);
-    box-shadow: 0 0 4px rgba(239, 68, 68, 0.5);
-  }
-  100% {
-    transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(239, 68, 68, 0.9);
-  }
+  transform: scale(0.88) rotate(45deg) !important;
 }
 
 /* 3. Ultra-Smooth Touch Feedback on All Cards */

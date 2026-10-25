@@ -3016,6 +3016,10 @@
   window.openChatModalByKey = openChatModalByKey;
 
   function openChatModal(recipientName, recipientPhone, recipientAvatar, initialContext, recipientId, explicitChatKey, chatType) {
+    if (typeof dismissChatMessageActionSheet === 'function') {
+      dismissChatMessageActionSheet();
+    }
+    clearTimeout(_chatBubbleLongPressTimer);
     try {
       document.querySelectorAll('#modal-chat .auto-filled-profile-chip').forEach(c => c.remove());
     } catch (_) {}
@@ -3147,6 +3151,12 @@
       quickBar.style.display = 'none';
       quickBar.innerHTML = '';
     }
+
+    // Ensure delete dialogs and long-press timers are cleanly reset on chat open
+    clearTimeout(_chatBubbleLongPressTimer);
+    _activeMessageForDeletion = null;
+    closeModal('modal-delete-chat-message');
+    document.querySelectorAll('.chat-message-row.selected-bubble').forEach(el => el.classList.remove('selected-bubble'));
 
     // Instant 0ms Render: Render immediately from cache or empty starter UI without blocking spinner
     renderChatMessages();
@@ -3609,6 +3619,7 @@
         <div class="chat-bubble ${isMe ? 'outgoing' : 'incoming'} ${msg.type ? ('type-' + msg.type) : ''}"
           oncontextmenu="event.preventDefault(); promptDeleteChatMessage('${escapeHtml(msg.id)}'); return false;"
           ontouchstart="handleChatBubbleTouchStart(event, '${escapeHtml(msg.id)}')"
+          ontouchmove="handleChatBubbleTouchMove(event)"
           ontouchend="handleChatBubbleTouchEnd(event)"
           ontouchcancel="handleChatBubbleTouchEnd(event)"
           title="ഡിലീറ്റ് ചെയ്യാൻ അമർത്തിപ്പിടിക്കൂ (Long press to delete)">
@@ -3630,17 +3641,39 @@
 
   let _activeMessageForDeletion = null;
   let _chatBubbleLongPressTimer = null;
+  let _touchStartX = 0;
+  let _touchStartY = 0;
+  let _isTouchScrolling = false;
 
   function handleChatBubbleTouchStart(e, msgId) {
     clearTimeout(_chatBubbleLongPressTimer);
+    _isTouchScrolling = false;
+    if (e.touches && e.touches[0]) {
+      _touchStartX = e.touches[0].clientX;
+      _touchStartY = e.touches[0].clientY;
+    }
     _chatBubbleLongPressTimer = setTimeout(() => {
-      if (navigator.vibrate) {
-        try { navigator.vibrate(50); } catch (_) {}
+      if (!_isTouchScrolling) {
+        if (navigator.vibrate) {
+          try { navigator.vibrate(40); } catch (_) {}
+        }
+        promptDeleteChatMessage(msgId);
       }
-      promptDeleteChatMessage(msgId);
-    }, 600);
+    }, 750);
   }
   window.handleChatBubbleTouchStart = handleChatBubbleTouchStart;
+
+  function handleChatBubbleTouchMove(e) {
+    if (e.touches && e.touches[0]) {
+      const dx = Math.abs(e.touches[0].clientX - _touchStartX);
+      const dy = Math.abs(e.touches[0].clientY - _touchStartY);
+      if (dx > 8 || dy > 8) {
+        _isTouchScrolling = true;
+        clearTimeout(_chatBubbleLongPressTimer);
+      }
+    }
+  }
+  window.handleChatBubbleTouchMove = handleChatBubbleTouchMove;
 
   function handleChatBubbleTouchEnd() {
     clearTimeout(_chatBubbleLongPressTimer);
@@ -3719,15 +3752,10 @@
       text: msg.text || ''
     };
 
-    // Highlight the selected message bubble with WhatsApp selection glow
-    document.querySelectorAll('.chat-message-row.selected-bubble').forEach(el => el.classList.remove('selected-bubble'));
-    const rowEl = document.querySelector(`.chat-message-row[data-msg-id="${escapeHtml(msg.id)}"]`);
-    if (rowEl) rowEl.classList.add('selected-bubble');
-
-    // In-chat action sheet (nested STRICTLY inside chatModalSheet)
-    const sheet = document.getElementById('chatMessageActionSheet');
-    if (sheet) {
-      const previewEl = document.getElementById('cmasPreviewText');
+    // Clean WhatsApp confirmation dialog
+    const modal = document.getElementById('modal-delete-chat-message');
+    if (modal) {
+      const previewEl = document.getElementById('deleteMsgPreviewText');
       if (previewEl) {
         let preview = msg.text || '';
         if (preview.startsWith('[voice:')) preview = '🎙️ വോയ്‌സ് മെസ്സേജ് (Voice Message)';
@@ -3735,18 +3763,11 @@
         previewEl.textContent = `"${preview}"`;
       }
 
-      const everyoneBtn = document.getElementById('cmasDeleteEveryoneBtn');
+      const everyoneBtn = document.getElementById('deleteForEveryoneBtn');
       if (everyoneBtn) {
         everyoneBtn.style.display = (msg.sender === 'me') ? 'flex' : 'none';
       }
 
-      sheet.style.display = 'flex';
-      return;
-    }
-
-    // Fallback if sheet element not found
-    const modal = document.getElementById('modal-delete-chat-message');
-    if (modal) {
       modal.style.display = 'flex';
       modal.classList.add('active');
     }
@@ -3754,32 +3775,17 @@
   window.promptDeleteChatMessage = promptDeleteChatMessage;
 
   function dismissChatMessageActionSheet() {
-    const sheet = document.getElementById('chatMessageActionSheet');
-    if (sheet) sheet.style.display = 'none';
-    document.querySelectorAll('.chat-message-row.selected-bubble').forEach(el => el.classList.remove('selected-bubble'));
     closeModal('modal-delete-chat-message');
+    document.querySelectorAll('.chat-message-row.selected-bubble').forEach(el => el.classList.remove('selected-bubble'));
+    _activeMessageForDeletion = null;
   }
   window.dismissChatMessageActionSheet = dismissChatMessageActionSheet;
-
-  function copyActiveChatMessageText() {
-    if (!_activeMessageForDeletion || !_activeMessageForDeletion.text) {
-      dismissChatMessageActionSheet();
-      return;
-    }
-    const txt = _activeMessageForDeletion.text;
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(txt).then(() => {
-        toast('📋 സന്ദേശം കോപ്പി ചെയ്തു (Copied)');
-      }).catch(() => {});
-    }
-    dismissChatMessageActionSheet();
-  }
-  window.copyActiveChatMessageText = copyActiveChatMessageText;
 
   async function executeDeleteChatMessage(mode) {
     if (!_activeMessageForDeletion) return;
     const { msgId, chatKey, isMe } = _activeMessageForDeletion;
-    dismissChatMessageActionSheet();
+    closeModal('modal-delete-chat-message');
+    document.querySelectorAll('.chat-message-row.selected-bubble').forEach(el => el.classList.remove('selected-bubble'));
 
     if (mode === 'everyone') {
       if (!isMe) {
@@ -11509,6 +11515,9 @@
       if (typeof window._activeChatUnsubscribe === 'function') {
         try { window._activeChatUnsubscribe(); } catch (_) {}
         window._activeChatUnsubscribe = null;
+      }
+      if (typeof dismissChatMessageActionSheet === 'function') {
+        dismissChatMessageActionSheet();
       }
     }
     const el = document.getElementById(modalId);

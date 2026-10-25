@@ -1628,29 +1628,35 @@
         <!-- BOTTOM NAVIGATION BAR (Mobile Native Only)                     -->
         <!-- ============================================================== -->
         <nav class="bottom-nav" id="bottomNav">
-            <button class="nav-item active" data-page="home" onclick="navTo('home')" title="ഹോം">
-                <span class="nav-icon">🏠</span>
-                <span class="nav-label">ഹോം</span>
+            <button class="nav-item active" data-page="home" onclick="navTo('home')" title="ഹോം"
+                style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;padding:6px 2px;min-width:0;">
+                <span style="font-size:20px;line-height:1">🏠</span>
+                <span style="font-size:11px;font-weight:800;margin-top:2px;white-space:nowrap">ഹോം</span>
             </button>
-            <button class="nav-item" data-page="services" onclick="navTo('services')" title="നാട്ടിലെ സേവനങ്ങൾ">
-                <span class="nav-icon">⚡</span>
-                <span class="nav-label">സേവനങ്ങൾ</span>
+            <button class="nav-item" data-page="services" onclick="navTo('services')" title="നാട്ടിലെ സേവനങ്ങൾ"
+                style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;padding:6px 2px;min-width:0;">
+                <span style="font-size:20px;line-height:1">⚡</span>
+                <span style="font-size:11px;font-weight:800;margin-top:2px;white-space:nowrap">സേവനങ്ങൾ</span>
             </button>
-            <div class="nav-add-btn-wrap" onclick="navTo('add')" title="പുതിയ പോസ്റ്റ് ഇടാം">
-                <div class="nav-add-pulse-ring"></div>
-                <div class="nav-add-circle"><span>➕</span></div>
-                <div class="nav-add-label">പോസ്റ്റ്</div>
+            <div class="nav-add-btn-wrap" onclick="navTo('add')" title="പുതിയ പോസ്റ്റ് ഇടാം"
+                style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;min-width:0;">
+                <div class="nav-add-circle"
+                    style="background:#0E7043;color:#fff;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 12px rgba(14,112,67,0.35);border:3px solid #fff;margin-top:-14px">
+                    ➕</div>
+                <div class="nav-add-label" style="font-size:10px;font-weight:800;color:#0E7043;margin-top:2px;white-space:nowrap">പോസ്റ്റ്</div>
             </div>
-            <button class="nav-item" data-page="chat" onclick="navTo('chat')" title="ചാറ്റ്">
+            <button class="nav-item" data-page="chat" onclick="navTo('chat')" title="ചാറ്റ്"
+                style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;padding:6px 2px;min-width:0;">
                 <div style="position:relative;display:inline-block">
-                    <span class="nav-icon">💬</span>
+                    <span style="font-size:20px;line-height:1">💬</span>
                     <span id="bottomNavChatBadge" class="nav-chat-badge" style="display:none">0</span>
                 </div>
-                <span class="nav-label">ചാറ്റ്</span>
+                <span style="font-size:11px;font-weight:800;margin-top:2px;white-space:nowrap">ചാറ്റ്</span>
             </button>
-            <button class="nav-item" data-page="community" onclick="navTo('community')" title="നാട്ടുകൂട്ടം പോസ്റ്റുകൾ">
-                <span class="nav-icon">📢</span>
-                <span class="nav-label">പോസ്റ്റുകൾ</span>
+            <button class="nav-item" data-page="community" onclick="navTo('community')" title="നാട്ടുകൂട്ടം പോസ്റ്റുകൾ"
+                style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;padding:6px 2px;min-width:0;">
+                <span style="font-size:20px;line-height:1">📢</span>
+                <span style="font-size:11px;font-weight:800;margin-top:2px;white-space:nowrap">പോസ്റ്റുകൾ</span>
             </button>
         </nav>
 
@@ -1772,36 +1778,6 @@
                 </div>
             </div>
 
-            <!-- IN-CHAT MESSAGE ACTION BOTTOM SHEET (STAYS STRICTLY INSIDE CHAT SHEET) -->
-            <div id="chatMessageActionSheet" class="chat-msg-action-sheet" style="display:none">
-                <div class="cmas-backdrop" onclick="dismissChatMessageActionSheet()"></div>
-                <div class="cmas-card">
-                    <div class="cmas-drag-handle"></div>
-                    <div class="cmas-title">സന്ദേശ ഓപ്ഷനുകൾ</div>
-                    <div class="cmas-preview" id="cmasPreviewText">...</div>
-                    <div class="cmas-buttons">
-                        <!-- DELETE FOR EVERYONE (Outgoing message only) -->
-                        <button type="button" id="cmasDeleteEveryoneBtn" class="cmas-btn cmas-btn-danger" onclick="executeDeleteChatMessage('everyone')">
-                            <span class="cmas-icon">🗑️</span>
-                            <span class="cmas-text">എല്ലാവർക്കും ഡിലീറ്റ് ചെയ്യുക (Delete for everyone)</span>
-                        </button>
-                        <!-- DELETE FOR ME -->
-                        <button type="button" id="cmasDeleteForMeBtn" class="cmas-btn cmas-btn-neutral" onclick="executeDeleteChatMessage('forme')">
-                            <span class="cmas-icon">📱</span>
-                            <span class="cmas-text">എനിക്ക് മാത്രം ഡിലീറ്റ് ചെയ്യുക (Delete for me)</span>
-                        </button>
-                        <!-- COPY MESSAGE -->
-                        <button type="button" id="cmasCopyBtn" class="cmas-btn cmas-btn-neutral" onclick="copyActiveChatMessageText()">
-                            <span class="cmas-icon">📋</span>
-                            <span class="cmas-text">സന്ദേശം കോപ്പി ചെയ്യുക (Copy)</span>
-                        </button>
-                        <!-- CANCEL -->
-                        <button type="button" class="cmas-btn cmas-btn-cancel" onclick="dismissChatMessageActionSheet()">
-                            <span>റദ്ദാക്കുക (Cancel)</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
