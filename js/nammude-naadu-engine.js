@@ -3157,6 +3157,8 @@
     clearTimeout(_chatBubbleLongPressTimer);
     _activeMessageForDeletion = null;
     closeModal('modal-delete-chat-message');
+    if (typeof closeChatMessageMenu === 'function') closeChatMessageMenu();
+    if (typeof cancelChatReply === 'function') cancelChatReply();
     document.querySelectorAll('.chat-message-row.selected-bubble').forEach(el => el.classList.remove('selected-bubble'));
 
     // Instant 0ms Render: Render immediately from cache or empty starter UI without blocking spinner
@@ -3204,7 +3206,7 @@
             const mText = String(m.text || '').trim();
             const mTime = Number(m.timestamp) || 0;
             const exists = APP_STATE.chats[chatKey].some(local => {
-              if (local.id && m.id && local.id === m.id) return true;
+              if (local.id && m.id && String(local.id) === String(m.id)) return true;
               const lText = String(local.text || '').trim();
               if (lText && lText === mText) {
                 const lTime = Number(local.timestamp) || 0;
@@ -3235,7 +3237,7 @@
               });
             } else {
               const localMsg = APP_STATE.chats[chatKey].find(local => {
-                if (local.id && m.id && local.id === m.id) return true;
+                if (local.id && m.id && String(local.id) === String(m.id)) return true;
                 const lText = String(local.text || '').trim();
                 return (lText && lText === mText);
               });
@@ -3362,11 +3364,9 @@
       // Update header status
       const statusEl = document.getElementById('chatRecipientStatus');
       if (statusEl) statusEl.textContent = '✏️ ടൈപ്പ് ചെയ്യുന്നു...';
-      // Auto-hide after 4s of no updates
-      _typingHideTimer = setTimeout(() => hideChatTypingIndicator(), 4000);
-      // Scroll to show the indicator
-      const box = document.getElementById('chatMessagesBox');
-      if (box) box.scrollTop = box.scrollHeight + 60;
+      // Auto-hide after 3.5s of no updates
+      _typingHideTimer = setTimeout(() => hideChatTypingIndicator(), 3500);
+      // NOTE: Removed viewport scroll jump to maintain stable scroll position
     } else {
       hideChatTypingIndicator();
     }
@@ -3498,7 +3498,7 @@
     const box = document.getElementById('chatMessagesBox');
     if (box && box.dataset.renderedKey === chatKey && box.children.length > 0 && !box.querySelector('[style*="text-align:center"]')) {
       const recipientAvatar = (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.avatar) || DEFAULT_USER_AVATAR;
-      const singleHtml = renderSingleMessageHtml(msgObj, recipientAvatar);
+      const singleHtml = renderSingleMessageHtml(msgObj, recipientAvatar, true);
       box.insertAdjacentHTML('beforeend', singleHtml);
       box.scrollTop = box.scrollHeight;
     } else {
@@ -3546,7 +3546,7 @@
     return d.toLocaleDateString('ml-IN', { day: 'numeric', month: 'short' });
   }
 
-  function renderSingleMessageHtml(msg, recipientAvatar) {
+  function renderSingleMessageHtml(msg, recipientAvatar, isNew = false) {
     const isMe = msg.sender === 'me';
     let innerContentHtml = '';
 
@@ -3612,29 +3612,70 @@
       innerContentHtml = `<div class="chat-bubble-content">${escapeHtml(msg.text)}</div>`;
     }
 
+    // WhatsApp-Style Quoted Reply Box inside bubble
+    let quotedHtml = '';
+    if (msg.replyTo && msg.replyTo.text) {
+      quotedHtml = `
+        <div class="chat-quoted-box" onclick="highlightQuotedMessage('${escapeHtml(msg.replyTo.id || '')}')">
+          <div class="chat-quoted-sender">${escapeHtml(msg.replyTo.senderName || 'സന്ദേശം')}</div>
+          <div class="chat-quoted-text">${escapeHtml(msg.replyTo.text)}</div>
+        </div>
+      `;
+    }
+
+    // Forwarded badge
+    let forwardedHtml = '';
+    if (msg.isForwarded) {
+      forwardedHtml = `
+        <div class="chat-forwarded-pill">
+          <span>⏩ ഫോർവേഡ് ചെയ്തത്</span>
+        </div>
+      `;
+    }
+
+    // Reaction badge attached to bubble
+    let reactionBadgeHtml = '';
+    if (msg.reaction || (msg.reactions && Object.keys(msg.reactions).length > 0)) {
+      const rx = msg.reaction || Object.keys(msg.reactions)[0];
+      reactionBadgeHtml = `<span class="chat-bubble-reaction-badge">${escapeHtml(rx)}</span>`;
+    }
+
+    // Small chevron/arrow dropdown button on the bubble (prominent on sent, accessible on all)
+    const arrowBtnHtml = `
+      <button type="button" class="chat-msg-arrow-btn" onclick="openChatMessageMenu(event, '${escapeHtml(msg.id)}')" title="ഓപ്ഷനുകൾ (Options)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
+    `;
+
     return `
-      <div class="chat-message-row ${isMe ? 'outgoing-row' : 'incoming-row'}" data-msg-id="${escapeHtml(msg.id)}">
+      <div class="chat-message-row ${isMe ? 'outgoing-row' : 'incoming-row'} ${isNew ? 'chat-msg-new' : ''}" data-msg-id="${escapeHtml(msg.id)}">
         ${!isMe ? `
           <img src="${escapeHtml(recipientAvatar)}" class="chat-bubble-avatar" alt="Avatar" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
         ` : ''}
         <div class="chat-bubble ${isMe ? 'outgoing' : 'incoming'} ${msg.type ? ('type-' + msg.type) : ''}"
-          oncontextmenu="event.preventDefault(); promptDeleteChatMessage('${escapeHtml(msg.id)}'); return false;"
+          oncontextmenu="openChatMessageMenu(event, '${escapeHtml(msg.id)}'); return false;"
           ontouchstart="handleChatBubbleTouchStart(event, '${escapeHtml(msg.id)}')"
           ontouchmove="handleChatBubbleTouchMove(event)"
           ontouchend="handleChatBubbleTouchEnd(event)"
           ontouchcancel="handleChatBubbleTouchEnd(event)"
-          title="ഡിലീറ്റ് ചെയ്യാൻ അമർത്തിപ്പിടിക്കൂ (Long press to delete)">
+          title="ഓപ്ഷനുകൾ കാണാൻ ക്ലിക്ക് ചെയ്യുക">
+          ${arrowBtnHtml}
+          ${forwardedHtml}
+          ${quotedHtml}
           ${innerContentHtml}
           <div class="chat-bubble-meta">
             <span class="chat-time-text">${escapeHtml(msg.time || '')}</span>
             ${isMe ? (
               (msg.status === 'seen' || msg.seen === true)
-                ? '<span class="chat-ticks seen" title="\u0d15\u0d23\u0d4d\u0d1f\u0d41 (Seen)">\u2714\u2714</span>'
+                ? '<span class="chat-ticks seen" title="കണ്ടു (Seen)">✔✔</span>'
                 : ((msg.status === 'sent')
-                    ? '<span class="chat-ticks sent" title="\u0d05\u0d2f\u0d1a\u0d4d\u0d1a\u0d41 (Sent)">\u2714</span>'
-                    : '<span class="chat-ticks delivered" title="\u0d0e\u0d24\u0d4d\u0d24\u0d3f\u0d1a\u0d47\u0d7c\u0d28\u0d4d\u0d28\u0d41 (Delivered)">\u2714\u2714</span>')
+                    ? '<span class="chat-ticks sent" title="അയച്ചു (Sent)">✔</span>'
+                    : '<span class="chat-ticks delivered" title="എത്തിച്ചേർന്നു (Delivered)">✔✔</span>')
             ) : ''}
           </div>
+          ${reactionBadgeHtml}
         </div>
       </div>
     `;
@@ -3658,9 +3699,9 @@
         if (navigator.vibrate) {
           try { navigator.vibrate(40); } catch (_) {}
         }
-        promptDeleteChatMessage(msgId);
+        openChatMessageMenu(null, msgId);
       }
-    }, 750);
+    }, 650);
   }
   window.handleChatBubbleTouchStart = handleChatBubbleTouchStart;
 
@@ -3817,6 +3858,329 @@
   }
   window.executeDeleteChatMessage = executeDeleteChatMessage;
 
+  // ====================================================================
+  // WHATSAPP-STYLE MESSAGE CONTEXT MENU ACTIONS (Reply, Forward, Copy, Reaction)
+  // ====================================================================
+  let _activeContextMessage = null;
+  let _activeForwardMessage = null;
+
+  function openChatMessageMenu(event, msgId) {
+    if (event) {
+      try {
+        event.preventDefault();
+        event.stopPropagation();
+      } catch (_) {}
+    }
+    if (!APP_STATE.activeChatRecipient || !msgId) return;
+    const chatKey = APP_STATE.activeChatRecipient.key;
+    const thread = APP_STATE.chats[chatKey] || [];
+    const msg = thread.find(m => m && String(m.id) === String(msgId));
+    if (!msg) return;
+
+    _activeContextMessage = msg;
+
+    const menuOverlay = document.getElementById('chatMessageContextMenu');
+    if (menuOverlay) {
+      menuOverlay.style.display = 'flex';
+    }
+  }
+  window.openChatMessageMenu = openChatMessageMenu;
+
+  function closeChatMessageMenu() {
+    const menuOverlay = document.getElementById('chatMessageContextMenu');
+    if (menuOverlay) {
+      menuOverlay.style.display = 'none';
+    }
+  }
+  window.closeChatMessageMenu = closeChatMessageMenu;
+
+  function triggerMenuAction(action) {
+    const msg = _activeContextMessage;
+    closeChatMessageMenu();
+    if (!msg) return;
+
+    if (action === 'reply') {
+      startChatReply(msg.id);
+    } else if (action === 'forward') {
+      startChatForward(msg.id);
+    } else if (action === 'copy') {
+      copyChatMessageText(msg.id);
+    } else if (action === 'delete') {
+      promptDeleteChatMessage(msg.id);
+    }
+  }
+  window.triggerMenuAction = triggerMenuAction;
+
+  function handleMenuReaction(emoji) {
+    closeChatMessageMenu();
+    if (!_activeContextMessage || !APP_STATE.activeChatRecipient) return;
+    const chatKey = APP_STATE.activeChatRecipient.key;
+    const msgId = String(_activeContextMessage.id);
+    const thread = APP_STATE.chats[chatKey] || [];
+    const msg = thread.find(m => m && String(m.id) === msgId);
+    if (!msg) return;
+
+    if (!msg.reactions) msg.reactions = {};
+    if (msg.reaction === emoji) {
+      msg.reaction = null;
+      delete msg.reactions[emoji];
+    } else {
+      msg.reaction = emoji;
+      msg.reactions[emoji] = 1;
+    }
+    saveChats();
+    renderChatMessages();
+
+    // Broadcast reaction
+    if (window.NN_SUPABASE_SERVICES?.broadcastChatEvent) {
+      window.NN_SUPABASE_SERVICES.broadcastChatEvent(chatKey, 'chat_reaction', {
+        chatKey: chatKey,
+        msgId: msgId,
+        reaction: msg.reaction
+      });
+    }
+  }
+  window.handleMenuReaction = handleMenuReaction;
+
+  function startChatReply(msgId) {
+    if (!APP_STATE.activeChatRecipient || !msgId) return;
+    const chatKey = APP_STATE.activeChatRecipient.key;
+    const thread = APP_STATE.chats[chatKey] || [];
+    const msg = thread.find(m => m && String(m.id) === String(msgId));
+    if (!msg) return;
+
+    const isMe = (msg.sender === 'me');
+    const senderName = isMe ? 'നിങ്ങൾ (You)' : (APP_STATE.activeChatRecipient.name || 'സുഹൃത്ത്');
+    let previewText = msg.text || '';
+    if (previewText.startsWith('[voice:')) previewText = '🎙️ വോയ്‌സ് മെസ്സേജ്';
+    else if (previewText.startsWith('[image:')) previewText = '📷 ഫോട്ടോ';
+    else if (msg.type === 'sticker') previewText = '🎭 ' + (msg.stickerText || 'സ്റ്റിക്കർ');
+    if (previewText.length > 60) previewText = previewText.substring(0, 60) + '...';
+
+    APP_STATE.activeChatReply = {
+      id: String(msg.id),
+      senderName: senderName,
+      text: previewText
+    };
+
+    const bar = document.getElementById('chatReplyPreviewBar');
+    const senderEl = document.getElementById('chatReplyPreviewSender');
+    const textEl = document.getElementById('chatReplyPreviewText');
+    if (senderEl) senderEl.textContent = '↩️ മറുപടി നൽകുന്നു: ' + senderName;
+    if (textEl) textEl.textContent = previewText;
+    if (bar) bar.style.display = 'flex';
+
+    const inp = document.getElementById('chatInputMessage');
+    if (inp) {
+      inp.focus();
+    }
+  }
+  window.startChatReply = startChatReply;
+
+  function cancelChatReply() {
+    APP_STATE.activeChatReply = null;
+    const bar = document.getElementById('chatReplyPreviewBar');
+    if (bar) bar.style.display = 'none';
+  }
+  window.cancelChatReply = cancelChatReply;
+
+  function highlightQuotedMessage(msgId) {
+    if (!msgId) return;
+    const row = document.querySelector(`.chat-message-row[data-msg-id="${msgId}"]`);
+    if (row) {
+      row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      row.classList.add('selected-bubble');
+      setTimeout(() => row.classList.remove('selected-bubble'), 1500);
+    }
+  }
+  window.highlightQuotedMessage = highlightQuotedMessage;
+
+  function startChatForward(msgId) {
+    if (!APP_STATE.activeChatRecipient || !msgId) return;
+    const chatKey = APP_STATE.activeChatRecipient.key;
+    const thread = APP_STATE.chats[chatKey] || [];
+    const msg = thread.find(m => m && String(m.id) === String(msgId));
+    if (!msg) return;
+
+    _activeForwardMessage = msg;
+
+    let preview = msg.text || '';
+    if (preview.startsWith('[voice:')) preview = '🎙️ വോയ്‌സ് മെസ്സേജ്';
+    else if (preview.startsWith('[image:')) preview = '📷 ഫോട്ടോ';
+    else if (msg.type === 'sticker') preview = '🎭 ' + (msg.stickerText || 'സ്റ്റിക്കർ');
+    if (preview.length > 50) preview = preview.substring(0, 50) + '...';
+
+    const snippetEl = document.getElementById('forwardMsgPreviewSnippet');
+    if (snippetEl) snippetEl.textContent = `സന്ദേശം: "${preview}"`;
+
+    const searchInput = document.getElementById('forwardSearchInput');
+    if (searchInput) searchInput.value = '';
+
+    renderForwardContactsList('');
+    openModal('modal-forward-chat-message');
+  }
+  window.startChatForward = startChatForward;
+
+  function renderForwardContactsList(searchQuery = '') {
+    const listEl = document.getElementById('forwardContactsList');
+    if (!listEl) return;
+
+    const q = (searchQuery || '').trim().toLowerCase();
+    const myPhone = normalizePhone(APP_STATE.currentUser?.phone);
+
+    const contactsMap = new Map();
+
+    if (APP_STATE.chatMeta) {
+      Object.entries(APP_STATE.chatMeta).forEach(([k, meta]) => {
+        if (!meta) return;
+        const phone = normalizePhone(meta.phone || meta.partnerPhone || meta.recipientPhone);
+        if (phone && phone === myPhone) return;
+        const name = meta.name || meta.partnerName || meta.recipientName || 'നാട്ടുകാരൻ';
+        contactsMap.set(k, {
+          key: k,
+          name: name,
+          phone: phone,
+          avatar: meta.avatar || DEFAULT_USER_AVATAR,
+          id: meta.recipientId || meta.id || ''
+        });
+      });
+    }
+
+    const contacts = Array.from(contactsMap.values()).filter(c => {
+      if (!q) return true;
+      return (c.name && c.name.toLowerCase().includes(q)) || (c.phone && c.phone.includes(q));
+    });
+
+    if (contacts.length === 0) {
+      listEl.innerHTML = `
+        <div style="text-align:center;padding:24px 10px;color:#64748B;font-size:13px">
+          ഫോർവേഡ് ചെയ്യാൻ കോൺടാക്റ്റുകൾ ലഭ്യമല്ല. പുതിയ ചാറ്റ് ആരംഭിച്ച ശേഷം ഇവിടെ കാണാം.
+        </div>
+      `;
+      return;
+    }
+
+    listEl.innerHTML = contacts.map(c => `
+      <div class="forward-contact-item" onclick="executeForwardToRecipient('${escapeHtml(c.key)}', '${escapeHtml(c.name)}', '${escapeHtml(c.phone)}', '${escapeHtml(c.avatar)}', '${escapeHtml(c.id)}')"
+        style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:14px;cursor:pointer;transition:all 0.15s ease">
+        <img src="${escapeHtml(c.avatar || DEFAULT_USER_AVATAR)}" style="width:38px;height:38px;border-radius:50%;object-fit:cover" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:800;font-size:13.5px;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(c.name)}</div>
+          <div style="font-size:11px;color:#64748B">${escapeHtml(c.phone ? ('+91 ' + c.phone) : 'നമ്മുടെ നാട് സുഹൃത്ത്')}</div>
+        </div>
+        <span style="font-size:16px;color:#4F46E5">➤</span>
+      </div>
+    `).join('');
+  }
+  window.renderForwardContactsList = renderForwardContactsList;
+
+  function filterForwardContacts(q) {
+    renderForwardContactsList(q);
+  }
+  window.filterForwardContacts = filterForwardContacts;
+
+  async function executeForwardToRecipient(targetKey, targetName, targetPhone, targetAvatar, targetId) {
+    if (!_activeForwardMessage) return;
+    const msg = _activeForwardMessage;
+    closeModal('modal-forward-chat-message');
+
+    if (!APP_STATE.chats[targetKey]) APP_STATE.chats[targetKey] = [];
+
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const msgId = 'msg_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6);
+
+    const fwdMsg = {
+      id: msgId,
+      sender: 'me',
+      senderId: APP_STATE.currentUser?.id || '',
+      senderName: APP_STATE.currentUser?.name || 'നാട്ടുകാരൻ',
+      senderPhone: APP_STATE.currentUser?.phone || '',
+      senderAvatar: APP_STATE.currentUser?.avatar || DEFAULT_USER_AVATAR,
+      recipientId: targetId || '',
+      recipientPhone: targetPhone || '',
+      type: msg.type || 'text',
+      text: msg.text || '',
+      time: timeStr,
+      timestamp: Date.now(),
+      status: 'sent',
+      isForwarded: true
+    };
+
+    APP_STATE.chats[targetKey].push(fwdMsg);
+    if (!APP_STATE.chatMeta) APP_STATE.chatMeta = {};
+    if (!APP_STATE.chatMeta[targetKey]) {
+      APP_STATE.chatMeta[targetKey] = {
+        name: targetName,
+        phone: targetPhone,
+        avatar: targetAvatar,
+        recipientId: targetId,
+        updatedAt: Date.now()
+      };
+    } else {
+      APP_STATE.chatMeta[targetKey].updatedAt = Date.now();
+    }
+    saveChats();
+
+    if (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.key === targetKey) {
+      renderChatMessages();
+    }
+
+    if (window.NN_SUPABASE_SERVICES?.sendChatMessage) {
+      const metaObj = {
+        recipientId: targetId,
+        recipientName: targetName,
+        recipientPhone: targetPhone,
+        senderId: APP_STATE.currentUser?.id || '',
+        senderName: APP_STATE.currentUser?.name || '',
+        senderPhone: APP_STATE.currentUser?.phone || '',
+        senderAvatar: APP_STATE.currentUser?.avatar || ''
+      };
+      window.NN_SUPABASE_SERVICES.sendChatMessage(targetKey, fwdMsg, metaObj).catch(() => {});
+    }
+
+    toast(`⏩ സന്ദേശം ${targetName}-ലേക്ക് ഫോർവേഡ് ചെയ്തു!`);
+    _activeForwardMessage = null;
+  }
+  window.executeForwardToRecipient = executeForwardToRecipient;
+
+  function copyChatMessageText(msgId) {
+    if (!APP_STATE.activeChatRecipient || !msgId) return;
+    const chatKey = APP_STATE.activeChatRecipient.key;
+    const thread = APP_STATE.chats[chatKey] || [];
+    const msg = thread.find(m => m && String(m.id) === String(msgId));
+    if (!msg || !msg.text) return;
+
+    let textToCopy = msg.text;
+    if (textToCopy.startsWith('[image:')) textToCopy = '📷 [ഫോട്ടോ]';
+    if (textToCopy.startsWith('[voice:')) textToCopy = '🎙️ [വോയ്‌സ് മെസ്സേജ്]';
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        toast('📋 സന്ദേശം കോപ്പി ചെയ്തു!');
+      }).catch(() => {
+        fallbackCopyText(textToCopy);
+      });
+    } else {
+      fallbackCopyText(textToCopy);
+    }
+  }
+  window.copyChatMessageText = copyChatMessageText;
+
+  function fallbackCopyText(text) {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      toast('📋 സന്ദേശം കോപ്പി ചെയ്തു!');
+    } catch (_) {
+      toast('⚠️ കോപ്പി ചെയ്യാൻ സാധിച്ചില്ല');
+    }
+  }
+
   function deduplicateChatThread(thread) {
     if (!Array.isArray(thread) || thread.length <= 1) return thread || [];
     const cleanList = [];
@@ -3856,7 +4220,7 @@
   }
   window.deduplicateChatThread = deduplicateChatThread;
 
-  function renderChatMessages() {
+  function renderChatMessages(options = {}) {
     const box = document.getElementById('chatMessagesBox');
     if (!box || !APP_STATE.activeChatRecipient) return;
 
@@ -3888,27 +4252,87 @@
       return;
     }
 
-    // Fast Incremental Render: If same thread is open and only new messages arrived
-    if (box.dataset.renderedKey === chatKey && box.children.length > 0 && !box.querySelector('[style*="text-align:center"]')) {
+    // Fast Incremental Render: If same thread is open and container is populated
+    const isSameThreadOpen = (box.dataset.renderedKey === chatKey && box.children.length > 0 && !box.querySelector('[style*="text-align:center"]'));
+    if (isSameThreadOpen && !options.forceFull) {
       const existingRows = box.querySelectorAll('.chat-message-row');
       const renderedIds = new Set();
       existingRows.forEach(el => {
         const id = el.getAttribute('data-msg-id');
-        if (id) renderedIds.add(id);
+        if (id) renderedIds.add(String(id));
       });
 
+      // 1. In-place status / Blue Tick updates for existing messages (0ms DOM touch, 0 flicker)
+      thread.forEach(m => {
+        if (!m || !m.id) return;
+        const row = box.querySelector(`.chat-message-row[data-msg-id="${m.id}"]`);
+        if (!row) return;
+
+        if (m.sender === 'me') {
+          const tickEl = row.querySelector('.chat-ticks');
+          if (tickEl) {
+            if (m.seen || m.status === 'seen') {
+              if (!tickEl.classList.contains('seen')) {
+                tickEl.className = 'chat-ticks seen';
+                tickEl.title = 'കണ്ടു (Seen)';
+                tickEl.textContent = '✔✔';
+              }
+            } else if (m.status === 'delivered') {
+              if (!tickEl.classList.contains('delivered') && !tickEl.classList.contains('seen')) {
+                tickEl.className = 'chat-ticks delivered';
+                tickEl.title = 'എത്തിച്ചേർന്നു (Delivered)';
+                tickEl.textContent = '✔✔';
+              }
+            }
+          }
+        }
+      });
+
+      // 2. Handle deletions without whole-thread re-render
+      if (existingRows.length > thread.length) {
+        const threadIdSet = new Set(thread.map(m => String(m.id)));
+        existingRows.forEach(el => {
+          const id = el.getAttribute('data-msg-id');
+          if (id && !threadIdSet.has(id)) {
+            el.remove();
+          }
+        });
+      }
+
+      // 3. Append new messages smoothly
       const newMsgs = thread.filter(m => !renderedIds.has(String(m.id)));
-      if (newMsgs.length > 0 && newMsgs.length <= 4) {
+      if (newMsgs.length > 0) {
         let appendHtml = '';
+        let lastDate = box.dataset.lastDateStr || '';
         newMsgs.forEach(m => {
-          appendHtml += renderSingleMessageHtml(m, recipientAvatar);
+          const dateStr = formatChatDatePill(m.timestamp);
+          if (dateStr && dateStr !== lastDate) {
+            lastDate = dateStr;
+            box.dataset.lastDateStr = dateStr;
+            appendHtml += `
+              <div class="chat-date-divider">
+                <span>${escapeHtml(dateStr)}</span>
+              </div>
+            `;
+          }
+          appendHtml += renderSingleMessageHtml(m, recipientAvatar, true);
         });
         box.insertAdjacentHTML('beforeend', appendHtml);
-        box.scrollTop = box.scrollHeight;
+
+        // Auto-scroll only if near bottom or if current user sent the message
+        const isNearBottom = (box.scrollHeight - box.scrollTop - box.clientHeight) < 180;
+        const hasMyNewMsg = newMsgs.some(m => m.sender === 'me');
+        if (hasMyNewMsg || isNearBottom) {
+          box.scrollTop = box.scrollHeight;
+        }
         return;
       }
+
+      // Already rendered with all messages up-to-date: Exit cleanly without DOM wipe!
+      return;
     }
 
+    // Initial Full Render (first time opening this conversation)
     box.dataset.renderedKey = chatKey;
     let lastDateStr = '';
     const messagesHtml = thread.map(msg => {
@@ -3922,8 +4346,9 @@
           </div>
         `;
       }
-      return dateDivider + renderSingleMessageHtml(msg, recipientAvatar);
+      return dateDivider + renderSingleMessageHtml(msg, recipientAvatar, false);
     }).join('');
+    box.dataset.lastDateStr = lastDateStr;
 
     box.innerHTML = messagesHtml;
     box.scrollTop = box.scrollHeight;
@@ -3965,6 +4390,10 @@
       status: 'sent'
     };
 
+    if (APP_STATE.activeChatReply) {
+      msgObj.replyTo = { ...APP_STATE.activeChatReply };
+    }
+
     // Instant local echo (0ms latency)
     const localMsg = {
       ...msgObj,
@@ -3972,6 +4401,9 @@
       status: 'sent'
     };
     APP_STATE.chats[chatKey].push(localMsg);
+    if (APP_STATE.activeChatReply) {
+      cancelChatReply();
+    }
 
     if (input) {
       input.value = '';
@@ -3988,7 +4420,7 @@
     const box = document.getElementById('chatMessagesBox');
     if (box && box.dataset.renderedKey === chatKey && box.children.length > 0 && !box.querySelector('[style*="text-align:center"]')) {
       const recipientAvatar = (APP_STATE.activeChatRecipient && APP_STATE.activeChatRecipient.avatar) || DEFAULT_USER_AVATAR;
-      const singleHtml = renderSingleMessageHtml(localMsg, recipientAvatar);
+      const singleHtml = renderSingleMessageHtml(localMsg, recipientAvatar, true);
       box.insertAdjacentHTML('beforeend', singleHtml);
       box.scrollTop = box.scrollHeight;
     } else {

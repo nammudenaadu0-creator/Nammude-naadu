@@ -1041,11 +1041,13 @@
             try { renderChatMessages(); } catch (_) {}
           }
 
-          // 3. Auto-scroll to bottom of conversation
+          // 3. Auto-scroll to bottom only if user is already near the bottom
           const box = document.getElementById('chatMessagesBox');
           if (box) {
-            box.scrollTop = box.scrollHeight;
-            requestAnimationFrame(() => { if (box) box.scrollTop = box.scrollHeight; });
+            const isNearBottom = (box.scrollHeight - box.scrollTop - box.clientHeight) < 180;
+            if (isNearBottom) {
+              box.scrollTop = box.scrollHeight;
+            }
           }
 
           // 4. Play gentle WhatsApp incoming message chime

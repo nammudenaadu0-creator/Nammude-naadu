@@ -1653,6 +1653,16 @@
                 </div>
             </div>
 
+            <!-- WHATSAPP-STYLE REPLY PREVIEW BAR -->
+            <div id="chatReplyPreviewBar" class="chat-reply-preview-bar" style="display:none">
+                <div class="chat-reply-accent-line"></div>
+                <div class="chat-reply-preview-content">
+                    <div class="chat-reply-preview-sender" id="chatReplyPreviewSender">↩️ മറുപടി</div>
+                    <div class="chat-reply-preview-text" id="chatReplyPreviewText">...</div>
+                </div>
+                <button type="button" class="chat-reply-cancel-btn" onclick="cancelChatReply()" title="മറുപടി റദ്ദാക്കുക">✕</button>
+            </div>
+
             <!-- INPUT BAR WITH 🖼 PHOTO, 🎭 STICKER & 🎙️ VOICE CHAT BUTTON -->
             <div class="chat-input-bar" id="chatInputBar" style="background:#FFFFFF !important;background-color:#FFFFFF !important;">
                 <!-- Hidden photo file input -->
@@ -1771,6 +1781,64 @@
                     style="width:100%;padding:9px;background:transparent;color:#64748B;border:none;font-weight:700;font-size:13px;cursor:pointer">
                     റദ്ദാക്കുക (Cancel)
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- WHATSAPP-STYLE MESSAGE CONTEXT MENU / BOTTOM ACTION SHEET     -->
+    <!-- ============================================================== -->
+    <div id="chatMessageContextMenu" class="chat-msg-menu-overlay" onclick="if(event.target===this)closeChatMessageMenu()" style="display:none">
+        <div class="chat-msg-menu-card" id="chatMsgMenuCard">
+            <!-- Quick Emoji Reactions Row -->
+            <div class="chat-menu-reactions-row">
+                <button type="button" class="chat-reaction-btn" onclick="handleMenuReaction('👍')">👍</button>
+                <button type="button" class="chat-reaction-btn" onclick="handleMenuReaction('❤️')">❤️</button>
+                <button type="button" class="chat-reaction-btn" onclick="handleMenuReaction('😂')">😂</button>
+                <button type="button" class="chat-reaction-btn" onclick="handleMenuReaction('😮')">😮</button>
+                <button type="button" class="chat-reaction-btn" onclick="handleMenuReaction('😢')">😢</button>
+                <button type="button" class="chat-reaction-btn" onclick="handleMenuReaction('🙏')">🙏</button>
+            </div>
+            <div class="chat-menu-divider"></div>
+            <!-- Actions List -->
+            <div class="chat-menu-actions">
+                <button type="button" class="chat-menu-item" onclick="triggerMenuAction('reply')">
+                    <span class="chat-menu-icon">↩️</span>
+                    <span class="chat-menu-label">മറുപടി നൽകുക (Reply)</span>
+                </button>
+                <button type="button" class="chat-menu-item" onclick="triggerMenuAction('forward')">
+                    <span class="chat-menu-icon">⏩</span>
+                    <span class="chat-menu-label">ഫോർവേഡ് ചെയ്യുക (Forward)</span>
+                </button>
+                <button type="button" class="chat-menu-item" onclick="triggerMenuAction('copy')">
+                    <span class="chat-menu-icon">📋</span>
+                    <span class="chat-menu-label">കോപ്പി ചെയ്യുക (Copy)</span>
+                </button>
+                <button type="button" class="chat-menu-item chat-menu-item-danger" onclick="triggerMenuAction('delete')">
+                    <span class="chat-menu-icon">🗑️</span>
+                    <span class="chat-menu-label">ഡിലീറ്റ് ചെയ്യുക (Delete)</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: FORWARD MESSAGE (WHATSAPP-STYLE CONTACT CHOOSER)        -->
+    <!-- ============================================================== -->
+    <div id="modal-forward-chat-message" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-forward-chat-message')" style="display:none;z-index:999999;align-items:center;justify-content:center;background:rgba(15,23,42,0.65)!important">
+        <div style="width:90%;max-width:360px;background:#FFFFFF;border-radius:24px;padding:20px;box-shadow:0 25px 60px rgba(0,0,0,0.35);display:flex;flex-direction:column;max-height:80vh">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                <div style="display:flex;align-items:center;gap:8px">
+                    <span style="font-size:20px">⏩</span>
+                    <h3 style="font-size:16px;font-weight:900;color:#0F172A;margin:0">സന്ദേശം ഫോർവേഡ് ചെയ്യുക</h3>
+                </div>
+                <button type="button" onclick="closeModal('modal-forward-chat-message')" style="background:none;border:none;font-size:18px;color:#64748B;cursor:pointer">✕</button>
+            </div>
+            <p id="forwardMsgPreviewSnippet" style="font-size:12px;color:#64748B;margin:0 0 12px;padding:8px 10px;background:#F8FAFC;border-radius:10px;border-left:3px solid #6366F1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">...</p>
+            <input type="text" id="forwardSearchInput" placeholder="കോൺടാക്റ്റുകൾ തിരയുക..." oninput="filterForwardContacts(this.value)"
+                style="width:100%;padding:9px 12px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13px;margin-bottom:10px;box-sizing:border-box">
+            <div id="forwardContactsList" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px;max-height:280px">
+                <!-- Populated by JS -->
             </div>
         </div>
     </div>
