@@ -600,12 +600,40 @@
                             <div style="font-size:10.5px;color:#991B1B;font-weight:700;margin-top:2px">സഹായം ചോദിക്കാം ➔</div>
                         </div>
 
-                        <!-- BUTTON 2: ഞാൻ സഹായിക്കാം (സഹായങ്ങൾ നൽകാൻ) -->
-                        <div onclick="setNearbyCategory('help')"
-                            style="background:linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);border:1.5px solid #86EFAC;border-radius:14px;padding:12px 10px;cursor:pointer;text-align:center;box-shadow:0 2px 8px rgba(16,185,129,0.08)">
+                        <!-- BUTTON 2: ഞാൻ സഹായിക്കാം (സന്നദ്ധ സേവകൻ) -->
+                        <div onclick="openVolunteerHelperModal()" id="btnIAmReadyToHelpCard"
+                            style="background:linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);border:1.5px solid #86EFAC;border-radius:14px;padding:12px 10px;cursor:pointer;text-align:center;box-shadow:0 2px 8px rgba(16,185,129,0.08);position:relative">
                             <div style="font-size:24px;margin-bottom:4px">🤝</div>
                             <div style="font-size:13px;font-weight:800;color:#047857">ഞാൻ സഹായിക്കാം</div>
-                            <div style="font-size:10.5px;color:#065F46;font-weight:700;margin-top:2px">ആവശ്യങ്ങൾ കാണാം ➔</div>
+                            <div id="volunteerCardStatusBadge" style="font-size:10px;color:#065F46;font-weight:800;margin-top:3px;display:inline-flex;align-items:center;gap:3px;background:rgba(5,150,105,0.12);padding:2px 8px;border-radius:10px">
+                                <span>സന്നദ്ധ സേവകൻ</span>
+                                <span id="volunteerCardTickIcon">⚪</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VOLUNTEER HELPER INTERACTIVE SWITCH BANNER -->
+                    <div id="volunteerHelperBanner" style="margin:2px 16px 8px;padding:12px 14px;background:linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);border:1.5px solid #86EFAC;border-radius:16px;box-shadow:0 2px 8px rgba(16,185,129,0.08)">
+                        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+                            <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1">
+                                <div style="width:36px;height:36px;border-radius:12px;background:#FFFFFF;border:1.5px solid #A7F3D0;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;box-shadow:0 2px 6px rgba(16,185,129,0.12)">
+                                    🤝
+                                </div>
+                                <div style="min-width:0;flex:1">
+                                    <div style="font-size:12.5px;font-weight:900;color:#064E3B;letter-spacing:-0.2px;line-height:1.2">ഏത് സഹായത്തിനും ഞാൻ തയ്യാറാണ്</div>
+                                    <div id="volunteerBannerStatusText" style="font-size:10.5px;font-weight:800;color:#059669;margin-top:2px">
+                                        ⚪ ഓഫാണ് (ടിക്ക് ചെയ്താൽ സന്നദ്ധനാകാം)
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Switch Toggle -->
+                            <label class="volunteer-switch">
+                                <input type="checkbox" id="volunteerBannerCheckbox" onchange="toggleReadyToHelpVolunteer(this.checked)">
+                                <span class="volunteer-slider"></span>
+                            </label>
+                        </div>
+                        <div style="font-size:10px;color:#065F46;margin-top:8px;line-height:1.4;background:rgba(255,255,255,0.7);padding:6px 10px;border-radius:10px;border:1px dashed #A7F3D0">
+                            💡 <strong>പ്രത്യേകത:</strong> ഇത് ഓൺ ആക്കിയവർക്ക് <strong>മാത്രമേ</strong> പരിസരത്തെ (1-5 km) അടിയന്തിര സഹായ അഭ്യർത്ഥനകൾ നോട്ടിഫിക്കേഷനായി വരൂ.
                         </div>
                     </div>
 
@@ -1205,10 +1233,13 @@
                                 <input type="file" id="profilePhotoDirectInput" accept="image/*" style="display:none"
                                     onchange="handleProfilePhotoUpload(event)">
                             </div>
-                            <div style="display:flex;gap:6px">
+                            <div style="display:flex;gap:6px;flex-wrap:wrap">
                                 <span id="profDisplayVerifiedBadge"
                                     style="background:#E0F2FE;color:#0284C7;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:800;display:inline-flex;align-items:center;gap:4px">✓
                                     തദ്ദേശവാസി</span>
+                                <span id="profVolunteerBadge"
+                                    style="display:none;background:#ECFDF5;color:#047857;border:1px solid #86EFAC;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:800;align-items:center;gap:4px">🤝
+                                    സന്നദ്ധ സേവകൻ</span>
                             </div>
                         </div>
 
@@ -4348,6 +4379,74 @@
                     <span>സഹായം ചോദിക്കാം (1-10km ചുറ്റളവിൽ)</span>
                 </button>
             </form>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: VOLUNTEER HELPER SETTINGS (ഞാൻ സഹായിക്കാം - സന്നദ്ധ സേവകൻ) -->
+    <!-- ============================================================== -->
+    <div id="modal-volunteer-helper" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-volunteer-helper')">
+        <div class="modal-sheet" style="max-height:90vh;overflow-y:auto">
+            <!-- Header -->
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <div style="display:flex;align-items:center;gap:10px">
+                    <div style="width:44px;height:44px;border-radius:14px;background:#ECFDF5;border:1.5px solid #86EFAC;display:flex;align-items:center;justify-content:center;font-size:24px">
+                        🤝
+                    </div>
+                    <div>
+                        <h3 style="margin:0;font-size:17.5px;font-weight:900;color:#064E3B">ഞാൻ സഹായിക്കാം</h3>
+                        <span style="font-size:11.5px;color:#059669;font-weight:800">സന്നദ്ധ സേവകൻ (Community Volunteer)</span>
+                    </div>
+                </div>
+                <button type="button" onclick="closeModal('modal-volunteer-helper')" class="modal-close-btn" title="ക്ലോസ്">✕</button>
+            </div>
+
+            <!-- Big Interactive Toggle Banner -->
+            <div style="background:linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);border:1.5px solid #86EFAC;border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 3px 10px rgba(16,185,129,0.1)">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+                    <div>
+                        <div style="font-size:14.5px;font-weight:900;color:#064E3B">ഏത് സഹായത്തിനും ഞാൻ തയ്യാറാണ്</div>
+                        <div id="volunteerModalStatusText" style="font-size:12px;font-weight:800;color:#047857;margin-top:4px">
+                            ⚪ ഇപ്പോൾ ഓഫ് ആണ് (ടിക്ക് ചെയ്യാം)
+                        </div>
+                    </div>
+                    <!-- Switch Toggle -->
+                    <label class="volunteer-switch">
+                        <input type="checkbox" id="volunteerModalCheckbox" onchange="toggleReadyToHelpVolunteer(this.checked)">
+                        <span class="volunteer-slider"></span>
+                    </label>
+                </div>
+                <p style="font-size:11.5px;color:#065F46;margin:12px 0 0;line-height:1.5;border-top:1px dashed #86EFAC;padding-top:10px">
+                    💡 <strong>ഇതിന്റെ പ്രവർത്തനം:</strong> ഈ ടിക്ക് ഓൺ ചെയ്യുന്ന സന്നദ്ധ പ്രവർത്തകർക്ക് <strong>മാത്രമേ</strong> നിങ്ങളുടെ പ്രദേശത്തെ (1-5 km) അടിയന്തിര സഹായ അഭ്യർത്ഥനകൾ പ്രത്യേക നോട്ടിഫിക്കേഷനായി വരൂ.
+                </p>
+            </div>
+
+            <!-- Category Checklist of Support -->
+            <div style="margin-bottom:16px">
+                <label style="font-size:12px;font-weight:800;color:#334155;display:block;margin-bottom:8px">നിങ്ങൾക്ക് ഏതെല്ലാം കാര്യങ്ങളിൽ സഹായിക്കാൻ താല്പര്യമുണ്ട്?</label>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="volunteerSupportChips">
+                    <div style="padding:10px 12px;background:#F8FAFC;border:1.5px solid #86EFAC;border-radius:12px;font-size:12px;font-weight:800;color:#064E3B;display:flex;align-items:center;gap:6px">
+                        <span>🚗</span> <span>വാഹനം / ലിഫ്റ്റ്</span>
+                    </div>
+                    <div style="padding:10px 12px;background:#F8FAFC;border:1.5px solid #86EFAC;border-radius:12px;font-size:12px;font-weight:800;color:#064E3B;display:flex;align-items:center;gap:6px">
+                        <span>💊</span> <span>അടിയന്തിര മരുന്ന്</span>
+                    </div>
+                    <div style="padding:10px 12px;background:#F8FAFC;border:1.5px solid #86EFAC;border-radius:12px;font-size:12px;font-weight:800;color:#064E3B;display:flex;align-items:center;gap:6px">
+                        <span>🩸</span> <span>രക്തദാനം</span>
+                    </div>
+                    <div style="padding:10px 12px;background:#F8FAFC;border:1.5px solid #86EFAC;border-radius:12px;font-size:12px;font-weight:800;color:#064E3B;display:flex;align-items:center;gap:6px">
+                        <span>📦</span> <span>വീട്ടുസഹായം</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display:flex;gap:10px">
+                <button type="button" onclick="closeModal('modal-volunteer-helper'); navTo('nearby');"
+                    style="flex:1;background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#fff;border:none;padding:13px;border-radius:12px;font-weight:800;font-size:14.5px;cursor:pointer;box-shadow:0 3px 10px rgba(5,150,105,0.25);display:flex;align-items:center;justify-content:center;gap:6px">
+                    <span>🤝</span>
+                    <span>സഹായ ആവശ്യങ്ങൾ കാണാം</span>
+                </button>
+            </div>
         </div>
     </div>
 

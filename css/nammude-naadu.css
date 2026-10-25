@@ -4821,3 +4821,65 @@ input, textarea, select {
   pointer-events: auto !important;
   touch-action: manipulation !important;
 }
+
+/* Volunteer Helper Toggle & Alert Banner Styles */
+.volunteer-switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 26px;
+  flex-shrink: 0;
+}
+.volunteer-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.volunteer-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #CBD5E1;
+  transition: 0.25s ease;
+  border-radius: 34px;
+}
+.volunteer-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.25s ease;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.volunteer-switch input:checked + .volunteer-slider {
+  background-color: #059669;
+}
+.volunteer-switch input:checked + .volunteer-slider:before {
+  transform: translateX(22px);
+}
+
+/* Slide-in Top Help Alert Banner */
+.community-help-top-banner {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top, 12px));
+  left: 14px;
+  right: 14px;
+  max-width: 480px;
+  margin: 0 auto;
+  background: #FFFFFF;
+  border-radius: 16px;
+  border: 1.5px solid #FCA5A5;
+  box-shadow: 0 10px 30px rgba(220, 38, 38, 0.22);
+  padding: 12px 14px;
+  z-index: 9999999;
+  display: none;
+  animation: slideDownAlert 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes slideDownAlert {
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

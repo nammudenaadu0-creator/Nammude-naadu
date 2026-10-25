@@ -237,6 +237,7 @@
       cover: localStorage.getItem('nn_user_cover') || 'img/kerala-splash.jpg',
       bio: localStorage.getItem('nn_user_bio') || 'നമ്മുടെ നാട് കൂട്ടായ്മ 🌿',
       isDonor: localStorage.getItem('nn_user_is_donor') === 'true',
+      isReadyToHelp: localStorage.getItem('nn_user_ready_to_help') === 'true',
       isCustomized: !!savedUserName
     },
     location: {
@@ -9107,6 +9108,9 @@
   window.clearNearbySearch = clearNearbySearch;
 
   function renderNearbyScreen() {
+    if (typeof updateVolunteerHelperUI === 'function') {
+      updateVolunteerHelperUI();
+    }
     const container = document.getElementById('nearbyPeopleListContainer');
     if (!container) return;
 
@@ -9283,9 +9287,9 @@
                 <span>വിളിക്കാം</span>
               </a>
             ` : ''}
-            <button type="button" onclick="openNearbyPersonChat(${idx})" style="flex:1.3;display:flex;align-items:center;justify-content:center;gap:5px;background:linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);color:#fff;border:none;padding:8px 10px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 2px 4px rgba(220,38,38,0.2)">
-              <span>💬</span>
-              <span>സഹായിക്കാം (മെസ്സേജ്)</span>
+            <button type="button" onclick="openNearbyPersonChat(${idx})" style="flex:1.3;display:flex;align-items:center;justify-content:center;gap:5px;background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#fff;border:none;padding:8px 10px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 2px 6px rgba(5,150,105,0.25)">
+              <span>🤝</span>
+              <span>ഞാൻ സഹായിക്കാം</span>
             </button>
           </div>
         </div>
@@ -9459,6 +9463,11 @@
       });
     }
 
+    // Broadcast targeted alert to volunteer helpers network
+    if (typeof broadcastNearbyHelpToVolunteers === 'function') {
+      broadcastNearbyHelpToVolunteers(newHelp);
+    }
+
     closeModal('modal-nearby-help-request');
     if (noteInput) noteInput.value = '';
 
@@ -9473,6 +9482,228 @@
     }
   }
   window.submitNearbyHelpRequest = submitNearbyHelpRequest;
+
+  // ==============================================================
+  // COMMUNITY VOLUNTEER HELPER NETWORK (ഞാൻ സഹായിക്കാം - സന്നദ്ധ സേവകൻ)
+  // ==============================================================
+  function toggleReadyToHelpVolunteer(explicitState) {
+    if (!APP_STATE.currentUser) APP_STATE.currentUser = {};
+    const newState = (typeof explicitState === 'boolean')
+      ? explicitState
+      : !APP_STATE.currentUser.isReadyToHelp;
+
+    APP_STATE.currentUser.isReadyToHelp = newState;
+    try {
+      localStorage.setItem('nn_user_ready_to_help', newState ? 'true' : 'false');
+    } catch (_) {}
+
+    // Persist to Supabase profiles table
+    if (window.NN_SUPABASE && window.NN_SUPABASE.client && APP_STATE.currentUser.phone) {
+      const cleanPhone = String(APP_STATE.currentUser.phone).replace(/\D/g, '').slice(-10);
+      if (cleanPhone) {
+        window.NN_SUPABASE.client
+          .from('profiles')
+          .update({ is_ready_to_help: newState })
+          .ilike('phone', `%${cleanPhone}%`)
+          .then(() => {})
+          .catch(() => {});
+      }
+    }
+
+    // Sound and UI feedback
+    if (newState) {
+      if (window.NN_FCM && typeof window.NN_FCM.promptPermission === 'function') {
+        window.NN_FCM.promptPermission();
+      }
+      playChatAudioEffect('received');
+      toast('🤝 അഭിനന്ദനങ്ങൾ! നിങ്ങൾ സന്നദ്ധ സേവകനായി രജിസ്റ്റർ ചെയ്തു. സമീപത്തെ സഹായ അഭ്യർത്ഥനകൾ നിങ്ങൾക്ക് ലഭിക്കും.');
+    } else {
+      toast('⚪ സന്നദ്ധ സേവകൻ ഓഫ് ആക്കി. ഇനി സഹായ അറിയിപ്പുകൾ ലഭിക്കില്ല.');
+    }
+
+    updateVolunteerHelperUI();
+  }
+  window.toggleReadyToHelpVolunteer = toggleReadyToHelpVolunteer;
+
+  function updateVolunteerHelperUI() {
+    const isReady = !!(APP_STATE.currentUser && APP_STATE.currentUser.isReadyToHelp);
+
+    // 1. Button 2 in Screen-Nearby (ഞാൻ സഹായിക്കാം)
+    const cardBadge = document.getElementById('volunteerCardStatusBadge');
+    if (cardBadge) {
+      if (isReady) {
+        cardBadge.style.background = '#ECFDF5';
+        cardBadge.style.color = '#047857';
+        cardBadge.innerHTML = '<span>സന്നദ്ധൻ</span> <span style="color:#059669">✅</span>';
+      } else {
+        cardBadge.style.background = 'rgba(5,150,105,0.12)';
+        cardBadge.style.color = '#065F46';
+        cardBadge.innerHTML = '<span>സന്നദ്ധ സേവകൻ</span> <span>⚪</span>';
+      }
+    }
+
+    // 2. Banner in Screen-Nearby
+    const bannerCheckbox = document.getElementById('volunteerBannerCheckbox');
+    if (bannerCheckbox) bannerCheckbox.checked = isReady;
+
+    const bannerStatusText = document.getElementById('volunteerBannerStatusText');
+    if (bannerStatusText) {
+      bannerStatusText.innerHTML = isReady
+        ? '🟢 <strong>സന്നദ്ധ സേവകൻ സജീവം (Active)</strong> &bull; നോട്ടിഫിക്കേഷനുകൾ ലഭിക്കും'
+        : '⚪ ഓഫ് ആണ് (ടിക്ക് ചെയ്താൽ സന്നദ്ധനാകാം)';
+      bannerStatusText.style.color = isReady ? '#047857' : '#64748B';
+    }
+
+    // 3. Modal Checkbox & Status
+    const modalCheckbox = document.getElementById('volunteerModalCheckbox');
+    if (modalCheckbox) modalCheckbox.checked = isReady;
+
+    const modalStatusText = document.getElementById('volunteerModalStatusText');
+    if (modalStatusText) {
+      modalStatusText.innerHTML = isReady
+        ? '🟢 <strong>നിങ്ങൾ ഇപ്പോൾ സന്നദ്ധ സേവകനാണ് (Active)</strong>'
+        : '⚪ ഇപ്പോൾ ഓഫ് ആണ് (ടിക്ക് ചെയ്യാം)';
+      modalStatusText.style.color = isReady ? '#047857' : '#64748B';
+    }
+
+    // 4. Profile Screen Badge
+    const profBadge = document.getElementById('profVolunteerBadge');
+    if (profBadge) {
+      profBadge.style.display = isReady ? 'inline-block' : 'none';
+    }
+  }
+  window.updateVolunteerHelperUI = updateVolunteerHelperUI;
+
+  function openVolunteerHelperModal() {
+    updateVolunteerHelperUI();
+    openModal('modal-volunteer-helper');
+  }
+  window.openVolunteerHelperModal = openVolunteerHelperModal;
+
+  let _helpAlertBannerTimer = null;
+  function showCommunityHelpAlertBanner(help) {
+    if (!help) return;
+    let banner = document.getElementById('communityHelpTopBanner');
+    if (!banner) {
+      banner = document.createElement('div');
+      banner.id = 'communityHelpTopBanner';
+      banner.className = 'community-help-top-banner';
+      document.body.appendChild(banner);
+    }
+
+    banner.innerHTML = `
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+        <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1">
+          <div style="width:38px;height:38px;border-radius:12px;background:#FEE2E2;border:1px solid #FCA5A5;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">
+            🚨
+          </div>
+          <div style="min-width:0;flex:1">
+            <div style="display:flex;align-items:center;gap:6px">
+              <span style="font-size:13px;font-weight:900;color:#991B1B">സമീപത്ത് സഹായം വേണം!</span>
+              <span style="font-size:10px;font-weight:800;background:#FEF2F2;color:#DC2626;padding:1px 6px;border-radius:6px;border:1px solid #FECACA">അടിയന്തിരം</span>
+            </div>
+            <div style="font-size:11.5px;color:#1E293B;font-weight:700;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+              "${escapeHtml(help.description || '')}"
+            </div>
+          </div>
+        </div>
+        <button type="button" onclick="dismissCommunityHelpAlertBanner()" style="background:none;border:none;color:#94A3B8;font-size:14px;cursor:pointer;padding:2px">✕</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button type="button" onclick="dismissCommunityHelpAlertBanner(); navTo('nearby');" style="flex:1;background:#F1F5F9;border:1px solid #CBD5E1;color:#334155;padding:7px;border-radius:10px;font-size:11.5px;font-weight:800;cursor:pointer">
+          കാണുക ➔
+        </button>
+        <button type="button" onclick="dismissCommunityHelpAlertBanner(); openChatModal('${escapeHtml(help.userName || 'സുഹൃത്ത്').replace(/'/g, "\\'")}', '${help.phone || ''}', '${help.userAvatar || ''}', 'ഹലോ, നിങ്ങളുടെ സഹായ അഭ്യർത്ഥന കണ്ടു. ഞാൻ സഹായിക്കാൻ തയ്യാറാണ്!', '${help.userId || ''}');" style="flex:1.2;background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#fff;border:none;padding:7px;border-radius:10px;font-size:11.5px;font-weight:800;cursor:pointer;box-shadow:0 2px 6px rgba(5,150,105,0.25)">
+          🤝 ഞാൻ സഹായിക്കാം
+        </button>
+      </div>
+    `;
+
+    banner.style.display = 'block';
+    clearTimeout(_helpAlertBannerTimer);
+    _helpAlertBannerTimer = setTimeout(() => {
+      dismissCommunityHelpAlertBanner();
+    }, 12000);
+  }
+  window.showCommunityHelpAlertBanner = showCommunityHelpAlertBanner;
+
+  function dismissCommunityHelpAlertBanner() {
+    clearTimeout(_helpAlertBannerTimer);
+    const banner = document.getElementById('communityHelpTopBanner');
+    if (banner) {
+      banner.style.display = 'none';
+    }
+  }
+  window.dismissCommunityHelpAlertBanner = dismissCommunityHelpAlertBanner;
+
+  function broadcastNearbyHelpToVolunteers(newHelp) {
+    if (!newHelp) return;
+    try {
+      if (window.NN_SUPABASE && window.NN_SUPABASE.client) {
+        const channel = window.NN_SUPABASE.client.channel('nammude_help_alerts', {
+          config: { broadcast: { ack: false } }
+        });
+        channel.subscribe(status => {
+          if (status === 'SUBSCRIBED') {
+            channel.send({
+              type: 'broadcast',
+              event: 'nearby_help_posted',
+              payload: newHelp
+            });
+          }
+        });
+      }
+    } catch (_) {}
+  }
+  window.broadcastNearbyHelpToVolunteers = broadcastNearbyHelpToVolunteers;
+
+  function initNearbyVolunteerHelpListener() {
+    if (!window.NN_SUPABASE || !window.NN_SUPABASE.client) return;
+    try {
+      const channel = window.NN_SUPABASE.client.channel('nammude_help_alerts');
+      channel.on('broadcast', { event: 'nearby_help_posted' }, payload => {
+        const help = payload.payload;
+        if (!help || !help.id) return;
+
+        // TARGETING RULE: Only users who turned ON "Ready to Help" receive this!
+        const isHelper = !!(APP_STATE.currentUser && APP_STATE.currentUser.isReadyToHelp);
+        if (!isHelper) return;
+
+        // Do not alert the author themselves
+        const myPhone = normalizePhone(APP_STATE.currentUser?.phone);
+        const helpPhone = normalizePhone(help.phone);
+        if (myPhone && helpPhone && myPhone === helpPhone) return;
+
+        // Check radius distance
+        const dist = getItemDistanceKm(help, APP_STATE.location.lat, APP_STATE.location.lon);
+        const maxDist = help.radius || 5;
+        if (dist > maxDist) return;
+
+        // Trigger Local Push Notification with sound and channel
+        if (typeof window.showLocalNotification === 'function') {
+          window.showLocalNotification(
+            '🚨 അടിയന്തിര സഹായം ആവശ്യമുണ്ട്!',
+            `${help.userName}: "${help.description}" (${Math.round(dist * 10) / 10} km അകലെ)`,
+            { screen: 'nearby', helpId: help.id }
+          );
+        }
+
+        // Sound chime & In-app Banner
+        playChatAudioEffect('received');
+        showCommunityHelpAlertBanner(help);
+
+        // Add to local state and re-render if on nearby screen
+        if (!APP_STATE.nearbyHelpRequests) APP_STATE.nearbyHelpRequests = [];
+        if (!APP_STATE.nearbyHelpRequests.some(h => h.id === help.id)) {
+          APP_STATE.nearbyHelpRequests.unshift(help);
+          if (APP_STATE.currentScreen === 'nearby') {
+            renderNearbyScreen();
+          }
+        }
+      }).subscribe();
+    } catch (_) {}
+  }
+  window.initNearbyVolunteerHelpListener = initNearbyVolunteerHelpListener;
 
   // ==============================================================
   // 15. PROFILE SCREEN & PERSONAL DASHBOARD (FACEBOOK STYLE)
@@ -10115,6 +10346,12 @@
       verifiedBadge.textContent = 'തദ്ദേശവാസി (Verified ✓)';
       verifiedBadge.style.background = '#E0F2FE';
       verifiedBadge.style.color = '#0284C7';
+    }
+
+    const volunteerBadgeEl = document.getElementById('profVolunteerBadge');
+    if (volunteerBadgeEl) {
+      const isVol = isOther ? !!(user.isReadyToHelp || user.is_ready_to_help) : !!(APP_STATE.currentUser && APP_STATE.currentUser.isReadyToHelp);
+      volunteerBadgeEl.style.display = isVol ? 'inline-flex' : 'none';
     }
 
     if (avatarEl) avatarEl.src = currentAvatar;
@@ -11987,6 +12224,8 @@
     updateChatBadgeCounter();
     renderHomeScreen();
     renderCommunityFeed();
+    if (typeof updateVolunteerHelperUI === 'function') updateVolunteerHelperUI();
+    if (typeof initNearbyVolunteerHelpListener === 'function') initNearbyVolunteerHelpListener();
 
     // Mandatory Registration Gate on App Launch
     setTimeout(() => {
