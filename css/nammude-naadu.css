@@ -5283,3 +5283,54 @@ input, textarea, select {
   0% { transform: scale(1); }
   100% { transform: scale(1.025); }
 }
+
+/* ==================================================================== */
+/* EXTREME PERFORMANCE & 120HZ VIRTUALIZATION ENGINE                     */
+/* ==================================================================== */
+/* 1. Chromium DOM Virtualization: Skips layout/paint of offscreen cards */
+.feed-post-card,
+.job-card-modern,
+.rental-card-modern,
+.blood-donor-card,
+.home-top-provider-card,
+.nearby-person-card,
+.service-squircle-3d,
+.chat-inbox-item,
+.service-list-item,
+.emergency-card-modern,
+.business-directory-card {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 320px;
+}
+
+/* 2. Hardware Accelerated Smooth Scrolling for list containers */
+.fb-feed-stream,
+#feedPostsContainer,
+#allChatsList,
+.chat-thread-box,
+#homeServicesGrid,
+.emergency-grid-modern,
+.jobs-list-modern,
+.rentals-list-modern {
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior-y: contain !important;
+  transform: translateZ(0);
+  will-change: scroll-position;
+}
+
+/* 3. High-Speed Image Decoding and Contrast Optimization */
+.feed-post-img,
+.chat-image-bubble img,
+.chat-bubble-avatar,
+.chat-recipient-avatar,
+.service-provider-avatar,
+.nearby-user-avatar {
+  image-rendering: -webkit-optimize-contrast;
+  content-visibility: auto;
+}
+
+/* 4. Text Rendering Speed Optimization */
+body, button, input, textarea, select {
+  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: antialiased;
+}

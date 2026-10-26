@@ -60,6 +60,62 @@
   window.escapeHtml = escapeHtml;
 
   // ==============================================================
+  // ASYNCHRONOUS HIGH-SPEED INDEXEDDB STORAGE (0ms Main-Thread Lag)
+  // ==============================================================
+  const NN_IDB = (function() {
+    let _dbPromise = null;
+    function getDB() {
+      if (_dbPromise) return _dbPromise;
+      if (typeof window === 'undefined' || typeof indexedDB === 'undefined') {
+        return Promise.resolve(null);
+      }
+      _dbPromise = new Promise((resolve) => {
+        try {
+          const req = indexedDB.open('nammude_naadu_speed_cache', 1);
+          req.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains('keyval')) {
+              db.createObjectStore('keyval');
+            }
+          };
+          req.onsuccess = (e) => resolve(e.target.result);
+          req.onerror = () => resolve(null);
+        } catch (_) {
+          resolve(null);
+        }
+      });
+      return _dbPromise;
+    }
+
+    async function set(key, val) {
+      try {
+        const db = await getDB();
+        if (!db) return;
+        const tx = db.transaction('keyval', 'readwrite');
+        tx.objectStore('keyval').put(val, key);
+      } catch (_) {}
+    }
+
+    async function get(key) {
+      try {
+        const db = await getDB();
+        if (!db) return null;
+        return new Promise((resolve) => {
+          const tx = db.transaction('keyval', 'readonly');
+          const req = tx.objectStore('keyval').get(key);
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => resolve(null);
+        });
+      } catch (_) {
+        return null;
+      }
+    }
+
+    return { get, set };
+  })();
+  window.NN_IDB = NN_IDB;
+
+  // ==============================================================
   // COMPLETE APP RESET & FRESH START (Wipe all registered profiles)
   // ==============================================================
   function resetAppToFreshState(reload) {
@@ -780,6 +836,22 @@
         localStorage.setItem('nn_chats_meta', JSON.stringify(APP_STATE.chatMeta));
       } catch (_) {}
 
+      // High-Speed IndexedDB Background Hydration (0ms Lag, Deep Cache)
+      if (typeof NN_IDB !== 'undefined') {
+        NN_IDB.get('nn_chats_full').then(idbChats => {
+          if (idbChats && typeof idbChats === 'object') {
+            Object.keys(idbChats).forEach(k => {
+              if (Array.isArray(idbChats[k])) {
+                if (!APP_STATE.chats[k] || APP_STATE.chats[k].length < idbChats[k].length) {
+                  APP_STATE.chats[k] = idbChats[k];
+                }
+              }
+            });
+            if (typeof updateChatBadgeCounter === 'function') updateChatBadgeCounter();
+          }
+        }).catch(() => {});
+      }
+
       const storedServiceReqs = localStorage.getItem('nn_service_requests');
       APP_STATE.serviceRequests = storedServiceReqs ? JSON.parse(storedServiceReqs) : [];
 
@@ -902,6 +974,10 @@
         }
       } catch (_) {}
     }
+    // High-Speed IndexedDB Async Backup (Uncapped 0ms lag)
+    if (typeof NN_IDB !== 'undefined' && Array.isArray(APP_STATE.posts)) {
+      NN_IDB.set('nn_posts_full', APP_STATE.posts);
+    }
   }
   window.savePosts = savePosts;
 
@@ -917,6 +993,10 @@
           localStorage.setItem('nn_services', JSON.stringify(APP_STATE.services.slice(0, 50)));
         }
       } catch (_) {}
+    }
+    // High-Speed IndexedDB Async Backup
+    if (typeof NN_IDB !== 'undefined' && Array.isArray(APP_STATE.services)) {
+      NN_IDB.set('nn_services_full', APP_STATE.services);
     }
   }
   window.saveServices = saveServices;
@@ -949,6 +1029,11 @@
           localStorage.setItem('nn_chats_store', JSON.stringify(APP_STATE.chats));
         }
       } catch (_) {}
+    }
+    // High-Speed IndexedDB Async Backup (Complete threads, 0ms UI lock)
+    if (typeof NN_IDB !== 'undefined' && APP_STATE.chats) {
+      NN_IDB.set('nn_chats_full', APP_STATE.chats);
+      if (APP_STATE.chatMeta) NN_IDB.set('nn_chats_meta_full', APP_STATE.chatMeta);
     }
   }
 

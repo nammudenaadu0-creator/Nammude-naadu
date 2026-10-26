@@ -11,6 +11,8 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.graphics.Color;
 import android.webkit.WebView;
+import android.webkit.WebSettings;
+import android.view.View;
 import com.getcapacitor.BridgeActivity;
 
 public class MainActivity extends BridgeActivity {
@@ -19,6 +21,31 @@ public class MainActivity extends BridgeActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         createNotificationChannels();
+        configureWebViewPerformance();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        configureWebViewPerformance();
+    }
+
+    private void configureWebViewPerformance() {
+        try {
+            if (getBridge() != null && getBridge().getWebView() != null) {
+                WebView webView = getBridge().getWebView();
+                WebSettings settings = webView.getSettings();
+                settings.setDomStorageEnabled(true);
+                settings.setDatabaseEnabled(true);
+                settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    settings.setOffscreenPreRaster(true);
+                }
+                webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+                webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+                webView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+            }
+        } catch (Exception ignored) {}
     }
 
     private void createNotificationChannels() {
