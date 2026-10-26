@@ -857,9 +857,9 @@
     // 1. SENDER ECHO CHECK: If current user sent this, NEVER process as incoming 'them' message!
     const isSenderEcho = Boolean(
       (msgObj.sessionId && msgObj.sessionId === SESSION_CLIENT_ID) ||
-      (myId && senderId && myId === senderId) ||
-      (myPhone && senderPhone && myPhone === senderPhone) ||
-      (myEmail && senderEmail && myEmail === senderEmail)
+      (myId && senderId && myId === senderId && !myId.startsWith('usr_me_')) ||
+      (myPhone && senderPhone && myPhone.length === 10 && senderPhone.length === 10 && myPhone === senderPhone) ||
+      (myEmail && senderEmail && myEmail.length > 3 && myEmail === senderEmail)
     );
     if (isSenderEcho) {
       // Message was sent by me - ensure local status is 'sent' / 'delivered' and NEVER insert as 'them'
@@ -873,7 +873,7 @@
       return;
     }
 
-    // 2. RECIPIENT VERIFICATION: Strictly ensure ONLY the intended recipient receives this message!
+    // 2. RECIPIENT VERIFICATION: Ensure the intended recipient receives this message!
     const recPhone = (metaObj && metaObj.recipientPhone ? String(metaObj.recipientPhone).replace(/\D/g, '').slice(-10) : '') ||
                     (msgObj.recipientPhone ? String(msgObj.recipientPhone).replace(/\D/g, '').slice(-10) : '');
     const recId = (metaObj && metaObj.recipientId ? metaObj.recipientId : '') || (msgObj.recipientId || '');
@@ -882,24 +882,42 @@
 
     const phones = String(chatKey).match(/\d{10}/g) || [];
     const isRecPhoneMatch = Boolean(myPhone && recPhone && myPhone.length === 10 && myPhone === recPhone);
-    const isPhoneInKeyMatch = Boolean(myPhone && myPhone.length === 10 && phones.length >= 2 && phones.includes(myPhone));
-    const isRecIdMatch = Boolean(myId && recId && myId === recId);
+    const isPhoneInKeyMatch = Boolean(myPhone && myPhone.length === 10 && (phones.includes(myPhone) || String(chatKey).includes(myPhone)));
+    const isRecIdMatch = Boolean(myId && recId && (myId === recId || myId.replace(/\D/g, '') === recId.replace(/\D/g, '')));
     const isRecEmailMatch = Boolean(myEmail && recEmail && myEmail.includes('@') && myEmail === recEmail);
 
     const cleanMyId = myId ? myId.replace(/[^a-zA-Z0-9]/g, '') : '';
-    const keyParts = String(chatKey).replace(/^chat_/, '').split('_');
-    const isIdInKeyMatch = Boolean(cleanMyId && keyParts.some(p => p === cleanMyId || (myId && p === myId)));
+    const isIdInKeyMatch = Boolean(cleanMyId && (String(chatKey).includes(cleanMyId) || (myId && String(chatKey).includes(myId))));
 
-    // STRICT PRIVACY: The message MUST be addressed to this user. Otherwise DISCARD completely!
-    const isForMe = isRecPhoneMatch || isPhoneInKeyMatch || isRecIdMatch || isRecEmailMatch || isIdInKeyMatch;
+    // Active Chat or Existing Chat thread match: If user currently has this thread open or in chat list
+    const activeRecipient = (typeof APP_STATE !== 'undefined') ? APP_STATE.activeChatRecipient : null;
+    const activeKey = activeRecipient ? activeRecipient.key : '';
+    const activePhone = (activeRecipient && activeRecipient.phone) ? String(activeRecipient.phone).replace(/\D/g, '').slice(-10) : '';
+    const activeId = activeRecipient ? String(activeRecipient.id || '') : '';
+
+    const isActiveThreadMatch = Boolean(
+      activeKey && (
+        activeKey === chatKey ||
+        (phones.length >= 2 && String(activeKey).match(/\d{10}/g)?.sort().join('_') === phones.sort().join('_')) ||
+        (activePhone && senderPhone && activePhone === senderPhone) ||
+        (activeId && senderId && activeId === senderId)
+      )
+    );
+
+    const isMetaThreadMatch = Boolean(
+      typeof APP_STATE !== 'undefined' && APP_STATE.chatMeta && (
+        APP_STATE.chatMeta[chatKey] ||
+        (senderPhone && Object.values(APP_STATE.chatMeta).some(m => m && m.phone && String(m.phone).replace(/\D/g, '').slice(-10) === senderPhone))
+      )
+    );
+
+    // Guaranteed Acceptance: If message belongs to user's phone, ID, open thread, or active contact
+    const isForMe = isRecPhoneMatch || isPhoneInKeyMatch || isRecIdMatch || isRecEmailMatch || isIdInKeyMatch || isActiveThreadMatch || isMetaThreadMatch;
     if (!isForMe) {
       return;
     }
 
-    // 3. MULTI-CHANNEL DEDUPLICATION: Drop duplicate message transmissions (direct thread, global broadcast, db change)
-    const cleanText = String(msgObj.text || '').trim();
-    const cleanSender = String(msgObj.senderPhone || msgObj.senderId || '').replace(/\D/g, '').slice(-10) || String(msgObj.senderName || '');
-    const contentFingerprint = `${cleanSender}:${cleanText}`;
+    // 3. MULTI-CHANNEL DEDUPLICATION: Message ID-based deduplication (NO text fingerprinting so consecutive messages work)
     const uniqueMsgId = msgObj.id ? String(msgObj.id) : null;
     const now = Date.now();
 
@@ -909,15 +927,8 @@
         return;
       }
     }
-    if (contentFingerprint && _processedIncomingMessageIds.has(contentFingerprint)) {
-      const lastSeen = _processedIncomingMessageIds.get(contentFingerprint);
-      if (now - lastSeen < 45000) {
-        return;
-      }
-    }
     if (uniqueMsgId) _processedIncomingMessageIds.set(uniqueMsgId, now);
-    if (contentFingerprint) _processedIncomingMessageIds.set(contentFingerprint, now);
-    if (_processedIncomingMessageIds.size > 200) {
+    if (_processedIncomingMessageIds.size > 300) {
       for (const [k, v] of _processedIncomingMessageIds.entries()) {
         if (now - v > 120000) _processedIncomingMessageIds.delete(k);
       }
@@ -930,14 +941,7 @@
       if (!APP_STATE.chats[chatKey]) APP_STATE.chats[chatKey] = [];
 
       const exists = APP_STATE.chats[chatKey].some(m => {
-        if (m.id && msgObj.id && m.id === msgObj.id) return true;
-        const mText = String(m.text || '').trim();
-        if (mText && mText === cleanText) {
-          const mTime = Number(m.timestamp) || 0;
-          const incomingTime = Number(msgObj.timestamp) || 0;
-          if (mTime && incomingTime && Math.abs(mTime - incomingTime) < 45000) return true;
-          if (!mTime || !incomingTime) return true;
-        }
+        if (m.id && msgObj.id && String(m.id) === String(msgObj.id)) return true;
         return false;
       });
       if (!exists) {
@@ -1462,44 +1466,59 @@
     }
 
     // Ensure main chat channel is active
-    if (!chatChannel || chatChannel.state !== 'joined') {
+    if (!chatChannel) {
       try { setupRealtimeChannels(); } catch (_) {}
     }
 
-    // Direct peer thread broadcast (sub-50ms peer-to-peer delivery to open chat window)
+    // Direct peer thread broadcast (if open direct channel is subscribed)
     if (client) {
       try {
-        const directThread = client.channel('th_' + chatKey);
-        directThread.send({
-          type: 'broadcast',
-          event: 'chat_message',
-          payload: { chatKey, msgObj, metaObj }
-        }).catch(() => {});
-
-        // If chatKey contains two phones, also broadcast on sorted canonical key
-        const phones = String(chatKey).match(/\d{10}/g) || [];
-        if (phones.length >= 2) {
-          const sortedKey = 'chat_' + [...phones].sort().join('_');
-          if (sortedKey !== chatKey) {
-            const sortedThread = client.channel('th_' + sortedKey);
-            sortedThread.send({
-              type: 'broadcast',
-              event: 'chat_message',
-              payload: { chatKey: sortedKey, msgObj, metaObj }
-            }).catch(() => {});
-          }
+        const thChannels = client.getChannels ? client.getChannels() : [];
+        const openTh = thChannels.find(c => c && c.topic === 'realtime:th_' + chatKey);
+        if (openTh && openTh.state === 'joined') {
+          openTh.send({
+            type: 'broadcast',
+            event: 'chat_message',
+            payload: { chatKey, msgObj, metaObj }
+          }).catch(() => {});
         }
       } catch (_) {}
     }
 
     // Parallel broadcast (sub-50ms) + persistent DB insert
-    const broadcastPromise = chatChannel
-      ? chatChannel.send({
+    let broadcastPromise = Promise.resolve();
+    if (chatChannel) {
+      if (chatChannel.state === 'joined') {
+        broadcastPromise = chatChannel.send({
           type: 'broadcast',
           event: 'chat_message',
           payload: { chatKey, msgObj, metaObj }
-        }).catch(err => console.warn('⚠️ [Supabase Chat Broadcast]', err.message))
-      : Promise.resolve();
+        }).catch(err => console.warn('⚠️ [Supabase Chat Broadcast]', err.message));
+      } else {
+        // Wait up to 1000ms if channel is completing handshake
+        broadcastPromise = new Promise(resolve => {
+          let done = false;
+          const timeout = setTimeout(() => {
+            if (!done) { done = true; resolve(); }
+          }, 1000);
+          const trySend = () => {
+            if (chatChannel && chatChannel.state === 'joined') {
+              clearTimeout(timeout);
+              if (!done) {
+                done = true;
+                chatChannel.send({
+                  type: 'broadcast',
+                  event: 'chat_message',
+                  payload: { chatKey, msgObj, metaObj }
+                }).catch(() => {}).finally(() => resolve());
+              }
+            }
+          };
+          if (chatChannel && chatChannel.state === 'joined') trySend();
+          else setTimeout(trySend, 250);
+        });
+      }
+    }
 
     const dbPromise = client
       ? client.from('messages').insert({
@@ -1509,13 +1528,13 @@
           sender_name: msgObj.senderName || '',
           sender_phone: msgObj.senderPhone || '',
           sender_avatar: msgObj.senderAvatar || '',
-          recipient_id: metaObj ? metaObj.recipientId : '',
-          recipient_name: metaObj ? metaObj.recipientName : '',
-          recipient_phone: metaObj ? metaObj.recipientPhone : '',
+          recipient_id: (metaObj && metaObj.recipientId) || (msgObj.recipientId || ''),
+          recipient_name: (metaObj && metaObj.recipientName) || (msgObj.recipientName || ''),
+          recipient_phone: (metaObj && metaObj.recipientPhone) || (msgObj.recipientPhone || ''),
           text: msgObj.text || '',
           time: msgObj.time || '',
-          created_at: msgObj.timestamp
-        }).catch(e => console.info('ℹ️ [Supabase Messages Table note]:', e.message))
+          created_at: Number(msgObj.timestamp) || Date.now()
+        }).catch(e => console.warn('⚠️ [Supabase Messages Table note]:', e.message))
       : Promise.resolve();
 
     await Promise.allSettled([broadcastPromise, dbPromise]);
@@ -1635,9 +1654,10 @@
     }
     chatSubscribers.get(chatKey).add(onMessagesUpdate);
 
-    // Direct sub-50ms peer thread channel
+    // Direct sub-50ms peer thread channel + instant Postgres changes listener
     let thChannel = null;
     let thCanonicalChannel = null;
+    let thDbChannel = null;
     if (client) {
       try {
         thChannel = client.channel('th_' + chatKey, { config: { broadcast: { self: false } } });
@@ -1661,6 +1681,18 @@
             thCanonicalChannel.subscribe();
           }
         }
+
+        // Realtime Postgres changes specifically for this thread
+        thDbChannel = client.channel('th_db_' + chatKey)
+          .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
+            if (payload && payload.new) {
+              const row = payload.new;
+              if (row.chat_key === chatKey || (phones.length >= 2 && phones.every(p => String(row.chat_key).includes(p)))) {
+                fetchThreadMessages();
+              }
+            }
+          })
+          .subscribe();
       } catch (_) {}
     }
 
@@ -1754,6 +1786,9 @@
       if (thCanonicalChannel) {
         try { thCanonicalChannel.unsubscribe(); } catch (_) {}
       }
+      if (thDbChannel) {
+        try { thDbChannel.unsubscribe(); } catch (_) {}
+      }
       document.removeEventListener('visibilitychange', onVisible);
       if (chatSubscribers.has(chatKey)) {
         chatSubscribers.get(chatKey).delete(onMessagesUpdate);
@@ -1784,6 +1819,7 @@
         .limit(80);
 
       if (!error && Array.isArray(data) && data.length > 0) {
+        let hasNew = false;
         data.forEach(row => {
           let key = row.chat_key;
           if (!key || !row.text || row.text === '[deleted]' || row.text === '[read_receipt]' || (!row.sender_name && !row.sender_phone)) return;
@@ -1808,18 +1844,9 @@
             if (!APP_STATE.chats) APP_STATE.chats = {};
             if (!APP_STATE.chats[key]) APP_STATE.chats[key] = [];
             const rowTime = parseTimestampSafe(row.created_at);
-            const rowText = String(row.text || '').trim();
-            const exists = APP_STATE.chats[key].some(m => {
-              if (m.id && row.id && m.id === row.id) return true;
-              const mText = String(m.text || '').trim();
-              if (mText && mText === rowText) {
-                const mTime = Number(m.timestamp) || 0;
-                if (mTime && rowTime && Math.abs(mTime - rowTime) < 45000) return true;
-                if (!mTime || !rowTime) return true;
-              }
-              return false;
-            });
+            const exists = APP_STATE.chats[key].some(m => m.id && row.id && String(m.id) === String(row.id));
             if (!exists) {
+              hasNew = true;
               const isMe = (row.sender_id === myId) || (myPhone && rowSenderPhone && myPhone === rowSenderPhone);
               APP_STATE.chats[key].push({
                 id: row.id,

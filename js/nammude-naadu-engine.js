@@ -3306,8 +3306,7 @@
               const lText = String(local.text || '').trim();
               if (lText && lText === mText) {
                 const lTime = Number(local.timestamp) || 0;
-                if (lTime && mTime && Math.abs(lTime - mTime) < 45000) return true;
-                if (!lTime || !mTime) return true;
+                if (lTime && mTime && lTime === mTime) return true;
               }
               return false;
             });
@@ -4445,9 +4444,8 @@
         if (prevText && prevText === text) {
           const prevTime = Number(prev.timestamp) || 0;
           const prevSender = prev.sender || (prev.senderPhone ? String(prev.senderPhone).replace(/\D/g, '').slice(-10) : '');
-          if (!sender || !prevSender || sender === prevSender) {
-            if (time && prevTime && Math.abs(time - prevTime) < 45000) return true;
-            if (!time || !prevTime) return true;
+          if (time && prevTime && time === prevTime && (!sender || !prevSender || sender === prevSender)) {
+            return true;
           }
         }
         return false;
@@ -11739,6 +11737,12 @@
     }
     if (typeof updateUserAuthUI === 'function') {
       updateUserAuthUI();
+    }
+    if (typeof window.updateClientCitizenHeaders === 'function') {
+      window.updateClientCitizenHeaders();
+    }
+    if (typeof window.NN_SUPABASE_SERVICES?.syncUserChats === 'function') {
+      window.NN_SUPABASE_SERVICES.syncUserChats();
     }
 
     // Instantly update all avatar images in DOM
