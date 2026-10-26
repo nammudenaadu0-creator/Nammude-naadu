@@ -998,10 +998,8 @@
           chatModalEl &&
           (chatModalEl.classList.contains('active') ||
            chatModalEl.style.display === 'flex' ||
-           chatModalEl.style.display === 'block') &&
-          getComputedStyle(chatModalEl).display !== 'none'
+           chatModalEl.style.display === 'block')
         );
-        const isAppInBackground = Boolean(typeof document !== 'undefined' && (document.hidden || document.visibilityState === 'hidden'));
 
         let isMatchingThread = false;
         if (activeRecipient && isChatModalOpen) {
@@ -1025,7 +1023,6 @@
         const isCurrentChatActive = Boolean(
           activeRecipient &&
           isChatModalOpen &&
-          !isAppInBackground &&
           isMatchingThread
         );
 
@@ -1041,17 +1038,16 @@
           }
 
           // 2. Instant Live UI Re-render in the open chat screen
-          if (typeof renderChatMessages === 'function') {
+          if (typeof window.renderChatMessages === 'function') {
+            try { window.renderChatMessages(); } catch (_) {}
+          } else if (typeof renderChatMessages === 'function') {
             try { renderChatMessages(); } catch (_) {}
           }
 
-          // 3. Auto-scroll to bottom only if user is already near the bottom
+          // 3. Auto-scroll to bottom of conversation
           const box = document.getElementById('chatMessagesBox');
           if (box) {
-            const isNearBottom = (box.scrollHeight - box.scrollTop - box.clientHeight) < 180;
-            if (isNearBottom) {
-              box.scrollTop = box.scrollHeight;
-            }
+            box.scrollTop = box.scrollHeight;
           }
 
           // 4. Play gentle WhatsApp incoming message chime
@@ -1080,10 +1076,14 @@
         }
 
         // ALWAYS update chat badge counter and live chat list screen whenever ANY message arrives
-        if (typeof updateChatBadgeCounter === 'function') {
+        if (typeof window.updateChatBadgeCounter === 'function') {
+          try { window.updateChatBadgeCounter(); } catch (_) {}
+        } else if (typeof updateChatBadgeCounter === 'function') {
           try { updateChatBadgeCounter(); } catch (_) {}
         }
-        if (typeof renderChatListScreen === 'function') {
+        if (typeof window.renderChatListScreen === 'function') {
+          try { window.renderChatListScreen(); } catch (_) {}
+        } else if (typeof renderChatListScreen === 'function') {
           try { renderChatListScreen(); } catch (_) {}
         }
       }

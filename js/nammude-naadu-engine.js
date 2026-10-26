@@ -4593,6 +4593,7 @@
     box.innerHTML = messagesHtml;
     box.scrollTop = box.scrollHeight;
   }
+  window.renderChatMessages = renderChatMessages;
 
   function sendChatMessage() {
     const input = document.getElementById('chatInputMessage');
