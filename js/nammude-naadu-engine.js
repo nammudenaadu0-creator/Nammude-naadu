@@ -3546,6 +3546,14 @@
     return d.toLocaleDateString('ml-IN', { day: 'numeric', month: 'short' });
   }
 
+  function formatChatMessageContent(rawText) {
+    if (!rawText) return '';
+    const escaped = escapeHtml(String(rawText));
+    const urlPattern = /(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/g;
+    return escaped.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener noreferrer" class="chat-text-link" onclick="event.stopPropagation()">$1</a>');
+  }
+  window.formatChatMessageContent = formatChatMessageContent;
+
   function renderSingleMessageHtml(msg, recipientAvatar, isNew = false) {
     const isMe = msg.sender === 'me';
     let innerContentHtml = '';
@@ -3609,7 +3617,7 @@
         </div>
       `;
     } else {
-      innerContentHtml = `<div class="chat-bubble-content">${escapeHtml(msg.text)}</div>`;
+      innerContentHtml = `<div class="chat-bubble-content">${formatChatMessageContent(msg.text)}</div>`;
     }
 
     // WhatsApp-Style Quoted Reply Box inside bubble
@@ -3685,42 +3693,178 @@
   let _chatBubbleLongPressTimer = null;
   let _touchStartX = 0;
   let _touchStartY = 0;
+  let _touchCurrentX = 0;
+  let _activeTouchBubbleEl = null;
+  let _activeTouchMsgId = null;
   let _isTouchScrolling = false;
+  let _isSwipingToReply = false;
 
   function handleChatBubbleTouchStart(e, msgId) {
     clearTimeout(_chatBubbleLongPressTimer);
     _isTouchScrolling = false;
+    _isSwipingToReply = false;
+    _activeTouchMsgId = msgId;
+    _activeTouchBubbleEl = e.currentTarget;
     if (e.touches && e.touches[0]) {
       _touchStartX = e.touches[0].clientX;
       _touchStartY = e.touches[0].clientY;
+      _touchCurrentX = _touchStartX;
     }
     _chatBubbleLongPressTimer = setTimeout(() => {
-      if (!_isTouchScrolling) {
+      if (!_isTouchScrolling && !_isSwipingToReply) {
         if (navigator.vibrate) {
           try { navigator.vibrate(40); } catch (_) {}
         }
         openChatMessageMenu(null, msgId);
       }
-    }, 650);
+    }, 600);
   }
   window.handleChatBubbleTouchStart = handleChatBubbleTouchStart;
 
   function handleChatBubbleTouchMove(e) {
-    if (e.touches && e.touches[0]) {
-      const dx = Math.abs(e.touches[0].clientX - _touchStartX);
-      const dy = Math.abs(e.touches[0].clientY - _touchStartY);
-      if (dx > 8 || dy > 8) {
-        _isTouchScrolling = true;
-        clearTimeout(_chatBubbleLongPressTimer);
+    if (!e.touches || !e.touches[0]) return;
+    _touchCurrentX = e.touches[0].clientX;
+    const dx = _touchCurrentX - _touchStartX;
+    const dy = Math.abs(e.touches[0].clientY - _touchStartY);
+
+    if (dy > 12 && Math.abs(dx) < dy) {
+      _isTouchScrolling = true;
+      clearTimeout(_chatBubbleLongPressTimer);
+      if (_activeTouchBubbleEl) {
+        _activeTouchBubbleEl.style.transform = '';
+        _activeTouchBubbleEl.style.transition = '';
+      }
+      return;
+    }
+
+    // WhatsApp Swipe Right to Reply Gesture
+    if (dx > 12 && dy < 30) {
+      _isSwipingToReply = true;
+      clearTimeout(_chatBubbleLongPressTimer);
+      if (_activeTouchBubbleEl) {
+        const translateX = Math.min(dx * 0.65, 70);
+        _activeTouchBubbleEl.style.transition = 'none';
+        _activeTouchBubbleEl.style.transform = `translateX(${translateX}px)`;
       }
     }
   }
   window.handleChatBubbleTouchMove = handleChatBubbleTouchMove;
 
-  function handleChatBubbleTouchEnd() {
+  function handleChatBubbleTouchEnd(e) {
     clearTimeout(_chatBubbleLongPressTimer);
+    const bubbleToReset = _activeTouchBubbleEl;
+    if (bubbleToReset) {
+      bubbleToReset.style.transition = 'transform 0.22s cubic-bezier(0.2, 0.9, 0.3, 1)';
+      bubbleToReset.style.transform = 'translateX(0px)';
+      setTimeout(() => {
+        try {
+          bubbleToReset.style.transition = '';
+          bubbleToReset.style.transform = '';
+        } catch (_) {}
+      }, 250);
+    }
+
+    const dx = _touchCurrentX - _touchStartX;
+    if (_isSwipingToReply && dx >= 45 && _activeTouchMsgId) {
+      if (navigator.vibrate) {
+        try { navigator.vibrate(35); } catch (_) {}
+      }
+      startChatReply(_activeTouchMsgId);
+    }
+
+    _isSwipingToReply = false;
+    _activeTouchBubbleEl = null;
+    _activeTouchMsgId = null;
   }
   window.handleChatBubbleTouchEnd = handleChatBubbleTouchEnd;
+
+  // ====================================================================
+  // WHATSAPP FAST IN-CHAT KEYWORD SEARCH
+  // ====================================================================
+  let _chatSearchMatches = [];
+
+  function toggleChatSearch(forceState) {
+    const searchBox = document.getElementById('chatSearchBox');
+    const searchInput = document.getElementById('chatSearchInput');
+    const countEl = document.getElementById('chatSearchCount');
+    if (!searchBox) return;
+
+    const isCurrentlyOpen = searchBox.style.display !== 'none';
+    const shouldOpen = (forceState !== undefined) ? !!forceState : !isCurrentlyOpen;
+
+    if (shouldOpen) {
+      searchBox.style.display = 'flex';
+      if (searchInput) {
+        searchInput.value = '';
+        searchInput.focus();
+      }
+      if (countEl) countEl.textContent = '';
+      clearChatSearchHighlights();
+    } else {
+      searchBox.style.display = 'none';
+      if (searchInput) searchInput.value = '';
+      clearChatSearchHighlights();
+    }
+  }
+  window.toggleChatSearch = toggleChatSearch;
+
+  function clearChatSearchHighlights() {
+    _chatSearchMatches = [];
+    const countEl = document.getElementById('chatSearchCount');
+    if (countEl) countEl.textContent = '';
+    document.querySelectorAll('.chat-bubble.search-highlight-bubble, .chat-message-row.search-highlight-row').forEach(el => {
+      el.classList.remove('search-highlight-bubble', 'search-highlight-row', 'selected-bubble');
+    });
+  }
+  window.clearChatSearchHighlights = clearChatSearchHighlights;
+
+  function handleChatSearch(query) {
+    clearChatSearchHighlights();
+    const q = (query || '').trim().toLowerCase();
+    const countEl = document.getElementById('chatSearchCount');
+    if (!q || !APP_STATE.activeChatRecipient) {
+      if (countEl) countEl.textContent = '';
+      return;
+    }
+
+    const box = document.getElementById('chatMessagesBox');
+    if (!box) return;
+
+    const rows = box.querySelectorAll('.chat-message-row');
+    const matchedRows = [];
+
+    rows.forEach(row => {
+      const bubble = row.querySelector('.chat-bubble');
+      const textEl = row.querySelector('.chat-bubble-content') || bubble;
+      const text = (textEl ? textEl.textContent : '').toLowerCase();
+      if (text.includes(q)) {
+        matchedRows.push({ row, bubble });
+      }
+    });
+
+    _chatSearchMatches = matchedRows;
+
+    if (matchedRows.length === 0) {
+      if (countEl) countEl.textContent = 'കണ്ടെത്തിയില്ല';
+      return;
+    }
+
+    if (countEl) {
+      countEl.textContent = `${matchedRows.length} ഫലം`;
+    }
+
+    matchedRows.forEach(m => {
+      if (m.bubble) m.bubble.classList.add('search-highlight-bubble');
+      if (m.row) m.row.classList.add('search-highlight-row');
+    });
+
+    // Scroll to the latest match
+    const latest = matchedRows[matchedRows.length - 1];
+    if (latest && latest.row) {
+      latest.row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+  window.handleChatSearch = handleChatSearch;
 
   // Web Audio API WhatsApp-style sound feedback
   let _chatAudioCtx = null;
@@ -3881,6 +4025,7 @@
 
     const menuOverlay = document.getElementById('chatMessageContextMenu');
     if (menuOverlay) {
+      menuOverlay.classList.add('active');
       menuOverlay.style.display = 'flex';
     }
   }
@@ -3889,6 +4034,7 @@
   function closeChatMessageMenu() {
     const menuOverlay = document.getElementById('chatMessageContextMenu');
     if (menuOverlay) {
+      menuOverlay.classList.remove('active');
       menuOverlay.style.display = 'none';
     }
   }
@@ -4235,16 +4381,16 @@
     if (thread.length === 0) {
       box.dataset.renderedKey = chatKey;
       box.innerHTML = `
-        <div style="text-align:center;padding:28px 20px;background:#FFFFFF;border-radius:22px;margin:24px auto;max-width:320px;box-shadow:0 8px 24px rgba(79,70,229,0.08);border:1.5px solid #E0E7FF">
-          <div style="width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);border:2px solid #C7D2FE;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:30px;box-shadow:0 4px 12px rgba(99,102,241,0.18)">💬</div>
-          <div style="font-weight:900;font-size:16px;color:#0F172A">${escapeHtml(APP_STATE.activeChatRecipient.name)}</div>
-          <p style="font-size:12px;color:#64748B;margin:6px 0 0;line-height:1.5">നമ്മുടെ നാട് തത്സമയ സംഭാഷണം ആരംഭിക്കൂ. സന്ദേശങ്ങൾ ക്ലൗഡിൽ സുരക്ഷിതമാണ്.</p>
-          <div style="margin-top:14px;font-size:11px;font-weight:800;color:#4338CA;background:#EEF2FF;border:1px solid #C7D2FE;display:inline-flex;align-items:center;gap:4px;padding:5px 14px;border-radius:20px">
-            <span>⚡ തത്സമയ കണക്റ്റ്</span>
+        <div style="text-align:center;padding:24px 18px;background:#FFFFFF;border-radius:18px;margin:24px auto;max-width:320px;box-shadow:0 2px 10px rgba(11,20,26,0.08);border:1px solid #E2E8F0">
+          <div style="width:54px;height:54px;border-radius:50%;background:#E8F5E9;border:2px solid #C8E6C9;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:26px">🔒</div>
+          <div style="font-weight:800;font-size:15px;color:#111B21">${escapeHtml(APP_STATE.activeChatRecipient.name)}</div>
+          <p style="font-size:12px;color:#54656F;margin:6px 0 0;line-height:1.5">ഈ സംഭാഷണം പൂർണ്ണമായും എൻഡ്-ടു-എൻഡ് സുരക്ഷിതമാണ്. സന്ദേശങ്ങൾ അയച്ച് തുടങ്ങാം.</p>
+          <div style="margin-top:12px;font-size:11px;font-weight:700;color:#008069;background:#E8F5E9;border:1px solid #A7F3D0;display:inline-flex;align-items:center;gap:4px;padding:4px 14px;border-radius:20px">
+            <span>⚡ തത്സമയ ചാറ്റ്</span>
           </div>
-          <div style="margin-top:14px">
-            <button type="button" onclick="toggleChatStickers(true)" style="background:linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);border:1.5px solid #6366F1;color:#4338CA;padding:8px 16px;border-radius:999px;font-size:12px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 2px 6px rgba(99,102,241,0.15)">
-              <span>🎭</span> <span>മലയാളം സ്റ്റിക്കർ അയക്കൂ!</span>
+          <div style="margin-top:12px">
+            <button type="button" onclick="toggleChatStickers(true)" style="background:#008069;border:none;color:#FFFFFF;padding:8px 18px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 2px 8px rgba(0,128,105,0.25)">
+              <span>🎭</span> <span>സ്റ്റിക്കർ അയക്കൂ!</span>
             </button>
           </div>
         </div>

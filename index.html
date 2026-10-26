@@ -1576,9 +1576,9 @@
     <!-- ============================================================== -->
     <!-- MODAL: REALTIME 1-ON-1 IN-APP CHAT (WITH PREMIUM FUN ZONE)     -->
     <!-- ============================================================== -->
-    <div id="modal-chat" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-chat')" style="background:rgba(15,23,42,0.8)!important;display:none;flex-direction:column!important;align-items:stretch!important;">
-        <div class="chat-modal-sheet" id="chatModalSheet" style="background:#F8FAFC !important;background-color:#F8FAFC !important;box-shadow:0 25px 70px rgba(0,0,0,0.45) !important;">
-            <div class="chat-modal-header" style="background:linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4338CA 100%) !important;background-color:#1E1B4B !important;">
+    <div id="modal-chat" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-chat')" style="display:none;">
+        <div class="chat-modal-sheet" id="chatModalSheet">
+            <div class="chat-modal-header">
                 <button class="chat-back-to-inbox-btn" onclick="goToAllChatsInbox()"
                     title="ചാറ്റ് ബോക്സിലേക്ക് മടങ്ങാം">
                     <span>❮</span>
@@ -1598,6 +1598,9 @@
                 </div>
 
                 <div class="chat-header-actions">
+                    <button type="button" class="chat-search-toggle-btn" onclick="toggleChatSearch()" title="മെസ്സേജുകൾ തിരയുക (Search)">
+                        <span>🔍</span>
+                    </button>
                     <a id="chatRecipientCallBtn" href="tel:" class="chat-call-btn" title="വിളിക്കുക" style="display:none">
                         <span>📞</span>
                     </a>
@@ -1606,6 +1609,14 @@
                     </button>
                     <button class="chat-close-btn modal-close-btn modal-close-btn-light" onclick="closeModal('modal-chat')" title="ക്ലോസ് ചെയ്യാം">✕</button>
                 </div>
+            </div>
+
+            <!-- IN-CHAT MESSAGE SEARCH BAR (WHATSAPP FAST SEARCH) -->
+            <div id="chatSearchBox" class="chat-search-bar" style="display:none">
+                <span style="font-size:14px;color:#54656F">🔍</span>
+                <input type="text" id="chatSearchInput" placeholder="ചാറ്റിൽ തിരയുക..." oninput="handleChatSearch(this.value)" autocomplete="off">
+                <span id="chatSearchCount" class="chat-search-count"></span>
+                <button type="button" class="chat-search-close-btn" onclick="toggleChatSearch(false)" title="തിരച്ചിൽ അവസാനിപ്പിക്കുക">✕</button>
             </div>
 
             <!-- INQUIRY CONTEXT BANNER -->
@@ -1623,7 +1634,7 @@
             </div>
 
             <!-- CHAT THREAD (CONTAINS MESSAGES AND STICKERS) -->
-            <div class="chat-thread-box" id="chatMessagesBox" style="background:#F8FAFC !important;background-color:#F8FAFC !important;"></div>
+            <div class="chat-thread-box" id="chatMessagesBox"></div>
 
             <!-- TYPING INDICATOR (shown/hidden by JS) -->
             <div id="chatTypingIndicator" class="chat-typing-indicator" style="display:none;padding:0 14px 0;">
@@ -1663,17 +1674,17 @@
                 <button type="button" class="chat-reply-cancel-btn" onclick="cancelChatReply()" title="മറുപടി റദ്ദാക്കുക">✕</button>
             </div>
 
-            <!-- INPUT BAR WITH 🖼 PHOTO, 🎭 STICKER & 🎙️ VOICE CHAT BUTTON -->
-            <div class="chat-input-bar" id="chatInputBar" style="background:#FFFFFF !important;background-color:#FFFFFF !important;">
+            <!-- INPUT BAR WITH 📷 PHOTO, 😊 STICKER & 🎙️ VOICE CHAT BUTTON -->
+            <div class="chat-input-bar" id="chatInputBar">
                 <!-- Hidden photo file input -->
                 <input type="file" id="chatPhotoInput" accept="image/*" onchange="sendChatPhoto(this)">
                 <button type="button" class="chat-photo-btn" id="chatPhotoBtn" onclick="document.getElementById('chatPhotoInput').click()"
                     title="ഫോട്ടോ അയക്കാം">
-                    <span>🖼️</span>
+                    <span>📷</span>
                 </button>
                 <button type="button" class="chat-sticker-btn" id="chatStickerBtn" onclick="toggleChatStickers()"
-                    title="മലയാളം സ്റ്റിക്കറുകൾ അയക്കാം">
-                    <span>🎭</span>
+                    title="സ്റ്റിക്കറുകൾ അയക്കാം">
+                    <span>😊</span>
                 </button>
                 <input type="text" id="chatInputMessage" class="chat-text-input" placeholder="സന്ദേശം ടൈപ്പ് ചെയ്യുക..."
                     onkeydown="if(event.key==='Enter')sendChatMessage()" oninput="onChatInputChange()"
