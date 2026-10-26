@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "149195881439",
+    "project_id": "nammudenaadu0-310d7",
+    "storage_bucket": "nammudenaadu0-310d7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:149195881439:android:77f9231945c4bde6cee26a",
+        "android_client_info": {
+          "package_name": "com.nammudenaadu.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcW2ssLhlc8tLSbgmKyL8erZismv2ULcs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

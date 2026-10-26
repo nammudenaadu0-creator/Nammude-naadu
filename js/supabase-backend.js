@@ -906,46 +906,44 @@
       return;
     }
 
-    // 2. RECIPIENT VERIFICATION: Ensure the intended recipient receives this message!
+    // 2. RECIPIENT VERIFICATION: STRICT PRIVACY ENFORCEMENT
+    const phones = String(chatKey).match(/\d{10}/g) || [];
+
+    // Rule A: If this is a 2-phone 1-on-1 chat, the current user MUST be one of the two phones!
+    if (phones.length >= 2) {
+      if (!myPhone || !phones.includes(myPhone)) {
+        return; // Strictly between two other people. Never accept or notify!
+      }
+      if (myPhone === senderPhone) {
+        return; // Sent by me (handled in sender echo check)
+      }
+    }
+
     const recPhone = (metaObj && metaObj.recipientPhone ? String(metaObj.recipientPhone).replace(/\D/g, '').slice(-10) : '') ||
                     (msgObj.recipientPhone ? String(msgObj.recipientPhone).replace(/\D/g, '').slice(-10) : '');
     const recId = (metaObj && metaObj.recipientId ? metaObj.recipientId : '') || (msgObj.recipientId || '');
     const recEmail = (metaObj && metaObj.recipientEmail ? String(metaObj.recipientEmail).trim().toLowerCase() : '') ||
                      (msgObj.recipientEmail ? String(msgObj.recipientEmail).trim().toLowerCase() : '');
 
-    const phones = String(chatKey).match(/\d{10}/g) || [];
     const isRecPhoneMatch = Boolean(myPhone && recPhone && myPhone.length === 10 && myPhone === recPhone);
-    const isPhoneInKeyMatch = Boolean(myPhone && myPhone.length === 10 && (phones.includes(myPhone) || String(chatKey).includes(myPhone)));
-    const isRecIdMatch = Boolean(myId && recId && (myId === recId || myId.replace(/\D/g, '') === recId.replace(/\D/g, '')));
-    const isRecEmailMatch = Boolean(myEmail && recEmail && myEmail.includes('@') && myEmail === recEmail);
+    const isPhoneInKeyMatch = Boolean(myPhone && myPhone.length === 10 && (phones.includes(myPhone) || String(chatKey).includes(myPhone)) && myPhone !== senderPhone);
+    const isRecIdMatch = Boolean(myId && recId && (myId === recId || myId.replace(/\D/g, '') === recId.replace(/\D/g, '')) && myId !== senderId);
+    const isRecEmailMatch = Boolean(myEmail && recEmail && myEmail.includes('@') && myEmail === recEmail && myEmail !== senderEmail);
 
     const cleanMyId = myId ? myId.replace(/[^a-zA-Z0-9]/g, '') : '';
-    const isIdInKeyMatch = Boolean(cleanMyId && (String(chatKey).includes(cleanMyId) || (myId && String(chatKey).includes(myId))));
+    const isIdInKeyMatch = Boolean(cleanMyId && (String(chatKey).includes(cleanMyId) || (myId && String(chatKey).includes(myId))) && myId !== senderId);
 
-    // Active Chat or Existing Chat thread match: If user currently has this thread open or in chat list
+    // Active Chat thread match: ONLY if user currently has this EXACT thread open for this specific contact
     const activeRecipient = (typeof APP_STATE !== 'undefined') ? APP_STATE.activeChatRecipient : null;
     const activeKey = activeRecipient ? activeRecipient.key : '';
     const activePhone = (activeRecipient && activeRecipient.phone) ? String(activeRecipient.phone).replace(/\D/g, '').slice(-10) : '';
-    const activeId = activeRecipient ? String(activeRecipient.id || '') : '';
 
     const isActiveThreadMatch = Boolean(
-      activeKey && (
-        activeKey === chatKey ||
-        (phones.length >= 2 && String(activeKey).match(/\d{10}/g)?.sort().join('_') === phones.sort().join('_')) ||
-        (activePhone && senderPhone && activePhone === senderPhone) ||
-        (activeId && senderId && activeId === senderId)
-      )
+      activeKey && activeKey === chatKey && activePhone && senderPhone && activePhone === senderPhone
     );
 
-    const isMetaThreadMatch = Boolean(
-      typeof APP_STATE !== 'undefined' && APP_STATE.chatMeta && (
-        APP_STATE.chatMeta[chatKey] ||
-        (senderPhone && Object.values(APP_STATE.chatMeta).some(m => m && m.phone && String(m.phone).replace(/\D/g, '').slice(-10) === senderPhone))
-      )
-    );
-
-    // Guaranteed Acceptance: If message belongs to user's phone, ID, open thread, or active contact
-    const isForMe = isRecPhoneMatch || isPhoneInKeyMatch || isRecIdMatch || isRecEmailMatch || isIdInKeyMatch || isActiveThreadMatch || isMetaThreadMatch;
+    // Guaranteed Acceptance: Message MUST be positively verified as meant for THIS user
+    const isForMe = isRecPhoneMatch || isPhoneInKeyMatch || isRecIdMatch || isRecEmailMatch || isIdInKeyMatch || isActiveThreadMatch;
     if (!isForMe) {
       return;
     }

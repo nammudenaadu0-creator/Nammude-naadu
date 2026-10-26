@@ -2889,13 +2889,35 @@
     const myPhone = normalizePhone(APP_STATE.currentUser?.phone);
     const myId = APP_STATE.currentUser?.id;
 
-    // 1. Gather all existing keys
+    // 1. Gather all existing keys & purge any threads belonging to other users
+    const rawKeys = Array.from(new Set([
+      ...Object.keys(APP_STATE.chats),
+      ...Object.keys(APP_STATE.chatMeta)
+    ]));
+
+    if (rawKeys.length === 0) return;
+
+    if (myPhone) {
+      rawKeys.forEach(k => {
+        if (!isThreadBelongingToCurrentUser(k)) {
+          delete APP_STATE.chats[k];
+          delete APP_STATE.chatMeta[k];
+        }
+      });
+    }
+
     const allKeys = Array.from(new Set([
       ...Object.keys(APP_STATE.chats),
       ...Object.keys(APP_STATE.chatMeta)
     ]));
 
-    if (allKeys.length === 0) return;
+    if (allKeys.length === 0) {
+      try {
+        localStorage.setItem("nn_chats_store", JSON.stringify(APP_STATE.chats));
+        localStorage.setItem("nn_chats_meta", JSON.stringify(APP_STATE.chatMeta));
+      } catch (_) {}
+      return;
+    }
 
     const fp = allKeys.length + ':' + (myPhone || '') + ':' + allKeys.slice(0, 8).join(',');
     if (fp === _lastReconcileFp && !force) return;
@@ -5651,31 +5673,25 @@
   function isThreadBelongingToCurrentUser(k) {
     if (!k) return false;
     const curUser = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser : null;
-    if (!curUser) return true;
+    if (!curUser) return false;
 
     const myCleanPhone = normalizePhone(curUser.phone);
     const myId = String(curUser.id || '').trim();
-    const myEmail = String(curUser.email || '').trim().toLowerCase();
 
-    // 1. If user has neither phone nor id nor email (guest/fresh session):
-    // Never hide incoming chats that were successfully delivered to this device!
-    if (!myCleanPhone && !myId && !myEmail) return true;
-
-    // 2. Extract phone numbers from key
+    // 1. Extract phone numbers from key
     const keyPhones = String(k).match(/\d{10}/g) || [];
 
     // If key has 2 or more phone numbers, check if current user is one of them:
     if (keyPhones.length >= 2) {
       if (myCleanPhone && keyPhones.includes(myCleanPhone)) return true;
-      // If neither phone in this 2-phone key is current user, this belongs strictly to another pair of users!
-      if (myCleanPhone && !keyPhones.includes(myCleanPhone)) return false;
+      return false; // Not one of the 2 participants, strictly belongs to someone else
     }
 
-    // 3. Direct match in key
+    // 2. Direct match in key
     if (myCleanPhone && k.includes(myCleanPhone)) return true;
     if (myId && k.includes(myId)) return true;
 
-    // 4. Check services, jobs or rentals owned by this user (e.g. srv_xxx or usr_xxx)
+    // 3. Check services, jobs or rentals owned by this user
     const myOwnedIds = new Set();
     if (typeof APP_STATE !== 'undefined') {
       if (Array.isArray(APP_STATE.services)) {
@@ -5705,21 +5721,16 @@
       if (ownedId && cleanKey.includes(ownedId)) return true;
     }
 
-    // 5. Check metadata
+    // 4. Check metadata
     const meta = (APP_STATE.chatMeta && APP_STATE.chatMeta[k]) || {};
     const metaMyPhone = normalizePhone(meta.myPhone);
     const metaRecPhone = normalizePhone(meta.recipientPhone);
     const metaSendPhone = normalizePhone(meta.senderPhone);
-    const partnerPhone = normalizePhone(meta.phone || meta.partnerPhone);
 
     if (myCleanPhone) {
       if (metaMyPhone && metaMyPhone === myCleanPhone) return true;
       if (metaRecPhone && metaRecPhone === myCleanPhone) return true;
       if (metaSendPhone && metaSendPhone === myCleanPhone) return true;
-      if (partnerPhone && partnerPhone !== myCleanPhone) {
-        if (metaRecPhone && metaRecPhone !== myCleanPhone) return false;
-        return true;
-      }
     }
 
     if (myId) {
@@ -5728,7 +5739,7 @@
       if (meta.senderId && meta.senderId === myId) return true;
     }
 
-    // 6. Check individual messages inside thread
+    // 5. Check individual messages inside thread
     const msgs = (APP_STATE.chats && APP_STATE.chats[k]) || [];
     for (let i = 0; i < msgs.length; i++) {
       const m = msgs[i];
@@ -5745,15 +5756,8 @@
         if (m.recipientId && m.recipientId === myId) return true;
       }
       if (m.sender === 'them') {
-        if (rPhone && myCleanPhone && rPhone !== myCleanPhone) {
-          continue;
-        }
-        if (sPhone && myCleanPhone && sPhone === myCleanPhone) {
-          return true;
-        }
-        if (sPhone && (!myCleanPhone || sPhone !== myCleanPhone)) {
-          return true;
-        }
+        if (rPhone && myCleanPhone && rPhone === myCleanPhone) return true;
+        if (m.recipientId && myId && m.recipientId === myId) return true;
       }
     }
 

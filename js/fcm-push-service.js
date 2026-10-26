@@ -56,7 +56,11 @@
           return window.AndroidNativeConfig.isFirebaseAvailable();
         } catch (_) {}
       }
-      return window.IS_FIREBASE_CONFIGURED === true;
+      if (typeof window.IS_FIREBASE_CONFIGURED !== 'undefined') {
+        return window.IS_FIREBASE_CONFIGURED === true;
+      }
+      // Native Android with google-services.json & PushNotifications plugin active
+      return !!(this.isNative && window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.PushNotifications);
     },
 
     // 1. NATIVE ANDROID CAPACITOR FCM SETUP
