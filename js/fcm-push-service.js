@@ -173,16 +173,29 @@
     requestPermission: async function () {
       let granted = false;
 
-      if (this.isNative && window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.PushNotifications) {
+      if (this.isNative && window.Capacitor && window.Capacitor.Plugins) {
         try {
-          const result = await window.Capacitor.Plugins.PushNotifications.requestPermissions();
-          granted = result && (result.receive === 'granted');
-          if (granted && this.isFirebaseConfigured()) {
-            await window.Capacitor.Plugins.PushNotifications.register();
+          if (window.Capacitor.Plugins.LocalNotifications) {
+            const locRes = await window.Capacitor.Plugins.LocalNotifications.requestPermissions();
+            if (locRes && locRes.display === 'granted') {
+              granted = true;
+            }
+          }
+          if (window.Capacitor.Plugins.PushNotifications) {
+            const result = await window.Capacitor.Plugins.PushNotifications.requestPermissions();
+            if (result && result.receive === 'granted') granted = true;
+            if (granted && this.isFirebaseConfigured()) {
+              await window.Capacitor.Plugins.PushNotifications.register();
+            }
           }
         } catch (e) {
           console.warn('⚠️ [NN_FCM] Native permission request error:', e);
         }
+      }
+      if (typeof window !== 'undefined' && window.plugins && window.plugins.OneSignal && window.plugins.OneSignal.Notifications) {
+        try {
+          await window.plugins.OneSignal.Notifications.requestPermission(true);
+        } catch (_) {}
       } else if (typeof Notification !== 'undefined' && typeof Notification.requestPermission === 'function') {
         try {
           const perm = await Notification.requestPermission();
