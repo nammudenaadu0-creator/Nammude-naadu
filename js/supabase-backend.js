@@ -201,6 +201,9 @@
       bloodChannel.on('broadcast', { event: 'emergency_blood' }, ({ payload }) => {
         if (payload && payload.bloodRequest) handleIncomingBloodRequest(payload.bloodRequest);
       });
+      bloodChannel.on('broadcast', { event: 'new_blood_donor' }, ({ payload }) => {
+        if (payload && payload.donor) handleIncomingBloodDonor(payload.donor);
+      });
       bloodChannel.subscribe();
 
       emergencyChannel = client.channel('nn_community_emergency_contacts', { config: { broadcast: { self: false } } });
@@ -700,6 +703,41 @@
     }, FIVE_MINUTES_MS);
   }
 
+  function handleIncomingBloodDonor(row) {
+    if (!row || !row.name || !row.phone) return;
+    if (typeof APP_STATE === 'undefined') return;
+    if (!Array.isArray(APP_STATE.bloodDonors)) APP_STATE.bloodDonors = [];
+    const mapped = {
+      id: row.id || ('donor_' + (row.phone ? String(row.phone).replace(/\D/g, '').slice(-10) : Date.now())),
+      userId: row.user_id || row.userId || row.id,
+      isUserCreated: true,
+      isCloud: true,
+      name: row.name,
+      phone: row.phone,
+      group: row.blood_group || row.group || 'O+',
+      location: row.location || 'കേരളം',
+      district: row.district || '',
+      lat: row.latitude != null ? row.latitude : row.lat,
+      lon: row.longitude != null ? row.longitude : row.lon,
+      status: row.status || 'ലഭ്യമാണ്',
+      created_at: Number(row.created_at) || Date.now()
+    };
+    const cleanDPhone = (row.phone || '').replace(/\D/g, '').slice(-10);
+    const idx = APP_STATE.bloodDonors.findIndex(item => 
+      (item.phone && item.phone.replace(/\D/g, '').slice(-10) === cleanDPhone) || item.id === mapped.id
+    );
+    if (idx >= 0) {
+      APP_STATE.bloodDonors[idx] = { ...APP_STATE.bloodDonors[idx], ...mapped };
+    } else {
+      APP_STATE.bloodDonors.unshift(mapped);
+    }
+    try {
+      localStorage.setItem('nn_blood_donors', JSON.stringify(APP_STATE.bloodDonors));
+    } catch (_) {}
+    if (typeof saveDonors === 'function') saveDonors();
+    if (typeof renderBloodScreen === 'function') renderBloodScreen();
+  }
+
   // Database Row-Level Realtime Subscriptions (Unified multiplexed channel for sub-second sync)
   function setupDatabaseListeners() {
     if (!client) return;
@@ -764,9 +802,14 @@
             handleIncomingServiceRequest(payload.new);
           }
         })
-        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'blood_requests' }, payload => {
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'blood_requests' }, payload => {
           if (payload && payload.new) {
             handleIncomingBloodRequest(payload.new);
+          }
+        })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'blood_donors' }, payload => {
+          if (payload && payload.new) {
+            handleIncomingBloodDonor(payload.new);
           }
         })
         .on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, payload => {
@@ -821,16 +864,6 @@
         .on('postgres_changes', { event: '*', schema: 'public', table: 'rentals' }, payload => {
           if (payload && payload.new) {
             handleIncomingRental(payload.new);
-          }
-        })
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'emergency_contacts' }, payload => {
-          if (payload && payload.new) {
-            handleIncomingEmergencyContact(payload.new);
-          }
-        })
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, payload => {
-          if (payload && payload.new) {
-            handleIncomingProfile(payload.new);
           }
         })
         .subscribe();
@@ -2052,27 +2085,35 @@
     try {
       const { data, error } = await client.from('services').select('*').order('created_at', { ascending: false }).limit(300);
       if (!error && Array.isArray(data) && data.length > 0) {
-        const mapped = data.map(s => ({
-          id: s.id,
-          name: s.name,
-          trade: s.trade,
-          category: s.category || 'other',
-          phone: s.phone,
-          location: s.location,
-          district: s.district,
-          lat: s.latitude,
-          lon: s.longitude,
-          latitude: s.latitude,
-          longitude: s.longitude,
-          avatar: s.avatar,
-          experience: s.experience,
-          visitingFee: s.visiting_fee,
-          availability: s.availability || 'available',
-          workHours: s.work_hours,
-          bio: s.bio,
-          rating: Number(s.rating) || 5.0,
-          createdAt: Number(s.created_at) || Date.now()
-        }));
+        const mapped = data.map(s => {
+          let desc = {};
+          try {
+            if (s.description && (s.description.startsWith('{') || s.description.startsWith('['))) {
+              desc = JSON.parse(s.description);
+            }
+          } catch (_) {}
+          return {
+            id: s.id,
+            name: s.name || desc.name || s.title || '',
+            trade: s.trade || desc.trade || '',
+            category: s.category || desc.category || 'other',
+            phone: s.phone || desc.phone || '',
+            location: s.location || desc.location || '',
+            district: s.district || desc.district || '',
+            lat: s.latitude,
+            lon: s.longitude,
+            latitude: s.latitude,
+            longitude: s.longitude,
+            avatar: s.avatar || desc.avatar || '',
+            experience: s.experience || desc.experience || '',
+            visitingFee: s.visiting_fee || desc.visitingFee || s.price || '',
+            availability: s.availability || desc.availability || 'available',
+            workHours: s.work_hours || desc.workHours || '',
+            bio: s.bio || desc.bio || (typeof s.description === 'string' && !s.description.startsWith('{') ? s.description : '') || '',
+            rating: Number(s.rating || desc.rating) || 5.0,
+            createdAt: Number(s.created_at) || Date.now()
+          };
+        });
 
         if (typeof APP_STATE !== 'undefined' && Array.isArray(APP_STATE.services)) {
           mapped.forEach(cloudSrv => {
@@ -2123,60 +2164,92 @@
   async function saveBloodDonor(donorObj) {
     if (!donorObj) return;
     initSupabase();
+
+    const cleanPhoneDigits = (donorObj.phone ? String(donorObj.phone).replace(/\D/g, '').slice(-10) : '');
+    const donorId = donorObj.id || ('donor_' + (cleanPhoneDigits || Date.now()));
+    const payload = {
+      id: donorId,
+      name: donorObj.name || '',
+      phone: donorObj.phone || '',
+      blood_group: donorObj.group || donorObj.bloodGroup || '',
+      location: donorObj.location || '',
+      district: donorObj.district || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.district : '') || '',
+      latitude: donorObj.lat != null ? donorObj.lat : (donorObj.latitude || null),
+      longitude: donorObj.lon != null ? donorObj.lon : (donorObj.longitude || null),
+      ready_to_donate: donorObj.readyToDonate !== false,
+      created_at: Number(donorObj.createdAt || donorObj.created_at) || Date.now()
+    };
+
+    if (bloodChannel) {
+      try {
+        await bloodChannel.send({
+          type: 'broadcast',
+          event: 'new_blood_donor',
+          payload: { donor: payload }
+        });
+      } catch (_) {}
+    }
+
     if (client) {
       try {
-        await client.from('blood_donors').upsert({
-          id: donorObj.id || ('donor_' + (donorObj.phone ? donorObj.phone.replace(/\D/g, '') : Date.now())),
-          name: donorObj.name,
-          phone: donorObj.phone,
-          blood_group: donorObj.group || donorObj.bloodGroup,
-          location: donorObj.location,
-          latitude: donorObj.lat != null ? donorObj.lat : (donorObj.latitude || null),
-          longitude: donorObj.lon != null ? donorObj.lon : (donorObj.longitude || null),
-          ready_to_donate: donorObj.readyToDonate !== false,
-          created_at: Date.now()
-        });
-        console.info('💾 [Supabase] Blood donor saved');
-      } catch (_) {}
+        const { error } = await client.from('blood_donors').upsert(payload);
+        if (error) {
+          console.warn('⚠️ [Supabase Blood Donor Note]:', error.message);
+        } else {
+          console.info('💾 [Supabase] Blood donor saved to cloud:', payload.id);
+        }
+      } catch (err) {
+        console.warn('Blood donor save exception:', err);
+      }
     }
   }
 
-  async function syncBloodDonors() {
+  async function syncBloodDonors(callback) {
     initSupabase();
     if (!client) return;
     try {
-      const { data, error } = await client.from('blood_donors').select('*').limit(200);
+      const { data, error } = await client.from('blood_donors').select('*').limit(300);
       if (!error && Array.isArray(data) && data.length > 0) {
-        if (typeof APP_STATE !== 'undefined' && Array.isArray(APP_STATE.bloodDonors)) {
+        if (typeof APP_STATE !== 'undefined') {
+          if (!Array.isArray(APP_STATE.bloodDonors)) APP_STATE.bloodDonors = [];
           data.forEach(d => {
             if (!d.name || !d.phone || d.ready_to_donate === false) return;
             const mapped = {
               id: d.id,
-              userId: d.id,
+              userId: d.user_id || d.id,
               isUserCreated: true,
               isCloud: true,
               name: d.name,
               phone: d.phone,
               group: d.blood_group,
-              location: d.location,
+              location: d.location || 'കേരളം',
+              district: d.district || '',
               lat: d.latitude,
-              lon: d.longitude
+              lon: d.longitude,
+              status: 'ലഭ്യമാണ്',
+              created_at: Number(d.created_at) || Date.now()
             };
             const cleanDPhone = (d.phone || '').replace(/\D/g, '').slice(-10);
             const idx = APP_STATE.bloodDonors.findIndex(item => 
               (item.phone && item.phone.replace(/\D/g, '').slice(-10) === cleanDPhone) || item.id === mapped.id
             );
-            if (idx >= 0) APP_STATE.bloodDonors[idx] = { ...APP_STATE.bloodDonors[idx], ...mapped };
-            else APP_STATE.bloodDonors.unshift(mapped);
+            if (idx >= 0) {
+              APP_STATE.bloodDonors[idx] = { ...APP_STATE.bloodDonors[idx], ...mapped };
+            } else {
+              APP_STATE.bloodDonors.unshift(mapped);
+            }
           });
           try {
             localStorage.setItem('nn_blood_donors', JSON.stringify(APP_STATE.bloodDonors));
           } catch (_) {}
           if (typeof saveDonors === 'function') saveDonors();
-          if (typeof renderBloodScreen === 'function' && APP_STATE.currentScreen === 'blood') renderBloodScreen();
+          if (typeof renderBloodScreen === 'function') renderBloodScreen();
         }
+        if (typeof callback === 'function') callback(data);
       }
-    } catch (_) {}
+    } catch (err) {
+      console.warn('Sync blood donors note:', err);
+    }
   }
 
   async function saveBloodRequest(reqObj) {
@@ -2221,22 +2294,19 @@
     initSupabase();
     if (client) {
       try {
-        await client.from('service_requests').upsert({
+        const payload = {
           id: reqObj.id || ('sreq_' + Date.now()),
-          user_id: reqObj.userId || (typeof APP_STATE !== 'undefined' ? APP_STATE.currentUser.id : ''),
+          user_id: reqObj.userId || (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser ? APP_STATE.currentUser.id : null),
           title: reqObj.title || reqObj.trade || 'സേവന ആവശ്യം',
           trade: reqObj.trade || reqObj.categoryName || 'സർവീസ്',
-          category: reqObj.category || 'other',
-          description: reqObj.description || '',
           urgency: reqObj.urgency || 'urgent',
-          location: reqObj.location || '',
-          phone: reqObj.phone || '',
-          provider_phone: reqObj.providerPhone || '',
-          provider_name: reqObj.providerName || '',
-          image_url: reqObj.photo || reqObj.imageUrl || '',
+          location: reqObj.location || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.name : 'കേരളം'),
+          phone: reqObj.phone || (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser ? APP_STATE.currentUser.phone : '') || '9447000000',
+          image_url: reqObj.photo || reqObj.imageUrl || null,
           status: reqObj.status || 'pending',
           created_at: Date.now()
-        });
+        };
+        await client.from('service_requests').upsert(payload);
         console.info('💾 [Supabase] Service request saved successfully');
       } catch (e) {
         console.warn('⚠️ [Supabase] saveServiceRequest error:', e.message);

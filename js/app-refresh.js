@@ -94,6 +94,10 @@
           window.renderNearbyScreen();
         }
       } else if (cur === 'blood') {
+        if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncBloodDonors === 'function') {
+          syncTasks.push(window.NN_SUPABASE_SERVICES.syncBloodDonors().catch(() => {}));
+          await Promise.all(syncTasks);
+        }
         if (typeof window.renderBloodScreen === 'function') {
           window.renderBloodScreen();
         }

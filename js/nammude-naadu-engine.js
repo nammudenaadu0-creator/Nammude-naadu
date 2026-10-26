@@ -1135,6 +1135,8 @@
     }, 2800);
   }
   window.toast = toast;
+  window.showToast = toast;
+  window.showNotificationToast = toast;
 
   // ==============================================================
   // 5. NAVIGATION & SCREEN SWITCHING ENGINE (Ultra-Fast 60fps)
@@ -1214,6 +1216,11 @@
         }, 120);
       } else if (screenId === 'blood') {
         renderBloodScreen();
+        setTimeout(() => {
+          if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncBloodDonors === 'function') {
+            window.NN_SUPABASE_SERVICES.syncBloodDonors();
+          }
+        }, 120);
       } else if (screenId === 'add') {
         updatePostingProfileBar();
       } else if (screenId === 'chat') {
