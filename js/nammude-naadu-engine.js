@@ -759,12 +759,12 @@
         localStorage.setItem('nn_rentals', JSON.stringify(loadedRentals));
       } catch (_) {}
 
-      // REAL ACCOUNTS ONLY: Purge mock blood donors
+      // REAL ACCOUNTS ONLY: Purge mock blood donors, preserve all registered donors
       const mockDonorNames = new Set(['മുഹമ്മദ് ഷാഫി', 'വിജീഷ് പത്മനാഭൻ', 'അഞ്ജലി പ്രസാദ്', 'രഞ്ജിത്ത് വർമ്മ', 'സുരേഷ് കുമാർ', 'ദിവ്യാ മനോജ്', 'അബ്ദുൾ സമദ്', 'പ്രവീൺ കൃഷ്ണ']);
       const storedDonors = localStorage.getItem('nn_blood_donors');
       let loadedDonors = storedDonors ? JSON.parse(storedDonors) : [];
       loadedDonors = (Array.isArray(loadedDonors) ? loadedDonors : []).filter(d => 
-        d && !mockDonorNames.has(d.name) && (d.userId || d.isUserCreated || d.isCloud || (d.id && d.id.startsWith('donor_') && !mockDonorNames.has(d.name)))
+        d && d.name && !mockDonorNames.has(d.name)
       );
       APP_STATE.bloodDonors = loadedDonors;
       try {
@@ -1050,6 +1050,17 @@
     if (_saveChatsTimer) clearTimeout(_saveChatsTimer);
     _saveChatsTimer = setTimeout(_doFlushChats, 250);
   }
+  window.saveChats = saveChats;
+
+  function saveDonors() {
+    try {
+      localStorage.setItem('nn_blood_donors', JSON.stringify(APP_STATE.bloodDonors || []));
+      if (typeof NN_IDB !== 'undefined') {
+        NN_IDB.set('nn_blood_donors_full', APP_STATE.bloodDonors || []);
+      }
+    } catch (_) {}
+  }
+  window.saveDonors = saveDonors;
 
   function updateChatBadgeCounter() {
     // Count threads that have UNREAD incoming messages (unseen 'them' messages)
@@ -7496,12 +7507,26 @@
     const bar = document.getElementById('bloodGroupsChipsBar');
     if (!bar) return;
 
-    bar.innerHTML = BLOOD_GROUPS.map(grp => `
+    const allDonors = Array.isArray(APP_STATE.bloodDonors) ? APP_STATE.bloodDonors : [];
+    const totalCount = allDonors.length;
+
+    // Update screen header count badge
+    const badge = document.getElementById('bloodDonorsCountBadge');
+    if (badge) {
+      badge.textContent = `രജിസ്റ്റർ ചെയ്തവർ: ${totalCount}`;
+    }
+
+    bar.innerHTML = BLOOD_GROUPS.map(grp => {
+      const count = (grp === 'all')
+        ? totalCount
+        : allDonors.filter(d => d && d.group === grp).length;
+      return `
       <button class="blood-group-chip ${APP_STATE.activeBloodGroup === grp ? 'active' : ''}"
               onclick="filterBloodGroup('${grp}')">
-        ${grp === 'all' ? 'എല്ലാം (All)' : grp}
+        ${grp === 'all' ? `എല്ലാം (${count})` : `${grp} (${count})`}
       </button>
-    `).join('');
+      `;
+    }).join('');
   }
 
   function filterBloodGroup(grp) {
@@ -7520,41 +7545,50 @@
     const container = document.getElementById('bloodDonorsListContainer');
     if (!container) return;
 
-    const maxRadius = APP_STATE.radiusFilters.blood || APP_STATE.activeRadiusKm || 5;
+    const maxRadius = APP_STATE.radiusFilters.blood || APP_STATE.activeRadiusKm || 50;
 
     let list = [...(APP_STATE.bloodDonors || [])];
     // Calculate distance for each donor
     list.forEach(d => {
       d._calculatedDist = getItemDistanceKm(d, APP_STATE.location.lat, APP_STATE.location.lon);
     });
-    list.sort((a, b) => a._calculatedDist - b._calculatedDist);
+    list.sort((a, b) => (Number(a._calculatedDist) || 0) - (Number(b._calculatedDist) || 0));
 
     // Filter by blood group
     if (APP_STATE.activeBloodGroup !== 'all') {
       list = list.filter(d => d.group === APP_STATE.activeBloodGroup);
     }
 
-    // Apply radius filter strictly
+    // Apply radius filter: if within maxRadius, or fallback gracefully so registered donors are never hidden
     let inRadius = (maxRadius >= 1000) ? list : list.filter(d => d._calculatedDist <= maxRadius);
+    let noticeHtml = '';
+
+    if (inRadius.length === 0 && list.length > 0) {
+      // Fallback: show nearby donors registered across Kerala so user isn't shown empty screen!
+      inRadius = list;
+      noticeHtml = `
+        <div style="background:#FFF1F2;border:1px solid #FECDD3;border-radius:12px;padding:9px 12px;font-size:12px;color:#991B1B;font-weight:700;display:flex;align-items:center;gap:6px;margin-bottom:6px">
+          <span>📍</span>
+          <span>സമീപ പ്രദേശങ്ങളിലെ രജിസ്റ്റർ ചെയ്ത രക്തദാതാക്കളെ ഉൾപ്പെടുത്തിയിരിക്കുന്നു (${list.length} പേർ).</span>
+        </div>
+      `;
+    }
 
     if (inRadius.length === 0) {
-      const radiusLabel = (maxRadius >= 1000) ? '' : ` (${maxRadius} km)`;
       container.innerHTML = `
         <div style="text-align:center;padding:32px 16px;background:#fff;border-radius:16px;border:1px dashed #FECACA">
           <div style="font-size:32px;margin-bottom:6px">🩸</div>
-          <div style="font-weight:800;font-size:14px;color:#1E293B">ഈ പ്രദേശത്ത് രക്തദാതാക്കൾ ലഭ്യമല്ല</div>
-          <div style="font-size:12px;color:#64748B;margin:4px 0 14px"><b>${escapeHtml(APP_STATE.location.name)}</b> പരിസരത്ത്${radiusLabel} രക്തദാതാക്കളെ കണ്ടെത്തിയില്ല. പരിധി കൂട്ടുകയോ രക്തദാതാവായി രജിസ്റ്റർ ചെയ്യുകയോ ചെയ്യാം.</div>
+          <div style="font-weight:800;font-size:14px;color:#1E293B">രക്തദാതാക്കൾ ലഭ്യമായിട്ടില്ല</div>
+          <div style="font-size:12px;color:#64748B;margin:4px 0 14px">ഈ ഗ്രൂപ്പിൽ രക്തദാതാക്കൾ ഇതുവരെ രജിസ്റ്റർ ചെയ്തിട്ടില്ല. താങ്കൾക്ക് രക്തദാതാവായി രജിസ്റ്റർ ചെയ്യാം.</div>
           <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-            <button onclick="setGlobalRadius(25, null)" style="padding:7px 12px;background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;border-radius:10px;font-weight:700;font-size:11.5px;cursor:pointer">25 km</button>
-            <button onclick="setGlobalRadius(1000, null)" style="padding:7px 12px;background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;border-radius:10px;font-weight:700;font-size:11.5px;cursor:pointer">മുഴുവൻ കാണുക</button>
-            <button onclick="openModal('modal-edit-profile')" style="padding:7px 14px;background:#DC2626;color:#fff;border:none;border-radius:10px;font-weight:800;font-size:11.5px;cursor:pointer">🩸 രക്തദാതാവാകാം</button>
+            <button onclick="openRegisterDonorModal()" style="padding:9px 16px;background:#DC2626;color:#fff;border:none;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer">🩸 രക്തദാതാവായി രജിസ്റ്റർ ചെയ്യാം</button>
           </div>
         </div>
       `;
       return;
     }
 
-    container.innerHTML = bloodExtendedNotice + inRadius.map(d => {
+    container.innerHTML = noticeHtml + inRadius.map(d => {
       const donorAvatar = getRegisteredUserAvatar(d.phone || d.id || d.name);
       return `
       <div style="background:#fff;border-radius:16px;padding:14px;border:1px solid #FECACA;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
@@ -11207,11 +11241,17 @@
       return;
     }
 
+    const cleanDigits = phone.replace(/\D/g, '').slice(-10);
+    const donorId = 'donor_' + (cleanDigits || Date.now());
+
     const userAvatar = (APP_STATE.currentUser && APP_STATE.currentUser.avatar && !APP_STATE.currentUser.avatar.includes('data:image/svg+xml'))
       ? APP_STATE.currentUser.avatar
       : '';
 
     const newDonor = {
+      id: donorId,
+      userId: APP_STATE.currentUser?.id || ('usr_' + cleanDigits),
+      isUserCreated: true,
       name: name,
       group: group,
       phone: phone,
@@ -11219,7 +11259,8 @@
       location: loc,
       lat: APP_STATE.location.lat,
       lon: APP_STATE.location.lon,
-      status: status
+      status: status,
+      created_at: Date.now()
     };
 
     APP_STATE.currentUser.bloodGroup = group;
@@ -11229,10 +11270,16 @@
       localStorage.setItem('nn_user_is_donor', 'true');
     } catch (_) {}
 
-    APP_STATE.bloodDonors.unshift(newDonor);
-    try {
-      localStorage.setItem('nn_blood_donors', JSON.stringify(APP_STATE.bloodDonors));
-    } catch (_) {}
+    if (!Array.isArray(APP_STATE.bloodDonors)) APP_STATE.bloodDonors = [];
+    const existingIdx = APP_STATE.bloodDonors.findIndex(d => 
+      (d.phone && d.phone.replace(/\D/g, '').slice(-10) === cleanDigits) || d.id === donorId
+    );
+    if (existingIdx >= 0) {
+      APP_STATE.bloodDonors[existingIdx] = newDonor;
+    } else {
+      APP_STATE.bloodDonors.unshift(newDonor);
+    }
+    saveDonors();
 
     // Save donor registration to Supabase Cloud
     if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveBloodDonor === 'function') {
@@ -11240,7 +11287,7 @@
     }
 
     closeModal('modal-register-donor');
-    renderBloodDonorsList();
+    renderBloodScreen();
     toast('🩸 രക്തദാതാക്കളുടെ ലിസ്റ്റിലേക്ക് പേര് ചേർത്തു! നന്ദി 🌿');
   }
   window.submitDonorRegistration = submitDonorRegistration;

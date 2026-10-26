@@ -2125,6 +2125,9 @@
             if (!d.name || !d.phone || d.ready_to_donate === false) return;
             const mapped = {
               id: d.id,
+              userId: d.id,
+              isUserCreated: true,
+              isCloud: true,
               name: d.name,
               phone: d.phone,
               group: d.blood_group,
@@ -2132,10 +2135,16 @@
               lat: d.latitude,
               lon: d.longitude
             };
-            const idx = APP_STATE.bloodDonors.findIndex(item => item.phone === mapped.phone || item.id === mapped.id);
+            const cleanDPhone = (d.phone || '').replace(/\D/g, '').slice(-10);
+            const idx = APP_STATE.bloodDonors.findIndex(item => 
+              (item.phone && item.phone.replace(/\D/g, '').slice(-10) === cleanDPhone) || item.id === mapped.id
+            );
             if (idx >= 0) APP_STATE.bloodDonors[idx] = { ...APP_STATE.bloodDonors[idx], ...mapped };
             else APP_STATE.bloodDonors.unshift(mapped);
           });
+          try {
+            localStorage.setItem('nn_blood_donors', JSON.stringify(APP_STATE.bloodDonors));
+          } catch (_) {}
           if (typeof saveDonors === 'function') saveDonors();
           if (typeof renderBloodScreen === 'function' && APP_STATE.currentScreen === 'blood') renderBloodScreen();
         }
