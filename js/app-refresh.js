@@ -61,14 +61,7 @@
         syncTasks.push(Promise.resolve().then(() => window.updateUnreadBadge()).catch(() => {}));
       }
 
-      // B. Live GPS & Location Auto-Discovery Sync
-      if (typeof window.detectLiveGpsLocation === 'function') {
-        try {
-          window.detectLiveGpsLocation(false);
-        } catch (_) {}
-      }
-
-      // C. Screen specific data sync
+      // B. Screen specific data sync (only network data, NO heavy GPS hardware spin-up)
       if (cur === 'home') {
         // Supabase Posts sync
         if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.syncPosts === 'function') {
@@ -122,15 +115,14 @@
         try { navigator.vibrate([25, 45, 25]); } catch (_) {}
       }
 
-      const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'en')) === 'en';
-      const refreshDoneMsg = isEn ? '✅ App data & location refreshed!' : '✅ വിവരങ്ങളും ലൊക്കേഷനും പുതുക്കി!';
-      if (typeof window.toast === 'function') {
-        window.toast(refreshDoneMsg);
-      } else if (typeof window.showToast === 'function') {
-        window.showToast(refreshDoneMsg);
+      if (typeof window.showToast === 'function') {
+        window.showToast('✅ ആപ്പ് വിവരങ്ങൾ വിജയകരമായി പുതുക്കി!');
       }
     } catch (err) {
       console.warn('[AppRefresh] Refresh notice:', err);
+      if (typeof window.showToast === 'function') {
+        window.showToast('വിവരങ്ങൾ ലഭ്യമാക്കി ✅');
+      }
     } finally {
       // Clean up UI states
       spinIcons.forEach(el => el.classList.remove('refresh-spin-active'));
@@ -139,8 +131,7 @@
       }
 
       if (ptrPill) {
-        const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'en')) === 'en';
-        if (ptrText) ptrText.textContent = isEn ? 'Refreshed successfully! ✅' : 'വിവരങ്ങൾ പുതുക്കി! ✅';
+        if (ptrText) ptrText.textContent = 'വിജയകരമായി പുതുക്കി! ✅';
         setTimeout(() => {
           ptrPill.classList.remove('refreshing', 'pulling');
           ptrPill.style.transform = '';
@@ -154,7 +145,7 @@
   }
 
   /**
-   * Setup Mobile Native Touch Pull-To-Refresh (Disabled in favor of native 120Hz smooth scrolling)
+   * Setup Mobile Native Touch Pull-To-Refresh (Disabled in favor of native 120Hz scrolling)
    */
   function setupTouchPullToRefresh() {
     // Pure native touch scrolling with zero event listener friction
@@ -170,8 +161,7 @@
       ptrIcon.textContent = '⬇️';
       ptrIcon.style.transform = 'rotate(0deg)';
     }
-    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'en')) === 'en';
-    if (ptrText) ptrText.textContent = isEn ? 'Pull down to refresh...' : 'പുതുക്കാൻ താഴേക്ക് വലിക്കുക...';
+    if (ptrText) ptrText.textContent = 'താഴേക്ക് വലിക്കുക...';
   }
 
   /**
@@ -180,7 +170,7 @@
   function setupNetworkSync() {
     window.addEventListener('online', () => {
       if (typeof window.showToast === 'function') {
-        window.showToast('🌐 Internet connected! Refreshing data...');
+        window.showToast('🌐 ഇന്റർനെറ്റ് കണക്റ്റായി! വിവരങ്ങൾ പുതുക്കുന്നു...');
       }
       setTimeout(() => {
         refreshActiveScreen();

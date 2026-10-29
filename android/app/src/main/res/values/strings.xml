@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Nammude Naadu</string>
-    <string name="title_activity_main">Nammude Naadu</string>
+    <string name="app_name">നമ്മുടെ നാട്</string>
+    <string name="title_activity_main">നമ്മുടെ നാട്</string>
     <string name="package_name">com.nammudenaadu.app</string>
     <string name="custom_url_scheme">com.nammudenaadu.app</string>
 </resources>

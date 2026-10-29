@@ -1,19 +1,17 @@
 // High-Performance Service Worker for Nammude Naadu PWA
-const CACHE_NAME = 'nammude-naadu-v10';
+const CACHE_NAME = 'nammude-naadu-v7';
 const STATIC_ASSETS = [
   './',
   './index.html',
   './version.json',
   './assets/icon-192.png',
   './assets/icon-512.png',
-  './css/main.css?v=4.0',
-  './css/jobs.css?v=5.0',
-  './css/nammude-naadu.css?v=5.0',
+  './css/main.css?v=3.0',
+  './css/jobs.css?v=3.0',
+  './css/nammude-naadu.css?v=3.0',
   './img/kerala-splash.jpg',
-  './js/manglish-search.js?v=1.0',
-  './js/i18n-translations.js?v=2.0',
   './js/trades-catalog-500.js?v=2.5',
-  './js/nammude-naadu-engine.js?v=5.0',
+  './js/nammude-naadu-engine.js?v=2.6',
   './js/supabase-sdk.js',
   './js/supabase-backend.js?v=3.0',
   './manifest.json'
@@ -44,8 +42,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
   // NEVER intercept external dynamic APIs or websockets
-  if (url.origin !== self.location.origin ||
-      url.hostname.includes('supabase.co') ||
+  if (url.hostname.includes('supabase.co') ||
       url.hostname.includes('openstreetmap.org') ||
       url.hostname.includes('komoot.io') ||
       url.hostname.includes('bigdatacloud.net') ||

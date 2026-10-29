@@ -1,16 +1,13 @@
 {
-  "versionCode": 29,
-  "versionName": "1.0.29",
+  "versionCode": 24,
+  "versionName": "1.0.24",
   "minSupportedVersion": 1,
-  "releaseDate": "2026-10-26",
-  "title": "A new update is available! (Version 1.0.29)",
+  "releaseDate": "2026-10-24",
+  "title": "പുതിയ അപ്‌ഡേറ്റ് ലഭ്യമാണ്! (Version 1.0.24)",
   "releaseNotes": [
-    "💬 WhatsApp-inspired chat colors",
-    "📱 Full-screen chat on mobile",
-    "🔔 A single notification sound",
-    "📍 Location refreshes when the app opens",
-    "🛠️ Registered services appear in the directory after saving",
-    "🌐 English is now the default app language"
+    "💬 വാട്‌സ്ആപ്പ് മോഡൽ പുതിയ ചാറ്റ് ലിസ്റ്റ് ഡിസൈൻ & അൺറീഡ് മെസ്സേജ് ബാഡ്ജുകൾ",
+    "📷 ചാറ്റിൽ നേരിട്ട് ഫോട്ടോകൾ ഷെയർ ചെയ്യാനുള്ള സൗകര്യം & ടൈപ്പിംഗ് ഇൻഡിക്കേറ്റർ",
+    "⚡ സ്മാർട്ട് ടൈംസ്റ്റാമ്പും റിയൽ-ടൈം ബ്ലൂ ടിക് (Seen) സ്റ്റാറ്റസും"
   ],
   "apkUrl": "https://github.com/nammudenaadu0-creator/Nammude-naadu/raw/main/NammudeNaadu.apk",
   "webUrl": "https://nammudenaadu0-creator.github.io/Nammude-naadu/",

@@ -4,26 +4,3 @@ node_modules/
 android/.gradle/
 android/app/build/
 *firebase-adminsdk*.json
-
-# Admin secret config — NEVER commit this file
-admin-config.js
-
-# Android build artifacts — use GitHub Releases instead of committing binaries
-*.apk
-*.aab
-app-debug.apk
-app-release.apk
-NammudeNaadu.apk
-NammudeNaadu-release.apk
-NammudeNaadu-release.aab
-NammudeNaadu.aab
-
-# Android keystore — NEVER commit
-android/app/*.jks
-android/app/*.keystore
-android/app/keystore.properties
-keystore.properties
-
-# Local environment
-.env
-.env.local

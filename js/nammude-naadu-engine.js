@@ -450,91 +450,6 @@
   }
   window.getRegisteredUserAvatar = getRegisteredUserAvatar;
 
-  function getRegisteredUserName(identifier, fallback) {
-    if (!identifier && !fallback) return 'നാട്ടുകാരൻ';
-    const cleanStr = String(identifier || '').trim();
-    if (!cleanStr) return fallback || 'നാട്ടുകാരൻ';
-
-    const cleanPhone = cleanStr.replace(/\D/g, '').slice(-10);
-    const myPhone = (APP_STATE.currentUser?.phone || '').replace(/\D/g, '').slice(-10);
-    const myId = APP_STATE.currentUser?.id;
-    const myName = (APP_STATE.currentUser?.name || '').trim();
-
-    // 1. Current user
-    if ((cleanPhone && cleanPhone === myPhone) || (myId && cleanStr === myId) || (cleanStr.toLowerCase() === myName.toLowerCase() && myName && myName !== 'നാട്ടുകാരൻ')) {
-      if (myName && myName !== 'നാട്ടുകാരൻ') return myName;
-    }
-
-    // 2. Cloud registered citizen profiles
-    if (Array.isArray(APP_STATE.cloudProfiles)) {
-      const found = APP_STATE.cloudProfiles.find(p => {
-        if (!p) return false;
-        const pPhone = (p.phone || '').replace(/\D/g, '').slice(-10);
-        if (cleanPhone && pPhone && cleanPhone === pPhone) return true;
-        if (p.id && (p.id === cleanStr || p.id === ('usr_' + cleanPhone))) return true;
-        if (p.name && p.name.trim().toLowerCase() === cleanStr.toLowerCase() && p.name !== 'നാട്ടുകാരൻ') return true;
-        return false;
-      });
-      if (found && found.name && found.name.trim() && found.name.trim() !== 'നാട്ടുകാരൻ') {
-        return found.name.trim();
-      }
-    }
-
-    // 3. Registered services
-    if (Array.isArray(APP_STATE.services)) {
-      const found = APP_STATE.services.find(s => {
-        if (!s) return false;
-        const sPhone = (s.phone || '').replace(/\D/g, '').slice(-10);
-        if (cleanPhone && sPhone && cleanPhone === sPhone) return true;
-        if (s.id && s.id === cleanStr) return true;
-        return false;
-      });
-      if (found && found.name && found.name.trim()) return found.name.trim();
-    }
-
-    // 4. Blood donors
-    if (Array.isArray(APP_STATE.bloodDonors)) {
-      const found = APP_STATE.bloodDonors.find(d => {
-        if (!d) return false;
-        const dPhone = (d.phone || '').replace(/\D/g, '').slice(-10);
-        if (cleanPhone && dPhone && cleanPhone === dPhone) return true;
-        if (d.id && d.id === cleanStr) return true;
-        return false;
-      });
-      if (found && found.name && found.name.trim()) return found.name.trim();
-    }
-
-    // 5. Chat metadata cache
-    if (APP_STATE.chatMeta) {
-      for (const k in APP_STATE.chatMeta) {
-        const m = APP_STATE.chatMeta[k];
-        if (m && m.name && m.name !== 'പ്രാദേശിക സുഹൃത്ത്' && m.name !== 'നാട്ടുകാരൻ') {
-          const mPhone = (m.phone || '').replace(/\D/g, '').slice(-10);
-          if (cleanPhone && mPhone && cleanPhone === mPhone) return m.name;
-          if (m.recipientId && m.recipientId === cleanStr) return m.name;
-        }
-      }
-    }
-
-    // 6. Community posts
-    if (Array.isArray(APP_STATE.posts)) {
-      const found = APP_STATE.posts.find(p => {
-        if (!p) return false;
-        const pPhone = (p.authorPhone || '').replace(/\D/g, '').slice(-10);
-        if (cleanPhone && pPhone && cleanPhone === pPhone) return true;
-        if (p.authorId && p.authorId === cleanStr) return true;
-        return false;
-      });
-      if (found && found.authorName && found.authorName !== 'നാട്ടുകാരൻ') {
-        return found.authorName;
-      }
-    }
-
-    if (fallback && fallback !== 'നാട്ടുകാരൻ' && fallback !== 'പ്രാദേശിക സുഹൃത്ത്') return fallback;
-    return cleanStr || 'നാട്ടുകാരൻ';
-  }
-  window.getRegisteredUserName = getRegisteredUserName;
-
   function findRegisteredUserProfile(identifier) {
     if (!identifier) return null;
     const cleanStr = String(identifier).trim();
@@ -1692,34 +1607,6 @@
   }
   window.detectLiveGpsLocation = detectLiveGpsLocation;
 
-  let lastAppLocationRefreshAt = 0;
-  function refreshLocationOnAppOpen() {
-    const now = Date.now();
-    if (now - lastAppLocationRefreshAt < 30000) return;
-    lastAppLocationRefreshAt = now;
-    if (typeof detectLiveGpsLocation === 'function') {
-      detectLiveGpsLocation(false);
-    }
-  }
-  window.refreshLocationOnAppOpen = refreshLocationOnAppOpen;
-  setTimeout(refreshLocationOnAppOpen, 1000);
-  if (typeof document !== 'undefined') {
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') {
-        refreshLocationOnAppOpen();
-      }
-    });
-  }
-  if (typeof window !== 'undefined' && window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
-    try {
-      window.Capacitor.Plugins.App.addListener('appStateChange', (state) => {
-        if (state && state.isActive) {
-          refreshLocationOnAppOpen();
-        }
-      });
-    } catch (_) {}
-  }
-
   function openLocationModal() {
     renderPresetLocationsList();
     const curRad = APP_STATE.activeRadiusKm || 5;
@@ -2234,10 +2121,9 @@
                    (!post.isCloud && post.isCurrentUser);
 
     const postSnippet = (post.content || '').replace(/'/g, "\\'").replace(/"/g, '&quot;').substring(0, 35);
-    const resolvedPostName = getRegisteredUserName(post.authorPhone || post.authorId || post.authorName, post.authorName);
     const authorNameSafe = (isMine && APP_STATE.currentUser && APP_STATE.currentUser.name && APP_STATE.currentUser.name !== 'നാട്ടുകാരൻ')
       ? APP_STATE.currentUser.name.replace(/'/g, "\\'").replace(/"/g, '&quot;')
-      : (resolvedPostName || 'നാട്ടുകാരൻ').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      : (post.authorName || 'നാട്ടുകാരൻ').replace(/'/g, "\\'").replace(/"/g, '&quot;');
     const timeFormatted = formatMalayalamTime(post.timestamp || post.createdAt);
     const locationSafe = post.authorLocation || post.locationName || 'കേരളം';
     const avatarSafe = isMine
@@ -2251,7 +2137,7 @@
     return `
       <article class="fb-card" id="${post.id}" style="background:#FFFFFF;border-radius:14px;border:1px solid #CBD5E1;box-shadow:0 1px 4px rgba(0,0,0,0.03);padding:10px 12px;margin:0">
         <div class="fb-card-header" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-          <div class="fb-author-row" onclick="openAuthorProfile('${encodeURIComponent(resolvedPostName || 'നാട്ടുകാരൻ')}', '${encodeURIComponent(post.authorPhone || '')}', '${encodeURIComponent(avatarSafe)}', '${encodeURIComponent(locationSafe)}', '${encodeURIComponent(post.authorBlood || 'O+')}', '${post.authorId || ''}')" style="display:flex;align-items:center;gap:8px;cursor:pointer;flex:1">
+          <div class="fb-author-row" onclick="openAuthorProfile('${encodeURIComponent(post.authorName || 'നാട്ടുകാരൻ')}', '${encodeURIComponent(post.authorPhone || '')}', '${encodeURIComponent(avatarSafe)}', '${encodeURIComponent(locationSafe)}', '${encodeURIComponent(post.authorBlood || 'O+')}', '${post.authorId || ''}')" style="display:flex;align-items:center;gap:8px;cursor:pointer;flex:1">
             <div class="fb-author-avatar-wrap" style="position:relative;width:36px;height:36px;flex-shrink:0">
               <img src="${avatarSafe}" alt="${authorNameSafe}" class="fb-author-avatar" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1.5px solid #10B981" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
             </div>
@@ -2270,7 +2156,6 @@
 
           <div class="fb-header-actions" style="display:flex;align-items:center;gap:4px">
             ${typeBadge}
-            <button type="button" onclick="reportPost('${post.id}')" title="റിപ്പോർട്ട് ചെയ്യുക" style="background:none;border:none;color:#94A3B8;cursor:pointer;font-size:13px;padding:3px 5px">🚩</button>
             ${isMine ? `
               <div style="display:flex;gap:4px;margin-left:4px">
                 <button onclick="openEditPostModal('${post.id}')" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;padding:3px 7px;border-radius:8px;font-size:11px;font-weight:800;cursor:pointer">
@@ -2333,27 +2218,6 @@
     if (typeof renderHomeCommunityFeed === 'function') renderHomeCommunityFeed();
   }
   window.togglePostLike = togglePostLike;
-
-  function reportPost(postId) {
-    if (!postId) return;
-    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'en')) === 'en';
-    const post = (APP_STATE.posts || []).find(p => p.id === postId);
-    const reason = prompt(
-      isEn ? 'Please specify reason for reporting this post:' : 'ഈ പോസ്റ്റ് റിപ്പോർട്ട് ചെയ്യാനുള്ള കാരണം നൽകുക:',
-      isEn ? 'Inappropriate / Spam content' : 'അനാവശ്യ / തെറ്റായ ഉള്ളടക്കം'
-    );
-    if (reason === null) return;
-    let hidden = [];
-    try { hidden = JSON.parse(localStorage.getItem('nn_hidden_posts') || '[]'); } catch (_) { hidden = []; }
-    if (!hidden.includes(postId)) { hidden.push(postId); localStorage.setItem('nn_hidden_posts', JSON.stringify(hidden)); }
-    if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.reportContent === 'function') {
-      window.NN_SUPABASE_SERVICES.reportContent('post', postId, reason, post ? (post.authorName || post.authorPhone) : '');
-    }
-    renderCommunityFeed();
-    if (typeof renderHomeCommunityFeed === 'function') renderHomeCommunityFeed();
-    toast(isEn ? '🚩 Post reported to moderation team.' : '🚩 പോസ്റ്റ് റിപ്പോർട്ട് ചെയ്തു.');
-  }
-  window.reportPost = reportPost;
 
   function getFilteredPostsForLocation() {
     const maxRadius = APP_STATE.activeRadiusKm || 25;
@@ -2553,7 +2417,6 @@
     });
 
     // Resolve name if missing or generic
-    name = getRegisteredUserName(phone || authorId || name, name);
     if (!name || name === 'Chat' || name === 'പ്രാദേശിക സുഹൃത്ത്' || name === 'സുഹൃത്ത്' || name.startsWith('chat_')) {
       if (matchedService && matchedService.name) name = matchedService.name;
       else if (matchedDonor && matchedDonor.name) name = matchedDonor.name;
@@ -3352,10 +3215,8 @@
     const finalPhone = targetCleanPhone || safePhone || existingMeta.phone || '';
     const resolvedAvatar = getRegisteredUserAvatar(finalPhone || recipientId || safeName, safeAvatar || existingMeta.avatar || DEFAULT_USER_AVATAR);
 
-    const resolvedRecipientName = getRegisteredUserName(finalPhone || recipientId || safeName, (safeName && safeName !== 'പ്രാദേശിക സുഹൃത്ത്') ? safeName : (existingMeta.name || safeName));
-
     APP_STATE.activeChatRecipient = {
-      name: resolvedRecipientName,
+      name: (safeName && safeName !== 'പ്രാദേശിക സുഹൃത്ത്') ? safeName : (existingMeta.name || safeName),
       phone: finalPhone,
       avatar: resolvedAvatar,
       id: recipientId || existingMeta.recipientId || '',
@@ -3429,7 +3290,6 @@
     renderChatMessages();
 
     openModal('modal-chat');
-    window.ACTIVE_CHAT_KEY = chatKey;
     markChatAsSeen(chatKey);
 
     const box = document.getElementById('chatMessagesBox');
@@ -3940,9 +3800,7 @@
           <div class="chat-bubble-meta">
             <span class="chat-time-text">${escapeHtml(msg.time || '')}</span>
             ${isMe ? (
-              msg.status === 'failed'
-                ? '<span class="chat-ticks failed" title="അയക്കാൻ കഴിഞ്ഞില്ല (Failed)" style="color:#ef4444">⚠️</span>'
-                : (msg.status === 'seen' || msg.seen === true)
+              (msg.status === 'seen' || msg.seen === true)
                 ? '<span class="chat-ticks seen" title="കണ്ടു (Seen)">✔✔</span>'
                 : ((msg.status === 'sent')
                     ? '<span class="chat-ticks sent" title="അയച്ചു (Sent)">✔</span>'
@@ -4168,17 +4026,23 @@
         osc.start(now);
         osc.stop(now + 0.05);
       } else if (type === 'received') {
-        // WhatsApp incoming chime (single gentle tone)
-        const osc = ctx.createOscillator();
+        // WhatsApp incoming chime (2 gentle tones)
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
         const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(784, now);
+        osc1.type = 'sine';
+        osc2.type = 'sine';
+        osc1.frequency.setValueAtTime(659.25, now);
+        osc2.frequency.setValueAtTime(987.77, now + 0.04);
         gain.gain.setValueAtTime(0.18, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
-        osc.connect(gain);
+        osc1.connect(gain);
+        osc2.connect(gain);
         gain.connect(ctx.destination);
-        osc.start(now);
-        osc.stop(now + 0.12);
+        osc1.start(now);
+        osc1.stop(now + 0.06);
+        osc2.start(now + 0.04);
+        osc2.stop(now + 0.13);
       }
     } catch (_) {}
   }
@@ -4643,7 +4507,7 @@
         <div style="text-align:center;padding:24px 18px;background:#FFFFFF;border-radius:18px;margin:24px auto;max-width:320px;box-shadow:0 2px 10px rgba(11,20,26,0.08);border:1px solid #E2E8F0">
           <div style="width:54px;height:54px;border-radius:50%;background:#E8F5E9;border:2px solid #C8E6C9;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:26px">🔒</div>
           <div style="font-weight:800;font-size:15px;color:#111B21">${escapeHtml(APP_STATE.activeChatRecipient.name)}</div>
-          <p style="font-size:12px;color:#54656F;margin:6px 0 0;line-height:1.5">സുരക്ഷിതമായ ക്ലൗഡ് സന്ദേശങ്ങൾ. ശ്രദ്ധിക്കുക: ഈ ചാറ്റ് എൻഡ്-ടു-എൻഡ് എൻക്രിപ്റ്റ് ചെയ്തതല്ല.</p>
+          <p style="font-size:12px;color:#54656F;margin:6px 0 0;line-height:1.5">ഈ സംഭാഷണം പൂർണ്ണമായും എൻഡ്-ടു-എൻഡ് സുരക്ഷിതമാണ്. സന്ദേശങ്ങൾ അയച്ച് തുടങ്ങാം.</p>
           <div style="margin-top:12px;font-size:11px;font-weight:700;color:#008069;background:#E8F5E9;border:1px solid #A7F3D0;display:inline-flex;align-items:center;gap:4px;padding:4px 14px;border-radius:20px">
             <span>⚡ തത്സമയ ചാറ്റ്</span>
           </div>
@@ -4855,26 +4719,14 @@
     };
 
     if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.sendChatMessage === 'function') {
-      window.NN_SUPABASE_SERVICES.sendChatMessage(chatKey, msgObj, metaObj).then((res) => {
-        if (res && res.success === false) {
-          const localMessage = localMsg;
-          localMessage.status = 'failed';
-          saveChats();
-          renderChatMessages();
-          return;
-        }
+      window.NN_SUPABASE_SERVICES.sendChatMessage(chatKey, msgObj, metaObj).then(() => {
         const tickEl = document.querySelector(`.chat-message-row[data-msg-id="${msgId}"] .chat-ticks`);
         if (tickEl && !tickEl.classList.contains('seen')) {
           tickEl.className = 'chat-ticks delivered';
           tickEl.title = 'എത്തിച്ചേർന്നു (Delivered)';
           tickEl.textContent = '✔✔';
         }
-      }).catch(() => {
-        const localMessage = localMsg;
-        localMessage.status = 'failed';
-        saveChats();
-        renderChatMessages();
-      });
+      }).catch(() => {});
     }
 
     // Closed-app background push delivery via OneSignal
@@ -6169,7 +6021,6 @@
     }
 
     const avatarSrc = getRegisteredUserAvatar(meta.phone || meta.recipientId || meta.name, meta.avatar);
-    const threadDisplayName = getRegisteredUserName(meta.phone || meta.recipientId || meta.name, meta.name || k.replace('chat_', ''));
 
     return `
       <div onclick="openChatModalByKey('${k}')"
@@ -6206,7 +6057,7 @@
                          font-size:14.5px;
                          color:${isUnread ? '#065F46' : '#0F172A'};
                          white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-                         max-width:calc(100% - 80px)">${escapeHtml(threadDisplayName)}</span>
+                         max-width:calc(100% - 80px)">${escapeHtml(meta.name)}</span>
             <span style="font-size:11px;
                          color:${isUnread ? '#059669' : '#94A3B8'};
                          font-weight:${isUnread ? '800' : '600'};
@@ -6474,19 +6325,17 @@
 
     let list = allMatching;
 
-    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'en')) === 'en';
-
     if (list.length === 0) {
       container.innerHTML = `
         <div style="text-align:center;padding:36px 16px;background:#fff;border-radius:18px;border:1px solid #E2E8F0">
           <div style="font-size:36px;margin-bottom:8px">🔍</div>
-          <h3 style="margin:0 0 6px;color:#111827;font-size:16px">${isEn ? 'No services found' : 'സേവനങ്ങളൊന്നും കണ്ടെത്തിയില്ല'}</h3>
+          <h3 style="margin:0 0 6px;color:#111827;font-size:16px">സേവനങ്ങളൊന്നും കണ്ടെത്തിയില്ല</h3>
           <p style="font-size:13px;color:#64748B;margin:0 0 16px;line-height:1.5">
-            ${isEn ? 'No service providers found for this category or search query.<br>Try another search or register your service.' : 'നിങ്ങൾ തിരഞ്ഞ വിഭാഗത്തിലോ വാക്കിലോ സേവനദാതാക്കൾ ലഭ്യമല്ല.<br>മറ്റൊരു വാക്ക് തിരയുകയോ പുതിയ സേവനം രജിസ്റ്റർ ചെയ്യുകയോ ചെയ്യാം.'}
+            നിങ്ങൾ തിരഞ്ഞ വിഭാഗത്തിലോ വാക്കിലോ സേവനദാതാക്കൾ ലഭ്യമല്ല.<br>മറ്റൊരു വാക്ക് തിരയുകയോ പുതിയ സേവനം രജിസ്റ്റർ ചെയ്യുകയോ ചെയ്യാം.
           </p>
           <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-            <button onclick="filterServiceCategory('all')" style="padding:8px 14px;background:#ECFDF5;color:#0E7043;border:1px solid #A7F3D0;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">${isEn ? 'View All Services' : 'എല്ലാ സർവീസുകളും കാണുക'}</button>
-            <button onclick="openAddServiceModal()" style="padding:8px 14px;background:#0E7043;color:#fff;border:none;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer">➕ ${isEn ? 'Register New Service' : 'പുതിയ സേവനം ചേർക്കാം'}</button>
+            <button onclick="filterServiceCategory('all')" style="padding:8px 14px;background:#ECFDF5;color:#0E7043;border:1px solid #A7F3D0;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">എല്ലാ സർവീസുകളും കാണുക</button>
+            <button onclick="openAddServiceModal()" style="padding:8px 14px;background:#0E7043;color:#fff;border:none;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer">➕ പുതിയ സേവനം ചേർക്കാം</button>
           </div>
         </div>
       `;
@@ -6495,48 +6344,30 @@
 
     container.innerHTML = list.map(srv => {
       const isAvail = srv.availability !== 'busy';
-      const availLabel = isAvail 
-        ? (isEn ? '🟢 Available Now' : '🟢 ഇപ്പോൾ ലഭ്യമാണ്') 
-        : (isEn ? '🟡 By Appointment' : '🟡 ബുക്കിംഗ് അനുസരിച്ച്');
+      const availLabel = isAvail ? '🟢 ഇപ്പോൾ ലഭ്യമാണ്' : '🟡 ബുക്കിംഗ് അനുസരിച്ച്';
       const availClass = isAvail ? 'avail' : 'busy';
-
-      const providerName = getRegisteredUserName(srv.phone || srv.userId || srv.name, srv.name);
-      const tradeLabel = isEn ? (window.NN_I18N ? window.NN_I18N.translateTrade(srv.trade) : srv.trade) : srv.trade;
-      const locLabel = isEn 
-        ? (window.NN_I18N ? window.NN_I18N.translatePlace(resolveItemLocation(srv)) : resolveItemLocation(srv)) 
-        : resolveItemLocation(srv);
-      const distLabel = isEn ? `${srv._calculatedDist} km away` : `${srv._calculatedDist} km അകലെ`;
-      const feeText = isEn 
-        ? (window.NN_I18N ? window.NN_I18N.translateText(formatPrice(srv.visitingFee || '₹200 Visiting Fee')) : formatPrice(srv.visitingFee)) 
-        : formatPrice(srv.visitingFee || '₹200 വിസിറ്റിംഗ് നിരക്ക്');
-      const expText = isEn 
-        ? (window.NN_I18N ? window.NN_I18N.translateText(srv.experience) : srv.experience) 
-        : srv.experience;
-      const detailsText = isEn ? 'Details & Reviews ➔' : 'വിശദാംശങ്ങൾ & റേറ്റിംഗ് ➔';
-      const chatBtnText = isEn ? 'Chat Now' : 'ചാറ്റ്';
-      const liveBadge = isEn ? '☁️ Live' : '☁️ ലൈവ്';
 
       return `
         <div class="service-card" onclick="openServiceDetailModal('${srv.id}')" style="cursor:pointer">
           <div class="service-card-top">
-            <img src="${getRegisteredUserAvatar(srv.phone || srv.userId || srv.name, srv.avatar)}" alt="${escapeHtml(providerName)}" class="service-prov-avatar" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
+            <img src="${getRegisteredUserAvatar(srv.phone || srv.userId || srv.name, srv.avatar)}" alt="${srv.name}" class="service-prov-avatar" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
             <div class="service-prov-meta">
               <div style="display:flex;justify-content:space-between;align-items:flex-start">
                 <div class="service-prov-name">
-                  <span>${escapeHtml(providerName)}</span>
+                  <span>${srv.name}</span>
                   <span style="font-size:11px;background:#ECFDF5;color:#0E7043;padding:2px 8px;border-radius:8px;font-weight:700">★ ${srv.rating}</span>
-                  ${srv.isCloud ? `<span style="font-size:9.5px;background:#ECFDF5;color:#059669;border:1px solid #A7F3D0;padding:1px 6px;border-radius:6px;font-weight:800;margin-left:4px" title="Realtime registered">${liveBadge}</span>` : ''}
+                  ${srv.isCloud ? '<span style="font-size:9.5px;background:#ECFDF5;color:#059669;border:1px solid #A7F3D0;padding:1px 6px;border-radius:6px;font-weight:800;margin-left:4px" title="ഫയർബേസ് ക്ലൗഡിൽ തത്സമയം രജിസ്റ്റർ ചെയ്തത്">☁️ ലൈവ്</span>' : ''}
                 </div>
                 <span class="provider-live-pill ${availClass}">${availLabel}</span>
               </div>
               <div class="service-prov-trade" style="display:flex;align-items:center;gap:6px">
                 <span class="service-mini-icon-badge">${srv.icon || '🛠️'}</span>
-                <span>${escapeHtml(tradeLabel)}</span>
+                <span>${srv.trade}</span>
               </div>
               <div class="service-prov-loc">
-                <span>📍 ${escapeHtml(locLabel)}</span>
+                <span>📍 ${resolveItemLocation(srv)}</span>
                 <span>•</span>
-                <span style="color:#0E7043;font-weight:800">${distLabel}</span>
+                <span style="color:#0E7043;font-weight:800">${srv._calculatedDist} km അകലെ</span>
               </div>
             </div>
           </div>
@@ -6544,27 +6375,27 @@
           <!-- VEHICLE HIGHLIGHT BADGES -->
           ${srv.vehicleDetails ? `
             <div style="display:flex;flex-wrap:wrap;gap:5px;margin:4px 0">
-              ${srv.vehicleDetails.stand ? `<span style="font-size:10px;background:#F1F5F9;color:#334155;padding:2px 8px;border-radius:6px;font-weight:700">🚏 ${isEn ? 'Stand:' : 'സ്റ്റാൻഡ്:'} ${escapeHtml(isEn && window.NN_I18N ? window.NN_I18N.translatePlace(srv.vehicleDetails.stand) : srv.vehicleDetails.stand)}</span>` : ''}
+              ${srv.vehicleDetails.stand ? `<span style="font-size:10px;background:#F1F5F9;color:#334155;padding:2px 8px;border-radius:6px;font-weight:700">🚏 സ്റ്റാൻഡ്: ${escapeHtml(srv.vehicleDetails.stand)}</span>` : ''}
               ${srv.vehicleDetails.model ? `<span style="font-size:10px;background:#EFF6FF;color:#1D4ED8;padding:2px 8px;border-radius:6px;font-weight:700">🚗 ${escapeHtml(srv.vehicleDetails.model)}</span>` : ''}
-              ${srv.vehicleDetails.route ? `<span style="font-size:10px;background:#FDF2F8;color:#BE185D;padding:2px 8px;border-radius:6px;font-weight:700">🛣️ ${escapeHtml(isEn && window.NN_I18N ? window.NN_I18N.translatePlace(srv.vehicleDetails.route) : srv.vehicleDetails.route)}</span>` : ''}
+              ${srv.vehicleDetails.route ? `<span style="font-size:10px;background:#FDF2F8;color:#BE185D;padding:2px 8px;border-radius:6px;font-weight:700">🛣️ ${escapeHtml(srv.vehicleDetails.route)}</span>` : ''}
             </div>
           ` : ''}
 
           <div style="display:flex;flex-wrap:wrap;gap:6px;margin:2px 0">
-            <span class="provider-fee-pill">💰 ${feeText}</span>
-            ${(srv.specializations || []).slice(0, 3).map(sp => `<span class="provider-spec-tag">${escapeHtml(isEn && window.NN_I18N ? window.NN_I18N.translateText(sp) : sp)}</span>`).join('')}
+            <span class="provider-fee-pill">💰 ${formatPrice(srv.visitingFee || '₹200 വിസിറ്റിംഗ് നിരക്ക്')}</span>
+            ${(srv.specializations || []).slice(0, 3).map(sp => `<span class="provider-spec-tag">${sp}</span>`).join('')}
           </div>
 
           <div style="font-size:11.5px;color:#6B7280;display:flex;justify-content:space-between;border-top:1px dashed #E5E7EB;padding-top:8px">
-            <span>🛠️ ${escapeHtml(expText)}</span>
-            <span style="color:#059669;font-weight:700">${detailsText}</span>
+            <span>🛠️ ${srv.experience}</span>
+            <span style="color:#059669;font-weight:700">വിശദാംശങ്ങൾ & റേറ്റിംഗ് ➔</span>
           </div>
 
           <!-- DIRECT ACTION: IN-APP CHAT ONLY -->
           <div class="service-actions-row" onclick="event.stopPropagation()">
-            <button class="prov-btn-chat" onclick="openChatForService('${srv.id}')" title="${chatBtnText}" style="flex:1;justify-content:center">
+            <button class="prov-btn-chat" onclick="openChatForService('${srv.id}')" title="ചാറ്റ്" style="flex:1;justify-content:center">
               <span>💬</span>
-              <span>${chatBtnText}</span>
+              <span>ചാറ്റ്</span>
             </button>
           </div>
         </div>
@@ -6583,39 +6414,26 @@
     const sheet = document.getElementById('serviceDetailSheetContent');
     if (!sheet) return;
 
-    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'en')) === 'en';
     const dist = getItemDistanceKm(srv, APP_STATE.location.lat, APP_STATE.location.lon);
     const isAvail = srv.availability !== 'busy';
-    const availLabel = isAvail 
-      ? (isEn ? '🟢 Available Now' : '🟢 ഇപ്പോൾ ലഭ്യമാണ് (Available Now)') 
-      : (isEn ? '🟡 By Appointment' : '🟡 ബുക്കിംഗ് അനുസരിച്ച് (Prior Booking)');
+    const availLabel = isAvail ? '🟢 ഇപ്പോൾ ലഭ്യമാണ് (Available Now)' : '🟡 ബുക്കിംഗ് അനുസരിച്ച് (Prior Booking)';
     const availClass = isAvail ? 'avail' : 'busy';
-
-    const providerName = getRegisteredUserName(srv.phone || srv.userId || srv.name, srv.name);
-    const tradeLabel = isEn ? (window.NN_I18N ? window.NN_I18N.translateTrade(srv.trade) : srv.trade) : srv.trade;
-    const locLabel = isEn 
-      ? (window.NN_I18N ? window.NN_I18N.translatePlace(resolveItemLocation(srv)) : resolveItemLocation(srv)) 
-      : resolveItemLocation(srv);
-    const distLabel = isEn ? `${dist} km away` : `${dist} km അകലെ`;
-    const feeText = isEn 
-      ? (window.NN_I18N ? window.NN_I18N.translateText(formatPrice(srv.visitingFee || '₹200 Visiting Fee')) : formatPrice(srv.visitingFee)) 
-      : formatPrice(srv.visitingFee || '₹200 വിസിറ്റിംഗ് നിരക്ക്');
 
     sheet.innerHTML = `
       <div class="service-detail-hero">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <span style="font-size:0.75rem;background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:20px;font-weight:700">🛠️ ${isEn ? 'Service Profile' : 'സർവീസ് പ്രൊഫൈൽ'}</span>
+          <span style="font-size:0.75rem;background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:20px;font-weight:700">🛠️ സർവീസ് പ്രൊഫൈൽ</span>
           <button onclick="closeModal('modal-service-detail')" style="background:rgba(255,255,255,0.25);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer">✕</button>
         </div>
         <div style="display:flex;align-items:center;gap:14px;margin-top:14px">
-          <img src="${getRegisteredUserAvatar(srv.phone || srv.userId || srv.name, srv.avatar)}" alt="${escapeHtml(providerName)}" style="width:68px;height:68px;border-radius:50%;border:3px solid #fff;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,0.15)" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
+          <img src="${getRegisteredUserAvatar(srv.phone || srv.userId || srv.name, srv.avatar)}" alt="${srv.name}" style="width:68px;height:68px;border-radius:50%;border:3px solid #fff;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,0.15)" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
           <div>
-            <h3 style="margin:0;font-size:1.25rem;font-weight:800">${escapeHtml(providerName)}</h3>
+            <h3 style="margin:0;font-size:1.25rem;font-weight:800">${srv.name}</h3>
             <div style="font-size:0.9rem;opacity:0.95;margin-top:2px;display:flex;align-items:center;gap:6px">
               <span style="background:rgba(255,255,255,0.25);padding:2px 8px;border-radius:8px;font-size:14px">${srv.icon || '🛠️'}</span>
-              <span>${escapeHtml(tradeLabel)}</span>
+              <span>${srv.trade}</span>
             </div>
-            <div style="font-size:0.78rem;opacity:0.9;margin-top:3px">📍 ${escapeHtml(locLabel)} • <b style="color:#A7F3D0">${distLabel}</b></div>
+            <div style="font-size:0.78rem;opacity:0.9;margin-top:3px">📍 ${resolveItemLocation(srv)} • <b style="color:#A7F3D0">${dist} km അകലെ</b></div>
           </div>
         </div>
       </div>
@@ -6624,29 +6442,29 @@
         <!-- KEY STATS ROW -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
           <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:14px;padding:10px 12px">
-            <div style="font-size:0.7rem;color:#64748B;font-weight:700">💰 ${isEn ? 'Visiting Fee' : 'വിസിറ്റിംഗ് നിരക്ക്'}</div>
-            <div style="font-size:0.86rem;font-weight:800;color:#0F766E;margin-top:2px">${feeText}</div>
+            <div style="font-size:0.7rem;color:#64748B;font-weight:700">💰 വിസിറ്റിംഗ് നിരക്ക്</div>
+            <div style="font-size:0.86rem;font-weight:800;color:#0F766E;margin-top:2px">${formatPrice(srv.visitingFee || '₹200 വിസിറ്റിംഗ് നിരക്ക്')}</div>
           </div>
           <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:14px;padding:10px 12px">
-            <div style="font-size:0.7rem;color:#64748B;font-weight:700">⏰ ${isEn ? 'Working Hours' : 'പ്രവൃത്തി സമയം'}</div>
+            <div style="font-size:0.7rem;color:#64748B;font-weight:700">⏰ പ്രവൃത്തി സമയം</div>
             <div style="font-size:0.84rem;font-weight:800;color:#1E293B;margin-top:2px">${srv.workingHours || '8:00 AM - 7:30 PM'}</div>
           </div>
         </div>
 
         <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:14px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between">
-          <span style="font-size:0.82rem;font-weight:700;color:#166534">${isEn ? 'Availability Status:' : 'ലഭ്യതാ സ്റ്റാറ്റസ്:'}</span>
+          <span style="font-size:0.82rem;font-weight:700;color:#166534">ലഭ്യതാ സ്റ്റാറ്റസ്:</span>
           <span class="provider-live-pill ${availClass}">${availLabel}</span>
         </div>
 
         <!-- VEHICLE SPECIFICATIONS (IF VEHICLE SERVICE) -->
         ${srv.vehicleDetails ? `
           <div style="background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:14px;padding:12px;margin-top:2px">
-            <div style="font-size:0.82rem;font-weight:900;color:#065F46;margin-bottom:8px">🚗 ${isEn ? 'Vehicle Specifications:' : 'വാഹന വിവരങ്ങൾ (Vehicle Specifications):'}</div>
+            <div style="font-size:0.82rem;font-weight:900;color:#065F46;margin-bottom:8px">🚗 വാഹന വിവരങ്ങൾ (Vehicle Specifications):</div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:0.78rem">
-              ${srv.vehicleDetails.model ? `<div><span style="color:#64748B">${isEn ? 'Model/Seating:' : 'മോഡൽ/സീറ്റിംഗ്:'}</span> <b style="color:#0F172A">${escapeHtml(srv.vehicleDetails.model)}</b></div>` : ''}
-              ${srv.vehicleDetails.number ? `<div><span style="color:#64748B">${isEn ? 'Number:' : 'നമ്പർ:'}</span> <b style="color:#0F172A">${escapeHtml(srv.vehicleDetails.number)}</b></div>` : ''}
-              ${srv.vehicleDetails.stand ? `<div style="grid-column:span 2"><span style="color:#64748B">${isEn ? 'Main Stand:' : 'പ്രധാന സ്റ്റാൻഡ്:'}</span> <b style="color:#0F172A">🚏 ${escapeHtml(isEn && window.NN_I18N ? window.NN_I18N.translatePlace(srv.vehicleDetails.stand) : srv.vehicleDetails.stand)}</b></div>` : ''}
-              ${srv.vehicleDetails.route ? `<div style="grid-column:span 2"><span style="color:#64748B">${isEn ? 'Routes:' : 'റൂട്ടുകൾ:'}</span> <b style="color:#0F172A">🛣️ ${escapeHtml(isEn && window.NN_I18N ? window.NN_I18N.translatePlace(srv.vehicleDetails.route) : srv.vehicleDetails.route)}</b></div>` : ''}
+              ${srv.vehicleDetails.model ? `<div><span style="color:#64748B">മോഡൽ/സീറ്റിംഗ്:</span> <b style="color:#0F172A">${escapeHtml(srv.vehicleDetails.model)}</b></div>` : ''}
+              ${srv.vehicleDetails.number ? `<div><span style="color:#64748B">നമ്പർ:</span> <b style="color:#0F172A">${escapeHtml(srv.vehicleDetails.number)}</b></div>` : ''}
+              ${srv.vehicleDetails.stand ? `<div style="grid-column:span 2"><span style="color:#64748B">പ്രധാന സ്റ്റാൻഡ്:</span> <b style="color:#0F172A">🚏 ${escapeHtml(srv.vehicleDetails.stand)}</b></div>` : ''}
+              ${srv.vehicleDetails.route ? `<div style="grid-column:span 2"><span style="color:#64748B">റൂട്ടുകൾ:</span> <b style="color:#0F172A">🛣️ ${escapeHtml(srv.vehicleDetails.route)}</b></div>` : ''}
             </div>
           </div>
         ` : ''}
@@ -7358,7 +7176,7 @@
   window.selectServiceSearchSuggestion = selectServiceSearchSuggestion;
 
   // SUBMIT SERVICE REGISTRATION WITH CUSTOM TYPED TRADE & MINI ICON
-  async function submitServiceRegistration(e) {
+  function submitServiceRegistration(e) {
     if (e) e.preventDefault();
     const nameEl = document.getElementById('regServiceName');
     const name = nameEl ? nameEl.value.trim() : '';
@@ -7467,20 +7285,12 @@
       localStorage.setItem('nn_services', JSON.stringify(APP_STATE.services));
     } catch (_) {}
     // Save to Supabase Cloud Database
-    let result = { success: true };
     if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveService === 'function') {
-      const saveService = window.NN_SUPABASE_SERVICES.saveService;
-      result = await saveService.call(window.NN_SUPABASE_SERVICES, newService);
+      window.NN_SUPABASE_SERVICES.saveService(newService);
     }
-    if (!result || result.success !== true) {
-      toast('⚠️ ' + ((result && result.error) || 'സേവനം ക്ലൗഡിൽ സൂക്ഷിക്കാൻ കഴിഞ്ഞില്ല'));
-      return;
-    }
-    APP_STATE.activeServiceCategory = 'all';
     closeModal('modal-add-service');
     renderServicesScreen();
     renderHomeScreen();
-    navTo('services');
     toast(`🎉 ${selectedIcon} ${typedTrade} സേവനം വിജയകരമായി രജിസ്റ്റർ ചെയ്തു!`);
   }
   window.submitServiceRegistration = submitServiceRegistration;
@@ -7707,24 +7517,23 @@
     const bar = document.getElementById('bloodGroupsChipsBar');
     if (!bar) return;
 
-    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'en')) === 'en';
     const allDonors = Array.isArray(APP_STATE.bloodDonors) ? APP_STATE.bloodDonors : [];
     const totalCount = allDonors.length;
 
     // Update screen header count badge
     const badge = document.getElementById('bloodDonorsCountBadge');
     if (badge) {
-      badge.textContent = String(totalCount);
+      badge.textContent = `രജിസ്റ്റർ ചെയ്തവർ: ${totalCount}`;
     }
 
     bar.innerHTML = BLOOD_GROUPS.map(grp => {
-      const label = (grp === 'all')
-        ? (isEn ? 'All' : 'എല്ലാം')
-        : grp;
+      const count = (grp === 'all')
+        ? totalCount
+        : allDonors.filter(d => d && d.group === grp).length;
       return `
-      <button class="superapp-chip blood-group-chip ${APP_STATE.activeBloodGroup === grp ? 'active' : ''}"
+      <button class="blood-group-chip ${APP_STATE.activeBloodGroup === grp ? 'active' : ''}"
               onclick="filterBloodGroup('${grp}')">
-        ${label}
+        ${grp === 'all' ? `എല്ലാം (${count})` : `${grp} (${count})`}
       </button>
       `;
     }).join('');
@@ -7746,7 +7555,6 @@
     const container = document.getElementById('bloodDonorsListContainer');
     if (!container) return;
 
-    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'en')) === 'en';
     const maxRadius = APP_STATE.radiusFilters.blood || APP_STATE.activeRadiusKm || 50;
 
     let list = [...(APP_STATE.bloodDonors || [])];
@@ -7755,12 +7563,6 @@
       d._calculatedDist = getItemDistanceKm(d, APP_STATE.location.lat, APP_STATE.location.lon);
     });
     list.sort((a, b) => (Number(a._calculatedDist) || 0) - (Number(b._calculatedDist) || 0));
-
-    // Update stats row
-    const countBadge = document.getElementById('bloodDonorsCountBadge');
-    if (countBadge) countBadge.textContent = String(list.length);
-    const radiusValEl = document.getElementById('bloodRadiusValTxt');
-    if (radiusValEl) radiusValEl.textContent = maxRadius >= 1000 ? (isEn ? 'All Kerala' : 'മുഴുവൻ') : `${maxRadius} km`;
 
     // Filter by blood group
     if (APP_STATE.activeBloodGroup !== 'all') {
@@ -7775,85 +7577,49 @@
       // Fallback: show nearby donors registered across Kerala so user isn't shown empty screen!
       inRadius = list;
       noticeHtml = `
-        <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:14px;padding:9px 12px;font-size:12px;color:#1E40AF;font-weight:700;display:flex;align-items:center;gap:6px;margin:0 16px 8px">
+        <div style="background:#FFF1F2;border:1px solid #FECDD3;border-radius:12px;padding:9px 12px;font-size:12px;color:#991B1B;font-weight:700;display:flex;align-items:center;gap:6px;margin-bottom:6px">
           <span>📍</span>
-          <span>${isEn ? `Showing all registered volunteer donors (${list.length} donors)` : `സമീപ പ്രദേശങ്ങളിലെ രജിസ്റ്റർ ചെയ്ത രക്തദാതാക്കളെ ഉൾപ്പെടുത്തിയിരിക്കുന്നു (${list.length} പേർ).`}</span>
+          <span>സമീപ പ്രദേശങ്ങളിലെ രജിസ്റ്റർ ചെയ്ത രക്തദാതാക്കളെ ഉൾപ്പെടുത്തിയിരിക്കുന്നു (${list.length} പേർ).</span>
         </div>
       `;
     }
 
     if (inRadius.length === 0) {
       container.innerHTML = `
-        <div class="superapp-bottom-empty-card">
-          <div class="superapp-bottom-empty-icon">🩸</div>
-          <div class="superapp-bottom-empty-title">${isEn ? 'No blood donors found' : 'രക്തദാതാക്കൾ ലഭ്യമായിട്ടില്ല'}</div>
-          <div class="superapp-bottom-empty-sub">${isEn ? 'No volunteer donors registered for this group in this area yet.' : 'ഈ ഗ്രൂപ്പിൽ രക്തദാതാക്കൾ ഇതുവരെ രജിസ്റ്റർ ചെയ്തിട്ടില്ല. താങ്കൾക്ക് രക്തദാതാവായി രജിസ്റ്റർ ചെയ്യാം.'}</div>
-          <div class="superapp-bottom-empty-actions">
-            <button class="superapp-hero-btn solid" onclick="openRegisterDonorModal()" style="padding:10px 20px">
-              <span>➕</span> <span>${isEn ? 'Become a Donor' : 'രക്തദാതാവാകാം'}</span>
-            </button>
+        <div style="text-align:center;padding:32px 16px;background:#fff;border-radius:16px;border:1px dashed #FECACA">
+          <div style="font-size:32px;margin-bottom:6px">🩸</div>
+          <div style="font-weight:800;font-size:14px;color:#1E293B">രക്തദാതാക്കൾ ലഭ്യമായിട്ടില്ല</div>
+          <div style="font-size:12px;color:#64748B;margin:4px 0 14px">ഈ ഗ്രൂപ്പിൽ രക്തദാതാക്കൾ ഇതുവരെ രജിസ്റ്റർ ചെയ്തിട്ടില്ല. താങ്കൾക്ക് രക്തദാതാവായി രജിസ്റ്റർ ചെയ്യാം.</div>
+          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+            <button onclick="openRegisterDonorModal()" style="padding:9px 16px;background:#DC2626;color:#fff;border:none;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer">🩸 രക്തദാതാവായി രജിസ്റ്റർ ചെയ്യാം</button>
           </div>
         </div>
       `;
       return;
     }
 
-    const cardsHtml = inRadius.map(d => {
-      const donorPhone = d.phone || '';
-      const donorName = getRegisteredUserName(donorPhone || d.id || d.name, d.name || (isEn ? 'Blood Donor' : 'രക്തദാതാവ്'));
-      const donorAvatar = getRegisteredUserAvatar(donorPhone || d.id || donorName);
-      const locText = isEn 
-        ? (window.NN_I18N ? window.NN_I18N.translatePlace(resolveItemLocation(d) || APP_STATE.location.name) : (resolveItemLocation(d) || APP_STATE.location.name))
-        : (resolveItemLocation(d) || APP_STATE.location.name || 'തത്സമയ ലൊക്കേഷൻ');
-      const distLabel = isEn ? `${d._calculatedDist} km` : `${d._calculatedDist} km അകലെ`;
-      const statusText = d.status 
-        ? (isEn ? (window.NN_I18N ? window.NN_I18N.translateText(d.status) : d.status) : d.status)
-        : (isEn ? 'Available Now' : 'ഇപ്പോൾ ലഭ്യമാണ്');
-
+    container.innerHTML = noticeHtml + inRadius.map(d => {
+      const donorAvatar = getRegisteredUserAvatar(d.phone || d.id || d.name);
       return `
-        <div class="superapp-card" onclick="openChatForDonor('${donorName.replace(/'/g, "\\'")}', '${donorPhone}', '${d.group || 'O+'}')">
-          <img src="${donorAvatar}" alt="${escapeHtml(donorName)}" class="superapp-card-img" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
-          <div class="superapp-card-body">
-            <div class="superapp-card-title-row">
-              <span class="superapp-card-title">${escapeHtml(donorName)}</span>
-              <span class="superapp-badge-blue">${d.group || 'O+'}</span>
-            </div>
-            <div class="superapp-card-meta">
-              <span>📍 ${escapeHtml(locText)} (${distLabel})</span>
-            </div>
-            <div style="font-size:11px;font-weight:700;color:#059669;margin-top:2px;display:flex;align-items:center;gap:4px">
-              <span>🟢</span> <span>${escapeHtml(statusText)}</span>
-            </div>
-            ${donorPhone ? `<div style="font-size:11px;color:#64748B;font-weight:600;margin-top:2px">${donorPhone.startsWith('+') ? donorPhone : ('+91 ' + donorPhone.slice(-10))}</div>` : ''}
+      <div style="background:#fff;border-radius:16px;padding:14px;border:1px solid #FECACA;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="position:relative;width:46px;height:46px;flex-shrink:0">
+            <img src="${donorAvatar}" alt="${escapeHtml(d.name || 'രക്തദാതാവ്')}" style="width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid #FECACA" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
+            <span style="position:absolute;bottom:-2px;right:-2px;background:#DC2626;color:#fff;font-size:9.5px;font-weight:900;padding:1px 5px;border-radius:6px;border:1.5px solid #fff;line-height:1.2">${d.group || 'O+'}</span>
           </div>
-          <div style="display:flex;align-items:center;gap:8px" onclick="event.stopPropagation()">
-            ${donorPhone ? `
-              <a href="tel:${donorPhone}" class="superapp-action-circle solid-blue" title="${isEn ? 'Call Donor' : 'വിളിക്കൂ'}">
-                📞
-              </a>
-            ` : ''}
-            <button type="button" class="superapp-action-circle outline-chat" onclick="openChatForDonor('${donorName.replace(/'/g, "\\'")}', '${donorPhone}', '${d.group || 'O+'}')" title="${isEn ? 'Chat' : 'ചാറ്റ്'}">
-              💬
-            </button>
+          <div>
+            <div style="font-weight:800;font-size:14px;color:#111827">${escapeHtml(d.name || 'രക്തദാതാവ്')}</div>
+            <div style="font-size:11px;color:#6B7280">📍 ${escapeHtml(resolveItemLocation(d) || APP_STATE.location.name || 'തത്സമയ ലൊക്കേഷൻ')} • <span style="color:#059669;font-weight:800">${d._calculatedDist} km അകലെ</span>${d.status ? ` • <span style="color:#10B981;font-weight:700">${escapeHtml(d.status)}</span>` : ''}</div>
           </div>
         </div>
-      `;
-    }).join('');
-
-    const bottomCardHtml = `
-      <div class="superapp-bottom-empty-card">
-        <div class="superapp-bottom-empty-icon">💧</div>
-        <div class="superapp-bottom-empty-title">${isEn ? 'No more donors nearby?' : 'കൂടുതൽ ദാതാക്കൾ പരിസരത്ത് ഇല്ലേ?'}</div>
-        <div class="superapp-bottom-empty-sub">${isEn ? 'Consider becoming a donor and help save lives.' : 'രക്തദാതാവായി സ്വയം രജിസ്റ്റർ ചെയ്ത് ജീവൻ രക്ഷിക്കാൻ പങ്കാളിയാകൂ.'}</div>
-        <div class="superapp-bottom-empty-actions">
-          <button class="superapp-hero-btn solid" onclick="openRegisterDonorModal()" style="padding:10px 22px">
-            <span>➕</span> <span>${isEn ? 'Become a Donor' : 'രക്തദാതാവാകാം'}</span>
+        <div>
+          <button onclick="openChatForDonor('${(d.name || 'രക്തദാതാവ്').replace(/'/g, "\\'")}', '${d.phone || ''}', '${d.group || 'O+'}')" style="background:linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);color:#fff;border:none;padding:9px 14px;border-radius:10px;cursor:pointer;font-size:12.5px;font-weight:800;display:flex;align-items:center;gap:6px;box-shadow:0 2px 6px rgba(220,38,38,0.25)">
+            <span>💬 ചാറ്റ്</span>
           </button>
         </div>
       </div>
     `;
-
-    container.innerHTML = noticeHtml + cardsHtml + bottomCardHtml;
+    }).join('');
   }
 
   function openBloodModal() {
@@ -9730,8 +9496,7 @@
     const jobsListEl = document.getElementById('jobsListContainer');
     if (!jobsListEl) return;
 
-    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'en')) === 'en';
-    const maxRadius = APP_STATE.radiusFilters.jobs || APP_STATE.activeRadiusKm || 25;
+    const maxRadius = APP_STATE.radiusFilters.jobs;
     const searchInput = document.getElementById('jobSearchInput');
     const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
 
@@ -9744,89 +9509,55 @@
     });
 
     allMatchingJobs.sort((a, b) => a._calculatedDist - b._calculatedDist);
+
     let filteredJobs = (maxRadius >= 1000) ? allMatchingJobs : allMatchingJobs.filter(j => j._calculatedDist <= maxRadius);
 
     if (filteredJobs.length === 0) {
+      const radiusLabel = (maxRadius >= 1000) ? '' : ` (${maxRadius} km)`;
       jobsListEl.innerHTML = `
-        <div class="superapp-bottom-empty-card">
-          <div class="superapp-bottom-empty-icon">🔍</div>
-          <div class="superapp-bottom-empty-title">${isEn ? 'No jobs found in this area.' : 'ഈ പ്രദേശത്ത് തൊഴിലുകൾ ലഭ്യമല്ല'}</div>
-          <div class="superapp-bottom-empty-sub">${isEn ? 'Try increasing the search radius or post a job.' : 'പരിധി വർദ്ധിപ്പിക്കുകയോ പുതിയ തൊഴിൽ അവസരം നൽകുകയോ ചെയ്യാം.'}</div>
-          <div class="superapp-bottom-empty-actions">
-            <button class="superapp-hero-btn outline" onclick="setRadiusFilter('jobs', 25, null)" style="padding:9px 18px">
-              <span>${isEn ? 'Increase Radius' : '25 km പരിധി'}</span>
-            </button>
-            <button class="superapp-hero-btn solid" onclick="openPostJobModal()" style="padding:9px 18px">
-              <span>➕</span> <span>${isEn ? 'Post a Job' : 'തൊഴിൽ നൽകാം'}</span>
-            </button>
+        <div style="text-align:center;padding:36px 16px;background:#fff;border-radius:16px;border:1px solid #E2E8F0">
+          <div style="font-size:36px;margin-bottom:8px">💼</div>
+          <h3 style="margin:0 0 6px;color:#111827">ഈ പ്രദേശത്ത് തൊഴിലുകൾ ലഭ്യമല്ല</h3>
+          <p style="color:#6B7280;margin:0 0 14px;font-size:13px"><b>${escapeHtml(APP_STATE.location.name)}</b> പരിസരത്ത്${radiusLabel} തൊഴിൽ അവസരങ്ങളൊന്നും കണ്ടെത്തിയില്ല.</p>
+          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+            <button onclick="setGlobalRadius(25, null)" style="background:#EFF6FF;color:#0284C7;border:1px solid #BAE6FD;border-radius:10px;padding:8px 14px;font-weight:700;font-size:12px;cursor:pointer">25 km പരിധി</button>
+            <button onclick="setGlobalRadius(1000, null)" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;border-radius:10px;padding:8px 14px;font-weight:700;font-size:12px;cursor:pointer">മുഴുവൻ കാണുക</button>
+            <button onclick="openPostJobModal()" style="background:#0878D1;color:#fff;border:none;border-radius:10px;padding:8px 16px;font-weight:800;font-size:12px;cursor:pointer">➕ തൊഴിൽ നൽകാം</button>
           </div>
         </div>
       `;
-      return;
+    } else {
+      jobsListEl.innerHTML = filteredJobs.map(j => `
+        <div class="job-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <h3 style="margin:0 0 4px;font-size:15px;color:#111827">${j.title}</h3>
+              <div style="font-size:12px;color:#0284C7;font-weight:700">${j.employer}</div>
+            </div>
+            <span class="job-salary-badge">💰 ${formatPrice(j.salary)}</span>
+          </div>
+
+          <div style="font-size:12.5px;color:#4B5563;line-height:1.5">${j.description}</div>
+
+          <div style="font-size:11px;color:#6B7280;display:flex;align-items:center;gap:6px">
+            <span>📍 ${j.location}</span>
+            <span>•</span>
+            <span style="color:#0E7043;font-weight:700">${j._calculatedDist} km അകലെ</span>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-top:6px">
+            <button onclick="openApplyJobModal('${j.id}', '${j.title.replace(/'/g, "\\'")}', '${j.employer.replace(/'/g, "\\'")}', '${j.employerPhone}')" 
+                    style="flex:1;background:#0878D1;color:#fff;border:none;padding:10px;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer">
+              📝 അപേക്ഷിക്കുക
+            </button>
+            <button onclick="openChatForJob('${j.id}')" 
+                    style="flex:1;background:#E0F2FE;color:#0369A1;border:1px solid #BAE6FD;padding:10px 14px;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+              💬 ചാറ്റ്
+            </button>
+          </div>
+        </div>
+      `).join('');
     }
-
-    const categoryIcons = {
-      it: '</>',
-      education: '🎓',
-      sales: '📢',
-      finance: '💰',
-      healthcare: '🏥',
-      driver: '🚗',
-      hotel: '🍳',
-      delivery: '🛵',
-      other: '💼'
-    };
-
-    const cardsHtml = filteredJobs.map(j => {
-      const employerName = getRegisteredUserName(j.employerPhone || j.employer, j.employer);
-      const iconText = categoryIcons[j.category] || '💼';
-      const locText = isEn
-        ? (window.NN_I18N ? window.NN_I18N.translatePlace(j.location) : j.location)
-        : (j.location || 'കേരളം');
-      const distText = isEn ? `${j._calculatedDist} km` : `${j._calculatedDist} km അകലെ`;
-      const salaryText = formatPrice(j.salary);
-      const jobTypeTag = isEn ? 'Full Time' : 'മുഴുവൻ സമയം';
-      const catLabel = isEn
-        ? (window.NN_I18N ? window.NN_I18N.translateTrade(j.category) : j.category)
-        : j.category;
-
-      return `
-        <div class="superapp-card" onclick="openJobDetailModal('${j.id}')">
-          <div class="superapp-card-icon-box">${iconText}</div>
-          <div class="superapp-card-body">
-            <div class="superapp-card-title">${escapeHtml(j.title)}</div>
-            <div style="font-size:11.5px;color:#0C2B59;font-weight:700;margin-top:2px">🏢 ${escapeHtml(employerName)}</div>
-            <div class="superapp-card-meta">
-              <span>📍 ${escapeHtml(locText)} (${distText})</span>
-            </div>
-            ${salaryText ? `<div class="superapp-card-price">${salaryText}</div>` : ''}
-            <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
-              <span class="superapp-badge-blue">${jobTypeTag}</span>
-              ${catLabel ? `<span class="superapp-badge-green">${escapeHtml(catLabel)}</span>` : ''}
-            </div>
-          </div>
-          <span class="superapp-card-chevron">›</span>
-        </div>
-      `;
-    }).join('');
-
-    const bottomCardHtml = `
-      <div class="superapp-bottom-empty-card">
-        <div class="superapp-bottom-empty-icon">🔍</div>
-        <div class="superapp-bottom-empty-title">${isEn ? 'No more jobs in this range?' : 'കൂടുതൽ തൊഴിലുകൾ തിരയുകയാണോ?'}</div>
-        <div class="superapp-bottom-empty-sub">${isEn ? 'Try increasing the search radius or post a new job vacancy.' : 'പരിധി വർദ്ധിപ്പിക്കുകയോ നിങ്ങളുടെ സ്ഥാപനത്തിലെ ഒഴിവുകൾ പോസ്റ്റ് ചെയ്യുകയോ ചെയ്യാം.'}</div>
-        <div class="superapp-bottom-empty-actions">
-          <button class="superapp-hero-btn outline" onclick="setRadiusFilter('jobs', 50, null)" style="padding:9px 18px">
-            <span>${isEn ? 'Increase Radius' : 'പരിധി വർദ്ധിപ്പിക്കാം'}</span>
-          </button>
-          <button class="superapp-hero-btn solid" onclick="openPostJobModal()" style="padding:9px 18px">
-            <span>➕</span> <span>${isEn ? 'Post a Job' : 'തൊഴിൽ നൽകാം'}</span>
-          </button>
-        </div>
-      </div>
-    `;
-
-    jobsListEl.innerHTML = cardsHtml + bottomCardHtml;
   }
 
   function filterRentalCategory(cat, btn) {
@@ -9841,7 +9572,6 @@
     const rentalsListEl = document.getElementById('rentalsListContainer');
     if (!rentalsListEl) return;
 
-    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'en')) === 'en';
     const maxRadius = APP_STATE.radiusFilters.rentals || 10;
     const searchInput = document.getElementById('rentalSearchInput');
     const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
@@ -9870,79 +9600,57 @@
     });
 
     allMatchingRentals.sort((a, b) => a._calculatedDist - b._calculatedDist);
+
     let filteredRentals = (maxRadius >= 1000) ? allMatchingRentals : allMatchingRentals.filter(r => r._calculatedDist <= maxRadius);
 
     if (filteredRentals.length === 0) {
+      const radiusLabel = (maxRadius >= 1000) ? '' : ` (${maxRadius} km)`;
       rentalsListEl.innerHTML = `
-        <div class="superapp-bottom-empty-card">
-          <div class="superapp-bottom-empty-icon">🛍️</div>
-          <div class="superapp-bottom-empty-title">${isEn ? 'No listings found in this area.' : 'ഈ പ്രദേശത്ത് ഇനങ്ങൾ ലഭ്യമല്ല'}</div>
-          <div class="superapp-bottom-empty-sub">${isEn ? 'Try increasing the search radius or add a listing.' : 'പരിധി വർദ്ധിപ്പിക്കുകയോ പുതിയ വാടക/വിൽപന ഇനം ലിസ്റ്റ് ചെയ്യുകയോ ചെയ്യാം.'}</div>
-          <div class="superapp-bottom-empty-actions">
-            <button class="superapp-hero-btn outline" onclick="setRadiusFilter('rentals', 25, null)" style="padding:9px 18px">
-              <span>${isEn ? 'Increase Radius' : '25 km പരിധി'}</span>
-            </button>
-            <button class="superapp-hero-btn solid" onclick="openAddRentalModal()" style="padding:9px 18px">
-              <span>➕</span> <span>${isEn ? 'Add Listing' : 'ലിസ്റ്റ് ചെയ്യാം'}</span>
-            </button>
+        <div style="text-align:center;padding:36px 16px;background:#fff;border-radius:16px;border:1px solid #E2E8F0">
+          <div style="font-size:36px;margin-bottom:8px">🏠</div>
+          <h3 style="margin:0 0 6px;color:#111827">ഈ പ്രദേശത്ത് ഇനങ്ങൾ ലഭ്യമല്ല</h3>
+          <p style="color:#6B7280;margin:0 0 14px;font-size:13px"><b>${escapeHtml(APP_STATE.location.name)}</b> പരിസരത്ത്${radiusLabel} വാടക/വിൽപന ഇനങ്ങൾ കണ്ടെത്തിയില്ല.</p>
+          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+            <button onclick="setGlobalRadius(25, null)" style="background:#ECFDF5;color:#0E7043;border:1px solid #A7F3D0;border-radius:10px;padding:8px 14px;font-weight:700;font-size:12px;cursor:pointer">25 km പരിധി</button>
+            <button onclick="setGlobalRadius(1000, null)" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;border-radius:10px;padding:8px 14px;font-weight:700;font-size:12px;cursor:pointer">മുഴുവൻ കാണുക</button>
+            <button onclick="openAddRentalModal()" style="background:#0E7043;color:#fff;border:none;border-radius:10px;padding:8px 16px;font-weight:800;font-size:12px;cursor:pointer">➕ ലിസ്റ്റ് ചെയ്യാം</button>
           </div>
         </div>
       `;
-      return;
+    } else {
+      rentalsListEl.innerHTML = filteredRentals.map(r => {
+        const isSale = r.listingType === 'sale' || (r.type && r.type.includes('വിൽപന')) || (r.title && r.title.includes('വിൽപന'));
+        const typeBadge = isSale
+          ? '<span style="background:#EFF6FF;color:#1D4ED8;border:1px solid #BFDBFE;padding:3px 8px;border-radius:6px;font-weight:800;font-size:11px;display:inline-flex;align-items:center;gap:3px"><span>🏷️</span><span>വിൽപനയ്ക്ക്</span></span>'
+          : '<span style="background:#ECFDF5;color:#047857;border:1px solid #A7F3D0;padding:3px 8px;border-radius:6px;font-weight:800;font-size:11px;display:inline-flex;align-items:center;gap:3px"><span>🏠</span><span>വാടകയ്ക്ക്</span></span>';
+
+        const priceBadgeColor = isSale ? '#1D4ED8' : '#B45309';
+        const priceBadgeBg = isSale ? '#EFF6FF' : '#FEF3C7';
+        const priceText = isSale ? `വില: ${formatPrice(r.rate || r.price)}` : formatPrice(r.rate || r.price);
+
+        return `
+          <div class="job-card" style="background:#fff;border-radius:16px;padding:14px;border:1px solid #E2E8F0;box-shadow:0 1px 3px rgba(0,0,0,0.04);margin-bottom:10px">
+            ${r.image ? `<img src="${r.image}" style="width:100%;height:160px;object-fit:cover;border-radius:12px;margin-bottom:10px;border:1px solid #E2E8F0">` : ''}
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+              <div>
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+                  ${typeBadge}
+                  <span style="font-size:11px;color:#64748B;font-weight:700">${escapeHtml(r.type || 'ജനറൽ')}</span>
+                </div>
+                <h3 style="margin:0 0 4px;font-size:15px;font-weight:800;color:#0F172A">${escapeHtml(r.title)}</h3>
+              </div>
+              <span style="background:${priceBadgeBg};color:${priceBadgeColor};padding:4px 10px;border-radius:8px;font-size:12.5px;font-weight:800;white-space:nowrap">${priceText}</span>
+            </div>
+            <div style="font-size:12px;color:#64748B;margin-top:4px">
+              <span>ഉടമസ്ഥൻ: <b>${escapeHtml(r.owner)}</b></span> • <span>📍 ${escapeHtml(r.location)}</span> • <span style="color:#0E7043;font-weight:800">${r._calculatedDist || 1.2} km അകലെ</span>
+            </div>
+            <div style="margin-top:10px">
+              <button onclick="openChatForRental('${r.id}')" style="width:100%;background:#0E7043;color:#fff;border:none;padding:10px;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 6px rgba(14,112,67,0.2)">💬 ചാറ്റ്</button>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
-
-    const cardsHtml = filteredRentals.map(r => {
-      const isSale = r.listingType === 'sale' || (r.type && r.type.includes('വിൽപന')) || (r.title && r.title.includes('വിൽപന'));
-      const typeBadge = isSale 
-        ? `<span class="superapp-badge-blue">${isEn ? 'For Sale' : 'വിൽപനയ്ക്ക്'}</span>`
-        : `<span class="superapp-badge-green">${isEn ? 'For Rent' : 'വാടകയ്ക്ക്'}</span>`;
-
-      const priceVal = formatPrice(r.rate || r.price);
-      const priceText = isSale ? priceVal : (isEn ? `${priceVal} / month` : `${priceVal} / മാസം`);
-      const ownerName = getRegisteredUserName(r.ownerPhone || r.owner, r.owner);
-      const locText = isEn 
-        ? (window.NN_I18N ? window.NN_I18N.translatePlace(r.location) : r.location)
-        : (r.location || 'കേരളം');
-      const distText = isEn ? `${r._calculatedDist || 1.2} km` : `${r._calculatedDist || 1.2} km അകലെ`;
-      const thumbImg = r.image || 'assets/cat-rentals-3d.jpg';
-
-      return `
-        <div class="superapp-card" onclick="openChatForRental('${r.id}')">
-          <img src="${thumbImg}" class="superapp-card-thumb" alt="${escapeHtml(r.title)}" onerror="this.src='assets/cat-rentals-3d.jpg'">
-          <div class="superapp-card-body">
-            <div class="superapp-card-title-row">
-              ${typeBadge}
-              <span style="font-size:11px;color:#64748B;font-weight:700">• ${escapeHtml(isEn && window.NN_I18N ? window.NN_I18N.translateTrade(r.type || 'General') : (r.type || 'ജനറൽ'))}</span>
-            </div>
-            <div class="superapp-card-title" style="margin-top:2px">${escapeHtml(r.title)}</div>
-            <div class="superapp-card-meta">
-              <span>📍 ${escapeHtml(locText)} (${distText})</span>
-            </div>
-            <div class="superapp-card-price">${priceText}</div>
-            <div style="font-size:11px;color:#64748B;margin-top:3px">👤 ${escapeHtml(ownerName)}</div>
-          </div>
-          <span class="superapp-card-chevron">›</span>
-        </div>
-      `;
-    }).join('');
-
-    const bottomCardHtml = `
-      <div class="superapp-bottom-empty-card">
-        <div class="superapp-bottom-empty-icon">🛍️</div>
-        <div class="superapp-bottom-empty-title">${isEn ? 'No more listings in this area?' : 'കൂടുതൽ ലിസ്റ്റിംഗുകൾ കാണുന്നില്ലേ?'}</div>
-        <div class="superapp-bottom-empty-sub">${isEn ? 'Try increasing the search radius or add your own property / vehicle listing.' : 'പരിധി വർദ്ധിപ്പിക്കുകയോ നിങ്ങളുടെ സ്വന്തം വീട്, വാഹനം, വസ്തു ലിസ്റ്റ് ചെയ്യുകയോ ചെയ്യാം.'}</div>
-        <div class="superapp-bottom-empty-actions">
-          <button class="superapp-hero-btn outline" onclick="setRadiusFilter('rentals', 50, null)" style="padding:9px 18px">
-            <span>${isEn ? 'Increase Radius' : 'പരിധി വർദ്ധിപ്പിക്കാം'}</span>
-          </button>
-          <button class="superapp-hero-btn solid" onclick="openAddRentalModal()" style="padding:9px 18px">
-            <span>➕</span> <span>${isEn ? 'Add Listing' : 'ലിസ്റ്റ് ചെയ്യാം'}</span>
-          </button>
-        </div>
-      </div>
-    `;
-
-    rentalsListEl.innerHTML = cardsHtml + bottomCardHtml;
   }
 
   function openApplyJobModal(id, title, employer, phone) {
