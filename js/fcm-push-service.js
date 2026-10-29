@@ -36,6 +36,16 @@
       // Check and prompt permission UI smoothly if not decided yet
       this.checkAndPromptPermissionModal();
 
+      // Immediately resync token with Supabase if previously cached
+      try {
+        const cachedToken = localStorage.getItem('nn_fcm_token');
+        if (cachedToken) {
+          setTimeout(() => {
+            this.syncTokenWithSupabase(cachedToken);
+          }, 1200);
+        }
+      } catch (_) {}
+
       // Listen for app resume to resync token if needed
       if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
         try {
@@ -119,6 +129,13 @@
 
         if (permStatus && permStatus.receive === 'granted') {
           await PushNotifications.register();
+        } else if (!permStatus || permStatus.receive === 'prompt' || permStatus.receive === 'prompt-with-rationale') {
+          try {
+            const reqPerm = await PushNotifications.requestPermissions();
+            if (reqPerm && reqPerm.receive === 'granted') {
+              await PushNotifications.register();
+            }
+          } catch (_) {}
         }
       } catch (err) {
         console.warn('⚠️ [NN_FCM] Native init exception:', err.message);
@@ -133,8 +150,8 @@
         // 1. Chat Messages Channel
         await PushNotifications.createChannel({
           id: CHANNEL_MESSAGES,
-          name: 'സന്ദേശങ്ങൾ (Chat Messages)',
-          description: 'പുതിയ ചാറ്റ് സന്ദേശങ്ങൾക്കുള്ള തത്സമയ അറിയിപ്പുകൾ',
+          name: 'Chat Messages',
+          description: 'Real-time notifications for new chat messages',
           importance: 5, // High importance (Heads-up alert + sound)
           visibility: 1, // Public on lockscreen
           vibration: true,
@@ -146,8 +163,8 @@
         // 2. Urgent Alerts & Community Blood Channel
         await PushNotifications.createChannel({
           id: CHANNEL_ALERTS,
-          name: 'നമ്മുടെ നാട് അറിയിപ്പുകൾ (Alerts & Blood)',
-          description: 'അടിയന്തിര അറിയിപ്പുകളും രക്തദാന ആവശ്യങ്ങളും',
+          name: 'Nammude Naadu Alerts & Blood',
+          description: 'Urgent alerts and blood donation requests',
           importance: 5,
           visibility: 1,
           vibration: true,
@@ -159,8 +176,8 @@
         // 3. Default FCM fallback channel
         await PushNotifications.createChannel({
           id: CHANNEL_FCM_DEFAULT,
-          name: 'പ്രധാന അറിയിപ്പുകൾ (General)',
-          description: 'സാധാരണ അപ്‌ഡേറ്റുകളും അറിയിപ്പുകളും',
+          name: 'General Notifications',
+          description: 'General updates and notifications',
           importance: 4,
           visibility: 1,
           vibration: true,
@@ -212,7 +229,7 @@
         if (granted) {
           localStorage.setItem('nn_notif_enabled', 'true');
           if (typeof window.showNotificationToast === 'function') {
-            window.showNotificationToast('✅ അറിയിപ്പുകൾ ഓണാക്കി! ഇനി തത്സമയ സന്ദേശങ്ങൾ ലഭിക്കും.');
+            window.showNotificationToast('✅ Notifications enabled! You will now receive messages in real time.');
           }
           this.syncTokenWithSupabase();
         }
@@ -273,6 +290,70 @@
       console.info('🚪 [NN_FCM] Token detached on logout for user:', targetId);
     },
 
+    // Send instant push notification to recipient's phone via Supabase Edge Function (FCM HTTP v1)
+    sendPush: async function (recipientPhone, title, message, extraData = {}) {
+      const cleanTargetPhone = recipientPhone ? String(recipientPhone).replace(/\D/g, '').slice(-10) : '';
+      if (!cleanTargetPhone) return false;
+
+      let previewText = message || 'നിങ്ങൾക്ക് ഒരു പുതിയ സന്ദേശം വന്നിട്ടുണ്ട്';
+      if (typeof previewText === 'string') {
+        if (previewText.startsWith('[voice:')) previewText = '🎙️ വോയ്‌സ് നോട്ട്';
+        else if (previewText.startsWith('[image:')) previewText = '📷 ഫോട്ടോ';
+        else if (previewText.length > 100) previewText = previewText.substring(0, 97) + '...';
+      }
+
+      // 1. Primary: Supabase Edge Function FCM HTTP v1 Engine
+      try {
+        const supabaseUrl = (typeof window !== 'undefined' && window.SUPABASE_URL)
+          ? window.SUPABASE_URL
+          : (localStorage.getItem('nn_supabase_url') || 'https://ocnbtiwrepnnlwbtbzca.supabase.co');
+        const supabaseAnonKey = (typeof window !== 'undefined' && (window.SUPABASE_ANON_KEY || window.SUPABASE_PUBLISHABLE_KEY))
+          ? (window.SUPABASE_ANON_KEY || window.SUPABASE_PUBLISHABLE_KEY)
+          : (localStorage.getItem('nn_supabase_anon_key') || 'sb_publishable_Jw6BWENMoesmYzgvKif2Ow_wF1vnuq0');
+
+        if (supabaseUrl && supabaseAnonKey) {
+          const edgePayload = {
+            recipientPhone: cleanTargetPhone,
+            recipientId: (extraData && extraData.recipientId) || '',
+            title: title || 'നമ്മുടെ നാട്',
+            body: previewText,
+            channelId: (extraData && (extraData.type === 'chat' || extraData.chatKey))
+              ? 'nammude_naadu_messages' : 'nammude_naadu_alerts',
+            type: (extraData && extraData.type) || 'chat',
+            data: extraData || {}
+          };
+
+          const edgeRes = await fetch(`${supabaseUrl}/functions/v1/send-push-notification`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': supabaseAnonKey,
+              'Authorization': `Bearer ${supabaseAnonKey}`
+            },
+            body: JSON.stringify(edgePayload)
+          });
+
+          if (edgeRes.ok) {
+            console.info('🚀 [NN_FCM] Push notification delivered via FCM HTTP v1 to:', cleanTargetPhone);
+            return true;
+          } else {
+            console.warn('⚠️ [NN_FCM] Edge Function push response:', edgeRes.status);
+          }
+        }
+      } catch (err) {
+        console.warn('⚠️ [NN_FCM] Edge push dispatch note:', err.message);
+      }
+
+      // 2. Fallback: OneSignal Push Service
+      if (typeof window !== 'undefined' && window.NN_ONESIGNAL && typeof window.NN_ONESIGNAL.sendPush === 'function') {
+        try {
+          return await window.NN_ONESIGNAL.sendPush(cleanTargetPhone, title, previewText, extraData);
+        } catch (_) {}
+      }
+
+      return false;
+    },
+
     // Handle Notification tap when user clicked notification banner or tray item
     handleNotificationTap: function (notification) {
       if (!notification) return;
@@ -287,7 +368,7 @@
           if (typeof window.openChatModal === 'function') {
             setTimeout(() => {
               window.openChatModal(
-                data.senderName || data.name || 'സുഹൃത്ത്',
+                data.senderName || data.name || 'Friend',
                 data.senderPhone || data.phone || '',
                 data.senderAvatar || data.avatar || '',
                 '',
@@ -334,8 +415,8 @@
       }
 
       // Display native heads-up local alert or custom notification toast
-      const title = notification.title || 'നമ്മുടെ നാട് അറിയിപ്പ്';
-      const body = notification.body || 'നിങ്ങൾക്ക് ഒരു പുതിയ സന്ദേശം വന്നിട്ടുണ്ട്';
+      const title = notification.title || 'Nammude Naadu Notification';
+      const body = notification.body || 'You have a new message';
 
       if (typeof window.showLocalNotification === 'function') {
         window.showLocalNotification(title, body, data);

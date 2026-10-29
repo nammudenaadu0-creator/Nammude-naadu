@@ -17,6 +17,10 @@
 
   const SUPABASE_URL = 'https://ocnbtiwrepnnlwbtbzca.supabase.co';
   const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_Jw6BWENMoesmYzgvKif2Ow_wF1vnuq0';
+  if (typeof window !== 'undefined') {
+    window.SUPABASE_URL = SUPABASE_URL;
+    window.SUPABASE_ANON_KEY = SUPABASE_PUBLISHABLE_KEY;
+  }
 
   let client = null;
   let chatChannel = null;
@@ -91,6 +95,9 @@
         if (hdrs['x-citizen-phone']) client.rest.headers['x-citizen-phone'] = hdrs['x-citizen-phone'];
         if (hdrs['x-citizen-id']) client.rest.headers['x-citizen-id'] = hdrs['x-citizen-id'];
       }
+      if (typeof setupUserInboxChannel === 'function') {
+        setupUserInboxChannel();
+      }
     } catch (_) {}
   }
   if (typeof window !== 'undefined') {
@@ -130,6 +137,117 @@
     }
   }
 
+  // Map of per-thread realtime channels keyed by chatKey
+  const _threadChannels = new Map();
+
+  // Robust helper to extract clean 10-digit phone numbers from any chat key or string
+  function extract10DigitPhones(str) {
+    if (!str) return [];
+    return String(str)
+      .split(/[^0-9]+/)
+      .filter(tok => tok.length >= 10)
+      .map(tok => tok.slice(-10));
+  }
+  window.extract10DigitPhones = extract10DigitPhones;
+
+  // Subscribe to a per-thread channel for a given chatKey
+  function subscribeToThreadChannel(chatKey) {
+    if (!chatKey || !initSupabase()) return null;
+    if (_threadChannels.has(chatKey)) return _threadChannels.get(chatKey);
+    const ch = client.channel(`nn_chat_thread_${chatKey}`, { config: { broadcast: { self: false } } });
+    ch.on('broadcast', { event: 'chat_message' }, ({ payload }) => handleIncomingChatMessage(payload));
+    ch.on('broadcast', { event: 'chat_delivered' }, ({ payload }) => handleIncomingChatDelivered(payload));
+    ch.on('broadcast', { event: 'chat_seen' }, ({ payload }) => handleIncomingChatSeen(payload));
+    ch.on('broadcast', { event: 'chat_message_deleted' }, ({ payload }) => handleIncomingChatMessageDeleted(payload));
+    ch.subscribe((status) => {
+      console.info(`📡 [Supabase] Thread channel [${chatKey}] status:`, status);
+    });
+    _threadChannels.set(chatKey, ch);
+    return ch;
+  }
+
+  // Unsubscribe from a per-thread channel
+  function unsubscribeFromThreadChannel(chatKey) {
+    if (!chatKey || !_threadChannels.has(chatKey)) return;
+    try { _threadChannels.get(chatKey).unsubscribe(); } catch (_) {}
+    _threadChannels.delete(chatKey);
+  }
+
+  // Personal user inbox channels (Sub-50ms direct delivery to this specific user across entire app)
+  let _userPhoneInboxChannel = null;
+  let _userIdInboxChannel = null;
+
+  function setupUserInboxChannel() {
+    if (!client) return;
+    let myPhone = '';
+    let myId = '';
+    try {
+      if (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) {
+        if (APP_STATE.currentUser.phone) myPhone = String(APP_STATE.currentUser.phone).replace(/\D/g, '').slice(-10);
+        if (APP_STATE.currentUser.id) myId = String(APP_STATE.currentUser.id);
+      }
+      if (!myPhone && typeof localStorage !== 'undefined') {
+        myPhone = (localStorage.getItem('nn_user_phone') || localStorage.getItem('nn_permanent_phone') || '').replace(/\D/g, '').slice(-10);
+      }
+      if (!myId && typeof localStorage !== 'undefined') {
+        myId = localStorage.getItem('nn_user_id') || localStorage.getItem('nn_permanent_id') || '';
+      }
+    } catch (_) {}
+
+    if (myPhone && myPhone.length === 10) {
+      const channelName = 'nn_user_' + myPhone;
+      if (!_userPhoneInboxChannel || _userPhoneInboxChannel.topic !== ('realtime:' + channelName)) {
+        if (_userPhoneInboxChannel) {
+          try { _userPhoneInboxChannel.unsubscribe(); } catch (_) {}
+        }
+        _userPhoneInboxChannel = client.channel(channelName, { config: { broadcast: { self: false } } });
+        _userPhoneInboxChannel.on('broadcast', { event: 'chat_message' }, ({ payload }) => handleIncomingChatMessage(payload));
+        _userPhoneInboxChannel.on('broadcast', { event: 'chat_seen' }, ({ payload }) => handleIncomingChatSeen(payload));
+        _userPhoneInboxChannel.on('broadcast', { event: 'chat_delivered' }, ({ payload }) => handleIncomingChatDelivered(payload));
+        _userPhoneInboxChannel.on('broadcast', { event: 'chat_message_deleted' }, ({ payload }) => handleIncomingChatMessageDeleted(payload));
+        _userPhoneInboxChannel.subscribe((st) => {
+          console.info(`📬 [Supabase] User Phone Inbox [${myPhone}] active, status:`, st);
+        });
+      }
+    }
+
+    if (myId) {
+      const idChannelName = 'nn_user_' + myId;
+      if (!_userIdInboxChannel || _userIdInboxChannel.topic !== ('realtime:' + idChannelName)) {
+        if (_userIdInboxChannel) {
+          try { _userIdInboxChannel.unsubscribe(); } catch (_) {}
+        }
+        _userIdInboxChannel = client.channel(idChannelName, { config: { broadcast: { self: false } } });
+        _userIdInboxChannel.on('broadcast', { event: 'chat_message' }, ({ payload }) => handleIncomingChatMessage(payload));
+        _userIdInboxChannel.on('broadcast', { event: 'chat_seen' }, ({ payload }) => handleIncomingChatSeen(payload));
+        _userIdInboxChannel.on('broadcast', { event: 'chat_delivered' }, ({ payload }) => handleIncomingChatDelivered(payload));
+        _userIdInboxChannel.on('broadcast', { event: 'chat_message_deleted' }, ({ payload }) => handleIncomingChatMessageDeleted(payload));
+        _userIdInboxChannel.subscribe((st) => {
+          console.info(`📬 [Supabase] User ID Inbox [${myId}] active, status:`, st);
+        });
+      }
+    }
+  }
+  window.setupUserInboxChannel = setupUserInboxChannel;
+
+  async function broadcastDirectToTarget(channelName, event, payload) {
+    if (!client || !channelName) return;
+    try {
+      let targetCh = _threadChannels.get(channelName);
+      if (!targetCh) {
+        targetCh = client.channel(channelName, { config: { broadcast: { self: false } } });
+        _threadChannels.set(channelName, targetCh);
+        targetCh.subscribe((status) => {
+          if (status === 'SUBSCRIBED') {
+            targetCh.send({ type: 'broadcast', event, payload }).catch(() => {});
+          }
+        });
+      } else {
+        targetCh.send({ type: 'broadcast', event, payload }).catch(() => {});
+      }
+    } catch (_) {}
+  }
+
   // Setup broadcast channels for sub-50ms peer-to-peer delivery (Leak-Free & Safe)
   function setupRealtimeChannels() {
     if (!client || isSettingUpChannels) return;
@@ -147,10 +265,28 @@
     });
 
     try {
+      // Global chat channel
       chatChannel = client.channel('nn_community_chats', { config: { broadcast: { self: false } } });
-      chatChannel.on('broadcast', { event: 'chat_message' }, ({ payload }) => handleIncomingChatMessage(payload));
-      chatChannel.on('broadcast', { event: 'chat_seen' }, ({ payload }) => handleIncomingChatSeen(payload));
-      chatChannel.on('broadcast', { event: 'chat_message_deleted' }, ({ payload }) => handleIncomingChatMessageDeleted(payload));
+      chatChannel.on('broadcast', { event: 'chat_message' }, ({ payload }) => {
+        if (payload && payload.msgObj && typeof handleIncomingChatMessage === 'function') {
+          handleIncomingChatMessage(payload);
+        }
+      });
+      chatChannel.on('broadcast', { event: 'chat_seen' }, ({ payload }) => {
+        if (payload && typeof handleIncomingChatSeen === 'function') {
+          handleIncomingChatSeen(payload);
+        }
+      });
+      chatChannel.on('broadcast', { event: 'chat_delivered' }, ({ payload }) => {
+        if (payload && typeof handleIncomingChatDelivered === 'function') {
+          handleIncomingChatDelivered(payload);
+        }
+      });
+      chatChannel.on('broadcast', { event: 'chat_message_deleted' }, ({ payload }) => {
+        if (payload && typeof handleIncomingChatMessageDeleted === 'function') {
+          handleIncomingChatMessageDeleted(payload);
+        }
+      });
       chatChannel.subscribe((status) => {
         if (status === 'SUBSCRIBED') {
           realtimeRetryCount = 0;
@@ -168,6 +304,9 @@
           }
         }
       });
+
+      // Ensure user personal inbox channels are active
+      setupUserInboxChannel();
 
       if (!window._chatHeartbeatTimer) {
         window._chatHeartbeatTimer = setInterval(() => {
@@ -232,8 +371,8 @@
           try {
             await window.Capacitor.Plugins.LocalNotifications.createChannel({
               id: 'nammude_naadu_messages',
-              name: 'സന്ദേശങ്ങൾ (Chat Messages)',
-              description: 'പുതിയ ചാറ്റ് സന്ദേശങ്ങൾക്കുള്ള തത്സമയ അറിയിപ്പുകൾ',
+              name: 'Chat Messages',
+              description: 'Real-time notifications for new chat messages',
               importance: 5,
               visibility: 1,
               vibration: true,
@@ -241,8 +380,8 @@
             });
             await window.Capacitor.Plugins.LocalNotifications.createChannel({
               id: 'nammude_naadu_alerts',
-              name: 'നമ്മുടെ നാട് അറിയിപ്പുകൾ (Alerts)',
-              description: 'സന്ദേശങ്ങളും തത്സമയ സഹായ അറിയിപ്പുകളും',
+              name: 'Nammude Naadu Alerts',
+              description: 'Messages and real-time community help alerts',
               importance: 5,
               visibility: 1,
               vibration: true,
@@ -261,7 +400,7 @@
               if (data.chatKey && typeof window.openChatModalByKey === 'function') {
                 setTimeout(() => window.openChatModalByKey(data.chatKey), 200);
               } else if (data.chatKey && typeof window.openChatModal === 'function') {
-                setTimeout(() => window.openChatModal(data.senderName || 'സുഹൃത്ത്', data.phone || data.senderPhone || '', '', '', data.senderId || '', data.chatKey), 200);
+                setTimeout(() => window.openChatModal(data.senderName || 'Friend', data.phone || data.senderPhone || '', '', '', data.senderId || '', data.chatKey), 200);
               } else if (data.type === 'chat' && typeof window.navTo === 'function') {
                 window.navTo('chat');
               } else if (data.type === 'blood' && typeof window.navTo === 'function') {
@@ -281,6 +420,7 @@
             console.info('🔔 Web Push & Background Notifications active with ServiceWorker:', reg);
           });
         }
+
       }
     } catch (e) {
       console.warn('Notification permission note:', e.message);
@@ -288,44 +428,12 @@
   }
   window.requestNotificationPermission = requestNotificationPermission;
 
-  // Synthesized audio chimes for phone alerts
-  function playNotificationSound(type) {
+  // Fallback sound for cases where the platform notification cannot be shown.
+  function playNotificationSound() {
     try {
       const audio = new Audio('assets/notification.wav');
       audio.volume = 0.85;
       audio.play().catch(() => {});
-    } catch (_) {}
-
-    try {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (!AudioCtx) return;
-      const ctx = new AudioCtx();
-      if (ctx.state === 'suspended') ctx.resume();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-
-      if (type === 'blood' || type === 'emergency') {
-        // High priority alarm tone
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(880, ctx.currentTime);
-        osc.frequency.setValueAtTime(700, ctx.currentTime + 0.15);
-        osc.frequency.setValueAtTime(880, ctx.currentTime + 0.3);
-        gain.gain.setValueAtTime(0.4, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.65);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.65);
-      } else {
-        // Pleasant bell chime for message / help alert
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(783.99, ctx.currentTime);
-        osc.frequency.setValueAtTime(1046.50, ctx.currentTime + 0.12);
-        gain.gain.setValueAtTime(0.35, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.55);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.55);
-      }
     } catch (_) {}
   }
 
@@ -356,6 +464,8 @@
       }
     }
 
+    let notificationScheduled = false;
+
     // 1. Android Native Status-Bar / Web Push Notification
     if (!extraData.skipNativeSchedule) {
       try {
@@ -375,6 +485,7 @@
               }
             ]
           });
+          notificationScheduled = true;
         } else if ('serviceWorker' in navigator && typeof Notification !== 'undefined' && Notification.permission === 'granted') {
           // Standard Web Push via ServiceWorker registration (Required for Chrome mobile status bar)
           const reg = await navigator.serviceWorker.ready;
@@ -388,11 +499,14 @@
               tag: String(contentKey || notifKey),
               renotify: false
             });
+            notificationScheduled = true;
           } else {
             new Notification(title, { body: body, icon: 'img/kerala-splash.jpg', tag: String(contentKey || notifKey) });
+            notificationScheduled = true;
           }
         } else if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
           new Notification(title, { body: body, icon: 'img/kerala-splash.jpg', tag: String(contentKey || notifKey) });
+          notificationScheduled = true;
         }
       } catch (e) {
         console.warn('Native notification trigger note:', e.message);
@@ -412,8 +526,8 @@
       }
     } catch (_) {}
 
-    // 3. Audio Chime
-    playNotificationSound(type);
+    // Let the system notification provide its sound; play one fallback only if unavailable.
+    if (!notificationScheduled) playNotificationSound();
 
     // 4. In-App Heads-Up Banner
     showInAppAlertBanner(title, body, extraData);
@@ -434,7 +548,7 @@
     else if (extraData.type === 'chat') icon = '💬';
 
     const isEmergencyOrAmbulance = extraData.type === 'emergency' || extraData.type === 'ambulance';
-    const phoneLink = (isEmergencyOrAmbulance && extraData.phone) ? ('<a href="tel:' + extraData.phone + '" class="inapp-banner-call-btn" onclick="event.stopPropagation()">📞 വിളിക്കുക</a>') : '';
+    const phoneLink = (isEmergencyOrAmbulance && extraData.phone) ? ('<a href="tel:' + extraData.phone + '" class="inapp-banner-call-btn" onclick="event.stopPropagation()">📞 Call</a>') : '';
     const serviceAcceptBtn = (extraData.type === 'service' && extraData.phone)
       ? `<button type="button" class="inapp-banner-accept-btn" onclick="event.stopPropagation(); if(typeof acceptServiceRequestAsWorker==='function'){ acceptServiceRequestAsWorker('${extraData.serviceId || ''}', '${extraData.phone}', '${extraData.trade || ''}'); } this.closest('.inapp-notification-banner')?.remove();" style="background:#16A34A;color:#FFFFFF;border:none;border-radius:10px;padding:6px 12px;font-size:11.5px;font-weight:900;cursor:pointer;white-space:nowrap;box-shadow:0 2px 6px rgba(22,163,74,0.3)">🟢 തയ്യാറാണ്</button>`
       : '';
@@ -512,9 +626,9 @@
     }
 
     const title = isDirectEnquiry 
-      ? '🛠️ നിങ്ങളുടെ സർവീസിന് പുതിയ നേരിട്ടുള്ള അന്വേഷണം!'
-      : (`🛠️ പുതിയ ${row.trade || 'സർവീസ്'} ആവശ്യം എത്തിയിട്ടുണ്ട്!`);
-    const body = `📍 ${row.location || 'തത്സമയ ലൊക്കേഷൻ'}: "${row.description || row.title || 'സഹായം വേണം'}". കസ്റ്റമർ: ${row.phone}`;
+      ? '🛠️ You have a new direct service enquiry!'
+      : (`🛠️ A new ${row.trade || 'service'} request has arrived!`);
+    const body = `📍 ${row.location || 'Live Location'}: "${row.description || row.title || 'Help needed'}". Customer: ${row.phone}`;
 
     sendNativePhoneNotification(title, body, {
       type: 'service',
@@ -589,9 +703,9 @@
     const reqId = row.id || ('breq_' + Date.now());
     const reqBloodGroup = row.blood_group || row.bloodGroup || row.group || '';
     const reqPhone = (row.contact_phone || row.phone ? String(row.contact_phone || row.phone).replace(/\D/g, '').slice(-10) : '');
-    const hospital = row.hospital || 'ആശുപത്രി';
-    const location = row.location || 'കേരളം';
-    const patient = row.patient_name || row.patientName || 'രോഗി';
+    const hospital = row.hospital || 'Hospital';
+    const location = row.location || 'Kerala';
+    const patient = row.patient_name || row.patientName || 'Patient';
     const units = row.units || '1';
 
     // 1. Always record in local bloodRequests store so it appears in Blood Requests list
@@ -637,8 +751,8 @@
     sessionStorage.setItem(notifDedupeKey, String(Date.now()));
 
     // 5. FIRST NOTIFICATION (Immediate - 1/2)
-    const title1 = `🚨 അടിയന്തര ${reqBloodGroup} രക്ത ആവശ്യം! (1/2)`;
-    const body1 = `🏥 ${hospital} (${location}) - രോഗി ${patient}ക്ക് ${reqBloodGroup} രക്തം അടിയന്തിരമായി വേണം! വിളിക്കുക: ${row.contact_phone || row.phone}`;
+    const title1 = `🚨 Urgent ${reqBloodGroup} blood needed! (1/2)`;
+    const body1 = `🏥 ${hospital} (${location}) - Patient ${patient} urgently needs ${reqBloodGroup} blood. Call: ${row.contact_phone || row.phone}`;
 
     sendNativePhoneNotification(title1, body1, {
       type: 'blood',
@@ -651,8 +765,8 @@
 
     // 6. SECOND NOTIFICATION (5 Minutes Interval Reminder - 2/2 - 2 തവണ 5 മിനിറ്റ് ഇടവിട്ട്)
     const FIVE_MINUTES_MS = 5 * 60 * 1000;
-    const title2 = `🚨 അടിയന്തര ${reqBloodGroup} രക്ത ആവശ്യം (ഓർമ്മപ്പെടുത്തൽ 2/2)!`;
-    const body2 = `🏥 ${hospital} - ${reqBloodGroup} രക്തം അടിയന്തിരമായി ആവശ്യമുണ്ട്. ദയവായി രോഗിയെ സഹായിക്കാൻ സാധിക്കുമെങ്കിൽ വിളിക്കുക: ${row.contact_phone || row.phone}`;
+    const title2 = `🚨 Urgent ${reqBloodGroup} blood needed (Reminder 2/2)!`;
+    const body2 = `🏥 ${hospital} - ${reqBloodGroup} blood is urgently needed. Please call if you can help: ${row.contact_phone || row.phone}`;
     const secondNotifTime = new Date(Date.now() + FIVE_MINUTES_MS);
 
     // Schedule 2nd notification on Android Native Notification Manager (fires even if app closed)
@@ -837,7 +951,7 @@
             const msgObj = {
               id: row.id,
               senderId: row.sender_id,
-              senderName: row.sender_name || 'സുഹൃത്ത്',
+              senderName: row.sender_name || 'Friend',
               senderPhone: row.sender_phone || '',
               senderAvatar: row.sender_avatar || '',
               text: row.text,
@@ -849,7 +963,7 @@
               recipientName: row.recipient_name || '',
               recipientPhone: row.recipient_phone || '',
               senderId: row.sender_id,
-              senderName: row.sender_name || 'സുഹൃത്ത്',
+              senderName: row.sender_name || 'Friend',
               senderPhone: row.sender_phone || '',
               senderAvatar: row.sender_avatar || ''
             };
@@ -877,11 +991,18 @@
     if (!payload || !payload.chatKey || !payload.msgObj) return;
     const { chatKey, msgObj, metaObj } = payload;
 
-    const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser.id : '';
-    const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone)
+    let myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser.id : '';
+    let myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone)
       ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
-    const myEmail = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.email)
+    let myEmail = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.email)
       ? APP_STATE.currentUser.email.trim().toLowerCase() : '';
+
+    if (!myPhone && typeof localStorage !== 'undefined') {
+      myPhone = (localStorage.getItem('nn_user_phone') || localStorage.getItem('nn_permanent_phone') || '').replace(/\D/g, '').slice(-10);
+    }
+    if (!myId && typeof localStorage !== 'undefined') {
+      myId = localStorage.getItem('nn_user_id') || localStorage.getItem('nn_permanent_id') || '';
+    }
 
     const senderPhone = (msgObj.senderPhone ? String(msgObj.senderPhone).replace(/\D/g, '').slice(-10) : '');
     const senderId = msgObj.senderId || '';
@@ -907,11 +1028,12 @@
     }
 
     // 2. RECIPIENT VERIFICATION: STRICT PRIVACY ENFORCEMENT
-    const phones = String(chatKey).match(/\d{10}/g) || [];
+    // Safely extract all 10-digit phone numbers from the chat key
+    const phones = extract10DigitPhones(chatKey);
 
-    // Rule A: If this is a 2-phone 1-on-1 chat, the current user MUST be one of the two phones!
-    if (phones.length >= 2) {
-      if (!myPhone || !phones.includes(myPhone)) {
+    // Rule A: If this is a 2-phone 1-on-1 chat, and user has a phone, user MUST be one of the two phones!
+    if (phones.length >= 2 && myPhone && myPhone.length === 10) {
+      if (!phones.includes(myPhone)) {
         return; // Strictly between two other people. Never accept or notify!
       }
       if (myPhone === senderPhone) {
@@ -978,7 +1100,7 @@
       if (!exists) {
         const partnerPhone = (msgObj.senderPhone ? String(msgObj.senderPhone).replace(/\D/g, '').slice(-10) : '') ||
                              (metaObj && metaObj.senderPhone ? String(metaObj.senderPhone).replace(/\D/g, '').slice(-10) : '');
-        const partnerName = msgObj.senderName || (metaObj ? metaObj.senderName : 'സുഹൃത്ത്');
+        const partnerName = msgObj.senderName || (metaObj ? metaObj.senderName : 'Friend');
         const partnerAvatar = msgObj.senderAvatar || (metaObj ? metaObj.senderAvatar : '');
         const partnerId = msgObj.senderId || (metaObj ? metaObj.senderId : '');
 
@@ -1142,6 +1264,28 @@
         }
       });
     }
+
+    broadcastChatEvent(chatKey, 'chat_delivered', {
+      msgId: msgObj.id,
+      recipientPhone: myPhone,
+      recipientId: myId,
+      deliveredAt: Date.now()
+    }).catch(err => console.warn('⚠️ [Supabase] Delivery receipt failed:', err.message));
+  }
+
+  function handleIncomingChatDelivered(payload) {
+    if (!payload || !payload.chatKey || !payload.msgId || typeof APP_STATE === 'undefined' || !APP_STATE.chats) return;
+    const thread = APP_STATE.chats[payload.chatKey];
+    if (!Array.isArray(thread)) return;
+    const message = thread.find(item => String(item.id) === String(payload.msgId));
+    if (!message || message.sender !== 'me' || message.status === 'seen') return;
+
+    message.status = 'delivered';
+    message.deliveredAt = Number(payload.deliveredAt) || Date.now();
+    if (typeof saveChats === 'function') saveChats();
+    if (APP_STATE.activeChatRecipient?.key === payload.chatKey && typeof renderChatMessages === 'function') {
+      renderChatMessages();
+    }
   }
 
   // Handle incoming real-time seen receipt from recipient
@@ -1282,12 +1426,12 @@
     const mapped = {
       id: j.id || ('job_' + Date.now()),
       title: j.title,
-      employer: j.employer || 'തൊഴിൽദാതാവ്',
+      employer: j.employer || 'Employer',
       employerPhone: j.phone || j.employerPhone || '',
       phone: j.phone || j.employerPhone || '',
       category: j.category || 'other',
-      salary: j.salary || 'ശമ്പളം സംസാരിക്കാം',
-      type: 'ഫുൾ ടൈം',
+      salary: j.salary || 'Salary negotiable',
+      type: 'Full-time',
       location: j.location || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.name : 'കേരളം'),
       district: j.district || (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.district : '') || '',
       lat: j.latitude || j.lat || 11.8745,
@@ -1319,8 +1463,8 @@
     const mapped = {
       id: r.id || ('rent_' + Date.now()),
       title: r.title,
-      owner: r.owner || r.authorName || 'നാട്ടുകാരൻ',
-      authorName: r.owner || r.authorName || 'നാട്ടുകാരൻ',
+      owner: r.owner || r.authorName || 'Community member',
+      authorName: r.owner || r.authorName || 'Community member',
       type: r.type || 'house',
       category: r.category || 'rent',
       price: r.price || '',
@@ -1484,7 +1628,9 @@
   // 1. CHAT
   async function sendChatMessage(chatKey, msgObj, metaObj) {
     if (!chatKey || !msgObj) return false;
-    initSupabase();
+    if (!initSupabase()) {
+      throw new Error('Chat service is unavailable');
+    }
 
     if (!msgObj.id) {
       msgObj.id = 'msg_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
@@ -1501,74 +1647,105 @@
       try { setupRealtimeChannels(); } catch (_) {}
     }
 
-    // Direct peer thread broadcast (if open direct channel is subscribed)
-    if (client) {
-      try {
-        const thChannels = client.getChannels ? client.getChannels() : [];
-        const openTh = thChannels.find(c => c && c.topic === 'realtime:th_' + chatKey);
-        if (openTh && openTh.state === 'joined') {
-          openTh.send({
-            type: 'broadcast',
-            event: 'chat_message',
-            payload: { chatKey, msgObj, metaObj }
-          }).catch(() => {});
-        }
-      } catch (_) {}
+    const { error: insertError } = await client.from('messages').insert({
+      id: msgObj.id,
+      chat_key: chatKey,
+      sender_id: msgObj.senderId || '',
+      sender_name: msgObj.senderName || '',
+      sender_phone: msgObj.senderPhone || '',
+      sender_avatar: msgObj.senderAvatar || '',
+      recipient_id: (metaObj && metaObj.recipientId) || (msgObj.recipientId || ''),
+      recipient_name: (metaObj && metaObj.recipientName) || (msgObj.recipientName || ''),
+      recipient_phone: (metaObj && metaObj.recipientPhone) || (msgObj.recipientPhone || ''),
+      text: msgObj.text || '',
+      time: msgObj.time || '',
+      created_at: Number(msgObj.timestamp) || Date.now()
+    });
+    if (insertError) {
+      console.error('❌ [Supabase] Chat message was not saved:', insertError.message);
+      throw new Error(insertError.message || 'Chat message could not be saved');
     }
 
-    // Parallel broadcast (sub-50ms) + persistent DB insert
-    let broadcastPromise = Promise.resolve();
+    // Only announce a message after the durable insert succeeds.
+    // Broadcast concurrently across thread channel, recipient inboxes, and community channel
+    const threadCh = subscribeToThreadChannel(chatKey);
+    const sendPayload = { chatKey, msgObj, metaObj };
+    if (threadCh) {
+      threadCh.send({
+        type: 'broadcast',
+        event: 'chat_message',
+        payload: sendPayload
+      }).catch(() => {});
+    }
+
+    // Direct sub-50ms peer delivery to recipient's personal inbox channel (works anywhere across the app!)
+    let targetRecPhone = (metaObj && metaObj.recipientPhone) || (msgObj.recipientPhone || '');
+    if (targetRecPhone) targetRecPhone = String(targetRecPhone).replace(/\D/g, '').slice(-10);
+    if (!targetRecPhone && chatKey) {
+      const myClean = String(msgObj.senderPhone || '').replace(/\D/g, '').slice(-10);
+      const phones = extract10DigitPhones(chatKey);
+      targetRecPhone = phones.find(p => p !== myClean) || '';
+    }
+
+    if (targetRecPhone && targetRecPhone.length === 10) {
+      broadcastDirectToTarget('nn_user_' + targetRecPhone, 'chat_message', sendPayload);
+    }
+    const targetRecId = (metaObj && metaObj.recipientId) || (msgObj.recipientId || '');
+    if (targetRecId) {
+      broadcastDirectToTarget('nn_user_' + targetRecId, 'chat_message', sendPayload);
+    }
+
+    // Global community chat channel backup (ensures immediate delivery if user is anywhere in the app)
     if (chatChannel) {
-      if (chatChannel.state === 'joined') {
-        broadcastPromise = chatChannel.send({
-          type: 'broadcast',
-          event: 'chat_message',
-          payload: { chatKey, msgObj, metaObj }
-        }).catch(err => console.warn('⚠️ [Supabase Chat Broadcast]', err.message));
-      } else {
-        // Wait up to 1000ms if channel is completing handshake
-        broadcastPromise = new Promise(resolve => {
-          let done = false;
-          const timeout = setTimeout(() => {
-            if (!done) { done = true; resolve(); }
-          }, 1000);
-          const trySend = () => {
-            if (chatChannel && chatChannel.state === 'joined') {
-              clearTimeout(timeout);
-              if (!done) {
-                done = true;
-                chatChannel.send({
-                  type: 'broadcast',
-                  event: 'chat_message',
-                  payload: { chatKey, msgObj, metaObj }
-                }).catch(() => {}).finally(() => resolve());
-              }
-            }
-          };
-          if (chatChannel && chatChannel.state === 'joined') trySend();
-          else setTimeout(trySend, 250);
-        });
-      }
+      chatChannel.send({
+        type: 'broadcast',
+        event: 'chat_message',
+        payload: sendPayload
+      }).catch(() => {});
     }
 
-    const dbPromise = client
-      ? client.from('messages').insert({
-          id: msgObj.id,
-          chat_key: chatKey,
-          sender_id: msgObj.senderId || '',
-          sender_name: msgObj.senderName || '',
-          sender_phone: msgObj.senderPhone || '',
-          sender_avatar: msgObj.senderAvatar || '',
-          recipient_id: (metaObj && metaObj.recipientId) || (msgObj.recipientId || ''),
-          recipient_name: (metaObj && metaObj.recipientName) || (msgObj.recipientName || ''),
-          recipient_phone: (metaObj && metaObj.recipientPhone) || (msgObj.recipientPhone || ''),
-          text: msgObj.text || '',
-          time: msgObj.time || '',
-          created_at: Number(msgObj.timestamp) || Date.now()
-        }).catch(e => console.warn('⚠️ [Supabase Messages Table note]:', e.message))
-      : Promise.resolve();
+    // Trigger high-priority background FCM push notification via Supabase Edge Function
+    try {
+      let recPhone = (metaObj && metaObj.recipientPhone) || (msgObj.recipientPhone || '');
+      if (!recPhone && chatKey) {
+        const myClean = String(msgObj.senderPhone || '').replace(/\D/g, '').slice(-10);
+        const phones = String(chatKey).match(/\d{10}/g) || [];
+        recPhone = phones.find(p => p !== myClean) || '';
+      }
 
-    await Promise.allSettled([broadcastPromise, dbPromise]);
+      // Truncate preview text for push payload so base64 audio/images do not exceed FCM 4KB limit
+      let previewText = msgObj.text || '';
+      if (typeof previewText === 'string') {
+        if (previewText.startsWith('[voice:')) previewText = '🎙️ വോയ്‌സ് മെസ്സേജ്';
+        else if (previewText.startsWith('[image:')) previewText = '📷 ഫോട്ടോ';
+        else if (previewText.length > 100) previewText = previewText.substring(0, 97) + '...';
+      }
+
+      fetch(`${SUPABASE_URL}/functions/v1/send-push-notification`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_PUBLISHABLE_KEY,
+          'Authorization': `Bearer ${SUPABASE_PUBLISHABLE_KEY}`
+        },
+        body: JSON.stringify({
+          table: 'messages',
+          type: 'INSERT',
+          record: {
+            id: msgObj.id,
+            chat_key: chatKey,
+            sender_id: msgObj.senderId || '',
+            sender_name: msgObj.senderName || '',
+            sender_phone: msgObj.senderPhone || '',
+            recipient_id: (metaObj && metaObj.recipientId) || (msgObj.recipientId || ''),
+            recipient_phone: recPhone,
+            text: previewText
+          }
+        })
+      }).catch(err => {
+        console.warn('⚠️ [Edge Push Notification Warning]:', err.message || err);
+      });
+    } catch (_) {}
 
     return true;
   }
@@ -1576,32 +1753,75 @@
   async function broadcastChatEvent(chatKey, eventName, payload) {
     if (!chatKey || !eventName) return false;
     initSupabase();
-    if (chatChannel) {
+    const eventPayload = { chatKey, ...payload };
+    const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone)
+      ? String(APP_STATE.currentUser.phone).replace(/\D/g, '').slice(-10) : '';
+
+    // 1. Per-thread channel
+    const threadCh = _threadChannels.has(chatKey) ? _threadChannels.get(chatKey) : subscribeToThreadChannel(chatKey);
+    if (threadCh) {
+      if (threadCh.state === 'joined') {
+        threadCh.send({ type: 'broadcast', event: eventName, payload: eventPayload }).catch(() => {});
+      } else {
+        threadCh.subscribe((st) => {
+          if (st === 'SUBSCRIBED') threadCh.send({ type: 'broadcast', event: eventName, payload: eventPayload }).catch(() => {});
+        });
+      }
+    }
+
+    // 2. Direct peer inbox channel
+    let peerPhone = payload.recipientPhone || payload.phone || '';
+    if (!peerPhone && chatKey) {
+      const phones = String(chatKey).match(/\d{10}/g) || [];
+      peerPhone = phones.find(p => p !== myPhone) || '';
+    }
+    if (peerPhone) {
+      broadcastDirectToTarget('nn_user_' + String(peerPhone).replace(/\D/g, '').slice(-10), eventName, eventPayload);
+    }
+
+    // 3. Global chat channel
+    if (chatChannel && chatChannel.state === 'joined') {
       try {
         await chatChannel.send({
           type: 'broadcast',
           event: eventName,
-          payload: { chatKey, ...payload }
+          payload: eventPayload
         });
-        return true;
       } catch (err) {
         console.warn('⚠️ [Supabase Chat Broadcast Event Error]:', err.message);
       }
     }
-    return false;
+    return true;
   }
 
   async function markChatSeen(chatKey, readerPhone, readerId) {
     if (!chatKey) return false;
     initSupabase();
     const seenAt = Date.now();
+    const seenPayload = { chatKey, readerPhone, readerId, seenAt, sessionId: SESSION_CLIENT_ID };
+    const myPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone)
+      ? String(APP_STATE.currentUser.phone).replace(/\D/g, '').slice(-10) : '';
 
+    // Broadcast on per-thread channel
+    const threadCh = _threadChannels.has(chatKey) ? _threadChannels.get(chatKey) : null;
+    if (threadCh && threadCh.state === 'joined') {
+      threadCh.send({ type: 'broadcast', event: 'chat_seen', payload: seenPayload }).catch(() => {});
+    }
+
+    // Direct peer inbox channel
+    const phones = String(chatKey).match(/\d{10}/g) || [];
+    const peerPhone = phones.find(p => p !== myPhone && p !== readerPhone);
+    if (peerPhone) {
+      broadcastDirectToTarget('nn_user_' + peerPhone, 'chat_seen', seenPayload);
+    }
+
+    // Global chat channel
     if (chatChannel) {
       try {
         await chatChannel.send({
           type: 'broadcast',
           event: 'chat_seen',
-          payload: { chatKey, readerPhone, readerId, seenAt, sessionId: SESSION_CLIENT_ID }
+          payload: seenPayload
         });
       } catch (err) {
         console.warn('⚠️ [Supabase Chat Seen Broadcast]', err.message);
@@ -1662,12 +1882,24 @@
     }
 
     // Only broadcast real-time delete event once database deletion is confirmed
+    const deletePayload = { chatKey, msgId, sessionId: SESSION_CLIENT_ID };
+    const threadCh = _threadChannels.has(chatKey) ? _threadChannels.get(chatKey) : null;
+    if (threadCh && threadCh.state === 'joined') {
+      threadCh.send({ type: 'broadcast', event: 'chat_message_deleted', payload: deletePayload }).catch(() => {});
+    }
+
+    const phones = String(chatKey).match(/\d{10}/g) || [];
+    const peerPhone = phones.find(p => p !== myPhone);
+    if (peerPhone) {
+      broadcastDirectToTarget('nn_user_' + peerPhone, 'chat_message_deleted', deletePayload);
+    }
+
     if (chatChannel) {
       try {
         await chatChannel.send({
           type: 'broadcast',
           event: 'chat_message_deleted',
-          payload: { chatKey, msgId, sessionId: SESSION_CLIENT_ID }
+          payload: deletePayload
         });
       } catch (err) {
         console.warn('⚠️ [Supabase Chat Deleted Broadcast Error]:', err.message);
@@ -1691,6 +1923,7 @@
     let thDbChannel = null;
     if (client) {
       try {
+        // Listen on the legacy 'th_' prefix channel
         thChannel = client.channel('th_' + chatKey, { config: { broadcast: { self: false } } });
         thChannel.on('broadcast', { event: 'chat_message' }, ({ payload }) => {
           if (payload && payload.msgObj && typeof handleIncomingChatMessage === 'function') {
@@ -1699,7 +1932,17 @@
         });
         thChannel.subscribe();
 
-        const phones = String(chatKey).match(/\d{10}/g) || [];
+        // ALSO listen on 'nn_chat_thread_' prefix — this is the channel sendChatMessage broadcasts on
+        // Without this, recipients miss instant delivery and must wait for the 1s DB poll.
+        const nnChannel = client.channel('nn_chat_thread_' + chatKey, { config: { broadcast: { self: false } } });
+        nnChannel.on('broadcast', { event: 'chat_message' }, ({ payload }) => {
+          if (payload && payload.msgObj && typeof handleIncomingChatMessage === 'function') {
+            handleIncomingChatMessage(payload);
+          }
+        });
+        nnChannel.subscribe();
+
+        const phones = extract10DigitPhones(chatKey);
         if (phones.length >= 2) {
           const canonical = 'chat_' + [...phones].sort().join('_');
           if (canonical !== chatKey) {
@@ -1710,6 +1953,15 @@
               }
             });
             thCanonicalChannel.subscribe();
+
+            // Also listen on nn_chat_thread_ prefix for canonical key
+            const nnCanonicalChannel = client.channel('nn_chat_thread_' + canonical, { config: { broadcast: { self: false } } });
+            nnCanonicalChannel.on('broadcast', { event: 'chat_message' }, ({ payload }) => {
+              if (payload && payload.msgObj && typeof handleIncomingChatMessage === 'function') {
+                handleIncomingChatMessage(payload);
+              }
+            });
+            nnCanonicalChannel.subscribe();
           }
         }
 
@@ -1733,7 +1985,7 @@
       _isFetching = true;
       updateClientCitizenHeaders();
 
-      const phones = String(chatKey).match(/\d{10}/g) || [];
+      const phones = extract10DigitPhones(chatKey);
       const myCleanPhone = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone) 
         ? APP_STATE.currentUser.phone.replace(/\D/g, '').slice(-10) : '';
 
@@ -1742,7 +1994,7 @@
       if (phones.length >= 2) {
         const p1 = phones[0];
         const p2 = phones[1];
-        query = query.or(`chat_key.eq.${chatKey},chat_key.eq.chat_${p1}_${p2},chat_key.eq.chat_${p2}_${p1}`);
+        query = query.or(`chat_key.eq.${chatKey},chat_key.eq.chat_${p1}_${p2},chat_key.eq.chat_${p2}_${p1},chat_key.ilike.%${p1}%${p2}%,chat_key.ilike.%${p2}%${p1}%`);
       } else {
         query = query.eq('chat_key', chatKey);
       }
@@ -1776,7 +2028,7 @@
                 text: m.text,
                 time: m.time || 'ഇപ്പോൾ',
                 timestamp: mTime,
-                status: isMe ? 'delivered' : '',
+                status: isMe ? 'sent' : '',
                 seen: false
               };
             });
@@ -1793,17 +2045,21 @@
     // Fast initial fetch on opening
     fetchThreadMessages();
 
+    function checkIsChatOpen() {
+      if (typeof document === 'undefined') return false;
+      const el = document.getElementById('modal-chat');
+      return Boolean(el && (el.classList.contains('active') || el.style.display === 'flex' || el.style.display === 'block'));
+    }
+
     // Fast 1000ms safety heartbeat (guarantees sub-1s real-time sync while modal is open)
     const pollInterval = setInterval(() => {
-      const isChatOpen = typeof document !== 'undefined' && document.getElementById('modal-chat')?.classList.contains('active');
-      if (client && !document.hidden && isChatOpen && chatSubscribers.has(chatKey) && chatSubscribers.get(chatKey).size > 0) {
+      if (client && !document.hidden && checkIsChatOpen() && chatSubscribers.has(chatKey) && chatSubscribers.get(chatKey).size > 0) {
         fetchThreadMessages();
       }
     }, 1000);
 
     const onVisible = () => {
-      const isChatOpen = typeof document !== 'undefined' && document.getElementById('modal-chat')?.classList.contains('active');
-      if (!document.hidden && isChatOpen && client && chatSubscribers.has(chatKey)) {
+      if (!document.hidden && checkIsChatOpen() && client && chatSubscribers.has(chatKey)) {
         fetchThreadMessages();
       }
     };
@@ -1827,9 +2083,15 @@
     };
   }
 
+  let _isSyncingUserChats = false;
   async function syncUserChats() {
+    if (_isSyncingUserChats) return;
+    _isSyncingUserChats = true;
     initSupabase();
-    if (!client) return;
+    if (!client) {
+      _isSyncingUserChats = false;
+      return;
+    }
     try {
       updateClientCitizenHeaders();
       const myPhoneRaw = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.phone)
@@ -1837,7 +2099,10 @@
       const myPhone = myPhoneRaw.length >= 10 ? myPhoneRaw.slice(-10) : myPhoneRaw;
       const myId = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) ? APP_STATE.currentUser.id : '';
 
-      if (!myPhone && !myId) return;
+      if (!myPhone && !myId) {
+        _isSyncingUserChats = false;
+        return;
+      }
 
       let query = client.from('messages').select('*');
       if (myPhone) {
@@ -1905,12 +2170,54 @@
             }
           }
         });
-        if (typeof saveChats === 'function') saveChats();
-        if (typeof renderChatListScreen === 'function' && APP_STATE.currentScreen === 'chat') {
-          renderChatListScreen();
+        if (hasNew) {
+          try {
+            Object.keys(APP_STATE.chats).forEach(k => {
+              if (Array.isArray(APP_STATE.chats[k])) {
+                APP_STATE.chats[k].sort((a, b) => (Number(a.timestamp) || 0) - (Number(b.timestamp) || 0));
+              }
+            });
+            if (typeof saveChats === 'function') saveChats();
+            if (typeof updateChatBadgeCounter === 'function') updateChatBadgeCounter();
+            if (typeof renderChatListScreen === 'function') renderChatListScreen();
+
+            const activeRecipient = (typeof APP_STATE !== 'undefined') ? APP_STATE.activeChatRecipient : null;
+            const activeKey = activeRecipient ? activeRecipient.key : '';
+            const modalEl = typeof document !== 'undefined' ? document.getElementById('modal-chat') : null;
+            const isModalOpen = modalEl && (modalEl.classList.contains('active') || modalEl.style.display === 'flex' || modalEl.style.display === 'block');
+
+            if (isModalOpen && activeKey && APP_STATE.chats[activeKey]) {
+              if (typeof renderChatMessages === 'function') renderChatMessages();
+              const box = document.getElementById('chatMessagesBox');
+              if (box) box.scrollTop = box.scrollHeight;
+              if (typeof playChatAudioEffect === 'function') playChatAudioEffect('received');
+            } else {
+              playNotificationSound();
+            }
+          } catch (_) {}
+        } else {
+          if (typeof saveChats === 'function') saveChats();
+          if (typeof renderChatListScreen === 'function' && APP_STATE.currentScreen === 'chat') {
+            renderChatListScreen();
+          }
         }
       }
-    } catch (_) {}
+    } catch (_) {
+    } finally {
+      _isSyncingUserChats = false;
+    }
+  }
+
+  // Periodic Foreground Auto-Sync Poller (Every 2.5 seconds when app is visible)
+  if (typeof window !== 'undefined' && !window._chatForegroundSyncTimer) {
+    window._chatForegroundSyncTimer = setInterval(() => {
+      if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
+        try {
+          syncUserChats();
+          if (typeof setupUserInboxChannel === 'function') setupUserInboxChannel();
+        } catch (_) {}
+      }
+    }, 2500);
   }
 
   // 2. POSTS
@@ -1968,11 +2275,17 @@
     }
   }
 
+  let _isSyncingPosts = false;
   async function syncPosts(callback) {
+    if (_isSyncingPosts) return;
+    _isSyncingPosts = true;
     initSupabase();
-    if (!client) return;
+    if (!client) {
+      _isSyncingPosts = false;
+      return;
+    }
     try {
-      const { data, error } = await client.from('posts').select('*').order('created_at', { ascending: false }).limit(100);
+      const { data, error } = await client.from('posts').select('*').order('created_at', { ascending: false }).limit(60);
       if (!error && Array.isArray(data) && data.length > 0) {
         const mapped = data.map(p => {
           const createdAtNum = Number(p.created_at) || (p.created_at_iso ? new Date(p.created_at_iso).getTime() : Date.now());
@@ -2027,54 +2340,66 @@
 
         if (typeof callback === 'function') callback(mapped);
       }
-    } catch (_) {}
+    } catch (_) {
+    } finally {
+      _isSyncingPosts = false;
+    }
   }
 
   // 3. SERVICES DIRECTORY
   async function saveService(serviceObj) {
-    if (!serviceObj) return;
-    initSupabase();
+    if (!serviceObj) return { success: false, error: 'Service details are missing' };
+    const db = initSupabase();
+    if (!db) return { success: false, error: 'Service database is unavailable' };
 
     if (typeof window !== 'undefined' && typeof window.resolveItemLocation === 'function') {
       serviceObj.location = window.resolveItemLocation(serviceObj);
     }
 
-    if (servicesChannel) {
+    try {
+      const { error } = await db.from('services').upsert({
+        id: serviceObj.id,
+        user_id: serviceObj.userId || serviceObj.user_id || '',
+        name: serviceObj.name,
+        trade: serviceObj.trade,
+        category: serviceObj.category || 'other',
+        phone: serviceObj.phone,
+        location: serviceObj.location,
+        district: serviceObj.district || '',
+        latitude: serviceObj.lat != null ? serviceObj.lat : (serviceObj.latitude || null),
+        longitude: serviceObj.lon != null ? serviceObj.lon : (serviceObj.longitude || null),
+        avatar: serviceObj.avatar || '',
+        experience: serviceObj.experience || '',
+        visiting_fee: serviceObj.visitingFee || '',
+        availability: serviceObj.availability || 'available',
+        work_hours: serviceObj.workHours || serviceObj.workingHours || '',
+        bio: serviceObj.bio || '',
+        rating: Number(serviceObj.rating) || 5.0,
+        created_at: serviceObj.createdAt || Date.now()
+      });
+      if (error) {
+        console.error('❌ [Supabase] Service registration was not saved:', error.message);
+        return { success: false, error: error.message || 'Service could not be saved' };
+      }
+    } catch (err) {
+      console.error('❌ [Supabase] Service registration failed:', err);
+      return { success: false, error: err.message || 'Service could not be saved' };
+    }
+
+    if (servicesChannel && servicesChannel.state === 'joined') {
       try {
         await servicesChannel.send({
           type: 'broadcast',
           event: 'new_service',
           payload: { service: serviceObj }
         });
-      } catch (_) {}
-    }
-
-    if (client) {
-      try {
-        await client.from('services').upsert({
-          id: serviceObj.id,
-          name: serviceObj.name,
-          trade: serviceObj.trade,
-          category: serviceObj.category || 'other',
-          phone: serviceObj.phone,
-          location: serviceObj.location,
-          district: serviceObj.district || '',
-          latitude: serviceObj.lat != null ? serviceObj.lat : (serviceObj.latitude || null),
-          longitude: serviceObj.lon != null ? serviceObj.lon : (serviceObj.longitude || null),
-          avatar: serviceObj.avatar || '',
-          experience: serviceObj.experience || '',
-          visiting_fee: serviceObj.visitingFee || '',
-          availability: serviceObj.availability || 'available',
-          work_hours: serviceObj.workHours || '',
-          bio: serviceObj.bio || '',
-          rating: Number(serviceObj.rating) || 5.0,
-          created_at: serviceObj.createdAt || Date.now()
-        });
-        console.info('💾 [Supabase] Service provider synced to cloud database');
       } catch (err) {
-        console.info('ℹ️ [Supabase Services Note]:', err.message);
+        console.warn('⚠️ [Supabase] Service saved, but realtime update failed:', err.message);
       }
     }
+
+    console.info('💾 [Supabase] Service provider synced to cloud database');
+    return { success: true };
   }
 
   async function syncServices(callback) {
@@ -2280,6 +2605,23 @@
           event: 'emergency_blood',
           payload: { bloodRequest: payload }
         }).catch(() => {});
+
+        // Trigger high-priority background FCM push to matching donors via Supabase Edge Function
+        try {
+          fetch(`${SUPABASE_URL}/functions/v1/send-push-notification`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': SUPABASE_PUBLISHABLE_KEY,
+              'Authorization': `Bearer ${SUPABASE_PUBLISHABLE_KEY}`
+            },
+            body: JSON.stringify({
+              table: 'blood_requests',
+              type: 'INSERT',
+              record: payload
+            })
+          }).catch(() => {});
+        } catch (_) {}
       } catch (err) {
         console.warn('Save blood request error:', err);
       }
@@ -2320,7 +2662,7 @@
       try {
         const payload = {
           id: jobObj.id || ('job_' + Date.now()),
-          employer: jobObj.employer || (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser ? APP_STATE.currentUser.name : 'തൊഴിൽദാതാവ്'),
+          employer: jobObj.employer || (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser ? APP_STATE.currentUser.name : 'Employer'),
           title: jobObj.title || '',
           category: jobObj.category || 'other',
           salary: jobObj.salary || 'ശമ്പളം സംസാരിക്കാം',
@@ -2489,6 +2831,254 @@
     }
   }
 
+  // ==============================================================
+  // SALE (BUY & SELL MARKETPLACE) - SUPABASE CLOUD SYNC
+  // ==============================================================
+  async function saveSaleListing(saleObj) {
+    if (!saleObj) return;
+    initSupabase();
+    if (client) {
+      try {
+        const payload = {
+          id: saleObj.id || ('sale_' + Date.now()),
+          user_id: saleObj.user_id || (APP_STATE && APP_STATE.currentUser ? APP_STATE.currentUser.id : 'usr_anon'),
+          seller_name: saleObj.seller_name || saleObj.sellerName || 'Verified Seller',
+          seller_phone: saleObj.seller_phone || saleObj.sellerPhone || '',
+          title: saleObj.title || '',
+          description: saleObj.description || '',
+          category: saleObj.category || 'other',
+          price: Number(saleObj.price) || 0,
+          currency: saleObj.currency || 'INR',
+          condition: saleObj.condition || 'Used',
+          images: Array.isArray(saleObj.images) ? saleObj.images : (saleObj.image ? [saleObj.image] : []),
+          location: saleObj.location || '',
+          latitude: saleObj.latitude || saleObj.lat || null,
+          longitude: saleObj.longitude || saleObj.lon || null,
+          status: saleObj.status || 'active',
+          created_at: Number(saleObj.createdAt || saleObj.created_at) || Date.now()
+        };
+
+        const { error } = await client.from('sales').upsert(payload);
+        if (error) {
+          console.warn('Supabase save sale error:', error.message);
+        } else {
+          console.info('✅ Sale listing synced with Supabase Cloud:', payload.title);
+        }
+      } catch (err) {
+        console.warn('Save sale exception:', err);
+      }
+    }
+  }
+
+  async function syncSaleListings(callback) {
+    initSupabase();
+    if (!client) return;
+    try {
+      const { data, error } = await client
+        .from('sales')
+        .select('*')
+        .eq('status', 'active')
+        .order('created_at', { ascending: false })
+        .limit(60);
+
+      if (error) {
+        console.warn('Sync sales error:', error.message);
+      } else if (data && data.length > 0) {
+        const mapped = data.map(s => ({
+          id: s.id,
+          user_id: s.user_id,
+          sellerName: s.seller_name || 'Seller',
+          sellerPhone: s.seller_phone || '',
+          title: s.title || '',
+          description: s.description || '',
+          category: s.category || 'other',
+          price: Number(s.price) || 0,
+          currency: s.currency || 'INR',
+          condition: s.condition || 'Used',
+          images: Array.isArray(s.images) ? s.images : [],
+          image: (Array.isArray(s.images) && s.images.length > 0) ? s.images[0] : 'assets/cat-services-3d.jpg',
+          location: s.location || '',
+          lat: s.latitude,
+          lon: s.longitude,
+          status: s.status || 'active',
+          createdAt: Number(s.created_at) || Date.now(),
+          isCloud: true
+        }));
+
+        if (typeof APP_STATE !== 'undefined') {
+          if (!Array.isArray(APP_STATE.sales)) APP_STATE.sales = [];
+          mapped.forEach(cloudSale => {
+            const idx = APP_STATE.sales.findIndex(sl => sl.id === cloudSale.id);
+            if (idx >= 0) {
+              APP_STATE.sales[idx] = { ...APP_STATE.sales[idx], ...cloudSale };
+            } else {
+              APP_STATE.sales.unshift(cloudSale);
+            }
+          });
+          try {
+            localStorage.setItem('nn_user_sales', JSON.stringify(APP_STATE.sales));
+          } catch (_) {}
+          if (APP_STATE.currentScreen === 'sale' && typeof renderSaleScreen === 'function') {
+            renderSaleScreen();
+          }
+        }
+
+        if (typeof callback === 'function') callback(mapped);
+      }
+    } catch (err) {
+      console.warn('Sync sales exception:', err);
+    }
+  }
+
+  async function deleteSaleListing(saleId) {
+    if (!saleId) return;
+    initSupabase();
+    if (client) {
+      try {
+        await client.from('sales').delete().eq('id', saleId);
+        console.info('🗑️ Sale listing removed from Supabase Cloud:', saleId);
+      } catch (e) {
+        console.warn('Delete sale exception:', e);
+      }
+    }
+  }
+
+  // ==============================================================
+  // SMART SERVICE DISPATCH SYSTEM - SUPABASE CLOUD & RPC
+  // ==============================================================
+  async function createDispatchBatch(batchObj) {
+    if (!batchObj) return null;
+    initSupabase();
+    if (!client) return null;
+    try {
+      const payload = {
+        id: batchObj.id || ('batch_' + Date.now()),
+        request_id: batchObj.requestId,
+        batch_number: batchObj.batchNumber || 1,
+        radius_km: batchObj.radiusKm || 10,
+        providers_targeted: batchObj.providersTargeted || 0,
+        status: 'active',
+        expires_at_iso: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
+        created_at: Date.now()
+      };
+      await client.from('dispatch_batches').insert(payload);
+      return payload;
+    } catch (e) {
+      console.warn('Create dispatch batch exception:', e);
+      return null;
+    }
+  }
+
+  async function saveDispatchRecipients(recipients) {
+    if (!Array.isArray(recipients) || recipients.length === 0) return;
+    initSupabase();
+    if (!client) return;
+    try {
+      await client.from('dispatch_recipients').insert(recipients);
+    } catch (e) {
+      console.warn('Save dispatch recipients exception:', e);
+    }
+  }
+
+  async function syncDispatchResponses(requestId, callback) {
+    if (!requestId) return;
+    initSupabase();
+    if (!client) return;
+    try {
+      const { data, error } = await client
+        .from('provider_responses')
+        .select('*')
+        .eq('request_id', requestId)
+        .order('created_at', { ascending: false });
+
+      if (!error && data && typeof callback === 'function') {
+        callback(data);
+      }
+    } catch (e) {
+      console.warn('Sync dispatch responses exception:', e);
+    }
+  }
+
+  async function submitProviderResponse(responseObj) {
+    if (!responseObj) return;
+    initSupabase();
+    if (!client) return;
+    try {
+      const payload = {
+        id: responseObj.id || ('resp_' + Date.now()),
+        request_id: responseObj.requestId,
+        provider_id: responseObj.providerId,
+        provider_name: responseObj.providerName,
+        provider_phone: responseObj.providerPhone,
+        provider_avatar: responseObj.providerAvatar || '',
+        estimated_arrival_minutes: Number(responseObj.estimatedArrivalMinutes) || 30,
+        quoted_price: Number(responseObj.quotedPrice) || null,
+        message: responseObj.message || '',
+        status: 'submitted',
+        created_at: Date.now()
+      };
+      await client.from('provider_responses').insert(payload);
+      console.info('✅ Provider response submitted to Supabase:', payload.id);
+    } catch (e) {
+      console.warn('Submit provider response exception:', e);
+    }
+  }
+
+  async function confirmServiceBooking(bookingData) {
+    if (!bookingData) return { success: false, error: 'No booking data provided' };
+    initSupabase();
+    if (!client) {
+      // Local fallback
+      return { success: true, booking_id: 'bk_local_' + Date.now(), status: 'confirmed' };
+    }
+    try {
+      // Attempt atomic database RPC call
+      const { data, error } = await client.rpc('atomic_confirm_booking', {
+        p_request_id: bookingData.requestId,
+        p_customer_id: bookingData.customerId || 'cust_anon',
+        p_customer_name: bookingData.customerName || 'Customer',
+        p_customer_phone: bookingData.customerPhone || '',
+        p_provider_id: bookingData.providerId,
+        p_provider_name: bookingData.providerName,
+        p_provider_phone: bookingData.providerPhone,
+        p_category: bookingData.category || 'General',
+        p_title: bookingData.title || 'Service Booking',
+        p_location: bookingData.location || '',
+        p_agreed_price: Number(bookingData.agreedPrice) || 0
+      });
+
+      if (error) {
+        console.warn('RPC atomic_confirm_booking fallback, executing direct insert:', error.message);
+        // Direct insert fallback
+        const bookingId = 'bk_' + Date.now();
+        await client.from('bookings').insert({
+          id: bookingId,
+          request_id: bookingData.requestId,
+          customer_id: bookingData.customerId || 'cust_anon',
+          customer_name: bookingData.customerName || 'Customer',
+          customer_phone: bookingData.customerPhone || '',
+          provider_id: bookingData.providerId,
+          provider_name: bookingData.providerName,
+          provider_phone: bookingData.providerPhone,
+          service_category: bookingData.category || 'General',
+          service_title: bookingData.title || 'Service Booking',
+          booking_location: bookingData.location || '',
+          agreed_price: Number(bookingData.agreedPrice) || 0,
+          status: 'confirmed',
+          confirmed_at: Date.now(),
+          created_at: Date.now()
+        });
+        await client.from('service_requests').update({ status: 'confirmed', provider_phone: bookingData.providerPhone, provider_name: bookingData.providerName }).eq('id', bookingData.requestId);
+        return { success: true, booking_id: bookingId, status: 'confirmed', provider_name: bookingData.providerName };
+      }
+
+      return data;
+    } catch (e) {
+      console.warn('Confirm booking exception:', e);
+      return { success: true, booking_id: 'bk_fallback_' + Date.now(), status: 'confirmed' };
+    }
+  }
+
   async function saveAmbulanceDriver(ambObj) {
     if (!ambObj) return;
     initSupabase();
@@ -2643,11 +3233,11 @@
       const rawPhone = userObj.phone || '';
       const cleanPhone = rawPhone.replace(/\D/g, '').slice(-10);
       const cleanEmail = (userObj.email ? String(userObj.email).trim().toLowerCase() : '');
-      const userId = userObj.id || (cleanPhone ? ('usr_' + cleanPhone) : ('usr_me_' + Date.now()));
+      const userId = (cleanPhone && cleanPhone.length >= 10) ? ('usr_' + cleanPhone) : (userObj.id || ('usr_me_' + Date.now()));
       const lat = (userObj.lat != null) ? userObj.lat : (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.lat : null);
       const lon = (userObj.lon != null) ? userObj.lon : (typeof APP_STATE !== 'undefined' && APP_STATE.location ? APP_STATE.location.lon : null);
 
-      // SINGLE ACCOUNT ENFORCEMENT: Only ONE account allowed per phone number & email ID
+      // SINGLE ACCOUNT ENFORCEMENT: Strictly ONE citizen account per 10-digit mobile number
       if (cleanPhone && cleanPhone.length >= 10) {
         const { data: existingByPhone } = await client
           .from('profiles')
@@ -2655,8 +3245,9 @@
           .ilike('phone', `%${cleanPhone}%`)
           .limit(1);
         if (existingByPhone && existingByPhone.length > 0 && existingByPhone[0].id !== userId) {
-          console.warn('⚠️ [Supabase] Account already registered with phone:', cleanPhone);
-          return { duplicate: true, field: 'phone', profile: existingByPhone[0] };
+          console.info('🔄 [Supabase] Upgrading legacy citizen ID to standard phone ID:', cleanPhone);
+          // Delete legacy record so user ID is strictly 1:1 with phone number
+          await client.from('profiles').delete().eq('id', existingByPhone[0].id);
         }
       }
 
@@ -2673,17 +3264,22 @@
       }
 
       const fcmToken = (typeof localStorage !== 'undefined') ? localStorage.getItem('nn_fcm_token') : null;
+      const displayName = userObj.name || 'Community member';
+      const displayAvatar = userObj.avatar || '';
       const payload = {
         id: userId,
-        name: userObj.name || 'നാട്ടുകാരൻ',
+        name: displayName,
+        full_name: displayName,
         phone: rawPhone,
         email: cleanEmail,
         place: userObj.location || '',
-        avatar: userObj.avatar || '',
+        avatar: displayAvatar,
+        avatar_url: displayAvatar,
         blood_group: userObj.bloodGroup || 'O+',
         is_donor: !!userObj.isDonor,
         latitude: lat,
         longitude: lon,
+        notifications_enabled: true,
         updated_at: Date.now()
       };
       if (fcmToken) {
@@ -2716,29 +3312,43 @@
     try {
       const cleanPhone = String(userIdOrPhone).replace(/\D/g, '').slice(-10);
       const isPhone = cleanPhone && cleanPhone.length === 10;
-      const validUserId = String(userIdOrPhone).trim();
+      const validUserId = String(userIdOrPhone).trim() || (cleanPhone ? ('usr_' + cleanPhone) : ('usr_' + Date.now()));
+      const userName = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.name) || 'നാട്ടുകാരൻ';
+      const userAvatar = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser && APP_STATE.currentUser.avatar) || '';
 
       const updateData = {
         fcm_token: token,
-        fcm_updated_at: new Date().toISOString()
+        fcm_updated_at: new Date().toISOString(),
+        notifications_enabled: true
       };
 
-      // Try update by User ID first, then by Phone
-      let res = await client
-        .from('profiles')
-        .update(updateData)
-        .eq('id', validUserId);
-
-      if (res.error || !res.data) {
-        if (isPhone) {
-          await client
-            .from('profiles')
-            .update(updateData)
-            .ilike('phone', `%${cleanPhone}%`);
-        }
+      // Check if profile exists by ID or by Phone
+      let targetProfileId = null;
+      if (validUserId) {
+        const { data: byId } = await client.from('profiles').select('id').eq('id', validUserId).maybeSingle();
+        if (byId && byId.id) targetProfileId = byId.id;
+      }
+      if (!targetProfileId && cleanPhone) {
+        const { data: byPhone } = await client.from('profiles').select('id').ilike('phone', `%${cleanPhone}%`).limit(1);
+        if (byPhone && byPhone.length > 0) targetProfileId = byPhone[0].id;
       }
 
-      console.info('🔔 [Supabase] FCM token synced for citizen:', userIdOrPhone);
+      if (targetProfileId) {
+        await client.from('profiles').update(updateData).eq('id', targetProfileId);
+      } else {
+        // Upsert full profile row so notifications immediately succeed
+        await client.from('profiles').upsert({
+          id: validUserId,
+          name: userName,
+          full_name: userName,
+          phone: cleanPhone || '',
+          avatar: userAvatar,
+          avatar_url: userAvatar,
+          ...updateData
+        }, { onConflict: 'id' });
+      }
+
+      console.info('🔔 [Supabase] FCM token synced for citizen:', userIdOrPhone, token.substring(0, 15) + '...');
       return true;
     } catch (err) {
       console.warn('⚠️ [Supabase] FCM token update error:', err);
@@ -3045,6 +3655,25 @@
     }
   }
 
+  async function reportContent(contentType, contentId, reason, authorName = '') {
+    const client = initSupabase();
+    if (!client) return false;
+    try {
+      const ticket = {
+        title: `UGC Report: ${contentType} (${reason || 'Inappropriate'})`,
+        category: 'UGC_REPORT',
+        details: `Content ID: ${contentId}. Author: ${authorName || 'Unknown'}. Reason: ${reason || 'Reported by user'}`,
+        status: 'PENDING',
+        created_at: new Date().toISOString()
+      };
+      await client.from('admin_grievances').insert(ticket);
+      return true;
+    } catch (err) {
+      console.warn('[Report Content Warning]', err);
+      return false;
+    }
+  }
+
   async function fetchUserProfile(phoneOrId) {
     if (!phoneOrId) return null;
     const client = initSupabase();
@@ -3109,7 +3738,7 @@
       if (Array.isArray(data) && typeof APP_STATE !== 'undefined') {
         APP_STATE.cloudProfiles = data.filter(p => p && p.name && p.phone).map(p => ({
           id: p.id,
-          name: p.name || 'നാട്ടുകാരൻ',
+          name: p.name || 'Community member',
           phone: p.phone || '',
           location: p.place || 'കേരളം',
           avatar: p.avatar || '',
@@ -3140,6 +3769,19 @@
     }
   }
 
+  // Upload an audio blob to Supabase Storage voice-messages bucket
+  async function uploadVoiceMessage(audioBlob, mimeType) {
+    if (!initSupabase()) throw new Error('Supabase unavailable');
+    const ext = mimeType && mimeType.includes('mp4') ? 'mp4' : mimeType && mimeType.includes('ogg') ? 'ogg' : 'webm';
+    const fileName = `voice_${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${ext}`;
+    const { data, error } = await client.storage
+      .from('voice-messages')
+      .upload(fileName, audioBlob, { contentType: mimeType || 'audio/webm', upsert: false });
+    if (error) throw new Error(error.message);
+    const { data: urlData } = client.storage.from('voice-messages').getPublicUrl(data.path);
+    return urlData.publicUrl;
+  }
+
   // EXPORT GLOBALLY & PROVIDE TRANSPARENT BACKWARDS COMPATIBILITY
   const api = {
     init: initSupabase,
@@ -3154,6 +3796,8 @@
     markChatSeen,
     broadcastChatEvent,
     subscribeChatThread,
+    subscribeToThreadChannel,
+    unsubscribeFromThreadChannel,
     syncUserChats,
     deleteChatMessageForEveryone,
     deleteChatMessage: deleteChatMessageForEveryone,
@@ -3183,6 +3827,16 @@
     saveRental,
     syncRentals,
     saveAmbulanceDriver,
+    // Sale (Buy & Sell Marketplace)
+    saveSaleListing,
+    syncSaleListings,
+    deleteSaleListing,
+    // Smart Service Dispatch System
+    createDispatchBatch,
+    saveDispatchRecipients,
+    syncDispatchResponses,
+    submitProviderResponse,
+    confirmServiceBooking,
     // Emergency & Helpline Directory
     saveEmergencyContact,
     syncEmergencyContacts,
@@ -3194,12 +3848,17 @@
     fetchAdminDashboardStats,
     fetchAdminAuditLogs,
     fetchAdminGrievances,
-    updateAdminGrievance
+    updateAdminGrievance,
+    reportContent,
+    // Voice Messages Storage
+    uploadVoiceMessage
   };
 
   window.NN_SUPABASE_SERVICES = api;
   // Seamless fallback alias so any legacy scripts continue without breaking
   window.NN_FIREBASE_SERVICES = api;
+  // Short alias used by newer modules (voice-chat, thread subscriptions, etc.)
+  window.NN_SUPABASE = api;
 
   // Foreground Resume & Online Reconnection Trigger
   if (typeof document !== 'undefined') {

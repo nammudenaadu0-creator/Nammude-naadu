@@ -59,7 +59,7 @@
               if (data.chatKey && typeof window.openChatModal === 'function') {
                 setTimeout(() => {
                   window.openChatModal(
-                    data.senderName || data.name || 'സുഹൃത്ത്',
+                    data.senderName || data.name || 'Friend',
                     data.senderPhone || data.phone || '',
                     data.senderAvatar || data.avatar || '',
                     '',
@@ -151,16 +151,61 @@
     },
 
     // Send instant push notification to recipient's phone via OneSignal REST API
+    // Falls back to Supabase Edge Function (FCM HTTP v1) if REST key not available
     sendPush: async function (recipientPhone, title, message, extraData) {
+      const cleanTargetPhone = recipientPhone ? String(recipientPhone).replace(/\D/g, '').slice(-10) : '';
+      if (!cleanTargetPhone) return false;
+
+      // ── PRIMARY: Supabase Edge Function (FCM HTTP v1) — no secret exposed ──
+      // Edge Function looks up recipient FCM token from profiles table and sends via Google FCM
+      try {
+        const supabaseUrl = (typeof window !== 'undefined' && window.SUPABASE_URL)
+          ? window.SUPABASE_URL
+          : (localStorage.getItem('nn_supabase_url') || 'https://ocnbtiwrepnnlwbtbzca.supabase.co');
+        const supabaseAnonKey = (typeof window !== 'undefined' && (window.SUPABASE_ANON_KEY || window.SUPABASE_PUBLISHABLE_KEY))
+          ? (window.SUPABASE_ANON_KEY || window.SUPABASE_PUBLISHABLE_KEY)
+          : (localStorage.getItem('nn_supabase_anon_key') || 'sb_publishable_Jw6BWENMoesmYzgvKif2Ow_wF1vnuq0');
+
+        if (supabaseUrl && supabaseAnonKey) {
+          const edgePayload = {
+            recipientPhone: cleanTargetPhone,
+            title: title || 'നമ്മുടെ നാട്',
+            body: message || 'നിങ്ങൾക്ക് ഒരു പുതിയ സന്ദേശം വന്നിട്ടുണ്ട്',
+            channelId: (extraData && (extraData.type === 'chat' || extraData.chatKey))
+              ? 'nammude_naadu_messages' : 'nammude_naadu_alerts',
+            type: (extraData && extraData.type) || 'chat',
+            data: extraData || {}
+          };
+
+          const edgeRes = await fetch(`${supabaseUrl}/functions/v1/send-push-notification`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': supabaseAnonKey,
+              'Authorization': `Bearer ${supabaseAnonKey}`
+            },
+            body: JSON.stringify(edgePayload)
+          });
+
+          if (edgeRes.ok) {
+            const edgeJson = await edgeRes.json();
+            console.info('🚀 [Push] Sent via Edge Function FCM:', cleanTargetPhone, edgeJson);
+            return true;
+          } else {
+            console.warn('⚠️ [Push] Edge Function returned:', edgeRes.status, await edgeRes.text());
+          }
+        }
+      } catch (edgeErr) {
+        console.warn('⚠️ [Push] Edge Function fallback:', edgeErr.message);
+      }
+
+      // ── FALLBACK: OneSignal REST API (only if admin REST key is available) ──
       const activeAppId = localStorage.getItem('nn_onesignal_app_id') || this.appId;
       const activeRestKey = sessionStorage.getItem('nn_admin_onesignal_rest_key') || this.restApiKey || '';
 
       if (!activeAppId || activeAppId === 'YOUR_ONESIGNAL_APP_ID' || !activeRestKey) {
         return false;
       }
-
-      const cleanTargetPhone = recipientPhone ? String(recipientPhone).replace(/\D/g, '').slice(-10) : '';
-      if (!cleanTargetPhone) return false;
 
       try {
         const payload = {
@@ -169,8 +214,8 @@
             external_id: [cleanTargetPhone]
           },
           target_channel: 'push',
-          headings: { en: title || 'നമ്മുടെ നാട്' },
-          contents: { en: message || 'നിങ്ങൾക്ക് ഒരു പുതിയ സന്ദേശം വന്നിട്ടുണ്ട്' },
+          headings: { en: title || 'Nammude Naadu' },
+          contents: { en: message || 'You have a new message' },
           data: extraData || {},
           small_icon: 'ic_stat_onesignal_default',
           large_icon: 'https://nammudenaadu.web.app/assets/icon-192.png',
@@ -209,7 +254,7 @@
         const payload = {
           app_id: activeAppId,
           included_segments: ['Subscribed Users'],
-          headings: { en: title || '📢 അടിയന്തിര അറിയിപ്പ്!' },
+          headings: { en: title || '📢 Urgent Alert!' },
           contents: { en: message },
           data: extraData || {},
           android_channel_id: (extraData && (extraData.type === 'chat' || extraData.chatKey)) ? 'nammude_naadu_messages' : 'nammude_naadu_alerts',
@@ -284,7 +329,7 @@
       if (granted) {
         localStorage.setItem('nn_notif_enabled', 'true');
         if (typeof window.showNotificationToast === 'function') {
-          window.showNotificationToast('✅ അറിയിപ്പുകൾ ഓണാക്കി! ഇനി സന്ദേശങ്ങൾ ഉടൻ ലഭിക്കും.');
+          window.showNotificationToast('✅ Notifications enabled! You will now receive messages instantly.');
         }
         this.syncUserIdentity();
       }
@@ -297,8 +342,8 @@
         try {
           await window.Capacitor.Plugins.LocalNotifications.createChannel({
             id: 'nammude_naadu_messages',
-            name: 'സന്ദേശങ്ങൾ (Chat Messages)',
-            description: 'പുതിയ ചാറ്റ് സന്ദേശങ്ങൾക്കുള്ള തത്സമയ അറിയിപ്പുകൾ',
+            name: 'Chat Messages',
+            description: 'Real-time notifications for new chat messages',
             importance: 5,
             visibility: 1,
             vibration: true,
@@ -306,8 +351,8 @@
           });
           await window.Capacitor.Plugins.LocalNotifications.createChannel({
             id: 'nammude_naadu_alerts',
-            name: 'നമ്മുടെ നാട് അറിയിപ്പുകൾ (Alerts)',
-            description: 'അടിയന്തിര അറിയിപ്പുകളും പുതിയ സർവീസുകളും',
+            name: 'Nammude Naadu Alerts',
+            description: 'Urgent alerts and new service requests',
             importance: 5,
             visibility: 1,
             vibration: true,
@@ -337,8 +382,8 @@
             window.Capacitor.Plugins.LocalNotifications.schedule({
               notifications: [
                 {
-                  title: title || 'നമ്മുടെ നാട് സന്ദേശം',
-                  body: body || 'നിങ്ങൾക്ക് ഒരു പുതിയ സന്ദേശം വന്നിട്ടുണ്ട്',
+                  title: title || 'Nammude Naadu Message',
+                  body: body || 'You have a new message',
                   id: Math.floor(Math.random() * 900000) + 100000,
                   schedule: { at: new Date(Date.now() + 50) },
                   channelId: 'nammude_naadu_messages',
@@ -356,7 +401,7 @@
         // 2. Standard Web/WebView Notification API
         if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
           const options = {
-            body: body || 'നിങ്ങൾക്ക് ഒരു പുതിയ സന്ദേശം വന്നിട്ടുണ്ട്',
+            body: body || 'You have a new message',
             icon: 'assets/kerala-logo-badge.jpg',
             badge: 'assets/kerala-logo-badge.jpg',
             tag: extraData.chatKey || 'nn-chat-msg',
@@ -364,12 +409,12 @@
             data: extraData
           };
 
-          const notif = new Notification(title || 'നമ്മുടെ നാട് സന്ദേശം', options);
+          const notif = new Notification(title || 'Nammude Naadu Message', options);
           notif.onclick = function () {
             window.focus();
             if (extraData && extraData.chatKey && typeof window.openChatModal === 'function') {
               window.openChatModal(
-                extraData.senderName || 'സുഹൃത്ത്',
+                extraData.senderName || 'Friend',
                 extraData.senderPhone || '',
                 extraData.senderAvatar || '',
                 '',

@@ -1,11 +1,12 @@
 {
   "name": "nammude-naadu-test",
-  "version": "1.0.24",
+  "version": "1.0.29",
   "description": "",
   "main": "firebase-backend.js",
   "scripts": {
     "sync": "node copy-to-www.js && npx cap sync android",
-    "build:apk": "node copy-to-www.js && npx cap sync android && cd android && ./gradlew clean && ./gradlew assembleDebug && cd .. && cp android/app/build/outputs/apk/debug/app-debug.apk ./NammudeNaadu.apk",
+    "build:apk": "node copy-to-www.js && npx cap sync android && cd android && ./gradlew clean && ./gradlew assembleDebug && cd .. && cp android/app/build/outputs/apk/debug/app-debug.apk ./NammudeNaadu.apk && cp android/app/build/outputs/apk/debug/app-debug.apk ./app-debug.apk",
+    "build:release": "node copy-to-www.js && npx cap sync android && cd android && ./gradlew clean && ./gradlew assembleRelease bundleRelease && cd .. && cp android/app/build/outputs/apk/release/app-release.apk ./NammudeNaadu-release.apk && cp android/app/build/outputs/apk/release/app-release.apk ./app-release.apk && cp android/app/build/outputs/bundle/release/app-release.aab ./NammudeNaadu-release.aab",
     "open:android": "npx cap open android",
     "test": "node test/run-tests.js"
   },
@@ -18,6 +19,7 @@
     "@capacitor/app": "^8.1.2",
     "@capacitor/cli": "^8.5.3",
     "@capacitor/core": "^8.5.3",
+    "@capacitor/geolocation": "^8.2.4",
     "@capacitor/local-notifications": "^8.3.1",
     "@capacitor/push-notifications": "^8.1.3",
     "@supabase/supabase-js": "^2.118.0",

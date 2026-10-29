@@ -15,6 +15,7 @@ const filesToCopy = [
     'index.html',
     'admin.html',
     'privacy-policy.html',
+    'terms.html',
     'manifest.json',
     'sw.js',
     'version.json'

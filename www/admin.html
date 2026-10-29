@@ -4,9 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>നമ്മുടെ നാട് — Admin Console</title>
+  <title>Nammude Naadu — Admin Console</title>
   <link rel="icon" type="image/png" href="assets/favicon.png">
+  <!-- Admin secret config — gitignored, never committed to Git -->
+  <script src="admin-config.js" onerror="console.warn('admin-config.js not found. Copy admin-config.example.js → admin-config.js and set your PIN.')"></script>
   <script>
+    // ---------------------------------------------------------------
+    // Admin PIN is loaded from admin-config.js (gitignored, local only)
+    // admin-config.js must define: window.NN_ADMIN_PINS = ['yourpin']
+    // NEVER hardcode PINs here. See admin-config.example.js for setup.
+    // ---------------------------------------------------------------
     function checkAdminAuth() {
       if (sessionStorage.getItem('nn_admin_session') === 'true') {
         const gate = document.getElementById('adminAuthGate');
@@ -19,13 +26,18 @@
     function submitAdminGatePin(e) {
       if (e) e.preventDefault();
       const pin = (document.getElementById('adminGatePinInput')?.value || '').trim();
-      if (pin === '9605' || pin === 'NammudeNaadu2026!' || pin === 'Admin2026!') {
+      const validPins = (window.NN_ADMIN_PINS && Array.isArray(window.NN_ADMIN_PINS)) ? window.NN_ADMIN_PINS : [];
+      if (validPins.length === 0) {
+        alert('⚠️ Admin config not loaded. Please set up admin-config.js first.');
+        return;
+      }
+      if (validPins.includes(pin)) {
         sessionStorage.setItem('nn_admin_session', 'true');
         const gate = document.getElementById('adminAuthGate');
         if (gate) gate.style.display = 'none';
-        alert('✅ സ്വാഗതം അഡ്മിൻ! പ്രവേശനം അനുവദിച്ചു.');
+        alert('✅ Welcome, Admin! Access granted.');
       } else {
-        alert('❌ തെറ്റായ അഡ്മിൻ സെക്യൂരിറ്റി PIN.');
+        alert('❌ Incorrect Admin security PIN.');
       }
     }
 
@@ -554,16 +566,16 @@
   <div id="adminAuthGate" style="position:fixed;inset:0;background:#062319;z-index:9999999;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)">
     <div style="background:#fff;max-width:380px;width:100%;border-radius:24px;padding:32px 24px;box-shadow:0 24px 60px rgba(0,0,0,0.4);text-align:center;box-sizing:border-box">
       <div style="width:60px;height:60px;border-radius:18px;background:#ECFDF5;color:#047857;display:inline-flex;align-items:center;justify-content:center;font-size:30px;margin-bottom:16px">🔐</div>
-      <h2 style="margin:0 0 8px;font-size:20px;font-weight:900;color:#0F172A">അഡ്മിൻ ഓതന്റിക്കേഷൻ</h2>
-      <p style="font-size:13px;color:#64748B;margin:0 0 20px;line-height:1.5">ഈ പേജ് അഡ്മിൻ കൺസോളാണ്. പ്രവേശിക്കാൻ മാസ്റ്റർ സെക്യൂരിറ്റി PIN നൽകുക:</p>
+      <h2 style="margin:0 0 8px;font-size:20px;font-weight:900;color:#0F172A">Admin Authentication</h2>
+      <p style="font-size:13px;color:#64748B;margin:0 0 20px;line-height:1.5">This is the Admin Console. Enter the master security PIN to continue:</p>
       <form onsubmit="submitAdminGatePin(event)" style="display:flex;flex-direction:column;gap:14px">
         <input type="password" id="adminGatePinInput" placeholder="Master Security PIN" required autofocus
           style="padding:14px;border:2px solid #CBD5E1;border-radius:14px;font-size:16px;text-align:center;font-weight:800;letter-spacing:4px;outline:none;background:#F8FAFC">
         <button type="submit" style="padding:14px;background:#047857;color:#fff;border:none;border-radius:14px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 4px 14px rgba(4,120,87,0.3)">
-          അൺലോക്ക് ചെയ്യാം ➔
+          Unlock ➔
         </button>
         <button type="button" onclick="window.location.replace('index.html')" style="background:none;border:none;color:#64748B;font-size:12.5px;cursor:pointer;margin-top:4px">
-          ← തിരികെ ആപ്പിലേക്ക് മടങ്ങാം
+          ← Return to App
         </button>
       </form>
     </div>
@@ -573,10 +585,10 @@
     <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-brand">
-        <img src="assets/icon-192.png" alt="നമ്മുടെ നാട്" style="border-radius:10px;object-fit:cover"
+        <img src="assets/icon-192.png" alt="Nammude Naadu" style="border-radius:10px;object-fit:cover"
           onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 64 64\'><circle cx=\'32\' cy=\'32\' r=\'30\' fill=\'%230a8f5c\'/></svg>'">
         <div>
-          <div class="brand-title">നമ്മുടെ നാട്</div>
+          <div class="brand-title">Nammude Naadu</div>
           <span class="brand-sub">Admin Console</span>
           <span class="statutory-badge">IT Rules & DPDP 2023</span>
         </div>
@@ -586,7 +598,7 @@
         <li>
           <a href="index.html" class="nav-btn"
             style="text-decoration:none;background:rgba(255,255,255,0.08);color:#38bdf8;margin-bottom:10px">
-            <span>📱</span> ← Return to App (ഹോം)
+            <span>📱</span> ← Return to App (Home)
           </a>
         </li>
         <li>
@@ -630,12 +642,12 @@
         </li>
         <li>
           <button class="nav-btn" onclick="switchTab('banner', this)">
-            <span>🖼️</span> Home Banner (ഹോം ചിത്രം)
+            <span>🖼️</span> Home Banner
           </button>
         </li>
         <li>
           <button class="nav-btn" onclick="switchTab('categories', this)">
-            <span>🎨</span> Services &amp; Icons (സർവീസുകൾ &amp; ഐക്കൺ)
+            <span>🎨</span> Services &amp; Icons
           </button>
         </li>
         <li>
@@ -664,7 +676,7 @@
         <div class="top-actions-row">
           <a href="index.html" class="btn-action outline"
             onclick="if(window.history.length>1){window.history.back();return false;}"
-            style="text-decoration:none;color:var(--ink)">← Back to ആപ്പ്</a>
+            style="text-decoration:none;color:var(--ink)">← Back to App</a>
           <button class="btn-action outline" onclick="exportComplianceReport()">📥 Export Audit Report</button>
           <button class="btn-action green" onclick="runComplianceCheck()">🛡️ Run Legal Health Check</button>
         </div>
@@ -835,8 +847,8 @@
                       <span class="badge-tag verified">🚿 Plumber</span>
                     </td>
                     <td>
-                      <span class="badge-tag" style="background:#f1f5f9;color:#334155">🛠️ കിണർ വൃത്തിയാക്കൽ</span>
-                      <span class="badge-tag" style="background:#f1f5f9;color:#334155">🛠️ ഇൻവെർട്ടർ ഫിറ്റിംഗ്</span>
+                      <span class="badge-tag" style="background:#f1f5f9;color:#334155">🛠️ Well Cleaning</span>
+                      <span class="badge-tag" style="background:#f1f5f9;color:#334155">🛠️ Inverter Installation</span>
                     </td>
                     <td>Kozhikode (Mavoor Rd)</td>
                     <td>
@@ -861,7 +873,7 @@
                       <span class="badge-tag verified">🎨 Painting</span>
                     </td>
                     <td>
-                      <span class="badge-tag" style="background:#f1f5f9;color:#334155">🛠️ വാട്ടർപ്രൂഫിംഗ്</span>
+                      <span class="badge-tag" style="background:#f1f5f9;color:#334155">🛠️ Waterproofing</span>
                     </td>
                     <td>Malappuram (Manjeri)</td>
                     <td>
@@ -1049,13 +1061,13 @@
           </div>
         </div>
 
-        <!-- SECTION: HOME BANNER MANAGEMENT (ഹോം ചിത്രം മാറ്റുക) -->
+        <!-- SECTION: HOME BANNER MANAGEMENT -->
         <div id="tab-banner" class="tab-pane" style="display:none">
           <div class="legal-banner" style="background:linear-gradient(135deg, #ECFDF5 0%, #E0F2FE 100%);border-color:#86EFAC">
             <div class="ico">🖼️</div>
             <div>
-              <h3 style="color:#064E3B">Home Page Hero Banner Management (ഹോം ചിത്രം മാറ്റുക)</h3>
-              <p>ആപ്പിന്റെ ഹോം പേജിലെ പ്രധാന <strong>"നമ്മുടെ നാട്"</strong> ഹീറോ ബാനർ ചിത്രം, ടൈറ്റിൽ, സബ്‌ടൈറ്റിൽ, പരസ്യ വിവരണം എന്നിവ ഇവിടെ മാറ്റാം. ഇവിടെ നൽകുന്ന മാറ്റങ്ങൾ എല്ലാ നാട്ടുകാരുടെയും ഫോണുകളിൽ തത്സമയം (Live Real-Time) അപ്‌ഡേറ്റ് ചെയ്യപ്പെടും.
+              <h3 style="color:#064E3B">Home Page Hero Banner Management</h3>
+              <p>Update the home page hero image, title, subtitle, and advertisement description here. Changes are published in real time to all app users.
               </p>
             </div>
           </div>
@@ -1065,17 +1077,17 @@
               <div>
                 <h2 style="color:#064E3B;display:flex;align-items:center;gap:8px">
                   <span>🏡</span>
-                  <span>ഹോം പേജ് ഹീറോ ബാനർ തത്സമയ രൂപകൽപ്പന (Live Card Preview)</span>
+                  <span>Home Page Hero Banner (Live Preview)</span>
                 </h2>
-                <div style="font-size:12.5px;color:var(--muted);margin-top:2px">ആപ്പിൽ നാട്ടുകാർക്ക് കാണുന്ന അതേ പ്രീമിയം ലുക്കിൽ തത്സമയം പ്രിവ്യൂ ചെയ്യാം</div>
+                <div style="font-size:12.5px;color:var(--muted);margin-top:2px">Preview the banner exactly as users will see it in the app.</div>
               </div>
-              <button class="btn-action outline" onclick="resetAdminVillageBanner()">↺ റീസെറ്റ് (Default Theme)</button>
+              <button class="btn-action outline" onclick="resetAdminVillageBanner()">↺ Reset to Default Theme</button>
             </div>
 
             <!-- Live Card Mockup Preview (EXACT APP DESIGN) -->
             <div style="margin-bottom:24px;max-width:480px">
               <div style="font-size:11.5px;font-weight:800;color:#047857;margin-bottom:8px;display:flex;align-items:center;gap:6px">
-                <span>📱 ആപ്പിലെ തത്സമയ രൂപം (Live Mobile Preview):</span>
+                <span>📱 Live App Preview:</span>
               </div>
               <div id="adminHeroBannerCardMockup" style="position:relative;overflow:hidden;border-radius:20px;box-shadow:0 8px 24px rgba(6,78,59,0.18);min-height:140px;background:#064E3B;display:flex;align-items:center">
                 <img id="adminVillagePreviewFullImg" alt="Preview Full Cover" src="img/kerala-splash.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;border-radius:20px;pointer-events:none;">
@@ -1085,12 +1097,12 @@
                     <span style="font-size:22px">🌴</span>
                   </div>
                   <div>
-                    <div id="adminVillagePreviewTitle" style="font-size:18px;font-weight:900;color:#ffffff;text-shadow:0 2px 8px rgba(0,0,0,0.6);font-family:'Manjari',sans-serif">നമ്മുടെ നാട്</div>
-                    <div id="adminVillagePreviewSub" style="font-size:12.5px;font-weight:700;color:#A7F3D0;margin-top:2px;text-shadow:0 1px 4px rgba(0,0,0,0.5)">🤝 നാടിനൊപ്പം നാം</div>
+                    <div id="adminVillagePreviewTitle" style="font-size:18px;font-weight:900;color:#ffffff;text-shadow:0 2px 8px rgba(0,0,0,0.6);font-family:'Manjari',sans-serif">Nammude Naadu</div>
+                    <div id="adminVillagePreviewSub" style="font-size:12.5px;font-weight:700;color:#A7F3D0;margin-top:2px;text-shadow:0 1px 4px rgba(0,0,0,0.5)">🤝 Together with our community</div>
                   </div>
                 </div>
                 <div class="admin-ad-badge" style="position:absolute;top:10px;right:12px;background:rgba(0,0,0,0.7);color:#fff;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:800;z-index:4;border:1px solid rgba(255,255,255,0.25)">
-                  ✨ പ്രധാന അറിയിപ്പ് / Ads
+                  ✨ Featured / Ads
                 </div>
                 <!-- CAROUSEL INDICATOR DOTS -->
                 <div style="position:absolute;bottom:10px;right:14px;display:flex;gap:5px;z-index:5">
@@ -1106,27 +1118,27 @@
               <!-- Upload from device -->
               <div style="background:#f8fafc;border:2px dashed #86EFAC;border-radius:16px;padding:22px;text-align:center">
                 <div style="font-size:34px;margin-bottom:6px">📸</div>
-                <h4 style="margin:0 0 4px;font-size:14.5px;font-weight:800;color:#064E3B">കമ്പ്യൂട്ടറിൽ നിന്നോ ഫോണിൽ നിന്നോ ഫോട്ടോ തിരഞ്ഞെടുക്കാം</h4>
-                <p style="font-size:12px;color:var(--muted);margin:0 0 14px">ഹൈ-റെസൊലൂഷൻ ഫോട്ടോകൾ (JPG, PNG, WEBP) തിരഞ്ഞെടുക്കുക</p>
+                <h4 style="margin:0 0 4px;font-size:14.5px;font-weight:800;color:#064E3B">Choose a photo from your computer or phone</h4>
+                <p style="font-size:12px;color:var(--muted);margin:0 0 14px">Select a high-resolution image (JPG, PNG, or WEBP).</p>
                 <input type="file" id="adminVillageFileInput" accept="image/*" style="display:none" onchange="handleAdminVillageFileUpload(event)">
                 <button type="button" class="btn-action green" onclick="document.getElementById('adminVillageFileInput').click()" style="padding:10px 18px">
-                  📁 ഫോട്ടോ അപ്‌ലോഡ് ചെയ്യാം...
+                  📁 Upload Photo
                 </button>
               </div>
 
               <!-- Paste URL -->
               <div style="background:#f8fafc;border:1px solid var(--line);border-radius:16px;padding:22px">
                 <div style="font-size:34px;margin-bottom:6px">🔗</div>
-                <h4 style="margin:0 0 4px;font-size:14.5px;font-weight:800;color:#0F172A">ഇന്റർനെറ്റിലെ ചിത്രത്തിന്റെ ലിങ്ക് നൽകാം</h4>
-                <p style="font-size:12px;color:var(--muted);margin:0 0 10px">നേരിട്ടുള്ള വെബ് ഇമേജ് URL ലിങ്ക്</p>
+                <h4 style="margin:0 0 4px;font-size:14.5px;font-weight:800;color:#0F172A">Enter an image URL</h4>
+                <p style="font-size:12px;color:var(--muted);margin:0 0 10px">Use a direct link to a web image.</p>
                 <input type="url" id="adminVillageUrlInput" placeholder="https://images.unsplash.com/photo-..." style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:12.5px;margin-bottom:10px;outline:none">
-                <button type="button" class="btn-action outline" style="width:100%;justify-content:center" onclick="applyAdminVillageUrl()">ലിങ്ക് പ്രിവ്യൂ ചെയ്യുക</button>
+                <button type="button" class="btn-action outline" style="width:100%;justify-content:center" onclick="applyAdminVillageUrl()">Preview Link</button>
               </div>
             </div>
 
             <!-- Curated Kerala Presets -->
             <div style="margin-bottom:22px">
-              <h4 style="margin:0 0 10px;font-size:13.5px;font-weight:800;color:#064E3B">🌴 അല്ലെങ്കിൽ മനോഹരമായ കേരള പ്രകൃതിഭംഗി പ്രീസെറ്റുകൾ തിരഞ്ഞെടുക്കാം:</h4>
+              <h4 style="margin:0 0 10px;font-size:13.5px;font-weight:800;color:#064E3B">🌴 Or choose a scenic Kerala preset:</h4>
               <div style="display:flex;gap:10px;flex-wrap:wrap">
                 <button type="button" class="btn-sm info" style="padding:8px 14px;font-size:12px;border-radius:10px;background:#ECFDF5;border-color:#A7F3D0;color:#047857" onclick="setAdminVillagePreset('img/kerala-splash.jpg', 'ഔദ്യോഗിക പച്ചപ്പ് തീം')">🌿 കേരള തനിമ (Official Theme)</button>
                 <button type="button" class="btn-sm info" style="padding:8px 14px;font-size:12px;border-radius:10px;background:#F0F9FF;border-color:#BAE6FD;color:#0369A1" onclick="setAdminVillagePreset('https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80', 'തോണിയും കായലും')">⛵ ആലപ്പുഴ കായൽ & തോണി</button>
@@ -1138,29 +1150,29 @@
             <!-- Edit Texts -->
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
               <div>
-                <label style="font-size:12px;font-weight:700;color:var(--muted)">ബാനർ പ്രധാന തലക്കെട്ട് (Title / പരസ്യത്തിന്റെ പേര്):</label>
-                <input type="text" id="adminVillageTitleInput" value="നമ്മുടെ നാട്" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:13.5px;font-weight:700;margin-top:4px" oninput="updateAdminVillageMockup()">
+                <label style="font-size:12px;font-weight:700;color:var(--muted)">Banner Title / Advertisement Name:</label>
+                <input type="text" id="adminVillageTitleInput" value="Nammude Naadu" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:13.5px;font-weight:700;margin-top:4px" oninput="updateAdminVillageMockup()">
               </div>
               <div>
-                <label style="font-size:12px;font-weight:700;color:var(--muted)">ബാനർ ഉപതലക്കെട്ട് (Subtitle / ടാഗ്‌ലൈൻ):</label>
-                <input type="text" id="adminVillageSubInput" value="🤝 നാടിനൊപ്പം നാം" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:13.5px;font-weight:700;margin-top:4px" oninput="updateAdminVillageMockup()">
+                <label style="font-size:12px;font-weight:700;color:var(--muted)">Banner Subtitle / Tagline:</label>
+                <input type="text" id="adminVillageSubInput" value="🤝 Together with our community" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:13.5px;font-weight:700;margin-top:4px" oninput="updateAdminVillageMockup()">
               </div>
             </div>
 
             <!-- Ad Details on Click -->
             <div style="background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:20px">
-              <div style="font-size:13px;font-weight:800;color:#0F172A;margin-bottom:8px">ℹ️ നാട്ടുകാർ ബാനറിൽ ക്ലിക്ക് ചെയ്യുമ്പോൾ കാണിക്കേണ്ട വിശദ വിവരങ്ങൾ:</div>
+              <div style="font-size:13px;font-weight:800;color:#0F172A;margin-bottom:8px">ℹ️ Details shown when users click the banner:</div>
               <div style="margin-bottom:12px">
-                <label style="font-size:11.5px;font-weight:700;color:var(--muted)">വിശദ വിവരണം / സന്ദേശം (Full Description / Announcement Body):</label>
-                <textarea id="adminVillageDescInput" rows="3" placeholder="പരസ്യത്തെക്കുറിച്ചോ ഓഫറിനെക്കുറിച്ചോ അറിയിപ്പുകളെക്കുറിച്ചോ ഉള്ള പൂർണ്ണ വിവരങ്ങൾ ഇവിടെ എഴുതാം..." style="width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-size:13px;margin-top:4px;resize:vertical"></textarea>
+                <label style="font-size:11.5px;font-weight:700;color:var(--muted)">Full Description / Announcement:</label>
+                <textarea id="adminVillageDescInput" rows="3" placeholder="Enter details about the advertisement, offer, or announcement..." style="width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-size:13px;margin-top:4px;resize:vertical"></textarea>
               </div>
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
                 <div>
-                  <label style="font-size:11.5px;font-weight:700;color:var(--muted)">ബന്ധപ്പെടാനുള്ള ഫോൺ നമ്പർ (Contact Phone - Optional):</label>
-                  <input type="tel" id="adminVillagePhoneInput" placeholder="ഉദാ: 9847123456" style="width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-size:13px;margin-top:4px">
+                  <label style="font-size:11.5px;font-weight:700;color:var(--muted)">Contact Phone (Optional):</label>
+                  <input type="tel" id="adminVillagePhoneInput" placeholder="e.g. 9847123456" style="width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-size:13px;margin-top:4px">
                 </div>
                 <div>
-                  <label style="font-size:11.5px;font-weight:700;color:var(--muted)">വെബ്സൈറ്റ് ലിങ്ക് (Website / External Link - Optional):</label>
+                  <label style="font-size:11.5px;font-weight:700;color:var(--muted)">Website / External Link (Optional):</label>
                   <input type="url" id="adminVillageLinkInput" placeholder="https://example.com" style="width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-size:13px;margin-top:4px">
                 </div>
               </div>
@@ -1168,7 +1180,7 @@
 
             <div style="display:flex;justify-content:flex-end;gap:12px">
               <button type="button" class="btn-action green" style="padding:13px 30px;font-size:14.5px;font-weight:800;background:linear-gradient(135deg, #064E3B 0%, #0E7043 100%)" onclick="saveAdminVillageBanner()">
-                💾 ഈ ഹോം ചിത്രം സേവ് ചെയ്ത് പബ്ലിഷ് ചെയ്യാം (Save & Publish)
+                💾 Save &amp; Publish
               </button>
             </div>
           </div>
@@ -1179,45 +1191,45 @@
           <div class="legal-banner" style="background:linear-gradient(135deg,#ECFDF5 0%,#FEF9C3 100%);border-color:#86EFAC">
             <div class="ico">🎨</div>
             <div>
-              <h3 style="color:#064E3B">Service Categories &amp; Icons Manager (സർവീസുകളും ഐക്കണുകളും)</h3>
+              <h3 style="color:#064E3B">Service Categories &amp; Icons Manager</h3>
               <p style="color:#166534">
-                ഉപയോക്താക്കൾ ആപ്പിൽ രജിസ്റ്റർ ചെയ്ത പുതിയ സർവീസുകളും നിലവിലുള്ള വിഭാഗങ്ങളും ഇവിടെ കാണാം. അഡ്മിന് ഏത് സർവീസിനും സ്വന്തമായി <strong>ഐക്കൺ (Emoji / Logo / Image)</strong> മാറ്റാനും പുതിയ സർവീസ് ചേർക്കാനും സാധിക്കും.
+                View newly registered services and existing categories here. Admins can change any service icon (emoji, logo, or image) and add new services.
               </p>
             </div>
           </div>
 
-          <!-- ADMIN SERVICE MINI ICONS STUDIO (ആപ്പിലെ മിനി ഐക്കൺ മാനേജർ) -->
+          <!-- ADMIN SERVICE MINI ICONS STUDIO -->
           <div class="content-box" style="margin-bottom:24px;border:1.5px solid #86EFAC;background:linear-gradient(180deg,#FFFFFF 0%,#F0FDF4 100%)">
             <div class="box-header" style="flex-wrap:wrap;gap:10px">
               <div>
                 <div style="display:flex;align-items:center;gap:8px">
-                  <h2 style="margin:0;font-size:16px;font-weight:800;color:#065F46">🏷️ സർവീസ് മിനി ഐക്കൺ മാനേജർ (Service Mini Icons Studio)</h2>
-                  <span id="adminMiniIconsCountBadge" style="background:#ECFDF5;color:#059669;border:1px solid #A7F3D0;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:800">36 എണ്ണം</span>
+                  <h2 style="margin:0;font-size:16px;font-weight:800;color:#065F46">🏷️ Service Mini Icons Studio</h2>
+                  <span id="adminMiniIconsCountBadge" style="background:#ECFDF5;color:#059669;border:1px solid #A7F3D0;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:800">36 items</span>
                 </div>
-                <div style="font-size:12px;color:#64748B;margin-top:3px">ഉപയോക്താക്കൾക്ക് സർവീസ് രജിസ്റ്റർ ചെയ്യുമ്പോൾ തിരഞ്ഞെടുക്കാനുള്ള എല്ലാ മിനി ഐക്കണുകളും ഇവിടെ ചേർക്കാം.</div>
+                <div style="font-size:12px;color:#64748B;margin-top:3px">Add mini icons for users to choose when registering a service.</div>
               </div>
               <div style="display:flex;gap:8px;align-items:center">
                 <button type="button" class="btn-sm" onclick="adminSyncMiniIconsToFirebase()" style="background:#059669;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-weight:700;cursor:pointer">
-                  ☁️ Firebase സിങ്ക്
+                  ☁️ Sync Firebase
                 </button>
                 <button type="button" class="btn-sm" onclick="adminResetMiniIcons()" style="background:#F1F5F9;color:#475569;border:1px solid #CBD5E1;padding:8px 12px;border-radius:8px;font-weight:700;cursor:pointer">
-                  ↺ റീസെറ്റ്
+                  ↺ Reset
                 </button>
               </div>
             </div>
 
             <!-- ADD NEW MINI ICON FORM -->
             <div style="background:#fff;border:1px solid #E2E8F0;border-radius:14px;padding:16px;margin:14px 0">
-              <div style="font-size:13px;font-weight:800;color:#1E293B;margin-bottom:10px">➕ പുതിയ മിനി ഐക്കൺ ചേർക്കാം (Add New Icon):</div>
+              <div style="font-size:13px;font-weight:800;color:#1E293B;margin-bottom:10px">➕ Add New Mini Icon:</div>
               <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
                 <div>
-                  <label style="font-size:11px;font-weight:700;color:#64748B;display:block;margin-bottom:3px">ചിഹ്നം / ഇമോജി *</label>
+                  <label style="font-size:11px;font-weight:700;color:#64748B;display:block;margin-bottom:3px">Icon / Emoji *</label>
                   <input type="text" id="adminNewIconInput" maxlength="6" placeholder="🚜" 
                          style="width:75px;height:42px;text-align:center;font-size:22px;border:1.5px solid #10B981;border-radius:10px;outline:none;background:#F0FDF4">
                 </div>
                 <div style="flex:1;min-width:200px">
-                  <label style="font-size:11px;font-weight:700;color:#64748B;display:block;margin-bottom:3px">തൊഴിൽ / പേര് (Label / Trade) *</label>
-                  <input type="text" id="adminNewIconLabel" placeholder="Eg: ട്രാക്ടർ, ജലവിതരണം, തോട്ടം..." 
+                  <label style="font-size:11px;font-weight:700;color:#64748B;display:block;margin-bottom:3px">Label / Trade *</label>
+                  <input type="text" id="adminNewIconLabel" placeholder="e.g. Tractor, Water Supply, Gardening..."
                          style="width:100%;height:42px;padding:8px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px;outline:none">
                 </div>
                 <div style="align-self:flex-end">
@@ -1392,19 +1404,19 @@
           <!-- SECTION: ONESIGNAL PUSH NOTIFICATION SETTINGS -->
           <div class="content-box" style="margin-top:20px;border:1.5px solid #10B981">
             <div class="box-header">
-              <h2>🔔 OneSignal Push Notifications (ആപ്പ് ക്ലോസ് ആണെങ്കിലും നോട്ടിഫിക്കേഷൻ വരാൻ)</h2>
+              <h2>🔔 OneSignal Push Notifications</h2>
               <span id="oneSignalStatusBadge" class="badge-tag approved">OneSignal Ready</span>
             </div>
             <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
-              യൂസേഴ്സ് ആപ്പ് പൂർണ്ണമായി ക്ലോസ് ചെയ്താലും (Kill / Locked അവസ്ഥയിലും) ഫോൺ സ്റ്റാറ്റസ് ബാറിലേക്ക് തത്സമയം പുഷ് നോട്ടിഫിക്കേഷൻ എത്തിക്കാൻ OneSignal സഹായിക്കുന്നു.
+              OneSignal delivers real-time push notifications to the phone's status bar, even when the app is closed or the device is locked.
             </p>
 
             <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:14px;margin-bottom:16px">
-              <div style="font-weight:800;font-size:13px;color:#166534;margin-bottom:6px">📌 എങ്ങനെ കോൺഫിഗർ ചെയ്യാം? (3 ലളിതമായ സ്റ്റെപ്പുകൾ)</div>
+              <div style="font-weight:800;font-size:13px;color:#166534;margin-bottom:6px">📌 How to Configure (3 Simple Steps)</div>
               <ol style="margin:0;padding-left:20px;font-size:12.5px;color:#15803D;line-height:1.6">
-                <li><a href="https://onesignal.com" target="_blank" style="color:#0E7043;font-weight:800;text-decoration:underline">onesignal.com</a> സന്ദർശിച്ച് സൗജന്യ അക്കൗണ്ട് ഉണ്ടാക്കുക.</li>
-                <li>പുതിയ ആപ്പ് ഉണ്ടാക്കി <strong>Settings ➔ Keys & IDs</strong> എടുക്കുക.</li>
-                <li>അവിടെ കാണുന്ന <strong>OneSignal App ID</strong>-യും <strong>REST API Key</strong>-യും താഴെ നൽകി "Save Settings" ക്ലിക്ക് ചെയ്യുക.</li>
+                <li>Visit <a href="https://onesignal.com" target="_blank" style="color:#0E7043;font-weight:800;text-decoration:underline">onesignal.com</a> and create a free account.</li>
+                <li>Create an app and open <strong>Settings ➔ Keys & IDs</strong>.</li>
+                <li>Enter the <strong>OneSignal App ID</strong> and <strong>REST API Key</strong> below, then click "Save Settings".</li>
               </ol>
             </div>
 
@@ -1422,7 +1434,7 @@
                   💾 Save OneSignal Settings
                 </button>
                 <button type="button" class="btn-action" style="background:#2563EB;color:#fff" onclick="sendOneSignalAdminTestPush()">
-                  📲 Send Live Test Push (ടെസ്റ്റ് ചെയ്യാം)
+                  📲 Send Live Test Push
                 </button>
               </div>
             </div>
@@ -1443,7 +1455,7 @@
             🛠️
           </div>
           <div>
-            <h3 id="adminModalCatTitle" style="margin:0;font-size:17px;color:#0F172A">സർവീസ് ഐക്കൺ മാറ്റുക</h3>
+            <h3 id="adminModalCatTitle" style="margin:0;font-size:17px;color:#0F172A">Change Service Icon</h3>
             <div id="adminModalCatSubtitle" style="font-size:11.5px;color:#64748B">Change icon for Electrician</div>
           </div>
         </div>
@@ -1454,7 +1466,7 @@
 
       <!-- Preset Emoji Grid -->
       <div style="margin-bottom:16px">
-        <label style="display:block;font-size:12px;font-weight:700;color:#334155;margin-bottom:6px">1. ഐക്കൺ തിരഞ്ഞെടുക്കുക (Preset Icons):</label>
+        <label style="display:block;font-size:12px;font-weight:700;color:#334155;margin-bottom:6px">1. Choose an icon (Preset Icons):</label>
         <div id="adminEmojiPresetGrid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(42px, 1fr));gap:6px;max-height:160px;overflow-y:auto;padding:10px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px">
           <!-- Preset emojis injected via JS -->
         </div>
@@ -1462,7 +1474,7 @@
 
       <!-- Custom Emoji / Text Input -->
       <div style="margin-bottom:14px">
-        <label style="display:block;font-size:12px;font-weight:700;color:#334155;margin-bottom:4px">2. അല്ലെങ്കിൽ മറ്റേതെങ്കിലും ഇമോജി നൽകാം (Custom Emoji):</label>
+        <label style="display:block;font-size:12px;font-weight:700;color:#334155;margin-bottom:4px">2. Or enter a custom emoji:</label>
         <div style="display:flex;gap:8px">
           <input type="text" id="adminCustomEmojiInput" placeholder="e.g. 🧵, 🌾, 🍳, 🥩" style="flex:1;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:16px" oninput="setAdminPendingIcon(this.value)">
           <button type="button" class="btn-sm approve" onclick="setAdminPendingIcon(document.getElementById('adminCustomEmojiInput').value)">Apply</button>
@@ -1471,30 +1483,30 @@
 
       <!-- Upload Custom Photo / Icon Image -->
       <div style="margin-bottom:14px">
-        <label style="display:block;font-size:12px;font-weight:700;color:#334155;margin-bottom:4px">3. സ്വന്തം ചിത്രം / ലോഗോ അപ്‌ലോഡ് ചെയ്യാം (Upload Icon Image):</label>
+        <label style="display:block;font-size:12px;font-weight:700;color:#334155;margin-bottom:4px">3. Upload an image or logo:</label>
         <div style="display:flex;gap:8px;align-items:center">
           <input type="file" id="adminIconFileInput" accept="image/*" style="display:none" onchange="handleAdminIconFileUpload(event)">
           <button type="button" class="btn-action outline" onclick="document.getElementById('adminIconFileInput').click()" style="padding:8px 14px;font-size:12px">
-            📁 ഫോണിൽ നിന്നോ കമ്പ്യൂട്ടറിൽ നിന്നോ ചിത്രം തിരഞ്ഞെടുക്കുക
+            📁 Choose an image from your phone or computer
           </button>
         </div>
       </div>
 
       <!-- Custom Image URL -->
       <div style="margin-bottom:20px">
-        <label style="display:block;font-size:12px;font-weight:700;color:#334155;margin-bottom:4px">4. അല്ലെങ്കിൽ ഇമേജ് ലിങ്ക് നൽകാം (Image URL):</label>
+        <label style="display:block;font-size:12px;font-weight:700;color:#334155;margin-bottom:4px">4. Or enter an image URL:</label>
         <input type="url" id="adminIconUrlInput" placeholder="https://example.com/icon.png" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:12px" oninput="setAdminPendingIcon(this.value)">
       </div>
 
       <!-- Save & Reset Actions -->
       <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid #E2E8F0;padding-top:14px">
         <button type="button" class="btn-action outline" onclick="resetAdminCatIconToDefault()" style="color:#DC2626;border-color:#FECACA">
-          ↺ ഡിഫോൾട്ട് ആക്കുക
+          ↺ Reset to Default
         </button>
         <div style="display:flex;gap:10px">
-          <button type="button" class="btn-action outline" onclick="closeAdminEditIconModal()">റദ്ദാക്കുക</button>
+          <button type="button" class="btn-action outline" onclick="closeAdminEditIconModal()">Cancel</button>
           <button type="button" class="btn-action green" onclick="saveAdminCategoryIcon()" style="font-weight:800">
-            💾 സേവ് ചെയ്യുക (Save Icon)
+            💾 Save Icon
           </button>
         </div>
       </div>
@@ -1505,7 +1517,7 @@
   <div id="modalAdminAddCat" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.75);z-index:99999;align-items:center;justify-content:center;padding:16px" onclick="if(event.target===this)closeAdminAddCategoryModal()">
     <div style="background:#fff;border-radius:20px;max-width:480px;width:100%;padding:24px;border:1.5px solid #e2e8f0;box-shadow:0 20px 40px rgba(0,0,0,0.25)">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;border-bottom:1px solid #e2e8f0;padding-bottom:12px">
-        <h3 style="margin:0;font-size:17px;color:#0F172A">➕ പുതിയ സർവീസ് വിഭാഗം ചേർക്കുക</h3>
+        <h3 style="margin:0;font-size:17px;color:#0F172A">➕ Add Service Category</h3>
         <button onclick="closeAdminAddCategoryModal()" style="background:#F1F5F9;border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:14px;font-weight:700">✕</button>
       </div>
 
@@ -1515,18 +1527,18 @@
           <input type="text" id="adminNewCatNameEn" placeholder="e.g. Tailor & Stitching, Bakery, Tyre Works" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px">
         </div>
         <div>
-          <label style="display:block;font-size:12px;font-weight:700;color:#334155;margin-bottom:4px">മലയാളം പേര് (Malayalam Title) *</label>
+          <label style="display:block;font-size:12px;font-weight:700;color:#334155;margin-bottom:4px">Malayalam Title *</label>
           <input type="text" id="adminNewCatNameMl" placeholder="e.g. തയ്യൽക്കാരൻ, ബേക്കറി, ടയർ വർക്കുകൾ" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:13px">
         </div>
         <div>
-          <label style="display:block;font-size:12px;font-weight:700;color:#334155;margin-bottom:4px">ഐക്കൺ / ഇമോജി (Icon / Emoji) *</label>
+          <label style="display:block;font-size:12px;font-weight:700;color:#334155;margin-bottom:4px">Icon / Emoji *</label>
           <input type="text" id="adminNewCatIcon" placeholder="e.g. 🧵, 🥖, 🛞, 🛠️" value="🛠️" style="width:100%;padding:9px 12px;border:1px solid #CBD5E1;border-radius:10px;font-size:18px">
         </div>
 
         <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:10px">
-          <button type="button" class="btn-action outline" onclick="closeAdminAddCategoryModal()">റദ്ദാക്കുക</button>
+          <button type="button" class="btn-action outline" onclick="closeAdminAddCategoryModal()">Cancel</button>
           <button type="button" class="btn-action green" onclick="submitAdminNewCategory()" style="font-weight:800">
-            ✓ സർവീസ് ചേർക്കുക
+            ✓ Add Service
           </button>
         </div>
       </div>
@@ -1555,8 +1567,8 @@
 
     function initAdminVillageBanner() {
       const savedArt = localStorage.getItem('thuna_custom_village_banner_art') || 'img/kerala-splash.jpg';
-      const savedTitle = localStorage.getItem('thuna_custom_village_banner_title') || 'നമ്മുടെ നാട്';
-      const savedSub = localStorage.getItem('thuna_custom_village_banner_sub') || '🤝 നാടിനൊപ്പം നാം';
+      const savedTitle = localStorage.getItem('thuna_custom_village_banner_title') || 'Nammude Naadu';
+      const savedSub = localStorage.getItem('thuna_custom_village_banner_sub') || '🤝 Together with our community';
 
       pendingAdminVillageArt = savedArt;
 
@@ -1624,8 +1636,8 @@
       const titleInput = document.getElementById('adminVillageTitleInput');
       const subInput = document.getElementById('adminVillageSubInput');
 
-      if (titlePreview && titleInput) titlePreview.textContent = titleInput.value.trim() || 'നമ്മുടെ നാട്';
-      if (subPreview && subInput) subPreview.textContent = subInput.value.trim() || '🤝 നാടിനൊപ്പം നാം';
+      if (titlePreview && titleInput) titlePreview.textContent = titleInput.value.trim() || 'Nammude Naadu';
+      if (subPreview && subInput) subPreview.textContent = subInput.value.trim() || '🤝 Together with our community';
 
       if (fullImg) {
         fullImg.src = pendingAdminVillageArt || 'img/kerala-splash.jpg';
@@ -1635,11 +1647,11 @@
     function handleAdminVillageFileUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
-      toast('⏳ ചിത്രം തയ്യാറാക്കുന്നു...');
+      toast('⏳ Preparing image...');
       compressAdminVillageBannerImage(file, 1200, 0.85, function(compressedDataUrl) {
         pendingAdminVillageArt = compressedDataUrl;
         updateAdminVillageMockup();
-        toast('📸 ചിത്രം പ്രിവ്യൂവിൽ ചേർത്തു. "Save & Publish" ക്ലിക്ക് ചെയ്യുക.');
+        toast('📸 Image added to the preview. Click "Save & Publish".');
       });
     }
 
@@ -1648,13 +1660,13 @@
       if (!url) { toast('Please enter a valid image URL'); return; }
       pendingAdminVillageArt = url;
       updateAdminVillageMockup();
-      toast('✅ ലിങ്ക് പ്രിവ്യൂ ചെയ്തു. "Save & Publish" ക്ലിക്ക് ചെയ്യുക.');
+      toast('✅ Link previewed. Click "Save & Publish".');
     }
 
     function setAdminVillagePreset(url, label) {
       pendingAdminVillageArt = url;
       updateAdminVillageMockup();
-      toast('തിരഞ്ഞെടുത്തു: ' + label);
+      toast('Selected: ' + label);
     }
 
     function resetAdminVillageBanner() {
@@ -1666,8 +1678,8 @@
       const linkInput = document.getElementById('adminVillageLinkInput');
       const urlInput = document.getElementById('adminVillageUrlInput');
 
-      if (titleInput) titleInput.value = 'നമ്മുടെ നാട്';
-      if (subInput) subInput.value = '🤝 നാടിനൊപ്പം നാം';
+      if (titleInput) titleInput.value = 'Nammude Naadu';
+      if (subInput) subInput.value = '🤝 Together with our community';
       if (descInput) descInput.value = '';
       if (phoneInput) phoneInput.value = '';
       if (linkInput) linkInput.value = '';
@@ -1675,8 +1687,8 @@
 
       try {
         localStorage.removeItem('thuna_custom_village_banner_art');
-        localStorage.setItem('thuna_custom_village_banner_title', 'നമ്മുടെ നാട്');
-        localStorage.setItem('thuna_custom_village_banner_sub', '🤝 നാടിനൊപ്പം നാം');
+        localStorage.setItem('thuna_custom_village_banner_title', 'Nammude Naadu');
+        localStorage.setItem('thuna_custom_village_banner_sub', '🤝 Together with our community');
         localStorage.removeItem('thuna_custom_village_banner_desc');
         localStorage.removeItem('thuna_custom_village_banner_phone');
         localStorage.removeItem('thuna_custom_village_banner_link');
@@ -1686,8 +1698,8 @@
         window.NN_SUPABASE_SERVICES.saveEmergencyContact({
           id: 'app_setting_home_banner',
           category: 'app_setting_home_banner',
-          title: 'നമ്മുടെ നാട്',
-          badge: '🤝 നാടിനൊപ്പം നാം',
+          title: 'Nammude Naadu',
+          badge: '🤝 Together with our community',
           icon: 'img/kerala-splash.jpg',
           description: '',
           phone: '',
@@ -1697,12 +1709,12 @@
       }
 
       updateAdminVillageMockup();
-      toast('↺ ഡിഫോൾട്ട് പച്ചപ്പ് തീമിലേക്ക് റീസെറ്റ് ചെയ്തു.');
+      toast('↺ Reset to the default green theme.');
     }
 
     function saveAdminVillageBanner() {
-      const title = (document.getElementById('adminVillageTitleInput')?.value || '').trim() || 'നമ്മുടെ നാട്';
-      const sub = (document.getElementById('adminVillageSubInput')?.value || '').trim() || '🤝 നാടിനൊപ്പം നാം';
+      const title = (document.getElementById('adminVillageTitleInput')?.value || '').trim() || 'Nammude Naadu';
+      const sub = (document.getElementById('adminVillageSubInput')?.value || '').trim() || '🤝 Together with our community';
       const descVal = (document.getElementById('adminVillageDescInput')?.value || '').trim();
       const phoneVal = (document.getElementById('adminVillagePhoneInput')?.value || '').trim();
       const linkVal = (document.getElementById('adminVillageLinkInput')?.value || '').trim();
@@ -1825,7 +1837,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(ambObj)
       }).then(r => r.json()).then(() => {
-        toast('✅ ആംബുലൻസ് വിജയകരമായി ചേർത്തു!');
+        toast('✅ Ambulance added successfully!');
         toggleAdminAmbForm();
         loadAdminAmbulances();
       }).catch(() => {
@@ -1865,9 +1877,9 @@
         deletions: 'Statutory Account Deletion & Right-to-be-Forgotten Queue',
         auditTrail: 'Immutable Security & Moderation Audit Trail',
         emergencyPush: 'High-Priority Emergency Broadcast Controller',
-        banner: 'Home Page Hero Banner Management (ഹോം ചിത്രം മാറ്റുക)',
-        categories: 'Service Categories & Icons Manager (സർവീസുകളും ഐക്കണുകളും)',
-        ambulances: 'Ambulance Network Management (ആംബുലൻസ് സർവീസുകൾ)'
+        banner: 'Home Page Hero Banner Management',
+        categories: 'Service Categories & Icons Manager',
+        ambulances: 'Ambulance Network Management'
       };
       if (tabId === 'banner') initBannerAdmin();
       if (tabId === 'categories') initCategoriesAdmin();
@@ -2117,13 +2129,13 @@
       const label = (labelInput ? labelInput.value : '').trim();
 
       if (!icon) {
-        toast('⚠️ ദയവായി ഒരു ചിഹ്നമോ ഇമോജിയോ നൽകുക (Eg: 🚜)');
+        toast('⚠️ Please enter an icon or emoji (e.g. 🚜).');
         return;
       }
 
       const currentList = getAdminMiniIconsList();
       if (currentList.some(item => item.icon === icon)) {
-        toast('ℹ️ ഈ ഐക്കൺ ഇതിനകം ലിസ്റ്റിൽ ലഭ്യമാണ്!');
+        toast('ℹ️ This icon is already in the list.');
         return;
       }
 
@@ -2151,7 +2163,7 @@
       if (labelInput) labelInput.value = '';
 
       renderAdminMiniIcons();
-      toast(`🎉 "${icon} ${newItem.label}" ഐക്കൺ വിജയകരമായി ചേർത്തു!`);
+      toast(`🎉 "${icon} ${newItem.label}" icon added successfully!`);
 
       // Auto sync to Firebase
       await adminSyncMiniIconsToFirebase();
@@ -2159,7 +2171,7 @@
 
     async function adminDeleteMiniIcon(icon) {
       if (!icon) return;
-      if (!confirm(`ഈ ഐക്കൺ (${icon}) ലിസ്റ്റിൽ നിന്ന് നീക്കം ചെയ്യണമെന്നുറപ്പാണോ?`)) return;
+      if (!confirm(`Are you sure you want to remove this icon (${icon}) from the list?`)) return;
 
       let custom = [];
       try {
@@ -2172,7 +2184,7 @@
       localStorage.setItem('nn_admin_mini_icons', JSON.stringify(appIcons));
 
       renderAdminMiniIcons();
-      toast(`🗑️ "${icon}" ഐക്കൺ നീക്കം ചെയ്തു.`);
+      toast(`🗑️ "${icon}" icon removed.`);
 
       // Sync deletion to Firebase
       await adminSyncMiniIconsToFirebase();
@@ -2204,22 +2216,22 @@
         });
 
         if (res.ok) {
-          toast('☁️ മിനി ഐക്കണുകൾ ഫയർബേസ് ക്ലൗഡിലേക്ക് സിങ്ക് ചെയ്തു!');
+          toast('☁️ Icons synced to Firebase.');
         } else {
-          toast('⚠️ ഫയർബേസ് സേവിംഗിൽ തടസ്സം നേരിട്ടു.');
+          toast('⚠️ Could not save to Firebase.');
         }
       } catch (err) {
         console.warn('Firebase mini icons sync note:', err.message);
-        toast('☁️ ലോക്കലായി സേവ് ചെയ്തു!');
+        toast('☁️ Saved locally.');
       }
     }
 
     function adminResetMiniIcons() {
-      if (!confirm('എല്ലാ ഐക്കണുകളും ഒറിജിനൽ ഡിഫോൾട്ട് നിലയിലേക്ക് മാറ്റണമെന്നുറപ്പാണോ?')) return;
+      if (!confirm('Are you sure you want to reset all icons to their original defaults?')) return;
       localStorage.removeItem('nn_admin_mini_icons_detailed');
       localStorage.removeItem('nn_admin_mini_icons');
       renderAdminMiniIcons();
-      toast('↺ ഐക്കണുകൾ ഒറിജിനൽ ഡിഫോൾട്ട് ആക്കി.');
+      toast('↺ Icons reset to their original defaults.');
       adminSyncMiniIconsToFirebase();
     }
 
@@ -2245,7 +2257,7 @@
       if (countEl) countEl.textContent = filtered.length;
 
       if (!filtered.length) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px;color:#64748B">സർവീസുകളൊന്നും കണ്ടെത്തിയില്ല.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px;color:#64748B">No services found.</td></tr>`;
         return;
       }
 
@@ -2276,7 +2288,7 @@
             <td>${badgeHtml}</td>
             <td style="text-align:right">
               <button class="btn-sm approve" onclick="openAdminEditIconModal('${escapeHtml(c.id)}')">
-                🎨 ഐക്കൺ മാറ്റുക
+                🎨 Change Icon
               </button>
             </td>
           </tr>
@@ -2307,8 +2319,8 @@
       pendingIconValue = cat.activeIcon;
 
       document.getElementById('adminModalTargetCatId').value = cat.id;
-      document.getElementById('adminModalCatTitle').textContent = `${cat.name} (${cat.ml || ''}) — ഐക്കൺ മാറ്റുക`;
-      document.getElementById('adminModalCatSubtitle').textContent = `Category ID: ${cat.id} • നിലവിലെ ഐക്കൺ താഴെ കാണാം`;
+      document.getElementById('adminModalCatTitle').textContent = `${cat.name} — Change Icon`;
+      document.getElementById('adminModalCatSubtitle').textContent = `Category ID: ${cat.id} • Current icon shown below`;
       document.getElementById('adminCustomEmojiInput').value = '';
       document.getElementById('adminIconUrlInput').value = (cat.activeIcon.startsWith('http') ? cat.activeIcon : '');
 
@@ -2347,7 +2359,7 @@
       reader.onload = ev => {
         pendingIconValue = ev.target.result;
         updateAdminModalPreview();
-        toast('📸 ചിത്രം ഐക്കണായി പ്രിവ്യൂ ചെയ്തു! "സേവ് ചെയ്യുക" അമർത്തുക.');
+        toast('📸 Image previewed as the icon. Click "Save".');
       };
       reader.readAsDataURL(file);
     }
@@ -2379,14 +2391,14 @@
       }
 
       addAuditLog(`Reset icon for category ${pendingEditCatId} to default`);
-      toast(`↺ ${pendingEditCatId} ഐക്കൺ ഡിഫോൾട്ട് ആക്കി.`);
+      toast(`↺ Reset the ${pendingEditCatId} icon to its default.`);
       closeAdminEditIconModal();
       renderAdminCategoriesList();
     }
 
     async function saveAdminCategoryIcon() {
       if (!pendingEditCatId || !pendingIconValue) {
-        toast('⚠️ ദയവായി ഒരു ഐക്കൺ തിരഞ്ഞെടുക്കുക');
+        toast('⚠️ Please choose an icon.');
         return;
       }
 
@@ -2425,7 +2437,7 @@
       }
 
       addAuditLog(`Updated category icon for ${pendingEditCatId}`);
-      toast(`✓ ${pendingEditCatId} സർവീസിന് പുതിയ ഐക്കൺ സേവ് ചെയ്തു! ആപ്പിൽ ഉടൻ കാണാം.`);
+      toast(`✓ Saved the new icon for ${pendingEditCatId}. It will appear in the app shortly.`);
       closeAdminEditIconModal();
       renderAdminCategoriesList();
     }
@@ -2447,7 +2459,7 @@
       const icon = (document.getElementById('adminNewCatIcon')?.value || '🛠️').trim();
 
       if (!nameEn) {
-        toast('⚠️ ദയവായി സർവീസ് പേര് നൽകുക.');
+        toast('⚠️ Please enter a service name.');
         return;
       }
 
@@ -2492,7 +2504,7 @@
       }
 
       addAuditLog(`Added new service category: ${nameEn} (${nameMl})`);
-      toast(`✓ പുതിയ സർവീസ് ${nameEn} ആപ്പിൽ ചേർത്തു!`);
+      toast(`✓ Added the new service ${nameEn} to the app.`);
       closeAdminAddCategoryModal();
       renderAdminCategoriesList();
     }
@@ -2913,7 +2925,7 @@
           badge.className = 'badge-tag';
           badge.style.background = '#FEF3C7';
           badge.style.color = '#92400E';
-          badge.textContent = 'App ID നൽകുക ⚠️';
+          badge.textContent = 'Enter App ID ⚠️';
         }
       }
     }
@@ -2923,7 +2935,7 @@
       const restKey = (document.getElementById('oneSignalRestKeyInput')?.value || '').trim();
 
       if (!appId) {
-        showToast('⚠️ ദയവായി OneSignal App ID നൽകുക');
+        showToast('⚠️ Please enter the OneSignal App ID.');
         return;
       }
 
@@ -2931,7 +2943,7 @@
       if (restKey) localStorage.setItem('nn_onesignal_rest_key', restKey);
 
       loadOneSignalAdminSettings();
-      showToast('✅ OneSignal Settings വിജയകരമായി സേവ് ചെയ്തു!');
+      showToast('✅ OneSignal settings saved successfully!');
     }
 
     async function sendOneSignalAdminTestPush() {
@@ -2939,17 +2951,17 @@
       const restKey = localStorage.getItem('nn_onesignal_rest_key') || (document.getElementById('oneSignalRestKeyInput')?.value || '').trim();
 
       if (!appId || !restKey) {
-        showToast('⚠️ ടെസ്റ്റ് ചെയ്യാൻ App ID യും REST API Key യും ആവശ്യമാണ്');
+        showToast('⚠️ An App ID and REST API Key are required for testing.');
         return;
       }
 
-      showToast('🚀 ടെസ്റ്റ് നോട്ടിഫിക്കേഷൻ അയക്കുന്നു...');
+      showToast('🚀 Sending test notification...');
       try {
         const payload = {
           app_id: appId,
           included_segments: ['Subscribed Users'],
-          headings: { en: '🔔 നമ്മുടെ നാട് - Live Test Push' },
-          contents: { en: 'ആപ്പ് ക്ലോസ് ആണെങ്കിലും നോട്ടിഫിക്കേഷൻ വിജയകരമായി ലഭിക്കുന്നു! 🎉' },
+          headings: { en: '🔔 Nammude Naadu - Live Test Push' },
+          contents: { en: 'Notifications are delivered successfully, even when the app is closed! 🎉' },
           priority: 10
         };
 
@@ -2964,12 +2976,12 @@
         });
         const json = await res.json();
         if (json.id || json.recipients !== undefined) {
-          showToast(`✅ ടെസ്റ്റ് നോട്ടിഫിക്കേഷൻ അയച്ചു! (${json.recipients || 0} ഡിവൈസുകൾ)`);
+          showToast(`✅ Test notification sent! (${json.recipients || 0} devices)`);
         } else if (json.errors) {
-          showToast(`⚠️ പിശക്: ${Array.isArray(json.errors) ? json.errors.join(', ') : JSON.stringify(json.errors)}`);
+          showToast(`⚠️ Error: ${Array.isArray(json.errors) ? json.errors.join(', ') : JSON.stringify(json.errors)}`);
         }
       } catch (err) {
-        showToast('⚠️ നെറ്റ്‌വർക്ക് പിശക്: ' + err.message);
+        showToast('⚠️ Network error: ' + err.message);
       }
     }
 
@@ -2978,7 +2990,7 @@
       const bloodGroup = document.getElementById('pushGroup')?.value || 'B+';
       const message = document.getElementById('pushMessage')?.value || 'Urgent Blood Needed';
 
-      showToast('🚨 അടിയന്തിര ബ്ലഡ് പുഷ് അയക്കുന്നു...');
+      showToast('🚨 Sending urgent blood alert...');
       const restKey = localStorage.getItem('nn_onesignal_rest_key') || (document.getElementById('oneSignalRestKeyInput')?.value || '').trim();
       const appId = localStorage.getItem('nn_onesignal_app_id') || 'ba99bc43-e77b-4db1-90ac-d3cab11c8e3b';
 
@@ -2994,18 +3006,18 @@
             body: JSON.stringify({
               app_id: appId,
               included_segments: ['Subscribed Users'],
-              headings: { en: `🩸 അടിയന്തിര രക്തദാന ആവശ്യം (${bloodGroup})` },
+              headings: { en: `🩸 Urgent blood donation request (${bloodGroup})` },
               contents: { en: `${hospital}: ${message}` },
               data: { type: 'blood' },
               priority: 10
             })
           });
-          showToast('✅ എല്ലാ ദാതാക്കളുടെയും ഫോണിലേക്ക് പുഷ് നോട്ടിഫിക്കേഷൻ എത്തി!');
+          showToast('✅ Push notification delivered to all donors!');
         } catch (_) {
-          showToast('✅ നോട്ടിഫിക്കേഷൻ ബ്രോഡ്കാസ്റ്റ് ചെയ്തു.');
+          showToast('✅ Notification broadcast successfully.');
         }
       } else {
-        showToast('✅ എമർജൻസി അലേർട്ട് അയച്ചു.');
+        showToast('✅ Emergency alert sent.');
       }
     }
 

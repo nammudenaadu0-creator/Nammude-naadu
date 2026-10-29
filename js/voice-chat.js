@@ -125,23 +125,50 @@
 
         const durationText = this.formatDuration(elapsedSec);
 
-        // Convert to Base64 Data URL for instant delivery
-        const reader = new FileReader();
-        reader.onloadend = function () {
-          const base64Audio = reader.result;
+        // Upload to Supabase Storage for efficient delivery; fall back to base64 on failure
+        const mimeType = audioBlob.type || blobType;
 
-          if (targetVoiceContext === 'chat') {
-            if (typeof window.sendVoiceChatMessage === 'function') {
-              window.sendVoiceChatMessage(base64Audio, durationText, elapsedSec);
-            }
-          } else if (targetVoiceContext === 'quick-service') {
-            quickServiceVoiceData = { audioUrl: base64Audio, duration: durationText };
-            if (typeof window.onQuickServiceVoiceRecorded === 'function') {
-              window.onQuickServiceVoiceRecorded(quickServiceVoiceData);
+        const tryUpload = async () => {
+          if (window.NN_SUPABASE && typeof window.NN_SUPABASE.uploadVoiceMessage === 'function') {
+            showToast('📤 Voice message upload ചെയ്യുന്നു...');
+            try {
+              const publicUrl = await window.NN_SUPABASE.uploadVoiceMessage(audioBlob, mimeType);
+              if (targetVoiceContext === 'chat') {
+                if (typeof window.sendVoiceChatMessage === 'function') {
+                  window.sendVoiceChatMessage(publicUrl, durationText, elapsedSec);
+                }
+              } else if (targetVoiceContext === 'quick-service') {
+                quickServiceVoiceData = { audioUrl: publicUrl, duration: durationText };
+                if (typeof window.onQuickServiceVoiceRecorded === 'function') {
+                  window.onQuickServiceVoiceRecorded(quickServiceVoiceData);
+                }
+              }
+              return; // upload succeeded — skip base64 fallback
+            } catch (uploadErr) {
+              console.warn('⚠️ [VoiceChat] Storage upload failed, falling back to base64:', uploadErr.message);
             }
           }
+
+          // Fallback: convert to Base64 Data URL
+          const reader = new FileReader();
+          reader.onloadend = function () {
+            const base64Audio = reader.result;
+
+            if (targetVoiceContext === 'chat') {
+              if (typeof window.sendVoiceChatMessage === 'function') {
+                window.sendVoiceChatMessage(base64Audio, durationText, elapsedSec);
+              }
+            } else if (targetVoiceContext === 'quick-service') {
+              quickServiceVoiceData = { audioUrl: base64Audio, duration: durationText };
+              if (typeof window.onQuickServiceVoiceRecorded === 'function') {
+                window.onQuickServiceVoiceRecorded(quickServiceVoiceData);
+              }
+            }
+          };
+          reader.readAsDataURL(audioBlob);
         };
-        reader.readAsDataURL(audioBlob);
+
+        tryUpload();
       };
 
       mediaRecorder.stop();

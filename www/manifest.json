@@ -1,6 +1,6 @@
 {
-  "name": "നമ്മുടെ നാട് — Nammude Naadu",
-  "short_name": "നമ്മുടെ നാട്",
+  "name": "Nammude Naadu",
+  "short_name": "Nammude Naadu",
   "description": "Local Services, Community Feed, Emergency Blood & Jobs Network for Kerala",
   "start_url": "./index.html",
   "display": "standalone",

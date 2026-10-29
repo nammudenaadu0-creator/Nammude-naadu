@@ -303,12 +303,23 @@ serve(async (req: Request) => {
         const isSelf = (msg.sender_id && msg.sender_id === recipientProfile.id) || (senderPhone && senderPhone === cleanPhone);
 
         if (!isSelf) {
+          let displayBody = msg.text || "നിങ്ങൾക്ക് ഒരു പുതിയ സന്ദേശം വന്നിട്ടുണ്ട്";
+          if (typeof displayBody === 'string') {
+            if (displayBody.startsWith('[voice:')) {
+              displayBody = '🎙️ വോയ്‌സ് മെസ്സേജ്';
+            } else if (displayBody.startsWith('[image:')) {
+              displayBody = '📷 ഫോട്ടോ';
+            } else if (displayBody.length > 100) {
+              displayBody = displayBody.substring(0, 97) + '...';
+            }
+          }
+
           jobs.push({
             recipientId: recipientProfile.id,
             recipientPhone: recipientProfile.phone,
             fcmToken: recipientProfile.fcm_token,
             title: msg.sender_name ? `${msg.sender_name} (സന്ദേശം)` : "പുതിയ സന്ദേശം",
-            body: msg.text || "നിങ്ങൾക്ക് ഒരു പുതിയ സന്ദേശം വന്നിട്ടുണ്ട്",
+            body: displayBody,
             channelId: "nammude_naadu_messages",
             type: "chat",
             data: {
@@ -477,12 +488,19 @@ serve(async (req: Request) => {
       }
 
       if (targetToken) {
+        let directBody = payload.body || "നിങ്ങൾക്ക് ഒരു പുതിയ സന്ദേശം വന്നിട്ടുണ്ട്";
+        if (typeof directBody === 'string') {
+          if (directBody.startsWith('[voice:')) directBody = '🎙️ വോയ്‌സ് മെസ്സേജ്';
+          else if (directBody.startsWith('[image:')) directBody = '📷 ഫോട്ടോ';
+          else if (directBody.length > 100) directBody = directBody.substring(0, 97) + '...';
+        }
+
         jobs.push({
           recipientId: targetUser,
           recipientPhone: payload.recipientPhone,
           fcmToken: targetToken,
           title: payload.title || "നമ്മുടെ നാട് അറിയിപ്പ്",
-          body: payload.body || "നിങ്ങൾക്ക് ഒരു പുതിയ സന്ദേശം വന്നിട്ടുണ്ട്",
+          body: directBody,
           channelId: payload.channelId || "nammude_naadu_messages",
           type: payload.type || "general",
           data: payload.data || {},
