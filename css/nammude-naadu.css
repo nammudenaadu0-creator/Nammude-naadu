@@ -1621,17 +1621,17 @@ html, body {
 }
 
 .cat-pill-btn:hover {
-  background: #ECFDF5;
-  border-color: #86EFAC;
+  background: #EFF6FF;
+  border-color: #BFDBFE;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.12);
+  box-shadow: 0 4px 12px rgba(8, 120, 209, 0.12);
 }
 
 .cat-pill-btn.active {
-  background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
-  border-color: #10B981;
+  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+  border-color: #0878D1;
   border-width: 2px;
-  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+  box-shadow: 0 4px 14px rgba(8, 120, 209, 0.25);
   transform: translateY(-1px);
 }
 
@@ -1656,7 +1656,7 @@ html, body {
 }
 
 .cat-pill-btn.active .cat-pill-title {
-  color: #064E3B;
+  color: #0C2B59;
   font-weight: 900;
 }
 
@@ -1675,8 +1675,8 @@ html, body {
 }
 
 .service-card:hover {
-  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.12);
-  border-color: #86EFAC;
+  box-shadow: 0 8px 24px rgba(29, 78, 216, 0.12);
+  border-color: #BFDBFE;
   transform: translateY(-2px);
 }
 
@@ -1695,8 +1695,8 @@ html, body {
   height: 52px;
   border-radius: 16px;
   object-fit: cover;
-  border: 2px solid #86EFAC;
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
+  border: 2px solid #BFDBFE;
+  box-shadow: 0 2px 8px rgba(29, 78, 216, 0.15);
   flex-shrink: 0;
 }
 
@@ -1736,7 +1736,7 @@ html, body {
 
 .prov-btn-call {
   flex: 1;
-  background: #10B981;
+  background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);
   color: #FFFFFF;
   border: none;
   padding: 10px;
@@ -1749,6 +1749,7 @@ html, body {
   gap: 6px;
   text-decoration: none;
   cursor: pointer;
+  box-shadow: 0 4px 10px rgba(29, 78, 216, 0.2);
 }
 
 .prov-btn-chat {
@@ -3290,9 +3291,9 @@ html, body {
 }
 
 .quick-cat-chip-btn.active {
-  background: #ECFDF5;
-  border-color: #059669;
-  box-shadow: 0 0 0 1px #059669;
+  background: #EFF6FF;
+  border-color: #1D4ED8;
+  box-shadow: 0 0 0 1px #1D4ED8;
 }
 
 .quick-cat-chip-btn .chip-icon {
@@ -3307,7 +3308,7 @@ html, body {
 }
 
 .quick-cat-chip-btn.active .chip-name {
-  color: #065F46;
+  color: #1E40AF;
 }
 
 /* URGENCY PILL RADIOS */
@@ -3326,28 +3327,28 @@ html, body {
 }
 
 .urgency-pill-radio.active {
-  background: #ECFDF5;
-  border-color: #059669;
-  color: #065F46;
-  box-shadow: 0 0 0 1px #059669;
+  background: #EFF6FF;
+  border-color: #1D4ED8;
+  color: #1E40AF;
+  box-shadow: 0 0 0 1px #1D4ED8;
 }
 
 /* SERVICES SCREEN BROADCAST BANNER */
 .services-quick-broadcast-banner {
   margin: 10px 16px;
-  background: linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%);
-  border: 1.5px solid #A7F3D0;
+  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+  border: 1.5px solid #BFDBFE;
   border-radius: 16px;
   padding: 12px 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.08);
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.08);
 }
 
 .broadcast-pill-btn {
-  background: #059669;
+  background: #1D4ED8;
   color: #FFFFFF;
   font-size: 0.72rem;
   font-weight: 800;
@@ -3367,7 +3368,7 @@ html, body {
   left: 0;
   right: 0;
   background: #FFFFFF;
-  border: 1.5px solid #10B981;
+  border: 1.5px solid #1D4ED8;
   border-radius: 14px;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
   z-index: 1050;
@@ -3392,7 +3393,7 @@ html, body {
 
 .trade-suggestion-item:hover,
 .trade-suggestion-item:active {
-  background: #F0FDF4;
+  background: #EFF6FF;
 }
 
 .trade-sugg-icon {
@@ -3452,16 +3453,16 @@ html, body {
 
 .quick-trade-chip:active,
 .quick-trade-chip.active {
-  background: #ECFDF5;
-  border-color: #059669;
-  color: #065F46;
+  background: #EFF6FF;
+  border-color: #1D4ED8;
+  color: #1E40AF;
   transform: scale(0.98);
 }
 
 /* MINI ICON STUDIO */
 .mini-icon-studio {
-  background: linear-gradient(135deg, #F8FAFC 0%, #F0FDF4 100%);
-  border: 1.5px solid #BBF7D0;
+  background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%);
+  border: 1.5px solid #BFDBFE;
   border-radius: 16px;
   padding: 12px 14px;
 }
@@ -3470,13 +3471,13 @@ html, body {
   width: 52px;
   height: 52px;
   background: #FFFFFF;
-  border: 2.5px solid #059669;
+  border: 2.5px solid #1D4ED8;
   border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 26px;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25);
   animation: iconPop 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   flex-shrink: 0;
 }
@@ -3518,14 +3519,14 @@ html, body {
 }
 
 .mini-icon-btn:hover {
-  background: #ECFDF5;
+  background: #EFF6FF;
   transform: scale(1.15);
 }
 
 .mini-icon-btn.selected {
-  background: #ECFDF5;
-  border: 2px solid #059669;
-  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+  background: #EFF6FF;
+  border: 2px solid #1D4ED8;
+  box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.3);
   transform: scale(1.12);
 }
 
@@ -3543,9 +3544,9 @@ html, body {
 
 .suggested-skill-pill:hover,
 .suggested-skill-pill:active {
-  background: #ECFDF5;
-  border-color: #059669;
-  color: #065F46;
+  background: #EFF6FF;
+  border-color: #1D4ED8;
+  color: #1E40AF;
 }
 
 .service-mini-icon-badge {
