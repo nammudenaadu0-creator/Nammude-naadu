@@ -1,6507 +1,26665 @@
 // ==============================================================
-// 500+ COMPREHENSIVE LOCAL TRADES & SERVICES CATALOG FOR KERALA
+// 2000+ COMPREHENSIVE LOCAL TRADES & SERVICES CATALOG FOR KERALA
+// Professional English catalog across all categories & districts
 // ==============================================================
 (function() {
-  window.TRADES_CATALOG_500 = [
+  const catalog = [
   {
     "id": "tr_1",
-    "name": "വീട് വയറിങ്",
-    "en": "Home Wiring",
+    "name": "Home Concealed Wiring",
+    "en": "Home Concealed Wiring",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "കൺസീൽഡ് വയറിങ്",
-      "മെയിൻ ഡിബി",
-      "സ്വിച്ച് ബോർഡ്",
-      "ലൈറ്റിങ്"
+      "Home Concealed Wiring Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_2",
-    "name": "ഇൻവെർട്ടർ & യുപിഎസ് ഫിറ്റിംഗ്",
-    "en": "Inverter & UPS",
+    "name": "Switchboard Repair & Replacement",
+    "en": "Switchboard Repair & Replacement",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "ബാറ്ററി വാട്ടർ",
-      "യുപിഎസ് വയറിങ്",
-      "സോളാർ ഇൻവെർട്ടർ",
-      "ബാക്കപ്പ് ചെക്ക്"
+      "Switchboard Repair & Replacement Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_3",
-    "name": "സോളാർ റൂഫ്‌ടോപ്പ് പാനൽ",
-    "en": "Solar Rooftop",
+    "name": "MCB Trip & Distribution Board",
+    "en": "MCB Trip & Distribution Board",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "ഓൺ-ഗ്രിഡ് സോളാർ",
-      "നെറ്റ് മീറ്ററിങ്",
-      "സോളാർ ഇൻവെർട്ടർ",
-      "പാനൽ ക്ലീനിംഗ്"
+      "MCB Trip & Distribution Board Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_4",
-    "name": "ഫാൻ & മോട്ടോർ റീവൈൻഡിങ്",
-    "en": "Fan & Motor Rewinding",
+    "name": "Main Phase Line Connection",
+    "en": "Main Phase Line Connection",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "സീലിംഗ് ഫാൻ",
-      "പമ്പ് മോട്ടോർ",
-      "കോയിൽ റീവൈൻഡിങ്",
-      "ബെയറിംഗ് മാറ്റൽ"
+      "Main Phase Line Connection Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_5",
-    "name": "ഷോർട്ട് സർക്യൂട്ട് റിപ്പയർ",
-    "en": "Short Circuit Repair",
+    "name": "Earthing Pit & Electrode Setup",
+    "en": "Earthing Pit & Electrode Setup",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "ഫോൾട്ട് ഫൈൻഡിങ്",
-      "ട്രിപ്പിംഗ് പരിഹാരം",
-      "ഇഎൽസിബി ചെക്കിങ്",
-      "വയർ മാറ്റൽ"
+      "Earthing Pit & Electrode Setup Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_6",
-    "name": "സ്വിച്ച് ബോർഡ് മാറ്റൽ",
-    "en": "Switch Board Replacement",
+    "name": "LED Concealed Ceiling Lights",
+    "en": "LED Concealed Ceiling Lights",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "മോഡുലാർ സ്വിച്ച്",
-      "റെഗുലേറ്റർ ഫിറ്റിംഗ്",
-      "സോക്കറ്റ് മാറ്റൽ",
-      "ഇൻഡിക്കേറ്റർ"
+      "LED Concealed Ceiling Lights Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_7",
-    "name": "എൽഇഡി ഫോൾസ് സീലിംഗ് ലൈറ്റിങ്",
-    "en": "LED False Ceiling Lighting",
+    "name": "Chandelier & Pendant Light",
+    "en": "Chandelier & Pendant Light",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "പ്രൊഫൈൽ ലൈറ്റിങ്",
-      "കോവ് ലൈറ്റ്",
-      "സ്പോട്ട് ലൈറ്റ്",
-      "ഡ്രൈവർ മാറ്റൽ"
+      "Chandelier & Pendant Light Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_8",
-    "name": "സബ്മർസിബിൾ പമ്പ് കൺട്രോളർ",
-    "en": "Submersible Pump Controller",
+    "name": "Exhaust Fan Installation",
+    "en": "Exhaust Fan Installation",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "സ്റ്റാർട്ടർ പാനൽ",
-      "ഓട്ടോ കട്ട് ഓഫ്",
-      "ഡ്രൈ റൺ പ്രൊട്ടക്ഷൻ",
-      "കപ്പാസിറ്റർ"
+      "Exhaust Fan Installation Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_9",
-    "name": "ജനറേറ്റർ സർവീസിങ്",
-    "en": "Generator Servicing",
+    "name": "Ceiling Fan Rewinding & Repair",
+    "en": "Ceiling Fan Rewinding & Repair",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "ഡീസൽ ജനറേറ്റർ",
-      "ചേഞ്ച് ഓവർ സ്വിച്ച്",
-      "ഓട്ടോമാറ്റിക് സ്റ്റാർട്ട്",
-      "വയറിങ്"
+      "Ceiling Fan Rewinding & Repair Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_10",
-    "name": "എർത്ത് പൈപ്പ് & ലൈറ്റ്‌നിംഗ് പ്രൊട്ടക്ഷൻ",
-    "en": "Earthing & Lightning Arrester",
+    "name": "Inverter Battery Setup",
+    "en": "Inverter Battery Setup",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "കോപ്പർ എർത്തിങ്",
-      "കെമിക്കൽ എർത്ത്",
-      "ഇടിമിന്നൽ രക്ഷ",
-      "ടെസ്റ്റിംഗ്"
+      "Inverter Battery Setup Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_11",
-    "name": "3-ഫേസ് ഇൻഡസ്ട്രിയൽ വയറിങ്",
-    "en": "3-Phase Industrial Wiring",
+    "name": "UPS Backup System Wiring",
+    "en": "UPS Backup System Wiring",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "ഹെവി കേബിളിങ്",
-      "ബസ്ബാർ ചേമ്പർ",
-      "മോട്ടോർ സ്റ്റാർട്ടർ",
-      "ലോഡ് ബാലൻസിങ്"
+      "UPS Backup System Wiring Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_12",
-    "name": "വാട്ടർ ലെവൽ കൺട്രോളർ",
-    "en": "Water Level Controller",
+    "name": "Automatic Water Level Controller",
+    "en": "Automatic Water Level Controller",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "ഓട്ടോമാറ്റിക് പമ്പ് സ്വിച്ച്",
-      "സെൻസർ കേബിൾ",
-      "ടാങ്ക് ഫുൾ ഇൻഡിക്കേറ്റർ",
-      "ഡ്രൈ റൺ"
+      "Automatic Water Level Controller Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_13",
-    "name": "ഗീസർ വാട്ടർ ഹീറ്റർ ഫിറ്റിംഗ്",
-    "en": "Geyser Water Heater",
+    "name": "Stablizer Voltage Repair",
+    "en": "Stablizer Voltage Repair",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "ഇലക്ട്രിക് ഗീസർ",
-      "തെർമോസ്റ്റാറ്റ് മാറ്റൽ",
-      "കോയിൽ റിപ്പയർ",
-      "സേഫ്റ്റി വാൽവ്"
+      "Stablizer Voltage Repair Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_14",
-    "name": "ഔട്ട്‌ഡോർ ഗാർഡൻ ലൈറ്റിങ്",
-    "en": "Garden Lighting",
+    "name": "Short Circuit Fault Finding",
+    "en": "Short Circuit Fault Finding",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "വാട്ടർപ്രൂഫ് ലൈറ്റ്",
-      "ഗേറ്റ് ലാമ്പ്",
-      "പാത്ത്‌വേ ലൈറ്റ്",
-      "ടൈമർ സ്വിച്ച്"
+      "Short Circuit Fault Finding Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_15",
-    "name": "ഇലക്ട്രിക് ചിമ്മിനി ഇൻസ്റ്റലേഷൻ",
-    "en": "Electric Kitchen Chimney",
+    "name": "Geyser Electrical Point Fitting",
+    "en": "Geyser Electrical Point Fitting",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "ഡക്റ്റിംഗ് പൈപ്പ്",
-      "ചിമ്മിനി ഫിക്സിംഗ്",
-      "പവർ പോയിന്റ്",
-      "ഓട്ടോ ക്ലീൻ"
+      "Geyser Electrical Point Fitting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_16",
-    "name": "ഡിബി ഡ്രെസ്സിങ് & എംസിബി മാറ്റൽ",
-    "en": "DB Dressing & MCB",
+    "name": "AC Heavy Power Point Wiring",
+    "en": "AC Heavy Power Point Wiring",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "ഐസൊലേറ്റർ",
-      "ആർസിസിബി",
-      "ഡിസ്ട്രിബ്യൂഷൻ ബോർഡ്",
-      "വയർ ലേബലിങ്"
+      "AC Heavy Power Point Wiring Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_17",
-    "name": "സ്റ്റെബിലൈസർ റിപ്പയർ",
-    "en": "Stabilizer Repair",
+    "name": "Staircase 2-Way Light Wiring",
+    "en": "Staircase 2-Way Light Wiring",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "എസി സ്റ്റെബിലൈസർ",
-      "റിലേ മാറ്റൽ",
-      "ഹൈ വോൾട്ടേജ് കട്ട്",
-      "ട്രാൻസ്ഫോർമർ"
+      "Staircase 2-Way Light Wiring Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_18",
-    "name": "ഇവി ചാർജർ ഫിറ്റിംഗ്",
-    "en": "EV Charger Setup",
+    "name": "Outdoor Garden Waterproof Light",
+    "en": "Outdoor Garden Waterproof Light",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "ഹോം ചാർജിംഗ് പോയിന്റ്",
-      "16A സോക്കറ്റ്",
-      "പ്രത്യേക എംസിബി",
-      "എർത്തിങ് ചെക്ക്"
+      "Outdoor Garden Waterproof Light Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_19",
-    "name": "ഇന്റർകോം സിസ്റ്റം വയറിങ്",
-    "en": "Intercom System",
+    "name": "Compound Wall Gate Lamp Fitting",
+    "en": "Compound Wall Gate Lamp Fitting",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "ഡോർ ഫോൺ",
-      "റൂം ടു റൂം",
-      "മൾട്ടിഫ്ലാറ്റ് ഇന്റർകോം",
-      "കേബിൾ ലേയിങ്"
+      "Compound Wall Gate Lamp Fitting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_20",
-    "name": "സെൻസർ ലൈറ്റിങ് & ഓട്ടോമേഷൻ",
-    "en": "Motion Sensor Lighting",
+    "name": "Tubelight to LED Batten Retrofit",
+    "en": "Tubelight to LED Batten Retrofit",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "പിഐആർ സെൻസർ",
-      "ഡേ നൈറ്റ് സെൻസർ",
-      "സ്മാർട്ട് സ്വിച്ച്",
-      "വൈഫൈ കൺട്രോൾ"
+      "Tubelight to LED Batten Retrofit Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_21",
-    "name": "ഫാക്ടറി മെഷീൻ ഇലക്ട്രിക്കൽ",
-    "en": "Factory Electrical Works",
+    "name": "3-Phase Motor Control Panel",
+    "en": "3-Phase Motor Control Panel",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "കൺട്രോൾ പാനൽ",
-      "റിലേ വയറിങ്",
-      "മെഷീൻ സർവീസ്",
-      "സേഫ്റ്റി ലോക്ക്"
+      "3-Phase Motor Control Panel Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_22",
-    "name": "സ്റ്റേജ് ലൈറ്റിങ് സെറ്റപ്പ്",
-    "en": "Stage Lighting",
+    "name": "Industrial Cable Tray Laying",
+    "en": "Industrial Cable Tray Laying",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "പാർ ലൈറ്റുകൾ",
-      "ഫോക്കസ് ലൈറ്റ്",
-      "ഡിമ്മർ കൺട്രോൾ",
-      "ടെമ്പററി വയറിങ്"
+      "Industrial Cable Tray Laying Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_23",
-    "name": "പാനൽ ബോർഡ് നിർമ്മാണം",
-    "en": "Electrical Panel Board",
+    "name": "Substation Transformer Testing",
+    "en": "Substation Transformer Testing",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "കസ്റ്റം പാനൽ ബോർഡ്",
-      "മീറ്റർ ബോക്സ്",
-      "ഫേസ് ഇൻഡിക്കേറ്റർ",
-      "മെറ്റൽ ബോക്സ്"
+      "Substation Transformer Testing Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_24",
-    "name": "അടിയന്തര രാത്രികാല ഇലക്ട്രിക്കൽ സർവീസ്",
-    "en": "24x7 Emergency Electrician",
+    "name": "Diesel Generator Auto Changeover",
+    "en": "Diesel Generator Auto Changeover",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "നൈറ്റ് കോൾ",
-      "കറണ്ട് പോയാൽ സഹായം",
-      "ഫ്യൂസ് മാറ്റൽ",
-      "തൽക്ഷണ സർവീസ്"
+      "Diesel Generator Auto Changeover Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_25",
-    "name": "ഇലക്ട്രിക്കൽ സേഫ്റ്റി ഓഡിറ്റ്",
-    "en": "Electrical Safety Audit",
+    "name": "Power Factor Capacitor Bank",
+    "en": "Power Factor Capacitor Bank",
     "icon": "⚡",
     "category": "electrician",
     "specs": [
-      "വയറിങ് ചെക്കപ്പ്",
-      "ലോഡ് ഇൻസ്പെക്ഷൻ",
-      "ഷോർട്ട് സർക്യൂട്ട് പ്രിവൻഷൻ",
-      "റിപ്പോർട്ട്"
+      "Power Factor Capacitor Bank Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_26",
-    "name": "പൈപ്പ് ലീക്കേജ് പരിഹാരം",
-    "en": "Pipe Leakage Repair",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "Busbar Trunking Installation",
+    "en": "Busbar Trunking Installation",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "അണ്ടർഗ്രൗണ്ട് ലീക്ക്",
-      "വാൾ ലീക്ക് ഫിക്സ്",
-      "ജോയിന്റ് മാറ്റൽ",
-      "ടേപ്പ് സീലിങ്"
+      "Busbar Trunking Installation Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_27",
-    "name": "ബാത്ത്റൂം സാനിറ്ററി ഫിറ്റിംഗ്സ്",
-    "en": "Bathroom Sanitary Fittings",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "Lightning Arrester Protection",
+    "en": "Lightning Arrester Protection",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "ക്ലോസറ്റ് ഫിറ്റിംഗ്",
-      "വാഷ് ബേസിൻ",
-      "ഷവർ സെറ്റ്",
-      "മിക്സർ ടാപ്പ്"
+      "Lightning Arrester Protection Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_28",
-    "name": "വാട്ടർ ടാങ്ക് ഇൻസ്റ്റലേഷൻ",
-    "en": "Water Tank Installation",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "Factory High Bay Lighting",
+    "en": "Factory High Bay Lighting",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "ഓവർഹെഡ് ടാങ്ക്",
-      "കണക്റ്റിംഗ് പൈപ്പുകൾ",
-      "എയർ വെന്റ് പൈപ്പ്",
-      "വാൽവ് ഫിറ്റിംഗ്"
+      "Factory High Bay Lighting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_29",
-    "name": "മോട്ടോർ പമ്പ് ഫിറ്റിംഗ് & സർവീസ്",
-    "en": "Motor Pump Fitting",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "Electrical Safety Energy Audit",
+    "en": "Electrical Safety Energy Audit",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "സെൽഫ് പ്രൈമിംഗ് പമ്പ്",
-      "സബ്മർസിബിൾ",
-      "ഫുട്വാൽവ് മാറ്റൽ",
-      "പ്രഷർ ചെക്ക്"
+      "Electrical Safety Energy Audit Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_30",
-    "name": "ടാപ്പ് & ഷവർ മാറ്റൽ",
-    "en": "Tap & Shower Replacement",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "HT/LT Underground Cable Joint",
+    "en": "HT/LT Underground Cable Joint",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "പില്ലർ കോക്ക്",
-      "ആംഗിൾ വാൽവ്",
-      "ഹെൽത്ത് ഫോസെറ്റ്",
-      "ഷവർ റോസ്"
+      "HT/LT Underground Cable Joint Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_31",
-    "name": "ഡ്രെയിനേജ് പൈപ്പ് ലൈൻ ബ്ലോക്ക്",
-    "en": "Drainage Pipe Unclogging",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "Phase Sequence Correction",
+    "en": "Phase Sequence Correction",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "മെഷീൻ അൺബ്ലോക്ക്",
-      "അഴുക്കുചാൽ ക്ലിയർ",
-      "സോക് പിറ്റ് കണക്ഷൻ",
-      "ദുർഗന്ധം മാറ്റൽ"
+      "Phase Sequence Correction Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_32",
-    "name": "വാട്ടർ മീറ്റർ ഫിക്സിംഗ്",
-    "en": "Water Meter Fixing",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "VFD Variable Frequency Drive",
+    "en": "VFD Variable Frequency Drive",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "വാട്ടർ അതോറിറ്റി മീറ്റർ",
-      "നോൺ റിട്ടേൺ വാൽവ്",
-      "മെറ്റൽ ജോയിന്റ്",
-      "കണക്ഷൻ"
+      "VFD Variable Frequency Drive Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_33",
-    "name": "കിണർ മോട്ടോർ ഇറക്കൽ & മാറ്റൽ",
-    "en": "Well Motor Installation",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "Warehouse Flood Lighting",
+    "en": "Warehouse Flood Lighting",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "റോപ്പ് & പൈപ്പ് ലോവറിങ്",
-      "സേഫ്റ്റി വയർ",
-      "ഫുട്വാൽവ് ക്ലീൻ",
-      "പ്രഷർ ടെസ്റ്റ്"
+      "Warehouse Flood Lighting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_34",
-    "name": "പ്രഷർ പമ്പ് സിസ്റ്റം",
-    "en": "Pressure Pump System",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "Heavy Machinery Power Wiring",
+    "en": "Heavy Machinery Power Wiring",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "ഓട്ടോ പ്രഷർ പമ്പ്",
-      "ബൂസ്റ്റർ പമ്പ്",
-      "പ്രഷർ ഗേജ്",
-      "ഷവർ ഫ്ലോ കൂട്ടൽ"
+      "Heavy Machinery Power Wiring Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_35",
-    "name": "അണ്ടർഗ്രൗണ്ട് പൈപ്പ് ലൈൻ വർക്ക്",
-    "en": "Underground Pipe Line",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "Server Room Dual Power Line",
+    "en": "Server Room Dual Power Line",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "കിളയ്ക്കലും പൈപ്പിടലും",
-      "ജിഐ / സിപിവിസി",
-      "മണ്ണിനടിയിലെ പൈപ്പ്",
-      "ചാമ്പർ പണി"
+      "Server Room Dual Power Line Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_36",
-    "name": "ആർഒ വാട്ടർ പ്യൂരിഫയർ സർവീസ്",
-    "en": "RO Water Purifier Service",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "Emergency Lighting Battery Backup",
+    "en": "Emergency Lighting Battery Backup",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "ഫിൽട്ടർ മാറ്റൽ",
-      "ടിഡിഎസ് അഡ്ജസ്റ്റ്",
-      "പമ്പ് മാറ്റൽ",
-      "മെംബ്രേൻ വാഷ്"
+      "Emergency Lighting Battery Backup Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_37",
-    "name": "മഴവെള്ള സംഭരണി ഫിൽട്ടറിങ്",
-    "en": "Rainwater Harvesting Plumbing",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "Smart Touch Switch Installation",
+    "en": "Smart Touch Switch Installation",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "ഫിൽട്ടർ ബെഡ്",
-      "ഡൈവേർട്ടർ പൈപ്പ്",
-      "സ്റ്റോറേജ് ടാങ്ക്",
-      "ഓവർഫ്ലോ"
+      "Smart Touch Switch Installation Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_38",
-    "name": "സെപ്റ്റിക് ടാങ്ക് കണക്ഷൻ പൈപ്പ്",
-    "en": "Septic Tank Plumbing",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "WiFi Smart Bulb Controller",
+    "en": "WiFi Smart Bulb Controller",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "4 ഇഞ്ച് പിവിസി",
-      "ചാമ്പർ കണക്ഷൻ",
-      "സ്ലോപ്പ് ലെവലിങ്",
-      "ഗ്യാസ് വെന്റ്"
+      "WiFi Smart Bulb Controller Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_39",
-    "name": "കിച്ചൻ സിങ്ക് & വേസ്റ്റ് കപ്ലിംഗ്",
-    "en": "Kitchen Sink & Waste Coupling",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "Motion Sensor Lighting Fitting",
+    "en": "Motion Sensor Lighting Fitting",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "സിങ്ക് ഫിക്സിംഗ്",
-      "വേസ്റ്റ് പൈപ്പ്",
-      "ബോട്ടിൽ ട്രാപ്പ്",
-      "ഗ്രീസ് ക്ലിയറൻസ്"
+      "Motion Sensor Lighting Fitting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_40",
-    "name": "കോൺസീൽഡ് വാൾ വാൽവ് ഫിറ്റിംഗ്",
-    "en": "Concealed Valve Fitting",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "Automated Curtains Motor Setup",
+    "en": "Automated Curtains Motor Setup",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "ഡൈവേർട്ടർ ബോഡി",
-      "വാൾ കട്ടിംഗ്",
-      "പ്രഷർ ടെസ്റ്റ്",
-      "ഫിനിഷിംഗ്"
+      "Automated Curtains Motor Setup Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_41",
-    "name": "സിപിവിസി / പിവിസി ഹോട്ട് വാട്ടർ പൈപ്പിങ്",
-    "en": "CPVC Hot Water Piping",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "Smart Thermostat Installation",
+    "en": "Smart Thermostat Installation",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "സോൾവെന്റ് ജോയിന്റിങ്",
-      "ഹീറ്റ് റെസിസ്റ്റന്റ്",
-      "ഇൻസുലേഷൻ",
-      "ക്ലിപ്പ് ഫിക്സിംഗ്"
+      "Smart Thermostat Installation Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_42",
-    "name": "ക്ലോസറ്റ് ഫ്ലഷ് ടാങ്ക് റിപ്പയർ",
-    "en": "Flush Tank Repair",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "Voice Assistant Home Linkage",
+    "en": "Voice Assistant Home Linkage",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "സൈഫൺ വാൽവ്",
-      "ബോൾ കോക്ക്",
-      "പുഷ് ബട്ടൺ ഫിക്സ്",
-      "തുടർച്ചയായ വെള്ളമൊഴുക്ക്"
+      "Voice Assistant Home Linkage Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_43",
-    "name": "വാട്ടർ ടാങ്ക് ഓവർഫ്ലോ അലാറം",
-    "en": "Overhead Tank Overflow Alarm",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "Smart Video Door Phone Wiring",
+    "en": "Smart Video Door Phone Wiring",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "സെൻസർ ഇൻസ്റ്റലേഷൻ",
-      "ബസർ ഫിറ്റിംഗ്",
-      "വെള്ളം പാഴാകുന്നത് തടയൽ",
-      "വയറിങ്"
+      "Smart Video Door Phone Wiring Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_44",
-    "name": "ബോർവെൽ പൈപ്പ് കണക്ഷൻ",
-    "en": "Borewell Pipe Connection",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "Smart Lock Power Line Setup",
+    "en": "Smart Lock Power Line Setup",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "എച്ച്ഡിപിഇ പൈപ്പ്",
-      "കംപ്രഷൻ ഫിറ്റിംഗ്സ്",
-      "കേസിംഗ് ക്യാപ്",
-      "കൺട്രോൾ വാൽവ്"
+      "Smart Lock Power Line Setup Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_45",
-    "name": "ഗാർഡൻ സ്പ്രിംഗ്ളർ ഇറിഗേഷൻ",
-    "en": "Garden Sprinkler Plumbing",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "Automated Water Sump Controller",
+    "en": "Automated Water Sump Controller",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "പോപ്പ്-അപ്പ് സ്പ്രിംഗ്ളർ",
-      "മൈക്രോ ഡ്രിപ്പ്",
-      "ടൈമർ പ്ലംബിംഗ്",
-      "നോസിൽ"
+      "Automated Water Sump Controller Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_46",
-    "name": "വാഷിംഗ് മെഷീൻ പ്ലംബിംഗ് കണക്ഷൻ",
-    "en": "Washing Machine Plumbing",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "Solar Inverter Smart App Setup",
+    "en": "Solar Inverter Smart App Setup",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "ഇൻലെറ്റ് വാൽവ് ടാപ്പ്",
-      "ഡ്രെയിൻ ഹോസ് ഫിക്സ്",
-      "സ്റ്റാൻഡ് ലെവലിങ്",
-      "ലീക്ക് പ്രൂഫ്"
+      "Solar Inverter Smart App Setup Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_47",
-    "name": "സോളാർ വാട്ടർ ഹീറ്റർ പ്ലംബിംഗ്",
-    "en": "Solar Water Heater Plumbing",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "Dimmer Switch Mood Lighting",
+    "en": "Dimmer Switch Mood Lighting",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "റൂഫ് ടാങ്ക് കണക്ഷൻ",
-      "ഹോട്ട് വാട്ടർ പൈപ്പ്",
-      "എയർ വെന്റ് പൈപ്പ്",
-      "സേഫ്റ്റി"
+      "Dimmer Switch Mood Lighting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_48",
-    "name": "ബാത്ത് ടബ്ബ് & ജക്കൂസി ഫിറ്റിംഗ്",
-    "en": "Bath Tub & Jacuzzi",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "RGB Strip Light Profile Fitting",
+    "en": "RGB Strip Light Profile Fitting",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "വാട്ടർ ജെറ്റ് കണക്ഷൻ",
-      "ഡ്രെയിനേജ് ട്രാപ്പ്",
-      "മിക്സർ പ്ലംബിംഗ്",
-      "ലെവലിങ്"
+      "RGB Strip Light Profile Fitting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_49",
-    "name": "പൈപ്പ് ത്രെഡ്ഡിംഗ് & ജോയിന്റ് വർക്ക്",
-    "en": "Pipe Threading & GI Joint",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "Home EV 3.3kW Charger Fitting",
+    "en": "Home EV 3.3kW Charger Fitting",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "ഡൈ സെറ്റ് ത്രെഡ്ഡിംഗ്",
-      "യൂണിയൻ ജോയിന്റ്",
-      "ടെഫ്ലോൺ സീലിങ്",
-      "ഹെവി വാൽവ്"
+      "Home EV 3.3kW Charger Fitting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_50",
-    "name": "24 മണിക്കൂർ അടിയന്തര പ്ലംബിംഗ്",
-    "en": "24x7 Emergency Plumber",
-    "icon": "🚰",
-    "category": "plumber",
+    "name": "Fast EV 7.4kW Wallbox Setup",
+    "en": "Fast EV 7.4kW Wallbox Setup",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "അടിയന്തര പൈപ്പ് പൊട്ടൽ",
-      "മെയിൻ വാൽവ് ഷട്ട്ഓഫ്",
-      "നൈറ്റ് പ്ലംബർ",
-      "തൽക്ഷണം"
+      "Fast EV 7.4kW Wallbox Setup Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_51",
-    "name": "ഓട്ടോ റിക്ഷ ലോക്കൽ സർവീസ്",
-    "en": "Auto Rickshaw Local",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "Commercial EV Charging Station",
+    "en": "Commercial EV Charging Station",
+    "icon": "⚡",
+    "category": "electrician",
     "specs": [
-      "കണ്ണൂർ ടൗൺ ട്രിപ്പ്",
-      "ഹോസ്പിറ്റൽ യാത്ര",
-      "ഷോപ്പിംഗ് ഓട്ടം",
-      "മിതമായ കൂലി"
+      "Commercial EV Charging Station Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_52",
-    "name": "എസി ടാക്സി കാർ (സ്വിഫ്റ്റ് ഡിസയർ)",
-    "en": "Swift Dzire Taxi",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "PVC Overhead Pipeline Laying",
+    "en": "PVC Overhead Pipeline Laying",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "4 സീറ്റർ എസി",
-      "സുഖകരമായ യാത്ര",
-      "ഫാമിലി ട്രിപ്പ്",
-      "വൃത്തിയുള്ള വാഹനം"
+      "PVC Overhead Pipeline Laying Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_53",
-    "name": "ഇനോവ / എർട്ടിഗ ഫാമിലി ടാക്സി",
-    "en": "Innova Family Taxi",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "CPVC Concealed Hot Water Piping",
+    "en": "CPVC Concealed Hot Water Piping",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "7 സീറ്റർ ലക്ഷ്വറി",
-      "ലോങ്ങ് ട്രിപ്പുകൾ",
-      "കല്യാണ ഓട്ടം",
-      "വിശാലമായ ലഗേജ്"
+      "CPVC Concealed Hot Water Piping Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_54",
-    "name": "കണ്ണൂർ എയർപോർട്ട് ഡ്രോപ്പ് ടാക്സി",
-    "en": "Kannur Airport Drop Taxi",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "UPVC Cold Water Plumbing",
+    "en": "UPVC Cold Water Plumbing",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "കൃത്യസമയത്ത് ഡ്രോപ്പ്",
-      "പിക്ക് അപ്പ് സർവീസ്",
-      "ഫ്ലൈറ്റ് ടൈമിംഗ്",
-      "എസി കാബ്"
+      "UPVC Cold Water Plumbing Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_55",
-    "name": "24 മണിക്കൂർ നൈറ്റ് ഡ്രൈവർ",
-    "en": "24x7 Night Driver",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "PEX Flexible Pipe Installation",
+    "en": "PEX Flexible Pipe Installation",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "രാത്രികാല സർവീസ്",
-      "അടിയന്തര യാത്ര",
-      "റെയിൽവേ സ്റ്റേഷൻ",
-      "വിശ്വസ്തത"
+      "PEX Flexible Pipe Installation Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_56",
-    "name": "വീട്ടുസാധനങ്ങൾ മാറ്റൽ പിക്കപ്പ് വാഹനം",
-    "en": "Pickup Luggage Shifting",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "Overhead Water Tank Fitting (500L-2000L)",
+    "en": "Overhead Water Tank Fitting (500L-2000L)",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "മഹീന്ദ്ര പിക്കപ്പ്",
-      "ഫർണിച്ചർ ഷിഫ്റ്റിംഗ്",
-      "സുരക്ഷിത പാക്കിംഗ്",
-      "ലോഡിങ് സഹായം"
+      "Overhead Water Tank Fitting (500L-2000L) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_57",
-    "name": "ടിപ്പർ ലോറി മണ്ണ് & കല്ല് സർവീസ്",
-    "en": "Tipper Lorry Sand & Stone",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "Water Tank Automatic Float Valve",
+    "en": "Water Tank Automatic Float Valve",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "നിർമ്മാണ സാമഗ്രികൾ",
-      "മെറ്റൽ & മണൽ",
-      "ചെങ്കല്ല് ട്രാൻസ്പോർട്ട്",
-      "ക്വാറി ഓട്ടം"
+      "Water Tank Automatic Float Valve Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_58",
-    "name": "ടെമ്പോ ട്രാവലർ ഗ്രൂപ്പ് ടൂർ",
-    "en": "Tempo Traveller 17/26 Seater",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "Water Pressure Booster Pump",
+    "en": "Water Pressure Booster Pump",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "17/26 സീറ്റർ എസി",
-      "തീർത്ഥാടന യാത്ര",
-      "വിവാഹ സംഘങ്ങൾ",
-      "പുഷ്ബാക്ക് സീറ്റുകൾ"
+      "Water Pressure Booster Pump Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_59",
-    "name": "മിനി ലോറി ചരക്ക് ഗതാഗതം",
-    "en": "Mini Lorry Goods Carrier",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "Water Meter Installation & Check",
+    "en": "Water Meter Installation & Check",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ഐഷർ / ടാറ്റ 407",
-      "വ്യാവസായിക ചരക്കുകൾ",
-      "കടകളിലേക്ക് സാധനങ്ങൾ",
-      "ലോങ്ങ് റൂട്ട്"
+      "Water Meter Installation & Check Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_60",
-    "name": "ആംബുലൻസ് അടിയന്തര സർവീസ്",
-    "en": "Emergency Ambulance",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "Borewell to Tank Pipeline Connection",
+    "en": "Borewell to Tank Pipeline Connection",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ഓക്സിജൻ സൗകര്യം",
-      "സ്ട്രക്ചർ",
-      "ഹോസ്പിറ്റൽ ഷിഫ്റ്റിംഗ്",
-      "തൽക്ഷണ സേവനം"
+      "Borewell to Tank Pipeline Connection Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_61",
-    "name": "പ്രൈവറ്റ് കാർ ഡ്രൈവർ (മന്ത്‌ലി / ഡെയ്‌ലി)",
-    "en": "Acting Car Driver",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "Rainwater Harvesting Filter Piping",
+    "en": "Rainwater Harvesting Filter Piping",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "സ്വന്തം കാർ ഓടിക്കാൻ",
-      "ദിവസവേതനം",
-      "പരിചയസമ്പന്നൻ",
-      "മാന്യമായ പെരുമാറ്റം"
+      "Rainwater Harvesting Filter Piping Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_62",
-    "name": "ഹെവി വെഹിക്കിൾ ഡ്രൈവർ",
-    "en": "Heavy Vehicle Driver",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "Underground Sump Pipeline Laying",
+    "en": "Underground Sump Pipeline Laying",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ലോറി & ബസ്",
-      "കണ്ടെയ്നർ ഡ്രൈവർ",
-      "ഹെവി ബാഡ്ജ്",
-      "ലോങ്ങ് എക്സ്പീരിയൻസ്"
+      "Underground Sump Pipeline Laying Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_63",
-    "name": "സ്കൂൾ വാൻ സർവീസ്",
-    "en": "School Van Service",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "Municipal Water Pipe Tapping",
+    "en": "Municipal Water Pipe Tapping",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "കുട്ടികളുടെ സുരക്ഷിത യാത്ര",
-      "കൃത്യമായ സമയം",
-      "സ്കൂൾ റൂട്ട്",
-      "വിശ്വസ്ത ഡ്രൈവർ"
+      "Municipal Water Pipe Tapping Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_64",
-    "name": "ടൂർ പാക്കേജ് വാഹനം",
-    "en": "Tourist Vehicle Rental",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "Plumbing Air Lock Removal",
+    "en": "Plumbing Air Lock Removal",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "വയനാട് / കൂർഗ് ട്രിപ്പ്",
-      "ഊട്ടി / മൂന്നാർ",
-      "കില്ലോമീറ്റർ പാക്കേജ്",
-      "പരിചയമുള്ള ഡ്രൈവർ"
+      "Plumbing Air Lock Removal Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_65",
-    "name": "ബ്രേക്ക്ഡൗൺ ടോവിംഗ് വാഹനം",
-    "en": "Vehicle Breakdown Towing",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "Water Pipeline Concealed Leak Detection",
+    "en": "Water Pipeline Concealed Leak Detection",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "റോഡ് സൈഡ് അസിസ്റ്റൻസ്",
-      "കാർ കെട്ടിവലിക്കൽ",
-      "ഹൈഡ്രോളിക് ബെഡ്",
-      "24 മണിക്കൂർ"
+      "Water Pipeline Concealed Leak Detection Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_66",
-    "name": "ആശുപത്രി ട്രിപ്പ് സ്പെഷ്യൽ ടാക്സി",
-    "en": "Hospital Emergency Taxi",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "Non-Return Check Valve Fitting",
+    "en": "Non-Return Check Valve Fitting",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "രോഗികൾക്ക് പ്രത്യേക ശ്രദ്ധ",
-      "വീൽചെയർ സ്പേസ്",
-      "മെഡിക്കൽ കോളേജ്",
-      "സഹായമനോഭാവം"
+      "Non-Return Check Valve Fitting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_67",
-    "name": "ഓപ്പൺ ബോഡി ലോഡിങ് ജീപ്പ്",
-    "en": "Loading Jeep Service",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "Water Pressure Regulator Valve",
+    "en": "Water Pressure Regulator Valve",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ഗ്രാമീണ റൂട്ടുകൾ",
-      "കാർഷിക വിളകൾ",
-      "തടി & കമ്പി",
-      "ഹിൽ ഏരിയ"
+      "Water Pressure Regulator Valve Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_68",
-    "name": "ബൈക്ക് റൈഡർ ഡെലിവറി",
-    "en": "Bike Courier / Parcel Runner",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "Garden Drip Irrigation Pipeline",
+    "en": "Garden Drip Irrigation Pipeline",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ഫാസ്റ്റ് ഡോക്യുമെന്റ് ഡെലിവറി",
-      "മരുന്ന് വാങ്ങൽ",
-      "പാഴ്സൽ സർവീസ്",
-      "ചെറിയ സാധനങ്ങൾ"
+      "Garden Drip Irrigation Pipeline Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_69",
-    "name": "വെഡിങ് ലക്ഷ്വറി കാർ റെന്റൽ",
-    "en": "Wedding Luxury Car",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "Kitchen RO Purifier Inlet Pipeline",
+    "en": "Kitchen RO Purifier Inlet Pipeline",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "വരനും വധുവിനും ആഡംബര കാർ",
-      "ഡെക്കറേഷൻ ഉൾപ്പെടെ",
-      "ബിഎംഡബ്ല്യു / മെഴ്‌സിഡസ്",
-      "പ്രീമിയം"
+      "Kitchen RO Purifier Inlet Pipeline Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_70",
-    "name": "റെയിൽവേ സ്റ്റേഷൻ പിക്ക് & ഡ്രോപ്പ്",
-    "en": "Railway Station Pick & Drop",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "Washing Machine Inlet Drain Fitting",
+    "en": "Washing Machine Inlet Drain Fitting",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ട്രെയിൻ സമയം അനുസരിച്ച്",
-      "ലഗേജ് ഹെൽപ്പ്",
-      "കണ്ണൂർ റെയിൽവേ സ്റ്റേഷൻ",
-      "തൽക്ഷണം"
+      "Washing Machine Inlet Drain Fitting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_71",
-    "name": "അന്തർസംസ്ഥാന ചരക്ക് ലോറി",
-    "en": "Interstate Goods Truck",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "Water Softener Unit Connection",
+    "en": "Water Softener Unit Connection",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "കർണാടക / തമിഴ്നാട് റൂട്ട്",
-      "ഓൾ ഇന്ത്യ പെർമിറ്റ്",
-      "സുരക്ഷിത ചരക്കുനീക്കം",
-      "ജിപിഎസ് ട്രാക്കിംഗ്"
+      "Water Softener Unit Connection Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_72",
-    "name": "ട്രാക്ടർ കൃഷി ഓട്ടം",
-    "en": "Tractor Ploughing / Transport",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "Wall-Hung Commode Installation",
+    "en": "Wall-Hung Commode Installation",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "നിലം ഉഴൽ",
-      "പാടം പണി",
-      "മണ്ണ് നിരപ്പാക്കൽ",
-      "ട്രോളി ചരക്ക്"
+      "Wall-Hung Commode Installation Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_73",
-    "name": "എക്സ്കവേറ്റർ / ജെസിബി ഓപ്പറേറ്റർ",
-    "en": "JCB / Excavator Operator",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "Concealed Cistern Flush Tank Repair",
+    "en": "Concealed Cistern Flush Tank Repair",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "മണ്ണ് മാറ്റൽ",
-      "തറ കിളയ്ക്കൽ",
-      "റോഡ് പണി",
-      "തടസ്സങ്ങൾ മാറ്റൽ"
+      "Concealed Cistern Flush Tank Repair Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_74",
-    "name": "ക്രെയിൻ സർവീസ്",
-    "en": "Hydraulic Crane Service",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "European Water Closet Fitting",
+    "en": "European Water Closet Fitting",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ഭാരമുള്ള സാധനങ്ങൾ ഉയർത്തൽ",
-      "കൺസ്ട്രക്ഷൻ ലിഫ്റ്റിംഗ്",
-      "മെഷീൻ ഇറക്കൽ",
-      "സുരക്ഷ"
+      "European Water Closet Fitting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_75",
-    "name": "ലേഡീസ് ഡ്രൈവർ സർവീസ്",
-    "en": "Lady Chauffeur Service",
-    "icon": "🛺",
-    "category": "driver",
+    "name": "Indian Squatting Pan Installation",
+    "en": "Indian Squatting Pan Installation",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "സ്ത്രീകൾക്കും കുടുംബങ്ങൾക്കും",
-      "സുരക്ഷിതമായ ഡ്രൈവിംഗ്",
-      "ലേഡീസ് ഓട്ടോ / കാർ",
-      "സ്നേഹപൂർവ്വം"
+      "Indian Squatting Pan Installation Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_76",
-    "name": "സ്പ്ലിറ്റ് എസി ഇൻസ്റ്റലേഷൻ",
-    "en": "Split AC Installation",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Single Lever Diverter Valve Repair",
+    "en": "Single Lever Diverter Valve Repair",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ബ്രായ്ക്കറ്റ് ഫിറ്റിംഗ്",
-      "കോപ്പർ പൈപ്പിങ്",
-      "വാക്വം ചെയ്യൽ",
-      "ടെസ്റ്റിംഗ്"
+      "Single Lever Diverter Valve Repair Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_77",
-    "name": "എസി വാട്ടർ ജെറ്റ് ഡീപ് സർവീസിങ്",
-    "en": "AC Jet Pump Cleaning",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Thermostatic Shower Mixer Fitting",
+    "en": "Thermostatic Shower Mixer Fitting",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ഇൻഡോർ & ഔട്ട്ഡോർ വാഷ്",
-      "ബ്ലോവർ ക്ലീനിങ്",
-      "കൂളിംഗ് കോയിൽ വാഷ്",
-      "ഫിൽട്ടർ മാറ്റൽ"
+      "Thermostatic Shower Mixer Fitting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_78",
-    "name": "എസി ഗ്യാസ് റീഫില്ലിംഗ്",
-    "en": "AC Gas Charging / Leak Fix",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Overhead Rain Shower Installation",
+    "en": "Overhead Rain Shower Installation",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "R32 / R410A ഗ്യാസ്",
-      "നൈട്രജൻ പ്രഷർ ടെസ്റ്റ്",
-      "ഫ്ലെയർ നട്ട് ലീക്ക് ഫിക്സ്",
-      "തണുപ്പ് കൂട്ടൽ"
+      "Overhead Rain Shower Installation Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_79",
-    "name": "ഇൻവെർട്ടർ എസി പിസിബി ബോർഡ് റിപ്പയർ",
-    "en": "Inverter AC PCB Board",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Hand Jet Spray Replacement",
+    "en": "Hand Jet Spray Replacement",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "മദർബോർഡ് ചിപ്പ് ലെവൽ",
-      "സെൻസർ മാറ്റൽ",
-      "എറർ കോഡ് പരിഹാരം",
-      "സ്പെയർ പാർട്സ്"
+      "Hand Jet Spray Replacement Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_80",
-    "name": "ഫ്രിഡ്ജ് തണുപ്പ് കംപ്ലയിന്റ് പരിഹാരം",
-    "en": "Refrigerator Cooling Repair",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Countertop Wash Basin Fitting",
+    "en": "Countertop Wash Basin Fitting",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "കംപ്രസർ ചെക്ക്",
-      "ഗ്യാസ് ചാർജിംഗ്",
-      "റിലേ മാറ്റൽ",
-      "ഡീഫ്രോസ്റ്റ് ടൈമർ"
+      "Countertop Wash Basin Fitting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_81",
-    "name": "സിംഗിൾ & ഡബിൾ ഡോർ ഫ്രിഡ്ജ് സർവീസ്",
-    "en": "Single/Double Door Fridge",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Under-Counter Basin Installation",
+    "en": "Under-Counter Basin Installation",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ഡോർ ഗാസ്കറ്റ് മാറ്റൽ",
-      "ഐസ് അടിഞ്ഞുകൂടൽ മാറ്റൽ",
-      "തെർമോസ്റ്റാറ്റ്",
-      "ഫാൻ മോട്ടോർ"
+      "Under-Counter Basin Installation Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_82",
-    "name": "ഡീപ് ഫ്രീസർ സർവീസിങ്",
-    "en": "Deep Freezer Commercial Service",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Half Pedestal Basin Fitting",
+    "en": "Half Pedestal Basin Fitting",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ഷോപ്പ് ഫ്രീസർ",
-      "കംപ്രസർ മാറ്റൽ",
-      "ടെമ്പറേച്ചർ കൺട്രോളർ",
-      "ലീക്കേജ് ഫിക്സ്"
+      "Half Pedestal Basin Fitting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_83",
-    "name": "ഫ്രണ്ട് ലോഡ് വാഷിംഗ് മെഷീൻ സർവീസ്",
-    "en": "Front Load Washing Machine",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Hot & Cold Water Basin Mixer",
+    "en": "Hot & Cold Water Basin Mixer",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ഡ്രം ബെയറിംഗ് മാറ്റൽ",
-      "ഡ്രെയിൻ പമ്പ്",
-      "ഡോർ ലോക്ക് സ്വിച്ച്",
-      "വാട്ടർ ഇൻലെറ്റ്"
+      "Hot & Cold Water Basin Mixer Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_84",
-    "name": "ടോപ്പ് ലോഡ് വാഷിംഗ് മെഷീൻ റിപ്പയർ",
-    "en": "Top Load Washing Machine",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Bathroom Floor Drain Trap Cleaning",
+    "en": "Bathroom Floor Drain Trap Cleaning",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ഗിയർ ബോക്സ് മാറ്റൽ",
-      "ബെൽറ്റ് മാറ്റൽ",
-      "സ്പിൻ ഡ്രയർ കംപ്ലയിന്റ്",
-      "വൈബ്രേഷൻ ഫിക്സ്"
+      "Bathroom Floor Drain Trap Cleaning Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_85",
-    "name": "മൈക്രോവേവ് അവൻ സർവീസ്",
-    "en": "Microwave Oven Repair",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Bathtub Plumbing & Installation",
+    "en": "Bathtub Plumbing & Installation",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "മാഗ്നട്രോൺ മാറ്റൽ",
-      "ഹൈ വോൾട്ടേജ് ഫ്യൂസ്",
-      "ടച്ച് പാനൽ റിപ്പയർ",
-      "ഹീറ്റിംഗ് പ്രോബ്ലം"
+      "Bathtub Plumbing & Installation Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_86",
-    "name": "വാട്ടർ കൂളർ മെഷീൻ സർവീസ്",
-    "en": "Water Cooler Chiller Service",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Jacuzzi Water Jet Plumbing",
+    "en": "Jacuzzi Water Jet Plumbing",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "കൊമേഴ്സ്യൽ കൂളർ",
-      "കംപ്രസർ സർവീസ്",
-      "ടാപ്പ് മാറ്റൽ",
-      "കൂളിംഗ് ടെസ്റ്റ്"
+      "Jacuzzi Water Jet Plumbing Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_87",
-    "name": "എസി അൺഇൻസ്റ്റലേഷൻ & ഷിഫ്റ്റിംഗ്",
-    "en": "AC Uninstallation & Relocation",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Glass Partition Shower Enclosure",
+    "en": "Glass Partition Shower Enclosure",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ഗ്യാസ് പമ്പ് ഡൗൺ",
-      "പൈപ്പ് സുരക്ഷിതമായി അഴിക്കൽ",
-      "റീ-ഫിറ്റിംഗ്",
-      "പുതിയ പൈപ്പ്"
+      "Glass Partition Shower Enclosure Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_88",
-    "name": "കൊമേഴ്സ്യൽ കോൾഡ് സ്റ്റോറേജ് വർക്ക്",
-    "en": "Commercial Cold Storage",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Kitchen Sink Drain Unclogging",
+    "en": "Kitchen Sink Drain Unclogging",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ചില്ലർ റൂം",
-      "ഇൻഡസ്ട്രിയൽ കംപ്രസർ",
-      "ഫ്രിയോൺ ഗ്യാസ്",
-      "ഓട്ടോമാറ്റിക് കൺട്രോൾ"
+      "Kitchen Sink Drain Unclogging Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_89",
-    "name": "ഇൻഡക്ഷൻ കുക്കർ റിപ്പയർ",
-    "en": "Induction Cooker Repair",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Heavy Sewer Line Rodding Work",
+    "en": "Heavy Sewer Line Rodding Work",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ഐജിബിറ്റി മാറ്റൽ",
-      "കോയിൽ റിപ്പയർ",
-      "ഫാൻ മാറ്റൽ",
-      "ടച്ച് ബോർഡ്"
+      "Heavy Sewer Line Rodding Work Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_90",
-    "name": "ഗ്യാസ് ഗീസർ സർവീസ്",
-    "en": "Gas Geyser Repair",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Septic Tank Inlet Outlet Connection",
+    "en": "Septic Tank Inlet Outlet Connection",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ബർണർ ക്ലീൻ",
-      "ഡയഫ്രം മാറ്റൽ",
-      "ഓട്ടോ ഇഗ്നിഷൻ",
-      "വാട്ടർ ഫ്ലോ ചെക്ക്"
+      "Septic Tank Inlet Outlet Connection Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_91",
-    "name": "വാട്ടർ ഡിസ്പെൻസർ റിപ്പയർ",
-    "en": "Water Dispenser Service",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Gully Trap & Inspection Chamber",
+    "en": "Gully Trap & Inspection Chamber",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ഹോട്ട് & കോൾഡ് ടാങ്ക്",
-      "തെർമോസ്റ്റാറ്റ്",
-      "ടാപ്പ് മാറ്റൽ",
-      "സാനിറ്റൈസിങ്"
+      "Gully Trap & Inspection Chamber Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_92",
-    "name": "ഡിഷ്‌വാഷർ ഇൻസ്റ്റലേഷൻ & സർവീസ്",
-    "en": "Dishwasher Service",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Manhole Cover Replacement",
+    "en": "Manhole Cover Replacement",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "സ്പ്രേ ആം ക്ലീൻ",
-      "ഹീറ്റിംഗ് എലമെന്റ്",
-      "ഡ്രെയിനേജ് പമ്പ്",
-      "വാട്ടർ സോഫ്റ്റ്‌നർ"
+      "Manhole Cover Replacement Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_93",
-    "name": "ക്ലോത്ത് ഡ്രയർ മെഷീൻ റിപ്പയർ",
-    "en": "Clothes Dryer Repair",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Grease Trap Cleaning & Pipe Flush",
+    "en": "Grease Trap Cleaning & Pipe Flush",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ഹീറ്റിംഗ് കോയിൽ",
-      "ഡ്രം ബെൽറ്റ്",
-      "തെർമൽ ഫ്യൂസ്",
-      "ലിന്റ് ഫിൽട്ടർ"
+      "Grease Trap Cleaning & Pipe Flush Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_94",
-    "name": "ഐസ്ക്രീം പ്ലാന്റ് ഫ്രീസർ റിപ്പയർ",
-    "en": "Ice Cream Plant Freezer",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Storage Geyser Installation (10L-25L)",
+    "en": "Storage Geyser Installation (10L-25L)",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ഹാർഡ്നിംഗ് റൂം",
-      "സബ് സീറോ കൂളിംഗ്",
-      "ഡിജിറ്റൽ കൺട്രോളർ",
-      "ഗ്യാസ് ലീക്ക്"
+      "Storage Geyser Installation (10L-25L) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_95",
-    "name": "കാസറ്റ് എസി ഓഫീസ് സർവീസ്",
-    "en": "Cassette AC Office Service",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Instant Water Geyser Fitting (3L)",
+    "en": "Instant Water Geyser Fitting (3L)",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "സീലിംഗ് എസി",
-      "ഡ്രെയിൻ പമ്പ് ചെക്ക്",
-      "ഗ്രിൽ ക്ലീനിംഗ്",
-      "റിമോട്ട് സെൻസർ"
+      "Instant Water Geyser Fitting (3L) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_96",
-    "name": "എയർ കൂളർ റിപ്പയറിങ്",
-    "en": "Air Cooler Repair",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Solar Water Heater Roof Plumbing",
+    "en": "Solar Water Heater Roof Plumbing",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ഹണികോമ്പ് പാഡ് മാറ്റൽ",
-      "വാട്ടർ പമ്പ്",
-      "സ്വിംഗ് മോട്ടോർ",
-      "ഫാൻ ബ്ലേഡ്"
+      "Solar Water Heater Roof Plumbing Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_97",
-    "name": "മിക്സി & ഗ്രൈൻഡർ റിപ്പയർ",
-    "en": "Mixer & Wet Grinder Repair",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Central Water Filtration Sand Filter",
+    "en": "Central Water Filtration Sand Filter",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ആർമേച്ചർ മാറ്റൽ",
-      "കാർബൺ ബ്രഷ്",
-      "കപ്ലർ മാറ്റൽ",
-      "ബെയറിംഗ്"
+      "Central Water Filtration Sand Filter Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_98",
-    "name": "കിച്ചൻ എക്‌സ്‌ഹോസ്റ്റ് ഫാൻ റിപ്പയർ",
-    "en": "Kitchen Exhaust Fan",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "Iron Removal Filter for Borewell",
+    "en": "Iron Removal Filter for Borewell",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "ഹെവി ഡ്യൂട്ടി മോട്ടോർ",
-      "ഗ്രീസ് ക്ലീനിംഗ്",
-      "ലൂബ്രിക്കേഷൻ",
-      "ലൂവർ ഫിക്സ്"
+      "Iron Removal Filter for Borewell Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_99",
-    "name": "വാക്വം ക്ലീനർ സർവീസിങ്",
-    "en": "Vacuum Cleaner Repair",
-    "icon": "❄️",
-    "category": "acrepair",
+    "name": "RO Membrane Flush & Filter Change",
+    "en": "RO Membrane Flush & Filter Change",
+    "icon": "🚰",
+    "category": "plumber",
     "specs": [
-      "മോട്ടോർ സക്ഷൻ റിപ്പയർ",
-      "ഫിൽട്ടർ മാറ്റൽ",
-      "ഹോസ് പൈപ്പ് ഫിക്സ്",
-      "കോഡ് റീവൈൻഡ്"
+      "RO Membrane Flush & Filter Change Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_100",
-    "name": "അയൺ ബോക്സ് & സ്റ്റീമർ സർവീസ്",
-    "en": "Iron Box & Garment Steamer",
+    "name": "Split AC Full Chemical Foam Wash",
+    "en": "Split AC Full Chemical Foam Wash",
     "icon": "❄️",
     "category": "acrepair",
     "specs": [
-      "സ്റ്റീം അയൺ തെർമോസ്റ്റാറ്റ്",
-      "ഹീറ്റിംഗ് പ്ലേറ്റ്",
-      "വയർ മാറ്റൽ",
-      "ഡീസ്കെയിലിംഗ്"
+      "Split AC Full Chemical Foam Wash Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_101",
-    "name": "തേക്ക് തടി കട്ടിൽ & ഡൈനിംഗ് ടേബിൾ",
-    "en": "Teak Wood Cot & Table",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "Split AC Jet Pump Water Servicing",
+    "en": "Split AC Jet Pump Water Servicing",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "തേക്ക് തടി പണി",
-      "കസ്റ്റം സൈസ്",
-      "ഹെവി ഫ്രെയിം",
-      "ഈടുനിൽക്കുന്ന ഫിനിഷ്"
+      "Split AC Jet Pump Water Servicing Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_102",
-    "name": "മോഡുലാർ കിച്ചൻ കാബിനറ്റ് വർക്ക്",
-    "en": "Modular Kitchen Cabinet",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "Split AC Copper Piping & Concealing",
+    "en": "Split AC Copper Piping & Concealing",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "മറൈൻ പ്ലൈവുഡ്",
-      "അക്രിലിക് ഷട്ടറുകൾ",
-      "സോഫ്റ്റ് ക്ലോസ് ഹിഞ്ചസ്",
-      "ബാസ്കറ്റുകൾ"
+      "Split AC Copper Piping & Concealing Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_103",
-    "name": "വാതിൽ ലോക്ക് ഫിറ്റിംഗ് & മാറ്റൽ",
-    "en": "Door Lock Fitting & Repair",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "Split AC Uninstallation & Shifting",
+    "en": "Split AC Uninstallation & Shifting",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "ഗോദ്‌റെജ് ലോക്ക്",
-      "മോർട്ടൈസ് ലോക്ക്",
-      "മാഗ്നറ്റിക് ക്യാച്ചർ",
-      "കീ ഡ്യൂപ്ലിക്കേഷൻ"
+      "Split AC Uninstallation & Shifting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_104",
-    "name": "കബോർഡ് & വാർഡ്രോബ് നിർമ്മാണം",
-    "en": "Cupboard & Wardrobe",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "Split AC Wall Bracket Mounting",
+    "en": "Split AC Wall Bracket Mounting",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "സ്ലൈഡിങ് വാർഡ്രോബ്",
-      "ലാമിനേറ്റ് ഒട്ടിക്കൽ",
-      "ഹാങ്ങർ റോഡ്",
-      "ലോക്കർ അറ"
+      "Split AC Wall Bracket Mounting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_105",
-    "name": "മര ജനലുകൾ & വാതിലുകൾ റിപ്പയർ",
-    "en": "Wood Window & Door Repair",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "Split AC Outdoor Unit Stand Fitting",
+    "en": "Split AC Outdoor Unit Stand Fitting",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "ഉരസൽ മാറ്റൽ",
-      "ചട്ടം ലെവലിങ്",
-      "ഹിഞ്ചസ് ടൈറ്റനിംഗ്",
-      "ടവർ ബോൾട്ട്"
+      "Split AC Outdoor Unit Stand Fitting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_106",
-    "name": "വുഡ് പോളിഷിംഗ് & റോയൽ ഫിനിഷിംഗ്",
-    "en": "Wood Polishing & Melamine",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "Split AC Indoor Drain Pipe Clean",
+    "en": "Split AC Indoor Drain Pipe Clean",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "മെലാമൈൻ പോളിഷ്",
-      "പിയു പോളിഷ്",
-      "സ്പിരിറ്റ് പോളിഷ്",
-      "വുഡ് ഗ്രെയിൻ ഫിനിഷ്"
+      "Split AC Indoor Drain Pipe Clean Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_107",
-    "name": "ഓഫീസ് ടേബിൾ & കസേര റിപ്പയർ",
-    "en": "Office Table & Chair Repair",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "Split AC Blower Motor Repair",
+    "en": "Split AC Blower Motor Repair",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "ഹൈഡ്രോളിക് ചെയർ സർവീസ്",
-      "വീൽ മാറ്റൽ",
-      "ടേബിൾ ഡ്രോയർ ലോക്ക്",
-      "ടോപ്പ് ലാമിനേഷൻ"
+      "Split AC Blower Motor Repair Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_108",
-    "name": "പ്ലൈവുഡ് പാർട്ടീഷൻ വാൾ",
-    "en": "Plywood Partition Wall",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "Split AC Swing Motor Replacement",
+    "en": "Split AC Swing Motor Replacement",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "റൂം ഡിവൈഡർ",
-      "സൗണ്ട് ഇൻസുലേഷൻ",
-      "ജിപ്സം & പ്ലൈവുഡ്",
-      "ഡോർ ഫിറ്റിംഗ്"
+      "Split AC Swing Motor Replacement Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_109",
-    "name": "തടി സോഫ കുഷ്യൻ ഫ്രെയിം",
-    "en": "Wooden Sofa Frame Making",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "Split AC Remote Sensor PCB Fix",
+    "en": "Split AC Remote Sensor PCB Fix",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "തേക്ക് / ഈട്ടി സോഫ",
-      "കുഷ്യൻ ബേസ് ബോർഡ്",
-      "ആംറെസ്റ്റ് പോളിഷിംഗ്",
-      "സ്ട്രോങ്ങ് ജോയിന്റ്"
+      "Split AC Remote Sensor PCB Fix Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_110",
-    "name": "പൂജാമുറി മരപ്പണി & വാതിൽ",
-    "en": "Pooja Room Wood Carving",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "Split AC Compressor Capacitor Change",
+    "en": "Split AC Compressor Capacitor Change",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "തടി കൊത്തുപണികൾ",
-      "മണി ഘടിപ്പിച്ച വാതിൽ",
-      "പൂജ മണ്ഡപം",
-      "വിളക്ക് വെയ്ക്കുന്ന തട്ട്"
+      "Split AC Compressor Capacitor Change Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_111",
-    "name": "തടി സ്റ്റെയർകെയ്സ് ഹാൻഡ്‌റെയിൽ",
-    "en": "Wooden Staircase Handrail",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "Split AC Expansion Valve Repair",
+    "en": "Split AC Expansion Valve Repair",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "തേക്ക് ഹാൻഡ്‌റെയിൽ",
-      "ബാലസ്റ്റർ ഫിറ്റിംഗ്",
-      "വളവുകൾ മിനുക്കൽ",
-      "ഗ്ലോസ് പോളിഷ്"
+      "Split AC Expansion Valve Repair Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_112",
-    "name": "തടി സീലിംഗ് & വാൾ പാനലിംഗ്",
-    "en": "Wooden Ceiling & Paneling",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "Split AC Filter Cleaning & Disinfect",
+    "en": "Split AC Filter Cleaning & Disinfect",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "തടി പ്ലാങ്കുകൾ",
-      "എൽഇഡി ഗ്രൂവ്",
-      "അക്കോസ്റ്റിക് പാനൽ",
-      "ഡെക്കറേറ്റീവ് ഡിസൈൻ"
+      "Split AC Filter Cleaning & Disinfect Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_113",
-    "name": "ഡ്രോയർ സ്ലൈഡർ & ഹിഞ്ചസ് ഫിറ്റിംഗ്",
-    "en": "Drawer Channel & Hinges",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "Split AC Anti-Rust Coil Spray",
+    "en": "Split AC Anti-Rust Coil Spray",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "ടെലിസ്കോപ്പിക് ചാനൽ",
-      "ഓട്ടോ ക്ലോസ് ഹിഞ്ച്",
-      "ഹാൻഡിൽ മാറ്റൽ",
-      "അലൈൻമെന്റ്"
+      "Split AC Anti-Rust Coil Spray Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_114",
-    "name": "സ്കൂൾ & കോളേജ് ബെഞ്ച് ഡെസ്ക്",
-    "en": "School Desk & Bench Making",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "Split AC Thermal Insulation Wrap",
+    "en": "Split AC Thermal Insulation Wrap",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "ബൾക്ക് ഫർണിച്ചർ",
-      "തടി & ഇരുമ്പ് കോമ്പിനേഷൻ",
-      "ഡ്യൂറബിൾ വുഡ്",
-      "പെയിന്റിംഗ്"
+      "Split AC Thermal Insulation Wrap Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_115",
-    "name": "ഷോപ്പ് ഡിസ്പ്ലേ റാക്കുകൾ",
-    "en": "Wooden Shop Display Racks",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "Split AC R32 Refrigerant Top Up",
+    "en": "Split AC R32 Refrigerant Top Up",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "ഗ്ലാസ് & വുഡ് ഷെൽഫ്",
-      "എൽഇഡി ലൈറ്റ് പ്രൊവിഷൻ",
-      "സ്റ്റോറേജ് കബോർഡ്",
-      "കൗണ്ടർ ടേബിൾ"
+      "Split AC R32 Refrigerant Top Up Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_116",
-    "name": "ഡ്രസ്സിംഗ് ടേബിൾ & മിറർ ഫ്രെയിം",
-    "en": "Dressing Table & Mirror Frame",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "Split AC R410A Eco Gas Full Charge",
+    "en": "Split AC R410A Eco Gas Full Charge",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "ഫുൾ ലെങ്ത് മിറർ",
-      "മേക്കപ്പ് ഡ്രോയർ",
-      "തടി ഫ്രെയിം",
-      "പോളിഷ്"
+      "Split AC R410A Eco Gas Full Charge Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_117",
-    "name": "തടി വാതിലുകൾ പ്ലെയിനിങ് & ഫിക്സിംഗ്",
-    "en": "Door Planing & Leveling",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "R22 Refrigerant Gas Refilling",
+    "en": "R22 Refrigerant Gas Refilling",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "തറയിൽ ഉരസൽ പരിഹാരം",
-      "മഴക്കാലത്ത് വീർക്കൽ മാറ്റൽ",
-      "സൈഡ് ചെത്തൽ",
-      "റീ-ഫിറ്റിംഗ്"
+      "R22 Refrigerant Gas Refilling Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_118",
-    "name": "ഫർണിച്ചർ റീ-അപ്ഹോൾസ്റ്ററി",
-    "en": "Furniture Re-upholstery",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "AC Flare Nut Nitrogen Leak Test",
+    "en": "AC Flare Nut Nitrogen Leak Test",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "പഴയ സോഫ തുണി മാറ്റൽ",
-      "ഫോം റീപ്ലേസ്മെന്റ്",
-      "ലെതറെറ്റ് ഒട്ടിക്കൽ",
-      "സ്പ്രിംഗ് ഫിക്സിംഗ്"
+      "AC Flare Nut Nitrogen Leak Test Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_119",
-    "name": "ടിവി യൂണിറ്റ് & വാൾ ഷെൽഫുകൾ",
-    "en": "TV Wall Unit & Shelves",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "AC Aluminum Condenser Pin Hole Fix",
+    "en": "AC Aluminum Condenser Pin Hole Fix",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "ഫ്ലോട്ടിംഗ് ടിവി ഷെൽഫ്",
-      "കേബിൾ ഒളിപ്പിക്കൽ കൺസീൽഡ്",
-      "ഡിസ്പ്ലേ ബോക്സുകൾ",
-      "ലാമിനേറ്റ് ഫിനിഷ്"
+      "AC Aluminum Condenser Pin Hole Fix Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_120",
-    "name": "ഷൂ റാക്ക് നിർമ്മാണം",
-    "en": "Wooden Shoe Rack Making",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "AC Copper Coil Brazing & Welding",
+    "en": "AC Copper Coil Brazing & Welding",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "വെന്റിലേഷൻ ഷട്ടർ",
-      "മൾട്ടി ടയർ റാക്ക്",
-      "സിറ്റിംഗ് കുഷ്യൻ ടോപ്പ്",
-      "കോംപാക്ട് ഡിസൈൻ"
+      "AC Copper Coil Brazing & Welding Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_121",
-    "name": "എക്സ്റ്റീരിയർ വുഡ് പ്രൊട്ടക്ഷൻ കോട്ട്",
-    "en": "Exterior Wood Preservation",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "AC Vacuum Pump Evacuation Service",
+    "en": "AC Vacuum Pump Evacuation Service",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "വെതർ പ്രൂഫ് വാർണിഷ്",
-      "ചിതൽ പ്രതിരോധ മരുന്ന്",
-      "സൺ പ്രൊട്ടക്ഷൻ ഓയിൽ",
-      "ഫംഗസ് കോട്ടിംഗ്"
+      "AC Vacuum Pump Evacuation Service Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_122",
-    "name": "ആന്റിക് ഫർണിച്ചർ റിസ്റ്റോറേഷൻ",
-    "en": "Antique Furniture Restoration",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "AC Suction Pipe Frosting Fix",
+    "en": "AC Suction Pipe Frosting Fix",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "പഴയ ഫർണിച്ചർ പുതുക്കൽ",
-      "തടി മാറ്റിവെയ്ക്കൽ",
-      "പരമ്പരാഗത പോളിഷ്",
-      "വിലമതിപ്പുള്ള റിപ്പയർ"
+      "AC Suction Pipe Frosting Fix Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_123",
-    "name": "തടി കൊണ്ടുള്ള ഡെക്കിംഗ് & ഗസീബോ",
-    "en": "Wooden Decking & Gazebo",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "AC Low Cooling Diagnostic Check",
+    "en": "AC Low Cooling Diagnostic Check",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "ഔട്ട്‌ഡോർ വുഡ് ഫ്ലോറിംഗ്",
-      "ഗാർഡൻ ഗസീബോ",
-      "തേക്ക് തൂണുകൾ",
-      "വാട്ടർ റെസിസ്റ്റന്റ്"
+      "AC Low Cooling Diagnostic Check Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_124",
-    "name": "കുട്ടികളുടെ കളിത്തൊട്ടിൽ & ബങ്ക് ബെഡ്",
-    "en": "Baby Cradle & Bunk Bed",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "Inverter AC Dual Inverter PCB Repair",
+    "en": "Inverter AC Dual Inverter PCB Repair",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "സേഫ്റ്റി റെയിലിംഗ്",
-      "സ്മൂത്ത് ഫിനിഷ്",
-      "ലളിതമായ ആട്ടത്തൊട്ടിൽ",
-      "സ്റ്റെയർകെയ്സ് ബെഡ്"
+      "Inverter AC Dual Inverter PCB Repair Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_125",
-    "name": "അടിയന്തര ആശാരി സഹായം",
-    "en": "Urgent Carpenter Service",
-    "icon": "🪚",
-    "category": "carpenter",
+    "name": "Inverter AC Outdoor Motherboard",
+    "en": "Inverter AC Outdoor Motherboard",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "വാതിൽ ലോക്ക് ജാമായത് തുറക്കൽ",
-      "ജനൽ ചില്ല് മാറ്റൽ",
-      "തൽക്ഷണ റിപ്പയർ",
-      "സേവന സന്നദ്ധത"
+      "Inverter AC Outdoor Motherboard Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_126",
-    "name": "ഇന്റീരിയർ റോയൽ പെയിന്റിംഗ്",
-    "en": "Interior Luxury Painting",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Cassette AC Ceiling Installation",
+    "en": "Cassette AC Ceiling Installation",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "റോയൽ ഷൈൻ",
-      "റോളിംഗ് പെയിന്റിംഗ്",
-      "ഡബിൾ കോട്ട്",
-      "കളർ കോമ്പിനേഷൻ"
+      "Cassette AC Ceiling Installation Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_127",
-    "name": "വാൾ പുട്ടി & ലെവലിംഗ് വർക്ക്",
-    "en": "Wall Putty & Primer",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Cassette AC Filter Wash & Clean",
+    "en": "Cassette AC Filter Wash & Clean",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "ബിർള പുട്ടി",
-      "മിനുസപ്പെടുത്തൽ",
-      "പ്രൈമർ കോട്ടിംഗ്",
-      "ക്രാക്ക് ഫില്ലിംഗ്"
+      "Cassette AC Filter Wash & Clean Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_128",
-    "name": "എക്സ്റ്റീരിയർ വെതർ ഷീൽഡ് കോട്ടിംഗ്",
-    "en": "Exterior Weatherproof Coating",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Tower AC Maintenance for Halls",
+    "en": "Tower AC Maintenance for Halls",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "വെതർ കോട്ട്",
-      "ഫംഗസ് പ്രൂഫ്",
-      "മഴ പ്രതിരോധം",
-      "ഡ്യൂറബിലിറ്റി"
+      "Tower AC Maintenance for Halls Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_129",
-    "name": "ടെക്സ്ചർ ഡിസൈൻ വാൾ പെയിന്റിംഗ്",
-    "en": "Texture Wall Art & Stencil",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Ductable AC Duct Cleaning & Sanitizing",
+    "en": "Ductable AC Duct Cleaning & Sanitizing",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "റോയൽ പ്ലേ ടെക്സ്ചർ",
-      "സ്റ്റെൻസിൽ വർക്ക്",
-      "ഹൈലൈറ്റർ വാൾ",
-      "3D ഇഫക്ട്"
+      "Ductable AC Duct Cleaning & Sanitizing Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_130",
-    "name": "വാട്ടർപ്രൂഫിംഗ് റൂഫ് കോട്ടിംഗ്",
-    "en": "Roof Waterproofing Coating",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Single Door Fridge Gas Charging",
+    "en": "Single Door Fridge Gas Charging",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "ഡാംപ് പ്രൂഫ്",
-      "റൂഫ് ചോർച്ച മാറ്റൽ",
-      "ഫൈബർ മെഷ് കോട്ടിംഗ്",
-      "ടെറസ് സീലിങ്"
+      "Single Door Fridge Gas Charging Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_131",
-    "name": "മെറ്റൽ ഗേറ്റ് & ഗ്രിൽ പെയിന്റിംഗ്",
-    "en": "Metal Gate & Grill Enamel",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Double Door Frost Free Fridge Service",
+    "en": "Double Door Frost Free Fridge Service",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "റെഡ് ഓക്സൈഡ് പ്രൈമർ",
-      "ഇനാമൽ ഗ്ലോസ് പെയിന്റ്",
-      "തുരുമ്പ് നീക്കൽ",
-      "സ്പ്രേ കോട്ടിംഗ്"
+      "Double Door Frost Free Fridge Service Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_132",
-    "name": "വാൾപേപ്പർ ഫിക്സിംഗ് & മാറ്റൽ",
-    "en": "Wallpaper Installation & Removal",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Side-by-Side Inverter Fridge Repair",
+    "en": "Side-by-Side Inverter Fridge Repair",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "3D വാൾപേപ്പർ",
-      "ഇറക്കുമതി ചെയ്ത ഷീറ്റുകൾ",
-      "പെർഫെക്റ്റ് ജോയിന്റ്",
-      "വാൾപേപ്പർ മാറ്റൽ"
+      "Side-by-Side Inverter Fridge Repair Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_133",
-    "name": "പഴയ വീട് റീ-പെയിന്റിംഗ്",
-    "en": "Old House Repainting Package",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Refrigerator Defrost Timer Replacement",
+    "en": "Refrigerator Defrost Timer Replacement",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "പഴയ പെയിന്റ് ചുരണ്ടി മാറ്റൽ",
-      "ഫുൾ വാഷ്",
-      "പുട്ടി ടച്ച് അപ്പ്",
-      "സമ്പൂർണ്ണ പെയിന്റിംഗ്"
+      "Refrigerator Defrost Timer Replacement Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_134",
-    "name": "എണ്ണച്ചായം & ഇനാമൽ പെയിന്റിംഗ്",
-    "en": "Oil & Enamel Painting",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Refrigerator Bi-Metal Sensor Fix",
+    "en": "Refrigerator Bi-Metal Sensor Fix",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "തടി വാതിലുകൾ",
-      "ജനൽ ചട്ടങ്ങൾ",
-      "വാട്ടർപ്രൂഫ് ഇനാമൽ",
-      "ബ്രഷ് ഫിനിഷ്"
+      "Refrigerator Bi-Metal Sensor Fix Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_135",
-    "name": "വുഡ് പോളിഷ് & പിയു കോട്ടിംഗ്",
-    "en": "PU Wood Coating & Touchup",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Refrigerator Thermostat Control Repair",
+    "en": "Refrigerator Thermostat Control Repair",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "മെലാമൈൻ കോട്ട്",
-      "സ്പ്രേ പോളിഷ്",
-      "ഹൈ ഗ്ലോസ് ഫിനിഷ്",
-      "വുഡ് ഗ്രെയിൻ ഹൈലൈറ്റ്"
+      "Refrigerator Thermostat Control Repair Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_136",
-    "name": "ഡാംപ് ഷീൽഡ് ലീക്കേജ് പ്രൊട്ടക്ഷൻ",
-    "en": "Damp Shield Anti-leak Paint",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Fridge Door Rubber Gasket Change",
+    "en": "Fridge Door Rubber Gasket Change",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "ഭിത്തിയിലെ ഈർപ്പം മാറ്റൽ",
-      "ഉപ്പുപൊട്ടൽ തടയൽ",
-      "വാട്ടർ ബരിയർ",
-      "പ്രത്യേക കെമിക്കൽ"
+      "Fridge Door Rubber Gasket Change Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_137",
-    "name": "ജിപ്സം സീലിംഗ് പെയിന്റിംഗ്",
-    "en": "Gypsum Ceiling Painting",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Deep Freezer Commercial Service",
+    "en": "Deep Freezer Commercial Service",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "മാറ്റ് വൈറ്റ് ഫിനിഷ്",
-      "ലൈറ്റ് റിഫ്ലക്ഷൻ പെയിന്റ്",
-      "ഗ്രൂവ് പെയിന്റിംഗ്",
-      "സ്മൂത്ത് ലുക്ക്"
+      "Deep Freezer Commercial Service Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_138",
-    "name": "കുട്ടികളുടെ റൂം തീം പെയിന്റിംഗ്",
-    "en": "Kids Room Theme Cartoon Art",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Ice Cream Display Freezer Repair",
+    "en": "Ice Cream Display Freezer Repair",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "കാർട്ടൂൺ ചുവർചിത്രങ്ങൾ",
-      "ഗ്ലോ ഇൻ ഡാർക്ക്",
-      "തീം വാൾ ആർട്ട്",
-      "വാഷബിൾ പെയിന്റ്"
+      "Ice Cream Display Freezer Repair Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_139",
-    "name": "ഫംഗസ് & പായൽ നീക്കം ചെയ്യൽ പെയിന്റ്",
-    "en": "Anti-Fungal Pressure Wash",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Under-Counter Chiller Maintenance",
+    "en": "Under-Counter Chiller Maintenance",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "ഹൈ പ്രഷർ വാട്ടർ വാഷ്",
-      "ബയോ വാഷ് കെമിക്കൽ",
-      "പായൽ വരാതിരിക്കാൻ പെയിന്റ്",
-      "ക്ലീനിംഗ്"
+      "Under-Counter Chiller Maintenance Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_140",
-    "name": "സ്പ്രേ പെയിന്റിംഗ് സർവീസ്",
-    "en": "Airless Spray Painting",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Bottle Cooler Compressor Repair",
+    "en": "Bottle Cooler Compressor Repair",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "യന്ത്രവൽകൃത പെയിന്റിംഗ്",
-      "ഫാസ്റ്റ് ഫിനിഷ്",
-      "തുല്യമായ കവറേജ്",
-      "വലിയ കെട്ടിടങ്ങൾ"
+      "Bottle Cooler Compressor Repair Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_141",
-    "name": "കൊമേഴ്സ്യൽ ബിൽഡിംഗ് പെയിന്റിംഗ്",
-    "en": "Commercial High-rise Painting",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Commercial Water Cooler Service",
+    "en": "Commercial Water Cooler Service",
+    "icon": "❄️",
+    "category": "acrepair",
     "specs": [
-      "റോപ്പ് ആക്സസ് പെയിന്റർമാർ",
-      "സ്കാഫോൾഡിങ്",
-      "ഷോപ്പിംഗ് കോംപ്ലക്സ്",
-      "സേഫ്റ്റി"
+      "Commercial Water Cooler Service Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_142",
-    "name": "റൂഫിംഗ് ഷീറ്റ് പെയിന്റിംഗ്",
-    "en": "Roofing Sheet Painting",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Modular Kitchen Marine Ply Design",
+    "en": "Modular Kitchen Marine Ply Design",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "ഹീറ്റ് റിഫ്ലക്റ്റീവ് പെയിന്റ്",
-      "ചൂട് കുറയ്ക്കൽ",
-      "തുരുമ്പ് തടയൽ",
-      "ഷീറ്റ് ലൈഫ് കൂട്ടൽ"
+      "Modular Kitchen Marine Ply Design Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_143",
-    "name": "എപ്പോക്സി ഫ്ലോർ പെയിന്റിംഗ്",
-    "en": "Epoxy Floor Coating",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Acrylic Finish Kitchen Shutters",
+    "en": "Acrylic Finish Kitchen Shutters",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "ഗാരേജ് ഫ്ലോറിംഗ്",
-      "ഫാക്ടറി ഫ്ലോർ",
-      "കെമിക്കൽ റെസിസ്റ്റന്റ്",
-      "ഷൈനിംഗ് ഫിനിഷ്"
+      "Acrylic Finish Kitchen Shutters Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_144",
-    "name": "മാർബിൾ പോളിഷിംഗ്",
-    "en": "Marble & Italian Stone Polishing",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Laminate Finish Modular Cabinets",
+    "en": "Laminate Finish Modular Cabinets",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "ഡയമണ്ട് പാഡ് പോളിഷ്",
-      "മിറർ ഷൈൻ ഫിനിഷ്",
-      "അഴുക്ക് നീക്കൽ",
-      "ക്രിസ്റ്റലൈസേഷൻ"
+      "Laminate Finish Modular Cabinets Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_145",
-    "name": "ഗ്രാനൈറ്റ് ഷൈനിംഗ് വർക്ക്",
-    "en": "Granite Edge Polishing & Seal",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Soft-Close Tandem Drawer Fitting",
+    "en": "Soft-Close Tandem Drawer Fitting",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "എഡ്ജ് മോൾഡിങ് പോളിഷ്",
-      "ടോപ്പ് സീലർ കോട്ടിംഗ്",
-      "കറ നീക്കൽ",
-      "ഗ്ലോസ്സ് റിസ്റ്റോർ"
+      "Soft-Close Tandem Drawer Fitting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_146",
-    "name": "ടൈൽ ഗ്രൗട്ടിംഗ് & കളറിംഗ്",
-    "en": "Tile Grouting & Coloring",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Stainless Steel Kitchen Basket Pullout",
+    "en": "Stainless Steel Kitchen Basket Pullout",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "എപ്പോക്സി ഗ്രൗട്ട്",
-      "വാട്ടർപ്രൂഫ് ജോയിന്റ്",
-      "കളർ മാച്ചിംഗ്",
-      "പഴയ ഗ്രൗട്ട് മാറ്റൽ"
+      "Stainless Steel Kitchen Basket Pullout Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_147",
-    "name": "സിമന്റ് പെയിന്റിംഗ്",
-    "en": "Economic Cement Paint",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Kitchen Corner Carousel Fitting",
+    "en": "Kitchen Corner Carousel Fitting",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "സ്നോസെം പെയിന്റിംഗ്",
-      "മതിൽ പെയിന്റിംഗ്",
-      "സാമ്പത്തിക ലാഭം",
-      "ഡ്യൂറബിൾ"
+      "Kitchen Corner Carousel Fitting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_148",
-    "name": "വീടിന്റെ അതിർത്തി മതിൽ പെയിന്റിംഗ്",
-    "en": "Compound Wall Painting",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Overhead Wall Cabinet Mounting",
+    "en": "Overhead Wall Cabinet Mounting",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "എക്സ്റ്റീരിയർ പ്രൈമർ",
-      "ഡബിൾ കോട്ട് കളർ",
-      "വെതർ പ്രൂഫിംഗ്",
-      "ഗേറ്റ് പില്ലർ ഡിസൈൻ"
+      "Overhead Wall Cabinet Mounting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_149",
-    "name": "ട്രസ്സ് വർക്ക് പ്രൈമർ & പെയിന്റ്",
-    "en": "Truss Work Red Oxide & Paint",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Kitchen Chimney Wooden Box Cover",
+    "en": "Kitchen Chimney Wooden Box Cover",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "ജിഐ പൈപ്പ് പെയിന്റിംഗ്",
-      "മെറ്റൽ പ്രൈമർ",
-      "വെതർ ഇനാമൽ",
-      "റൂഫ് പ്രൊട്ടക്ഷൻ"
+      "Kitchen Chimney Wooden Box Cover Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_150",
-    "name": "പെയിന്റിംഗ് കളർ കൺസൾട്ടേഷൻ",
-    "en": "Color Consultation & 3D Preview",
-    "icon": "🎨",
-    "category": "painter",
+    "name": "Tall Grocery Pantry Unit Making",
+    "en": "Tall Grocery Pantry Unit Making",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "വീടിന്റെ ഫോട്ടോയിൽ പ്രിവ്യൂ",
-      "കളർ ഷേഡ് തിരഞ്ഞെടുപ്പ്",
-      "എസ്റ്റിമേറ്റ് ബജറ്റ്",
-      "വിദഗ്ദ്ധോപദേശം"
+      "Tall Grocery Pantry Unit Making Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_151",
-    "name": "ഫുൾ ഹോം ഡീപ് ക്ലീനിംഗ്",
-    "en": "Full House Deep Cleaning",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Breakfast Counter Wooden Top",
+    "en": "Breakfast Counter Wooden Top",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "മുഴുവൻ വീട് വാക്വമിങ്",
-      "ഫ്ലോർ സ്ക്രബ്ബിങ്",
-      "ജനൽ ഗ്ലാസ് വാഷ്",
-      "സാനിറ്റൈസിങ്"
+      "Breakfast Counter Wooden Top Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_152",
-    "name": "വാട്ടർ ടാങ്ക് മെഷീൻ വാഷ്",
-    "en": "Water Tank Pressure Cleaning",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Cutlery Tray & Utensil Organizers",
+    "en": "Cutlery Tray & Utensil Organizers",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "പ്രഷർ വാഷർ",
-      "ചെളി നീക്കൽ",
-      "ബ്ലീച്ചിംഗ് ട്രീറ്റ്മെന്റ്",
-      "അണുനശീകരണം"
+      "Cutlery Tray & Utensil Organizers Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_153",
-    "name": "കിണർ ചെളി നീക്കലും വൃത്തിയാക്കലും",
-    "en": "Well Cleaning & Desilting",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Hettich Soft Hinges Setup",
+    "en": "Hettich Soft Hinges Setup",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "കിണറ്റിൽ ഇറങ്ങി ക്ലീനിംഗ്",
-      "ചെളി കോരൽ",
-      "നീരുറവ തെളിക്കൽ",
-      "കുമ്മായം ഇടൽ"
+      "Hettich Soft Hinges Setup Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_154",
-    "name": "ബാത്ത്റൂം ആസിഡ് വാഷ് & ടൈൽ ക്ലീൻ",
-    "en": "Bathroom Acid Wash & De-scaling",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Teak Wood Main Door Carving & Fit",
+    "en": "Teak Wood Main Door Carving & Fit",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "ടൈൽസിലെ മഞ്ഞക്കറ മാറ്റൽ",
-      "ക്ലോസറ്റ് ഡീപ് ക്ലീൻ",
-      "ടാപ്പ് തിളക്കൽ",
-      "ദുർഗന്ധം മാറ്റൽ"
+      "Teak Wood Main Door Carving & Fit Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_155",
-    "name": "സോഫ ഷാംപൂ വാഷ് & വാക്വം",
-    "en": "Sofa Vacuum Shampoo Wash",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Anjili Mahagony Door Frame Fitting",
+    "en": "Anjili Mahagony Door Frame Fitting",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "ഫോം വാഷ് മെഷീൻ",
-      "കറകൾ നീക്കൽ",
-      "ഡ്രൈ വാക്വമിങ്",
-      "സുഗന്ധം നൽകൽ"
+      "Anjili Mahagony Door Frame Fitting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_156",
-    "name": "കാർപെറ്റ് & മാറ്റുകൾ ഡ്രൈ ക്ലീനിംഗ്",
-    "en": "Carpet & Rug Wash",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Flush Door Installation & Planing",
+    "en": "Flush Door Installation & Planing",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "ഡീപ് ഷാംപൂയിങ്",
-      "പൊടി നീക്കം",
-      "ഡ്രൈയിങ് മെഷീൻ",
-      "അണുവിമുക്തമാക്കൽ"
+      "Flush Door Installation & Planing Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_157",
-    "name": "കിച്ചൻ എണ്ണക്കറ നീക്കൽ ക്ലീനിംഗ്",
-    "en": "Kitchen Chimney & Degreasing",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Waterproof PVC Bathroom Door",
+    "en": "Waterproof PVC Bathroom Door",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "ചിമ്മിനി ഫിൽട്ടർ വാഷ്",
-      "ടൈൽസിലെ എണ്ണക്കറ",
-      "ഗ്യാസ് സ്റ്റൗ ക്ലീനിങ്",
-      "കാബിനറ്റ് വൈപ്പ്"
+      "Waterproof PVC Bathroom Door Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_158",
-    "name": "പോസ്റ്റ് കൺസ്ട്രക്ഷൻ ക്ലീനിംഗ്",
-    "en": "Post Construction Dust Cleaning",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Fibre Molded Interior Room Door",
+    "en": "Fibre Molded Interior Room Door",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "സിമന്റ് കറകൾ ചുരണ്ടൽ",
-      "പെയിന്റ് തുള്ളികൾ മാറ്റൽ",
-      "പൊടി തുടച്ചുമാറ്റൽ",
-      "ഫ്ലോർ പോളിഷ് വാഷ്"
+      "Fibre Molded Interior Room Door Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_159",
-    "name": "ഗ്ലാസ് ജനലുകൾ & ഫസാഡ് ക്ലീനിംഗ്",
-    "en": "Glass Window & Facade Cleaning",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Sliding Pocket Wooden Door Fitting",
+    "en": "Sliding Pocket Wooden Door Fitting",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "ഹൈ റീച്ച് ഗ്ലാസ് ക്ലീനർ",
-      "സ്ക്വീജി വാഷ്",
-      "കറകൾ ഇല്ലാത്ത ഗ്ലാസ്",
-      "ഫ്രെയിം ക്ലീനിങ്"
+      "Sliding Pocket Wooden Door Fitting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_160",
-    "name": "സെപ്റ്റിക് ടാങ്ക് വേസ്റ്റ് റിമൂവൽ",
-    "en": "Septic Tank Cleaning Tanker",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Traditional Kerala Wooden Window",
+    "en": "Traditional Kerala Wooden Window",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "വാക്വം സക്ഷൻ ടാങ്കർ",
-      "വേസ്റ്റ് നീക്കം ചെയ്യൽ",
-      "പൈപ്പ് ലൈൻ ഫ്ലഷിംഗ്",
-      "ദ്രുത സേവനം"
+      "Traditional Kerala Wooden Window Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_161",
-    "name": "വാട്ടർ ടാങ്ക് ബ്ലീച്ചിംഗ് & ശുദ്ധീകരണം",
-    "en": "Water Tank Chemical Disinfection",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Glass Inset Wooden French Door",
+    "en": "Glass Inset Wooden French Door",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "പൊട്ടാസ്യം പെർമാംഗനേറ്റ്",
-      "ക്ലോറിൻ ട്രീറ്റ്മെന്റ്",
-      "ബാക്ടീരിയ നശീകരണം",
-      "ശുദ്ധജലം"
+      "Glass Inset Wooden French Door Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_162",
-    "name": "കിണർ കുമ്മായം ഇടലും നെറ്റ് ഇടലും",
-    "en": "Well Net & Chlorination",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Godrej Yale Main Door Lock Fitting",
+    "en": "Godrej Yale Main Door Lock Fitting",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "ഇല വീഴാതിരിക്കാൻ നെറ്റ്",
-      "കുമ്മായം അളവിൽ ഇടൽ",
-      "വെള്ളത്തിന്റെ രുചി കൂട്ടൽ",
-      "പരിപാലനം"
+      "Godrej Yale Main Door Lock Fitting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_163",
-    "name": "ഫ്ലോർ സ്ക്രബ്ബിങ് & പോളിഷിംഗ്",
-    "en": "Floor Buffing & Machine Scrubbing",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "King Size Teak Wood Bed with Storage",
+    "en": "King Size Teak Wood Bed with Storage",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "റോട്ടറി ഫ്ലോർ മെഷീൻ",
-      "ടൈൽ പോളിഷിംഗ്",
-      "കറകൾ നീക്കൽ",
-      "തിളങ്ങുന്ന തറ"
+      "King Size Teak Wood Bed with Storage Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_164",
-    "name": "ബെഡ് മാറ്റ്രസ്സ് വാക്വമിങ്",
-    "en": "Mattress Sanitization & Steam",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Queen Size Hydraulic Bed Making",
+    "en": "Queen Size Hydraulic Bed Making",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "പൊടിപടലങ്ങൾ നീക്കൽ",
-      "അലർജി പ്രിവൻഷൻ",
-      "സ്റ്റീം സാനിറ്റൈസേഷൻ",
-      "ബെഡ്ബഗ്ഗ് കൺട്രോൾ"
+      "Queen Size Hydraulic Bed Making Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_165",
-    "name": "വീട്ടുതൊടി മാലിന്യ നീക്കം",
-    "en": "Garden Yard Waste Clearing",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Custom 6-Door Bedroom Wardrobe",
+    "en": "Custom 6-Door Bedroom Wardrobe",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "ഉണങ്ങിയ ഇലകൾ മാറ്റൽ",
-      "പ്ലാസ്റ്റിക് മാലിന്യ നീക്കം",
-      "തൊടി വൃത്തിയാക്കൽ",
-      "ലാൻഡ് ലെവലിങ്"
+      "Custom 6-Door Bedroom Wardrobe Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_166",
-    "name": "അപ്പാർട്ട്മെന്റ് മൂവിങ് ഇൻ ക്ലീനിംഗ്",
-    "en": "Move-in / Move-out Cleaning",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Walk-in Closet Shelving & Drawers",
+    "en": "Walk-in Closet Shelving & Drawers",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "താമസിക്കാൻ പാകത്തിന് ക്ലീനിങ്",
-      "കബോർഡുകൾ തുടയ്ക്കൽ",
-      "ബാത്ത്റൂം വാഷ്",
-      "റെഡി ടു മൂവ്"
+      "Walk-in Closet Shelving & Drawers Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_167",
-    "name": "റെസ്റ്റോറന്റ് കിച്ചൻ ഡീപ് ക്ലീനിംഗ്",
-    "en": "Restaurant Commercial Kitchen",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Dining Table 6-Seater Solid Wood",
+    "en": "Dining Table 6-Seater Solid Wood",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "ഹെവി കിച്ചൻ ചിമ്മിനി",
-      "ഗ്രീസ് ട്രാപ്പ് ക്ലീൻ",
-      "ബർണർ വാഷ്",
-      "ഹൈജീൻ സർട്ടിഫൈഡ്"
+      "Dining Table 6-Seater Solid Wood Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_168",
-    "name": "സോളാർ പാനൽ ഡസ്റ്റ് വാഷ്",
-    "en": "Solar Panel Water Cleaning",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Custom Wooden Sofa Settee Making",
+    "en": "Custom Wooden Sofa Settee Making",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "പാനൽ പൊടി കഴുകൽ",
-      "വൈദ്യുതോൽപാദനം കൂട്ടൽ",
-      "സോഫ്റ്റ് ബ്രഷ് വാഷ്",
-      "പാനൽ സേഫ്റ്റി"
+      "Custom Wooden Sofa Settee Making Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_169",
-    "name": "ബാത്ത്റൂം ഗ്ലാസ് പാർട്ടീഷൻ ക്ലീനിംഗ്",
-    "en": "Shower Glass Descaling",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Living Room TV Entertainment Unit",
+    "en": "Living Room TV Entertainment Unit",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "ഹാർഡ് വാട്ടർ കറ മാറ്റൽ",
-      "ഗ്ലാസ് ഷൈനിംഗ് കോട്ട്",
-      "മിറർ ക്ലീനിംഗ്",
-      "ക്ലിയർ വ്യൂ"
+      "Living Room TV Entertainment Unit Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_170",
-    "name": "റൂഫ് വാട്ടർ പ്രൂഫ് വാഷ്",
-    "en": "Terrace Fungus High Pressure Wash",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Crockery Display Glass Cabinet",
+    "en": "Crockery Display Glass Cabinet",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "ടെറസിലെ പായൽ കളയൽ",
-      "ഹൈ പ്രഷർ വാട്ടർ ജെറ്റ്",
-      "ചോർച്ച സാധ്യത കണ്ടെത്തൽ",
-      "ക്ലീൻ റൂഫ്"
+      "Crockery Display Glass Cabinet Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_171",
-    "name": "ആശുപത്രി & ക്ലിനിക് സാനിറ്റൈസേഷൻ",
-    "en": "Clinic Deep Sanitization",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Home Study Table & Bookshelf",
+    "en": "Home Study Table & Bookshelf",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "മെഡിക്കൽ ഗ്രേഡ് അണുനശീകരണം",
-      "ഫോഗിങ് സർവീസ്",
-      "ലാബ് ക്ലീനിംഗ്",
-      "സേഫ്റ്റി"
+      "Home Study Table & Bookshelf Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_172",
-    "name": "വാഹന പാർക്കിംഗ് മുറ്റം ക്ലീനിംഗ്",
-    "en": "Car Porch Interlock Wash",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Shoe Rack with Louvered Wooden Doors",
+    "en": "Shoe Rack with Louvered Wooden Doors",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "ഇന്റർലോക്കിലെ പൂപ്പൽ കളയൽ",
-      "എണ്ണക്കറ നീക്കൽ",
-      "പ്രഷർ വാഷ്",
-      "മുറ്റം തിളങ്ങൽ"
+      "Shoe Rack with Louvered Wooden Doors Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_173",
-    "name": "സ്കൂൾ & കോളേജ് ക്ലാസ്റൂം ക്ലീനിംഗ്",
-    "en": "School Hall & Classroom Wash",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Dressing Table with Vanity Mirror",
+    "en": "Dressing Table with Vanity Mirror",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "ബെഞ്ചുകൾ തുടയ്ക്കൽ",
-      "ഫ്ലോർ മോപ്പിംഗ്",
-      "ടോയ്‌ലറ്റ് ബ്ലോക്ക് ക്ലീൻ",
-      "ബൾക്ക് ക്ലീനിങ്"
+      "Dressing Table with Vanity Mirror Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_174",
-    "name": "വെള്ളപ്പൊക്ക അനന്തര ക്ലീനിംഗ്",
-    "en": "Post Flood Sludge Removal",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Pooja Mandapam Teak Wood Carved",
+    "en": "Pooja Mandapam Teak Wood Carved",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "ചെളിവെള്ളം ഒഴുക്കൽ",
-      "കെമിക്കൽ വാഷ്",
-      "സാനിറ്റൈസിങ് ഫോഗിങ്",
-      "അടിയന്തര സേവനം"
+      "Pooja Mandapam Teak Wood Carved Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_175",
-    "name": "റഗുലർ പ്രതിവാര ക്ലീനിംഗ്",
-    "en": "Weekly Home Maid Cleaning",
-    "icon": "🧹",
-    "category": "cleaning",
+    "name": "Old Teak Furniture PU Wood Polish",
+    "en": "Old Teak Furniture PU Wood Polish",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "ആഴ്ചയിലൊരിക്കൽ ഫുൾ ക്ലീൻ",
-      "തുണി അലക്കലും ഇസ്തിരിയും",
-      "വീട് അടിച്ചുവാരി തുടയ്ക്കൽ",
-      "വിശ്വസ്തത"
+      "Old Teak Furniture PU Wood Polish Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_176",
-    "name": "കോൺക്രീറ്റ് റൂഫ് വാർപ്പ് പണി",
-    "en": "Concrete Roof Slab Casting",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "French Spirit Polish Traditional Hand",
+    "en": "French Spirit Polish Traditional Hand",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "റെഡിമിക്സ് കോൺക്രീറ്റ്",
-      "വൈബ്രേറ്റർ ഉപയോഗം",
-      "ക്യൂറിംഗ്",
-      "ലെവലിങ്"
+      "French Spirit Polish Traditional Hand Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_177",
-    "name": "ചെങ്കല്ല് & സിമന്റ് കട്ട കെട്ടൽ",
-    "en": "Laterite / Red Brick Masonry",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Melamine Clear Matte Finish Polish",
+    "en": "Melamine Clear Matte Finish Polish",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "കണ്ണൂർ ചെങ്കല്ല് പണി",
-      "ബ്രിക്ക് വർക്ക്",
-      "നൂൽപിടിച്ച് കെട്ടൽ",
-      "സ്ട്രോങ്ങ് സിമന്റ് മോർട്ടാർ"
+      "Melamine Clear Matte Finish Polish Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_178",
-    "name": "സിമന്റ് പ്ലാസ്റ്ററിംഗ് ഇൻസൈഡ്/ഔട്ട്സൈഡ്",
-    "en": "Wall Cement Plastering",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Wooden Floor Scratch Polishing",
+    "en": "Wooden Floor Scratch Polishing",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "ചുവര് പ്ലാസ്റ്ററിംഗ്",
-      "സ്പോഞ്ച് ഫിനിഷ്",
-      "കോണുകൾ പെർഫെക്റ്റ് ചെയ്യൽ",
-      "വാട്ടർപ്രൂഫ് പ്ലാസ്റ്റർ"
+      "Wooden Floor Scratch Polishing Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_179",
-    "name": "ഇന്റർലോക്ക് ടൈൽസ് മുറ്റത്ത് വിരിക്കൽ",
-    "en": "Interlock Paver Tiles Laying",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Termite Damaged Plywood Replacement",
+    "en": "Termite Damaged Plywood Replacement",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "ക്വാറി വേസ്റ്റ് ബെഡ്",
-      "ലെവലിങ് & റോളിംഗ്",
-      "എഡ്ജ് കോൺക്രീറ്റിങ്",
-      "ഡിസൈൻ പാറ്റേൺ"
+      "Termite Damaged Plywood Replacement Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_180",
-    "name": "ഫ്ലോർ ടൈൽസ് വിരിക്കൽ",
-    "en": "Vitrified Floor Tile Laying",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Loose Hinges & Channel Screws Repair",
+    "en": "Loose Hinges & Channel Screws Repair",
+    "icon": "🪚",
+    "category": "carpenter",
     "specs": [
-      "2x2 / 4x2 ടൈൽസ്",
-      "സ്പെയ്സർ ഉപയോഗിച്ചുള്ള പണി",
-      "എപ്പോക്സി ഗ്രൗട്ടിംഗ്",
-      "തികഞ്ഞ നിരപ്പ്"
+      "Loose Hinges & Channel Screws Repair Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_181",
-    "name": "ഗ്രാനൈറ്റ് കിച്ചൻ സ്ലാബ് ഫിറ്റിംഗ്",
-    "en": "Granite Kitchen Countertop",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Interior Acrylic Wall Putty (2 Coats)",
+    "en": "Interior Acrylic Wall Putty (2 Coats)",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "ഗ്രാനൈറ്റ് കട്ടിംഗ്",
-      "സിങ്ക് ഹോൾ കട്ടിംഗ്",
-      "എഡ്ജ് മോൾഡിങ്",
-      "വാട്ടർപ്രൂഫ് സീലർ"
+      "Interior Acrylic Wall Putty (2 Coats) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_182",
-    "name": "മാർബിൾ തറ വിരിക്കൽ",
-    "en": "Italian / Indian Marble Laying",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Interior Primer Water-Based Coating",
+    "en": "Interior Primer Water-Based Coating",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "മാർബിൾ സ്ലാബ് കട്ടിംഗ്",
-      "വൈറ്റ് സിമന്റ് ഫിക്സിംഗ്",
-      "ഗ്രൗണ്ട് പോളിഷിംഗ്",
-      "ലക്ഷ്വറി ലുക്ക്"
+      "Interior Primer Water-Based Coating Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_183",
-    "name": "കോമ്പൗണ്ട് വാൾ നിർമ്മാണം",
-    "en": "Compound Wall & Pillar",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Premium Interior Emulsion Paint",
+    "en": "Premium Interior Emulsion Paint",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "അതിർത്തി മതിൽ",
-      "ബേസ്മെന്റ് ബെൽറ്റ്",
-      "പില്ലർ കോൺക്രീറ്റിങ്",
-      "പ്ലാസ്റ്ററിംഗ്"
+      "Premium Interior Emulsion Paint Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_184",
-    "name": "തറയോട് മേയൽ & ലീക്ക് ഫിക്സ്",
-    "en": "Clay Roof Tile Fixing",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Royal Luxury Silk Interior Emulsion",
+    "en": "Royal Luxury Silk Interior Emulsion",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "മംഗലാപുരം ഓട് മേയൽ",
-      "പൊട്ടിയ ഓട് മാറ്റൽ",
-      "വളവ് മാറ്റൽ",
-      "ചോർച്ച തടയൽ"
+      "Royal Luxury Silk Interior Emulsion Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_185",
-    "name": "ബാത്ത്റൂം വാൾ ടൈലിംഗ്",
-    "en": "Bathroom Ceramic Wall Tiling",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Anti-Bacterial Interior Wall Paint",
+    "en": "Anti-Bacterial Interior Wall Paint",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "വാട്ടർപ്രൂഫ് ടൈൽ ഫിക്സിംഗ്",
-      "കട്ടിംഗ് & ഹോൾ ഇടൽ",
-      "ഗ്രൗണ്ട് ഫിനിഷ്",
-      "ഡിസൈനർ ടൈൽസ്"
+      "Anti-Bacterial Interior Wall Paint Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_186",
-    "name": "കോൺക്രീറ്റ് തറ ബെൽറ്റ് & പില്ലർ",
-    "en": "Concrete Belt & Pillar Column",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Ceiling Distemper White Painting",
+    "en": "Ceiling Distemper White Painting",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "കമ്പി കെട്ടൽ",
-      "ഷട്ടറിംഗ് പലക പണി",
-      "കോൺക്രീറ്റ് മിക്സിംഗ്",
-      "സ്ട്രക്ചറൽ സ്ട്രെങ്ത്"
+      "Ceiling Distemper White Painting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_187",
-    "name": "മുറ്റം കോൺക്രീറ്റ് ചെയ്യൽ",
-    "en": "Courtyard Concrete Flooring",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Living Room Accent Wall Color",
+    "en": "Living Room Accent Wall Color",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "ഗ്രേവൽ ബേസ്",
-      "കോൺക്രീറ്റ് ഫ്ലോറിംഗ്",
-      "സ്ലോപ്പ് ഡ്രെയിനേജ്",
-      "ബ്രൂം ഫിനിഷ്"
+      "Living Room Accent Wall Color Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_188",
-    "name": "ചുവര് പൊളിക്കലും മാറ്റലും",
-    "en": "Wall Demolition & Core Cutting",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Geometric Wall Painting Stencil",
+    "en": "Geometric Wall Painting Stencil",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "സുരക്ഷിതമായ പൊളിക്കൽ",
-      "മാലിന്യങ്ങൾ നീക്കൽ",
-      "ബീം സപ്പോർട്ട്",
-      "റീ-മോഡലിംഗ്"
+      "Geometric Wall Painting Stencil Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_189",
-    "name": "ഡ്രെയിനേജ് ചാനൽ സ്ലാബ് നിർമ്മാണം",
-    "en": "Drainage Slab Construction",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Kids Room Cartoon Mural Painting",
+    "en": "Kids Room Cartoon Mural Painting",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "കോൺക്രീറ്റ് മൂടി സ്ലാബ്",
-      "ഡ്രെയിനേജ് കോൺക്രീറ്റിങ്",
-      "ഇരുമ്പ് മെഷ്",
-      "ഈട്"
+      "Kids Room Cartoon Mural Painting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_190",
-    "name": "വാട്ടർപ്രൂഫിങ് സിമന്റ് ബേസ്",
-    "en": "Basement Waterproofing Masonry",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Metallic Paint Velvet Finish Wall",
+    "en": "Metallic Paint Velvet Finish Wall",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "ബേസ്മെന്റ് ചോർച്ച തടയൽ",
-      "കെമിക്കൽ കോട്ടിംഗ്",
-      "ഡാംപ് പ്രൂഫ് കോഴ്സ്",
-      "പ്ലാസ്റ്ററിംഗ്"
+      "Metallic Paint Velvet Finish Wall Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_191",
-    "name": "സ്വിമ്മിംഗ് പൂൾ ടൈലിംഗ്",
-    "en": "Swimming Pool Tiling",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Kitchen Washable Oil Emulsion",
+    "en": "Kitchen Washable Oil Emulsion",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "ഗ്ലാസ് മൊസൈക് ടൈൽസ്",
-      "വാട്ടർപ്രൂഫ് അഡീസീവ്",
-      "ക്ലോറിൻ റെസിസ്റ്റന്റ് ഗ്രൗട്ട്",
-      "ഫിനിഷ്"
+      "Kitchen Washable Oil Emulsion Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_192",
-    "name": "സ്റ്റെപ്പുകൾ ഗ്രാനൈറ്റ് മോൾഡിങ്",
-    "en": "Staircase Granite Molding",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Exterior Wall Putty Application",
+    "en": "Exterior Wall Putty Application",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "ഫുൾ നോസിങ് ഗ്രാനൈറ്റ്",
-      "ആന്റി-സ്കിഡ് ഗ്രൂവ്സ്",
-      "റൈസർ & ട്രെഡ് ഫിറ്റിംഗ്",
-      "മിനുസപ്പെടുത്തൽ"
+      "Exterior Wall Putty Application Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_193",
-    "name": "കിണർ ആൾത്തറ കെട്ടൽ",
-    "en": "Well Ring Lowering & Parapet Wall",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Weatherproof Exterior Emulsion 7-Yr",
+    "en": "Weatherproof Exterior Emulsion 7-Yr",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "സിമന്റ് റിംഗ് ഇറക്കൽ",
-      "കിണർ ചുറ്റുമതിൽ കെട്ടൽ",
-      "പാരപ്പറ്റ് പ്ലാസ്റ്ററിംഗ്",
-      "സുരക്ഷ"
+      "Weatherproof Exterior Emulsion 7-Yr Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_194",
-    "name": "കോൺക്രീറ്റ് കട്ടിംഗ് & ഡ്രില്ലിങ്",
-    "en": "Concrete Core Cutting & Chipping",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Extreme Rain Guard Silicon Paint",
+    "en": "Extreme Rain Guard Silicon Paint",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "എയർഹോൾ കട്ടിംഗ്",
-      "പൈപ്പിടാൻ കോൺക്രീറ്റ് ചിപ്പിംഗ്",
-      "ഡയമണ്ട് ബ്ലേഡ് കട്ടിംഗ്",
-      "പെർഫെക്റ്റ് വർക്ക്"
+      "Extreme Rain Guard Silicon Paint Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_195",
-    "name": "ഗേറ്റ് തൂൺ പണി & പ്ലാസ്റ്ററിംഗ്",
-    "en": "Gate Pillar Brickwork & Plaster",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Apex Ultima Dust Repellent Coating",
+    "en": "Apex Ultima Dust Repellent Coating",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "ഹെവി ഗേറ്റ് പില്ലർ",
-      "സ്ട്രക്ചറൽ കമ്പി പണി",
-      "ഗ്രാനൈറ്റ് ടോപ്പ് ക്യാപ്",
-      "ഡിസൈൻ പ്ലാസ്റ്റർ"
+      "Apex Ultima Dust Repellent Coating Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_196",
-    "name": "തറ നിർമ്മാണം & മണ്ണിടൽ",
-    "en": "Basement Filling & Foundation",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Exterior Tile & Cladding Clear Coat",
+    "en": "Exterior Tile & Cladding Clear Coat",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "ഫൗണ്ടേഷൻ പണി",
-      "റോക്ക് ബെഡ്",
-      "മണ്ണ് നിറയ്ക്കൽ",
-      "വാട്ടറിംഗ് & കോംപാക്ഷൻ"
+      "Exterior Tile & Cladding Clear Coat Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_197",
-    "name": "ജാക്കി ഉപയോഗിച്ച് വീട് ഉയർത്തൽ",
-    "en": "House Lifting & Shifting",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Boundary Wall Exterior Whitewash",
+    "en": "Boundary Wall Exterior Whitewash",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "ഹൈഡ്രോളിക് ജാക്കി",
-      "റോഡ് ലെവലിലേക്ക് ഉയർത്തൽ",
-      "സുരക്ഷിത സാങ്കേതികവിദ്യ",
-      "സർട്ടിഫൈഡ് എഞ്ചിനീയറിങ്"
+      "Boundary Wall Exterior Whitewash Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_198",
-    "name": "പാരപ്പറ്റ് വാൾ നിർമ്മാണം",
-    "en": "Terrace Parapet Wall Masonry",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Exterior Crack Bridging Flexible Coat",
+    "en": "Exterior Crack Bridging Flexible Coat",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "ടെറസ്സ് ചുറ്റുമതിൽ",
-      "വാട്ടർ ഡ്രെയിൻ ഹോൾസ്",
-      "പ്ലാസ്റ്ററിംഗ്",
-      "സേഫ്റ്റി ഹൈറ്റ്"
+      "Exterior Crack Bridging Flexible Coat Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_199",
-    "name": "പഴയ കെട്ടിട റിപ്പയർ പണികൾ",
-    "en": "Old Building Renovation Works",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Terrace Roof Waterproof Coating",
+    "en": "Terrace Roof Waterproof Coating",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "വിള്ളലുകൾ അടയ്ക്കൽ",
-      "ബലപ്പെടുത്തൽ",
-      "പുതിയ പ്ലാസ്റ്റർ",
-      "നവീകരണം"
+      "Terrace Roof Waterproof Coating Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_200",
-    "name": "ചെറിയ കൊത്തുപണികളും സിവിൽ റിപ്പയറും",
-    "en": "Minor Masonry & Tile Repair",
-    "icon": "🧱",
-    "category": "mason",
+    "name": "Cool Roof Heat Reflective Paint",
+    "en": "Cool Roof Heat Reflective Paint",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "പൊട്ടിയ ടൈൽ മാറ്റൽ",
-      "ചെറിയ പ്ലാസ്റ്ററിംഗ്",
-      "ചോർച്ച റിപ്പയർ",
-      "ദ്രുത സഹായം"
+      "Cool Roof Heat Reflective Paint Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_201",
-    "name": "ഇരുമ്പ് മെയിൻ ഗേറ്റ് നിർമ്മാണം",
-    "en": "Iron Main Gate Fabrication",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Parapet Wall Crack Sealing Compound",
+    "en": "Parapet Wall Crack Sealing Compound",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "ഹെവി ഗേറ്റ് ഡിസൈൻ",
-      "ഹിഞ്ചസ് & ലാച്ച് ഫിക്സിംഗ്",
-      "ആന്റി-റസ്റ്റ് കോട്ടിംഗ്",
-      "സുരക്ഷിത ലോക്കിങ്"
+      "Parapet Wall Crack Sealing Compound Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_202",
-    "name": "വിൻഡോ ഗ്രിൽ നിർമ്മാണം",
-    "en": "Window Security Grill Making",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Rising Dampness Chemical Injection",
+    "en": "Rising Dampness Chemical Injection",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "സ്ക്വയർ റോഡ് ഗ്രിൽ",
-      "ഡിസൈനർ എംഎസ് ഗ്രിൽ",
-      "പെയിന്റിംഗ്",
-      "ശക്തമായ ഫിക്സിംഗ്"
+      "Rising Dampness Chemical Injection Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_203",
-    "name": "ജിഐ ട്രസ്സ് റൂഫിംഗ് വർക്ക്",
-    "en": "GI Truss Roofing Fabrication",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Basement Wall Crystalline Water Proof",
+    "en": "Basement Wall Crystalline Water Proof",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "മേൽക്കൂര ട്രസ്സ് പണി",
-      "ജിഐ പൈപ്പ് വെൽഡിങ്",
-      "കളർ ഷീറ്റ് ഫിക്സിംഗ്",
-      "മഴവെള്ള പാത്തി"
+      "Basement Wall Crystalline Water Proof Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_204",
-    "name": "സ്റ്റെയിൻലെസ്സ് സ്റ്റീൽ സ്റ്റെയർ റെയ്‌ലിംഗ്",
-    "en": "SS Staircase Railing",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Bathroom Grouting Waterproof Seal",
+    "en": "Bathroom Grouting Waterproof Seal",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "304 ഗ്രേഡ് സ്റ്റെയിൻലെസ്സ് സ്റ്റീൽ",
-      "മിറർ ഫിനിഷ്",
-      "ടഫ്ൻഡ് ഗ്ലാസ് റെയ്‌ലിംഗ്",
-      "മോഡേൺ ലുക്ക്"
+      "Bathroom Grouting Waterproof Seal Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_205",
-    "name": "കാർ പാർക്കിംഗ് ഷെഡ് നിർമ്മാണം",
-    "en": "Car Porch Polycarbonate Shed",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Metal Window Grill Enamel Spray",
+    "en": "Metal Window Grill Enamel Spray",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "പോളി കാർബണേറ്റ് ഷീറ്റ്",
-      "ജിഐ ആർച്ച് പൈപ്പ്",
-      "മഴ & വെയിൽ പ്രൊട്ടക്ഷൻ",
-      "സ്റ്റൈലിഷ് ഡിസൈൻ"
+      "Metal Window Grill Enamel Spray Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_206",
-    "name": "റോളിംഗ് ഷട്ടർ നിർമ്മാണം & റിപ്പയർ",
-    "en": "Rolling Shutter Fabrication",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Compound Wall Gate Gloss Enamel",
+    "en": "Compound Wall Gate Gloss Enamel",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "കട ഷട്ടർ നിർമ്മാണം",
-      "സ്പ്രിംഗ് മാറ്റൽ",
-      "ഷട്ടർ ജാം മാറ്റൽ",
-      "സെൻട്രൽ ലോക്ക്"
+      "Compound Wall Gate Gloss Enamel Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_207",
-    "name": "സ്പൈറൽ സ്റ്റെയർകെയ്സ് ഇരുമ്പ് പണി",
-    "en": "Spiral Iron Staircase",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Italian Marble Texture Wall Finish",
+    "en": "Italian Marble Texture Wall Finish",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "വളഞ്ഞ കോണിപ്പടി",
-      "ചെറിയ സ്ഥലത്ത് സ്റ്റെയർ",
-      "ചെക്കർഡ് പ്ലേറ്റ് സ്റ്റെപ്പുകൾ",
-      "സ്ട്രോങ്ങ് ഹാൻഡ്‌റെയിൽ"
+      "Italian Marble Texture Wall Finish Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_208",
-    "name": "ബാൽക്കണി സേഫ്റ്റി ഗ്രിൽ",
-    "en": "Balcony Safety Metal Grill",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Wood Polish PU Exterior Gloss",
+    "en": "Wood Polish PU Exterior Gloss",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "കുട്ടികൾക്കുള്ള സേഫ്റ്റി ഗ്രിൽ",
-      "തുരുമ്പ് പിടിക്കാത്ത പെയിന്റിംഗ്",
-      "ശക്തമായ വെൽഡിങ്",
-      "ഭംഗിയുള്ള ഡിസൈൻ"
+      "Wood Polish PU Exterior Gloss Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_209",
-    "name": "പോർട്ടബിൾ ഹോം വെൽഡിങ് സർവീസ്",
-    "en": "Doorstep Mobile Welding",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Wood Melamine Interior Matte",
+    "en": "Wood Melamine Interior Matte",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "വീട്ടുപടിക്കൽ വെൽഡിങ് മെഷീൻ",
-      "ചെറിയ റിപ്പയറുകൾ",
-      "ഗേറ്റ് ഹിഞ്ച് മാറ്റൽ",
-      "തൽക്ഷണ സേവനം"
+      "Wood Melamine Interior Matte Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_210",
-    "name": "ഗേറ്റ് വീൽ & ട്രാക്ക് മാറ്റൽ",
-    "en": "Gate Roller Wheel & Track Fix",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Pressure Jet Wash for Moss Cleaning",
+    "en": "Pressure Jet Wash for Moss Cleaning",
+    "icon": "🎨",
+    "category": "painter",
     "specs": [
-      "സ്ലൈഡിങ് ഗേറ്റ് വീൽ",
-      "താഴത്തെ ട്രാക്ക് ലെവലിങ്",
-      "സ്മൂത്ത് മൂവ്മെന്റ്",
-      "ബെയറിംഗ് റീപ്ലേസ്മെന്റ്"
+      "Pressure Jet Wash for Moss Cleaning Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_211",
-    "name": "മെറ്റൽ ഫാബ്രിക്കേഷൻ ഫാക്ടറി ഷെഡ്",
-    "en": "Industrial Metal Shed Work",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Laterite Stone Wall Construction",
+    "en": "Laterite Stone Wall Construction",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "ഹെവി ഐ-ബീം സ്ട്രക്ചർ",
-      "ഇൻഡസ്ട്രിയൽ റൂഫിംഗ്",
-      "ക്രെയ്ൻ ഗാൻട്രി",
-      "വ്യാവസായിക ഷെഡ്"
+      "Laterite Stone Wall Construction Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_212",
-    "name": "കൊളാപ്സിബിൾ ഗേറ്റ് നിർമ്മാണം",
-    "en": "Collapsible Iron Channel Gate",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Red Clay Wire-Cut Brick Masonry",
+    "en": "Red Clay Wire-Cut Brick Masonry",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "ചാനൽ ഗേറ്റ്",
-      "ലിങ്ക്ഡ് ഫോൾഡിങ്",
-      "ഷോപ്പ് സെക്യൂരിറ്റി",
-      "ഈടുനിൽക്കുന്ന ഇരുമ്പ്"
+      "Red Clay Wire-Cut Brick Masonry Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_213",
-    "name": "ബോട്ട് വെൽഡിങ് & മറൈൻ വർക്ക്",
-    "en": "Boat & Marine Metal Welding",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Solid Concrete Block Wall Building",
+    "en": "Solid Concrete Block Wall Building",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "മറൈൻ ഗ്രേഡ് വെൽഡിങ്",
-      "ബോട്ട് റിപ്പയർ",
-      "തുരുമ്പ് പ്രതിരോധം",
-      "തീരദേശ സർവീസ്"
+      "Solid Concrete Block Wall Building Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_214",
-    "name": "സ്റ്റീൽ കട്ടിൽ & റാക്ക് നിർമ്മാണം",
-    "en": "Steel Cot & Storage Rack",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Hollow Concrete Block Masonry",
+    "en": "Hollow Concrete Block Masonry",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "ഇരുമ്പ് കട്ടിൽ",
-      "ഷോപ്പ് സ്റ്റോറേജ് റാക്ക്",
-      "പൗഡർ കോട്ടിംഗ് ഫിനിഷ്",
-      "ഭാരമേറുന്ന ഡിസൈൻ"
+      "Hollow Concrete Block Masonry Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_215",
-    "name": "ഇൻഡസ്ട്രിയൽ ചിമ്മിനി വെൽഡിങ്",
-    "en": "Industrial Chimney Fabrication",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Rubble Stone Basement Foundation",
+    "en": "Rubble Stone Basement Foundation",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "ഹെവി ഷീറ്റ് റോളിംഗ്",
-      "പുകക്കുഴൽ വെൽഡിങ്",
-      "ബേസ് പ്ലേറ്റ് ഫിക്സിംഗ്",
-      "ഹീറ്റ് റെസിസ്റ്റന്റ്"
+      "Rubble Stone Basement Foundation Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_216",
-    "name": "ലേസർ കട്ട് മെറ്റൽ ഗേറ്റ് ഡിസൈൻ",
-    "en": "CNC Laser Cut Gate Designer",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Granite Stone Retaining Wall",
+    "en": "Granite Stone Retaining Wall",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "സിഎൻസി ലേസർ കട്ടിംഗ് ഷീറ്റ്",
-      "മോഡേൺ ലക്ഷ്വറി ഗേറ്റ്",
-      "കസ്റ്റം പാറ്റേണുകൾ",
-      "പ്രീമിയം ലുക്ക്"
+      "Granite Stone Retaining Wall Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_217",
-    "name": "സോളാർ പാനൽ മൗണ്ടിംഗ് സ്ട്രക്ചർ",
-    "en": "Solar Panel Metal Structure",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Single Coat Exterior Rough Plaster",
+    "en": "Single Coat Exterior Rough Plaster",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "ജിഐ മൗണ്ടിംഗ് സ്റ്റാൻഡ്",
-      "കാറ്റിനെ പ്രതിരോധിക്കുന്ന ഡിസൈൻ",
-      "റൂഫ് ക്ലാമ്പ്",
-      "തുരുമ്പ് രഹിതം"
+      "Single Coat Exterior Rough Plaster Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_218",
-    "name": "അലുമിനിയം വെൽഡിങ് സ്പെഷ്യലിസ്റ്റ്",
-    "en": "Aluminium TIG/MIG Welding",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Smooth Float Interior Cement Plaster",
+    "en": "Smooth Float Interior Cement Plaster",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "അലുമിനിയം ടിഗ് വെൽഡിങ്",
-      "ക്രാക്ക് ഫിക്സിംഗ്",
-      "കനംകുറഞ്ഞ മെറ്റൽ ജോയിന്റ്",
-      "കൃത്യത"
+      "Smooth Float Interior Cement Plaster Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_219",
-    "name": "കിണർ മൂടി നിർമ്മാണം (ഇരുമ്പ് വല)",
-    "en": "Well Cover Safety Net Making",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Ceiling Concrete Plastering 1:3",
+    "en": "Ceiling Concrete Plastering 1:3",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "ഹെവി ഇരുമ്പ് മെഷ് ഫ്രെയിം",
-      "ലോക്കിങ് സൗകര്യം",
-      "മോട്ടോർ പൈപ്പ് ഡോർ",
-      "സുരക്ഷിതമായ മൂടി"
+      "Ceiling Concrete Plastering 1:3 Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_220",
-    "name": "ജനറേറ്റർ സൗണ്ട് പ്രൂഫ് ഷെഡ്",
-    "en": "Generator Acoustic Enclosure",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "RCC Roof Slab Shuttering & Casting",
+    "en": "RCC Roof Slab Shuttering & Casting",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "ശബ്ദം കുറയ്ക്കുന്ന ബോക്സ്",
-      "വെന്റിലേഷൻ ലൂവർ",
-      "തീപിടിക്കാത്ത ഇൻസുലേഷൻ",
-      "വെതർ പ്രൂഫ്"
+      "RCC Roof Slab Shuttering & Casting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_221",
-    "name": "കാറ്റിൽ ഷെഡ് ഇരുമ്പ് പണി",
-    "en": "Cattle Farm Metal Shed Work",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Concrete Column & Plinth Beam",
+    "en": "Concrete Column & Plinth Beam",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "ഡെയറി ഫാം ഷെഡ്",
-      "ജിഐ പൈപ്പ് പണി",
-      "ഈസി വാഷിംഗ് ഡ്രെയിനേജ് ഡിസൈൻ",
-      "കുറഞ്ഞ ചിലവ്"
+      "Concrete Column & Plinth Beam Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_222",
-    "name": "ഇരുമ്പ് ഫെൻസിംഗ് & കമ്പിവേലി",
-    "en": "Chainlink & Barbed Wire Fencing",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Lintel Beam & Sunshade Casting",
+    "en": "Lintel Beam & Sunshade Casting",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "ജിഐ ഫെൻസിംഗ് പോസ്റ്റ്",
-      "മുള്ളുവേലി കെട്ടൽ",
-      "ഗ്രീൻ നെറ്റ് ഫിക്സിംഗ്",
-      "അതിർത്തി സംരക്ഷണം"
+      "Lintel Beam & Sunshade Casting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_223",
-    "name": "ട്രെയിലർ ബോഡി ബിൽഡിംഗ്",
-    "en": "Trailer & Tipper Body Fabrication",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Concrete Staircase Formwork & Pour",
+    "en": "Concrete Staircase Formwork & Pour",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "ട്രാക്ടർ ട്രെയിലർ ബോഡി",
-      "ഹെവി പ്ലേറ്റ് വെൽഡിങ്",
-      "ഹൈഡ്രോളിക് ജാക്ക് ഫിറ്റിംഗ്",
-      "സ്ട്രെങ്ത്"
+      "Concrete Staircase Formwork & Pour Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_224",
-    "name": "ആർച്ച് മേൽക്കൂര നിർമ്മാണം",
-    "en": "Curved Metal Arch Canopy",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Compound Wall Coping Concrete Cap",
+    "en": "Compound Wall Coping Concrete Cap",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "വളഞ്ഞ മേൽക്കൂര",
-      "ഓഡിറ്റോറിയം ഷെഡ്",
-      "വാട്ടർപ്രൂഫ് ജോയിന്റുകൾ",
-      "വിശാലമായ സ്പാൻ"
+      "Compound Wall Coping Concrete Cap Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_225",
-    "name": "അടിയന്തര ഗേറ്റ് വെൽഡിങ് റിപ്പയർ",
-    "en": "Urgent Gate Lock & Hinge Repair",
-    "icon": "🔥",
-    "category": "welding",
+    "name": "Screed Concrete Slope for Terrace",
+    "en": "Screed Concrete Slope for Terrace",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "ഒടിഞ്ഞ ഹിഞ്ച് വെൽഡ് ചെയ്യൽ",
-      "ലോക്ക് റീ-ഫിക്സിംഗ്",
-      "വീൽ ജാം മാറ്റൽ",
-      "തൽക്ഷണം"
+      "Screed Concrete Slope for Terrace Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_226",
-    "name": "സുരക്ഷിത തെങ്ങുകയറ്റക്കാരൻ",
-    "en": "Trained Coconut Tree Climber",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Vitrified Tile Flooring (4x2 / 2x2)",
+    "en": "Vitrified Tile Flooring (4x2 / 2x2)",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "റോബോട്ടിക് / ബെൽറ്റ് ക്ലൈംബിംഗ്",
-      "തേങ്ങ പറിക്കൽ",
-      "തലപ്പ വൃത്തിയാക്കൽ",
-      "മണ്ട ചീയൽ മരുന്ന്"
+      "Vitrified Tile Flooring (4x2 / 2x2) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_227",
-    "name": "പുല്ലുവെട്ട് മെഷീൻ സർവീസ്",
-    "en": "Lawn Grass Trimming Machine",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Ceramic Bathroom Wall Tile Laying",
+    "en": "Ceramic Bathroom Wall Tile Laying",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "മെഷീൻ ഉപയോഗിച്ച് പുല്ലുവെട്ടൽ",
-      "മുറ്റം ലെവലാക്കൽ",
-      "കാട് തെളിക്കൽ",
-      "വേഗത്തിലുള്ള പണി"
+      "Ceramic Bathroom Wall Tile Laying Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_228",
-    "name": "വലിയ മരം വെട്ടി മാറ്റൽ",
-    "en": "Big Tree Felling & Wood Cutting",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Anti-Skid Bathroom Floor Tiles",
+    "en": "Anti-Skid Bathroom Floor Tiles",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "റോപ്പ് ഉപയോഗിച്ച് സുരക്ഷിതമായി മുറിക്കൽ",
-      "വീടിന് കേടുപാടുകൾ ഇല്ലാതെ",
-      "തടി കഷണങ്ങളാക്കൽ",
-      "ക്രെയിൻ സപ്പോർട്ട്"
+      "Anti-Skid Bathroom Floor Tiles Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_229",
-    "name": "മരക്കൊമ്പ് സുരക്ഷിതമായി വെട്ടൽ",
-    "en": "Tree Branch Pruning Near Lines",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Kitchen Counter Granite Slab Laying",
+    "en": "Kitchen Counter Granite Slab Laying",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "ഇലക്ട്രിക് ലൈനുകൾക്കടുത്തുള്ള കൊമ്പ്",
-      "ടെറസിലേക്ക് ചാഞ്ഞ കൊമ്പ് മുറിക്കൽ",
-      "സേഫ്റ്റി ബെൽറ്റ്",
-      "ക്ലിയറൻസ്"
+      "Kitchen Counter Granite Slab Laying Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_230",
-    "name": "ഗാർഡൻ ലാൻഡ്സ്കേപ്പിംഗ് ഡിസൈൻ",
-    "en": "Garden Landscaping & Grass",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Italian Marble Flooring & Polish",
+    "en": "Italian Marble Flooring & Polish",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "മെക്സിക്കൻ പുല്ല് വിരിക്കൽ",
-      "പൂന്തോട്ട നിർമ്മാണം",
-      "പാത്ത്‌വേ സ്റ്റോൺ",
-      "അലങ്കാര ചെടികൾ"
+      "Italian Marble Flooring & Polish Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_231",
-    "name": "ജൈവ പച്ചക്കറി കൃഷി സഹായി",
-    "en": "Organic Terrace Farming Expert",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Granite Stone Steps & Riser Fit",
+    "en": "Granite Stone Steps & Riser Fit",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "ഗ്രോബാഗ് കൃഷി സെറ്റപ്പ്",
-      "തക്കാളി, വെണ്ട, പച്ചമുളക്",
-      "ജൈവ കീടനാശിനി പ്രയോഗം",
-      "വിത്തുവിതയ്ക്കൽ"
+      "Granite Stone Steps & Riser Fit Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_232",
-    "name": "കവുങ്ങ് കയറ്റവും അടയ്ക്ക പറിക്കലും",
-    "en": "Arecanut Tree Climber",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Terrace Weatherproof Cooling Tiles",
+    "en": "Terrace Weatherproof Cooling Tiles",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "അടയ്ക്ക കൊയ്യൽ",
-      "മരുന്ന് തളിക്കൽ (ബോർഡോ മിശ്രിതം)",
-      "കവുങ്ങ് സംരക്ഷണം",
-      "വിദഗ്ദ്ധ തൊഴിലാളി"
+      "Terrace Weatherproof Cooling Tiles Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_233",
-    "name": "റബ്ബർ ടാപ്പിംഗ് തൊഴിലാളി",
-    "en": "Rubber Tapping Tapper",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Interlock Paver Block Driveway Laying",
+    "en": "Interlock Paver Block Driveway Laying",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "കൃത്യമായ വെട്ട്",
-      "റബ്ബർ പാൽ ശേഖരണം",
-      "കത്തി മൂർച്ച കൂട്ടൽ",
-      "മരത്തിന് ആയുസ്സ്"
+      "Interlock Paver Block Driveway Laying Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_234",
-    "name": "തോട്ടം കിളയ്ക്കലും മണ്ണിളക്കലും",
-    "en": "Garden Soil Digging & Tilling",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Cobblestone Garden Pathway Laying",
+    "en": "Cobblestone Garden Pathway Laying",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "തടമെടുക്കൽ",
-      "മണ്ണിളക്കി വളം ചേർക്കൽ",
-      "കിളയ്ക്കൽ പണി",
-      "മഴക്കാല ഒരുക്കം"
+      "Cobblestone Garden Pathway Laying Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_235",
-    "name": "ഡ്രിപ്പ് ഇറിഗേഷൻ തുഷാര ജലസേചനം",
-    "en": "Drip Irrigation System Setup",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "RCC Concrete Core Cutting (2\"-6\")",
+    "en": "RCC Concrete Core Cutting (2\"-6\")",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "തുള്ളി നന സംവിധാനം",
-      "ഓട്ടോമാറ്റിക് ടൈമർ",
-      "പൈപ്പ് ലൈൻ ലേയിങ്",
-      "വെള്ളം ലാഭിക്കൽ"
+      "RCC Concrete Core Cutting (2\"-6\") Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_236",
-    "name": "ഫലവൃക്ഷത്തൈകൾ നടലും പരിചരണവും",
-    "en": "Fruit Tree Planting & Grafting",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Non-Structural Wall Demolition Work",
+    "en": "Non-Structural Wall Demolition Work",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "മാവ്, പ്ലാവ്, റംബുട്ടാൻ",
-      "ഗ്രാഫ്റ്റിംഗ് & ലെയറിംഗ്",
-      "കുഴിയെടുക്കൽ",
-      "വളപ്രയോഗം"
+      "Non-Structural Wall Demolition Work Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_237",
-    "name": "ജൈവവളവും ചാണകപ്പൊടിയും സപ്ലൈ",
-    "en": "Cowdung & Organic Compost",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Old Plaster Chipping & Removal",
+    "en": "Old Plaster Chipping & Removal",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "ഉണക്കിപ്പൊടിച്ച ചാണകം",
-      "ചകിരിച്ചോറ് കമ്പോസ്റ്റ്",
-      "വേപ്പിൻപിണ്ണാക്ക്",
-      "എല്ലുപൊടി"
+      "Old Plaster Chipping & Removal Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_238",
-    "name": "ചെടിച്ചട്ടികൾ റീ-പോട്ടിംഗ്",
-    "en": "Plant Repotting & Soil Mix",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "RCC Column Jacketing Reinforcement",
+    "en": "RCC Column Jacketing Reinforcement",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "പോട്ടിംഗ് മിശ്രിതം",
-      "പുതിയ ചട്ടിയിലേക്ക് മാറ്റൽ",
-      "വേര് പ്രൂണിംഗ്",
-      "ഫെർട്ടിലൈസർ മിക്സ്"
+      "RCC Column Jacketing Reinforcement Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_239",
-    "name": "പവർ ടില്ലർ നിലം ഉഴൽ",
-    "en": "Power Tiller Field Ploughing",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Cracked Beam Polymer Mortar Repair",
+    "en": "Cracked Beam Polymer Mortar Repair",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "ടില്ലർ ഉപയോഗിച്ച് പാടം ഉഴൽ",
-      "കരഭൂമി കിളയ്ക്കൽ",
-      "വേഗത്തിലുള്ള നിലമൊരുക്കൽ",
-      "കുറഞ്ഞ ചിലവ്"
+      "Cracked Beam Polymer Mortar Repair Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_240",
-    "name": "കാടുവെട്ടിത്തെളിക്കൽ സർവീസ്",
-    "en": "Weed & Bush Clearing Service",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Floor Tile Chipping & Re-leveling",
+    "en": "Floor Tile Chipping & Re-leveling",
+    "icon": "🧱",
+    "category": "mason",
     "specs": [
-      "ബ്രഷ് കട്ടർ മെഷീൻ",
-      "മുള്ളും പടർപ്പുകളും നീക്കൽ",
-      "പ്ലോട്ട് അതിർത്തി തെളിക്കൽ",
-      "മാലിന്യ നിർമ്മാർജ്ജനം"
+      "Floor Tile Chipping & Re-leveling Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_241",
-    "name": "തേനീച്ച വളർത്തലും പെട്ടി സ്ഥാപിക്കലും",
-    "en": "Beekeeping Honey Box Setup",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Steel Tube Truss Roofing for Terrace",
+    "en": "Steel Tube Truss Roofing for Terrace",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "തേനീച്ച പെട്ടി സ്ഥാപിക്കൽ",
-      "പരിപാലനം",
-      "തേൻ എടുക്കൽ സർവീസ്",
-      "ശുദ്ധമായ തേൻ"
+      "Steel Tube Truss Roofing for Terrace Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_242",
-    "name": "തെങ്ങിൻ തടം തുറക്കലും വളമിടലും",
-    "en": "Coconut Basin Digging & Fertilizer",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "GI Corrugated Sheet Roof Erection",
+    "en": "GI Corrugated Sheet Roof Erection",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "തടമെടുക്കൽ",
-      "ഉപ്പ് & ചാരം ഇടൽ",
-      "കുമ്മായം പ്രയോഗം",
-      "തേങ്ങ ഉൽപാദനം കൂട്ടൽ"
+      "GI Corrugated Sheet Roof Erection Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_243",
-    "name": "ബൊൺസായ് & ഓർക്കിഡ് ഗാർഡനിംഗ്",
-    "en": "Bonsai & Orchid Plant Care",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Polycarbonate Transparent Sunshade",
+    "en": "Polycarbonate Transparent Sunshade",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "ഓർക്കിഡ് വളർത്തൽ",
-      "ബൊൺസായ് ഷേപ്പിംഗ്",
-      "പ്രത്യേക വളക്കൂട്ട്",
-      "ഫംഗിസൈഡ് സ്പ്രേ"
+      "Polycarbonate Transparent Sunshade Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_244",
-    "name": "ഔഷധ സസ്യത്തോട്ടം നിർമ്മാണം",
-    "en": "Herbal Medicinal Garden Setup",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Multiwall Polycarbonate Car Porch",
+    "en": "Multiwall Polycarbonate Car Porch",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "തുളസി, കറ്റാർവാഴ, ആര്യവേപ്പ്",
-      "ആയുർവേദ ചെടികൾ",
-      "പരിപാലന നിർദ്ദേശങ്ങൾ",
-      "പച്ചപ്പ്"
+      "Multiwall Polycarbonate Car Porch Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_245",
-    "name": "നെൽവയൽ ഞാറുനടീൽ തൊഴിലാളികൾ",
-    "en": "Paddy Sowing & Harvesting",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Terrace Pergola Steel Framework",
+    "en": "Terrace Pergola Steel Framework",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "ഞാറുനടൽ പണി",
-      "കളപറിക്കൽ",
-      "കൊയ്ത്തു മെഷീൻ ഓപ്പറേഷൻ",
-      "പരമ്പരാഗത കൃഷി സഹായം"
+      "Terrace Pergola Steel Framework Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_246",
-    "name": "വേലി കെട്ടലും മുള്ളുവേലി സ്ഥാപിക്കലും",
-    "en": "Garden Fencing & Green Mesh",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Industrial Factory PEB Steel Shed",
+    "en": "Industrial Factory PEB Steel Shed",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "പച്ച നെറ്റ് വേലി",
-      "മുളങ്കമ്പുകൾ കെട്ടൽ",
-      "കന്നുകാലികൾ കയറാതിരിക്കാൻ",
-      "അതിർത്തി വേലി"
+      "Industrial Factory PEB Steel Shed Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_247",
-    "name": "ഫാമുകൾക്ക് പുല്ല് അരിഞ്ഞു നൽകൽ",
-    "en": "Cattle Fodder Cutting",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Mezzanine Steel Floor Fabrication",
+    "en": "Mezzanine Steel Floor Fabrication",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "പശുക്കൾക്കുള്ള തീറ്റപ്പുല്ല്",
-      "ഹൈബ്രിഡ് നേപ്പിയർ പുല്ല്",
-      "ദിവസേന വിതരണം",
-      "കർഷക സഹായം"
+      "Mezzanine Steel Floor Fabrication Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_248",
-    "name": "വാഴക്കന്ന് നടീലും പരിപാലനവും",
-    "en": "Plantain / Banana Plantation",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Main Gate Steel Laser Cut Modern",
+    "en": "Main Gate Steel Laser Cut Modern",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "നേന്ത്രവാഴ കൃഷി",
-      "കുഴിയെടുക്കൽ",
-      "താങ്ങ് കൊടുക്കൽ (മുള)",
-      "കുലവെട്ടൽ"
+      "Main Gate Steel Laser Cut Modern Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_249",
-    "name": "പൂന്തോട്ട ജലധാര നിർമ്മാണം",
-    "en": "Garden Water Fountain Setup",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Wrought Iron Classical Gate Making",
+    "en": "Wrought Iron Classical Gate Making",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "വാട്ടർ കാസ്കേഡ്",
-      "ഫിഷ് പോണ്ട് നിർമ്മാണം",
-      "ലോട്ടസ് ലില്ലി പോണ്ട്",
-      "പമ്പ് കണക്ഷൻ"
+      "Wrought Iron Classical Gate Making Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_250",
-    "name": "തോട്ടം കീടനാശിനി തളിക്കൽ",
-    "en": "Pest Spraying for Plantation",
-    "icon": "🌴",
-    "category": "gardening",
+    "name": "Automatic Sliding Gate Steel Frame",
+    "en": "Automatic Sliding Gate Steel Frame",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "പവർ സ്പ്രേയർ മെഷീൻ",
-      "കീടനശീകരണം",
-      "കുമിൾനാശിനി പ്രയോഗം",
-      "വിളസംരക്ഷണം"
+      "Automatic Sliding Gate Steel Frame Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_251",
-    "name": "ബ്രൈഡൽ മേക്കപ്പ് ആർട്ടിസ്റ്റ്",
-    "en": "Bridal Makeup Artist HD/Airbrush",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Stainless Steel (SS 304) Balcony Railing",
+    "en": "Stainless Steel (SS 304) Balcony Railing",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "എച്ച്ഡി ബ്രൈഡൽ മേക്കപ്പ്",
-      "ഹെയർ സ്റ്റൈലിംഗ്",
-      "സാരി ഡ്രേപ്പിംഗ്",
-      "പ്രീമിയം ലുക്ക്"
+      "Stainless Steel (SS 304) Balcony Railing Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_252",
-    "name": "ബ്രൈഡൽ മെഹന്ദി ഡിസൈനർ",
-    "en": "Bridal Mehendi Artist Designer",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Toughened Glass SS Spigot Railing",
+    "en": "Toughened Glass SS Spigot Railing",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "കൈകൾ മുഴുവൻ മെഹന്ദി",
-      "കാലുകളിൽ മെഹന്ദി",
-      "പോർട്രെയ്റ്റ് മെഹന്ദി",
-      "ഡാർക്ക് കളർ"
+      "Toughened Glass SS Spigot Railing Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_253",
-    "name": "ഹോം ഫേഷ്യൽ & ക്ലീനപ്പ്",
-    "en": "Home Facial & Glow Cleanup",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "MS Window Safety Grill Fabrication",
+    "en": "MS Window Safety Grill Fabrication",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "ഗോൾഡ് ഫേഷ്യൽ",
-      "ഡയമണ്ട് ഗ്ലോ",
-      "ബ്ലാക്ക് ഹെഡ്സ് നീക്കൽ",
-      "ഫ്രൂട്ട് ഫേഷ്യൽ"
+      "MS Window Safety Grill Fabrication Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_254",
-    "name": "ലേഡീസ് ഹെയർ കട്ടിംഗ് & സ്റ്റൈലിംഗ്",
-    "en": "Ladies Haircut & Styling",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Cast Iron Decorative Stair Handrail",
+    "en": "Cast Iron Decorative Stair Handrail",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "സ്റ്റെപ്പ് കട്ട്",
-      "ലെയർ കട്ട്",
-      "ബോബ് കട്ട്",
-      "സ്പ്ലിറ്റ് എൻഡ്സ് ട്രിമ്മിംഗ്"
+      "Cast Iron Decorative Stair Handrail Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_255",
-    "name": "സാരി ഡ്രേപ്പിംഗ് & അയണിംഗ്",
-    "en": "Saree Draping & Box Folding",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Spiral Iron Metal Staircase Making",
+    "en": "Spiral Iron Metal Staircase Making",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "പെർഫെക്റ്റ് പ്ലീറ്റ്സ്",
-      "കാഞ്ചീപുരം സാരി സെറ്റിംഗ്",
-      "ബോക്സ് ഫോൾഡിങ്",
-      "പിൻ സെറ്റ്"
+      "Spiral Iron Metal Staircase Making Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_256",
-    "name": "അറബിക് & ഇന്ത്യൻ മെഹന്ദി",
-    "en": "Arabic & Traditional Mehendi",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Compound Wall Razor Wire Spike",
+    "en": "Compound Wall Razor Wire Spike",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "ലളിതമായ ഡിസൈനുകൾ",
-      "പെരുന്നാൾ മെഹന്ദി",
-      "പാർട്ടി മെഹന്ദി",
-      "ഓർഗാനിക് മൈലാഞ്ചി"
+      "Compound Wall Razor Wire Spike Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_257",
-    "name": "ഹെയർ സ്പാ & ഡാൻഡ്രഫ് ട്രീറ്റ്മെന്റ്",
-    "en": "Hair Spa & Scalp Treatment",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Rolling Shutter Hand Motorized Gate",
+    "en": "Rolling Shutter Hand Motorized Gate",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "ഡീപ് കണ്ടീഷനിംഗ്",
-      "താരൻ മാറ്റൽ",
-      "ഹെയർ മസാജ്",
-      "മുടി കൊഴിച്ചിൽ തടയൽ"
+      "Rolling Shutter Hand Motorized Gate Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_258",
-    "name": "ഹെയർ സ്മൂത്തനിങ് & കെരാറ്റിൻ",
-    "en": "Hair Smoothening & Keratin",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Collapsible Accordion Iron Gate",
+    "en": "Collapsible Accordion Iron Gate",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "കെരാറ്റിൻ ട്രീറ്റ്മെന്റ്",
-      "ഹെയർ സ്ട്രൈറ്റനിംഗ്",
-      "ബോടോക്സ് ഹെയർ",
-      "സിൽക്കി ഹെയർ"
+      "Collapsible Accordion Iron Gate Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_259",
-    "name": "മാനിക്ക്യൂർ & പെഡിക്യൂർ ഹോം സർവീസ്",
-    "en": "Manicure & Pedicure at Home",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Aluminium Powder-Coated Sliding Door",
+    "en": "Aluminium Powder-Coated Sliding Door",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "നഖം വൃത്തിയാക്കൽ",
-      "ഡെഡ് സ്കിൻ നീക്കൽ",
-      "ഫൂട്ട് മസാജ്",
-      "നെയിൽ പോളിഷ്"
+      "Aluminium Powder-Coated Sliding Door Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_260",
-    "name": "ഐബ്രോ ത്രെഡിംഗ് & വാക്സിംഗ്",
-    "en": "Eyebrow Threading & Waxing",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "UPVC Soundproof Casement Window",
+    "en": "UPVC Soundproof Casement Window",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "പെർഫെക്റ്റ് ആർച്ച് ത്രെഡിംഗ്",
-      "ഫോർഹെഡ് ത്രെഡ്",
-      "അപ്പർലിപ്സ്",
-      "റിക വാക്സിംഗ്"
+      "UPVC Soundproof Casement Window Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_261",
-    "name": "ബോഡി പോളിഷിംഗ് & സ്കിൻ സ്പാ",
-    "en": "Full Body Polish & Herb Scrub",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Aluminium Office Cabin Partitions",
+    "en": "Aluminium Office Cabin Partitions",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "ഹെർബൽ ബോഡി സ്ക്രബ്ബ്",
-      "ടാൻ റിമൂവൽ പാക്ക്",
-      "സ്കിൻ ഗ്ലോ",
-      "റിലാക്സിങ് സ്പാ"
+      "Aluminium Office Cabin Partitions Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_262",
-    "name": "കുട്ടികളുടെ കാതുകുത്തൽ സർവീസ്",
-    "en": "Baby Ear Piercing Safe/Gun",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Structural Glazing Glass Facade",
+    "en": "Structural Glazing Glass Facade",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "വേദനയില്ലാതെ കാതുകുത്തൽ",
-      "സ്റ്റെറിലൈസ്ഡ് ഗൺ",
-      "സ്വർണ്ണക്കമ്മൽ ഇടൽ",
-      "സുരക്ഷിതം"
+      "Structural Glazing Glass Facade Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_263",
-    "name": "ജെന്റ്സ് ഹെയർ കട്ടിംഗ് ഹോം സർവീസ്",
-    "en": "Gents Barber Home Haircut",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Bathroom Aluminium Louver Window",
+    "en": "Bathroom Aluminium Louver Window",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "വീട്ടിലെത്തി മുടിവെട്ടൽ",
-      "മുതിർന്നവർക്കും കുട്ടികൾക്കും",
-      "ഹെയർ കളറിംഗ്",
-      "ഷേവിംഗ്"
+      "Bathroom Aluminium Louver Window Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_264",
-    "name": "ഷേവിംഗ് & ബിയേഡ് ട്രിമ്മിംഗ്",
-    "en": "Beard Styling & Shaving Home",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Mosquito Net SS Mesh Slider Window",
+    "en": "Mosquito Net SS Mesh Slider Window",
+    "icon": "🔥",
+    "category": "welding",
     "specs": [
-      "താടി ഷേപ്പിംഗ്",
-      "ഹോട്ട് ടവൽ ഷേവ്",
-      "ബിയേഡ് ഓയിൽ മസാജ്",
-      "സ്റ്റൈലിഷ് ലുക്ക്"
+      "Mosquito Net SS Mesh Slider Window Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_265",
-    "name": "പാർട്ടി മേക്കപ്പ് & ഹെയർ ഡൂ",
-    "en": "Party Makeup & Hairstyle",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Car Full Periodic Maintenance (Engine Oil & Filters)",
+    "en": "Car Full Periodic Maintenance (Engine Oil & Filters)",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "സിമ്പിൾ ഗ്ലോ മേക്കപ്പ്",
-      "പഫ് & ബ്രെയ്ഡ്സ്",
-      "ഐ മേക്കപ്പ്",
-      "നീണ്ടുനിൽക്കുന്ന ഫിനിഷ്"
+      "Car Full Periodic Maintenance (Engine Oil & Filters) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_266",
-    "name": "വെഡിങ് ഗസ്റ്റ് മെഹന്ദി ടീം",
-    "en": "Wedding Guest Bulk Mehendi",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Brake Pad Replacement & Disc Skimming",
+    "en": "Brake Pad Replacement & Disc Skimming",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "വിവാഹ സംഘങ്ങൾക്ക് മെഹന്ദി",
-      "വേഗത്തിലുള്ള വരയ്ക്കൽ",
-      "ടീം വർക്ക്",
-      "മിതമായ നിരക്ക്"
+      "Brake Pad Replacement & Disc Skimming Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_267",
-    "name": "ബ്രൈഡൽ ജ്വല്ലറി റെന്റൽ",
-    "en": "Bridal Jewellery Set Rental",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Clutch Plate & Pressure Plate Overhaul",
+    "en": "Clutch Plate & Pressure Plate Overhaul",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "കല്യാണ ആഭരണങ്ങൾ വാടകയ്ക്ക്",
-      "മാറ്റ് ഗോൾഡ് സെറ്റ്",
-      "കുന്ദൻ ജ്വല്ലറി",
-      "നെക്ലേസ് & കമ്മൽ"
+      "Clutch Plate & Pressure Plate Overhaul Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_268",
-    "name": "നെയിൽ ആർട്ട് & എക്സ്റ്റൻഷൻ",
-    "en": "Nail Art & Gel Extensions",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Car Shock Absorber & Suspension Strut",
+    "en": "Car Shock Absorber & Suspension Strut",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "ജെൽ നെയിൽസ്",
-      "അക്രിലിക് എക്സ്റ്റൻഷൻ",
-      "നെയിൽ പെയിന്റ് ആർട്ട്",
-      "ഗ്ലിറ്റർ ഡിസൈൻ"
+      "Car Shock Absorber & Suspension Strut Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_269",
-    "name": "ആയുർവേദ മുഖകാന്തി ഫേഷ്യൽ",
-    "en": "Ayurvedic Herbal Facial Pack",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Timing Belt Chain Replacement",
+    "en": "Timing Belt Chain Replacement",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "നവര ഫേഷ്യൽ",
-      "മഞ്ഞൾ & ചന്ദന ലേപം",
-      "സ്വാഭാവിക സൗന്ദര്യം",
-      "പാർശ്വഫലങ്ങൾ ഇല്ല"
+      "Timing Belt Chain Replacement Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_270",
-    "name": "ബ്രൈഡൽ ഷവർ മേക്കോവർ",
-    "en": "Bridal Shower Makeover Package",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Engine Coolant Flush & Radiator Clean",
+    "en": "Engine Coolant Flush & Radiator Clean",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "കല്യാണത്തിന് മുൻപുള്ള ഒരുക്കം",
-      "ഫുൾ ബോഡി വാക്സ്",
-      "ബ്ലീച്ച് & ഫേഷ്യൽ",
-      "കംപ്ലീറ്റ് ഗ്ലോ"
+      "Engine Coolant Flush & Radiator Clean Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_271",
-    "name": "ഫോട്ടോ ഷൂട്ട് മോഡൽ മേക്കപ്പ്",
-    "en": "Model & Portfolio Makeup",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Spark Plug Replacement & Ignition Check",
+    "en": "Spark Plug Replacement & Ignition Check",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "കാമറ ഫ്രണ്ട്‌ലി മേക്കപ്പ്",
-      "കോണ്ടൂറിംഗ് & ഹൈലൈറ്റ്",
-      "സിനിമാറ്റിക് ലുക്ക്",
-      "മാറ്റ് ഫിനിഷ്"
+      "Spark Plug Replacement & Ignition Check Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_272",
-    "name": "ഡ്രൈ വാക്സിംഗ് & റിക വാക്സിംഗ്",
-    "en": "Rica Waxing Sensitive Skin",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Diesel Fuel Injector Ultrasonic Clean",
+    "en": "Diesel Fuel Injector Ultrasonic Clean",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "വേദന കുറഞ്ഞ വാക്സിംഗ്",
-      "കൈകാലുകൾ വാക്സ്",
-      "അണ്ടർആംസ് വാക്സ്",
-      "സ്മൂത്ത് സ്കിൻ"
+      "Diesel Fuel Injector Ultrasonic Clean Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_273",
-    "name": "നാച്ചുറൽ മൈലാഞ്ചി പൊടി തയ്യാറാക്കൽ",
-    "en": "Organic Henna Paste Maker",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Steering Rack & Tie Rod End Repair",
+    "en": "Steering Rack & Tie Rod End Repair",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "ശുദ്ധമായ മൈലാഞ്ചി കോൺ",
-      "കെമിക്കൽ ഇല്ലാത്തത്",
-      "കടും ചുവപ്പ് നിറം",
-      "ഹോം മെയ്ഡ്"
+      "Steering Rack & Tie Rod End Repair Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_274",
-    "name": "വയോജനങ്ങൾക്കുള്ള ഹെയർ കെയർ",
-    "en": "Elderly Home Haircut & Trim",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Engine Head Gasket Replacement",
+    "en": "Engine Head Gasket Replacement",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "കിടപ്പുരോഗികൾക്ക് മുടിവെട്ടൽ",
-      "കരുതലുള്ള പരിചരണം",
-      "നഖം വെട്ടി വൃത്തിയാക്കൽ",
-      "വീട്ടിലെത്തി"
+      "Engine Head Gasket Replacement Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_275",
-    "name": "അത്തർ & പെർഫ്യൂം ഹോം ഡെലിവറി",
-    "en": "Attar & Fragrance Specialist",
-    "icon": "💄",
-    "category": "beautician",
+    "name": "Car Foam Pressure Wash & Underbody Clean",
+    "en": "Car Foam Pressure Wash & Underbody Clean",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "അറബിക് ഔദ് അത്തർ",
-      "ലോങ്ങ് ലാസ്റ്റിംഗ് പെർഫ്യൂം",
-      "നാച്ചുറൽ സുഗന്ധം",
-      "വിശ്വസ്തത"
+      "Car Foam Pressure Wash & Underbody Clean Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_276",
-    "name": "എച്ച്ഡി സിസിടിവി ക്യാമറ ഇൻസ്റ്റലേഷൻ",
-    "en": "HD CCTV Camera Installation",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Car Ceramic Coating (9H Multi-Layer)",
+    "en": "Car Ceramic Coating (9H Multi-Layer)",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "Hikvision / CP Plus",
-      "നൈറ്റ് വിഷൻ കളർ",
-      "വീടിനും കടകൾക്കും",
-      "ക്ലിയർ റെക്കോർഡിംഗ്"
+      "Car Ceramic Coating (9H Multi-Layer) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_277",
-    "name": "മൊബൈൽ ഫോൺ ലൈവ് വ്യൂ സെറ്റപ്പ്",
-    "en": "CCTV Mobile Phone Live View",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Car Interior Deep Steam Shampoo Clean",
+    "en": "Car Interior Deep Steam Shampoo Clean",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "എവിടെയിരുന്നും ഫോണിൽ കാണാം",
-      "ആപ്പ് കോൺഫിഗറേഷൻ",
-      "മോഷൻ അലേർട്ട്",
-      "നോട്ടിഫിക്കേഷൻ"
+      "Car Interior Deep Steam Shampoo Clean Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_278",
-    "name": "വൈഫൈ റൂട്ടർ റേഞ്ച് എക്സ്റ്റൻഡർ",
-    "en": "WiFi Router Range Extender",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Teflon Paint Sealant Protection",
+    "en": "Teflon Paint Sealant Protection",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "വൈഫൈ സിഗ്നൽ കൂട്ടൽ",
-      "മെഷ് വൈഫൈ സിസ്റ്റം",
-      "ഡെഡ് സോൺ ഒഴിവാക്കൽ",
-      "ഹൈ സ്പീഡ്"
+      "Teflon Paint Sealant Protection Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_279",
-    "name": "ഫൈബർ ഒപ്റ്റിക് ഇന്റർനെറ്റ് കേബിളിങ്",
-    "en": "Fiber Optic Internet Cabling",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Headlight Restoration Yellow Removal",
+    "en": "Headlight Restoration Yellow Removal",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "ഫൈബർ ജോയിന്റിങ് സ്പ്ലൈസിങ്",
-      "പാച്ച് കോഡ് മാറ്റൽ",
-      "മോഡം കണക്ഷൻ",
-      "സിഗ്നൽ ടെസ്റ്റിംഗ്"
+      "Headlight Restoration Yellow Removal Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_280",
-    "name": "സിസിടിവി ഹാർഡ് ഡിസ്ക് & ഡിവിആർ സർവീസ്",
-    "en": "DVR/NVR HDD Replacement",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Car AC Cooling Coil Cleaning",
+    "en": "Car AC Cooling Coil Cleaning",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "റെക്കോർഡിംഗ് പ്രശ്നം പരിഹാരം",
-      "ഹാർഡ് ഡിസ്ക് മാറ്റൽ",
-      "ഡിവിആർ അഡാപ്റ്റർ",
-      "ഡാറ്റാ സേഫ്റ്റി"
+      "Car AC Cooling Coil Cleaning Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_281",
-    "name": "ബയോമെട്രിക് ഫിംഗർപ്രിന്റ് അറ്റൻഡൻസ്",
-    "en": "Biometric Attendance Machine",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Car AC Compressor Gas Refill",
+    "en": "Car AC Compressor Gas Refill",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "വിരലടയാള പഞ്ചിംഗ് മെഷീൻ",
-      "ഫേസ് റെക്കഗ്നിഷൻ",
-      "ഹാജർ സോഫ്റ്റ്‌വെയർ",
-      "ഓഫീസ് സെറ്റപ്പ്"
+      "Car AC Compressor Gas Refill Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_282",
-    "name": "വീഡിയോ ഡോർ ഫോൺ ഇൻസ്റ്റലേഷൻ",
-    "en": "Video Door Phone & Bell",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Car Battery Jumpstart & Replace",
+    "en": "Car Battery Jumpstart & Replace",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "കോളിംഗ് ബെൽ ക്യാമറ",
-      "ഇൻഡോർ സ്ക്രീൻ",
-      "വാതിലിൽ ഉള്ളവരോട് സംസാരിക്കാം",
-      "സുരക്ഷ"
+      "Car Battery Jumpstart & Replace Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_283",
-    "name": "സോളാർ വയർലെസ്സ് സിസിടിവി ക്യാമറ",
-    "en": "Solar 4G Wireless CCTV",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Car Audio System & Subwoofer Setup",
+    "en": "Car Audio System & Subwoofer Setup",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "വൈദ്യുതി ഇല്ലാത്ത തോട്ടങ്ങളിൽ",
-      "4G സിം കാർഡ് ക്യാമറ",
-      "സോളാർ ബാറ്ററി ബാക്കപ്പ്",
-      "വയറിങ് ആവശ്യമില്ല"
+      "Car Audio System & Subwoofer Setup Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_284",
-    "name": "വീട് മോഷണ പ്രതിരോധ അലാറം",
-    "en": "Burglar Alarm & Motion Detector",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Reverse Parking Camera & Sensor Fit",
+    "en": "Reverse Parking Camera & Sensor Fit",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "വാതിൽ തുറന്നാൽ സൈറൺ",
-      "മോഷൻ ഡിറ്റക്ടർ",
-      "മൊബൈൽ ഫോൺ കോൾ അലേർട്ട്",
-      "സേഫ് ഹോം"
+      "Reverse Parking Camera & Sensor Fit Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_285",
-    "name": "ഇന്റർകോം & എക്സ്ചേഞ്ച് സിസ്റ്റം",
-    "en": "EPABX Intercom System Setup",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Denting Removal Machine Paintless",
+    "en": "Denting Removal Machine Paintless",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "ഓഫീസ് എക്സ്ചേഞ്ച്",
-      "റൂം കണക്ഷനുകൾ",
-      "ഇന്റർകോം ഫോണുകൾ",
-      "വയറിങ് സർവീസ്"
+      "Denting Removal Machine Paintless Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_286",
-    "name": "നെറ്റ്വർക്ക് ലാൻ കേബിൾ ക്രിമ്പിങ്",
-    "en": "LAN Cable Laying & Crimp",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Accidental Body Frame Straightening",
+    "en": "Accidental Body Frame Straightening",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "ക്യാറ്റ് 6 കേബിളിങ്",
-      "ആർജെ 45 കണക്ടർ",
-      "ലാൻ സ്വിച്ച് ബോർഡ്",
-      "ഹൈ സ്പീഡ് നെറ്റ്‌വർക്ക്"
+      "Accidental Body Frame Straightening Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_287",
-    "name": "സ്മാർട്ട് ഡോർ ലോക്ക് ഫിംഗർപ്രിന്റ്",
-    "en": "Smart Digital Door Lock",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Baked Oven Booth Spray Painting",
+    "en": "Baked Oven Booth Spray Painting",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "ഫിംഗർപ്രിന്റ് ഡോർ ലോക്ക്",
-      "പാസ്‌വേഡ് & ആർഎഫ്ഐഡി കാർഡ്",
-      "കീലെസ്സ് എൻട്രി",
-      "ഓട്ടോമാറ്റിക് ലോക്ക്"
+      "Baked Oven Booth Spray Painting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_288",
-    "name": "ഓട്ടോമാറ്റിക് ഗേറ്റ് മോട്ടോർ സെൻസർ",
-    "en": "Automatic Sensor Gate Opener",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Bike Engine Oil & Filter Change",
+    "en": "Bike Engine Oil & Filter Change",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "റിമോട്ട് കൺട്രോൾ ഗേറ്റ്",
-      "മോട്ടോർ ഇൻസ്റ്റലേഷൻ",
-      "സെൻസർ സേഫ്റ്റി",
-      "സ്വയം തുറക്കുന്ന ഗേറ്റ്"
+      "Bike Engine Oil & Filter Change Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_289",
-    "name": "പിഎ പബ്ലിക് അഡ്രസ്സ് സൗണ്ട് സിസ്റ്റം",
-    "en": "PA Speaker System Setup",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Motorcycle Carburetor FI Tuning",
+    "en": "Motorcycle Carburetor FI Tuning",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "പള്ളി / അമ്പലം സൗണ്ട്സ്",
-      "സ്കൂൾ മൈക്ക് സിസ്റ്റം",
-      "ഹോൺ സ്പീക്കറുകൾ",
-      "ആംപ്ലിഫയർ"
+      "Motorcycle Carburetor FI Tuning Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_290",
-    "name": "കമ്പ്യൂട്ടർ നെറ്റ്വർക്കിങ് സ്വിച്ച്",
-    "en": "Network Switch & Rack Setup",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Bike Disc Brake Bleeding & Pad Fit",
+    "en": "Bike Disc Brake Bleeding & Pad Fit",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "സർവർ റാക്ക് ഡ്രെസ്സിങ്",
-      "ഗിഗാബിറ്റ് സ്വിച്ച്",
-      "കേബിൾ മാനേജ്‌മെന്റ്",
-      "ഓഫീസ് ലാൻ"
+      "Bike Disc Brake Bleeding & Pad Fit Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_291",
-    "name": "സിസിടിവി പാസ്‌വേഡ് റീസെറ്റ് സർവീസ്",
-    "en": "CCTV Password Reset & Upgrade",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Two-Wheeler Chain & Sprocket Set",
+    "en": "Two-Wheeler Chain & Sprocket Set",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "മറന്നുപോയ പാസ്‌വേഡ് റീസെറ്റ്",
-      "ഫേംവെയർ അപ്ഗ്രേഡ്",
-      "സിസിടിവി അൺലോക്കിങ്",
-      "സഹായം"
+      "Two-Wheeler Chain & Sprocket Set Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_292",
-    "name": "ഷോപ്പ് സിസിടിവി കാഷ് കൗണ്ടർ ഓഡിയോ",
-    "en": "Cash Counter Audio CCTV",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Scooter V-Belt & Roller Weights",
+    "en": "Scooter V-Belt & Roller Weights",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "ശബ്ദം കേൾക്കാവുന്ന ക്യാമറ",
-      "ക്ലോസപ്പ് ലെൻസ്",
-      "പണമിടപാട് വ്യക്തമായി കാണാം",
-      "കടകൾക്ക്"
+      "Scooter V-Belt & Roller Weights Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_293",
-    "name": "ഫാക്ടറി പെരിമീറ്റർ ഇൻഫ്രാറെഡ് ബീം",
-    "en": "Perimeter Security IR Beam",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Bike Front Fork Oil Seal Overhaul",
+    "en": "Bike Front Fork Oil Seal Overhaul",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "മതിൽ ചാടിയാൽ അലാറം",
-      "ഇൻഫ്രാറെഡ് വേലി",
-      "ഫാക്ടറി അതിർത്തി സുരക്ഷ",
-      "24 മണിക്കൂർ"
+      "Bike Front Fork Oil Seal Overhaul Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_294",
-    "name": "സ്കൂൾ ബസ് ജിപിഎസ് ട്രാക്കർ",
-    "en": "School Bus / Vehicle GPS Tracker",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Tubeless Tyre Puncture Quick Fix",
+    "en": "Tubeless Tyre Puncture Quick Fix",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "വാഹന ലൊക്കേഷൻ ട്രാക്കിംഗ്",
-      "സ്പീഡ് ലിമിറ്റ് അലേർട്ട്",
-      "എൻജിൻ കട്ട് ഓഫ്",
-      "മൊബൈൽ ട്രാക്കിംഗ്"
+      "Tubeless Tyre Puncture Quick Fix Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_295",
-    "name": "ലിങ്ക്ഡ് ഓഫീസ് വിപിഎൻ സെറ്റപ്പ്",
-    "en": "Office VPN & Router Firewall",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Royal Enfield Tappet & Valve Tune",
+    "en": "Royal Enfield Tappet & Valve Tune",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "ബ്രാഞ്ച് ഓഫീസ് കണക്ഷൻ",
-      "സുരക്ഷിത ഡാറ്റാ ഷെയറിങ്",
-      "റൂട്ടർ ഫയർവാൾ",
-      "വർക്ക് ഫ്രം ഹോം"
+      "Royal Enfield Tappet & Valve Tune Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_296",
-    "name": "പ്രൊജക്ടർ & കോൺഫറൻസ് സ്ക്രീൻ",
-    "en": "Conference Projector & Mic",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Scooter Starter Motor Self Repair",
+    "en": "Scooter Starter Motor Self Repair",
+    "icon": "🔧",
+    "category": "mechanic",
     "specs": [
-      "ഓഫീസ് പ്രൊജക്ടർ ഫിക്സിംഗ്",
-      "മോട്ടറൈസ്ഡ് സ്ക്രീൻ",
-      "എച്ച്ഡിഎംഐ കേബിളിങ്",
-      "മീറ്റിംഗ് റൂം"
+      "Scooter Starter Motor Self Repair Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_297",
-    "name": "സ്മാർട്ട് ടിവി വാൾ മൗണ്ടിംഗ് & കേബിളിങ്",
-    "en": "Smart TV Wall Mount Setup",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Airport Pickup Sedan Taxi (Swift Dzire/Etios)",
+    "en": "Airport Pickup Sedan Taxi (Swift Dzire/Etios)",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "ടിവി ഭിത്തിയിൽ ഉറപ്പിക്കൽ",
-      "കേബിളുകൾ കൺസീൽ ചെയ്യൽ",
-      "സൗണ്ട് ബാർ ഫിക്സിംഗ്",
-      "പെർഫെക്റ്റ് ലെവൽ"
+      "Airport Pickup Sedan Taxi (Swift Dzire/Etios) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_298",
-    "name": "സർവർ റൂം കൂളിംഗ് സെൻസർ അലാറം",
-    "en": "Server Room Temperature Alert",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Family 7-Seater Outstation SUV (Innova/Ertiga)",
+    "en": "Family 7-Seater Outstation SUV (Innova/Ertiga)",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "ചൂട് കൂടിയാൽ അലേർട്ട്",
-      "എസ്എംഎസ് വാണിംഗ്",
-      "സർവർ സുരക്ഷ",
-      "ഓട്ടോമാറ്റിക് ചെക്കിങ്"
+      "Family 7-Seater Outstation SUV (Innova/Ertiga) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_299",
-    "name": "ഇന്റർനെറ്റ് സ്പീഡ് ബൂസ്റ്റിംഗ്",
-    "en": "Internet Connectivity Optimizer",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Hourly Call Driver for Personal Car",
+    "en": "Hourly Call Driver for Personal Car",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "സ്ലോ ഇന്റർനെറ്റ് പരിഹാരം",
-      "ഡിഎൻഎസ് ഒപ്റ്റിമൈസേഷൻ",
-      "റൂട്ടർ പൊസിഷനിംഗ്",
-      "വൈഫൈ ചാനൽ മാറ്റൽ"
+      "Hourly Call Driver for Personal Car Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_300",
-    "name": "24 മണിക്കൂർ സെക്യൂരിറ്റി സിസ്റ്റം റിപ്പയർ",
-    "en": "Emergency Security Repair",
-    "icon": "📹",
-    "category": "cctv",
+    "name": "Daily Driver for Family Commute",
+    "en": "Daily Driver for Family Commute",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "ക്യാമറ ഓഫ് ആയാൽ തൽക്ഷണം",
-      "അലാറം നിർത്തൽ",
-      "അടിയന്തര ടെക്നീഷ്യൻ",
-      "വിശ്വസ്തത"
+      "Daily Driver for Family Commute Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_301",
-    "name": "മലബാർ ദം ബിരിയാണി ഓർഡറുകൾ",
-    "en": "Malabar Thalassery Dum Biriyani",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Night Return Driver on Demand",
+    "en": "Night Return Driver on Demand",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "ചിക്കൻ / മട്ടൻ ബിരിയാണി",
-      "ജീരകശാല അരി",
-      "നെയ്ച്ചോറ് & ബീഫ്",
-      "സാലഡ്, അച്ചാർ, പായസം"
+      "Night Return Driver on Demand Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_302",
-    "name": "പരമ്പരാഗത കേരള ഇല സദ്യ കുക്ക്",
-    "en": "Traditional Kerala Banana Leaf Sadhya",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Kerala Tourism Sightseeing Car",
+    "en": "Kerala Tourism Sightseeing Car",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "24 കൂട്ടം വിഭവങ്ങൾ",
-      "സാമ്പാർ, അവിയൽ, കാളൻ, ഓലൻ",
-      "പാലട & അടപ്രഥമൻ",
-      "തുമ്പപ്പൂ ചോറ്"
+      "Kerala Tourism Sightseeing Car Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_303",
-    "name": "ചായ സൽക്കാരം സ്നാക്സ് കാറ്ററിംഗ്",
-    "en": "Evening Tea & Snacks Catering",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "AC Auto Rickshaw Local Trip",
+    "en": "AC Auto Rickshaw Local Trip",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "ഉന്നക്കായ, പഴം നിറച്ചത്",
-      "ചിക്കൻ റോൾ & സമൂസ",
-      "ലൈവ് ചായ & കാപ്പി",
-      "ചെറിയ കൂട്ടായ്മകൾ"
+      "AC Auto Rickshaw Local Trip Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_304",
-    "name": "തന്തൂരി & ബാർബിക്യു ലൈവ് കൗണ്ടർ",
-    "en": "Live Tandoor & BBQ Counter",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Regular Auto Rickshaw Stand Pickup",
+    "en": "Regular Auto Rickshaw Stand Pickup",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "ലൈവ് ബാർബിക്യു ചിക്കൻ",
-      "തന്തൂരി റൊട്ടി & നാൻ",
-      "ഷവർമ കൗണ്ടർ",
-      "പാർട്ടി സ്പെഷ്യൽ"
+      "Regular Auto Rickshaw Stand Pickup Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_305",
-    "name": "അറബിക് അൽഫാം & മന്തി കുക്ക്",
-    "en": "Arabic Mandi & Alfahm Chef",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Tempo Traveller 12-Seater Rental",
+    "en": "Tempo Traveller 12-Seater Rental",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "കുഴിമന്തി പാചകം",
-      "പെരി പെരി അൽഫാം",
-      "മയോണൈസ് & സാസ്",
-      "അറബിക് റൈസ്"
+      "Tempo Traveller 12-Seater Rental Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_306",
-    "name": "കല്യാണ സദ്യ ചീഫ് കുക്കിംഗ് മാസ്റ്റർ",
-    "en": "Wedding Head Chef / Master Cook",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Tempo Traveller 17-Seater Pushback",
+    "en": "Tempo Traveller 17-Seater Pushback",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "വലിയ വിവാഹ പാചകം",
-      "കൃത്യമായ കണക്കും അളവും",
-      "രുചികരമായ ഭക്ഷണം",
-      "വിദഗ്ദ്ധ തൊഴിലാളികൾ"
+      "Tempo Traveller 17-Seater Pushback Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_307",
-    "name": "വീട്ടുവിശേഷങ്ങൾക്ക് പാചകക്കാരൻ",
-    "en": "Small House Function Family Cook",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Tourist Luxury 26-Seater Mini Bus",
+    "en": "Tourist Luxury 26-Seater Mini Bus",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "ഗൃഹപ്രവേശം, ജന്മദിനം",
-      "വീട്ടിലെത്തി പാചകം ചെയ്യൽ",
-      "ഫ്രഷ് ഭക്ഷണം",
-      "മിതമായ കൂലി"
+      "Tourist Luxury 26-Seater Mini Bus Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_308",
-    "name": "പാലട പായസം & പ്രഥമൻ സ്പെഷ്യലിസ്റ്റ്",
-    "en": "Palada Payasam & Pradhaman Maker",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Luxury AC Air Bus 49-Seater Tour",
+    "en": "Luxury AC Air Bus 49-Seater Tour",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "ഗുളിക പാലട പായസം",
-      "ചക്ക പ്രഥമൻ / പരിപ്പ് പായസം",
-      "ശുദ്ധമായ പശുവിൻ പാൽ",
-      "രുചിക്കൂട്ട്"
+      "Luxury AC Air Bus 49-Seater Tour Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_309",
-    "name": "കോഫി & ലൈവ് ടീ സ്റ്റാൾ സെറ്റപ്പ്",
-    "en": "Live Coffee & Tea Stall for Events",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Tata Ace Mini Truck for Local Shifting",
+    "en": "Tata Ace Mini Truck for Local Shifting",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "എക്സ്പ്രസ്സോ കോഫി മെഷീൻ",
-      "സുലൈമാനി & മസാല ടീ",
-      "സ്റ്റാൾ ഡെക്കറേഷൻ",
-      "തൽക്ഷണം"
+      "Tata Ace Mini Truck for Local Shifting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_310",
-    "name": "ജ്യൂസ് & മോക്ക്ടെയിൽ ലൈവ് ബാർ",
-    "en": "Live Fresh Fruit Juice Counter",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Mahindra Bolero Pickup Goods Transport",
+    "en": "Mahindra Bolero Pickup Goods Transport",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "ഫ്രഷ് ഫ്രൂട്ട് ജ്യൂസുകൾ",
-      "മോക്ക്ടെയിൽ വെൽക്കം ഡ്രിങ്ക്സ്",
-      "കുലുക്കി സർബത്ത് കൗണ്ടർ",
-      "ഫ്രൂട്ട് സാലഡ്"
+      "Mahindra Bolero Pickup Goods Transport Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_311",
-    "name": "ഐസ്ക്രീം & ഡെസേർട്ട് കാറ്ററിംഗ്",
-    "en": "Ice Cream & Dessert Buffet",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Three-Wheeler Goods Auto Carriage",
+    "en": "Three-Wheeler Goods Auto Carriage",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "സ്കൂപ്പ് ഐസ്ക്രീം സ്റ്റാൾ",
-      "പുഡ്ഡിംഗ് & കസ്റ്റാർഡ്",
-      "ഗുലാബ് ജാമുൻ വിത്ത് ഐസ്ക്രീം",
-      "ഡെസേർട്ട് ബാർ"
+      "Three-Wheeler Goods Auto Carriage Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_312",
-    "name": "മീൻ പൊരിച്ചത് & സീഫുഡ് കുക്കിംഗ്",
-    "en": "Kerala Seafood & Fish Fry Special",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Eicher 14ft Closed Container Truck",
+    "en": "Eicher 14ft Closed Container Truck",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "അയല, മത്തി, ആവോലി പൊരിച്ചത്",
-      "കൊഞ്ച് റോസ്റ്റ് & കക്ക",
-      "മീൻ കറി നാടൻ കുടമ്പുളി",
-      "സീഫുഡ് പ്രേമികൾക്ക്"
+      "Eicher 14ft Closed Container Truck Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_313",
-    "name": "ചപ്പാത്തി & പൊറോട്ട മൊത്ത വിതരണം",
-    "en": "Chapati & Malabar Porotta Bulk",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "10-Wheel Heavy Lorry for Transport",
+    "en": "10-Wheel Heavy Lorry for Transport",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "സോഫ്റ്റ് മലബാർ പൊറോട്ട",
-      "ഹോം മെയ്ഡ് ചപ്പാത്തി",
-      "ഓർഡറുകൾക്ക് മുൻകൂട്ടി എത്തിക്കും",
-      "പാർട്ടി ഓർഡർ"
+      "10-Wheel Heavy Lorry for Transport Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_314",
-    "name": "കേരളീയ നാടൻ പലഹാരങ്ങൾ",
-    "en": "Nadan Snacks (Unniyappam, Neyyappam)",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Tipper Lorry for Sand & Granite",
+    "en": "Tipper Lorry for Sand & Granite",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "ഉണ്ണിയപ്പം, നെയ്യപ്പം",
-      "കോഴിക്കോട് ഹൽവ",
-      "കഴുത്തുരുട്ടി & കായ്പ്പോള",
-      "ശുദ്ധമായ ചേരുവകൾ"
+      "Tipper Lorry for Sand & Granite Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_315",
-    "name": "നോമ്പ് തുറ ഇഫ്താർ കിറ്റ് കാറ്ററിംഗ്",
-    "en": "Iftar Food Kit & Snacks",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "JCB 3DX Excavator Backhoe on Hire",
+    "en": "JCB 3DX Excavator Backhoe on Hire",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "തരിക്കഞ്ഞി & ജീരകക്കഞ്ഞി",
-      "ഈന്തപ്പഴം & ഫ്രൂട്ട്സ് കിറ്റ്",
-      "സ്നാക്സ് ബോക്സ്",
-      "കൃത്യസമയത്ത് ഡെലിവറി"
+      "JCB 3DX Excavator Backhoe on Hire Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_316",
-    "name": "ബർത്ത്ഡേ കസ്റ്റം തീം കേക്ക്",
-    "en": "Custom Birthday Fondant Cake",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Hitachi Excavator Rock Breaker Poclain",
+    "en": "Hitachi Excavator Rock Breaker Poclain",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "ഹോം ബേക്കർ കേക്കുകൾ",
-      "ഫോട്ടോ കേക്ക്",
-      "ചോക്ലേറ്റ് ട്രഫിൾ",
-      "കുട്ടികളുടെ തീം ഡിസൈൻ"
+      "Hitachi Excavator Rock Breaker Poclain Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_317",
-    "name": "ബിരിയാണി ചെമ്പ് വാടകയ്ക്ക് നൽകൽ",
-    "en": "Biriyani Chembu & Utensils Rent",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Hydraulic Mobile Crane 14-25 Ton",
+    "en": "Hydraulic Mobile Crane 14-25 Ton",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "വലിയ ബിരിയാണി ചെമ്പുകൾ",
-      "പ്ലേറ്റുകൾ, ഗ്ലാസുകൾ",
-      "വിളമ്പുന്ന പാത്രങ്ങൾ",
-      "വാടക സർവീസ്"
+      "Hydraulic Mobile Crane 14-25 Ton Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_318",
-    "name": "കാറ്ററിംഗ് വിളമ്പുകാരും സർവീസും",
-    "en": "Catering Service Staff & Boys",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Flatbed Towing Truck for Car Breakdown",
+    "en": "Flatbed Towing Truck for Car Breakdown",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "യൂണിഫോം അണിഞ്ഞ ബോയ്‌സ്",
-      "മാന്യമായ പെരുമാറ്റം",
-      "വേഗത്തിലുള്ള വിളമ്പൽ",
-      "ടേബിൾ സർവീസ്"
+      "Flatbed Towing Truck for Car Breakdown Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_319",
-    "name": "ഡയറ്റ് & ഹെൽത്തി മീൽസ് ഡെലിവറി",
-    "en": "Healthy Diet Meal Box at Home",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Tractor with Rotary Tiller for Field",
+    "en": "Tractor with Rotary Tiller for Field",
+    "icon": "🚗",
+    "category": "vehicles",
     "specs": [
-      "എണ്ണ കുറഞ്ഞ ഭക്ഷണം",
-      "സാലഡ് & ബോയിൽഡ് ചിക്കൻ",
-      "ബ്രൗൺ റൈസ് മീൽസ്",
-      "ഓഫീസ് ഡെലിവറി"
+      "Tractor with Rotary Tiller for Field Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_320",
-    "name": "അച്ചാർ & ചമ്മന്തിപ്പൊടി തയ്യാറാക്കൽ",
-    "en": "Homemade Pickle & Podi Maker",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Occupied House Full Deep Cleaning",
+    "en": "Occupied House Full Deep Cleaning",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "മാങ്ങ, നാരങ്ങ, വെളുത്തുള്ളി അച്ചാർ",
-      "മീൻ അച്ചാർ & ബീഫ് അച്ചാർ",
-      "ഇഡ്ഡലിപ്പൊടി",
-      "നാടൻ രുചി"
+      "Occupied House Full Deep Cleaning Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_321",
-    "name": "വാഴയില മൊത്ത വിതരണം",
-    "en": "Banana Leaves Bulk Supply",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Vacant House Move-in Move-out Clean",
+    "en": "Vacant House Move-in Move-out Clean",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "സദ്യയ്ക്കുള്ള വലിയ വാഴയില",
-      "വെട്ടി വൃത്തിയാക്കിയത്",
-      "വിവാഹ ആവശ്യങ്ങൾക്ക്",
-      "ഡോർ ഡെലിവറി"
+      "Vacant House Move-in Move-out Clean Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_322",
-    "name": "വിറകടുപ്പ് ബിരിയാണി പാചകം",
-    "en": "Firewood Dum Biriyani Specialist",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Post-Construction Chemical Deep Clean",
+    "en": "Post-Construction Chemical Deep Clean",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "നാടൻ വിറകടുപ്പിലെ ബിരിയാണി",
-      "പ്രത്യേക രുചിയും മണവും",
-      "ദം ഇടൽ സ്പെഷ്യലിസ്റ്റ്",
-      "വിദഗ്ദ്ധൻ"
+      "Post-Construction Chemical Deep Clean Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_323",
-    "name": "വെജിറ്റേറിയൻ ഫുൾ മീൽസ് കാറ്ററിംഗ്",
-    "en": "Pure Vegetarian Brahmin Sadhya",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Kitchen Degreasing & Oil Stains Scrub",
+    "en": "Kitchen Degreasing & Oil Stains Scrub",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "ശുദ്ധ വെജിറ്റേറിയൻ അടുക്കള",
-      "പപ്പടം & പായസം",
-      "രുചിയൂറും കൂട്ടുകറികൾ",
-      "ഗുണമേന്മ"
+      "Kitchen Degreasing & Oil Stains Scrub Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_324",
-    "name": "ചൈനീസ് & ഫ്രൈഡ് റൈസ് ലൈവ് കുക്ക്",
-    "en": "Live Chinese & Noodle Stall",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Bathroom Tile Acid Clean & Descaling",
+    "en": "Bathroom Tile Acid Clean & Descaling",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "ചിക്കൻ ഫ്രൈഡ് റൈസ്",
-      "ഹക്കാ നൂഡിൽസ്",
-      "ചില്ലി ചിക്കൻ ലൈവ്",
-      "പാർട്ടി സ്പെഷ്യൽ"
+      "Bathroom Tile Acid Clean & Descaling Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_325",
-    "name": "ഹോസ്റ്റൽ & മെസ്സ് ഫുഡ് സപ്ലൈ",
-    "en": "Mess Food & Tiffin Service",
-    "icon": "🍲",
-    "category": "catering",
+    "name": "Sofa Fabric Wet Shampoo Injection",
+    "en": "Sofa Fabric Wet Shampoo Injection",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "രാവിലെ, ഉച്ചയ്ക്ക്, രാത്രി ഭക്ഷണം",
-      "വീട്ടിലുണ്ടാക്കുന്ന രുചി",
-      "റഗുലർ ടിഫിൻ ബോക്സ്",
-      "മാസവരി"
+      "Sofa Fabric Wet Shampoo Injection Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_326",
-    "name": "ഡിസൈനർ ബ്ലൗസ് സ്പെഷ്യലിസ്റ്റ്",
-    "en": "Designer Blouse Cutting & Stitching",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Carpet High-Power Vacuum & Shampoo",
+    "en": "Carpet High-Power Vacuum & Shampoo",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "ബോട്ട് നെക്ക്, പ്രിൻസസ് കട്ട്",
-      "പാഡഡ് ബ്ലൗസ്",
-      "ബാക്ക് ലെസ്സ് & ഡ്രോപ് നെക്ക്",
-      "പെർഫെക്റ്റ് ഫിറ്റിംഗ്"
+      "Carpet High-Power Vacuum & Shampoo Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_327",
-    "name": "സാരി ബോർഡർ വർക്ക് & ഫോൾസ് ഫിറ്റിംഗ്",
-    "en": "Saree Falls & Pico Work",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Mattress Dust Mite Deep Sanitization",
+    "en": "Mattress Dust Mite Deep Sanitization",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "സാരി ഫോൾസ് തയ്ക്കൽ",
-      "പീക്കോ ബോർഡർ",
-      "കുഞ്ചലം പിടിപ്പിക്കൽ",
-      "തത്സമയം തയ്ച്ചുനൽകും"
+      "Mattress Dust Mite Deep Sanitization Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_328",
-    "name": "ലേഡീസ് ചുരിദാർ & കുർത്തി തയ്യൽ",
-    "en": "Ladies Churidar & Kurti Tailor",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Balcony Floor Scrubbing & Moss Wash",
+    "en": "Balcony Floor Scrubbing & Moss Wash",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "ലൈനിങ് ചുരിദാർ",
-      "അനാർക്കലി & അംബ്രല്ല കട്ട്",
-      "പ്ലാസോ പാന്റ്സ്",
-      "സ്ലീവ്സ് ഡിസൈൻ"
+      "Balcony Floor Scrubbing & Moss Wash Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_329",
-    "name": "സ്കൂൾ & കോളേജ് യൂണിഫോം തയ്യൽ",
-    "en": "School / College Uniform Bulk",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Curtain Steam Cleaning On-Site",
+    "en": "Curtain Steam Cleaning On-Site",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "സ്കൂൾ യൂണിഫോം ഷർട്ട് & പാന്റ്സ്",
-      "പിനാഫോർ തയ്യൽ",
-      "കോളേജ് കോട്ട്",
-      "കൃത്യസമയത്ത് ഡെലിവറി"
+      "Curtain Steam Cleaning On-Site Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_330",
-    "name": "ജെന്റ്സ് ഷർട്ട് & പാന്റ്സ് തയ്യൽ",
-    "en": "Gents Shirt & Pant Master Tailor",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Window Glass Both Sides Clean",
+    "en": "Window Glass Both Sides Clean",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "ഫോർമൽ ഷർട്ട് കട്ടിംഗ്",
-      "സ്ലിം ഫിറ്റ് ട്രൗസർ",
-      "പെർഫെക്റ്റ് അളവ്",
-      "മാസ്റ്റർ തയ്യൽ"
+      "Window Glass Both Sides Clean Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_331",
-    "name": "കോട്ട് സ്യൂട്ട് & ബ്ലേസർ തയ്യൽ",
-    "en": "Suit, Coat & Blazer Stitching",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Overhead Sintex Water Tank Deep Clean",
+    "en": "Overhead Sintex Water Tank Deep Clean",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "ടു-പീസ് സ്യൂട്ട്",
-      "വെഡിങ് ബ്ലേസർ",
-      "സഫാരി സ്യൂട്ട്",
-      "പ്രീമിയം കാൻവാസ് ഫിനിഷ്"
+      "Overhead Sintex Water Tank Deep Clean Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_332",
-    "name": "കുട്ടികളുടെ ഫ്രോക്ക് & പാവാട",
-    "en": "Kids Frock & Pattu Pavada",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Concrete Overhead Water Tank Scrubbing",
+    "en": "Concrete Overhead Water Tank Scrubbing",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "പട്ടുപാവാട & ബ്ലൗസ്",
-      "ബർത്ത്ഡേ ഫ്രോക്ക്",
-      "കുട്ടികളുടെ ഉടുപ്പുകൾ",
-      "വർണ്ണാഭമായ ഡിസൈനുകൾ"
+      "Concrete Overhead Water Tank Scrubbing Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_333",
-    "name": "കർട്ടൻ & വിൻഡോ ഡ്രേപ്പ് തയ്യൽ",
-    "en": "Home Curtain & Drapes Tailor",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Underground RCC Sump High Pressure Clean",
+    "en": "Underground RCC Sump High Pressure Clean",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "ഐലെറ്റ് കർട്ടൻ തയ്യൽ",
-      "പ്ലീറ്റഡ് ഡ്രേപ്പുകൾ",
-      "ഷിയർ കർട്ടൻ",
-      "സൈസ് അളന്നെടുക്കൽ"
+      "Underground RCC Sump High Pressure Clean Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_334",
-    "name": "സോഫ & കുഷ്യൻ കവർ തയ്യൽ",
-    "en": "Sofa & Cushion Cover Stitching",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Septic Tank Vacuum Suction Tanker (3000L)",
+    "en": "Septic Tank Vacuum Suction Tanker (3000L)",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "സിബ്ബ് വെച്ച കുഷ്യൻ കവർ",
-      "സോഫ സ്ലിപ്പ് കവർ",
-      "ഡൈനിംഗ് ചെയർ കവർ",
-      "ഫിറ്റിംഗ്"
+      "Septic Tank Vacuum Suction Tanker (3000L) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_335",
-    "name": "ആൾട്ടറേഷൻ & സിബ്ബ് മാറ്റൽ",
-    "en": "Fast Alteration & Zip Replacement",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Heavy Septic Tank Waste Sludge Clear (6000L)",
+    "en": "Heavy Septic Tank Waste Sludge Clear (6000L)",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "പാന്റ്സ് നീളം കുറയ്ക്കൽ",
-      "ടൈറ്റാക്കൽ / ലൂസാക്കൽ",
-      "സിബ്ബ് മാറ്റൽ",
-      "തൽക്ഷണ സർവീസ്"
+      "Heavy Septic Tank Waste Sludge Clear (6000L) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_336",
-    "name": "ആരി & സർദോസി എംബ്രോയ്ഡറി",
-    "en": "Aari & Zardosi Hand Embroidery",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Sewage Pipeline High Pressure Jet Flush",
+    "en": "Sewage Pipeline High Pressure Jet Flush",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "മഗ്ഗം വർക്ക് ബ്ലൗസ്",
-      "മുത്ത് & കല്ല് പതിപ്പിക്കൽ",
-      "ബ്രൈഡൽ എംബ്രോയ്ഡറി",
-      "കൈവേലകൾ"
+      "Sewage Pipeline High Pressure Jet Flush Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_337",
-    "name": "ബ്രൈഡൽ ഗൗൺ ഡിസൈനിങ്",
-    "en": "Bridal Gown & Maxi Stitching",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Termite Drill-Fill-Seal Anti-Treatment",
+    "en": "Termite Drill-Fill-Seal Anti-Treatment",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "ക്രിസ്ത്യൻ വെഡിങ് ഗൗൺ",
-      "മാക്സി ഡ്രസ്സ്",
-      "ലെയേർഡ് നെറ്റ് ഗൗൺ",
-      "കസ്റ്റം ഫാഷൻ"
+      "Termite Drill-Fill-Seal Anti-Treatment Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_338",
-    "name": "നൈറ്റി & ഹൗസ് കോട്ട് തയ്യൽ",
-    "en": "Nighty & House Coat Bulk Tailor",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Kitchen Cockroach Herbal Gel Paste",
+    "en": "Kitchen Cockroach Herbal Gel Paste",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "കോട്ടൺ നൈറ്റി തയ്യൽ",
-      "ഫീഡിങ് സിബ്ബ് നൈറ്റി",
-      "ഹൗസ് കോട്ട്",
-      "കംഫർട്ടബിൾ സ്റ്റിച്ചിംഗ്"
+      "Kitchen Cockroach Herbal Gel Paste Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_339",
-    "name": "പർദ്ദ & അബായ തയ്യൽ സർവീസ്",
-    "en": "Pardha & Abaya Designer Tailoring",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Bedbug 2-Round Chemical Spray",
+    "en": "Bedbug 2-Round Chemical Spray",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "ദുബായ് മോഡൽ അബായ",
-      "സ്റ്റോൺ വർക്ക് പർദ്ദ",
-      "ഹിജാബ് തയ്യൽ",
-      "കസ്റ്റം സൈസ്"
+      "Bedbug 2-Round Chemical Spray Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_340",
-    "name": "ജീൻസ് പാന്റ്സ് ആൾട്ടറേഷൻ & ലെങ്ത്",
-    "en": "Jeans Hemming & Alteration",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Rodent Bait Box & Glue Board Service",
+    "en": "Rodent Bait Box & Glue Board Service",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "ഒറിജിനൽ ഹെം നിലനിർത്തൽ",
-      "വേസ്റ്റ് അഡ്ജസ്റ്റ്മെന്റ്",
-      "പോക്കറ്റ് റിപ്പയർ",
-      "ശക്തമായ നൂൽ"
+      "Rodent Bait Box & Glue Board Service Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_341",
-    "name": "പട്ടുസാരി കുഞ്ചലം കെട്ടൽ",
-    "en": "Saree Tassels & Kunchalam Knots",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Mosquito Thermal Fogging Outdoor",
+    "en": "Mosquito Thermal Fogging Outdoor",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "സിൽക്ക് ത്രെഡ് കുഞ്ചലം",
-      "മുത്തുകൾ കോർത്തത്",
-      "സാരി മുന്താണി ഭംഗിയാക്കൽ",
-      "കൈപ്പണി"
+      "Mosquito Thermal Fogging Outdoor Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_342",
-    "name": "ബെഡ്ഷീറ്റ് & പില്ലോ കവർ തയ്യൽ",
-    "en": "Bed Sheet & Pillow Cover Stitching",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Balcony Pigeon Bird Netting High-Rise",
+    "en": "Balcony Pigeon Bird Netting High-Rise",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "ഇലാസ്റ്റിക് ഫിറ്റഡ് ബെഡ്ഷീറ്റ്",
-      "പില്ലോ കവർ സെറ്റ്",
-      "ക്വിൽറ്റ് കവർ",
-      "ഫിനിഷ്"
+      "Balcony Pigeon Bird Netting High-Rise Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_343",
-    "name": "തുണി ബാഗുകൾ തയ്യൽ",
-    "en": "Cloth Shopping Bags Manufacturing",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Honey Bee & Wasp Nest Safe Removal",
+    "en": "Honey Bee & Wasp Nest Safe Removal",
+    "icon": "🧹",
+    "category": "cleaning",
     "specs": [
-      "കോട്ടൺ സഞ്ചി തയ്യൽ",
-      "പ്ലാസ്റ്റിക് നിരോധന ബദൽ",
-      "ബൾക്ക് ഓർഡർ",
-      "പ്രിന്റിംഗ്"
+      "Honey Bee & Wasp Nest Safe Removal Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_344",
-    "name": "മെഷീൻ കമ്പ്യൂട്ടറൈസ്ഡ് എംബ്രോയ്ഡറി",
-    "en": "Computerized Machine Embroidery",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Skilled Coconut Tree Climbing & Plucking",
+    "en": "Skilled Coconut Tree Climbing & Plucking",
+    "icon": "🌴",
+    "category": "gardening",
     "specs": [
-      "ലോഗോ എംബ്രോയ്ഡറി",
-      "യൂണിഫോം ബാഡ്ജ്",
-      "കംപ്യൂട്ടർ ഡിസൈൻ വർക്ക്",
-      "വേഗത"
+      "Skilled Coconut Tree Climbing & Plucking Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_345",
-    "name": "ലെഹങ്ക ഫിറ്റിംഗ് & കാൻ-കാൻ അറ്റാച്ച്",
-    "en": "Lehenga Fitting & Can-Can",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Coconut Tree Crown Cleaning & Salt/Ash",
+    "en": "Coconut Tree Crown Cleaning & Salt/Ash",
+    "icon": "🌴",
+    "category": "gardening",
     "specs": [
-      "വിവാഹ ലെഹങ്ക സൈസ് അഡ്ജസ്റ്റ്",
-      "ഫ്ലെയർ കൂട്ടാൻ കാൻ-കാൻ",
-      "ബ്ലൗസ് ആൾട്ടറേഷൻ",
-      "പെർഫെക്ഷൻ"
+      "Coconut Tree Crown Cleaning & Salt/Ash Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_346",
-    "name": "ടേബിൾ ക്ലോത്ത് തയ്യൽ",
-    "en": "Dining Table Cloth & Mat Stitching",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Coconut Tree Rhinoceros Beetle Treatment",
+    "en": "Coconut Tree Rhinoceros Beetle Treatment",
+    "icon": "🌴",
+    "category": "gardening",
     "specs": [
-      "ടേബിൾ റണ്ണർ",
-      "ഡൈനിംഗ് മാറ്റ്",
-      "ഫ്രിഡ്ജ് ടോപ്പ് കവർ",
-      "വാഷിംഗ് മെഷീൻ കവർ"
+      "Coconut Tree Rhinoceros Beetle Treatment Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_347",
-    "name": "മെഡിക്കൽ അപ്രോൺ & സ്ക്രബ്ബ്സ് തയ്യൽ",
-    "en": "Doctor Apron & Hospital Scrubs",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Dangerous Tree Branch Trimming High-Tension",
+    "en": "Dangerous Tree Branch Trimming High-Tension",
+    "icon": "🌴",
+    "category": "gardening",
     "specs": [
-      "ഡോക്ടേഴ്സ് വൈറ്റ് കോട്ട്",
-      "നഴ്സിംഗ് സ്ക്രബ്ബ്സ്",
-      "ലാബ് അപ്രോൺ",
-      "കോട്ടൺ തുണി"
+      "Dangerous Tree Branch Trimming High-Tension Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_348",
-    "name": "സ്പോർട്സ് ജേഴ്സി തയ്യലും പ്രിന്റും",
-    "en": "Sports Jersey Stitching & Print",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Large Wood Tree Felling with Crane & Winch",
+    "en": "Large Wood Tree Felling with Crane & Winch",
+    "icon": "🌴",
+    "category": "gardening",
     "specs": [
-      "ഫുട്ബോൾ ജേഴ്സി തയ്യൽ",
-      "പേരും നമ്പറും പ്രിന്റ്",
-      "ഡ്രൈ-ഫിറ്റ് തുണി",
-      "ടീം സെറ്റുകൾ"
+      "Large Wood Tree Felling with Crane & Winch Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_349",
-    "name": "കാർ സീറ്റ് കവർ തയ്യൽ & ഫിറ്റിംഗ്",
-    "en": "Car Seat Custom Cover Stitching",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Chainsaw Machine Wood Cutting on Site",
+    "en": "Chainsaw Machine Wood Cutting on Site",
+    "icon": "🌴",
+    "category": "gardening",
     "specs": [
-      "ലെതറെറ്റ് കാർ സീറ്റ് കവർ",
-      "ഫോം കുഷ്യനിംഗ്",
-      "പെർഫെക്റ്റ് ഫിറ്റിംഗ്",
-      "ഡ്യൂറബിലിറ്റി"
+      "Chainsaw Machine Wood Cutting on Site Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_350",
-    "name": "ദ്രുത എമർജൻസി തയ്യൽ സർവീസ്",
-    "en": "2-Hour Express Tailor Service",
-    "icon": "🧵",
-    "category": "tailoring",
+    "name": "Tree Stump Grinding & Root Removal",
+    "en": "Tree Stump Grinding & Root Removal",
+    "icon": "🌴",
+    "category": "gardening",
     "specs": [
-      "പെട്ടെന്ന് ആവശ്യമായി വരുമ്പോൾ",
-      "2 മണിക്കൂറിൽ ആൾട്ടറേഷൻ",
-      "തൽക്ഷണം",
-      "സഹായം"
+      "Tree Stump Grinding & Root Removal Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_351",
-    "name": "കിടപ്പുരോഗി പരിചരണ ഹോം നഴ്സ്",
-    "en": "Bedridden Patient Caregiver",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Arecanut Betel Nut Tree Harvesting",
+    "en": "Arecanut Betel Nut Tree Harvesting",
+    "icon": "🌴",
+    "category": "gardening",
     "specs": [
-      "കുളിപ്പിക്കൽ & വസ്ത്രം മാറ്റൽ",
-      "ബെഡ് സോർ പ്രതിരോധം",
-      "മരുന്ന് കൃത്യസമയത്ത്",
-      "സ്നേഹപരിചരണം"
+      "Arecanut Betel Nut Tree Harvesting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_352",
-    "name": "വയോജന ശുശ്രൂഷ (എൽഡർ കെയർ)",
-    "en": "Elderly Home Care Companion",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Rubber Tree Tapping Skilled Daily",
+    "en": "Rubber Tree Tapping Skilled Daily",
+    "icon": "🌴",
+    "category": "gardening",
     "specs": [
-      "പ്രായമായവർക്ക് കൂട്ട്",
-      "നടക്കാൻ സഹായിക്കൽ",
-      "ആഹാരം കൊടുക്കൽ",
-      "ആശുപത്രിയിൽ കൊണ്ടുപോകൽ"
+      "Rubber Tree Tapping Skilled Daily Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_353",
-    "name": "പ്രസവ രക്ഷ & കുഞ്ഞ് പരിചരണം",
-    "en": "Post-natal Mother & Baby Care",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Lawn Grass Laying (Bermuda / Buffalo / Korean)",
+    "en": "Lawn Grass Laying (Bermuda / Buffalo / Korean)",
+    "icon": "🌴",
+    "category": "gardening",
     "specs": [
-      "പ്രസവരക്ഷാ പരിചരണം",
-      "കുഞ്ഞിനെ കുളിപ്പിക്കൽ",
-      "എണ്ണതേപ്പിക്കൽ",
-      "അമ്മയ്ക്കുള്ള ശുശ്രൂഷ"
+      "Lawn Grass Laying (Bermuda / Buffalo / Korean) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_354",
-    "name": "വീട്ടിലെത്തി ഇഞ്ചക്ഷൻ എടുക്കൽ",
-    "en": "Home Nurse for Injections & IV",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Motorized Brush Cutter Grass Trimming",
+    "en": "Motorized Brush Cutter Grass Trimming",
+    "icon": "🌴",
+    "category": "gardening",
     "specs": [
-      "ഐവി ഫ്ലൂയിഡ് ഡ്രിപ്പ്",
-      "ഇൻസുലിൻ & ആന്റിബയോട്ടിക്",
-      "ഡോക്ടറുടെ കുറിപ്പടി പ്രകാരം",
-      "സ്റ്റെറൈൽ"
+      "Motorized Brush Cutter Grass Trimming Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_355",
-    "name": "മുറിവ് ഡ്രസ്സിംഗ് & തുന്നൽ അഴിക്കൽ",
-    "en": "Wound Dressing & Suture Removal",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Lawn Mower Machine Cutting & Edge Clean",
+    "en": "Lawn Mower Machine Cutting & Edge Clean",
+    "icon": "🌴",
+    "category": "gardening",
     "specs": [
-      "ശസ്ത്രക്രിയ മുറിവ് ഡ്രസ്സിംഗ്",
-      "ഷുഗർ രോഗികളുടെ മുറിവ് കെയർ",
-      "തുന്നൽ നീക്കം",
-      "സേഫ്റ്റി"
+      "Lawn Mower Machine Cutting & Edge Clean Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_356",
-    "name": "യൂറിൻ കത്തീറ്റർ മാറ്റൽ സർവീസ്",
-    "en": "Urinary Catheter Care at Home",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Hedge Trimming & Topiary Shaping",
+    "en": "Hedge Trimming & Topiary Shaping",
+    "icon": "🌴",
+    "category": "gardening",
     "specs": [
-      "കത്തീറ്റർ ഇൻസർഷൻ & ചേഞ്ച്",
-      "യൂറിൻ ബാഗ് മാറ്റൽ",
-      "ഇൻഫെക്ഷൻ കൺട്രോൾ",
-      "പരിചയസമ്പന്നർ"
+      "Hedge Trimming & Topiary Shaping Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_357",
-    "name": "ബിപി & ഷുഗർ ഹോം ചെക്കപ്പ്",
-    "en": "BP, Sugar & Vital Signs Home Check",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Decorative Garden Landscaping Design",
+    "en": "Decorative Garden Landscaping Design",
+    "icon": "🌴",
+    "category": "gardening",
     "specs": [
-      "ഡിജിറ്റൽ & മാനുവൽ ബിപി",
-      "ഗ്ലൂക്കോമീറ്റർ ഷുഗർ ചെക്ക്",
-      "പൾസ് ഓക്സിമീറ്റർ",
-      "ചാർട്ടിങ്"
+      "Decorative Garden Landscaping Design Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_358",
-    "name": "ഫിസിയോതെറാപ്പി ഹോം ട്രീറ്റ്മെന്റ്",
-    "en": "Home Physiotherapist for Stroke",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Garden Soil Mixing (Red Soil / Cow Dung / Coir)",
+    "en": "Garden Soil Mixing (Red Soil / Cow Dung / Coir)",
+    "icon": "🌴",
+    "category": "gardening",
     "specs": [
-      "സ്ട്രോക്ക് റീഹാബിലിറ്റേഷൻ",
-      "സന്ധിവേദന വ്യായാമങ്ങൾ",
-      "നടത്തം പരിശീലിപ്പിക്കൽ",
-      "ഫിസിയോ മെഷീൻ"
+      "Garden Soil Mixing (Red Soil / Cow Dung / Coir) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_359",
-    "name": "രക്തസാമ്പിൾ വീട്ടിലെത്തി ശേഖരിക്കൽ",
-    "en": "Home Blood Sample Collection",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Drip Irrigation Automatic Garden Timer",
+    "en": "Drip Irrigation Automatic Garden Timer",
+    "icon": "🌴",
+    "category": "gardening",
     "specs": [
-      "ലാബ് ടെസ്റ്റ് സാമ്പിൾ എടുക്കൽ",
-      "ഫാസ്റ്റിംഗ് ഷുഗർ, കൊളസ്ട്രോൾ",
-      "റിപ്പോർട്ട് വാട്സാപ്പിൽ",
-      "സൗകര്യം"
+      "Drip Irrigation Automatic Garden Timer Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_360",
-    "name": "ഓക്സിജൻ സിലിണ്ടർ ഹോം സപ്ലൈ",
-    "en": "Oxygen Cylinder & Concentrator Supply",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Vertical Garden Living Green Wall Setup",
+    "en": "Vertical Garden Living Green Wall Setup",
+    "icon": "🌴",
+    "category": "gardening",
     "specs": [
-      "മെഡിക്കൽ ഓക്സിജൻ സിലിണ്ടർ",
-      "ഓക്സിജൻ കോൺസെൻട്രേറ്റർ വാടകയ്ക്ക്",
-      "മാസ്ക് & കാനുല",
-      "24 മണിക്കൂർ"
+      "Vertical Garden Living Green Wall Setup Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_361",
-    "name": "ഹോസ്പിറ്റൽ ബൈസ്റ്റാൻഡർ സർവീസ്",
-    "en": "Hospital Patient Bystander Attendant",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Outdoor Planter Pot Shifting & Repotting",
+    "en": "Outdoor Planter Pot Shifting & Repotting",
+    "icon": "🌴",
+    "category": "gardening",
     "specs": [
-      "ആശുപത്രിയിൽ കൂട്ടിരിപ്പ്",
-      "രാത്രികാല കൂട്ടിരിപ്പുകാരൻ",
-      "രോഗിക്ക് സഹായം",
-      "വിശ്വസ്ത സേവനം"
+      "Outdoor Planter Pot Shifting & Repotting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_362",
-    "name": "വീൽചെയർ & എയർ ബെഡ് വാടകയ്ക്ക്",
-    "en": "Hospital Bed & Air Mattress Rent",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Organic Plant Pesticide Neem Spray",
+    "en": "Organic Plant Pesticide Neem Spray",
+    "icon": "🌴",
+    "category": "gardening",
     "specs": [
-      "മെഡിക്കൽ കോട്ട് വാടകയ്ക്ക്",
-      "എയർ ബെഡ് (ബെഡ് സോർ തടയാൻ)",
-      "ഫോൾഡിങ് വീൽചെയർ",
-      "വാക്കർ"
+      "Organic Plant Pesticide Neem Spray Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_363",
-    "name": "ആയുർവേദ ഉഴിച്ചിൽ & പിഴിച്ചിൽ",
-    "en": "Ayurvedic Home Massage & Pizhichil",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Power Tiller Machine Soil Plowing",
+    "en": "Power Tiller Machine Soil Plowing",
+    "icon": "🌴",
+    "category": "gardening",
     "specs": [
-      "വാതവേദന ശമനം",
-      "കുഴമ്പ് തേച്ചുകുളി",
-      "കിഴി പിടിക്കൽ",
-      "പരമ്പരാഗത തെറാപ്പി"
+      "Power Tiller Machine Soil Plowing Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_364",
-    "name": "നട്ടെല്ല് വേദന ഫിസിയോ വ്യായാമം",
-    "en": "Spine & Back Pain Physiotherapy",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Kerala Traditional Wedding Sadhya (28 Items)",
+    "en": "Kerala Traditional Wedding Sadhya (28 Items)",
+    "icon": "🍲",
+    "category": "catering",
     "specs": [
-      "ഡിസ്ക് പ്രൊലാപ്സ് കെയർ",
-      "കഴുത്തുവേദന എക്സർസൈസ്",
-      "പോസ്ചർ കറക്ഷൻ",
-      "പെയിൻ റിലീഫ്"
+      "Kerala Traditional Wedding Sadhya (28 Items) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_365",
-    "name": "നെബുലൈസേഷൻ സഹായം",
-    "en": "Nebulization Setup & Inhaler Care",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Onam Special Feast Sadhya on Plantain Leaf",
+    "en": "Onam Special Feast Sadhya on Plantain Leaf",
+    "icon": "🍲",
+    "category": "catering",
     "specs": [
-      "ശ്വാസതടസ്സം ഉള്ളവർക്ക്",
-      "നെബുലൈസർ മെഷീൻ",
-      "മെഡിസിൻ വേപ്പറൈസിങ്",
-      "ശ്വാസകോശ കെയർ"
+      "Onam Special Feast Sadhya on Plantain Leaf Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_366",
-    "name": "പാലിയേറ്റീവ് കെയർ അസിസ്റ്റന്റ്",
-    "en": "Palliative Care Home Support",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Thalassery Dum Biriyani (Chicken / Mutton / Beef)",
+    "en": "Thalassery Dum Biriyani (Chicken / Mutton / Beef)",
+    "icon": "🍲",
+    "category": "catering",
     "specs": [
-      "വേദന സംഹാരി പരിചരണം",
-      "മാനസിക പിന്തുണ",
-      "കുടുംബത്തിന് ആശ്വാസം",
-      "കാരുണ്യപൂർവ്വം"
+      "Thalassery Dum Biriyani (Chicken / Mutton / Beef) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_367",
-    "name": "സർജറി കഴിഞ്ഞ രോഗികളുടെ പരിചരണം",
-    "en": "Post-Operative Recovery Nurse",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Malabar Kozhi Porichathu & Ghee Rice",
+    "en": "Malabar Kozhi Porichathu & Ghee Rice",
+    "icon": "🍲",
+    "category": "catering",
     "specs": [
-      "ഓപ്പറേഷൻ കഴിഞ്ഞുള്ള ശുശ്രൂഷ",
-      "ഭക്ഷണക്രമം",
-      "മരുന്നുകൾ കൃത്യമായി നൽകൽ",
-      "റിക്കവറി"
+      "Malabar Kozhi Porichathu & Ghee Rice Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_368",
-    "name": "ഡിമെൻഷ്യ / അൽഷിമേഴ്സ് പരിചരണം",
-    "en": "Dementia & Memory Care Attendant",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Kerala Fish Curry Meals Traditional Style",
+    "en": "Kerala Fish Curry Meals Traditional Style",
+    "icon": "🍲",
+    "category": "catering",
     "specs": [
-      "ഓർമ്മക്കുറവുള്ള വയോജനങ്ങൾക്ക്",
-      "ക്ഷമയോടെയുള്ള ശുശ്രൂഷ",
-      "സുരക്ഷാ നിരീക്ഷണം",
-      "സ്നേഹം"
+      "Kerala Fish Curry Meals Traditional Style Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_369",
-    "name": "വാക്കിംഗ് സ്റ്റിക്ക് & വാക്കർ സപ്ലൈ",
-    "en": "Walker & Walking Aid Delivery",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Kuttanad Duck Roast & Karimeen Pollichathu",
+    "en": "Kuttanad Duck Roast & Karimeen Pollichathu",
+    "icon": "🍲",
+    "category": "catering",
     "specs": [
-      "നാലുകാൽ വാക്കിംഗ് സ്റ്റിക്ക്",
-      "റോളേറ്റർ വാക്കർ",
-      "ബാത്ത്റൂം സേഫ്റ്റി ബാറുകൾ",
-      "ഡെലിവറി"
+      "Kuttanad Duck Roast & Karimeen Pollichathu Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_370",
-    "name": "മരുന്നുകൾ വീട്ടിലെത്തിക്കൽ",
-    "en": "Urgent Prescription Medicine Delivery",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Evening Kerala Snacks (Parippuvada / Pazhampori / Samosa)",
+    "en": "Evening Kerala Snacks (Parippuvada / Pazhampori / Samosa)",
+    "icon": "🍲",
+    "category": "catering",
     "specs": [
-      "നിത്യേനയുള്ള മരുന്നുകൾ",
-      "പ്രിസ്ക്രിപ്ഷൻ മരുന്ന് വാങ്ങൽ",
-      "തത്സമയം വീട്ടിലെത്തിക്കും",
-      "ആശ്വാസം"
+      "Evening Kerala Snacks (Parippuvada / Pazhampori / Samosa) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_371",
-    "name": "ഡയാലിസിസ് രോഗി സഹായി",
-    "en": "Dialysis Patient Support Bystander",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Live Appam & Stew / Egg Roast Counter",
+    "en": "Live Appam & Stew / Egg Roast Counter",
+    "icon": "🍲",
+    "category": "catering",
     "specs": [
-      "ഡയാലിസിസ് സെന്ററിലേക്ക് കൊണ്ടുപോകൽ",
-      "അവിടെ കൂട്ടിരിക്കൽ",
-      "തിരികെ വീട്ടിലെത്തിക്കൽ",
-      "സഹായം"
+      "Live Appam & Stew / Egg Roast Counter Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_372",
-    "name": "ഫുഡ് ട്യൂബ് (റൈൽസ് ട്യൂബ്) കെയർ",
-    "en": "Ryle's Tube Feeding & Care",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Live Kerala Dosa & Chutney Varieties",
+    "en": "Live Kerala Dosa & Chutney Varieties",
+    "icon": "🍲",
+    "category": "catering",
     "specs": [
-      "ട്യൂബിലൂടെ ആഹാരം നൽകൽ",
-      "ട്യൂബ് ക്ലീനിംഗ് & ഫ്ലഷിംഗ്",
-      "ആസ്പിറേഷൻ പ്രിവൻഷൻ",
-      "ട്രെയിൻഡ്"
+      "Live Kerala Dosa & Chutney Varieties Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_373",
-    "name": "സ്പീച്ച് തെറാപ്പി കുട്ടി സഹായം",
-    "en": "Speech Therapy Home Assistant",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Payasam Varieties (Palada / Parippu / Ada Pradhaman)",
+    "en": "Payasam Varieties (Palada / Parippu / Ada Pradhaman)",
+    "icon": "🍲",
+    "category": "catering",
     "specs": [
-      "സംസാര വൈകല്യം ഉള്ളവർക്ക്",
-      "വാക്കുകൾ ഉച്ചരിക്കാൻ പ്രാക്ടീസ്",
-      "കുട്ടികൾക്കുള്ള തെറാപ്പി",
-      "ക്ഷമ"
+      "Payasam Varieties (Palada / Parippu / Ada Pradhaman) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_374",
-    "name": "രാത്രികാല നഴ്സിംഗ് ഡ്യൂട്ടി",
-    "en": "Night Shift Home Nurse Service",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Continental & Chinese Buffet Dinner",
+    "en": "Continental & Chinese Buffet Dinner",
+    "icon": "🍲",
+    "category": "catering",
     "specs": [
-      "രാത്രി 8 മുതൽ രാവിലെ 8 വരെ",
-      "ഉറക്കത്തിൽ നിരീക്ഷണം",
-      "യൂറിൻ പാസ്സ് സഹായം",
-      "നൈറ്റ് ഡ്യൂട്ടി"
+      "Continental & Chinese Buffet Dinner Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_375",
-    "name": "24 മണിക്കൂർ ഫുൾ ടൈം ഹോം നഴ്സ്",
-    "en": "24-Hour Resident Home Nurse",
-    "icon": "🩺",
-    "category": "nursing",
+    "name": "Arabic Chicken Mandi & Alfahm Grill",
+    "en": "Arabic Chicken Mandi & Alfahm Grill",
+    "icon": "🍲",
+    "category": "catering",
     "specs": [
-      "വീട്ടിൽ താമസിച്ച് പരിചരണം",
-      "പൂർണ്ണ ഉത്തരവാദിത്തം",
-      "വിശ്വസ്തരായ നഴ്സുമാർ",
-      "പരിചയം"
+      "Arabic Chicken Mandi & Alfahm Grill Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_376",
-    "name": "ഹൈസ്കൂൾ മാത്തമാറ്റിക്സ് ട്യൂഷൻ",
-    "en": "High School Class 8-10 Maths",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Live Barbecue BBQ Chicken Skewers",
+    "en": "Live Barbecue BBQ Chicken Skewers",
+    "icon": "🍲",
+    "category": "catering",
     "specs": [
-      "എസ്എസ്എൽസി / സിബിഎസ്ഇ",
-      "പ്രോബ്ലം സോൾവിങ്",
-      "കഴിഞ്ഞ വർഷത്തെ ചോദ്യപേപ്പർ",
-      "എ പ്ലസ്"
+      "Live Barbecue BBQ Chicken Skewers Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_377",
-    "name": "ഫിസിക്സ് & കെമിസ്ട്രി ട്യൂഷൻ",
-    "en": "Physics & Chemistry Tuition",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Welcome Mocktail Drinks & Fruit Punch",
+    "en": "Welcome Mocktail Drinks & Fruit Punch",
+    "icon": "🍲",
+    "category": "catering",
     "specs": [
-      "തിയറിയും പ്രോബ്ലംസും",
-      "ഫോർമുല പ്രാക്ടീസ്",
-      "ലാബ് ബേസിക്സ്",
-      "വ്യക്തിഗത ശ്രദ്ധ"
+      "Welcome Mocktail Drinks & Fruit Punch Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_378",
-    "name": "പ്ലസ് ടു ബയോളജി ക്ലാസുകൾ",
-    "en": "Plus Two Biology & NEET Basics",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Ice Cream Parlour & Live Waffle Counter",
+    "en": "Ice Cream Parlour & Live Waffle Counter",
+    "icon": "🍲",
+    "category": "catering",
     "specs": [
-      "ബോട്ടണി & സുവോളജി",
-      "ഡയഗ്രം പ്രാക്ടീസ്",
-      "നീറ്റ് ബേസിക്സ്",
-      "റെഗുലർ പരീക്ഷകൾ"
+      "Ice Cream Parlour & Live Waffle Counter Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_379",
-    "name": "സ്പോക്കൺ ഇംഗ്ലീഷ് & ഗ്രാമർ",
-    "en": "Spoken English & Communication",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Corporate Box Lunch & Executive Thali",
+    "en": "Corporate Box Lunch & Executive Thali",
+    "icon": "🍲",
+    "category": "catering",
     "specs": [
-      "ഇംഗ്ലീഷ് സംസാരിക്കാൻ പരിശീലനം",
-      "ഗ്രാമർ തെറ്റുകൾ തിരുത്തൽ",
-      "ഇന്റർവ്യൂ സ്കിൽസ്",
-      "ആത്മവിശ്വാസം"
+      "Corporate Box Lunch & Executive Thali Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_380",
-    "name": "പ്രൈമറി ക്ലാസ് ഓൾ സബ്ജക്ട്സ്",
-    "en": "Primary Class 1-7 All Subjects",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Custom Theme Designer Birthday Cakes",
+    "en": "Custom Theme Designer Birthday Cakes",
+    "icon": "🍲",
+    "category": "catering",
     "specs": [
-      "എല്ലാ വിഷയങ്ങളും പഠിപ്പിക്കൽ",
-      "ഹോംവർക്ക് സഹായം",
-      "വായനയും എഴുത്തും മെച്ചപ്പെടുത്തൽ",
-      "സ്നേഹപൂർവ്വം"
+      "Custom Theme Designer Birthday Cakes Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_381",
-    "name": "ഹിന്ദി ഭാഷാ ട്യൂഷൻ",
-    "en": "Hindi Language & Prathmic/Madhyama",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Big Aluminum Biriyani Chembu Hire",
+    "en": "Big Aluminum Biriyani Chembu Hire",
+    "icon": "🍲",
+    "category": "catering",
     "specs": [
-      "ദക്ഷിണ ഭാരത് ഹിന്ദി പരീക്ഷകൾ",
-      "സ്കൂൾ ഹിന്ദി സിലബസ്",
-      "ഹിന്ദി സംസാരിക്കാൻ",
-      "വ്യാകരണം"
+      "Big Aluminum Biriyani Chembu Hire Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_382",
-    "name": "കോമേഴ്സ് & അക്കൗണ്ടൻസി ട്യൂഷൻ",
-    "en": "Plus Two Commerce & Accountancy",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Experienced Uniformed Service Waiters",
+    "en": "Experienced Uniformed Service Waiters",
+    "icon": "🍲",
+    "category": "catering",
     "specs": [
-      "അക്കൗണ്ടൻസി പ്രോബ്ലംസ്",
-      "ബിസിനസ് സ്റ്റഡീസ്",
-      "ഇക്കണോമിക്സ്",
-      "ടാലി ബേസിക്സ്"
+      "Experienced Uniformed Service Waiters Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_383",
-    "name": "പിഎസ്‌സി പരീക്ഷാ കോച്ചിംഗ്",
-    "en": "Kerala PSC Exam Home Coaching",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Wedding Candid Photography Coverage",
+    "en": "Wedding Candid Photography Coverage",
+    "icon": "📷",
+    "category": "photography",
     "specs": [
-      "എൽഡിസി / എൽജിഎസ് പരീക്ഷകൾ",
-      "ജനറൽ നോളജ് & കറന്റ് അഫയേഴ്സ്",
-      "മാത്സ് ഷോർട്ട്കട്ട്സ്",
-      "മോക്ക് ടെസ്റ്റ്"
+      "Wedding Candid Photography Coverage Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_384",
-    "name": "ഖുർആൻ ഓത്ത് & തജ്‌വീദ് പഠനം",
-    "en": "Quran Recitation Home Tutor",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Traditional Stage Photography & Posed",
+    "en": "Traditional Stage Photography & Posed",
+    "icon": "📷",
+    "category": "photography",
     "specs": [
-      "തജ്‌വീദ് നിയമങ്ങൾ",
-      "ഖുർആൻ പാരായണം",
-      "ഹിഫ്സ് പരിശീലനം",
-      "കുട്ടികൾക്കും മുതിർന്നവർക്കും"
+      "Traditional Stage Photography & Posed Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_385",
-    "name": "കർണാടക സംഗീത അധ്യാപകൻ",
-    "en": "Carnatic Classical Music Teacher",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Cinematic Wedding Teaser & Film (4K)",
+    "en": "Cinematic Wedding Teaser & Film (4K)",
+    "icon": "📷",
+    "category": "photography",
     "specs": [
-      "സ്വരസാധകം",
-      "ഗീതങ്ങൾ & കീർത്തനങ്ങൾ",
-      "ശ്രുതി & താളം",
-      "പാട്ട് മത്സര പരിശീലനം"
+      "Cinematic Wedding Teaser & Film (4K) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_386",
-    "name": "കീബോർഡ് & പിയാനോ ക്ലാസ്സ്",
-    "en": "Keyboard & Piano Home Lessons",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "4K Drone Aerial Videography & Shoot",
+    "en": "4K Drone Aerial Videography & Shoot",
+    "icon": "📷",
+    "category": "photography",
     "specs": [
-      "വെസ്റ്റേൺ നോട്ടേഷൻസ്",
-      "സിനിമ ഗാനങ്ങൾ വായിക്കാൻ",
-      "ഹാൻഡ് പ്രാക്ടീസ്",
-      "ഗ്രേഡ് എക്സാം"
+      "4K Drone Aerial Videography & Shoot Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_387",
-    "name": "ഗിറ്റാർ പഠന ക്ലാസുകൾ",
-    "en": "Acoustic Guitar Tutor at Home",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Pre-Wedding Outdoor Love Story Shoot",
+    "en": "Pre-Wedding Outdoor Love Story Shoot",
+    "icon": "📷",
+    "category": "photography",
     "specs": [
-      "കോർഡ്സ് & സ്ട്രമ്മിംഗ്",
-      "ടണൽ പ്രാക്ടീസ്",
-      "ഫിംഗർസ്റ്റൈൽ",
-      "പ്രാക്ടിക്കൽ ഗിറ്റാർ"
+      "Pre-Wedding Outdoor Love Story Shoot Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_388",
-    "name": "ചിത്രരചന & പെയിന്റിംഗ് ക്ലാസ്",
-    "en": "Drawing, Sketching & Watercolor",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Post-Wedding Sunset Beach Couple Shoot",
+    "en": "Post-Wedding Sunset Beach Couple Shoot",
+    "icon": "📷",
+    "category": "photography",
     "specs": [
-      "പെൻസിൽ ഡ്രോയിംഗ്",
-      "വാട്ടർ കളർ പെയിന്റിംഗ്",
-      "അക്രിലിക് കാൻവാസ്",
-      "കുട്ടികളുടെ സർഗ്ഗാത്മകത"
+      "Post-Wedding Sunset Beach Couple Shoot Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_389",
-    "name": "യോഗ & മെഡിറ്റേഷൻ മാസ്റ്റർ",
-    "en": "Personal Yoga Instructor at Home",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Save the Date Creative Reel & Video",
+    "en": "Save the Date Creative Reel & Video",
+    "icon": "📷",
+    "category": "photography",
     "specs": [
-      "സൂര്യനമസ്കാരം & ആസനങ്ങൾ",
-      "പ്രാണായാമം ശ്വസന വ്യായാമം",
-      "സ്ട്രെസ്സ് റിലീഫ്",
-      "തടി കുറയ്ക്കൽ"
+      "Save the Date Creative Reel & Video Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_390",
-    "name": "കരാട്ടെ & സ്വയംരക്ഷാ പരിശീലനം",
-    "en": "Karate & Self Defense Master",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Haldi & Mehendi Colorful Function Shoot",
+    "en": "Haldi & Mehendi Colorful Function Shoot",
+    "icon": "📷",
+    "category": "photography",
     "specs": [
-      "കുട്ടികൾക്കുള്ള കരാട്ടെ",
-      "പെൺകുട്ടികൾക്ക് സ്വയംരക്ഷ",
-      "ഫിസിക്കൽ ഫിറ്റ്നസ്സ്",
-      "ബെൽറ്റ് ഗ്രേഡിംഗ്"
+      "Haldi & Mehendi Colorful Function Shoot Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_391",
-    "name": "ചെസ്സ് പരിശീലകൻ",
-    "en": "Chess Strategy Coaching for Kids",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Bridal Dressing & Getting Ready Portrait",
+    "en": "Bridal Dressing & Getting Ready Portrait",
+    "icon": "📷",
+    "category": "photography",
     "specs": [
-      "ചെസ്സ് ഓപ്പണിംഗ് & മിഡിൽ ഗെയിം",
-      "ടാക്റ്റിക്സ് & പസിൽസ്",
-      "മത്സരങ്ങൾക്ക് ഒരുക്കം",
-      "ഏകാഗ്രത"
+      "Bridal Dressing & Getting Ready Portrait Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_392",
-    "name": "നീന്തൽ പരിശീലകൻ",
-    "en": "Swimming Coach for Beginners",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Maternity Outdoor / Indoor Photo Shoot",
+    "en": "Maternity Outdoor / Indoor Photo Shoot",
+    "icon": "📷",
+    "category": "photography",
     "specs": [
-      "നീന്തൽ പഠിപ്പിക്കൽ",
-      "വാട്ടർ സേഫ്റ്റി",
-      "ബ്രെസ്റ്റ് സ്ട്രോക്ക് & ഫ്രീസ്റ്റൈൽ",
-      "ഭയം മാറ്റൽ"
+      "Maternity Outdoor / Indoor Photo Shoot Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_393",
-    "name": "കുട്ടികളുടെ കാലിഗ്രാഫി & കൈയക്ഷരം",
-    "en": "Handwriting & Calligraphy Improvement",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Newborn Baby Themed Costume Photography",
+    "en": "Newborn Baby Themed Costume Photography",
+    "icon": "📷",
+    "category": "photography",
     "specs": [
-      "ഇംഗ്ലീഷ് & മലയാളം കൈയക്ഷരം",
-      "വേഗത്തിൽ എഴുതാൻ",
-      "നീറ്റ് പ്രസന്റേഷൻ",
-      "പേന പിടിക്കുന്ന രീതി"
+      "Newborn Baby Themed Costume Photography Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_394",
-    "name": "കമ്പ്യൂട്ടർ എംഎസ് ഓഫീസ് & കോഡിംഗ്",
-    "en": "Basic Computer, Python & Coding",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Kids 1st Birthday Party Photo & Video",
+    "en": "Kids 1st Birthday Party Photo & Video",
+    "icon": "📷",
+    "category": "photography",
     "specs": [
-      "വേഡ്, എക്സൽ, പവർപോയിന്റ്",
-      "കുട്ടികൾക്ക് പൈത്തൺ കോഡിംഗ്",
-      "ടൈപ്പിംഗ് പ്രാക്ടീസ്",
-      "ഇന്റർനെറ്റ് ബേസിക്സ്"
+      "Kids 1st Birthday Party Photo & Video Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_395",
-    "name": "ഐഇഎൽടിഎസ് / ഒഇടി പരിശീലനം",
-    "en": "IELTS & OET Spoken/Writing Trainer",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Housewarming & Gruhapravesam Coverage",
+    "en": "Housewarming & Gruhapravesam Coverage",
+    "icon": "📷",
+    "category": "photography",
     "specs": [
-      "റീഡിങ്, റൈറ്റിംഗ്, ലിസണിംഗ്, സ്പീക്കിങ്",
-      "മോക്ക് ഇന്റർവ്യൂ",
-      "ബാൻഡ് സ്കോർ 7+",
-      "മെറ്റീരിയലുകൾ"
+      "Housewarming & Gruhapravesam Coverage Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_396",
-    "name": "മലയാളം അക്ഷര പഠനം & വായന",
-    "en": "Malayalam Reading & Writing Tutor",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Baptism & Holy Communion Photography",
+    "en": "Baptism & Holy Communion Photography",
+    "icon": "📷",
+    "category": "photography",
     "specs": [
-      "അക്ഷരമാല & കൂട്ടക്ഷരങ്ങൾ",
-      "വായനാശീലം വളർത്തൽ",
-      "അക്ഷരത്തെറ്റുകൾ മാറ്റൽ",
-      "മലയാളം സംസാരിക്കൽ"
+      "Baptism & Holy Communion Photography Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_397",
-    "name": "ഭരതനാട്യം നൃത്ത അധ്യാപിക",
-    "en": "Classical Dance Bharatanatyam",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Corporate Seminar & Conference Coverage",
+    "en": "Corporate Seminar & Conference Coverage",
+    "icon": "📷",
+    "category": "photography",
     "specs": [
-      "മുദ്രകൾ & അടവുകൾ",
-      "താളം & ഭാവം",
-      "അരങ്ങേറ്റം ഒരുക്കം",
-      "നൃത്ത പരിശീലനം"
+      "Corporate Seminar & Conference Coverage Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_398",
-    "name": "അറബിക് ഭാഷാ പഠനം",
-    "en": "Spoken Arabic Language Tutor",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Model Fashion Portfolio & Lookbook",
+    "en": "Model Fashion Portfolio & Lookbook",
+    "icon": "📷",
+    "category": "photography",
     "specs": [
-      "ഗൾഫിലേക്ക് പോകുന്നവർക്ക്",
-      "അറബിക് സംസാരം",
-      "ബേസിക് ഗ്രാമർ",
-      "സാധാരണ സംഭാഷണങ്ങൾ"
+      "Model Fashion Portfolio & Lookbook Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_399",
-    "name": "ഡ്രൈവിംഗ് ലൈസൻസ് ടെസ്റ്റ് ടിപ്പുകൾ",
-    "en": "Driving Theory & Road Test Guide",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Product Commercial Photo Shoot for Amazon",
+    "en": "Product Commercial Photo Shoot for Amazon",
+    "icon": "📷",
+    "category": "photography",
     "specs": [
-      "എച്ച് & 8 ടെസ്റ്റ് ട്രിക്കുകൾ",
-      "റോഡ് സൈനുകൾ",
-      "ക്ലച്ച് കൺട്രോൾ",
-      "ലൈസൻസ് എളുപ്പമാക്കാം"
+      "Product Commercial Photo Shoot for Amazon Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_400",
-    "name": "സ്പെഷ്യൽ എഡ്യൂക്കേഷൻ അധ്യാപകൻ",
-    "en": "Special Education Child Tutor",
-    "icon": "📚",
-    "category": "tuition",
+    "name": "Premium Leather Photo Album Binding",
+    "en": "Premium Leather Photo Album Binding",
+    "icon": "📷",
+    "category": "photography",
     "specs": [
-      "പഠനവൈകല്യം ഉള്ള കുട്ടികൾക്ക് (ADHD/Dyslexia)",
-      "ക്ഷമയോടെയുള്ള അധ്യാപനം",
-      "വ്യക്തിഗത രീതി",
-      "സഹായം"
+      "Premium Leather Photo Album Binding Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_401",
-    "name": "3000 ലിറ്റർ കുടിവെള്ള ടാങ്കർ",
-    "en": "3000L Pure Drinking Water Tanker",
-    "icon": "💧",
-    "category": "water",
+    "name": "Wedding Stage Floral Decoration (Fresh Flowers)",
+    "en": "Wedding Stage Floral Decoration (Fresh Flowers)",
+    "icon": "🔊",
+    "category": "events",
     "specs": [
-      "ശുദ്ധജല സപ്ലൈ",
-      "ഫാസ്റ്റ് ഡെലിവറി",
-      "ക്ലീൻ ടാങ്കർ",
-      "വീടുകൾക്ക് അനുയോജ്യം"
+      "Wedding Stage Floral Decoration (Fresh Flowers) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_402",
-    "name": "5000 ലിറ്റർ കുടിവെള്ള ടാങ്കർ",
-    "en": "5000L Drinking Water Supply",
-    "icon": "💧",
-    "category": "water",
+    "name": "Engagement Theme Backdrop & Ring Light",
+    "en": "Engagement Theme Backdrop & Ring Light",
+    "icon": "🔊",
+    "category": "events",
     "specs": [
-      "വലിയ വീടുകൾക്കും വില്ലകൾക്കും",
-      "ഹൈ പ്രഷർ മോട്ടോർ പമ്പിംഗ്",
-      "തൽക്ഷണം",
-      "ന്യായമായ നിരക്ക്"
+      "Engagement Theme Backdrop & Ring Light Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_403",
-    "name": "6000 ലിറ്റർ വലിയ വാട്ടർ ടാങ്കർ",
-    "en": "6000L Large Water Tanker",
-    "icon": "💧",
-    "category": "water",
+    "name": "Entrance Arch Floral Gate Designing",
+    "en": "Entrance Arch Floral Gate Designing",
+    "icon": "🔊",
+    "category": "events",
     "specs": [
-      "അപ്പാർട്ട്മെന്റ് സപ്ലൈ",
-      "ഹോസ്പിറ്റൽ & ഹോട്ടൽ",
-      "ഹെവി വോളിയം",
-      "വിശ്വസ്ത സർവീസ്"
+      "Entrance Arch Floral Gate Designing Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_404",
-    "name": "20 ലിറ്റർ മിനറൽ വാട്ടർ കാൻ സപ്ലൈ",
-    "en": "20L Mineral Water Can Delivery",
-    "icon": "💧",
-    "category": "water",
+    "name": "Traditional Brass Lamp & Floral Rangoli",
+    "en": "Traditional Brass Lamp & Floral Rangoli",
+    "icon": "🔊",
+    "category": "events",
     "specs": [
-      "വീടുകളിലും ഓഫീസുകളിലും",
-      "ഡെയ്ലി / വീക്ക്‌ലി ഡെലിവറി",
-      "ആർഒ പ്യൂരിഫൈഡ്",
-      "കാൻ എക്സ്ചേഞ്ച്"
+      "Traditional Brass Lamp & Floral Rangoli Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_405",
-    "name": "അടിയന്തര രാത്രികാല വാട്ടർ സപ്ലൈ",
-    "en": "Night Emergency Water Supply",
-    "icon": "💧",
-    "category": "water",
+    "name": "Balloon Theme Arch & Character Cutouts",
+    "en": "Balloon Theme Arch & Character Cutouts",
+    "icon": "🔊",
+    "category": "events",
     "specs": [
-      "വെള്ളം തീർന്നുപോയാൽ രാത്രിയിലും",
-      "24 മണിക്കൂർ ഫോൺ കോൾ",
-      "അടിയന്തര ടാങ്കർ",
-      "ആശ്വാസം"
+      "Balloon Theme Arch & Character Cutouts Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_406",
-    "name": "കൺസ്ട്രക്ഷൻ സൈറ്റ് വാട്ടർ ടാങ്കർ",
-    "en": "Building Construction Water",
-    "icon": "💧",
-    "category": "water",
+    "name": "Fabric Draping Stage Backdrop Decoration",
+    "en": "Fabric Draping Stage Backdrop Decoration",
+    "icon": "🔊",
+    "category": "events",
     "specs": [
-      "വാർപ്പ് പണികൾക്ക് വെള്ളം",
-      "ക്യൂറിംഗ് ആവശ്യങ്ങൾക്ക്",
-      "സ്ഥിരം സപ്ലൈ",
-      "ബൾക്ക് റേറ്റ്"
+      "Fabric Draping Stage Backdrop Decoration Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_407",
-    "name": "റെസ്റ്റോറന്റ് ദിവസേന വാട്ടർ സപ്ലൈ",
-    "en": "Restaurant Daily Water Contract",
-    "icon": "💧",
-    "category": "water",
+    "name": "VIP Sofa & Stage Furniture Arrangement",
+    "en": "VIP Sofa & Stage Furniture Arrangement",
+    "icon": "🔊",
+    "category": "events",
     "specs": [
-      "ഹോട്ടലുകൾക്ക് നിത്യേന",
-      "രാവിലെ തന്നെ എത്തിക്കും",
-      "ഭക്ഷണ പാചക യോഗ്യമായ ജലം",
-      "കരാർ"
+      "VIP Sofa & Stage Furniture Arrangement Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_408",
-    "name": "കിണർ റീചാർജ്ജിംഗ് സംവിധാനം",
-    "en": "Well Rainwater Recharging Setup",
-    "icon": "💧",
-    "category": "water",
+    "name": "Red Carpet Aisle Runner Laying",
+    "en": "Red Carpet Aisle Runner Laying",
+    "icon": "🔊",
+    "category": "events",
     "specs": [
-      "മഴവെള്ളം കിണറ്റിലേക്ക്",
-      "ഫിൽട്ടർ സംവിധാനം",
-      "വേനലിലും കിണറ്റിൽ വെള്ളം",
-      "ഭൂഗർഭജലം കൂട്ടൽ"
+      "Red Carpet Aisle Runner Laying Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_409",
-    "name": "കിണർ വെള്ളം ക്ലോറിനേഷൻ & ശുദ്ധീകരണം",
-    "en": "Well Water Purification & Testing",
-    "icon": "💧",
-    "category": "water",
+    "name": "DJ Sound System Line Array Speakers",
+    "en": "DJ Sound System Line Array Speakers",
+    "icon": "🔊",
+    "category": "events",
     "specs": [
-      "ബ്ലീച്ചിംഗ് പൗഡർ ഡോസിംഗ്",
-      "ബാക്ടീരിയ ഫ്രീ വാട്ടർ",
-      "രുചി വ്യത്യാസം മാറ്റൽ",
-      "ക്ലീനിംഗ്"
+      "DJ Sound System Line Array Speakers Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_410",
-    "name": "ബോർവെൽ ഫ്ലഷിംഗ് & ക്ലീനിംഗ്",
-    "en": "Borewell High Pressure Flushing",
-    "icon": "💧",
-    "category": "water",
+    "name": "Party Dance Floor with Moving Head Lights",
+    "en": "Party Dance Floor with Moving Head Lights",
+    "icon": "🔊",
+    "category": "events",
     "specs": [
-      "ചെളിവെള്ളം ക്ലിയർ ചെയ്യൽ",
-      "പ്രഷർ എയർ ഫ്ലഷിംഗ്",
-      "ബോർവെൽ ഈൽഡ് കൂട്ടൽ",
-      "റിപ്പയർ"
+      "Party Dance Floor with Moving Head Lights Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_411",
-    "name": "പ്ലാസ്റ്റിക് വാട്ടർ ടാങ്കുകൾ വിൽപന",
-    "en": "Sintex Plastic Water Tank Delivery",
-    "icon": "💧",
-    "category": "water",
+    "name": "Stage Sharpy Beam Spot Lights",
+    "en": "Stage Sharpy Beam Spot Lights",
+    "icon": "🔊",
+    "category": "events",
     "specs": [
-      "500L, 1000L, 2000L ടാങ്കുകൾ",
-      "ട്രിപ്പിൾ ലെയർ",
-      "വീട്ടിലെത്തിച്ചു നൽകും",
-      "വാറന്റി"
+      "Stage Sharpy Beam Spot Lights Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_412",
-    "name": "വാട്ടർ പ്യൂരിഫയർ ഫിൽട്ടർ കാർട്രിഡ്ജ്",
-    "en": "Water Filter Cartridge & Candle",
-    "icon": "💧",
-    "category": "water",
+    "name": "LED Par Cans Ambience Color Wash",
+    "en": "LED Par Cans Ambience Color Wash",
+    "icon": "🔊",
+    "category": "events",
     "specs": [
-      "സെഡിമെന്റ് ഫിൽട്ടർ",
-      "കാർബൺ ബ്ലോക്ക്",
-      "യുവി ലാമ്പ് മാറ്റൽ",
-      "ഹോം ഡെലിവറി"
+      "LED Par Cans Ambience Color Wash Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_413",
-    "name": "കിണർ മൂടി ഗ്രിൽ ഫിക്സിംഗ്",
-    "en": "Well Safety Iron Net Cover",
-    "icon": "💧",
-    "category": "water",
+    "name": "Cold Pyro Safe Sparkular Machine",
+    "en": "Cold Pyro Safe Sparkular Machine",
+    "icon": "🔊",
+    "category": "events",
     "specs": [
-      "ഇരുമ്പ് കമ്പിവല മൂടി",
-      "കുട്ടികളുടെ സുരക്ഷയ്ക്ക്",
-      "തുരുമ്പ് പിടിക്കാത്ത പെയിന്റ്",
-      "ഡോർ പ്രൊവിഷൻ"
+      "Cold Pyro Safe Sparkular Machine Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_414",
-    "name": "കുഴൽക്കിണർ നിർമ്മാണം ബോറിങ്",
-    "en": "Borewell Drilling Contractor",
-    "icon": "💧",
-    "category": "water",
+    "name": "Heavy Smoke & Fog Cloud Machine",
+    "en": "Heavy Smoke & Fog Cloud Machine",
+    "icon": "🔊",
+    "category": "events",
     "specs": [
-      "കുഴൽക്കിണർ നിർമ്മാണം",
-      "സെൻസർ ഉപയോഗിച്ച് നീരുറവ കണ്ടെത്തൽ",
-      "കേസിംഗ് പൈപ്പ്",
-      "വിദഗ്ദ്ധർ"
+      "Heavy Smoke & Fog Cloud Machine Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_415",
-    "name": "ജല ഗുണനിലവാര ലാബ് പരിശോധന",
-    "en": "Drinking Water Lab Test & Report",
-    "icon": "💧",
-    "category": "water",
+    "name": "LED Video Wall (P3 High Resolution)",
+    "en": "LED Video Wall (P3 High Resolution)",
+    "icon": "🔊",
+    "category": "events",
     "specs": [
-      "പിഎച്ച്, ടിഡിഎസ്, കോളിഫോം ബാക്ടീരിയ",
-      "ലാബ് ടെസ്റ്റിംഗ് റിപ്പോർട്ട്",
-      "സാമ്പിൾ ശേഖരണം",
-      "സർട്ടിഫിക്കറ്റ്"
+      "LED Video Wall (P3 High Resolution) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_416",
-    "name": "നീന്തൽക്കുളം വെള്ളം നിറയ്ക്കൽ",
-    "en": "Swimming Pool Bulk Water Supply",
-    "icon": "💧",
-    "category": "water",
+    "name": "Stage Generator Silent Power Backup (25-62 kVA)",
+    "en": "Stage Generator Silent Power Backup (25-62 kVA)",
+    "icon": "🔊",
+    "category": "events",
     "specs": [
-      "ക്ലിയർ ഫിൽട്ടേർഡ് വാട്ടർ",
-      "സ്വിമ്മിംഗ് പൂൾ ഫില്ലിംഗ്",
-      "ഒന്നിലധികം ടാങ്കറുകൾ ഒരേസമയം",
-      "വേഗത"
+      "Stage Generator Silent Power Backup (25-62 kVA) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_417",
-    "name": "തോട്ടം നനയ്ക്കൽ ടാങ്കർ സർവീസ്",
-    "en": "Farm & Garden Water Tanker",
-    "icon": "💧",
-    "category": "water",
+    "name": "Traditional Chenda Melam Team",
+    "en": "Traditional Chenda Melam Team",
+    "icon": "🔊",
+    "category": "events",
     "specs": [
-      "വേനൽക്കാലത്ത് കൃഷി നനയ്ക്കാൻ",
-      "ഹോസ് പൈപ്പ് കണക്ഷൻ",
-      "വലിയ തോട്ടങ്ങളിലേക്ക്",
-      "സഹായം"
+      "Traditional Chenda Melam Team Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_418",
-    "name": "കല്യാണ ആവശ്യങ്ങൾക്കുള്ള വാട്ടർ സപ്ലൈ",
-    "en": "Wedding Function Water Supply",
-    "icon": "💧",
-    "category": "water",
+    "name": "Shinkari Melam Team for Events",
+    "en": "Shinkari Melam Team for Events",
+    "icon": "🔊",
+    "category": "events",
     "specs": [
-      "വിവാഹ മണ്ഡപത്തിലേക്ക് വെള്ളം",
-      "അടുക്കള ആവശ്യങ്ങൾക്ക്",
-      "കുടിവെള്ളം & ഉപയോഗ ജലം",
-      "തടസ്സമില്ലാതെ"
+      "Shinkari Melam Team for Events Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_419",
-    "name": "ഹൈ പ്രഷർ ടാങ്ക് വാട്ടർ പമ്പ് സപ്ലൈ",
-    "en": "Pressure Booster Water Pump",
-    "icon": "💧",
-    "category": "water",
+    "name": "Nadaswaram Instrumental Melam Artists",
+    "en": "Nadaswaram Instrumental Melam Artists",
+    "icon": "🔊",
+    "category": "events",
     "specs": [
-      "ഷവറിൽ പ്രഷർ കൂട്ടാൻ",
-      "ഓട്ടോമാറ്റിക് ബൂസ്റ്റർ പമ്പ്",
-      "ഇൻസ്റ്റലേഷൻ",
-      "വാറന്റി"
+      "Nadaswaram Instrumental Melam Artists Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_420",
-    "name": "ഐസ് ബ്ലോക്ക് സപ്ലൈ",
-    "en": "Fish & Event Commercial Ice Blocks",
-    "icon": "💧",
-    "category": "water",
+    "name": "Master of Ceremonies (Emcee / Anchor on Stage)",
+    "en": "Master of Ceremonies (Emcee / Anchor on Stage)",
+    "icon": "🔊",
+    "category": "events",
     "specs": [
-      "മത്സ്യ സംഭരണത്തിന് ഐസ്",
-      "പരിപാടികൾക്ക് ഐസ് ബ്ലോക്കുകൾ",
-      "ഫ്രഷ് ക്വാളിറ്റി",
-      "ഡോർ ഡെലിവറി"
+      "Master of Ceremonies (Emcee / Anchor on Stage) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_421",
-    "name": "ഓട്ടോമാറ്റിക് വാട്ടർ പമ്പ് ലെവൽ സെൻസർ",
-    "en": "Overhead Tank Sensor",
-    "icon": "💧",
-    "category": "water",
+    "name": "Children Birthday Magic Show & Games",
+    "en": "Children Birthday Magic Show & Games",
+    "icon": "🔊",
+    "category": "events",
     "specs": [
-      "ടാങ്കിൽ വെള്ളം കുറഞ്ഞാൽ പമ്പ് ഓണാകും",
-      "നിറഞ്ഞാൽ തനിയെ ഓഫാകും",
-      "വെള്ളവും വൈദ്യുതിയും ലാഭിക്കാം",
-      "ഫിറ്റിംഗ്"
+      "Children Birthday Magic Show & Games Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_422",
-    "name": "വാട്ടർ സോഫ്റ്റ്‌നർ ഹാർഡ് വാട്ടർ ട്രീറ്റ്മെന്റ്",
-    "en": "Hard Water Softener",
-    "icon": "💧",
-    "category": "water",
+    "name": "24-Hour Residential Trained Home Nurse",
+    "en": "24-Hour Residential Trained Home Nurse",
+    "icon": "🩺",
+    "category": "nursing",
     "specs": [
-      "ഉപ്പുവെള്ളം മാറ്റൽ",
-      "ടൈൽസിലെ കറ തടയൽ",
-      "മുടികൊഴിച്ചിൽ മാറ്റൽ",
-      "സെൻട്രൽ സിസ്റ്റം"
+      "24-Hour Residential Trained Home Nurse Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_423",
-    "name": "കിണർ തോണ്ടൽ & ആഴം കൂട്ടൽ",
-    "en": "Traditional Well Digging Labor",
-    "icon": "💧",
-    "category": "water",
+    "name": "12-Hour Day / Night Patient Caretaker",
+    "en": "12-Hour Day / Night Patient Caretaker",
+    "icon": "🩺",
+    "category": "nursing",
     "specs": [
-      "പുതിയ കിണർ നിർമ്മാണം",
-      "കിണറിന്റെ ആഴം കൂട്ടൽ",
-      "നീരുറവ വെട്ടൽ",
-      "പരമ്പരാഗത തൊഴിലാളികൾ"
+      "12-Hour Day / Night Patient Caretaker Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_424",
-    "name": "ഫയർ എമർജൻസി വാട്ടർ ടാങ്കർ",
-    "en": "Emergency Fire Hydrant Water Support",
-    "icon": "💧",
-    "category": "water",
+    "name": "Elderly Bedridden Assisted Living Nurse",
+    "en": "Elderly Bedridden Assisted Living Nurse",
+    "icon": "🩺",
+    "category": "nursing",
     "specs": [
-      "അടിയന്തര തീപിടുത്ത സഹായം",
-      "ഹൈ പ്രഷർ വാട്ടർ സപ്ലൈ",
-      "24x7 കോൾ",
-      "സന്നദ്ധ സേവനം"
+      "Elderly Bedridden Assisted Living Nurse Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_425",
-    "name": "സ്ഥിരം പ്രതിമാസ വാട്ടർ കണക്ഷൻ",
-    "en": "Monthly Water Tanker Subscription",
-    "icon": "💧",
-    "category": "water",
+    "name": "Post-Operative Surgery Recovery Caretaker",
+    "en": "Post-Operative Surgery Recovery Caretaker",
+    "icon": "🩺",
+    "category": "nursing",
     "specs": [
-      "മാസക്കരാർ അടിസ്ഥാനത്തിൽ",
-      "രണ്ടുദിവസം കൂടുമ്പോൾ ടാങ്കർ",
-      "ഡിസ്കൗണ്ട് നിരക്ക്",
-      "ഉറപ്പുള്ള സേവനം"
+      "Post-Operative Surgery Recovery Caretaker Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_426",
-    "name": "സ്മാർട്ട്ഫോൺ ഡിസ്പ്ലേ മാറ്റൽ",
-    "en": "Smartphone Touch Display Replacement",
-    "icon": "📱",
-    "category": "other",
+    "name": "Paralysis Stroke Rehabilitation Attendant",
+    "en": "Paralysis Stroke Rehabilitation Attendant",
+    "icon": "🩺",
+    "category": "nursing",
     "specs": [
-      "ഒറിജിനൽ ഒഎൽഇഡി / ഐപിഎസ് സ്ക്രീൻ",
-      "വാറന്റി സഹിതം",
-      "1 മണിക്കൂറിൽ സർവീസ്",
-      "ടച്ച് ഗ്ലാസ് ഫിക്സ്"
+      "Paralysis Stroke Rehabilitation Attendant Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_427",
-    "name": "ഐഫോൺ സ്ക്രീൻ & ബാറ്ററി സർവീസ്",
-    "en": "iPhone Screen & Battery Replacement",
-    "icon": "📱",
-    "category": "other",
+    "name": "Dementia & Alzheimer Patient Nurse",
+    "en": "Dementia & Alzheimer Patient Nurse",
+    "icon": "🩺",
+    "category": "nursing",
     "specs": [
-      "ഐഫോൺ ഒറിജിനൽ സ്ക്രീൻ",
-      "100% ബാറ്ററി ഹെൽത്ത് മാറ്റൽ",
-      "ഫേസ് ഐഡി പ്രൊട്ടക്ഷൻ",
-      "ട്രൂ ടോൺ ഫിക്സ്"
+      "Dementia & Alzheimer Patient Nurse Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_428",
-    "name": "മൊബൈൽ ചാർജിംഗ് പോർട്ട് റിപ്പയർ",
-    "en": "Charging Jack / Pin Repair",
-    "icon": "📱",
-    "category": "other",
+    "name": "Newborn Baby & Post-Natal Mother Care",
+    "en": "Newborn Baby & Post-Natal Mother Care",
+    "icon": "🩺",
+    "category": "nursing",
     "specs": [
-      "ടൈപ്പ്-സി / ലൈറ്റ്നിംഗ് പോർട്ട്",
-      "ലൂസ് കണക്ഷൻ മാറ്റൽ",
-      "ഫാസ്റ്റ് ചാർജിംഗ് സപ്പോർട്ട്",
-      "സോൾഡറിങ്"
+      "Newborn Baby & Post-Natal Mother Care Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_429",
-    "name": "വാട്ടർ ഡാമേജ് മൊബൈൽ സർവീസ്",
-    "en": "Water Logged Mobile Revival",
-    "icon": "📱",
-    "category": "other",
+    "name": "Ryles Tube Nasogastric Feeding Nurse",
+    "en": "Ryles Tube Nasogastric Feeding Nurse",
+    "icon": "🩺",
+    "category": "nursing",
     "specs": [
-      "വെള്ളത്തിൽ വീണ ഫോൺ അൾട്രാസോണിക് വാഷ്",
-      "ഷോർട്ട് സർക്യൂട്ട് മാറ്റൽ",
-      "ബോർഡ് റിക്കവറി",
-      "ഡാറ്റാ സേഫ്"
+      "Ryles Tube Nasogastric Feeding Nurse Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_430",
-    "name": "ലാപ്‌ടോപ്പ് ഒഎസ് ഇൻസ്റ്റലേഷൻ & ഫോർമാറ്റ്",
-    "en": "Laptop OS Windows/Mac Format",
-    "icon": "📱",
-    "category": "other",
+    "name": "Foley Urinary Catheter Care & Flush",
+    "en": "Foley Urinary Catheter Care & Flush",
+    "icon": "🩺",
+    "category": "nursing",
     "specs": [
-      "വിൻഡോസ് 11 / മാക് ഒഎസ്",
-      "എംഎസ് ഓഫീസ്",
-      "ആന്റിവൈറസ്",
-      "ഡ്രൈവറുകൾ അപ്ഡേറ്റ്"
+      "Foley Urinary Catheter Care & Flush Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_431",
-    "name": "ലാപ്‌ടോപ്പ് എസ്എസ്ഡി & റാം അപ്ഗ്രേഡ്",
-    "en": "SSD & RAM Speed Upgrade",
-    "icon": "📱",
-    "category": "other",
+    "name": "Bed Sore Wound Dressing & Sterile Care",
+    "en": "Bed Sore Wound Dressing & Sterile Care",
+    "icon": "🩺",
+    "category": "nursing",
     "specs": [
-      "സ്ലോ ലാപ്‌ടോപ്പ് 10 ഇരട്ടി സ്പീഡാക്കാം",
-      "എൻവിഎംഇ എസ്എസ്ഡി",
-      "ഡിഡിആർ4 റാം",
-      "തത്സമയം"
+      "Bed Sore Wound Dressing & Sterile Care Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_432",
-    "name": "ലാപ്‌ടോപ്പ് കീബോർഡ് & ട്രാക്ക്പാഡ്",
-    "en": "Laptop Keyboard Replacement",
-    "icon": "📱",
-    "category": "other",
+    "name": "Tracheostomy Tube Suction Care Nurse",
+    "en": "Tracheostomy Tube Suction Care Nurse",
+    "icon": "🩺",
+    "category": "nursing",
     "specs": [
-      "കീ വർക്ക് ചെയ്യാത്തത് മാറ്റൽ",
-      "ബാക്ക്‌ലൈറ്റ് കീബോർഡ്",
-      "ട്രാക്ക്പാഡ് ക്ലിക്ക് ഫിക്സ്",
-      "ഡെൽ/എച്ച്പി/ലെനോവോ"
+      "Tracheostomy Tube Suction Care Nurse Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_433",
-    "name": "ചിപ്പ് ലെവൽ മദർബോർഡ് റിപ്പയറിങ്",
-    "en": "Chip Level Motherboard Repair",
-    "icon": "📱",
-    "category": "other",
+    "name": "Insulin & Intramuscular Injection at Home",
+    "en": "Insulin & Intramuscular Injection at Home",
+    "icon": "🩺",
+    "category": "nursing",
     "specs": [
-      "ഡെഡ് ലാപ്‌ടോപ്പ് ഓണാക്കൽ",
-      "പവർ ഐസി മാറ്റൽ",
-      "ഷോർട്ട് ക്ലിയറിങ്",
-      "മൈക്രോസോൾഡറിങ്"
+      "Insulin & Intramuscular Injection at Home Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_434",
-    "name": "ലാപ്‌ടോപ്പ് ഹിഞ്ചസ് & ബോഡി ഫിക്സിംഗ്",
-    "en": "Laptop Hinge Broken Body Repair",
-    "icon": "📱",
-    "category": "other",
+    "name": "Oxygen Concentrator Machine on Rental (5L-10L)",
+    "en": "Oxygen Concentrator Machine on Rental (5L-10L)",
+    "icon": "🩺",
+    "category": "nursing",
     "specs": [
-      "പൊട്ടിയ ബോഡി പ്ലാസ്റ്റിക് വെൽഡിങ്",
-      "ഹിഞ്ച് ലൂസ് ആക്കൽ",
-      "സ്ക്രീൻ ഫ്രെയിം മാറ്റൽ",
-      "സ്ട്രോങ്ങ് ഫിക്സ്"
+      "Oxygen Concentrator Machine on Rental (5L-10L) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_435",
-    "name": "ഡിലീറ്റായ ഡാറ്റാ റിക്കവറി സർവീസ്",
-    "en": "Hard Disk & Pen Drive Data Recovery",
-    "icon": "📱",
-    "category": "other",
+    "name": "Medical ICU Electric Hospital Bed Hire",
+    "en": "Medical ICU Electric Hospital Bed Hire",
+    "icon": "🩺",
+    "category": "nursing",
     "specs": [
-      "ഫോട്ടോകളും വീഡിയോകളും തിരിച്ചെടുക്കൽ",
-      "ഫോർമാറ്റായ ഡിസ്ക്",
-      "പെൻഡ്രൈവ് എറർ",
-      "രഹസ്യസ്വഭാവം"
+      "Medical ICU Electric Hospital Bed Hire Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_436",
-    "name": "പ്രിന്റർ സർവീസ് & കാട്രിഡ്ജ് റീഫിൽ",
-    "en": "Printer Repair & Ink Refilling",
-    "icon": "📱",
-    "category": "other",
+    "name": "Anti-Decubitus Air Mattress for Bed Sores",
+    "en": "Anti-Decubitus Air Mattress for Bed Sores",
+    "icon": "🩺",
+    "category": "nursing",
     "specs": [
-      "എപ്സൺ / എച്ച്പി / കാനൺ",
-      "പേപ്പർ ജാം മാറ്റൽ",
-      "ഹെഡ് ക്ലീനിംഗ്",
-      "ടോണർ പൗഡർ ഫില്ലിംഗ്"
+      "Anti-Decubitus Air Mattress for Bed Sores Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_437",
-    "name": "മൊബൈൽ മൈക്ക് & സ്പീക്കർ റിപ്പയർ",
-    "en": "Mic, Speaker & Earpiece Repair",
-    "icon": "📱",
-    "category": "other",
+    "name": "Foldable Lightweight Wheelchair on Rent",
+    "en": "Foldable Lightweight Wheelchair on Rent",
+    "icon": "🩺",
+    "category": "nursing",
     "specs": [
-      "ശബ്ദം കേൾക്കാത്ത പ്രശ്നം",
-      "റിംഗർ സ്പീക്കർ മാറ്റൽ",
-      "കോളിംഗ് മൈക്ക് ഫിക്സ്",
-      "പൊടി ക്ലീനിംഗ്"
+      "Foldable Lightweight Wheelchair on Rent Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_438",
-    "name": "ഫോൺ നെറ്റ്വർക്ക് & വൈഫൈ പ്രശ്നങ്ങൾ",
-    "en": "Mobile Network Signal / IC Repair",
-    "icon": "📱",
-    "category": "other",
+    "name": "Home Blood Sample Collection (Lab Test)",
+    "en": "Home Blood Sample Collection (Lab Test)",
+    "icon": "🩺",
+    "category": "nursing",
     "specs": [
-      "നോ സർവീസ് പരിഹാരം",
-      "വൈഫൈ കണക്ട് ആകാത്തത്",
-      "ആന്റിന കേബിൾ",
-      "സിം സ്ലോട്ട് റിപ്പയർ"
+      "Home Blood Sample Collection (Lab Test) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_439",
-    "name": "ബ്ലൂടൂത്ത് ഹെഡ്‌ഫോൺ റിപ്പയർ",
-    "en": "Bluetooth Headset / Earbuds Repair",
-    "icon": "📱",
-    "category": "other",
+    "name": "Home 12-Lead ECG Test with Cardiologist Report",
+    "en": "Home 12-Lead ECG Test with Cardiologist Report",
+    "icon": "🩺",
+    "category": "nursing",
     "specs": [
-      "എയർപോഡ്സ് ബാറ്ററി മാറ്റൽ",
-      "ഒരു സൈഡ് കേൾക്കാത്തത്",
-      "ചാർജിംഗ് കേസ് ഫിക്സ്",
-      "വയർ ജോയിന്റ്"
+      "Home 12-Lead ECG Test with Cardiologist Report Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_440",
-    "name": "ടാബ്‌ലെറ്റ് & ഐപാഡ് ഡിസ്പ്ലേ സർവീസ്",
-    "en": "iPad & Tablet Screen Service",
-    "icon": "📱",
-    "category": "other",
+    "name": "Doctor Home Visit for Geriatric Patients",
+    "en": "Doctor Home Visit for Geriatric Patients",
+    "icon": "🩺",
+    "category": "nursing",
     "specs": [
-      "ഐപാഡ് ഗ്ലാസ് മാറ്റൽ",
-      "സാംസങ് ടാബ് ഡിസ്പ്ലേ",
-      "ബാറ്ററി മാറ്റൽ",
-      "പെൻസിൽ സപ്പോർട്ട് ചെക്ക്"
+      "Doctor Home Visit for Geriatric Patients Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_441",
-    "name": "സ്മാർട്ട് വാച്ച് സ്ക്രീൻ & ബാറ്ററി",
-    "en": "Smart Watch Battery & Display",
-    "icon": "📱",
-    "category": "other",
+    "name": "Qualified Physiotherapy Home Rehabilitation",
+    "en": "Qualified Physiotherapy Home Rehabilitation",
+    "icon": "🩺",
+    "category": "nursing",
     "specs": [
-      "ആപ്പിൾ വാച്ച് സ്ക്രീൻ",
-      "ഫാസ്റ്റ് ഡ്രെയിൻ ബാറ്ററി മാറ്റൽ",
-      "സ്ട്രോപ്പ് മാറ്റൽ",
-      "വാട്ടർ റെസിസ്റ്റന്റ് ഫിക്സ്"
+      "Qualified Physiotherapy Home Rehabilitation Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_442",
-    "name": "ഗെയിമിംഗ് പിസി അസംബ്ലിംഗ്",
-    "en": "Custom Gaming PC Assembling",
-    "icon": "📱",
-    "category": "other",
+    "name": "Ayurvedic Medicated Oil Massage at Home",
+    "en": "Ayurvedic Medicated Oil Massage at Home",
+    "icon": "🩺",
+    "category": "nursing",
     "specs": [
-      "ഗ്രാഫിക്സ് കാർഡ് ആർടിഎക്സ്",
-      "ലിക്വിഡ് കൂളർ ഫിറ്റിംഗ്",
-      "ആർജിബി ലൈറ്റിങ്",
-      "കേബിൾ മാനേജ്‌മെന്റ്"
+      "Ayurvedic Medicated Oil Massage at Home Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_443",
-    "name": "പ്ലേസ്റ്റേഷൻ / എക്സ്ബോക്സ് സർവീസ്",
-    "en": "PlayStation / Console Repair",
-    "icon": "📱",
-    "category": "other",
+    "name": "Class 10 CBSE Mathematics Personal Tutor",
+    "en": "Class 10 CBSE Mathematics Personal Tutor",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "പിഎസ് 4 / പിഎസ് 5 ഹീറ്റിംഗ് ഫിക്സ്",
-      "തെർമൽ പേസ്റ്റ് മാറ്റൽ",
-      "എച്ച്ഡിഎംഐ പോർട്ട് മാറ്റൽ",
-      "കൺട്രോളർ റിപ്പയർ"
+      "Class 10 CBSE Mathematics Personal Tutor Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_444",
-    "name": "കമ്പ്യൂട്ടർ ആന്റിവൈറസ് & സ്പൈവെയർ ക്ലീൻ",
-    "en": "Antivirus & Virus Removal",
-    "icon": "📱",
-    "category": "other",
+    "name": "Class 10 CBSE Science (Phy/Chem/Bio)",
+    "en": "Class 10 CBSE Science (Phy/Chem/Bio)",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "സ്ലോ പിസി സ്പീഡ് അപ്",
-      "മാൽവെയർ നീക്കം",
-      "ഒറിജിനൽ ആന്റിവൈറസ് ഇൻസ്റ്റലേഷൻ",
-      "ഡാറ്റാ പ്രൊട്ടക്ഷൻ"
+      "Class 10 CBSE Science (Phy/Chem/Bio) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_445",
-    "name": "സിപിയു പവർ സപ്ലൈ (SMPS) മാറ്റൽ",
-    "en": "Computer SMPS Power Supply Fix",
-    "icon": "📱",
-    "category": "other",
+    "name": "Class 12 CBSE Physics Home / Online Tutor",
+    "en": "Class 12 CBSE Physics Home / Online Tutor",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "കമ്പ്യൂട്ടർ ഓൺ ആകാത്തത് മാറ്റൽ",
-      "ഹെവി പവർ സപ്ലൈ",
-      "വോൾട്ടേജ് ചെക്ക്",
-      "കേബിളിങ്"
+      "Class 12 CBSE Physics Home / Online Tutor Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_446",
-    "name": "മോണിറ്റർ എൽഇഡി സ്ക്രീൻ റിപ്പയർ",
-    "en": "Desktop Monitor Screen Repair",
-    "icon": "📱",
-    "category": "other",
+    "name": "Class 12 CBSE Chemistry Entrance Oriented",
+    "en": "Class 12 CBSE Chemistry Entrance Oriented",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "വൈറ്റ് സ്ക്രീൻ ഫിക്സ്",
-      "ലൈൻ വന്ന സ്ക്രീൻ",
-      "പവർ ബോർഡ് റിപ്പയർ",
-      "ബാക്ക്‌ലൈറ്റ് എൽഇഡി"
+      "Class 12 CBSE Chemistry Entrance Oriented Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_447",
-    "name": "മൊബൈൽ ടെമ്പർഡ് ഗ്ലാസ് & ബാക്ക് സ്കിൻ",
-    "en": "Tempered Glass & Skin Pasting",
-    "icon": "📱",
-    "category": "other",
+    "name": "Class 12 CBSE Mathematics Advanced",
+    "en": "Class 12 CBSE Mathematics Advanced",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "യുവി ഗ്ലാസ് ഒട്ടിക്കൽ",
-      "മാറ്റ് / ഗ്ലോസ്സ് ബാക്ക് സ്കിൻ",
-      "സ്ക്രാച്ച് പ്രൊട്ടക്ഷൻ",
-      "പെർഫെക്റ്റ് ഫിറ്റ്"
+      "Class 12 CBSE Mathematics Advanced Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_448",
-    "name": "പോർട്ടബിൾ പ്രൊജക്ടർ റിപ്പയർ",
-    "en": "Portable LED Projector Service",
-    "icon": "📱",
-    "category": "other",
+    "name": "Class 12 CBSE Biology NEET Foundation",
+    "en": "Class 12 CBSE Biology NEET Foundation",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "ലാംപ് മാറ്റൽ",
-      "ലെൻസ് ക്ലീനിംഗ്",
-      "കളർ വീൽ റിപ്പയർ",
-      "ഡിസ്പ്ലേ ചിപ്പ്"
+      "Class 12 CBSE Biology NEET Foundation Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_449",
-    "name": "കാമറ മെമ്മറി കാർഡ് എറർ ഫിക്സ്",
-    "en": "SD Card Photo Recovery",
-    "icon": "📱",
-    "category": "other",
+    "name": "Kerala State Syllabus 10th SSLC All Subjects",
+    "en": "Kerala State Syllabus 10th SSLC All Subjects",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "ഫോർമാറ്റ് ചോദിക്കുന്ന കാർഡ്",
-      "ഫോട്ടോകൾ വീണ്ടെടുക്കൽ",
-      "കറപ്റ്റഡ് ഫയൽ ഫിക്സ്",
-      "ക്വിക്ക് സർവീസ്"
+      "Kerala State Syllabus 10th SSLC All Subjects Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_450",
-    "name": "ഡോർസ്റ്റെപ്പ് ലാപ്‌ടോപ്പ് സർവീസ്",
-    "en": "Doorstep Laptop & PC Service",
-    "icon": "📱",
-    "category": "other",
+    "name": "Kerala State Plus Two Commerce (Accountancy)",
+    "en": "Kerala State Plus Two Commerce (Accountancy)",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "വീട്ടിലെത്തി ലാപ്‌ടോപ്പ് നന്നാക്കൽ",
-      "ഓഫീസ് ഡെസ്ക്ടോപ്പ് റിപ്പയർ",
-      "തത്സമയം",
-      "വിശ്വാസ്യത"
+      "Kerala State Plus Two Commerce (Accountancy) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_451",
-    "name": "ഡോർസ്റ്റെപ്പ് കാർ ഫോം വാഷ്",
-    "en": "Doorstep Foam Car Wash & Vacuum",
-    "icon": "🚗",
-    "category": "other",
+    "name": "ICSE Class 9 & 10 Mathematics & Physics",
+    "en": "ICSE Class 9 & 10 Mathematics & Physics",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "വീട്ടുപടിക്കൽ പ്രഷർ വാഷ്",
-      "ഹൈ ഫോം ഷാംപൂ",
-      "അണ്ടർബോഡി ക്ലീനിംഗ്",
-      "ടയർ പോളിഷ്"
+      "ICSE Class 9 & 10 Mathematics & Physics Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_452",
-    "name": "ബൈക്ക് വാട്ടർ സർവീസ് & പോളിഷിംഗ്",
-    "en": "Bike High Pressure Water Wash",
-    "icon": "🚗",
-    "category": "other",
+    "name": "IELTS Academic & General Band 8 Trainer",
+    "en": "IELTS Academic & General Band 8 Trainer",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "ചെയിൻ ക്ലീനിംഗ് & ലൂബ്രിക്കേഷൻ",
-      "എൻജിൻ ഡിഗ്രീസിങ്",
-      "ബോഡി പോളിഷ്",
-      "സ്ക്രാച്ച് പ്രൊട്ടക്ഷൻ"
+      "IELTS Academic & General Band 8 Trainer Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_453",
-    "name": "കാർ ഇന്റീരിയർ ഡീപ് വാക്വമിങ്",
-    "en": "Interior Upholstery Shampooing",
-    "icon": "🚗",
-    "category": "other",
+    "name": "OET Nursing English Speaking & Writing",
+    "en": "OET Nursing English Speaking & Writing",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "സീറ്റുകൾ ഷാംപൂ വാഷ്",
-      "റൂഫ് ലൈനിങ് ക്ലീനിംഗ്",
-      "ഡാഷ്‌ബോർഡ് പോളിഷിംഗ്",
-      "ദുർഗന്ധം മാറ്റൽ"
+      "OET Nursing English Speaking & Writing Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_454",
-    "name": "സെറാമിക് & ഗ്രാഫീൻ കോട്ടിംഗ്",
-    "en": "Ceramic Coating 9H Paint Protection",
-    "icon": "🚗",
-    "category": "other",
+    "name": "Spoken English Fluent Communication Class",
+    "en": "Spoken English Fluent Communication Class",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "9H നാനോ സെറാമിക്",
-      "ഷൈനിംഗ് ഗ്ലോസ്സ്",
-      "വാട്ടർ ഡ്രോപ്ലെറ്റ് ഇഫക്ട്",
-      "3 വർഷ വാറന്റി"
+      "Spoken English Fluent Communication Class Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_455",
-    "name": "കാർ ബോഡി റബ്ബിംഗ് & പോളിഷിംഗ്",
-    "en": "Car Body Scratch Rubbing Compound",
-    "icon": "🚗",
-    "category": "other",
+    "name": "Malayalam Reading, Writing & Speaking Tutor",
+    "en": "Malayalam Reading, Writing & Speaking Tutor",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "ചെറിയ സ്ക്രാച്ചുകൾ മാറ്റൽ",
-      "മെഷീൻ ബഫിംഗ്",
-      "പെയിന്റ് തിളക്കം തിരികെ നൽകൽ",
-      "മിറർ ഫിനിഷ്"
+      "Malayalam Reading, Writing & Speaking Tutor Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_456",
-    "name": "ഹെഡ്‌ലൈറ്റ് യെല്ലോ പോളിഷിംഗ്",
-    "en": "Headlight Yellow Lens Restoration",
-    "icon": "🚗",
-    "category": "other",
+    "name": "Hindi Prachar Sabha Exam Preparation",
+    "en": "Hindi Prachar Sabha Exam Preparation",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "മങ്ങിയ ഹെഡ്‌ലൈറ്റ് ക്ലിയറാക്കൽ",
-      "വെളിച്ചം കൂട്ടൽ",
-      "യുവി പ്രൊട്ടക്ഷൻ കോട്ട്",
-      "പുതിയതുപോലെ"
+      "Hindi Prachar Sabha Exam Preparation Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_457",
-    "name": "ട്യൂബ്‌ലെസ്സ് ടയർ പഞ്ചർ ഒട്ടിക്കൽ",
-    "en": "Doorstep Tubeless Tyre Puncture",
-    "icon": "🚗",
-    "category": "other",
+    "name": "German Language A1/A2 Certificate Coach",
+    "en": "German Language A1/A2 Certificate Coach",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "റോഡിൽ പഞ്ചറായാൽ സഹായം",
-      "മഷ്റൂം പഞ്ചർ ഒട്ടിക്കൽ",
-      "എയർ പ്രഷർ ചെക്കിങ്",
-      "തൽക്ഷണം"
+      "German Language A1/A2 Certificate Coach Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_458",
-    "name": "കാർ ബാറ്ററി ജമ്പ്സ്റ്റാർട്ട് സർവീസ്",
-    "en": "Car Battery Jumpstart on Road",
-    "icon": "🚗",
-    "category": "other",
+    "name": "French Beginner Level Personal Tutor",
+    "en": "French Beginner Level Personal Tutor",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "ബാറ്ററി ഡൗൺ ആയാൽ സ്റ്റാർട്ടാക്കാം",
-      "ജമ്പർ കേബിൾ സപ്പോർട്ട്",
-      "ആൾട്ടർനേറ്റർ ചെക്ക്",
-      "റോഡ് സൈഡ് അസിസ്റ്റ്"
+      "French Beginner Level Personal Tutor Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_459",
-    "name": "പുതിയ കാർ ബാറ്ററി ഹോം ഡെലിവറി",
-    "en": "Car Battery Exide/Amaron Doorstep",
-    "icon": "🚗",
-    "category": "other",
+    "name": "KEAM / NEET Engineering Medical Entrance Coaching",
+    "en": "KEAM / NEET Engineering Medical Entrance Coaching",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "എക്സൈഡ് / അമറോൺ",
-      "പഴയ ബാറ്ററി എക്സ്ചേഞ്ച്",
-      "ഫ്രീ ഫിറ്റിംഗ്",
-      "വാറന്റി കാർഡ്"
+      "KEAM / NEET Engineering Medical Entrance Coaching Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_460",
-    "name": "ചെറിയ ഡെന്റുകൾ പെയിന്റ് ഇല്ലാതെ മാറ്റൽ",
-    "en": "Paintless Dent Removal PDR",
-    "icon": "🚗",
-    "category": "other",
+    "name": "Kerala PSC Degree Level Preliminary Coaching",
+    "en": "Kerala PSC Degree Level Preliminary Coaching",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "പെയിന്റ് പോകാത്ത ഡെന്റുകൾ മാറ്റൽ",
-      "ഒറിജിനൽ പെയിന്റ് സുരക്ഷിതം",
-      "കുറഞ്ഞ ചിലവ്",
-      "വേഗത്തിൽ"
+      "Kerala PSC Degree Level Preliminary Coaching Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_461",
-    "name": "കാർ ആക്സിഡന്റ് ബോഡി പെയിന്റിംഗ്",
-    "en": "Full Car Touchup & Oven Painting",
-    "icon": "🚗",
-    "category": "other",
+    "name": "Carnatic Classical Vocal Music Tutor",
+    "en": "Carnatic Classical Vocal Music Tutor",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "ടിങ്കറിംഗ് & പുട്ടി വർക്ക്",
-      "ഓവൻ പെയിന്റ് ബൂത്ത്",
-      "കളർ മാച്ചിംഗ്",
-      "ഇൻഷുറൻസ് ക്ലെയിം"
+      "Carnatic Classical Vocal Music Tutor Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_462",
-    "name": "കാർ എസി കൂളിംഗ് സർവീസ്",
-    "en": "Car AC Gas Refill & Cooling Coil",
-    "icon": "🚗",
-    "category": "other",
+    "name": "Western Keyboard & Synthesizer Teacher",
+    "en": "Western Keyboard & Synthesizer Teacher",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "കൂളിംഗ് കോയിൽ ക്ലീനിംഗ്",
-      "ഗ്യാസ് ടോപ്പ് അപ്പ്",
-      "ക്യാബിൻ ഫിൽട്ടർ മാറ്റൽ",
-      "തണുപ്പ് കൂട്ടൽ"
+      "Western Keyboard & Synthesizer Teacher Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_463",
-    "name": "എൻജിൻ ഓയിൽ മാറ്റൽ & ഫിൽട്ടർ",
-    "en": "Engine Oil & Filter Change Service",
-    "icon": "🚗",
-    "category": "other",
+    "name": "Acoustic Guitar Chords & Fingerstyle Tutor",
+    "en": "Acoustic Guitar Chords & Fingerstyle Tutor",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "സിന്തറ്റിക് എൻജിൻ ഓയിൽ",
-      "ഓയിൽ ഫിൽട്ടർ മാറ്റൽ",
-      "എയർ ഫിൽട്ടർ ക്ലീനിംഗ്",
-      "സ്മൂത്ത് ഡ്രൈവിംഗ്"
+      "Acoustic Guitar Chords & Fingerstyle Tutor Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_464",
-    "name": "ബ്രേക്ക് പാഡ് മാറ്റലും ചെക്കിംഗും",
-    "en": "Brake Pad Replacement & Bleeding",
-    "icon": "🚗",
-    "category": "other",
+    "name": "Bharatanatyam Classical Dance Teacher",
+    "en": "Bharatanatyam Classical Dance Teacher",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "ഫ്രണ്ട് & റിയർ ബ്രേക്ക് പാഡ്",
-      "ബ്രേക്ക് ഓയിൽ ടോപ്പ് അപ്പ്",
-      "ഡിസ്ക് റോട്ടർ ക്ലീനിംഗ്",
-      "സേഫ്റ്റി"
+      "Bharatanatyam Classical Dance Teacher Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_465",
-    "name": "കാർ വീൽ അലൈൻമെന്റ് & ബാലൻസിങ്",
-    "en": "Wheel Alignment & Balancing",
-    "icon": "🚗",
-    "category": "other",
+    "name": "Karate & Self Defense Martial Arts Coach",
+    "en": "Karate & Self Defense Martial Arts Coach",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "3D വീൽ അലൈൻമെന്റ്",
-      "ടയർ റൊട്ടേഷൻ",
-      "സ്റ്റിയറിംഗ് വൈബ്രേഷൻ മാറ്റൽ",
-      "ടയർ ആയുസ്സ് കൂട്ടൽ"
+      "Karate & Self Defense Martial Arts Coach Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_466",
-    "name": "കാർ ഓഡിയോ സ്പീക്കർ & ആൻഡ്രോയിഡ് സിസ്റ്റം",
-    "en": "Car Android Touchscreen & Stereo",
-    "icon": "🚗",
-    "category": "other",
+    "name": "Drawing, Sketching & Watercolor Painting",
+    "en": "Drawing, Sketching & Watercolor Painting",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "ടച്ച് സ്ക്രീൻ ഇൻഫോടെയ്ൻമെന്റ്",
-      "ബാക്ക് കാമറ ഫിറ്റിംഗ്",
-      "സബ് വൂഫർ & സ്പീക്കർ",
-      "ജിപിഎസ് നാവിഗേഷൻ"
+      "Drawing, Sketching & Watercolor Painting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_467",
-    "name": "കാർ സൺഫിലിം & കൂളിംഗ് ഗ്ലാസ്",
-    "en": "Sun Control Heat Resistance Film",
-    "icon": "🚗",
-    "category": "other",
+    "name": "Python Coding for School Kids (Scratch/Python)",
+    "en": "Python Coding for School Kids (Scratch/Python)",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "ഹീറ്റ് റിജക്ഷൻ ഫിലിം",
-      "യുവി പ്രൊട്ടക്ഷൻ ഗ്ലാസ്",
-      "ക്ലിയർ വിഷൻ ഫിലിം",
-      "ക്യാബിൻ ചൂട് കുറയ്ക്കൽ"
+      "Python Coding for School Kids (Scratch/Python) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_468",
-    "name": "അണ്ടർബോഡി ആന്റി-റസ്റ്റ് കോട്ടിംഗ്",
-    "en": "Underbody Anti-Rust Coating",
-    "icon": "🚗",
-    "category": "other",
+    "name": "Swimming Personal Coach for Beginners",
+    "en": "Swimming Personal Coach for Beginners",
+    "icon": "📚",
+    "category": "tuition",
     "specs": [
-      "തീരദേശ വാഹനങ്ങൾക്ക് തുരുമ്പ് തടയാൻ",
-      "ബ്ലാക്ക് റബ്ബറൈസ്ഡ് കോട്ടിംഗ്",
-      "5 വർഷ വാറന്റി",
-      "സൈലൻസർ കോട്ട്"
+      "Swimming Personal Coach for Beginners Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_469",
-    "name": "കാർ വൈപ്പർ ബ്ലേഡ് മാറ്റൽ",
-    "en": "Doorstep Wiper Blade Replacement",
-    "icon": "🚗",
-    "category": "other",
+    "name": "IP High-Definition 5MP Camera Setup",
+    "en": "IP High-Definition 5MP Camera Setup",
+    "icon": "📹",
+    "category": "cctv",
     "specs": [
-      "മഴക്കാലത്ത് ക്ലിയർ വ്യൂ",
-      "സിലിക്കൺ വൈപ്പർ ബ്ലേഡുകൾ",
-      "ഫ്രെയിംലെസ്സ് വൈപ്പർ",
-      "ഹോം ഡെലിവറി"
+      "IP High-Definition 5MP Camera Setup Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_470",
-    "name": "ക്ലച്ച് പ്ലേറ്റ് റിപ്പയർ സർവീസ്",
-    "en": "Clutch Plate Overhaul Mechanic",
-    "icon": "🚗",
-    "category": "other",
+    "name": "HD Analog ColorVu Night Vision Camera",
+    "en": "HD Analog ColorVu Night Vision Camera",
+    "icon": "📹",
+    "category": "cctv",
     "specs": [
-      "ക്ലച്ച് ഹാർഡ് ആയാൽ മാറ്റൽ",
-      "ഗിയർ ഷിഫ്റ്റിംഗ് സ്മൂത്താക്കൽ",
-      "മൈലേജ് കൂട്ടൽ",
-      "എക്സ്പെർട്ട് മെക്കാനിക്"
+      "HD Analog ColorVu Night Vision Camera Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_471",
-    "name": "സസ്പെൻഷൻ ബുഷ് & ഷോക്ക് അബ്സോർബർ",
-    "en": "Car Suspension & Shocker Work",
-    "icon": "🚗",
-    "category": "other",
+    "name": "WiFi PTZ 360-Degree Wireless Camera",
+    "en": "WiFi PTZ 360-Degree Wireless Camera",
+    "icon": "📹",
+    "category": "cctv",
     "specs": [
-      "കുഴികളിൽ ചാടുമ്പോൾ ശബ്ദം മാറ്റൽ",
-      "ഷോക്കർ മാറ്റൽ",
-      "ലിങ്ക് റോഡ്",
-      "കംഫർട്ട് യാത്ര"
+      "WiFi PTZ 360-Degree Wireless Camera Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_472",
-    "name": "കാർ കീ റിമോട്ട് ബാറ്ററി മാറ്റൽ",
-    "en": "Car Remote Key Battery & Duplicate",
-    "icon": "🚗",
-    "category": "other",
+    "name": "CCTV 4/8/16 Channel DVR & NVR Setup",
+    "en": "CCTV 4/8/16 Channel DVR & NVR Setup",
+    "icon": "📹",
+    "category": "cctv",
     "specs": [
-      "സ്മാർട്ട് കീ ബാറ്ററി മാറ്റൽ",
-      "ഡ്യൂപ്ലിക്കേറ്റ് റിമോട്ട് കീ",
-      "സെൻട്രൽ ലോക്കിങ് ഫിക്സ്",
-      "ചിപ്പ് പ്രോഗ്രാമിങ്"
+      "CCTV 4/8/16 Channel DVR & NVR Setup Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_473",
-    "name": "24 മണിക്കൂർ ഹൈവേ ബ്രേക്ക്ഡൗൺ മെക്കാനിക്",
-    "en": "24x7 Highway Breakdown Help",
-    "icon": "🚗",
-    "category": "other",
+    "name": "Hard Disk Storage Surveillance Drive Fit",
+    "en": "Hard Disk Storage Surveillance Drive Fit",
+    "icon": "📹",
+    "category": "cctv",
     "specs": [
-      "ഹൈവേയിൽ വണ്ടി നിന്നാൽ തൽക്ഷണം",
-      "മെക്കാനിക് സ്ഥലത്തെത്തും",
-      "ഫാൻ ബെൽറ്റ്, ഫ്യൂസ് ചെക്ക്",
-      "സഹായം"
+      "Hard Disk Storage Surveillance Drive Fit Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_474",
-    "name": "സ്കൂട്ടർ & ബൈക്ക് എൻജിൻ ട്യൂണിംഗ്",
-    "en": "Two Wheeler Engine General Service",
-    "icon": "🚗",
-    "category": "other",
+    "name": "Mobile App Remote Live Camera Viewing",
+    "en": "Mobile App Remote Live Camera Viewing",
+    "icon": "📹",
+    "category": "cctv",
     "specs": [
-      "മൈലേജ് കൂട്ടൽ",
-      "കാർബ്യുറേറ്റർ ക്ലീനിംഗ്",
-      "സ്പാർക്ക് പ്ലഗ് മാറ്റൽ",
-      "സ്മൂത്ത് പിക്ക് അപ്പ്"
+      "Mobile App Remote Live Camera Viewing Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_475",
-    "name": "കാർ പെർഫ്യൂം & ആക്സസറീസ് ഡെലിവറി",
-    "en": "Car Accessories & Dashboard Polish",
-    "icon": "🚗",
-    "category": "other",
+    "name": "CCTV Cat6 Cable Conduit Pipe Laying",
+    "en": "CCTV Cat6 Cable Conduit Pipe Laying",
+    "icon": "📹",
+    "category": "cctv",
     "specs": [
-      "ലോങ്ങ് ലാസ്റ്റിംഗ് കാർ പെർഫ്യൂം",
-      "മൈക്രോഫൈബർ തുണി",
-      "മൊബൈൽ ഹോൾഡർ",
-      "ഡോർ ഗാർഡ്"
+      "CCTV Cat6 Cable Conduit Pipe Laying Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_476",
-    "name": "അലുമിനിയം സ്ലൈഡിങ് ജനലുകൾ",
-    "en": "Aluminium Sliding Window Fabrication",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Video Door Phone with Two-Way Intercom",
+    "en": "Video Door Phone with Two-Way Intercom",
+    "icon": "📹",
+    "category": "cctv",
     "specs": [
-      "2 ട്രാക്ക് / 3 ട്രാക്ക് സ്ലൈഡിങ്",
-      "കൊതുകു വല സഹിതം",
-      "പൗഡർ കോട്ടഡ് അലുമിനിയം",
-      "സ്മൂത്ത് വീലുകൾ"
+      "Video Door Phone with Two-Way Intercom Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_477",
-    "name": "ടഫ്ൻഡ് ഗ്ലാസ് ഓഫീസ് പാർട്ടീഷൻ",
-    "en": "Toughened Glass Office Partition",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Biometric Fingerprint Door Lock Fitting",
+    "en": "Biometric Fingerprint Door Lock Fitting",
+    "icon": "📹",
+    "category": "cctv",
     "specs": [
-      "10mm / 12mm ടഫ്ൻഡ് ഗ്ലാസ്",
-      "പാച്ച് ഫിറ്റിംഗ് ഡോറുകൾ",
-      "ഫ്രോസ്റ്റഡ് ഫിലിം ഡിസൈൻ",
-      "ലക്ഷ്വറി ഓഫീസ്"
+      "Biometric Fingerprint Door Lock Fitting Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_478",
-    "name": "യുപിവിസി സൗണ്ട് പ്രൂഫ് ജനൽ",
-    "en": "UPVC Soundproof Windows & Doors",
-    "icon": "🪟",
-    "category": "other",
+    "name": "RFID Card Reader Office Access Control",
+    "en": "RFID Card Reader Office Access Control",
+    "icon": "📹",
+    "category": "cctv",
     "specs": [
-      "പുറത്തെ ബഹളങ്ങൾ തടയാൻ",
-      "ഡബിൾ ഗ്ലേസ്ഡ് ഗ്ലാസ്",
-      "റെയിൻ പ്രൂഫ്",
-      "ദീർഘായുസ്സ്"
+      "RFID Card Reader Office Access Control Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_479",
-    "name": "ജിപ്സം ഫോൾസ് സീലിംഗ് വർക്ക്",
-    "en": "Gypsum Designer False Ceiling",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Intercom EPABX System for Multi-Floor",
+    "en": "Intercom EPABX System for Multi-Floor",
+    "icon": "📹",
+    "category": "cctv",
     "specs": [
-      "സെന്റ് ഗോബെയ്ൻ ജിപ്സം ബോർഡ്",
-      "കോവ് ലൈറ്റ് ഡിസൈൻ",
-      "ഹാൾ & ബെഡ്റൂം സീലിംഗ്",
-      "ചൂട് കുറയ്ക്കൽ"
+      "Intercom EPABX System for Multi-Floor Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_480",
-    "name": "എസിപി ഷീറ്റ് ഷോപ്പ് ഫ്രണ്ട് ക്ലാഡിംഗ്",
-    "en": "ACP Sheet Elevation Cladding",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Burglar Anti-Theft Siren Intrusion Alarm",
+    "en": "Burglar Anti-Theft Siren Intrusion Alarm",
+    "icon": "📹",
+    "category": "cctv",
     "specs": [
-      "കടകളുടെ മുൻവശം ഭംഗിയാക്കൽ",
-      "എസിപി പാനൽ ഫിക്സിംഗ്",
-      "എൽഇഡി അക്ഷരങ്ങൾ ബോർഡ്",
-      "മോഡേൺ ലുക്ക്"
+      "Burglar Anti-Theft Siren Intrusion Alarm Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_481",
-    "name": "ബാൽക്കണി ടഫ്ൻഡ് ഗ്ലാസ് റെയ്‌ലിംഗ്",
-    "en": "Balcony Glass Railing with Spigots",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Fire Smoke & Heat Detector System",
+    "en": "Fire Smoke & Heat Detector System",
+    "icon": "📹",
+    "category": "cctv",
     "specs": [
-      "സ്റ്റെയിൻലെസ്സ് സ്റ്റീൽ സ്പിഗോട്ട്",
-      "ഹെവി ടഫ്ൻഡ് ഗ്ലാസ്",
-      "ക്ലിയർ വ്യൂ ബാൽക്കണി",
-      "സുരക്ഷ"
+      "Fire Smoke & Heat Detector System Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_482",
-    "name": "വെഡിങ് സ്റ്റേജ് ഡെക്കറേഷൻ",
-    "en": "Wedding Stage Floral Decoration",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Automatic Motorized Sliding Gate Kit",
+    "en": "Automatic Motorized Sliding Gate Kit",
+    "icon": "📹",
+    "category": "cctv",
     "specs": [
-      "ഫ്രഷ് ഫ്ലവർ ഡെക്കറേഷൻ",
-      "തീം സ്റ്റേജ് ബാക്ക്ഡ്രോപ്പ്",
-      "ലൈറ്റിങ് & സോഫ",
-      "ഫോട്ടോ ഷൂട്ട് ഏരിയ"
+      "Automatic Motorized Sliding Gate Kit Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_483",
-    "name": "പന്തൽ & പന്തൽ ഷെഡ് നിർമ്മാണം",
-    "en": "Waterproof Function Pandal Work",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Network Server Rack 6U/9U Cable Dressing",
+    "en": "Network Server Rack 6U/9U Cable Dressing",
+    "icon": "📹",
+    "category": "cctv",
     "specs": [
-      "മഴ നനയാത്ത പന്തൽ",
-      "സീലിംഗ് തുണി ഡെക്കറേഷൻ",
-      "വിവാഹ പന്തൽ",
-      "ഫാൻ & ലൈറ്റ് പ്രൊവിഷൻ"
+      "Network Server Rack 6U/9U Cable Dressing Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_484",
-    "name": "ലൈറ്റ് & സൗണ്ട്സ് ഡിജെ സിസ്റ്റം",
-    "en": "DJ Sound, Mic Set & Stage Lights",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Designer Blouse with Princess Cut & Piping",
+    "en": "Designer Blouse with Princess Cut & Piping",
+    "icon": "🧵",
+    "category": "tailoring",
     "specs": [
-      "ജെബിഎൽ സൗണ്ട് സിസ്റ്റം",
-      "വയർലെസ്സ് മൈക്കുകൾ",
-      "ഡിജെ ലൈറ്റുകൾ & സ്മോക്ക്",
-      "പരിപാടികൾക്ക്"
+      "Designer Blouse with Princess Cut & Piping Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_485",
-    "name": "ഡീസൽ ജനറേറ്റർ വാടകയ്ക്ക്",
-    "en": "Silent Diesel Generator on Rent",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Aari Work & Maggam Hand Embroidery Blouse",
+    "en": "Aari Work & Maggam Hand Embroidery Blouse",
+    "icon": "🧵",
+    "category": "tailoring",
     "specs": [
-      "15 KVA മുതൽ 125 KVA വരെ",
-      "സൈലന്റ് ജനറേറ്റർ",
-      "ഡീസൽ ഉൾപ്പെടെ",
-      "തടസ്സമില്ലാത്ത വൈദ്യുതി"
+      "Aari Work & Maggam Hand Embroidery Blouse Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_486",
-    "name": "പാക്കേഴ്സ് & മൂവേഴ്സ് വീട് മാറ്റൽ",
-    "en": "Packers & Movers House Shifting",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Churidar, Salwar & Kurti Custom Tailoring",
+    "en": "Churidar, Salwar & Kurti Custom Tailoring",
+    "icon": "🧵",
+    "category": "tailoring",
     "specs": [
-      "സുരക്ഷിതമായ പാക്കിംഗ്",
-      "വാഹനത്തിൽ കയറ്റലും ഇറക്കലും",
-      "കണ്ണൂരിൽ നിന്നും എങ്ങോട്ടും",
-      "വിശ്വാസ്യത"
+      "Churidar, Salwar & Kurti Custom Tailoring Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_487",
-    "name": "ഫർണിച്ചർ കാർഡ്ബോർഡ് പാക്കിംഗ്",
-    "en": "Safe Bubble & Box Furniture Packing",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Anarkali Suit & Floor-Length Gown Making",
+    "en": "Anarkali Suit & Floor-Length Gown Making",
+    "icon": "🧵",
+    "category": "tailoring",
     "specs": [
-      "ബബിൾ റാപ്പിംഗ്",
-      "കോറഗേറ്റഡ് ഷീറ്റ് പാക്കിംഗ്",
-      "സ്ക്രാച്ച് വരാതെ കൊണ്ടുപോകൽ",
-      "ലഗേജ് സേഫ്റ്റി"
+      "Anarkali Suit & Floor-Length Gown Making Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_488",
-    "name": "ലോഡിങ് & അൺലോഡിങ് ചുമട്ടുതൊഴിലാളികൾ",
-    "en": "Experienced Loading Labours",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Saree Kuchu Tassel Traditional Hand Work",
+    "en": "Saree Kuchu Tassel Traditional Hand Work",
+    "icon": "🧵",
+    "category": "tailoring",
     "specs": [
-      "ഭാരമുള്ള സാധനങ്ങൾ കയറ്റാൻ",
-      "ഫർണിച്ചർ മുകളിലേക്ക് എത്തിക്കാൻ",
-      "വിശ്വസ്തരായ തൊഴിലാളികൾ",
-      "കൃത്യമായ കൂലി"
+      "Saree Kuchu Tassel Traditional Hand Work Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_489",
-    "name": "ഫോട്ടോഗ്രാഫി & കാൻഡിഡ് ഷൂട്ട്",
-    "en": "Wedding & Event Candid Photography",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Saree Fall & Zig-Zag Pico Hemming",
+    "en": "Saree Fall & Zig-Zag Pico Hemming",
+    "icon": "🧵",
+    "category": "tailoring",
     "specs": [
-      "വിവാഹ ഫോട്ടോ & വീഡിയോ",
-      "കാൻഡിഡ് ഫോട്ടോസ്",
-      "സേവ് ദി ഡേറ്റ് ഷൂട്ട്",
-      "ഹൈ റെസല്യൂഷൻ ആൽബം"
+      "Saree Fall & Zig-Zag Pico Hemming Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_490",
-    "name": "ഡ്രോൺ ഷൂട്ട് & ഏരിയൽ വീഡിയോ",
-    "en": "Drone 4K Video Shoot Operator",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Ladies Western Dress & Pants Tailoring",
+    "en": "Ladies Western Dress & Pants Tailoring",
+    "icon": "🧵",
+    "category": "tailoring",
     "specs": [
-      "ഡ്രോൺ 4K ഏരിയൽ കാമറ",
-      "പരിപാടികളുടെ മുകളിൽ നിന്നുള്ള ദൃശ്യം",
-      "ലൈസൻസ്ഡ് പൈലറ്റ്",
-      "സിനിമാറ്റിക്"
+      "Ladies Western Dress & Pants Tailoring Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_491",
-    "name": "വീട്ടുതാക്കോൽ പകർപ്പ് നിർമ്മാണം",
-    "en": "Duplicate Key & Locksmith Doorstep",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Men Custom Fit Formal Shirt Stitching",
+    "en": "Men Custom Fit Formal Shirt Stitching",
+    "icon": "🧵",
+    "category": "tailoring",
     "specs": [
-      "ലോക്ക് തുറക്കൽ",
-      "ഡ്യൂപ്ലിക്കേറ്റ് കീ തത്സമയം",
-      "കമ്പ്യൂട്ടർ കീ കട്ടിംഗ്",
-      "ഡോർസ്റ്റെപ്പ്"
+      "Men Custom Fit Formal Shirt Stitching Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_492",
-    "name": "ഡിജിറ്റൽ പാസ്‌വേഡ് ഡോർ ലോക്ക് സർവീസ്",
-    "en": "Digital Smart Lock Service",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Men Formal Trouser Pant Tailoring",
+    "en": "Men Formal Trouser Pant Tailoring",
+    "icon": "🧵",
+    "category": "tailoring",
     "specs": [
-      "സ്മാർട്ട് ലോക്ക് ഇൻസ്റ്റലേഷൻ",
-      "ബാറ്ററി മാറ്റൽ",
-      "പാസ്‌വേഡ് റീസെറ്റ്",
-      "ടെക്നിക്കൽ സപ്പോർട്ട്"
+      "Men Formal Trouser Pant Tailoring Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_493",
-    "name": "ചിതൽ പ്രതിരോധ മരുന്ന് തളിക്കൽ",
-    "en": "Anti-Termite Pest Control Service",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Two-Piece & Three-Piece Suit Blazer Stitching",
+    "en": "Two-Piece & Three-Piece Suit Blazer Stitching",
+    "icon": "🧵",
+    "category": "tailoring",
     "specs": [
-      "തടി തുളയ്ക്കുന്ന ചിതൽ നശീകരണം",
-      "ഡ്രില്ലിങ് & കെമിക്കൽ ഇൻജക്ഷൻ",
-      "5 വർഷ ഗ്യാരണ്ടി",
-      "സുരക്ഷിതം"
+      "Two-Piece & Three-Piece Suit Blazer Stitching Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_494",
-    "name": "പാറ്റ & മൂട്ട നശീകരണ സ്പ്രേ",
-    "en": "Cockroach & Bedbug Pest Control",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Traditional Kurta Pyjama Tailoring",
+    "en": "Traditional Kurta Pyjama Tailoring",
+    "icon": "🧵",
+    "category": "tailoring",
     "specs": [
-      "കിടക്കയിലെ മൂട്ട നശീകരണം",
-      "കിച്ചൻ പാറ്റ ജെൽ ട്രീറ്റ്മെന്റ്",
-      "മണമില്ലാത്ത മരുന്ന്",
-      "പൂർണ്ണ ശമനം"
+      "Traditional Kurta Pyjama Tailoring Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_495",
-    "name": "തേനീച്ചക്കൂട് സുരക്ഷിതമായി മാറ്റൽ",
-    "en": "Beehive Removal without Harm",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Curtain Eyelet Ring Stitching for Home",
+    "en": "Curtain Eyelet Ring Stitching for Home",
+    "icon": "🧵",
+    "category": "tailoring",
     "specs": [
-      "വീട്ടിലെ കടന്നൽ & തേനീച്ചക്കൂട്",
-      "ആളുകൾക്ക് കുത്തേൽക്കാതെ നീക്കൽ",
-      "തേനീച്ചയെ കൊല്ലില്ല",
-      "സുരക്ഷിതം"
+      "Curtain Eyelet Ring Stitching for Home Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_496",
-    "name": "കൊതുക് വല ജനലിൽ ഫിറ്റ് ചെയ്യൽ",
-    "en": "Mosquito Net Window Mesh",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Sofa Cushion Cover & Pillow Making",
+    "en": "Sofa Cushion Cover & Pillow Making",
+    "icon": "🧵",
+    "category": "tailoring",
     "specs": [
-      "വെൽക്രോ കൊതുക് വല",
-      "റോളർ നെറ്റ് വിൻഡോ",
-      "സ്റ്റെയിൻലെസ്സ് സ്റ്റീൽ മെഷ്",
-      "ശുദ്ധവായു ഉറപ്പാക്കാം"
+      "Sofa Cushion Cover & Pillow Making Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_497",
-    "name": "തുണി ഉണക്കുന്ന സീലിംഗ് ഹാംഗർ",
-    "en": "Ceiling Cloth Drying Hanger Fitting",
-    "icon": "🪟",
-    "category": "other",
+    "name": "School & College Uniform Bulk Stitching",
+    "en": "School & College Uniform Bulk Stitching",
+    "icon": "🧵",
+    "category": "tailoring",
     "specs": [
-      "ബാൽക്കണി സീലിംഗ് ഹാംഗർ",
-      "പുല്ലി ഉപയോഗിച്ച് കയറ്റാം",
-      "തുരുമ്പ് പിടിക്കാത്ത സ്റ്റീൽ പൈപ്പുകൾ",
-      "സ്ഥലം ലാഭിക്കാം"
+      "School & College Uniform Bulk Stitching Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_498",
-    "name": "അലൂമിനിയം ബാത്ത്റൂം വാതിലുകൾ",
-    "en": "Aluminium Bathroom Waterproof Door",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Bridal HD Makeup for Wedding Function",
+    "en": "Bridal HD Makeup for Wedding Function",
+    "icon": "💄",
+    "category": "beautician",
     "specs": [
-      "വെള്ളം തട്ടിയാലും കേടാവാത്ത വാതിൽ",
-      "പിവിസി പാനൽ ഡോർ",
-      "ലൂവർ വെന്റിലേഷൻ",
-      "റെഡിമെയ്ഡ് ഫിക്സ്"
+      "Bridal HD Makeup for Wedding Function Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_499",
-    "name": "പ്ലാസ്റ്റിക് കസേരകളും മേശകളും വാടകയ്ക്ക്",
-    "en": "Event Chairs & Tables Rental",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Airbrush Waterproof Bridal Makeup",
+    "en": "Airbrush Waterproof Bridal Makeup",
+    "icon": "💄",
+    "category": "beautician",
     "specs": [
-      "ഫങ്ഷനുകൾക്ക് കസേരകൾ",
-      "റൗണ്ട് ടേബിൾ & കവർ",
-      "വിഐപി സോഫകൾ വാടകയ്ക്ക്",
-      "ഡെലിവറി"
+      "Airbrush Waterproof Bridal Makeup Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
     ]
   },
   {
     "id": "tr_500",
-    "name": "24 മണിക്കൂർ സർവീസ് അടിയന്തര കോർഡിനേറ്റർ",
-    "en": "24x7 Local Naadu Helpline",
-    "icon": "🪟",
-    "category": "other",
+    "name": "Reception Glam Makeup & Hair Styling",
+    "en": "Reception Glam Makeup & Hair Styling",
+    "icon": "💄",
+    "category": "beautician",
     "specs": [
-      "അടിയന്തര ഘട്ടങ്ങളിൽ ഏത് സർവീസും",
-      "ലോക്കൽ വർക്കർമാരെ കണക്ട് ചെയ്യും",
-      "നമ്മുടെ നാട് ഹെൽപ്പ് ലൈൻ",
-      "എപ്പോഴും കൂടെയുണ്ട്"
+      "Reception Glam Makeup & Hair Styling Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_501",
+    "name": "Bridal Saree Draping Perfection Service",
+    "en": "Bridal Saree Draping Perfection Service",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Bridal Saree Draping Perfection Service Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_502",
+    "name": "Bridal Mehendi Full Hand Arabic & Indian",
+    "en": "Bridal Mehendi Full Hand Arabic & Indian",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Bridal Mehendi Full Hand Arabic & Indian Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_503",
+    "name": "Engagement Subtle Soft Glow Makeup",
+    "en": "Engagement Subtle Soft Glow Makeup",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Engagement Subtle Soft Glow Makeup Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_504",
+    "name": "Ladies Haircut (Layer / Feather / Bob / U-Cut)",
+    "en": "Ladies Haircut (Layer / Feather / Bob / U-Cut)",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Ladies Haircut (Layer / Feather / Bob / U-Cut) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_505",
+    "name": "Hair Keratin Protein Treatment for Frizz",
+    "en": "Hair Keratin Protein Treatment for Frizz",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Hair Keratin Protein Treatment for Frizz Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_506",
+    "name": "Hair Smoothening & Chemical Straightening",
+    "en": "Hair Smoothening & Chemical Straightening",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Hair Smoothening & Chemical Straightening Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_507",
+    "name": "Hair Global Color & Highlights / Balayage",
+    "en": "Hair Global Color & Highlights / Balayage",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Hair Global Color & Highlights / Balayage Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_508",
+    "name": "Herbal & Gold Facial for Glowing Skin",
+    "en": "Herbal & Gold Facial for Glowing Skin",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Herbal & Gold Facial for Glowing Skin Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_509",
+    "name": "Deep Pore Clean-up with Blackhead Removal",
+    "en": "Deep Pore Clean-up with Blackhead Removal",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Deep Pore Clean-up with Blackhead Removal Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_510",
+    "name": "Full Body Waxing (Rica / Honey Wax)",
+    "en": "Full Body Waxing (Rica / Honey Wax)",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Full Body Waxing (Rica / Honey Wax) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_511",
+    "name": "Eyebrow Threading & Upper Lip Clean",
+    "en": "Eyebrow Threading & Upper Lip Clean",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Eyebrow Threading & Upper Lip Clean Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_512",
+    "name": "Deluxe Pedicure & Foot Crack Treatment",
+    "en": "Deluxe Pedicure & Foot Crack Treatment",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Deluxe Pedicure & Foot Crack Treatment Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_513",
+    "name": "On-Grid Solar 3kW System for Home",
+    "en": "On-Grid Solar 3kW System for Home",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "On-Grid Solar 3kW System for Home Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_514",
+    "name": "On-Grid Solar 5kW High Efficiency Monocrystalline",
+    "en": "On-Grid Solar 5kW High Efficiency Monocrystalline",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "On-Grid Solar 5kW High Efficiency Monocrystalline Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_515",
+    "name": "Off-Grid 3kW Solar with Lithium Battery",
+    "en": "Off-Grid 3kW Solar with Lithium Battery",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Off-Grid 3kW Solar with Lithium Battery Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_516",
+    "name": "Hybrid Solar 5kW System with Grid Backup",
+    "en": "Hybrid Solar 5kW System with Grid Backup",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Hybrid Solar 5kW System with Grid Backup Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_517",
+    "name": "Solar Net Metering KSEB Feasibility Study",
+    "en": "Solar Net Metering KSEB Feasibility Study",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Solar Net Metering KSEB Feasibility Study Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_518",
+    "name": "Galvanized GI Solar Mounting Structure",
+    "en": "Galvanized GI Solar Mounting Structure",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Galvanized GI Solar Mounting Structure Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_519",
+    "name": "Solar DCDB & ACDB Protection Box Wiring",
+    "en": "Solar DCDB & ACDB Protection Box Wiring",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Solar DCDB & ACDB Protection Box Wiring Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_520",
+    "name": "Solar Panel High-Pressure Water Jet Cleaning",
+    "en": "Solar Panel High-Pressure Water Jet Cleaning",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Solar Panel High-Pressure Water Jet Cleaning Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_521",
+    "name": "Solar Water Heater 100 Litres (FPC Glass)",
+    "en": "Solar Water Heater 100 Litres (FPC Glass)",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Solar Water Heater 100 Litres (FPC Glass) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_522",
+    "name": "Solar Water Heater 200 Litres (ETC Tube)",
+    "en": "Solar Water Heater 200 Litres (ETC Tube)",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Solar Water Heater 200 Litres (ETC Tube) Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_523",
+    "name": "Solar Water Heater Descaling & Tank Service",
+    "en": "Solar Water Heater Descaling & Tank Service",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Solar Water Heater Descaling & Tank Service Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_524",
+    "name": "Solar Automatic Street Light",
+    "en": "Solar Automatic Street Light",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Solar Automatic Street Light Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_525",
+    "name": "LED Smart TV Screen Replacement (32\"-65\")",
+    "en": "LED Smart TV Screen Replacement (32\"-65\")",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "LED Smart TV Screen Replacement (32\"-65\") Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_526",
+    "name": "LED TV Backlight Strip Replacement",
+    "en": "LED TV Backlight Strip Replacement",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "LED TV Backlight Strip Replacement Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_527",
+    "name": "Smart TV Android Motherboard Repair",
+    "en": "Smart TV Android Motherboard Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Smart TV Android Motherboard Repair Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_528",
+    "name": "TV Power Supply Board (SMPS) Capacitor Fix",
+    "en": "TV Power Supply Board (SMPS) Capacitor Fix",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "TV Power Supply Board (SMPS) Capacitor Fix Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_529",
+    "name": "Home Theatre 5.1 Amplifier Speaker Repair",
+    "en": "Home Theatre 5.1 Amplifier Speaker Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Home Theatre 5.1 Amplifier Speaker Repair Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_530",
+    "name": "Microwave Oven Magnetron & Fuse Repair",
+    "en": "Microwave Oven Magnetron & Fuse Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Microwave Oven Magnetron & Fuse Repair Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_531",
+    "name": "Induction Cooktop Glass Top & Coil Repair",
+    "en": "Induction Cooktop Glass Top & Coil Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Induction Cooktop Glass Top & Coil Repair Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_532",
+    "name": "Mixer Grinder Motor Rewinding & Blade Bush",
+    "en": "Mixer Grinder Motor Rewinding & Blade Bush",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Mixer Grinder Motor Rewinding & Blade Bush Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_533",
+    "name": "Kitchen Exhaust Chimney Motor Repair",
+    "en": "Kitchen Exhaust Chimney Motor Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Kitchen Exhaust Chimney Motor Repair Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_534",
+    "name": "Laptop Broken Screen Replacement (14\"-15.6\")",
+    "en": "Laptop Broken Screen Replacement (14\"-15.6\")",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Laptop Broken Screen Replacement (14\"-15.6\") Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_535",
+    "name": "Laptop Keyboard Keys Replacement",
+    "en": "Laptop Keyboard Keys Replacement",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Laptop Keyboard Keys Replacement Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_536",
+    "name": "Laptop Battery Replacement & Calibration",
+    "en": "Laptop Battery Replacement & Calibration",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Laptop Battery Replacement & Calibration Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_537",
+    "name": "Desktop PC SMPS Power Supply Replacement",
+    "en": "Desktop PC SMPS Power Supply Replacement",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Desktop PC SMPS Power Supply Replacement Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_538",
+    "name": "SSD Storage Upgrade & Windows OS Install",
+    "en": "SSD Storage Upgrade & Windows OS Install",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "SSD Storage Upgrade & Windows OS Install Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_539",
+    "name": "Hard Disk Lost Data Recovery Service",
+    "en": "Hard Disk Lost Data Recovery Service",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Hard Disk Lost Data Recovery Service Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_540",
+    "name": "Smartphone Cracked Glass / Touch Display Fit",
+    "en": "Smartphone Cracked Glass / Touch Display Fit",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Smartphone Cracked Glass / Touch Display Fit Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_541",
+    "name": "Mobile Phone Battery Replacement Original",
+    "en": "Mobile Phone Battery Replacement Original",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Mobile Phone Battery Replacement Original Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_542",
+    "name": "Smartphone Charging Port Type-C Soldering",
+    "en": "Smartphone Charging Port Type-C Soldering",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Smartphone Charging Port Type-C Soldering Professional Work",
+      "Experienced Certified Technician",
+      "Quality Hardware & Genuine Parts",
+      "Transparent Rates & Quick Service"
+    ]
+  },
+  {
+    "id": "tr_543",
+    "name": "Kottayam Electrician & Power Maintenance",
+    "en": "Kottayam Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_544",
+    "name": "Kottayam Emergency Plumbing & Water Solution",
+    "en": "Kottayam Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_545",
+    "name": "Kottayam AC Installation & Cool Care Service",
+    "en": "Kottayam AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_546",
+    "name": "Kottayam Custom Carpentry & Furniture Restoring",
+    "en": "Kottayam Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_547",
+    "name": "Kottayam Weatherproof Wall Painting & Damp Proofing",
+    "en": "Kottayam Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_548",
+    "name": "Kottayam Civil Masonry & Concrete Repair",
+    "en": "Kottayam Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_549",
+    "name": "Kottayam Truss Roofing & Structural Steel Fabrication",
+    "en": "Kottayam Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_550",
+    "name": "Kottayam On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Kottayam On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_551",
+    "name": "Kottayam Professional Driver & Taxi Ride Hire",
+    "en": "Kottayam Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_552",
+    "name": "Kottayam Home Deep Cleaning & Waste Management",
+    "en": "Kottayam Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_553",
+    "name": "Kottayam Coconut Tree & Farm Care Service",
+    "en": "Kottayam Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_554",
+    "name": "Kottayam Catering & Traditional Feast Cooking",
+    "en": "Kottayam Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_555",
+    "name": "Kottayam Wedding Photography & Drone Cinematography",
+    "en": "Kottayam Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_556",
+    "name": "Kottayam Stage Sound System & Light Decoration",
+    "en": "Kottayam Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_557",
+    "name": "Kottayam Home Nursing & Elderly Patient Attendant",
+    "en": "Kottayam Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_558",
+    "name": "Kottayam Academic Home Tuition & Skill Training",
+    "en": "Kottayam Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_559",
+    "name": "Kottayam CCTV Security Camera & Automation Setup",
+    "en": "Kottayam CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_560",
+    "name": "Kottayam Designer Tailoring & Stitching Service",
+    "en": "Kottayam Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_561",
+    "name": "Kottayam Bridal Beauty Makeup & Personal Care",
+    "en": "Kottayam Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_562",
+    "name": "Kottayam Solar Rooftop & Inverter Power System",
+    "en": "Kottayam Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_563",
+    "name": "Kottayam TV, Computer & Home Appliance Repair",
+    "en": "Kottayam TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_564",
+    "name": "Kottayam Open Well Digging & Mud Deep Cleaning",
+    "en": "Kottayam Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_565",
+    "name": "Kottayam Interlock Paver Block & Driveway Laying",
+    "en": "Kottayam Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_566",
+    "name": "Kottayam Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Kottayam Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_567",
+    "name": "Kottayam Aluminium Glass Sliding & Cabin Partition",
+    "en": "Kottayam Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_568",
+    "name": "Kottayam Household Packing & Moving Shifting Assist",
+    "en": "Kottayam Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_569",
+    "name": "Kottayam Gas Stove & Commercial Burner Repair",
+    "en": "Kottayam Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_570",
+    "name": "Kottayam Anti-Termite & Mosquito Pest Extermination",
+    "en": "Kottayam Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Kottayam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_571",
+    "name": "Kochi Electrician & Power Maintenance",
+    "en": "Kochi Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_572",
+    "name": "Kochi Emergency Plumbing & Water Solution",
+    "en": "Kochi Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_573",
+    "name": "Kochi AC Installation & Cool Care Service",
+    "en": "Kochi AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_574",
+    "name": "Kochi Custom Carpentry & Furniture Restoring",
+    "en": "Kochi Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_575",
+    "name": "Kochi Weatherproof Wall Painting & Damp Proofing",
+    "en": "Kochi Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_576",
+    "name": "Kochi Civil Masonry & Concrete Repair",
+    "en": "Kochi Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_577",
+    "name": "Kochi Truss Roofing & Structural Steel Fabrication",
+    "en": "Kochi Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_578",
+    "name": "Kochi On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Kochi On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_579",
+    "name": "Kochi Professional Driver & Taxi Ride Hire",
+    "en": "Kochi Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_580",
+    "name": "Kochi Home Deep Cleaning & Waste Management",
+    "en": "Kochi Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_581",
+    "name": "Kochi Coconut Tree & Farm Care Service",
+    "en": "Kochi Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_582",
+    "name": "Kochi Catering & Traditional Feast Cooking",
+    "en": "Kochi Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_583",
+    "name": "Kochi Wedding Photography & Drone Cinematography",
+    "en": "Kochi Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_584",
+    "name": "Kochi Stage Sound System & Light Decoration",
+    "en": "Kochi Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_585",
+    "name": "Kochi Home Nursing & Elderly Patient Attendant",
+    "en": "Kochi Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_586",
+    "name": "Kochi Academic Home Tuition & Skill Training",
+    "en": "Kochi Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_587",
+    "name": "Kochi CCTV Security Camera & Automation Setup",
+    "en": "Kochi CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_588",
+    "name": "Kochi Designer Tailoring & Stitching Service",
+    "en": "Kochi Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_589",
+    "name": "Kochi Bridal Beauty Makeup & Personal Care",
+    "en": "Kochi Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_590",
+    "name": "Kochi Solar Rooftop & Inverter Power System",
+    "en": "Kochi Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_591",
+    "name": "Kochi TV, Computer & Home Appliance Repair",
+    "en": "Kochi TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_592",
+    "name": "Kochi Open Well Digging & Mud Deep Cleaning",
+    "en": "Kochi Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_593",
+    "name": "Kochi Interlock Paver Block & Driveway Laying",
+    "en": "Kochi Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_594",
+    "name": "Kochi Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Kochi Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_595",
+    "name": "Kochi Aluminium Glass Sliding & Cabin Partition",
+    "en": "Kochi Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_596",
+    "name": "Kochi Household Packing & Moving Shifting Assist",
+    "en": "Kochi Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_597",
+    "name": "Kochi Gas Stove & Commercial Burner Repair",
+    "en": "Kochi Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_598",
+    "name": "Kochi Anti-Termite & Mosquito Pest Extermination",
+    "en": "Kochi Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Kochi Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_599",
+    "name": "Thiruvananthapuram Electrician & Power Maintenance",
+    "en": "Thiruvananthapuram Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_600",
+    "name": "Thiruvananthapuram Emergency Plumbing & Water Solution",
+    "en": "Thiruvananthapuram Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_601",
+    "name": "Thiruvananthapuram AC Installation & Cool Care Service",
+    "en": "Thiruvananthapuram AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_602",
+    "name": "Thiruvananthapuram Custom Carpentry & Furniture Restoring",
+    "en": "Thiruvananthapuram Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_603",
+    "name": "Thiruvananthapuram Weatherproof Wall Painting & Damp Proofing",
+    "en": "Thiruvananthapuram Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_604",
+    "name": "Thiruvananthapuram Civil Masonry & Concrete Repair",
+    "en": "Thiruvananthapuram Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_605",
+    "name": "Thiruvananthapuram Truss Roofing & Structural Steel Fabrication",
+    "en": "Thiruvananthapuram Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_606",
+    "name": "Thiruvananthapuram On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Thiruvananthapuram On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_607",
+    "name": "Thiruvananthapuram Professional Driver & Taxi Ride Hire",
+    "en": "Thiruvananthapuram Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_608",
+    "name": "Thiruvananthapuram Home Deep Cleaning & Waste Management",
+    "en": "Thiruvananthapuram Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_609",
+    "name": "Thiruvananthapuram Coconut Tree & Farm Care Service",
+    "en": "Thiruvananthapuram Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_610",
+    "name": "Thiruvananthapuram Catering & Traditional Feast Cooking",
+    "en": "Thiruvananthapuram Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_611",
+    "name": "Thiruvananthapuram Wedding Photography & Drone Cinematography",
+    "en": "Thiruvananthapuram Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_612",
+    "name": "Thiruvananthapuram Stage Sound System & Light Decoration",
+    "en": "Thiruvananthapuram Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_613",
+    "name": "Thiruvananthapuram Home Nursing & Elderly Patient Attendant",
+    "en": "Thiruvananthapuram Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_614",
+    "name": "Thiruvananthapuram Academic Home Tuition & Skill Training",
+    "en": "Thiruvananthapuram Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_615",
+    "name": "Thiruvananthapuram CCTV Security Camera & Automation Setup",
+    "en": "Thiruvananthapuram CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_616",
+    "name": "Thiruvananthapuram Designer Tailoring & Stitching Service",
+    "en": "Thiruvananthapuram Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_617",
+    "name": "Thiruvananthapuram Bridal Beauty Makeup & Personal Care",
+    "en": "Thiruvananthapuram Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_618",
+    "name": "Thiruvananthapuram Solar Rooftop & Inverter Power System",
+    "en": "Thiruvananthapuram Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_619",
+    "name": "Thiruvananthapuram TV, Computer & Home Appliance Repair",
+    "en": "Thiruvananthapuram TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_620",
+    "name": "Thiruvananthapuram Open Well Digging & Mud Deep Cleaning",
+    "en": "Thiruvananthapuram Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_621",
+    "name": "Thiruvananthapuram Interlock Paver Block & Driveway Laying",
+    "en": "Thiruvananthapuram Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_622",
+    "name": "Thiruvananthapuram Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Thiruvananthapuram Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_623",
+    "name": "Thiruvananthapuram Aluminium Glass Sliding & Cabin Partition",
+    "en": "Thiruvananthapuram Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_624",
+    "name": "Thiruvananthapuram Household Packing & Moving Shifting Assist",
+    "en": "Thiruvananthapuram Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_625",
+    "name": "Thiruvananthapuram Gas Stove & Commercial Burner Repair",
+    "en": "Thiruvananthapuram Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_626",
+    "name": "Thiruvananthapuram Anti-Termite & Mosquito Pest Extermination",
+    "en": "Thiruvananthapuram Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Thiruvananthapuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_627",
+    "name": "Kozhikode Electrician & Power Maintenance",
+    "en": "Kozhikode Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_628",
+    "name": "Kozhikode Emergency Plumbing & Water Solution",
+    "en": "Kozhikode Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_629",
+    "name": "Kozhikode AC Installation & Cool Care Service",
+    "en": "Kozhikode AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_630",
+    "name": "Kozhikode Custom Carpentry & Furniture Restoring",
+    "en": "Kozhikode Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_631",
+    "name": "Kozhikode Weatherproof Wall Painting & Damp Proofing",
+    "en": "Kozhikode Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_632",
+    "name": "Kozhikode Civil Masonry & Concrete Repair",
+    "en": "Kozhikode Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_633",
+    "name": "Kozhikode Truss Roofing & Structural Steel Fabrication",
+    "en": "Kozhikode Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_634",
+    "name": "Kozhikode On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Kozhikode On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_635",
+    "name": "Kozhikode Professional Driver & Taxi Ride Hire",
+    "en": "Kozhikode Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_636",
+    "name": "Kozhikode Home Deep Cleaning & Waste Management",
+    "en": "Kozhikode Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_637",
+    "name": "Kozhikode Coconut Tree & Farm Care Service",
+    "en": "Kozhikode Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_638",
+    "name": "Kozhikode Catering & Traditional Feast Cooking",
+    "en": "Kozhikode Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_639",
+    "name": "Kozhikode Wedding Photography & Drone Cinematography",
+    "en": "Kozhikode Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_640",
+    "name": "Kozhikode Stage Sound System & Light Decoration",
+    "en": "Kozhikode Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_641",
+    "name": "Kozhikode Home Nursing & Elderly Patient Attendant",
+    "en": "Kozhikode Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_642",
+    "name": "Kozhikode Academic Home Tuition & Skill Training",
+    "en": "Kozhikode Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_643",
+    "name": "Kozhikode CCTV Security Camera & Automation Setup",
+    "en": "Kozhikode CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_644",
+    "name": "Kozhikode Designer Tailoring & Stitching Service",
+    "en": "Kozhikode Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_645",
+    "name": "Kozhikode Bridal Beauty Makeup & Personal Care",
+    "en": "Kozhikode Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_646",
+    "name": "Kozhikode Solar Rooftop & Inverter Power System",
+    "en": "Kozhikode Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_647",
+    "name": "Kozhikode TV, Computer & Home Appliance Repair",
+    "en": "Kozhikode TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_648",
+    "name": "Kozhikode Open Well Digging & Mud Deep Cleaning",
+    "en": "Kozhikode Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_649",
+    "name": "Kozhikode Interlock Paver Block & Driveway Laying",
+    "en": "Kozhikode Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_650",
+    "name": "Kozhikode Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Kozhikode Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_651",
+    "name": "Kozhikode Aluminium Glass Sliding & Cabin Partition",
+    "en": "Kozhikode Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_652",
+    "name": "Kozhikode Household Packing & Moving Shifting Assist",
+    "en": "Kozhikode Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_653",
+    "name": "Kozhikode Gas Stove & Commercial Burner Repair",
+    "en": "Kozhikode Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_654",
+    "name": "Kozhikode Anti-Termite & Mosquito Pest Extermination",
+    "en": "Kozhikode Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Kozhikode Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_655",
+    "name": "Thrissur Electrician & Power Maintenance",
+    "en": "Thrissur Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_656",
+    "name": "Thrissur Emergency Plumbing & Water Solution",
+    "en": "Thrissur Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_657",
+    "name": "Thrissur AC Installation & Cool Care Service",
+    "en": "Thrissur AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_658",
+    "name": "Thrissur Custom Carpentry & Furniture Restoring",
+    "en": "Thrissur Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_659",
+    "name": "Thrissur Weatherproof Wall Painting & Damp Proofing",
+    "en": "Thrissur Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_660",
+    "name": "Thrissur Civil Masonry & Concrete Repair",
+    "en": "Thrissur Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_661",
+    "name": "Thrissur Truss Roofing & Structural Steel Fabrication",
+    "en": "Thrissur Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_662",
+    "name": "Thrissur On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Thrissur On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_663",
+    "name": "Thrissur Professional Driver & Taxi Ride Hire",
+    "en": "Thrissur Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_664",
+    "name": "Thrissur Home Deep Cleaning & Waste Management",
+    "en": "Thrissur Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_665",
+    "name": "Thrissur Coconut Tree & Farm Care Service",
+    "en": "Thrissur Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_666",
+    "name": "Thrissur Catering & Traditional Feast Cooking",
+    "en": "Thrissur Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_667",
+    "name": "Thrissur Wedding Photography & Drone Cinematography",
+    "en": "Thrissur Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_668",
+    "name": "Thrissur Stage Sound System & Light Decoration",
+    "en": "Thrissur Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_669",
+    "name": "Thrissur Home Nursing & Elderly Patient Attendant",
+    "en": "Thrissur Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_670",
+    "name": "Thrissur Academic Home Tuition & Skill Training",
+    "en": "Thrissur Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_671",
+    "name": "Thrissur CCTV Security Camera & Automation Setup",
+    "en": "Thrissur CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_672",
+    "name": "Thrissur Designer Tailoring & Stitching Service",
+    "en": "Thrissur Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_673",
+    "name": "Thrissur Bridal Beauty Makeup & Personal Care",
+    "en": "Thrissur Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_674",
+    "name": "Thrissur Solar Rooftop & Inverter Power System",
+    "en": "Thrissur Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_675",
+    "name": "Thrissur TV, Computer & Home Appliance Repair",
+    "en": "Thrissur TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_676",
+    "name": "Thrissur Open Well Digging & Mud Deep Cleaning",
+    "en": "Thrissur Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_677",
+    "name": "Thrissur Interlock Paver Block & Driveway Laying",
+    "en": "Thrissur Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_678",
+    "name": "Thrissur Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Thrissur Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_679",
+    "name": "Thrissur Aluminium Glass Sliding & Cabin Partition",
+    "en": "Thrissur Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_680",
+    "name": "Thrissur Household Packing & Moving Shifting Assist",
+    "en": "Thrissur Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_681",
+    "name": "Thrissur Gas Stove & Commercial Burner Repair",
+    "en": "Thrissur Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_682",
+    "name": "Thrissur Anti-Termite & Mosquito Pest Extermination",
+    "en": "Thrissur Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Thrissur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_683",
+    "name": "Kollam Electrician & Power Maintenance",
+    "en": "Kollam Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_684",
+    "name": "Kollam Emergency Plumbing & Water Solution",
+    "en": "Kollam Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_685",
+    "name": "Kollam AC Installation & Cool Care Service",
+    "en": "Kollam AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_686",
+    "name": "Kollam Custom Carpentry & Furniture Restoring",
+    "en": "Kollam Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_687",
+    "name": "Kollam Weatherproof Wall Painting & Damp Proofing",
+    "en": "Kollam Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_688",
+    "name": "Kollam Civil Masonry & Concrete Repair",
+    "en": "Kollam Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_689",
+    "name": "Kollam Truss Roofing & Structural Steel Fabrication",
+    "en": "Kollam Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_690",
+    "name": "Kollam On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Kollam On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_691",
+    "name": "Kollam Professional Driver & Taxi Ride Hire",
+    "en": "Kollam Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_692",
+    "name": "Kollam Home Deep Cleaning & Waste Management",
+    "en": "Kollam Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_693",
+    "name": "Kollam Coconut Tree & Farm Care Service",
+    "en": "Kollam Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_694",
+    "name": "Kollam Catering & Traditional Feast Cooking",
+    "en": "Kollam Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_695",
+    "name": "Kollam Wedding Photography & Drone Cinematography",
+    "en": "Kollam Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_696",
+    "name": "Kollam Stage Sound System & Light Decoration",
+    "en": "Kollam Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_697",
+    "name": "Kollam Home Nursing & Elderly Patient Attendant",
+    "en": "Kollam Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_698",
+    "name": "Kollam Academic Home Tuition & Skill Training",
+    "en": "Kollam Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_699",
+    "name": "Kollam CCTV Security Camera & Automation Setup",
+    "en": "Kollam CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_700",
+    "name": "Kollam Designer Tailoring & Stitching Service",
+    "en": "Kollam Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_701",
+    "name": "Kollam Bridal Beauty Makeup & Personal Care",
+    "en": "Kollam Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_702",
+    "name": "Kollam Solar Rooftop & Inverter Power System",
+    "en": "Kollam Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_703",
+    "name": "Kollam TV, Computer & Home Appliance Repair",
+    "en": "Kollam TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_704",
+    "name": "Kollam Open Well Digging & Mud Deep Cleaning",
+    "en": "Kollam Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_705",
+    "name": "Kollam Interlock Paver Block & Driveway Laying",
+    "en": "Kollam Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_706",
+    "name": "Kollam Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Kollam Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_707",
+    "name": "Kollam Aluminium Glass Sliding & Cabin Partition",
+    "en": "Kollam Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_708",
+    "name": "Kollam Household Packing & Moving Shifting Assist",
+    "en": "Kollam Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_709",
+    "name": "Kollam Gas Stove & Commercial Burner Repair",
+    "en": "Kollam Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_710",
+    "name": "Kollam Anti-Termite & Mosquito Pest Extermination",
+    "en": "Kollam Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Kollam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_711",
+    "name": "Alappuzha Electrician & Power Maintenance",
+    "en": "Alappuzha Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_712",
+    "name": "Alappuzha Emergency Plumbing & Water Solution",
+    "en": "Alappuzha Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_713",
+    "name": "Alappuzha AC Installation & Cool Care Service",
+    "en": "Alappuzha AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_714",
+    "name": "Alappuzha Custom Carpentry & Furniture Restoring",
+    "en": "Alappuzha Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_715",
+    "name": "Alappuzha Weatherproof Wall Painting & Damp Proofing",
+    "en": "Alappuzha Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_716",
+    "name": "Alappuzha Civil Masonry & Concrete Repair",
+    "en": "Alappuzha Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_717",
+    "name": "Alappuzha Truss Roofing & Structural Steel Fabrication",
+    "en": "Alappuzha Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_718",
+    "name": "Alappuzha On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Alappuzha On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_719",
+    "name": "Alappuzha Professional Driver & Taxi Ride Hire",
+    "en": "Alappuzha Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_720",
+    "name": "Alappuzha Home Deep Cleaning & Waste Management",
+    "en": "Alappuzha Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_721",
+    "name": "Alappuzha Coconut Tree & Farm Care Service",
+    "en": "Alappuzha Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_722",
+    "name": "Alappuzha Catering & Traditional Feast Cooking",
+    "en": "Alappuzha Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_723",
+    "name": "Alappuzha Wedding Photography & Drone Cinematography",
+    "en": "Alappuzha Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_724",
+    "name": "Alappuzha Stage Sound System & Light Decoration",
+    "en": "Alappuzha Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_725",
+    "name": "Alappuzha Home Nursing & Elderly Patient Attendant",
+    "en": "Alappuzha Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_726",
+    "name": "Alappuzha Academic Home Tuition & Skill Training",
+    "en": "Alappuzha Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_727",
+    "name": "Alappuzha CCTV Security Camera & Automation Setup",
+    "en": "Alappuzha CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_728",
+    "name": "Alappuzha Designer Tailoring & Stitching Service",
+    "en": "Alappuzha Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_729",
+    "name": "Alappuzha Bridal Beauty Makeup & Personal Care",
+    "en": "Alappuzha Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_730",
+    "name": "Alappuzha Solar Rooftop & Inverter Power System",
+    "en": "Alappuzha Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_731",
+    "name": "Alappuzha TV, Computer & Home Appliance Repair",
+    "en": "Alappuzha TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_732",
+    "name": "Alappuzha Open Well Digging & Mud Deep Cleaning",
+    "en": "Alappuzha Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_733",
+    "name": "Alappuzha Interlock Paver Block & Driveway Laying",
+    "en": "Alappuzha Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_734",
+    "name": "Alappuzha Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Alappuzha Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_735",
+    "name": "Alappuzha Aluminium Glass Sliding & Cabin Partition",
+    "en": "Alappuzha Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_736",
+    "name": "Alappuzha Household Packing & Moving Shifting Assist",
+    "en": "Alappuzha Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_737",
+    "name": "Alappuzha Gas Stove & Commercial Burner Repair",
+    "en": "Alappuzha Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_738",
+    "name": "Alappuzha Anti-Termite & Mosquito Pest Extermination",
+    "en": "Alappuzha Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Alappuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_739",
+    "name": "Palakkad Electrician & Power Maintenance",
+    "en": "Palakkad Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_740",
+    "name": "Palakkad Emergency Plumbing & Water Solution",
+    "en": "Palakkad Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_741",
+    "name": "Palakkad AC Installation & Cool Care Service",
+    "en": "Palakkad AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_742",
+    "name": "Palakkad Custom Carpentry & Furniture Restoring",
+    "en": "Palakkad Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_743",
+    "name": "Palakkad Weatherproof Wall Painting & Damp Proofing",
+    "en": "Palakkad Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_744",
+    "name": "Palakkad Civil Masonry & Concrete Repair",
+    "en": "Palakkad Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_745",
+    "name": "Palakkad Truss Roofing & Structural Steel Fabrication",
+    "en": "Palakkad Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_746",
+    "name": "Palakkad On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Palakkad On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_747",
+    "name": "Palakkad Professional Driver & Taxi Ride Hire",
+    "en": "Palakkad Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_748",
+    "name": "Palakkad Home Deep Cleaning & Waste Management",
+    "en": "Palakkad Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_749",
+    "name": "Palakkad Coconut Tree & Farm Care Service",
+    "en": "Palakkad Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_750",
+    "name": "Palakkad Catering & Traditional Feast Cooking",
+    "en": "Palakkad Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_751",
+    "name": "Palakkad Wedding Photography & Drone Cinematography",
+    "en": "Palakkad Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_752",
+    "name": "Palakkad Stage Sound System & Light Decoration",
+    "en": "Palakkad Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_753",
+    "name": "Palakkad Home Nursing & Elderly Patient Attendant",
+    "en": "Palakkad Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_754",
+    "name": "Palakkad Academic Home Tuition & Skill Training",
+    "en": "Palakkad Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_755",
+    "name": "Palakkad CCTV Security Camera & Automation Setup",
+    "en": "Palakkad CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_756",
+    "name": "Palakkad Designer Tailoring & Stitching Service",
+    "en": "Palakkad Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_757",
+    "name": "Palakkad Bridal Beauty Makeup & Personal Care",
+    "en": "Palakkad Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_758",
+    "name": "Palakkad Solar Rooftop & Inverter Power System",
+    "en": "Palakkad Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_759",
+    "name": "Palakkad TV, Computer & Home Appliance Repair",
+    "en": "Palakkad TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_760",
+    "name": "Palakkad Open Well Digging & Mud Deep Cleaning",
+    "en": "Palakkad Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_761",
+    "name": "Palakkad Interlock Paver Block & Driveway Laying",
+    "en": "Palakkad Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_762",
+    "name": "Palakkad Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Palakkad Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_763",
+    "name": "Palakkad Aluminium Glass Sliding & Cabin Partition",
+    "en": "Palakkad Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_764",
+    "name": "Palakkad Household Packing & Moving Shifting Assist",
+    "en": "Palakkad Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_765",
+    "name": "Palakkad Gas Stove & Commercial Burner Repair",
+    "en": "Palakkad Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_766",
+    "name": "Palakkad Anti-Termite & Mosquito Pest Extermination",
+    "en": "Palakkad Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Palakkad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_767",
+    "name": "Malappuram Electrician & Power Maintenance",
+    "en": "Malappuram Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_768",
+    "name": "Malappuram Emergency Plumbing & Water Solution",
+    "en": "Malappuram Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_769",
+    "name": "Malappuram AC Installation & Cool Care Service",
+    "en": "Malappuram AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_770",
+    "name": "Malappuram Custom Carpentry & Furniture Restoring",
+    "en": "Malappuram Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_771",
+    "name": "Malappuram Weatherproof Wall Painting & Damp Proofing",
+    "en": "Malappuram Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_772",
+    "name": "Malappuram Civil Masonry & Concrete Repair",
+    "en": "Malappuram Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_773",
+    "name": "Malappuram Truss Roofing & Structural Steel Fabrication",
+    "en": "Malappuram Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_774",
+    "name": "Malappuram On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Malappuram On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_775",
+    "name": "Malappuram Professional Driver & Taxi Ride Hire",
+    "en": "Malappuram Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_776",
+    "name": "Malappuram Home Deep Cleaning & Waste Management",
+    "en": "Malappuram Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_777",
+    "name": "Malappuram Coconut Tree & Farm Care Service",
+    "en": "Malappuram Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_778",
+    "name": "Malappuram Catering & Traditional Feast Cooking",
+    "en": "Malappuram Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_779",
+    "name": "Malappuram Wedding Photography & Drone Cinematography",
+    "en": "Malappuram Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_780",
+    "name": "Malappuram Stage Sound System & Light Decoration",
+    "en": "Malappuram Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_781",
+    "name": "Malappuram Home Nursing & Elderly Patient Attendant",
+    "en": "Malappuram Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_782",
+    "name": "Malappuram Academic Home Tuition & Skill Training",
+    "en": "Malappuram Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_783",
+    "name": "Malappuram CCTV Security Camera & Automation Setup",
+    "en": "Malappuram CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_784",
+    "name": "Malappuram Designer Tailoring & Stitching Service",
+    "en": "Malappuram Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_785",
+    "name": "Malappuram Bridal Beauty Makeup & Personal Care",
+    "en": "Malappuram Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_786",
+    "name": "Malappuram Solar Rooftop & Inverter Power System",
+    "en": "Malappuram Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_787",
+    "name": "Malappuram TV, Computer & Home Appliance Repair",
+    "en": "Malappuram TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_788",
+    "name": "Malappuram Open Well Digging & Mud Deep Cleaning",
+    "en": "Malappuram Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_789",
+    "name": "Malappuram Interlock Paver Block & Driveway Laying",
+    "en": "Malappuram Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_790",
+    "name": "Malappuram Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Malappuram Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_791",
+    "name": "Malappuram Aluminium Glass Sliding & Cabin Partition",
+    "en": "Malappuram Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_792",
+    "name": "Malappuram Household Packing & Moving Shifting Assist",
+    "en": "Malappuram Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_793",
+    "name": "Malappuram Gas Stove & Commercial Burner Repair",
+    "en": "Malappuram Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_794",
+    "name": "Malappuram Anti-Termite & Mosquito Pest Extermination",
+    "en": "Malappuram Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Malappuram Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_795",
+    "name": "Kannur Electrician & Power Maintenance",
+    "en": "Kannur Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_796",
+    "name": "Kannur Emergency Plumbing & Water Solution",
+    "en": "Kannur Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_797",
+    "name": "Kannur AC Installation & Cool Care Service",
+    "en": "Kannur AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_798",
+    "name": "Kannur Custom Carpentry & Furniture Restoring",
+    "en": "Kannur Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_799",
+    "name": "Kannur Weatherproof Wall Painting & Damp Proofing",
+    "en": "Kannur Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_800",
+    "name": "Kannur Civil Masonry & Concrete Repair",
+    "en": "Kannur Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_801",
+    "name": "Kannur Truss Roofing & Structural Steel Fabrication",
+    "en": "Kannur Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_802",
+    "name": "Kannur On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Kannur On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_803",
+    "name": "Kannur Professional Driver & Taxi Ride Hire",
+    "en": "Kannur Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_804",
+    "name": "Kannur Home Deep Cleaning & Waste Management",
+    "en": "Kannur Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_805",
+    "name": "Kannur Coconut Tree & Farm Care Service",
+    "en": "Kannur Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_806",
+    "name": "Kannur Catering & Traditional Feast Cooking",
+    "en": "Kannur Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_807",
+    "name": "Kannur Wedding Photography & Drone Cinematography",
+    "en": "Kannur Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_808",
+    "name": "Kannur Stage Sound System & Light Decoration",
+    "en": "Kannur Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_809",
+    "name": "Kannur Home Nursing & Elderly Patient Attendant",
+    "en": "Kannur Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_810",
+    "name": "Kannur Academic Home Tuition & Skill Training",
+    "en": "Kannur Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_811",
+    "name": "Kannur CCTV Security Camera & Automation Setup",
+    "en": "Kannur CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_812",
+    "name": "Kannur Designer Tailoring & Stitching Service",
+    "en": "Kannur Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_813",
+    "name": "Kannur Bridal Beauty Makeup & Personal Care",
+    "en": "Kannur Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_814",
+    "name": "Kannur Solar Rooftop & Inverter Power System",
+    "en": "Kannur Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_815",
+    "name": "Kannur TV, Computer & Home Appliance Repair",
+    "en": "Kannur TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_816",
+    "name": "Kannur Open Well Digging & Mud Deep Cleaning",
+    "en": "Kannur Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_817",
+    "name": "Kannur Interlock Paver Block & Driveway Laying",
+    "en": "Kannur Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_818",
+    "name": "Kannur Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Kannur Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_819",
+    "name": "Kannur Aluminium Glass Sliding & Cabin Partition",
+    "en": "Kannur Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_820",
+    "name": "Kannur Household Packing & Moving Shifting Assist",
+    "en": "Kannur Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_821",
+    "name": "Kannur Gas Stove & Commercial Burner Repair",
+    "en": "Kannur Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_822",
+    "name": "Kannur Anti-Termite & Mosquito Pest Extermination",
+    "en": "Kannur Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Kannur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_823",
+    "name": "Kasaragod Electrician & Power Maintenance",
+    "en": "Kasaragod Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_824",
+    "name": "Kasaragod Emergency Plumbing & Water Solution",
+    "en": "Kasaragod Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_825",
+    "name": "Kasaragod AC Installation & Cool Care Service",
+    "en": "Kasaragod AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_826",
+    "name": "Kasaragod Custom Carpentry & Furniture Restoring",
+    "en": "Kasaragod Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_827",
+    "name": "Kasaragod Weatherproof Wall Painting & Damp Proofing",
+    "en": "Kasaragod Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_828",
+    "name": "Kasaragod Civil Masonry & Concrete Repair",
+    "en": "Kasaragod Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_829",
+    "name": "Kasaragod Truss Roofing & Structural Steel Fabrication",
+    "en": "Kasaragod Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_830",
+    "name": "Kasaragod On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Kasaragod On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_831",
+    "name": "Kasaragod Professional Driver & Taxi Ride Hire",
+    "en": "Kasaragod Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_832",
+    "name": "Kasaragod Home Deep Cleaning & Waste Management",
+    "en": "Kasaragod Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_833",
+    "name": "Kasaragod Coconut Tree & Farm Care Service",
+    "en": "Kasaragod Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_834",
+    "name": "Kasaragod Catering & Traditional Feast Cooking",
+    "en": "Kasaragod Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_835",
+    "name": "Kasaragod Wedding Photography & Drone Cinematography",
+    "en": "Kasaragod Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_836",
+    "name": "Kasaragod Stage Sound System & Light Decoration",
+    "en": "Kasaragod Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_837",
+    "name": "Kasaragod Home Nursing & Elderly Patient Attendant",
+    "en": "Kasaragod Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_838",
+    "name": "Kasaragod Academic Home Tuition & Skill Training",
+    "en": "Kasaragod Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_839",
+    "name": "Kasaragod CCTV Security Camera & Automation Setup",
+    "en": "Kasaragod CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_840",
+    "name": "Kasaragod Designer Tailoring & Stitching Service",
+    "en": "Kasaragod Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_841",
+    "name": "Kasaragod Bridal Beauty Makeup & Personal Care",
+    "en": "Kasaragod Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_842",
+    "name": "Kasaragod Solar Rooftop & Inverter Power System",
+    "en": "Kasaragod Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_843",
+    "name": "Kasaragod TV, Computer & Home Appliance Repair",
+    "en": "Kasaragod TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_844",
+    "name": "Kasaragod Open Well Digging & Mud Deep Cleaning",
+    "en": "Kasaragod Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_845",
+    "name": "Kasaragod Interlock Paver Block & Driveway Laying",
+    "en": "Kasaragod Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_846",
+    "name": "Kasaragod Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Kasaragod Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_847",
+    "name": "Kasaragod Aluminium Glass Sliding & Cabin Partition",
+    "en": "Kasaragod Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_848",
+    "name": "Kasaragod Household Packing & Moving Shifting Assist",
+    "en": "Kasaragod Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_849",
+    "name": "Kasaragod Gas Stove & Commercial Burner Repair",
+    "en": "Kasaragod Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_850",
+    "name": "Kasaragod Anti-Termite & Mosquito Pest Extermination",
+    "en": "Kasaragod Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Kasaragod Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_851",
+    "name": "Idukki Electrician & Power Maintenance",
+    "en": "Idukki Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_852",
+    "name": "Idukki Emergency Plumbing & Water Solution",
+    "en": "Idukki Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_853",
+    "name": "Idukki AC Installation & Cool Care Service",
+    "en": "Idukki AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_854",
+    "name": "Idukki Custom Carpentry & Furniture Restoring",
+    "en": "Idukki Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_855",
+    "name": "Idukki Weatherproof Wall Painting & Damp Proofing",
+    "en": "Idukki Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_856",
+    "name": "Idukki Civil Masonry & Concrete Repair",
+    "en": "Idukki Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_857",
+    "name": "Idukki Truss Roofing & Structural Steel Fabrication",
+    "en": "Idukki Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_858",
+    "name": "Idukki On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Idukki On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_859",
+    "name": "Idukki Professional Driver & Taxi Ride Hire",
+    "en": "Idukki Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_860",
+    "name": "Idukki Home Deep Cleaning & Waste Management",
+    "en": "Idukki Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_861",
+    "name": "Idukki Coconut Tree & Farm Care Service",
+    "en": "Idukki Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_862",
+    "name": "Idukki Catering & Traditional Feast Cooking",
+    "en": "Idukki Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_863",
+    "name": "Idukki Wedding Photography & Drone Cinematography",
+    "en": "Idukki Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_864",
+    "name": "Idukki Stage Sound System & Light Decoration",
+    "en": "Idukki Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_865",
+    "name": "Idukki Home Nursing & Elderly Patient Attendant",
+    "en": "Idukki Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_866",
+    "name": "Idukki Academic Home Tuition & Skill Training",
+    "en": "Idukki Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_867",
+    "name": "Idukki CCTV Security Camera & Automation Setup",
+    "en": "Idukki CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_868",
+    "name": "Idukki Designer Tailoring & Stitching Service",
+    "en": "Idukki Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_869",
+    "name": "Idukki Bridal Beauty Makeup & Personal Care",
+    "en": "Idukki Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_870",
+    "name": "Idukki Solar Rooftop & Inverter Power System",
+    "en": "Idukki Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_871",
+    "name": "Idukki TV, Computer & Home Appliance Repair",
+    "en": "Idukki TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_872",
+    "name": "Idukki Open Well Digging & Mud Deep Cleaning",
+    "en": "Idukki Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_873",
+    "name": "Idukki Interlock Paver Block & Driveway Laying",
+    "en": "Idukki Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_874",
+    "name": "Idukki Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Idukki Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_875",
+    "name": "Idukki Aluminium Glass Sliding & Cabin Partition",
+    "en": "Idukki Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_876",
+    "name": "Idukki Household Packing & Moving Shifting Assist",
+    "en": "Idukki Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_877",
+    "name": "Idukki Gas Stove & Commercial Burner Repair",
+    "en": "Idukki Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_878",
+    "name": "Idukki Anti-Termite & Mosquito Pest Extermination",
+    "en": "Idukki Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Idukki Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_879",
+    "name": "Wayanad Electrician & Power Maintenance",
+    "en": "Wayanad Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_880",
+    "name": "Wayanad Emergency Plumbing & Water Solution",
+    "en": "Wayanad Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_881",
+    "name": "Wayanad AC Installation & Cool Care Service",
+    "en": "Wayanad AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_882",
+    "name": "Wayanad Custom Carpentry & Furniture Restoring",
+    "en": "Wayanad Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_883",
+    "name": "Wayanad Weatherproof Wall Painting & Damp Proofing",
+    "en": "Wayanad Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_884",
+    "name": "Wayanad Civil Masonry & Concrete Repair",
+    "en": "Wayanad Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_885",
+    "name": "Wayanad Truss Roofing & Structural Steel Fabrication",
+    "en": "Wayanad Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_886",
+    "name": "Wayanad On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Wayanad On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_887",
+    "name": "Wayanad Professional Driver & Taxi Ride Hire",
+    "en": "Wayanad Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_888",
+    "name": "Wayanad Home Deep Cleaning & Waste Management",
+    "en": "Wayanad Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_889",
+    "name": "Wayanad Coconut Tree & Farm Care Service",
+    "en": "Wayanad Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_890",
+    "name": "Wayanad Catering & Traditional Feast Cooking",
+    "en": "Wayanad Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_891",
+    "name": "Wayanad Wedding Photography & Drone Cinematography",
+    "en": "Wayanad Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_892",
+    "name": "Wayanad Stage Sound System & Light Decoration",
+    "en": "Wayanad Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_893",
+    "name": "Wayanad Home Nursing & Elderly Patient Attendant",
+    "en": "Wayanad Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_894",
+    "name": "Wayanad Academic Home Tuition & Skill Training",
+    "en": "Wayanad Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_895",
+    "name": "Wayanad CCTV Security Camera & Automation Setup",
+    "en": "Wayanad CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_896",
+    "name": "Wayanad Designer Tailoring & Stitching Service",
+    "en": "Wayanad Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_897",
+    "name": "Wayanad Bridal Beauty Makeup & Personal Care",
+    "en": "Wayanad Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_898",
+    "name": "Wayanad Solar Rooftop & Inverter Power System",
+    "en": "Wayanad Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_899",
+    "name": "Wayanad TV, Computer & Home Appliance Repair",
+    "en": "Wayanad TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_900",
+    "name": "Wayanad Open Well Digging & Mud Deep Cleaning",
+    "en": "Wayanad Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_901",
+    "name": "Wayanad Interlock Paver Block & Driveway Laying",
+    "en": "Wayanad Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_902",
+    "name": "Wayanad Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Wayanad Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_903",
+    "name": "Wayanad Aluminium Glass Sliding & Cabin Partition",
+    "en": "Wayanad Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_904",
+    "name": "Wayanad Household Packing & Moving Shifting Assist",
+    "en": "Wayanad Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_905",
+    "name": "Wayanad Gas Stove & Commercial Burner Repair",
+    "en": "Wayanad Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_906",
+    "name": "Wayanad Anti-Termite & Mosquito Pest Extermination",
+    "en": "Wayanad Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Wayanad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_907",
+    "name": "Pathanamthitta Electrician & Power Maintenance",
+    "en": "Pathanamthitta Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_908",
+    "name": "Pathanamthitta Emergency Plumbing & Water Solution",
+    "en": "Pathanamthitta Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_909",
+    "name": "Pathanamthitta AC Installation & Cool Care Service",
+    "en": "Pathanamthitta AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_910",
+    "name": "Pathanamthitta Custom Carpentry & Furniture Restoring",
+    "en": "Pathanamthitta Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_911",
+    "name": "Pathanamthitta Weatherproof Wall Painting & Damp Proofing",
+    "en": "Pathanamthitta Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_912",
+    "name": "Pathanamthitta Civil Masonry & Concrete Repair",
+    "en": "Pathanamthitta Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_913",
+    "name": "Pathanamthitta Truss Roofing & Structural Steel Fabrication",
+    "en": "Pathanamthitta Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_914",
+    "name": "Pathanamthitta On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Pathanamthitta On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_915",
+    "name": "Pathanamthitta Professional Driver & Taxi Ride Hire",
+    "en": "Pathanamthitta Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_916",
+    "name": "Pathanamthitta Home Deep Cleaning & Waste Management",
+    "en": "Pathanamthitta Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_917",
+    "name": "Pathanamthitta Coconut Tree & Farm Care Service",
+    "en": "Pathanamthitta Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_918",
+    "name": "Pathanamthitta Catering & Traditional Feast Cooking",
+    "en": "Pathanamthitta Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_919",
+    "name": "Pathanamthitta Wedding Photography & Drone Cinematography",
+    "en": "Pathanamthitta Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_920",
+    "name": "Pathanamthitta Stage Sound System & Light Decoration",
+    "en": "Pathanamthitta Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_921",
+    "name": "Pathanamthitta Home Nursing & Elderly Patient Attendant",
+    "en": "Pathanamthitta Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_922",
+    "name": "Pathanamthitta Academic Home Tuition & Skill Training",
+    "en": "Pathanamthitta Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_923",
+    "name": "Pathanamthitta CCTV Security Camera & Automation Setup",
+    "en": "Pathanamthitta CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_924",
+    "name": "Pathanamthitta Designer Tailoring & Stitching Service",
+    "en": "Pathanamthitta Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_925",
+    "name": "Pathanamthitta Bridal Beauty Makeup & Personal Care",
+    "en": "Pathanamthitta Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_926",
+    "name": "Pathanamthitta Solar Rooftop & Inverter Power System",
+    "en": "Pathanamthitta Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_927",
+    "name": "Pathanamthitta TV, Computer & Home Appliance Repair",
+    "en": "Pathanamthitta TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_928",
+    "name": "Pathanamthitta Open Well Digging & Mud Deep Cleaning",
+    "en": "Pathanamthitta Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_929",
+    "name": "Pathanamthitta Interlock Paver Block & Driveway Laying",
+    "en": "Pathanamthitta Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_930",
+    "name": "Pathanamthitta Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Pathanamthitta Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_931",
+    "name": "Pathanamthitta Aluminium Glass Sliding & Cabin Partition",
+    "en": "Pathanamthitta Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_932",
+    "name": "Pathanamthitta Household Packing & Moving Shifting Assist",
+    "en": "Pathanamthitta Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_933",
+    "name": "Pathanamthitta Gas Stove & Commercial Burner Repair",
+    "en": "Pathanamthitta Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_934",
+    "name": "Pathanamthitta Anti-Termite & Mosquito Pest Extermination",
+    "en": "Pathanamthitta Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Pathanamthitta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_935",
+    "name": "Ernakulam Electrician & Power Maintenance",
+    "en": "Ernakulam Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_936",
+    "name": "Ernakulam Emergency Plumbing & Water Solution",
+    "en": "Ernakulam Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_937",
+    "name": "Ernakulam AC Installation & Cool Care Service",
+    "en": "Ernakulam AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_938",
+    "name": "Ernakulam Custom Carpentry & Furniture Restoring",
+    "en": "Ernakulam Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_939",
+    "name": "Ernakulam Weatherproof Wall Painting & Damp Proofing",
+    "en": "Ernakulam Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_940",
+    "name": "Ernakulam Civil Masonry & Concrete Repair",
+    "en": "Ernakulam Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_941",
+    "name": "Ernakulam Truss Roofing & Structural Steel Fabrication",
+    "en": "Ernakulam Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_942",
+    "name": "Ernakulam On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Ernakulam On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_943",
+    "name": "Ernakulam Professional Driver & Taxi Ride Hire",
+    "en": "Ernakulam Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_944",
+    "name": "Ernakulam Home Deep Cleaning & Waste Management",
+    "en": "Ernakulam Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_945",
+    "name": "Ernakulam Coconut Tree & Farm Care Service",
+    "en": "Ernakulam Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_946",
+    "name": "Ernakulam Catering & Traditional Feast Cooking",
+    "en": "Ernakulam Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_947",
+    "name": "Ernakulam Wedding Photography & Drone Cinematography",
+    "en": "Ernakulam Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_948",
+    "name": "Ernakulam Stage Sound System & Light Decoration",
+    "en": "Ernakulam Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_949",
+    "name": "Ernakulam Home Nursing & Elderly Patient Attendant",
+    "en": "Ernakulam Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_950",
+    "name": "Ernakulam Academic Home Tuition & Skill Training",
+    "en": "Ernakulam Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_951",
+    "name": "Ernakulam CCTV Security Camera & Automation Setup",
+    "en": "Ernakulam CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_952",
+    "name": "Ernakulam Designer Tailoring & Stitching Service",
+    "en": "Ernakulam Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_953",
+    "name": "Ernakulam Bridal Beauty Makeup & Personal Care",
+    "en": "Ernakulam Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_954",
+    "name": "Ernakulam Solar Rooftop & Inverter Power System",
+    "en": "Ernakulam Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_955",
+    "name": "Ernakulam TV, Computer & Home Appliance Repair",
+    "en": "Ernakulam TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_956",
+    "name": "Ernakulam Open Well Digging & Mud Deep Cleaning",
+    "en": "Ernakulam Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_957",
+    "name": "Ernakulam Interlock Paver Block & Driveway Laying",
+    "en": "Ernakulam Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_958",
+    "name": "Ernakulam Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Ernakulam Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_959",
+    "name": "Ernakulam Aluminium Glass Sliding & Cabin Partition",
+    "en": "Ernakulam Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_960",
+    "name": "Ernakulam Household Packing & Moving Shifting Assist",
+    "en": "Ernakulam Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_961",
+    "name": "Ernakulam Gas Stove & Commercial Burner Repair",
+    "en": "Ernakulam Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_962",
+    "name": "Ernakulam Anti-Termite & Mosquito Pest Extermination",
+    "en": "Ernakulam Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Ernakulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_963",
+    "name": "Changanassery Electrician & Power Maintenance",
+    "en": "Changanassery Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_964",
+    "name": "Changanassery Emergency Plumbing & Water Solution",
+    "en": "Changanassery Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_965",
+    "name": "Changanassery AC Installation & Cool Care Service",
+    "en": "Changanassery AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_966",
+    "name": "Changanassery Custom Carpentry & Furniture Restoring",
+    "en": "Changanassery Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_967",
+    "name": "Changanassery Weatherproof Wall Painting & Damp Proofing",
+    "en": "Changanassery Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_968",
+    "name": "Changanassery Civil Masonry & Concrete Repair",
+    "en": "Changanassery Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_969",
+    "name": "Changanassery Truss Roofing & Structural Steel Fabrication",
+    "en": "Changanassery Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_970",
+    "name": "Changanassery On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Changanassery On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_971",
+    "name": "Changanassery Professional Driver & Taxi Ride Hire",
+    "en": "Changanassery Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_972",
+    "name": "Changanassery Home Deep Cleaning & Waste Management",
+    "en": "Changanassery Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_973",
+    "name": "Changanassery Coconut Tree & Farm Care Service",
+    "en": "Changanassery Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_974",
+    "name": "Changanassery Catering & Traditional Feast Cooking",
+    "en": "Changanassery Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_975",
+    "name": "Changanassery Wedding Photography & Drone Cinematography",
+    "en": "Changanassery Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_976",
+    "name": "Changanassery Stage Sound System & Light Decoration",
+    "en": "Changanassery Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_977",
+    "name": "Changanassery Home Nursing & Elderly Patient Attendant",
+    "en": "Changanassery Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_978",
+    "name": "Changanassery Academic Home Tuition & Skill Training",
+    "en": "Changanassery Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_979",
+    "name": "Changanassery CCTV Security Camera & Automation Setup",
+    "en": "Changanassery CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_980",
+    "name": "Changanassery Designer Tailoring & Stitching Service",
+    "en": "Changanassery Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_981",
+    "name": "Changanassery Bridal Beauty Makeup & Personal Care",
+    "en": "Changanassery Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_982",
+    "name": "Changanassery Solar Rooftop & Inverter Power System",
+    "en": "Changanassery Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_983",
+    "name": "Changanassery TV, Computer & Home Appliance Repair",
+    "en": "Changanassery TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_984",
+    "name": "Changanassery Open Well Digging & Mud Deep Cleaning",
+    "en": "Changanassery Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_985",
+    "name": "Changanassery Interlock Paver Block & Driveway Laying",
+    "en": "Changanassery Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_986",
+    "name": "Changanassery Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Changanassery Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_987",
+    "name": "Changanassery Aluminium Glass Sliding & Cabin Partition",
+    "en": "Changanassery Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_988",
+    "name": "Changanassery Household Packing & Moving Shifting Assist",
+    "en": "Changanassery Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_989",
+    "name": "Changanassery Gas Stove & Commercial Burner Repair",
+    "en": "Changanassery Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_990",
+    "name": "Changanassery Anti-Termite & Mosquito Pest Extermination",
+    "en": "Changanassery Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Changanassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_991",
+    "name": "Thiruvalla Electrician & Power Maintenance",
+    "en": "Thiruvalla Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_992",
+    "name": "Thiruvalla Emergency Plumbing & Water Solution",
+    "en": "Thiruvalla Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_993",
+    "name": "Thiruvalla AC Installation & Cool Care Service",
+    "en": "Thiruvalla AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_994",
+    "name": "Thiruvalla Custom Carpentry & Furniture Restoring",
+    "en": "Thiruvalla Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_995",
+    "name": "Thiruvalla Weatherproof Wall Painting & Damp Proofing",
+    "en": "Thiruvalla Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_996",
+    "name": "Thiruvalla Civil Masonry & Concrete Repair",
+    "en": "Thiruvalla Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_997",
+    "name": "Thiruvalla Truss Roofing & Structural Steel Fabrication",
+    "en": "Thiruvalla Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_998",
+    "name": "Thiruvalla On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Thiruvalla On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_999",
+    "name": "Thiruvalla Professional Driver & Taxi Ride Hire",
+    "en": "Thiruvalla Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1000",
+    "name": "Thiruvalla Home Deep Cleaning & Waste Management",
+    "en": "Thiruvalla Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1001",
+    "name": "Thiruvalla Coconut Tree & Farm Care Service",
+    "en": "Thiruvalla Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1002",
+    "name": "Thiruvalla Catering & Traditional Feast Cooking",
+    "en": "Thiruvalla Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1003",
+    "name": "Thiruvalla Wedding Photography & Drone Cinematography",
+    "en": "Thiruvalla Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1004",
+    "name": "Thiruvalla Stage Sound System & Light Decoration",
+    "en": "Thiruvalla Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1005",
+    "name": "Thiruvalla Home Nursing & Elderly Patient Attendant",
+    "en": "Thiruvalla Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1006",
+    "name": "Thiruvalla Academic Home Tuition & Skill Training",
+    "en": "Thiruvalla Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1007",
+    "name": "Thiruvalla CCTV Security Camera & Automation Setup",
+    "en": "Thiruvalla CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1008",
+    "name": "Thiruvalla Designer Tailoring & Stitching Service",
+    "en": "Thiruvalla Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1009",
+    "name": "Thiruvalla Bridal Beauty Makeup & Personal Care",
+    "en": "Thiruvalla Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1010",
+    "name": "Thiruvalla Solar Rooftop & Inverter Power System",
+    "en": "Thiruvalla Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1011",
+    "name": "Thiruvalla TV, Computer & Home Appliance Repair",
+    "en": "Thiruvalla TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1012",
+    "name": "Thiruvalla Open Well Digging & Mud Deep Cleaning",
+    "en": "Thiruvalla Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1013",
+    "name": "Thiruvalla Interlock Paver Block & Driveway Laying",
+    "en": "Thiruvalla Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1014",
+    "name": "Thiruvalla Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Thiruvalla Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1015",
+    "name": "Thiruvalla Aluminium Glass Sliding & Cabin Partition",
+    "en": "Thiruvalla Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1016",
+    "name": "Thiruvalla Household Packing & Moving Shifting Assist",
+    "en": "Thiruvalla Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1017",
+    "name": "Thiruvalla Gas Stove & Commercial Burner Repair",
+    "en": "Thiruvalla Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1018",
+    "name": "Thiruvalla Anti-Termite & Mosquito Pest Extermination",
+    "en": "Thiruvalla Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Thiruvalla Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1019",
+    "name": "Perumbavoor Electrician & Power Maintenance",
+    "en": "Perumbavoor Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1020",
+    "name": "Perumbavoor Emergency Plumbing & Water Solution",
+    "en": "Perumbavoor Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1021",
+    "name": "Perumbavoor AC Installation & Cool Care Service",
+    "en": "Perumbavoor AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1022",
+    "name": "Perumbavoor Custom Carpentry & Furniture Restoring",
+    "en": "Perumbavoor Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1023",
+    "name": "Perumbavoor Weatherproof Wall Painting & Damp Proofing",
+    "en": "Perumbavoor Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1024",
+    "name": "Perumbavoor Civil Masonry & Concrete Repair",
+    "en": "Perumbavoor Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1025",
+    "name": "Perumbavoor Truss Roofing & Structural Steel Fabrication",
+    "en": "Perumbavoor Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1026",
+    "name": "Perumbavoor On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Perumbavoor On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1027",
+    "name": "Perumbavoor Professional Driver & Taxi Ride Hire",
+    "en": "Perumbavoor Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1028",
+    "name": "Perumbavoor Home Deep Cleaning & Waste Management",
+    "en": "Perumbavoor Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1029",
+    "name": "Perumbavoor Coconut Tree & Farm Care Service",
+    "en": "Perumbavoor Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1030",
+    "name": "Perumbavoor Catering & Traditional Feast Cooking",
+    "en": "Perumbavoor Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1031",
+    "name": "Perumbavoor Wedding Photography & Drone Cinematography",
+    "en": "Perumbavoor Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1032",
+    "name": "Perumbavoor Stage Sound System & Light Decoration",
+    "en": "Perumbavoor Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1033",
+    "name": "Perumbavoor Home Nursing & Elderly Patient Attendant",
+    "en": "Perumbavoor Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1034",
+    "name": "Perumbavoor Academic Home Tuition & Skill Training",
+    "en": "Perumbavoor Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1035",
+    "name": "Perumbavoor CCTV Security Camera & Automation Setup",
+    "en": "Perumbavoor CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1036",
+    "name": "Perumbavoor Designer Tailoring & Stitching Service",
+    "en": "Perumbavoor Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1037",
+    "name": "Perumbavoor Bridal Beauty Makeup & Personal Care",
+    "en": "Perumbavoor Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1038",
+    "name": "Perumbavoor Solar Rooftop & Inverter Power System",
+    "en": "Perumbavoor Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1039",
+    "name": "Perumbavoor TV, Computer & Home Appliance Repair",
+    "en": "Perumbavoor TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1040",
+    "name": "Perumbavoor Open Well Digging & Mud Deep Cleaning",
+    "en": "Perumbavoor Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1041",
+    "name": "Perumbavoor Interlock Paver Block & Driveway Laying",
+    "en": "Perumbavoor Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1042",
+    "name": "Perumbavoor Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Perumbavoor Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1043",
+    "name": "Perumbavoor Aluminium Glass Sliding & Cabin Partition",
+    "en": "Perumbavoor Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1044",
+    "name": "Perumbavoor Household Packing & Moving Shifting Assist",
+    "en": "Perumbavoor Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1045",
+    "name": "Perumbavoor Gas Stove & Commercial Burner Repair",
+    "en": "Perumbavoor Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1046",
+    "name": "Perumbavoor Anti-Termite & Mosquito Pest Extermination",
+    "en": "Perumbavoor Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Perumbavoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1047",
+    "name": "Angamaly Electrician & Power Maintenance",
+    "en": "Angamaly Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1048",
+    "name": "Angamaly Emergency Plumbing & Water Solution",
+    "en": "Angamaly Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1049",
+    "name": "Angamaly AC Installation & Cool Care Service",
+    "en": "Angamaly AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1050",
+    "name": "Angamaly Custom Carpentry & Furniture Restoring",
+    "en": "Angamaly Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1051",
+    "name": "Angamaly Weatherproof Wall Painting & Damp Proofing",
+    "en": "Angamaly Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1052",
+    "name": "Angamaly Civil Masonry & Concrete Repair",
+    "en": "Angamaly Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1053",
+    "name": "Angamaly Truss Roofing & Structural Steel Fabrication",
+    "en": "Angamaly Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1054",
+    "name": "Angamaly On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Angamaly On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1055",
+    "name": "Angamaly Professional Driver & Taxi Ride Hire",
+    "en": "Angamaly Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1056",
+    "name": "Angamaly Home Deep Cleaning & Waste Management",
+    "en": "Angamaly Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1057",
+    "name": "Angamaly Coconut Tree & Farm Care Service",
+    "en": "Angamaly Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1058",
+    "name": "Angamaly Catering & Traditional Feast Cooking",
+    "en": "Angamaly Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1059",
+    "name": "Angamaly Wedding Photography & Drone Cinematography",
+    "en": "Angamaly Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1060",
+    "name": "Angamaly Stage Sound System & Light Decoration",
+    "en": "Angamaly Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1061",
+    "name": "Angamaly Home Nursing & Elderly Patient Attendant",
+    "en": "Angamaly Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1062",
+    "name": "Angamaly Academic Home Tuition & Skill Training",
+    "en": "Angamaly Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1063",
+    "name": "Angamaly CCTV Security Camera & Automation Setup",
+    "en": "Angamaly CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1064",
+    "name": "Angamaly Designer Tailoring & Stitching Service",
+    "en": "Angamaly Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1065",
+    "name": "Angamaly Bridal Beauty Makeup & Personal Care",
+    "en": "Angamaly Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1066",
+    "name": "Angamaly Solar Rooftop & Inverter Power System",
+    "en": "Angamaly Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1067",
+    "name": "Angamaly TV, Computer & Home Appliance Repair",
+    "en": "Angamaly TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1068",
+    "name": "Angamaly Open Well Digging & Mud Deep Cleaning",
+    "en": "Angamaly Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1069",
+    "name": "Angamaly Interlock Paver Block & Driveway Laying",
+    "en": "Angamaly Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1070",
+    "name": "Angamaly Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Angamaly Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1071",
+    "name": "Angamaly Aluminium Glass Sliding & Cabin Partition",
+    "en": "Angamaly Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1072",
+    "name": "Angamaly Household Packing & Moving Shifting Assist",
+    "en": "Angamaly Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1073",
+    "name": "Angamaly Gas Stove & Commercial Burner Repair",
+    "en": "Angamaly Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1074",
+    "name": "Angamaly Anti-Termite & Mosquito Pest Extermination",
+    "en": "Angamaly Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Angamaly Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1075",
+    "name": "Muvattupuzha Electrician & Power Maintenance",
+    "en": "Muvattupuzha Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1076",
+    "name": "Muvattupuzha Emergency Plumbing & Water Solution",
+    "en": "Muvattupuzha Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1077",
+    "name": "Muvattupuzha AC Installation & Cool Care Service",
+    "en": "Muvattupuzha AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1078",
+    "name": "Muvattupuzha Custom Carpentry & Furniture Restoring",
+    "en": "Muvattupuzha Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1079",
+    "name": "Muvattupuzha Weatherproof Wall Painting & Damp Proofing",
+    "en": "Muvattupuzha Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1080",
+    "name": "Muvattupuzha Civil Masonry & Concrete Repair",
+    "en": "Muvattupuzha Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1081",
+    "name": "Muvattupuzha Truss Roofing & Structural Steel Fabrication",
+    "en": "Muvattupuzha Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1082",
+    "name": "Muvattupuzha On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Muvattupuzha On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1083",
+    "name": "Muvattupuzha Professional Driver & Taxi Ride Hire",
+    "en": "Muvattupuzha Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1084",
+    "name": "Muvattupuzha Home Deep Cleaning & Waste Management",
+    "en": "Muvattupuzha Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1085",
+    "name": "Muvattupuzha Coconut Tree & Farm Care Service",
+    "en": "Muvattupuzha Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1086",
+    "name": "Muvattupuzha Catering & Traditional Feast Cooking",
+    "en": "Muvattupuzha Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1087",
+    "name": "Muvattupuzha Wedding Photography & Drone Cinematography",
+    "en": "Muvattupuzha Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1088",
+    "name": "Muvattupuzha Stage Sound System & Light Decoration",
+    "en": "Muvattupuzha Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1089",
+    "name": "Muvattupuzha Home Nursing & Elderly Patient Attendant",
+    "en": "Muvattupuzha Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1090",
+    "name": "Muvattupuzha Academic Home Tuition & Skill Training",
+    "en": "Muvattupuzha Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1091",
+    "name": "Muvattupuzha CCTV Security Camera & Automation Setup",
+    "en": "Muvattupuzha CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1092",
+    "name": "Muvattupuzha Designer Tailoring & Stitching Service",
+    "en": "Muvattupuzha Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1093",
+    "name": "Muvattupuzha Bridal Beauty Makeup & Personal Care",
+    "en": "Muvattupuzha Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1094",
+    "name": "Muvattupuzha Solar Rooftop & Inverter Power System",
+    "en": "Muvattupuzha Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1095",
+    "name": "Muvattupuzha TV, Computer & Home Appliance Repair",
+    "en": "Muvattupuzha TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1096",
+    "name": "Muvattupuzha Open Well Digging & Mud Deep Cleaning",
+    "en": "Muvattupuzha Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1097",
+    "name": "Muvattupuzha Interlock Paver Block & Driveway Laying",
+    "en": "Muvattupuzha Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1098",
+    "name": "Muvattupuzha Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Muvattupuzha Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1099",
+    "name": "Muvattupuzha Aluminium Glass Sliding & Cabin Partition",
+    "en": "Muvattupuzha Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1100",
+    "name": "Muvattupuzha Household Packing & Moving Shifting Assist",
+    "en": "Muvattupuzha Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1101",
+    "name": "Muvattupuzha Gas Stove & Commercial Burner Repair",
+    "en": "Muvattupuzha Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1102",
+    "name": "Muvattupuzha Anti-Termite & Mosquito Pest Extermination",
+    "en": "Muvattupuzha Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Muvattupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1103",
+    "name": "Kothamangalam Electrician & Power Maintenance",
+    "en": "Kothamangalam Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1104",
+    "name": "Kothamangalam Emergency Plumbing & Water Solution",
+    "en": "Kothamangalam Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1105",
+    "name": "Kothamangalam AC Installation & Cool Care Service",
+    "en": "Kothamangalam AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1106",
+    "name": "Kothamangalam Custom Carpentry & Furniture Restoring",
+    "en": "Kothamangalam Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1107",
+    "name": "Kothamangalam Weatherproof Wall Painting & Damp Proofing",
+    "en": "Kothamangalam Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1108",
+    "name": "Kothamangalam Civil Masonry & Concrete Repair",
+    "en": "Kothamangalam Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1109",
+    "name": "Kothamangalam Truss Roofing & Structural Steel Fabrication",
+    "en": "Kothamangalam Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1110",
+    "name": "Kothamangalam On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Kothamangalam On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1111",
+    "name": "Kothamangalam Professional Driver & Taxi Ride Hire",
+    "en": "Kothamangalam Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1112",
+    "name": "Kothamangalam Home Deep Cleaning & Waste Management",
+    "en": "Kothamangalam Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1113",
+    "name": "Kothamangalam Coconut Tree & Farm Care Service",
+    "en": "Kothamangalam Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1114",
+    "name": "Kothamangalam Catering & Traditional Feast Cooking",
+    "en": "Kothamangalam Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1115",
+    "name": "Kothamangalam Wedding Photography & Drone Cinematography",
+    "en": "Kothamangalam Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1116",
+    "name": "Kothamangalam Stage Sound System & Light Decoration",
+    "en": "Kothamangalam Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1117",
+    "name": "Kothamangalam Home Nursing & Elderly Patient Attendant",
+    "en": "Kothamangalam Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1118",
+    "name": "Kothamangalam Academic Home Tuition & Skill Training",
+    "en": "Kothamangalam Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1119",
+    "name": "Kothamangalam CCTV Security Camera & Automation Setup",
+    "en": "Kothamangalam CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1120",
+    "name": "Kothamangalam Designer Tailoring & Stitching Service",
+    "en": "Kothamangalam Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1121",
+    "name": "Kothamangalam Bridal Beauty Makeup & Personal Care",
+    "en": "Kothamangalam Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1122",
+    "name": "Kothamangalam Solar Rooftop & Inverter Power System",
+    "en": "Kothamangalam Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1123",
+    "name": "Kothamangalam TV, Computer & Home Appliance Repair",
+    "en": "Kothamangalam TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1124",
+    "name": "Kothamangalam Open Well Digging & Mud Deep Cleaning",
+    "en": "Kothamangalam Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1125",
+    "name": "Kothamangalam Interlock Paver Block & Driveway Laying",
+    "en": "Kothamangalam Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1126",
+    "name": "Kothamangalam Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Kothamangalam Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1127",
+    "name": "Kothamangalam Aluminium Glass Sliding & Cabin Partition",
+    "en": "Kothamangalam Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1128",
+    "name": "Kothamangalam Household Packing & Moving Shifting Assist",
+    "en": "Kothamangalam Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1129",
+    "name": "Kothamangalam Gas Stove & Commercial Burner Repair",
+    "en": "Kothamangalam Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1130",
+    "name": "Kothamangalam Anti-Termite & Mosquito Pest Extermination",
+    "en": "Kothamangalam Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Kothamangalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1131",
+    "name": "Aluva Electrician & Power Maintenance",
+    "en": "Aluva Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1132",
+    "name": "Aluva Emergency Plumbing & Water Solution",
+    "en": "Aluva Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1133",
+    "name": "Aluva AC Installation & Cool Care Service",
+    "en": "Aluva AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1134",
+    "name": "Aluva Custom Carpentry & Furniture Restoring",
+    "en": "Aluva Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1135",
+    "name": "Aluva Weatherproof Wall Painting & Damp Proofing",
+    "en": "Aluva Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1136",
+    "name": "Aluva Civil Masonry & Concrete Repair",
+    "en": "Aluva Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1137",
+    "name": "Aluva Truss Roofing & Structural Steel Fabrication",
+    "en": "Aluva Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1138",
+    "name": "Aluva On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Aluva On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1139",
+    "name": "Aluva Professional Driver & Taxi Ride Hire",
+    "en": "Aluva Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1140",
+    "name": "Aluva Home Deep Cleaning & Waste Management",
+    "en": "Aluva Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1141",
+    "name": "Aluva Coconut Tree & Farm Care Service",
+    "en": "Aluva Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1142",
+    "name": "Aluva Catering & Traditional Feast Cooking",
+    "en": "Aluva Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1143",
+    "name": "Aluva Wedding Photography & Drone Cinematography",
+    "en": "Aluva Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1144",
+    "name": "Aluva Stage Sound System & Light Decoration",
+    "en": "Aluva Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1145",
+    "name": "Aluva Home Nursing & Elderly Patient Attendant",
+    "en": "Aluva Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1146",
+    "name": "Aluva Academic Home Tuition & Skill Training",
+    "en": "Aluva Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1147",
+    "name": "Aluva CCTV Security Camera & Automation Setup",
+    "en": "Aluva CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1148",
+    "name": "Aluva Designer Tailoring & Stitching Service",
+    "en": "Aluva Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1149",
+    "name": "Aluva Bridal Beauty Makeup & Personal Care",
+    "en": "Aluva Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1150",
+    "name": "Aluva Solar Rooftop & Inverter Power System",
+    "en": "Aluva Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1151",
+    "name": "Aluva TV, Computer & Home Appliance Repair",
+    "en": "Aluva TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1152",
+    "name": "Aluva Open Well Digging & Mud Deep Cleaning",
+    "en": "Aluva Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1153",
+    "name": "Aluva Interlock Paver Block & Driveway Laying",
+    "en": "Aluva Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1154",
+    "name": "Aluva Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Aluva Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1155",
+    "name": "Aluva Aluminium Glass Sliding & Cabin Partition",
+    "en": "Aluva Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1156",
+    "name": "Aluva Household Packing & Moving Shifting Assist",
+    "en": "Aluva Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1157",
+    "name": "Aluva Gas Stove & Commercial Burner Repair",
+    "en": "Aluva Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1158",
+    "name": "Aluva Anti-Termite & Mosquito Pest Extermination",
+    "en": "Aluva Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Aluva Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1159",
+    "name": "Tripunithura Electrician & Power Maintenance",
+    "en": "Tripunithura Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1160",
+    "name": "Tripunithura Emergency Plumbing & Water Solution",
+    "en": "Tripunithura Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1161",
+    "name": "Tripunithura AC Installation & Cool Care Service",
+    "en": "Tripunithura AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1162",
+    "name": "Tripunithura Custom Carpentry & Furniture Restoring",
+    "en": "Tripunithura Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1163",
+    "name": "Tripunithura Weatherproof Wall Painting & Damp Proofing",
+    "en": "Tripunithura Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1164",
+    "name": "Tripunithura Civil Masonry & Concrete Repair",
+    "en": "Tripunithura Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1165",
+    "name": "Tripunithura Truss Roofing & Structural Steel Fabrication",
+    "en": "Tripunithura Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1166",
+    "name": "Tripunithura On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Tripunithura On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1167",
+    "name": "Tripunithura Professional Driver & Taxi Ride Hire",
+    "en": "Tripunithura Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1168",
+    "name": "Tripunithura Home Deep Cleaning & Waste Management",
+    "en": "Tripunithura Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1169",
+    "name": "Tripunithura Coconut Tree & Farm Care Service",
+    "en": "Tripunithura Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1170",
+    "name": "Tripunithura Catering & Traditional Feast Cooking",
+    "en": "Tripunithura Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1171",
+    "name": "Tripunithura Wedding Photography & Drone Cinematography",
+    "en": "Tripunithura Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1172",
+    "name": "Tripunithura Stage Sound System & Light Decoration",
+    "en": "Tripunithura Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1173",
+    "name": "Tripunithura Home Nursing & Elderly Patient Attendant",
+    "en": "Tripunithura Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1174",
+    "name": "Tripunithura Academic Home Tuition & Skill Training",
+    "en": "Tripunithura Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1175",
+    "name": "Tripunithura CCTV Security Camera & Automation Setup",
+    "en": "Tripunithura CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1176",
+    "name": "Tripunithura Designer Tailoring & Stitching Service",
+    "en": "Tripunithura Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1177",
+    "name": "Tripunithura Bridal Beauty Makeup & Personal Care",
+    "en": "Tripunithura Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1178",
+    "name": "Tripunithura Solar Rooftop & Inverter Power System",
+    "en": "Tripunithura Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1179",
+    "name": "Tripunithura TV, Computer & Home Appliance Repair",
+    "en": "Tripunithura TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1180",
+    "name": "Tripunithura Open Well Digging & Mud Deep Cleaning",
+    "en": "Tripunithura Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1181",
+    "name": "Tripunithura Interlock Paver Block & Driveway Laying",
+    "en": "Tripunithura Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1182",
+    "name": "Tripunithura Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Tripunithura Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1183",
+    "name": "Tripunithura Aluminium Glass Sliding & Cabin Partition",
+    "en": "Tripunithura Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1184",
+    "name": "Tripunithura Household Packing & Moving Shifting Assist",
+    "en": "Tripunithura Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1185",
+    "name": "Tripunithura Gas Stove & Commercial Burner Repair",
+    "en": "Tripunithura Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1186",
+    "name": "Tripunithura Anti-Termite & Mosquito Pest Extermination",
+    "en": "Tripunithura Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Tripunithura Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1187",
+    "name": "Cherthala Electrician & Power Maintenance",
+    "en": "Cherthala Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1188",
+    "name": "Cherthala Emergency Plumbing & Water Solution",
+    "en": "Cherthala Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1189",
+    "name": "Cherthala AC Installation & Cool Care Service",
+    "en": "Cherthala AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1190",
+    "name": "Cherthala Custom Carpentry & Furniture Restoring",
+    "en": "Cherthala Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1191",
+    "name": "Cherthala Weatherproof Wall Painting & Damp Proofing",
+    "en": "Cherthala Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1192",
+    "name": "Cherthala Civil Masonry & Concrete Repair",
+    "en": "Cherthala Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1193",
+    "name": "Cherthala Truss Roofing & Structural Steel Fabrication",
+    "en": "Cherthala Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1194",
+    "name": "Cherthala On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Cherthala On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1195",
+    "name": "Cherthala Professional Driver & Taxi Ride Hire",
+    "en": "Cherthala Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1196",
+    "name": "Cherthala Home Deep Cleaning & Waste Management",
+    "en": "Cherthala Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1197",
+    "name": "Cherthala Coconut Tree & Farm Care Service",
+    "en": "Cherthala Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1198",
+    "name": "Cherthala Catering & Traditional Feast Cooking",
+    "en": "Cherthala Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1199",
+    "name": "Cherthala Wedding Photography & Drone Cinematography",
+    "en": "Cherthala Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1200",
+    "name": "Cherthala Stage Sound System & Light Decoration",
+    "en": "Cherthala Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1201",
+    "name": "Cherthala Home Nursing & Elderly Patient Attendant",
+    "en": "Cherthala Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1202",
+    "name": "Cherthala Academic Home Tuition & Skill Training",
+    "en": "Cherthala Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1203",
+    "name": "Cherthala CCTV Security Camera & Automation Setup",
+    "en": "Cherthala CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1204",
+    "name": "Cherthala Designer Tailoring & Stitching Service",
+    "en": "Cherthala Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1205",
+    "name": "Cherthala Bridal Beauty Makeup & Personal Care",
+    "en": "Cherthala Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1206",
+    "name": "Cherthala Solar Rooftop & Inverter Power System",
+    "en": "Cherthala Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1207",
+    "name": "Cherthala TV, Computer & Home Appliance Repair",
+    "en": "Cherthala TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1208",
+    "name": "Cherthala Open Well Digging & Mud Deep Cleaning",
+    "en": "Cherthala Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1209",
+    "name": "Cherthala Interlock Paver Block & Driveway Laying",
+    "en": "Cherthala Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1210",
+    "name": "Cherthala Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Cherthala Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1211",
+    "name": "Cherthala Aluminium Glass Sliding & Cabin Partition",
+    "en": "Cherthala Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1212",
+    "name": "Cherthala Household Packing & Moving Shifting Assist",
+    "en": "Cherthala Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1213",
+    "name": "Cherthala Gas Stove & Commercial Burner Repair",
+    "en": "Cherthala Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1214",
+    "name": "Cherthala Anti-Termite & Mosquito Pest Extermination",
+    "en": "Cherthala Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Cherthala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1215",
+    "name": "Kayamkulam Electrician & Power Maintenance",
+    "en": "Kayamkulam Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1216",
+    "name": "Kayamkulam Emergency Plumbing & Water Solution",
+    "en": "Kayamkulam Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1217",
+    "name": "Kayamkulam AC Installation & Cool Care Service",
+    "en": "Kayamkulam AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1218",
+    "name": "Kayamkulam Custom Carpentry & Furniture Restoring",
+    "en": "Kayamkulam Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1219",
+    "name": "Kayamkulam Weatherproof Wall Painting & Damp Proofing",
+    "en": "Kayamkulam Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1220",
+    "name": "Kayamkulam Civil Masonry & Concrete Repair",
+    "en": "Kayamkulam Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1221",
+    "name": "Kayamkulam Truss Roofing & Structural Steel Fabrication",
+    "en": "Kayamkulam Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1222",
+    "name": "Kayamkulam On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Kayamkulam On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1223",
+    "name": "Kayamkulam Professional Driver & Taxi Ride Hire",
+    "en": "Kayamkulam Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1224",
+    "name": "Kayamkulam Home Deep Cleaning & Waste Management",
+    "en": "Kayamkulam Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1225",
+    "name": "Kayamkulam Coconut Tree & Farm Care Service",
+    "en": "Kayamkulam Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1226",
+    "name": "Kayamkulam Catering & Traditional Feast Cooking",
+    "en": "Kayamkulam Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1227",
+    "name": "Kayamkulam Wedding Photography & Drone Cinematography",
+    "en": "Kayamkulam Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1228",
+    "name": "Kayamkulam Stage Sound System & Light Decoration",
+    "en": "Kayamkulam Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1229",
+    "name": "Kayamkulam Home Nursing & Elderly Patient Attendant",
+    "en": "Kayamkulam Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1230",
+    "name": "Kayamkulam Academic Home Tuition & Skill Training",
+    "en": "Kayamkulam Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1231",
+    "name": "Kayamkulam CCTV Security Camera & Automation Setup",
+    "en": "Kayamkulam CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1232",
+    "name": "Kayamkulam Designer Tailoring & Stitching Service",
+    "en": "Kayamkulam Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1233",
+    "name": "Kayamkulam Bridal Beauty Makeup & Personal Care",
+    "en": "Kayamkulam Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1234",
+    "name": "Kayamkulam Solar Rooftop & Inverter Power System",
+    "en": "Kayamkulam Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1235",
+    "name": "Kayamkulam TV, Computer & Home Appliance Repair",
+    "en": "Kayamkulam TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1236",
+    "name": "Kayamkulam Open Well Digging & Mud Deep Cleaning",
+    "en": "Kayamkulam Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1237",
+    "name": "Kayamkulam Interlock Paver Block & Driveway Laying",
+    "en": "Kayamkulam Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1238",
+    "name": "Kayamkulam Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Kayamkulam Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1239",
+    "name": "Kayamkulam Aluminium Glass Sliding & Cabin Partition",
+    "en": "Kayamkulam Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1240",
+    "name": "Kayamkulam Household Packing & Moving Shifting Assist",
+    "en": "Kayamkulam Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1241",
+    "name": "Kayamkulam Gas Stove & Commercial Burner Repair",
+    "en": "Kayamkulam Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1242",
+    "name": "Kayamkulam Anti-Termite & Mosquito Pest Extermination",
+    "en": "Kayamkulam Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Kayamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1243",
+    "name": "Adoor Electrician & Power Maintenance",
+    "en": "Adoor Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1244",
+    "name": "Adoor Emergency Plumbing & Water Solution",
+    "en": "Adoor Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1245",
+    "name": "Adoor AC Installation & Cool Care Service",
+    "en": "Adoor AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1246",
+    "name": "Adoor Custom Carpentry & Furniture Restoring",
+    "en": "Adoor Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1247",
+    "name": "Adoor Weatherproof Wall Painting & Damp Proofing",
+    "en": "Adoor Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1248",
+    "name": "Adoor Civil Masonry & Concrete Repair",
+    "en": "Adoor Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1249",
+    "name": "Adoor Truss Roofing & Structural Steel Fabrication",
+    "en": "Adoor Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1250",
+    "name": "Adoor On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Adoor On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1251",
+    "name": "Adoor Professional Driver & Taxi Ride Hire",
+    "en": "Adoor Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1252",
+    "name": "Adoor Home Deep Cleaning & Waste Management",
+    "en": "Adoor Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1253",
+    "name": "Adoor Coconut Tree & Farm Care Service",
+    "en": "Adoor Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1254",
+    "name": "Adoor Catering & Traditional Feast Cooking",
+    "en": "Adoor Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1255",
+    "name": "Adoor Wedding Photography & Drone Cinematography",
+    "en": "Adoor Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1256",
+    "name": "Adoor Stage Sound System & Light Decoration",
+    "en": "Adoor Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1257",
+    "name": "Adoor Home Nursing & Elderly Patient Attendant",
+    "en": "Adoor Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1258",
+    "name": "Adoor Academic Home Tuition & Skill Training",
+    "en": "Adoor Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1259",
+    "name": "Adoor CCTV Security Camera & Automation Setup",
+    "en": "Adoor CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1260",
+    "name": "Adoor Designer Tailoring & Stitching Service",
+    "en": "Adoor Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1261",
+    "name": "Adoor Bridal Beauty Makeup & Personal Care",
+    "en": "Adoor Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1262",
+    "name": "Adoor Solar Rooftop & Inverter Power System",
+    "en": "Adoor Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1263",
+    "name": "Adoor TV, Computer & Home Appliance Repair",
+    "en": "Adoor TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1264",
+    "name": "Adoor Open Well Digging & Mud Deep Cleaning",
+    "en": "Adoor Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1265",
+    "name": "Adoor Interlock Paver Block & Driveway Laying",
+    "en": "Adoor Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1266",
+    "name": "Adoor Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Adoor Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1267",
+    "name": "Adoor Aluminium Glass Sliding & Cabin Partition",
+    "en": "Adoor Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1268",
+    "name": "Adoor Household Packing & Moving Shifting Assist",
+    "en": "Adoor Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1269",
+    "name": "Adoor Gas Stove & Commercial Burner Repair",
+    "en": "Adoor Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1270",
+    "name": "Adoor Anti-Termite & Mosquito Pest Extermination",
+    "en": "Adoor Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Adoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1271",
+    "name": "Attingal Electrician & Power Maintenance",
+    "en": "Attingal Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1272",
+    "name": "Attingal Emergency Plumbing & Water Solution",
+    "en": "Attingal Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1273",
+    "name": "Attingal AC Installation & Cool Care Service",
+    "en": "Attingal AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1274",
+    "name": "Attingal Custom Carpentry & Furniture Restoring",
+    "en": "Attingal Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1275",
+    "name": "Attingal Weatherproof Wall Painting & Damp Proofing",
+    "en": "Attingal Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1276",
+    "name": "Attingal Civil Masonry & Concrete Repair",
+    "en": "Attingal Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1277",
+    "name": "Attingal Truss Roofing & Structural Steel Fabrication",
+    "en": "Attingal Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1278",
+    "name": "Attingal On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Attingal On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1279",
+    "name": "Attingal Professional Driver & Taxi Ride Hire",
+    "en": "Attingal Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1280",
+    "name": "Attingal Home Deep Cleaning & Waste Management",
+    "en": "Attingal Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1281",
+    "name": "Attingal Coconut Tree & Farm Care Service",
+    "en": "Attingal Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1282",
+    "name": "Attingal Catering & Traditional Feast Cooking",
+    "en": "Attingal Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1283",
+    "name": "Attingal Wedding Photography & Drone Cinematography",
+    "en": "Attingal Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1284",
+    "name": "Attingal Stage Sound System & Light Decoration",
+    "en": "Attingal Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1285",
+    "name": "Attingal Home Nursing & Elderly Patient Attendant",
+    "en": "Attingal Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1286",
+    "name": "Attingal Academic Home Tuition & Skill Training",
+    "en": "Attingal Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1287",
+    "name": "Attingal CCTV Security Camera & Automation Setup",
+    "en": "Attingal CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1288",
+    "name": "Attingal Designer Tailoring & Stitching Service",
+    "en": "Attingal Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1289",
+    "name": "Attingal Bridal Beauty Makeup & Personal Care",
+    "en": "Attingal Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1290",
+    "name": "Attingal Solar Rooftop & Inverter Power System",
+    "en": "Attingal Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1291",
+    "name": "Attingal TV, Computer & Home Appliance Repair",
+    "en": "Attingal TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1292",
+    "name": "Attingal Open Well Digging & Mud Deep Cleaning",
+    "en": "Attingal Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1293",
+    "name": "Attingal Interlock Paver Block & Driveway Laying",
+    "en": "Attingal Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1294",
+    "name": "Attingal Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Attingal Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1295",
+    "name": "Attingal Aluminium Glass Sliding & Cabin Partition",
+    "en": "Attingal Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1296",
+    "name": "Attingal Household Packing & Moving Shifting Assist",
+    "en": "Attingal Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1297",
+    "name": "Attingal Gas Stove & Commercial Burner Repair",
+    "en": "Attingal Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1298",
+    "name": "Attingal Anti-Termite & Mosquito Pest Extermination",
+    "en": "Attingal Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Attingal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1299",
+    "name": "Nedumangad Electrician & Power Maintenance",
+    "en": "Nedumangad Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1300",
+    "name": "Nedumangad Emergency Plumbing & Water Solution",
+    "en": "Nedumangad Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1301",
+    "name": "Nedumangad AC Installation & Cool Care Service",
+    "en": "Nedumangad AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1302",
+    "name": "Nedumangad Custom Carpentry & Furniture Restoring",
+    "en": "Nedumangad Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1303",
+    "name": "Nedumangad Weatherproof Wall Painting & Damp Proofing",
+    "en": "Nedumangad Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1304",
+    "name": "Nedumangad Civil Masonry & Concrete Repair",
+    "en": "Nedumangad Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1305",
+    "name": "Nedumangad Truss Roofing & Structural Steel Fabrication",
+    "en": "Nedumangad Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1306",
+    "name": "Nedumangad On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Nedumangad On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1307",
+    "name": "Nedumangad Professional Driver & Taxi Ride Hire",
+    "en": "Nedumangad Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1308",
+    "name": "Nedumangad Home Deep Cleaning & Waste Management",
+    "en": "Nedumangad Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1309",
+    "name": "Nedumangad Coconut Tree & Farm Care Service",
+    "en": "Nedumangad Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1310",
+    "name": "Nedumangad Catering & Traditional Feast Cooking",
+    "en": "Nedumangad Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1311",
+    "name": "Nedumangad Wedding Photography & Drone Cinematography",
+    "en": "Nedumangad Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1312",
+    "name": "Nedumangad Stage Sound System & Light Decoration",
+    "en": "Nedumangad Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1313",
+    "name": "Nedumangad Home Nursing & Elderly Patient Attendant",
+    "en": "Nedumangad Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1314",
+    "name": "Nedumangad Academic Home Tuition & Skill Training",
+    "en": "Nedumangad Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1315",
+    "name": "Nedumangad CCTV Security Camera & Automation Setup",
+    "en": "Nedumangad CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1316",
+    "name": "Nedumangad Designer Tailoring & Stitching Service",
+    "en": "Nedumangad Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1317",
+    "name": "Nedumangad Bridal Beauty Makeup & Personal Care",
+    "en": "Nedumangad Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1318",
+    "name": "Nedumangad Solar Rooftop & Inverter Power System",
+    "en": "Nedumangad Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1319",
+    "name": "Nedumangad TV, Computer & Home Appliance Repair",
+    "en": "Nedumangad TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1320",
+    "name": "Nedumangad Open Well Digging & Mud Deep Cleaning",
+    "en": "Nedumangad Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1321",
+    "name": "Nedumangad Interlock Paver Block & Driveway Laying",
+    "en": "Nedumangad Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1322",
+    "name": "Nedumangad Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Nedumangad Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1323",
+    "name": "Nedumangad Aluminium Glass Sliding & Cabin Partition",
+    "en": "Nedumangad Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1324",
+    "name": "Nedumangad Household Packing & Moving Shifting Assist",
+    "en": "Nedumangad Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1325",
+    "name": "Nedumangad Gas Stove & Commercial Burner Repair",
+    "en": "Nedumangad Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1326",
+    "name": "Nedumangad Anti-Termite & Mosquito Pest Extermination",
+    "en": "Nedumangad Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Nedumangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1327",
+    "name": "Punalur Electrician & Power Maintenance",
+    "en": "Punalur Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1328",
+    "name": "Punalur Emergency Plumbing & Water Solution",
+    "en": "Punalur Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1329",
+    "name": "Punalur AC Installation & Cool Care Service",
+    "en": "Punalur AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1330",
+    "name": "Punalur Custom Carpentry & Furniture Restoring",
+    "en": "Punalur Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1331",
+    "name": "Punalur Weatherproof Wall Painting & Damp Proofing",
+    "en": "Punalur Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1332",
+    "name": "Punalur Civil Masonry & Concrete Repair",
+    "en": "Punalur Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1333",
+    "name": "Punalur Truss Roofing & Structural Steel Fabrication",
+    "en": "Punalur Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1334",
+    "name": "Punalur On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Punalur On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1335",
+    "name": "Punalur Professional Driver & Taxi Ride Hire",
+    "en": "Punalur Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1336",
+    "name": "Punalur Home Deep Cleaning & Waste Management",
+    "en": "Punalur Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1337",
+    "name": "Punalur Coconut Tree & Farm Care Service",
+    "en": "Punalur Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1338",
+    "name": "Punalur Catering & Traditional Feast Cooking",
+    "en": "Punalur Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1339",
+    "name": "Punalur Wedding Photography & Drone Cinematography",
+    "en": "Punalur Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1340",
+    "name": "Punalur Stage Sound System & Light Decoration",
+    "en": "Punalur Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1341",
+    "name": "Punalur Home Nursing & Elderly Patient Attendant",
+    "en": "Punalur Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1342",
+    "name": "Punalur Academic Home Tuition & Skill Training",
+    "en": "Punalur Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1343",
+    "name": "Punalur CCTV Security Camera & Automation Setup",
+    "en": "Punalur CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1344",
+    "name": "Punalur Designer Tailoring & Stitching Service",
+    "en": "Punalur Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1345",
+    "name": "Punalur Bridal Beauty Makeup & Personal Care",
+    "en": "Punalur Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1346",
+    "name": "Punalur Solar Rooftop & Inverter Power System",
+    "en": "Punalur Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1347",
+    "name": "Punalur TV, Computer & Home Appliance Repair",
+    "en": "Punalur TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1348",
+    "name": "Punalur Open Well Digging & Mud Deep Cleaning",
+    "en": "Punalur Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1349",
+    "name": "Punalur Interlock Paver Block & Driveway Laying",
+    "en": "Punalur Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1350",
+    "name": "Punalur Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Punalur Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1351",
+    "name": "Punalur Aluminium Glass Sliding & Cabin Partition",
+    "en": "Punalur Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1352",
+    "name": "Punalur Household Packing & Moving Shifting Assist",
+    "en": "Punalur Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1353",
+    "name": "Punalur Gas Stove & Commercial Burner Repair",
+    "en": "Punalur Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1354",
+    "name": "Punalur Anti-Termite & Mosquito Pest Extermination",
+    "en": "Punalur Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Punalur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1355",
+    "name": "Kottarakkara Electrician & Power Maintenance",
+    "en": "Kottarakkara Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1356",
+    "name": "Kottarakkara Emergency Plumbing & Water Solution",
+    "en": "Kottarakkara Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1357",
+    "name": "Kottarakkara AC Installation & Cool Care Service",
+    "en": "Kottarakkara AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1358",
+    "name": "Kottarakkara Custom Carpentry & Furniture Restoring",
+    "en": "Kottarakkara Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1359",
+    "name": "Kottarakkara Weatherproof Wall Painting & Damp Proofing",
+    "en": "Kottarakkara Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1360",
+    "name": "Kottarakkara Civil Masonry & Concrete Repair",
+    "en": "Kottarakkara Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1361",
+    "name": "Kottarakkara Truss Roofing & Structural Steel Fabrication",
+    "en": "Kottarakkara Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1362",
+    "name": "Kottarakkara On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Kottarakkara On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1363",
+    "name": "Kottarakkara Professional Driver & Taxi Ride Hire",
+    "en": "Kottarakkara Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1364",
+    "name": "Kottarakkara Home Deep Cleaning & Waste Management",
+    "en": "Kottarakkara Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1365",
+    "name": "Kottarakkara Coconut Tree & Farm Care Service",
+    "en": "Kottarakkara Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1366",
+    "name": "Kottarakkara Catering & Traditional Feast Cooking",
+    "en": "Kottarakkara Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1367",
+    "name": "Kottarakkara Wedding Photography & Drone Cinematography",
+    "en": "Kottarakkara Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1368",
+    "name": "Kottarakkara Stage Sound System & Light Decoration",
+    "en": "Kottarakkara Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1369",
+    "name": "Kottarakkara Home Nursing & Elderly Patient Attendant",
+    "en": "Kottarakkara Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1370",
+    "name": "Kottarakkara Academic Home Tuition & Skill Training",
+    "en": "Kottarakkara Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1371",
+    "name": "Kottarakkara CCTV Security Camera & Automation Setup",
+    "en": "Kottarakkara CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1372",
+    "name": "Kottarakkara Designer Tailoring & Stitching Service",
+    "en": "Kottarakkara Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1373",
+    "name": "Kottarakkara Bridal Beauty Makeup & Personal Care",
+    "en": "Kottarakkara Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1374",
+    "name": "Kottarakkara Solar Rooftop & Inverter Power System",
+    "en": "Kottarakkara Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1375",
+    "name": "Kottarakkara TV, Computer & Home Appliance Repair",
+    "en": "Kottarakkara TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1376",
+    "name": "Kottarakkara Open Well Digging & Mud Deep Cleaning",
+    "en": "Kottarakkara Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1377",
+    "name": "Kottarakkara Interlock Paver Block & Driveway Laying",
+    "en": "Kottarakkara Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1378",
+    "name": "Kottarakkara Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Kottarakkara Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1379",
+    "name": "Kottarakkara Aluminium Glass Sliding & Cabin Partition",
+    "en": "Kottarakkara Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1380",
+    "name": "Kottarakkara Household Packing & Moving Shifting Assist",
+    "en": "Kottarakkara Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1381",
+    "name": "Kottarakkara Gas Stove & Commercial Burner Repair",
+    "en": "Kottarakkara Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1382",
+    "name": "Kottarakkara Anti-Termite & Mosquito Pest Extermination",
+    "en": "Kottarakkara Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Kottarakkara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1383",
+    "name": "Chalakudy Electrician & Power Maintenance",
+    "en": "Chalakudy Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1384",
+    "name": "Chalakudy Emergency Plumbing & Water Solution",
+    "en": "Chalakudy Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1385",
+    "name": "Chalakudy AC Installation & Cool Care Service",
+    "en": "Chalakudy AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1386",
+    "name": "Chalakudy Custom Carpentry & Furniture Restoring",
+    "en": "Chalakudy Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1387",
+    "name": "Chalakudy Weatherproof Wall Painting & Damp Proofing",
+    "en": "Chalakudy Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1388",
+    "name": "Chalakudy Civil Masonry & Concrete Repair",
+    "en": "Chalakudy Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1389",
+    "name": "Chalakudy Truss Roofing & Structural Steel Fabrication",
+    "en": "Chalakudy Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1390",
+    "name": "Chalakudy On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Chalakudy On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1391",
+    "name": "Chalakudy Professional Driver & Taxi Ride Hire",
+    "en": "Chalakudy Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1392",
+    "name": "Chalakudy Home Deep Cleaning & Waste Management",
+    "en": "Chalakudy Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1393",
+    "name": "Chalakudy Coconut Tree & Farm Care Service",
+    "en": "Chalakudy Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1394",
+    "name": "Chalakudy Catering & Traditional Feast Cooking",
+    "en": "Chalakudy Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1395",
+    "name": "Chalakudy Wedding Photography & Drone Cinematography",
+    "en": "Chalakudy Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1396",
+    "name": "Chalakudy Stage Sound System & Light Decoration",
+    "en": "Chalakudy Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1397",
+    "name": "Chalakudy Home Nursing & Elderly Patient Attendant",
+    "en": "Chalakudy Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1398",
+    "name": "Chalakudy Academic Home Tuition & Skill Training",
+    "en": "Chalakudy Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1399",
+    "name": "Chalakudy CCTV Security Camera & Automation Setup",
+    "en": "Chalakudy CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1400",
+    "name": "Chalakudy Designer Tailoring & Stitching Service",
+    "en": "Chalakudy Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1401",
+    "name": "Chalakudy Bridal Beauty Makeup & Personal Care",
+    "en": "Chalakudy Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1402",
+    "name": "Chalakudy Solar Rooftop & Inverter Power System",
+    "en": "Chalakudy Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1403",
+    "name": "Chalakudy TV, Computer & Home Appliance Repair",
+    "en": "Chalakudy TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1404",
+    "name": "Chalakudy Open Well Digging & Mud Deep Cleaning",
+    "en": "Chalakudy Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1405",
+    "name": "Chalakudy Interlock Paver Block & Driveway Laying",
+    "en": "Chalakudy Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1406",
+    "name": "Chalakudy Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Chalakudy Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1407",
+    "name": "Chalakudy Aluminium Glass Sliding & Cabin Partition",
+    "en": "Chalakudy Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1408",
+    "name": "Chalakudy Household Packing & Moving Shifting Assist",
+    "en": "Chalakudy Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1409",
+    "name": "Chalakudy Gas Stove & Commercial Burner Repair",
+    "en": "Chalakudy Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1410",
+    "name": "Chalakudy Anti-Termite & Mosquito Pest Extermination",
+    "en": "Chalakudy Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Chalakudy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1411",
+    "name": "Kodungallur Electrician & Power Maintenance",
+    "en": "Kodungallur Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1412",
+    "name": "Kodungallur Emergency Plumbing & Water Solution",
+    "en": "Kodungallur Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1413",
+    "name": "Kodungallur AC Installation & Cool Care Service",
+    "en": "Kodungallur AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1414",
+    "name": "Kodungallur Custom Carpentry & Furniture Restoring",
+    "en": "Kodungallur Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1415",
+    "name": "Kodungallur Weatherproof Wall Painting & Damp Proofing",
+    "en": "Kodungallur Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1416",
+    "name": "Kodungallur Civil Masonry & Concrete Repair",
+    "en": "Kodungallur Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1417",
+    "name": "Kodungallur Truss Roofing & Structural Steel Fabrication",
+    "en": "Kodungallur Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1418",
+    "name": "Kodungallur On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Kodungallur On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1419",
+    "name": "Kodungallur Professional Driver & Taxi Ride Hire",
+    "en": "Kodungallur Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1420",
+    "name": "Kodungallur Home Deep Cleaning & Waste Management",
+    "en": "Kodungallur Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1421",
+    "name": "Kodungallur Coconut Tree & Farm Care Service",
+    "en": "Kodungallur Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1422",
+    "name": "Kodungallur Catering & Traditional Feast Cooking",
+    "en": "Kodungallur Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1423",
+    "name": "Kodungallur Wedding Photography & Drone Cinematography",
+    "en": "Kodungallur Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1424",
+    "name": "Kodungallur Stage Sound System & Light Decoration",
+    "en": "Kodungallur Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1425",
+    "name": "Kodungallur Home Nursing & Elderly Patient Attendant",
+    "en": "Kodungallur Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1426",
+    "name": "Kodungallur Academic Home Tuition & Skill Training",
+    "en": "Kodungallur Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1427",
+    "name": "Kodungallur CCTV Security Camera & Automation Setup",
+    "en": "Kodungallur CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1428",
+    "name": "Kodungallur Designer Tailoring & Stitching Service",
+    "en": "Kodungallur Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1429",
+    "name": "Kodungallur Bridal Beauty Makeup & Personal Care",
+    "en": "Kodungallur Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1430",
+    "name": "Kodungallur Solar Rooftop & Inverter Power System",
+    "en": "Kodungallur Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1431",
+    "name": "Kodungallur TV, Computer & Home Appliance Repair",
+    "en": "Kodungallur TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1432",
+    "name": "Kodungallur Open Well Digging & Mud Deep Cleaning",
+    "en": "Kodungallur Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1433",
+    "name": "Kodungallur Interlock Paver Block & Driveway Laying",
+    "en": "Kodungallur Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1434",
+    "name": "Kodungallur Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Kodungallur Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1435",
+    "name": "Kodungallur Aluminium Glass Sliding & Cabin Partition",
+    "en": "Kodungallur Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1436",
+    "name": "Kodungallur Household Packing & Moving Shifting Assist",
+    "en": "Kodungallur Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1437",
+    "name": "Kodungallur Gas Stove & Commercial Burner Repair",
+    "en": "Kodungallur Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1438",
+    "name": "Kodungallur Anti-Termite & Mosquito Pest Extermination",
+    "en": "Kodungallur Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Kodungallur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1439",
+    "name": "Irinjalakuda Electrician & Power Maintenance",
+    "en": "Irinjalakuda Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1440",
+    "name": "Irinjalakuda Emergency Plumbing & Water Solution",
+    "en": "Irinjalakuda Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1441",
+    "name": "Irinjalakuda AC Installation & Cool Care Service",
+    "en": "Irinjalakuda AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1442",
+    "name": "Irinjalakuda Custom Carpentry & Furniture Restoring",
+    "en": "Irinjalakuda Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1443",
+    "name": "Irinjalakuda Weatherproof Wall Painting & Damp Proofing",
+    "en": "Irinjalakuda Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1444",
+    "name": "Irinjalakuda Civil Masonry & Concrete Repair",
+    "en": "Irinjalakuda Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1445",
+    "name": "Irinjalakuda Truss Roofing & Structural Steel Fabrication",
+    "en": "Irinjalakuda Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1446",
+    "name": "Irinjalakuda On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Irinjalakuda On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1447",
+    "name": "Irinjalakuda Professional Driver & Taxi Ride Hire",
+    "en": "Irinjalakuda Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1448",
+    "name": "Irinjalakuda Home Deep Cleaning & Waste Management",
+    "en": "Irinjalakuda Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1449",
+    "name": "Irinjalakuda Coconut Tree & Farm Care Service",
+    "en": "Irinjalakuda Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1450",
+    "name": "Irinjalakuda Catering & Traditional Feast Cooking",
+    "en": "Irinjalakuda Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1451",
+    "name": "Irinjalakuda Wedding Photography & Drone Cinematography",
+    "en": "Irinjalakuda Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1452",
+    "name": "Irinjalakuda Stage Sound System & Light Decoration",
+    "en": "Irinjalakuda Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1453",
+    "name": "Irinjalakuda Home Nursing & Elderly Patient Attendant",
+    "en": "Irinjalakuda Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1454",
+    "name": "Irinjalakuda Academic Home Tuition & Skill Training",
+    "en": "Irinjalakuda Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1455",
+    "name": "Irinjalakuda CCTV Security Camera & Automation Setup",
+    "en": "Irinjalakuda CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1456",
+    "name": "Irinjalakuda Designer Tailoring & Stitching Service",
+    "en": "Irinjalakuda Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1457",
+    "name": "Irinjalakuda Bridal Beauty Makeup & Personal Care",
+    "en": "Irinjalakuda Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1458",
+    "name": "Irinjalakuda Solar Rooftop & Inverter Power System",
+    "en": "Irinjalakuda Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1459",
+    "name": "Irinjalakuda TV, Computer & Home Appliance Repair",
+    "en": "Irinjalakuda TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1460",
+    "name": "Irinjalakuda Open Well Digging & Mud Deep Cleaning",
+    "en": "Irinjalakuda Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1461",
+    "name": "Irinjalakuda Interlock Paver Block & Driveway Laying",
+    "en": "Irinjalakuda Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1462",
+    "name": "Irinjalakuda Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Irinjalakuda Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1463",
+    "name": "Irinjalakuda Aluminium Glass Sliding & Cabin Partition",
+    "en": "Irinjalakuda Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1464",
+    "name": "Irinjalakuda Household Packing & Moving Shifting Assist",
+    "en": "Irinjalakuda Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1465",
+    "name": "Irinjalakuda Gas Stove & Commercial Burner Repair",
+    "en": "Irinjalakuda Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1466",
+    "name": "Irinjalakuda Anti-Termite & Mosquito Pest Extermination",
+    "en": "Irinjalakuda Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Irinjalakuda Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1467",
+    "name": "Guruvayur Electrician & Power Maintenance",
+    "en": "Guruvayur Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1468",
+    "name": "Guruvayur Emergency Plumbing & Water Solution",
+    "en": "Guruvayur Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1469",
+    "name": "Guruvayur AC Installation & Cool Care Service",
+    "en": "Guruvayur AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1470",
+    "name": "Guruvayur Custom Carpentry & Furniture Restoring",
+    "en": "Guruvayur Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1471",
+    "name": "Guruvayur Weatherproof Wall Painting & Damp Proofing",
+    "en": "Guruvayur Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1472",
+    "name": "Guruvayur Civil Masonry & Concrete Repair",
+    "en": "Guruvayur Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1473",
+    "name": "Guruvayur Truss Roofing & Structural Steel Fabrication",
+    "en": "Guruvayur Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1474",
+    "name": "Guruvayur On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Guruvayur On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1475",
+    "name": "Guruvayur Professional Driver & Taxi Ride Hire",
+    "en": "Guruvayur Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1476",
+    "name": "Guruvayur Home Deep Cleaning & Waste Management",
+    "en": "Guruvayur Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1477",
+    "name": "Guruvayur Coconut Tree & Farm Care Service",
+    "en": "Guruvayur Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1478",
+    "name": "Guruvayur Catering & Traditional Feast Cooking",
+    "en": "Guruvayur Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1479",
+    "name": "Guruvayur Wedding Photography & Drone Cinematography",
+    "en": "Guruvayur Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1480",
+    "name": "Guruvayur Stage Sound System & Light Decoration",
+    "en": "Guruvayur Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1481",
+    "name": "Guruvayur Home Nursing & Elderly Patient Attendant",
+    "en": "Guruvayur Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1482",
+    "name": "Guruvayur Academic Home Tuition & Skill Training",
+    "en": "Guruvayur Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1483",
+    "name": "Guruvayur CCTV Security Camera & Automation Setup",
+    "en": "Guruvayur CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1484",
+    "name": "Guruvayur Designer Tailoring & Stitching Service",
+    "en": "Guruvayur Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1485",
+    "name": "Guruvayur Bridal Beauty Makeup & Personal Care",
+    "en": "Guruvayur Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1486",
+    "name": "Guruvayur Solar Rooftop & Inverter Power System",
+    "en": "Guruvayur Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1487",
+    "name": "Guruvayur TV, Computer & Home Appliance Repair",
+    "en": "Guruvayur TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1488",
+    "name": "Guruvayur Open Well Digging & Mud Deep Cleaning",
+    "en": "Guruvayur Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1489",
+    "name": "Guruvayur Interlock Paver Block & Driveway Laying",
+    "en": "Guruvayur Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1490",
+    "name": "Guruvayur Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Guruvayur Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1491",
+    "name": "Guruvayur Aluminium Glass Sliding & Cabin Partition",
+    "en": "Guruvayur Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1492",
+    "name": "Guruvayur Household Packing & Moving Shifting Assist",
+    "en": "Guruvayur Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1493",
+    "name": "Guruvayur Gas Stove & Commercial Burner Repair",
+    "en": "Guruvayur Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1494",
+    "name": "Guruvayur Anti-Termite & Mosquito Pest Extermination",
+    "en": "Guruvayur Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Guruvayur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1495",
+    "name": "Kunnamkulam Electrician & Power Maintenance",
+    "en": "Kunnamkulam Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1496",
+    "name": "Kunnamkulam Emergency Plumbing & Water Solution",
+    "en": "Kunnamkulam Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1497",
+    "name": "Kunnamkulam AC Installation & Cool Care Service",
+    "en": "Kunnamkulam AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1498",
+    "name": "Kunnamkulam Custom Carpentry & Furniture Restoring",
+    "en": "Kunnamkulam Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1499",
+    "name": "Kunnamkulam Weatherproof Wall Painting & Damp Proofing",
+    "en": "Kunnamkulam Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1500",
+    "name": "Kunnamkulam Civil Masonry & Concrete Repair",
+    "en": "Kunnamkulam Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1501",
+    "name": "Kunnamkulam Truss Roofing & Structural Steel Fabrication",
+    "en": "Kunnamkulam Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1502",
+    "name": "Kunnamkulam On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Kunnamkulam On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1503",
+    "name": "Kunnamkulam Professional Driver & Taxi Ride Hire",
+    "en": "Kunnamkulam Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1504",
+    "name": "Kunnamkulam Home Deep Cleaning & Waste Management",
+    "en": "Kunnamkulam Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1505",
+    "name": "Kunnamkulam Coconut Tree & Farm Care Service",
+    "en": "Kunnamkulam Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1506",
+    "name": "Kunnamkulam Catering & Traditional Feast Cooking",
+    "en": "Kunnamkulam Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1507",
+    "name": "Kunnamkulam Wedding Photography & Drone Cinematography",
+    "en": "Kunnamkulam Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1508",
+    "name": "Kunnamkulam Stage Sound System & Light Decoration",
+    "en": "Kunnamkulam Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1509",
+    "name": "Kunnamkulam Home Nursing & Elderly Patient Attendant",
+    "en": "Kunnamkulam Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1510",
+    "name": "Kunnamkulam Academic Home Tuition & Skill Training",
+    "en": "Kunnamkulam Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1511",
+    "name": "Kunnamkulam CCTV Security Camera & Automation Setup",
+    "en": "Kunnamkulam CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1512",
+    "name": "Kunnamkulam Designer Tailoring & Stitching Service",
+    "en": "Kunnamkulam Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1513",
+    "name": "Kunnamkulam Bridal Beauty Makeup & Personal Care",
+    "en": "Kunnamkulam Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1514",
+    "name": "Kunnamkulam Solar Rooftop & Inverter Power System",
+    "en": "Kunnamkulam Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1515",
+    "name": "Kunnamkulam TV, Computer & Home Appliance Repair",
+    "en": "Kunnamkulam TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1516",
+    "name": "Kunnamkulam Open Well Digging & Mud Deep Cleaning",
+    "en": "Kunnamkulam Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1517",
+    "name": "Kunnamkulam Interlock Paver Block & Driveway Laying",
+    "en": "Kunnamkulam Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1518",
+    "name": "Kunnamkulam Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Kunnamkulam Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1519",
+    "name": "Kunnamkulam Aluminium Glass Sliding & Cabin Partition",
+    "en": "Kunnamkulam Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1520",
+    "name": "Kunnamkulam Household Packing & Moving Shifting Assist",
+    "en": "Kunnamkulam Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1521",
+    "name": "Kunnamkulam Gas Stove & Commercial Burner Repair",
+    "en": "Kunnamkulam Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1522",
+    "name": "Kunnamkulam Anti-Termite & Mosquito Pest Extermination",
+    "en": "Kunnamkulam Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Kunnamkulam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1523",
+    "name": "Ottapalam Electrician & Power Maintenance",
+    "en": "Ottapalam Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1524",
+    "name": "Ottapalam Emergency Plumbing & Water Solution",
+    "en": "Ottapalam Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1525",
+    "name": "Ottapalam AC Installation & Cool Care Service",
+    "en": "Ottapalam AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1526",
+    "name": "Ottapalam Custom Carpentry & Furniture Restoring",
+    "en": "Ottapalam Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1527",
+    "name": "Ottapalam Weatherproof Wall Painting & Damp Proofing",
+    "en": "Ottapalam Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1528",
+    "name": "Ottapalam Civil Masonry & Concrete Repair",
+    "en": "Ottapalam Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1529",
+    "name": "Ottapalam Truss Roofing & Structural Steel Fabrication",
+    "en": "Ottapalam Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1530",
+    "name": "Ottapalam On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Ottapalam On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1531",
+    "name": "Ottapalam Professional Driver & Taxi Ride Hire",
+    "en": "Ottapalam Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1532",
+    "name": "Ottapalam Home Deep Cleaning & Waste Management",
+    "en": "Ottapalam Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1533",
+    "name": "Ottapalam Coconut Tree & Farm Care Service",
+    "en": "Ottapalam Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1534",
+    "name": "Ottapalam Catering & Traditional Feast Cooking",
+    "en": "Ottapalam Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1535",
+    "name": "Ottapalam Wedding Photography & Drone Cinematography",
+    "en": "Ottapalam Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1536",
+    "name": "Ottapalam Stage Sound System & Light Decoration",
+    "en": "Ottapalam Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1537",
+    "name": "Ottapalam Home Nursing & Elderly Patient Attendant",
+    "en": "Ottapalam Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1538",
+    "name": "Ottapalam Academic Home Tuition & Skill Training",
+    "en": "Ottapalam Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1539",
+    "name": "Ottapalam CCTV Security Camera & Automation Setup",
+    "en": "Ottapalam CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1540",
+    "name": "Ottapalam Designer Tailoring & Stitching Service",
+    "en": "Ottapalam Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1541",
+    "name": "Ottapalam Bridal Beauty Makeup & Personal Care",
+    "en": "Ottapalam Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1542",
+    "name": "Ottapalam Solar Rooftop & Inverter Power System",
+    "en": "Ottapalam Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1543",
+    "name": "Ottapalam TV, Computer & Home Appliance Repair",
+    "en": "Ottapalam TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1544",
+    "name": "Ottapalam Open Well Digging & Mud Deep Cleaning",
+    "en": "Ottapalam Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1545",
+    "name": "Ottapalam Interlock Paver Block & Driveway Laying",
+    "en": "Ottapalam Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1546",
+    "name": "Ottapalam Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Ottapalam Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1547",
+    "name": "Ottapalam Aluminium Glass Sliding & Cabin Partition",
+    "en": "Ottapalam Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1548",
+    "name": "Ottapalam Household Packing & Moving Shifting Assist",
+    "en": "Ottapalam Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1549",
+    "name": "Ottapalam Gas Stove & Commercial Burner Repair",
+    "en": "Ottapalam Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1550",
+    "name": "Ottapalam Anti-Termite & Mosquito Pest Extermination",
+    "en": "Ottapalam Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Ottapalam Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1551",
+    "name": "Manjeri Electrician & Power Maintenance",
+    "en": "Manjeri Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1552",
+    "name": "Manjeri Emergency Plumbing & Water Solution",
+    "en": "Manjeri Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1553",
+    "name": "Manjeri AC Installation & Cool Care Service",
+    "en": "Manjeri AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1554",
+    "name": "Manjeri Custom Carpentry & Furniture Restoring",
+    "en": "Manjeri Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1555",
+    "name": "Manjeri Weatherproof Wall Painting & Damp Proofing",
+    "en": "Manjeri Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1556",
+    "name": "Manjeri Civil Masonry & Concrete Repair",
+    "en": "Manjeri Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1557",
+    "name": "Manjeri Truss Roofing & Structural Steel Fabrication",
+    "en": "Manjeri Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1558",
+    "name": "Manjeri On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Manjeri On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1559",
+    "name": "Manjeri Professional Driver & Taxi Ride Hire",
+    "en": "Manjeri Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1560",
+    "name": "Manjeri Home Deep Cleaning & Waste Management",
+    "en": "Manjeri Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1561",
+    "name": "Manjeri Coconut Tree & Farm Care Service",
+    "en": "Manjeri Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1562",
+    "name": "Manjeri Catering & Traditional Feast Cooking",
+    "en": "Manjeri Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1563",
+    "name": "Manjeri Wedding Photography & Drone Cinematography",
+    "en": "Manjeri Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1564",
+    "name": "Manjeri Stage Sound System & Light Decoration",
+    "en": "Manjeri Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1565",
+    "name": "Manjeri Home Nursing & Elderly Patient Attendant",
+    "en": "Manjeri Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1566",
+    "name": "Manjeri Academic Home Tuition & Skill Training",
+    "en": "Manjeri Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1567",
+    "name": "Manjeri CCTV Security Camera & Automation Setup",
+    "en": "Manjeri CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1568",
+    "name": "Manjeri Designer Tailoring & Stitching Service",
+    "en": "Manjeri Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1569",
+    "name": "Manjeri Bridal Beauty Makeup & Personal Care",
+    "en": "Manjeri Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1570",
+    "name": "Manjeri Solar Rooftop & Inverter Power System",
+    "en": "Manjeri Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1571",
+    "name": "Manjeri TV, Computer & Home Appliance Repair",
+    "en": "Manjeri TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1572",
+    "name": "Manjeri Open Well Digging & Mud Deep Cleaning",
+    "en": "Manjeri Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1573",
+    "name": "Manjeri Interlock Paver Block & Driveway Laying",
+    "en": "Manjeri Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1574",
+    "name": "Manjeri Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Manjeri Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1575",
+    "name": "Manjeri Aluminium Glass Sliding & Cabin Partition",
+    "en": "Manjeri Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1576",
+    "name": "Manjeri Household Packing & Moving Shifting Assist",
+    "en": "Manjeri Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1577",
+    "name": "Manjeri Gas Stove & Commercial Burner Repair",
+    "en": "Manjeri Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1578",
+    "name": "Manjeri Anti-Termite & Mosquito Pest Extermination",
+    "en": "Manjeri Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Manjeri Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1579",
+    "name": "Tirur Electrician & Power Maintenance",
+    "en": "Tirur Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1580",
+    "name": "Tirur Emergency Plumbing & Water Solution",
+    "en": "Tirur Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1581",
+    "name": "Tirur AC Installation & Cool Care Service",
+    "en": "Tirur AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1582",
+    "name": "Tirur Custom Carpentry & Furniture Restoring",
+    "en": "Tirur Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1583",
+    "name": "Tirur Weatherproof Wall Painting & Damp Proofing",
+    "en": "Tirur Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1584",
+    "name": "Tirur Civil Masonry & Concrete Repair",
+    "en": "Tirur Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1585",
+    "name": "Tirur Truss Roofing & Structural Steel Fabrication",
+    "en": "Tirur Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1586",
+    "name": "Tirur On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Tirur On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1587",
+    "name": "Tirur Professional Driver & Taxi Ride Hire",
+    "en": "Tirur Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1588",
+    "name": "Tirur Home Deep Cleaning & Waste Management",
+    "en": "Tirur Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1589",
+    "name": "Tirur Coconut Tree & Farm Care Service",
+    "en": "Tirur Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1590",
+    "name": "Tirur Catering & Traditional Feast Cooking",
+    "en": "Tirur Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1591",
+    "name": "Tirur Wedding Photography & Drone Cinematography",
+    "en": "Tirur Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1592",
+    "name": "Tirur Stage Sound System & Light Decoration",
+    "en": "Tirur Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1593",
+    "name": "Tirur Home Nursing & Elderly Patient Attendant",
+    "en": "Tirur Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1594",
+    "name": "Tirur Academic Home Tuition & Skill Training",
+    "en": "Tirur Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1595",
+    "name": "Tirur CCTV Security Camera & Automation Setup",
+    "en": "Tirur CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1596",
+    "name": "Tirur Designer Tailoring & Stitching Service",
+    "en": "Tirur Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1597",
+    "name": "Tirur Bridal Beauty Makeup & Personal Care",
+    "en": "Tirur Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1598",
+    "name": "Tirur Solar Rooftop & Inverter Power System",
+    "en": "Tirur Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1599",
+    "name": "Tirur TV, Computer & Home Appliance Repair",
+    "en": "Tirur TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1600",
+    "name": "Tirur Open Well Digging & Mud Deep Cleaning",
+    "en": "Tirur Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1601",
+    "name": "Tirur Interlock Paver Block & Driveway Laying",
+    "en": "Tirur Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1602",
+    "name": "Tirur Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Tirur Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1603",
+    "name": "Tirur Aluminium Glass Sliding & Cabin Partition",
+    "en": "Tirur Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1604",
+    "name": "Tirur Household Packing & Moving Shifting Assist",
+    "en": "Tirur Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1605",
+    "name": "Tirur Gas Stove & Commercial Burner Repair",
+    "en": "Tirur Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1606",
+    "name": "Tirur Anti-Termite & Mosquito Pest Extermination",
+    "en": "Tirur Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Tirur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1607",
+    "name": "Perinthalmanna Electrician & Power Maintenance",
+    "en": "Perinthalmanna Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1608",
+    "name": "Perinthalmanna Emergency Plumbing & Water Solution",
+    "en": "Perinthalmanna Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1609",
+    "name": "Perinthalmanna AC Installation & Cool Care Service",
+    "en": "Perinthalmanna AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1610",
+    "name": "Perinthalmanna Custom Carpentry & Furniture Restoring",
+    "en": "Perinthalmanna Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1611",
+    "name": "Perinthalmanna Weatherproof Wall Painting & Damp Proofing",
+    "en": "Perinthalmanna Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1612",
+    "name": "Perinthalmanna Civil Masonry & Concrete Repair",
+    "en": "Perinthalmanna Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1613",
+    "name": "Perinthalmanna Truss Roofing & Structural Steel Fabrication",
+    "en": "Perinthalmanna Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1614",
+    "name": "Perinthalmanna On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Perinthalmanna On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1615",
+    "name": "Perinthalmanna Professional Driver & Taxi Ride Hire",
+    "en": "Perinthalmanna Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1616",
+    "name": "Perinthalmanna Home Deep Cleaning & Waste Management",
+    "en": "Perinthalmanna Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1617",
+    "name": "Perinthalmanna Coconut Tree & Farm Care Service",
+    "en": "Perinthalmanna Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1618",
+    "name": "Perinthalmanna Catering & Traditional Feast Cooking",
+    "en": "Perinthalmanna Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1619",
+    "name": "Perinthalmanna Wedding Photography & Drone Cinematography",
+    "en": "Perinthalmanna Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1620",
+    "name": "Perinthalmanna Stage Sound System & Light Decoration",
+    "en": "Perinthalmanna Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1621",
+    "name": "Perinthalmanna Home Nursing & Elderly Patient Attendant",
+    "en": "Perinthalmanna Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1622",
+    "name": "Perinthalmanna Academic Home Tuition & Skill Training",
+    "en": "Perinthalmanna Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1623",
+    "name": "Perinthalmanna CCTV Security Camera & Automation Setup",
+    "en": "Perinthalmanna CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1624",
+    "name": "Perinthalmanna Designer Tailoring & Stitching Service",
+    "en": "Perinthalmanna Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1625",
+    "name": "Perinthalmanna Bridal Beauty Makeup & Personal Care",
+    "en": "Perinthalmanna Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1626",
+    "name": "Perinthalmanna Solar Rooftop & Inverter Power System",
+    "en": "Perinthalmanna Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1627",
+    "name": "Perinthalmanna TV, Computer & Home Appliance Repair",
+    "en": "Perinthalmanna TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1628",
+    "name": "Perinthalmanna Open Well Digging & Mud Deep Cleaning",
+    "en": "Perinthalmanna Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1629",
+    "name": "Perinthalmanna Interlock Paver Block & Driveway Laying",
+    "en": "Perinthalmanna Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1630",
+    "name": "Perinthalmanna Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Perinthalmanna Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1631",
+    "name": "Perinthalmanna Aluminium Glass Sliding & Cabin Partition",
+    "en": "Perinthalmanna Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1632",
+    "name": "Perinthalmanna Household Packing & Moving Shifting Assist",
+    "en": "Perinthalmanna Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1633",
+    "name": "Perinthalmanna Gas Stove & Commercial Burner Repair",
+    "en": "Perinthalmanna Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1634",
+    "name": "Perinthalmanna Anti-Termite & Mosquito Pest Extermination",
+    "en": "Perinthalmanna Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Perinthalmanna Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1635",
+    "name": "Kottakkal Electrician & Power Maintenance",
+    "en": "Kottakkal Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1636",
+    "name": "Kottakkal Emergency Plumbing & Water Solution",
+    "en": "Kottakkal Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1637",
+    "name": "Kottakkal AC Installation & Cool Care Service",
+    "en": "Kottakkal AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1638",
+    "name": "Kottakkal Custom Carpentry & Furniture Restoring",
+    "en": "Kottakkal Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1639",
+    "name": "Kottakkal Weatherproof Wall Painting & Damp Proofing",
+    "en": "Kottakkal Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1640",
+    "name": "Kottakkal Civil Masonry & Concrete Repair",
+    "en": "Kottakkal Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1641",
+    "name": "Kottakkal Truss Roofing & Structural Steel Fabrication",
+    "en": "Kottakkal Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1642",
+    "name": "Kottakkal On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Kottakkal On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1643",
+    "name": "Kottakkal Professional Driver & Taxi Ride Hire",
+    "en": "Kottakkal Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1644",
+    "name": "Kottakkal Home Deep Cleaning & Waste Management",
+    "en": "Kottakkal Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1645",
+    "name": "Kottakkal Coconut Tree & Farm Care Service",
+    "en": "Kottakkal Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1646",
+    "name": "Kottakkal Catering & Traditional Feast Cooking",
+    "en": "Kottakkal Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1647",
+    "name": "Kottakkal Wedding Photography & Drone Cinematography",
+    "en": "Kottakkal Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1648",
+    "name": "Kottakkal Stage Sound System & Light Decoration",
+    "en": "Kottakkal Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1649",
+    "name": "Kottakkal Home Nursing & Elderly Patient Attendant",
+    "en": "Kottakkal Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1650",
+    "name": "Kottakkal Academic Home Tuition & Skill Training",
+    "en": "Kottakkal Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1651",
+    "name": "Kottakkal CCTV Security Camera & Automation Setup",
+    "en": "Kottakkal CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1652",
+    "name": "Kottakkal Designer Tailoring & Stitching Service",
+    "en": "Kottakkal Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1653",
+    "name": "Kottakkal Bridal Beauty Makeup & Personal Care",
+    "en": "Kottakkal Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1654",
+    "name": "Kottakkal Solar Rooftop & Inverter Power System",
+    "en": "Kottakkal Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1655",
+    "name": "Kottakkal TV, Computer & Home Appliance Repair",
+    "en": "Kottakkal TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1656",
+    "name": "Kottakkal Open Well Digging & Mud Deep Cleaning",
+    "en": "Kottakkal Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1657",
+    "name": "Kottakkal Interlock Paver Block & Driveway Laying",
+    "en": "Kottakkal Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1658",
+    "name": "Kottakkal Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Kottakkal Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1659",
+    "name": "Kottakkal Aluminium Glass Sliding & Cabin Partition",
+    "en": "Kottakkal Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1660",
+    "name": "Kottakkal Household Packing & Moving Shifting Assist",
+    "en": "Kottakkal Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1661",
+    "name": "Kottakkal Gas Stove & Commercial Burner Repair",
+    "en": "Kottakkal Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1662",
+    "name": "Kottakkal Anti-Termite & Mosquito Pest Extermination",
+    "en": "Kottakkal Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Kottakkal Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1663",
+    "name": "Nilambur Electrician & Power Maintenance",
+    "en": "Nilambur Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1664",
+    "name": "Nilambur Emergency Plumbing & Water Solution",
+    "en": "Nilambur Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1665",
+    "name": "Nilambur AC Installation & Cool Care Service",
+    "en": "Nilambur AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1666",
+    "name": "Nilambur Custom Carpentry & Furniture Restoring",
+    "en": "Nilambur Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1667",
+    "name": "Nilambur Weatherproof Wall Painting & Damp Proofing",
+    "en": "Nilambur Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1668",
+    "name": "Nilambur Civil Masonry & Concrete Repair",
+    "en": "Nilambur Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1669",
+    "name": "Nilambur Truss Roofing & Structural Steel Fabrication",
+    "en": "Nilambur Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1670",
+    "name": "Nilambur On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Nilambur On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1671",
+    "name": "Nilambur Professional Driver & Taxi Ride Hire",
+    "en": "Nilambur Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1672",
+    "name": "Nilambur Home Deep Cleaning & Waste Management",
+    "en": "Nilambur Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1673",
+    "name": "Nilambur Coconut Tree & Farm Care Service",
+    "en": "Nilambur Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1674",
+    "name": "Nilambur Catering & Traditional Feast Cooking",
+    "en": "Nilambur Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1675",
+    "name": "Nilambur Wedding Photography & Drone Cinematography",
+    "en": "Nilambur Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1676",
+    "name": "Nilambur Stage Sound System & Light Decoration",
+    "en": "Nilambur Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1677",
+    "name": "Nilambur Home Nursing & Elderly Patient Attendant",
+    "en": "Nilambur Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1678",
+    "name": "Nilambur Academic Home Tuition & Skill Training",
+    "en": "Nilambur Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1679",
+    "name": "Nilambur CCTV Security Camera & Automation Setup",
+    "en": "Nilambur CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1680",
+    "name": "Nilambur Designer Tailoring & Stitching Service",
+    "en": "Nilambur Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1681",
+    "name": "Nilambur Bridal Beauty Makeup & Personal Care",
+    "en": "Nilambur Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1682",
+    "name": "Nilambur Solar Rooftop & Inverter Power System",
+    "en": "Nilambur Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1683",
+    "name": "Nilambur TV, Computer & Home Appliance Repair",
+    "en": "Nilambur TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1684",
+    "name": "Nilambur Open Well Digging & Mud Deep Cleaning",
+    "en": "Nilambur Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1685",
+    "name": "Nilambur Interlock Paver Block & Driveway Laying",
+    "en": "Nilambur Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1686",
+    "name": "Nilambur Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Nilambur Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1687",
+    "name": "Nilambur Aluminium Glass Sliding & Cabin Partition",
+    "en": "Nilambur Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1688",
+    "name": "Nilambur Household Packing & Moving Shifting Assist",
+    "en": "Nilambur Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1689",
+    "name": "Nilambur Gas Stove & Commercial Burner Repair",
+    "en": "Nilambur Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1690",
+    "name": "Nilambur Anti-Termite & Mosquito Pest Extermination",
+    "en": "Nilambur Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Nilambur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1691",
+    "name": "Vadakara Electrician & Power Maintenance",
+    "en": "Vadakara Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1692",
+    "name": "Vadakara Emergency Plumbing & Water Solution",
+    "en": "Vadakara Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1693",
+    "name": "Vadakara AC Installation & Cool Care Service",
+    "en": "Vadakara AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1694",
+    "name": "Vadakara Custom Carpentry & Furniture Restoring",
+    "en": "Vadakara Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1695",
+    "name": "Vadakara Weatherproof Wall Painting & Damp Proofing",
+    "en": "Vadakara Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1696",
+    "name": "Vadakara Civil Masonry & Concrete Repair",
+    "en": "Vadakara Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1697",
+    "name": "Vadakara Truss Roofing & Structural Steel Fabrication",
+    "en": "Vadakara Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1698",
+    "name": "Vadakara On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Vadakara On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1699",
+    "name": "Vadakara Professional Driver & Taxi Ride Hire",
+    "en": "Vadakara Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1700",
+    "name": "Vadakara Home Deep Cleaning & Waste Management",
+    "en": "Vadakara Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1701",
+    "name": "Vadakara Coconut Tree & Farm Care Service",
+    "en": "Vadakara Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1702",
+    "name": "Vadakara Catering & Traditional Feast Cooking",
+    "en": "Vadakara Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1703",
+    "name": "Vadakara Wedding Photography & Drone Cinematography",
+    "en": "Vadakara Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1704",
+    "name": "Vadakara Stage Sound System & Light Decoration",
+    "en": "Vadakara Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1705",
+    "name": "Vadakara Home Nursing & Elderly Patient Attendant",
+    "en": "Vadakara Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1706",
+    "name": "Vadakara Academic Home Tuition & Skill Training",
+    "en": "Vadakara Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1707",
+    "name": "Vadakara CCTV Security Camera & Automation Setup",
+    "en": "Vadakara CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1708",
+    "name": "Vadakara Designer Tailoring & Stitching Service",
+    "en": "Vadakara Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1709",
+    "name": "Vadakara Bridal Beauty Makeup & Personal Care",
+    "en": "Vadakara Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1710",
+    "name": "Vadakara Solar Rooftop & Inverter Power System",
+    "en": "Vadakara Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1711",
+    "name": "Vadakara TV, Computer & Home Appliance Repair",
+    "en": "Vadakara TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1712",
+    "name": "Vadakara Open Well Digging & Mud Deep Cleaning",
+    "en": "Vadakara Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1713",
+    "name": "Vadakara Interlock Paver Block & Driveway Laying",
+    "en": "Vadakara Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1714",
+    "name": "Vadakara Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Vadakara Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1715",
+    "name": "Vadakara Aluminium Glass Sliding & Cabin Partition",
+    "en": "Vadakara Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1716",
+    "name": "Vadakara Household Packing & Moving Shifting Assist",
+    "en": "Vadakara Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1717",
+    "name": "Vadakara Gas Stove & Commercial Burner Repair",
+    "en": "Vadakara Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1718",
+    "name": "Vadakara Anti-Termite & Mosquito Pest Extermination",
+    "en": "Vadakara Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Vadakara Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1719",
+    "name": "Koyilandy Electrician & Power Maintenance",
+    "en": "Koyilandy Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1720",
+    "name": "Koyilandy Emergency Plumbing & Water Solution",
+    "en": "Koyilandy Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1721",
+    "name": "Koyilandy AC Installation & Cool Care Service",
+    "en": "Koyilandy AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1722",
+    "name": "Koyilandy Custom Carpentry & Furniture Restoring",
+    "en": "Koyilandy Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1723",
+    "name": "Koyilandy Weatherproof Wall Painting & Damp Proofing",
+    "en": "Koyilandy Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1724",
+    "name": "Koyilandy Civil Masonry & Concrete Repair",
+    "en": "Koyilandy Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1725",
+    "name": "Koyilandy Truss Roofing & Structural Steel Fabrication",
+    "en": "Koyilandy Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1726",
+    "name": "Koyilandy On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Koyilandy On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1727",
+    "name": "Koyilandy Professional Driver & Taxi Ride Hire",
+    "en": "Koyilandy Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1728",
+    "name": "Koyilandy Home Deep Cleaning & Waste Management",
+    "en": "Koyilandy Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1729",
+    "name": "Koyilandy Coconut Tree & Farm Care Service",
+    "en": "Koyilandy Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1730",
+    "name": "Koyilandy Catering & Traditional Feast Cooking",
+    "en": "Koyilandy Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1731",
+    "name": "Koyilandy Wedding Photography & Drone Cinematography",
+    "en": "Koyilandy Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1732",
+    "name": "Koyilandy Stage Sound System & Light Decoration",
+    "en": "Koyilandy Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1733",
+    "name": "Koyilandy Home Nursing & Elderly Patient Attendant",
+    "en": "Koyilandy Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1734",
+    "name": "Koyilandy Academic Home Tuition & Skill Training",
+    "en": "Koyilandy Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1735",
+    "name": "Koyilandy CCTV Security Camera & Automation Setup",
+    "en": "Koyilandy CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1736",
+    "name": "Koyilandy Designer Tailoring & Stitching Service",
+    "en": "Koyilandy Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1737",
+    "name": "Koyilandy Bridal Beauty Makeup & Personal Care",
+    "en": "Koyilandy Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1738",
+    "name": "Koyilandy Solar Rooftop & Inverter Power System",
+    "en": "Koyilandy Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1739",
+    "name": "Koyilandy TV, Computer & Home Appliance Repair",
+    "en": "Koyilandy TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1740",
+    "name": "Koyilandy Open Well Digging & Mud Deep Cleaning",
+    "en": "Koyilandy Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1741",
+    "name": "Koyilandy Interlock Paver Block & Driveway Laying",
+    "en": "Koyilandy Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1742",
+    "name": "Koyilandy Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Koyilandy Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1743",
+    "name": "Koyilandy Aluminium Glass Sliding & Cabin Partition",
+    "en": "Koyilandy Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1744",
+    "name": "Koyilandy Household Packing & Moving Shifting Assist",
+    "en": "Koyilandy Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1745",
+    "name": "Koyilandy Gas Stove & Commercial Burner Repair",
+    "en": "Koyilandy Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1746",
+    "name": "Koyilandy Anti-Termite & Mosquito Pest Extermination",
+    "en": "Koyilandy Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Koyilandy Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1747",
+    "name": "Payyanur Electrician & Power Maintenance",
+    "en": "Payyanur Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1748",
+    "name": "Payyanur Emergency Plumbing & Water Solution",
+    "en": "Payyanur Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1749",
+    "name": "Payyanur AC Installation & Cool Care Service",
+    "en": "Payyanur AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1750",
+    "name": "Payyanur Custom Carpentry & Furniture Restoring",
+    "en": "Payyanur Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1751",
+    "name": "Payyanur Weatherproof Wall Painting & Damp Proofing",
+    "en": "Payyanur Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1752",
+    "name": "Payyanur Civil Masonry & Concrete Repair",
+    "en": "Payyanur Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1753",
+    "name": "Payyanur Truss Roofing & Structural Steel Fabrication",
+    "en": "Payyanur Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1754",
+    "name": "Payyanur On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Payyanur On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1755",
+    "name": "Payyanur Professional Driver & Taxi Ride Hire",
+    "en": "Payyanur Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1756",
+    "name": "Payyanur Home Deep Cleaning & Waste Management",
+    "en": "Payyanur Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1757",
+    "name": "Payyanur Coconut Tree & Farm Care Service",
+    "en": "Payyanur Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1758",
+    "name": "Payyanur Catering & Traditional Feast Cooking",
+    "en": "Payyanur Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1759",
+    "name": "Payyanur Wedding Photography & Drone Cinematography",
+    "en": "Payyanur Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1760",
+    "name": "Payyanur Stage Sound System & Light Decoration",
+    "en": "Payyanur Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1761",
+    "name": "Payyanur Home Nursing & Elderly Patient Attendant",
+    "en": "Payyanur Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1762",
+    "name": "Payyanur Academic Home Tuition & Skill Training",
+    "en": "Payyanur Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1763",
+    "name": "Payyanur CCTV Security Camera & Automation Setup",
+    "en": "Payyanur CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1764",
+    "name": "Payyanur Designer Tailoring & Stitching Service",
+    "en": "Payyanur Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1765",
+    "name": "Payyanur Bridal Beauty Makeup & Personal Care",
+    "en": "Payyanur Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1766",
+    "name": "Payyanur Solar Rooftop & Inverter Power System",
+    "en": "Payyanur Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1767",
+    "name": "Payyanur TV, Computer & Home Appliance Repair",
+    "en": "Payyanur TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1768",
+    "name": "Payyanur Open Well Digging & Mud Deep Cleaning",
+    "en": "Payyanur Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1769",
+    "name": "Payyanur Interlock Paver Block & Driveway Laying",
+    "en": "Payyanur Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1770",
+    "name": "Payyanur Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Payyanur Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1771",
+    "name": "Payyanur Aluminium Glass Sliding & Cabin Partition",
+    "en": "Payyanur Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1772",
+    "name": "Payyanur Household Packing & Moving Shifting Assist",
+    "en": "Payyanur Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1773",
+    "name": "Payyanur Gas Stove & Commercial Burner Repair",
+    "en": "Payyanur Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1774",
+    "name": "Payyanur Anti-Termite & Mosquito Pest Extermination",
+    "en": "Payyanur Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Payyanur Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1775",
+    "name": "Taliparamba Electrician & Power Maintenance",
+    "en": "Taliparamba Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1776",
+    "name": "Taliparamba Emergency Plumbing & Water Solution",
+    "en": "Taliparamba Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1777",
+    "name": "Taliparamba AC Installation & Cool Care Service",
+    "en": "Taliparamba AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1778",
+    "name": "Taliparamba Custom Carpentry & Furniture Restoring",
+    "en": "Taliparamba Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1779",
+    "name": "Taliparamba Weatherproof Wall Painting & Damp Proofing",
+    "en": "Taliparamba Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1780",
+    "name": "Taliparamba Civil Masonry & Concrete Repair",
+    "en": "Taliparamba Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1781",
+    "name": "Taliparamba Truss Roofing & Structural Steel Fabrication",
+    "en": "Taliparamba Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1782",
+    "name": "Taliparamba On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Taliparamba On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1783",
+    "name": "Taliparamba Professional Driver & Taxi Ride Hire",
+    "en": "Taliparamba Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1784",
+    "name": "Taliparamba Home Deep Cleaning & Waste Management",
+    "en": "Taliparamba Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1785",
+    "name": "Taliparamba Coconut Tree & Farm Care Service",
+    "en": "Taliparamba Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1786",
+    "name": "Taliparamba Catering & Traditional Feast Cooking",
+    "en": "Taliparamba Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1787",
+    "name": "Taliparamba Wedding Photography & Drone Cinematography",
+    "en": "Taliparamba Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1788",
+    "name": "Taliparamba Stage Sound System & Light Decoration",
+    "en": "Taliparamba Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1789",
+    "name": "Taliparamba Home Nursing & Elderly Patient Attendant",
+    "en": "Taliparamba Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1790",
+    "name": "Taliparamba Academic Home Tuition & Skill Training",
+    "en": "Taliparamba Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1791",
+    "name": "Taliparamba CCTV Security Camera & Automation Setup",
+    "en": "Taliparamba CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1792",
+    "name": "Taliparamba Designer Tailoring & Stitching Service",
+    "en": "Taliparamba Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1793",
+    "name": "Taliparamba Bridal Beauty Makeup & Personal Care",
+    "en": "Taliparamba Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1794",
+    "name": "Taliparamba Solar Rooftop & Inverter Power System",
+    "en": "Taliparamba Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1795",
+    "name": "Taliparamba TV, Computer & Home Appliance Repair",
+    "en": "Taliparamba TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1796",
+    "name": "Taliparamba Open Well Digging & Mud Deep Cleaning",
+    "en": "Taliparamba Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1797",
+    "name": "Taliparamba Interlock Paver Block & Driveway Laying",
+    "en": "Taliparamba Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1798",
+    "name": "Taliparamba Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Taliparamba Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1799",
+    "name": "Taliparamba Aluminium Glass Sliding & Cabin Partition",
+    "en": "Taliparamba Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1800",
+    "name": "Taliparamba Household Packing & Moving Shifting Assist",
+    "en": "Taliparamba Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1801",
+    "name": "Taliparamba Gas Stove & Commercial Burner Repair",
+    "en": "Taliparamba Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1802",
+    "name": "Taliparamba Anti-Termite & Mosquito Pest Extermination",
+    "en": "Taliparamba Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Taliparamba Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1803",
+    "name": "Thalassery Electrician & Power Maintenance",
+    "en": "Thalassery Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1804",
+    "name": "Thalassery Emergency Plumbing & Water Solution",
+    "en": "Thalassery Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1805",
+    "name": "Thalassery AC Installation & Cool Care Service",
+    "en": "Thalassery AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1806",
+    "name": "Thalassery Custom Carpentry & Furniture Restoring",
+    "en": "Thalassery Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1807",
+    "name": "Thalassery Weatherproof Wall Painting & Damp Proofing",
+    "en": "Thalassery Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1808",
+    "name": "Thalassery Civil Masonry & Concrete Repair",
+    "en": "Thalassery Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1809",
+    "name": "Thalassery Truss Roofing & Structural Steel Fabrication",
+    "en": "Thalassery Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1810",
+    "name": "Thalassery On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Thalassery On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1811",
+    "name": "Thalassery Professional Driver & Taxi Ride Hire",
+    "en": "Thalassery Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1812",
+    "name": "Thalassery Home Deep Cleaning & Waste Management",
+    "en": "Thalassery Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1813",
+    "name": "Thalassery Coconut Tree & Farm Care Service",
+    "en": "Thalassery Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1814",
+    "name": "Thalassery Catering & Traditional Feast Cooking",
+    "en": "Thalassery Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1815",
+    "name": "Thalassery Wedding Photography & Drone Cinematography",
+    "en": "Thalassery Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1816",
+    "name": "Thalassery Stage Sound System & Light Decoration",
+    "en": "Thalassery Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1817",
+    "name": "Thalassery Home Nursing & Elderly Patient Attendant",
+    "en": "Thalassery Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1818",
+    "name": "Thalassery Academic Home Tuition & Skill Training",
+    "en": "Thalassery Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1819",
+    "name": "Thalassery CCTV Security Camera & Automation Setup",
+    "en": "Thalassery CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1820",
+    "name": "Thalassery Designer Tailoring & Stitching Service",
+    "en": "Thalassery Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1821",
+    "name": "Thalassery Bridal Beauty Makeup & Personal Care",
+    "en": "Thalassery Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1822",
+    "name": "Thalassery Solar Rooftop & Inverter Power System",
+    "en": "Thalassery Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1823",
+    "name": "Thalassery TV, Computer & Home Appliance Repair",
+    "en": "Thalassery TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1824",
+    "name": "Thalassery Open Well Digging & Mud Deep Cleaning",
+    "en": "Thalassery Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1825",
+    "name": "Thalassery Interlock Paver Block & Driveway Laying",
+    "en": "Thalassery Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1826",
+    "name": "Thalassery Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Thalassery Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1827",
+    "name": "Thalassery Aluminium Glass Sliding & Cabin Partition",
+    "en": "Thalassery Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1828",
+    "name": "Thalassery Household Packing & Moving Shifting Assist",
+    "en": "Thalassery Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1829",
+    "name": "Thalassery Gas Stove & Commercial Burner Repair",
+    "en": "Thalassery Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1830",
+    "name": "Thalassery Anti-Termite & Mosquito Pest Extermination",
+    "en": "Thalassery Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Thalassery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1831",
+    "name": "Kanhangad Electrician & Power Maintenance",
+    "en": "Kanhangad Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1832",
+    "name": "Kanhangad Emergency Plumbing & Water Solution",
+    "en": "Kanhangad Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1833",
+    "name": "Kanhangad AC Installation & Cool Care Service",
+    "en": "Kanhangad AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1834",
+    "name": "Kanhangad Custom Carpentry & Furniture Restoring",
+    "en": "Kanhangad Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1835",
+    "name": "Kanhangad Weatherproof Wall Painting & Damp Proofing",
+    "en": "Kanhangad Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1836",
+    "name": "Kanhangad Civil Masonry & Concrete Repair",
+    "en": "Kanhangad Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1837",
+    "name": "Kanhangad Truss Roofing & Structural Steel Fabrication",
+    "en": "Kanhangad Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1838",
+    "name": "Kanhangad On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Kanhangad On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1839",
+    "name": "Kanhangad Professional Driver & Taxi Ride Hire",
+    "en": "Kanhangad Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1840",
+    "name": "Kanhangad Home Deep Cleaning & Waste Management",
+    "en": "Kanhangad Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1841",
+    "name": "Kanhangad Coconut Tree & Farm Care Service",
+    "en": "Kanhangad Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1842",
+    "name": "Kanhangad Catering & Traditional Feast Cooking",
+    "en": "Kanhangad Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1843",
+    "name": "Kanhangad Wedding Photography & Drone Cinematography",
+    "en": "Kanhangad Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1844",
+    "name": "Kanhangad Stage Sound System & Light Decoration",
+    "en": "Kanhangad Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1845",
+    "name": "Kanhangad Home Nursing & Elderly Patient Attendant",
+    "en": "Kanhangad Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1846",
+    "name": "Kanhangad Academic Home Tuition & Skill Training",
+    "en": "Kanhangad Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1847",
+    "name": "Kanhangad CCTV Security Camera & Automation Setup",
+    "en": "Kanhangad CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1848",
+    "name": "Kanhangad Designer Tailoring & Stitching Service",
+    "en": "Kanhangad Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1849",
+    "name": "Kanhangad Bridal Beauty Makeup & Personal Care",
+    "en": "Kanhangad Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1850",
+    "name": "Kanhangad Solar Rooftop & Inverter Power System",
+    "en": "Kanhangad Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1851",
+    "name": "Kanhangad TV, Computer & Home Appliance Repair",
+    "en": "Kanhangad TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1852",
+    "name": "Kanhangad Open Well Digging & Mud Deep Cleaning",
+    "en": "Kanhangad Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1853",
+    "name": "Kanhangad Interlock Paver Block & Driveway Laying",
+    "en": "Kanhangad Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1854",
+    "name": "Kanhangad Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Kanhangad Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1855",
+    "name": "Kanhangad Aluminium Glass Sliding & Cabin Partition",
+    "en": "Kanhangad Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1856",
+    "name": "Kanhangad Household Packing & Moving Shifting Assist",
+    "en": "Kanhangad Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1857",
+    "name": "Kanhangad Gas Stove & Commercial Burner Repair",
+    "en": "Kanhangad Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1858",
+    "name": "Kanhangad Anti-Termite & Mosquito Pest Extermination",
+    "en": "Kanhangad Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Kanhangad Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1859",
+    "name": "Kalpetta Electrician & Power Maintenance",
+    "en": "Kalpetta Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1860",
+    "name": "Kalpetta Emergency Plumbing & Water Solution",
+    "en": "Kalpetta Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1861",
+    "name": "Kalpetta AC Installation & Cool Care Service",
+    "en": "Kalpetta AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1862",
+    "name": "Kalpetta Custom Carpentry & Furniture Restoring",
+    "en": "Kalpetta Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1863",
+    "name": "Kalpetta Weatherproof Wall Painting & Damp Proofing",
+    "en": "Kalpetta Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1864",
+    "name": "Kalpetta Civil Masonry & Concrete Repair",
+    "en": "Kalpetta Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1865",
+    "name": "Kalpetta Truss Roofing & Structural Steel Fabrication",
+    "en": "Kalpetta Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1866",
+    "name": "Kalpetta On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Kalpetta On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1867",
+    "name": "Kalpetta Professional Driver & Taxi Ride Hire",
+    "en": "Kalpetta Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1868",
+    "name": "Kalpetta Home Deep Cleaning & Waste Management",
+    "en": "Kalpetta Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1869",
+    "name": "Kalpetta Coconut Tree & Farm Care Service",
+    "en": "Kalpetta Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1870",
+    "name": "Kalpetta Catering & Traditional Feast Cooking",
+    "en": "Kalpetta Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1871",
+    "name": "Kalpetta Wedding Photography & Drone Cinematography",
+    "en": "Kalpetta Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1872",
+    "name": "Kalpetta Stage Sound System & Light Decoration",
+    "en": "Kalpetta Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1873",
+    "name": "Kalpetta Home Nursing & Elderly Patient Attendant",
+    "en": "Kalpetta Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1874",
+    "name": "Kalpetta Academic Home Tuition & Skill Training",
+    "en": "Kalpetta Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1875",
+    "name": "Kalpetta CCTV Security Camera & Automation Setup",
+    "en": "Kalpetta CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1876",
+    "name": "Kalpetta Designer Tailoring & Stitching Service",
+    "en": "Kalpetta Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1877",
+    "name": "Kalpetta Bridal Beauty Makeup & Personal Care",
+    "en": "Kalpetta Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1878",
+    "name": "Kalpetta Solar Rooftop & Inverter Power System",
+    "en": "Kalpetta Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1879",
+    "name": "Kalpetta TV, Computer & Home Appliance Repair",
+    "en": "Kalpetta TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1880",
+    "name": "Kalpetta Open Well Digging & Mud Deep Cleaning",
+    "en": "Kalpetta Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1881",
+    "name": "Kalpetta Interlock Paver Block & Driveway Laying",
+    "en": "Kalpetta Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1882",
+    "name": "Kalpetta Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Kalpetta Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1883",
+    "name": "Kalpetta Aluminium Glass Sliding & Cabin Partition",
+    "en": "Kalpetta Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1884",
+    "name": "Kalpetta Household Packing & Moving Shifting Assist",
+    "en": "Kalpetta Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1885",
+    "name": "Kalpetta Gas Stove & Commercial Burner Repair",
+    "en": "Kalpetta Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1886",
+    "name": "Kalpetta Anti-Termite & Mosquito Pest Extermination",
+    "en": "Kalpetta Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Kalpetta Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1887",
+    "name": "Sulthan Bathery Electrician & Power Maintenance",
+    "en": "Sulthan Bathery Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1888",
+    "name": "Sulthan Bathery Emergency Plumbing & Water Solution",
+    "en": "Sulthan Bathery Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1889",
+    "name": "Sulthan Bathery AC Installation & Cool Care Service",
+    "en": "Sulthan Bathery AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1890",
+    "name": "Sulthan Bathery Custom Carpentry & Furniture Restoring",
+    "en": "Sulthan Bathery Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1891",
+    "name": "Sulthan Bathery Weatherproof Wall Painting & Damp Proofing",
+    "en": "Sulthan Bathery Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1892",
+    "name": "Sulthan Bathery Civil Masonry & Concrete Repair",
+    "en": "Sulthan Bathery Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1893",
+    "name": "Sulthan Bathery Truss Roofing & Structural Steel Fabrication",
+    "en": "Sulthan Bathery Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1894",
+    "name": "Sulthan Bathery On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Sulthan Bathery On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1895",
+    "name": "Sulthan Bathery Professional Driver & Taxi Ride Hire",
+    "en": "Sulthan Bathery Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1896",
+    "name": "Sulthan Bathery Home Deep Cleaning & Waste Management",
+    "en": "Sulthan Bathery Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1897",
+    "name": "Sulthan Bathery Coconut Tree & Farm Care Service",
+    "en": "Sulthan Bathery Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1898",
+    "name": "Sulthan Bathery Catering & Traditional Feast Cooking",
+    "en": "Sulthan Bathery Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1899",
+    "name": "Sulthan Bathery Wedding Photography & Drone Cinematography",
+    "en": "Sulthan Bathery Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1900",
+    "name": "Sulthan Bathery Stage Sound System & Light Decoration",
+    "en": "Sulthan Bathery Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1901",
+    "name": "Sulthan Bathery Home Nursing & Elderly Patient Attendant",
+    "en": "Sulthan Bathery Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1902",
+    "name": "Sulthan Bathery Academic Home Tuition & Skill Training",
+    "en": "Sulthan Bathery Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1903",
+    "name": "Sulthan Bathery CCTV Security Camera & Automation Setup",
+    "en": "Sulthan Bathery CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1904",
+    "name": "Sulthan Bathery Designer Tailoring & Stitching Service",
+    "en": "Sulthan Bathery Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1905",
+    "name": "Sulthan Bathery Bridal Beauty Makeup & Personal Care",
+    "en": "Sulthan Bathery Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1906",
+    "name": "Sulthan Bathery Solar Rooftop & Inverter Power System",
+    "en": "Sulthan Bathery Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1907",
+    "name": "Sulthan Bathery TV, Computer & Home Appliance Repair",
+    "en": "Sulthan Bathery TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1908",
+    "name": "Sulthan Bathery Open Well Digging & Mud Deep Cleaning",
+    "en": "Sulthan Bathery Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1909",
+    "name": "Sulthan Bathery Interlock Paver Block & Driveway Laying",
+    "en": "Sulthan Bathery Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1910",
+    "name": "Sulthan Bathery Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Sulthan Bathery Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1911",
+    "name": "Sulthan Bathery Aluminium Glass Sliding & Cabin Partition",
+    "en": "Sulthan Bathery Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1912",
+    "name": "Sulthan Bathery Household Packing & Moving Shifting Assist",
+    "en": "Sulthan Bathery Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1913",
+    "name": "Sulthan Bathery Gas Stove & Commercial Burner Repair",
+    "en": "Sulthan Bathery Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1914",
+    "name": "Sulthan Bathery Anti-Termite & Mosquito Pest Extermination",
+    "en": "Sulthan Bathery Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Sulthan Bathery Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1915",
+    "name": "Thodupuzha Electrician & Power Maintenance",
+    "en": "Thodupuzha Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1916",
+    "name": "Thodupuzha Emergency Plumbing & Water Solution",
+    "en": "Thodupuzha Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1917",
+    "name": "Thodupuzha AC Installation & Cool Care Service",
+    "en": "Thodupuzha AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1918",
+    "name": "Thodupuzha Custom Carpentry & Furniture Restoring",
+    "en": "Thodupuzha Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1919",
+    "name": "Thodupuzha Weatherproof Wall Painting & Damp Proofing",
+    "en": "Thodupuzha Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1920",
+    "name": "Thodupuzha Civil Masonry & Concrete Repair",
+    "en": "Thodupuzha Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1921",
+    "name": "Thodupuzha Truss Roofing & Structural Steel Fabrication",
+    "en": "Thodupuzha Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1922",
+    "name": "Thodupuzha On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Thodupuzha On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1923",
+    "name": "Thodupuzha Professional Driver & Taxi Ride Hire",
+    "en": "Thodupuzha Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1924",
+    "name": "Thodupuzha Home Deep Cleaning & Waste Management",
+    "en": "Thodupuzha Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1925",
+    "name": "Thodupuzha Coconut Tree & Farm Care Service",
+    "en": "Thodupuzha Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1926",
+    "name": "Thodupuzha Catering & Traditional Feast Cooking",
+    "en": "Thodupuzha Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1927",
+    "name": "Thodupuzha Wedding Photography & Drone Cinematography",
+    "en": "Thodupuzha Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1928",
+    "name": "Thodupuzha Stage Sound System & Light Decoration",
+    "en": "Thodupuzha Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1929",
+    "name": "Thodupuzha Home Nursing & Elderly Patient Attendant",
+    "en": "Thodupuzha Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1930",
+    "name": "Thodupuzha Academic Home Tuition & Skill Training",
+    "en": "Thodupuzha Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1931",
+    "name": "Thodupuzha CCTV Security Camera & Automation Setup",
+    "en": "Thodupuzha CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1932",
+    "name": "Thodupuzha Designer Tailoring & Stitching Service",
+    "en": "Thodupuzha Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1933",
+    "name": "Thodupuzha Bridal Beauty Makeup & Personal Care",
+    "en": "Thodupuzha Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1934",
+    "name": "Thodupuzha Solar Rooftop & Inverter Power System",
+    "en": "Thodupuzha Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1935",
+    "name": "Thodupuzha TV, Computer & Home Appliance Repair",
+    "en": "Thodupuzha TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1936",
+    "name": "Thodupuzha Open Well Digging & Mud Deep Cleaning",
+    "en": "Thodupuzha Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1937",
+    "name": "Thodupuzha Interlock Paver Block & Driveway Laying",
+    "en": "Thodupuzha Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1938",
+    "name": "Thodupuzha Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Thodupuzha Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1939",
+    "name": "Thodupuzha Aluminium Glass Sliding & Cabin Partition",
+    "en": "Thodupuzha Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1940",
+    "name": "Thodupuzha Household Packing & Moving Shifting Assist",
+    "en": "Thodupuzha Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1941",
+    "name": "Thodupuzha Gas Stove & Commercial Burner Repair",
+    "en": "Thodupuzha Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1942",
+    "name": "Thodupuzha Anti-Termite & Mosquito Pest Extermination",
+    "en": "Thodupuzha Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Thodupuzha Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1943",
+    "name": "Pala Electrician & Power Maintenance",
+    "en": "Pala Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1944",
+    "name": "Pala Emergency Plumbing & Water Solution",
+    "en": "Pala Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1945",
+    "name": "Pala AC Installation & Cool Care Service",
+    "en": "Pala AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1946",
+    "name": "Pala Custom Carpentry & Furniture Restoring",
+    "en": "Pala Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1947",
+    "name": "Pala Weatherproof Wall Painting & Damp Proofing",
+    "en": "Pala Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1948",
+    "name": "Pala Civil Masonry & Concrete Repair",
+    "en": "Pala Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1949",
+    "name": "Pala Truss Roofing & Structural Steel Fabrication",
+    "en": "Pala Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1950",
+    "name": "Pala On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Pala On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1951",
+    "name": "Pala Professional Driver & Taxi Ride Hire",
+    "en": "Pala Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1952",
+    "name": "Pala Home Deep Cleaning & Waste Management",
+    "en": "Pala Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1953",
+    "name": "Pala Coconut Tree & Farm Care Service",
+    "en": "Pala Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1954",
+    "name": "Pala Catering & Traditional Feast Cooking",
+    "en": "Pala Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1955",
+    "name": "Pala Wedding Photography & Drone Cinematography",
+    "en": "Pala Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1956",
+    "name": "Pala Stage Sound System & Light Decoration",
+    "en": "Pala Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1957",
+    "name": "Pala Home Nursing & Elderly Patient Attendant",
+    "en": "Pala Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1958",
+    "name": "Pala Academic Home Tuition & Skill Training",
+    "en": "Pala Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1959",
+    "name": "Pala CCTV Security Camera & Automation Setup",
+    "en": "Pala CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1960",
+    "name": "Pala Designer Tailoring & Stitching Service",
+    "en": "Pala Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1961",
+    "name": "Pala Bridal Beauty Makeup & Personal Care",
+    "en": "Pala Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1962",
+    "name": "Pala Solar Rooftop & Inverter Power System",
+    "en": "Pala Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1963",
+    "name": "Pala TV, Computer & Home Appliance Repair",
+    "en": "Pala TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1964",
+    "name": "Pala Open Well Digging & Mud Deep Cleaning",
+    "en": "Pala Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1965",
+    "name": "Pala Interlock Paver Block & Driveway Laying",
+    "en": "Pala Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1966",
+    "name": "Pala Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Pala Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1967",
+    "name": "Pala Aluminium Glass Sliding & Cabin Partition",
+    "en": "Pala Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1968",
+    "name": "Pala Household Packing & Moving Shifting Assist",
+    "en": "Pala Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1969",
+    "name": "Pala Gas Stove & Commercial Burner Repair",
+    "en": "Pala Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1970",
+    "name": "Pala Anti-Termite & Mosquito Pest Extermination",
+    "en": "Pala Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Pala Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1971",
+    "name": "Vaikom Electrician & Power Maintenance",
+    "en": "Vaikom Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1972",
+    "name": "Vaikom Emergency Plumbing & Water Solution",
+    "en": "Vaikom Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1973",
+    "name": "Vaikom AC Installation & Cool Care Service",
+    "en": "Vaikom AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1974",
+    "name": "Vaikom Custom Carpentry & Furniture Restoring",
+    "en": "Vaikom Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1975",
+    "name": "Vaikom Weatherproof Wall Painting & Damp Proofing",
+    "en": "Vaikom Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1976",
+    "name": "Vaikom Civil Masonry & Concrete Repair",
+    "en": "Vaikom Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1977",
+    "name": "Vaikom Truss Roofing & Structural Steel Fabrication",
+    "en": "Vaikom Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1978",
+    "name": "Vaikom On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Vaikom On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1979",
+    "name": "Vaikom Professional Driver & Taxi Ride Hire",
+    "en": "Vaikom Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1980",
+    "name": "Vaikom Home Deep Cleaning & Waste Management",
+    "en": "Vaikom Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1981",
+    "name": "Vaikom Coconut Tree & Farm Care Service",
+    "en": "Vaikom Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1982",
+    "name": "Vaikom Catering & Traditional Feast Cooking",
+    "en": "Vaikom Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1983",
+    "name": "Vaikom Wedding Photography & Drone Cinematography",
+    "en": "Vaikom Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1984",
+    "name": "Vaikom Stage Sound System & Light Decoration",
+    "en": "Vaikom Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1985",
+    "name": "Vaikom Home Nursing & Elderly Patient Attendant",
+    "en": "Vaikom Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1986",
+    "name": "Vaikom Academic Home Tuition & Skill Training",
+    "en": "Vaikom Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1987",
+    "name": "Vaikom CCTV Security Camera & Automation Setup",
+    "en": "Vaikom CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1988",
+    "name": "Vaikom Designer Tailoring & Stitching Service",
+    "en": "Vaikom Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1989",
+    "name": "Vaikom Bridal Beauty Makeup & Personal Care",
+    "en": "Vaikom Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1990",
+    "name": "Vaikom Solar Rooftop & Inverter Power System",
+    "en": "Vaikom Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1991",
+    "name": "Vaikom TV, Computer & Home Appliance Repair",
+    "en": "Vaikom TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1992",
+    "name": "Vaikom Open Well Digging & Mud Deep Cleaning",
+    "en": "Vaikom Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1993",
+    "name": "Vaikom Interlock Paver Block & Driveway Laying",
+    "en": "Vaikom Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1994",
+    "name": "Vaikom Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Vaikom Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1995",
+    "name": "Vaikom Aluminium Glass Sliding & Cabin Partition",
+    "en": "Vaikom Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1996",
+    "name": "Vaikom Household Packing & Moving Shifting Assist",
+    "en": "Vaikom Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1997",
+    "name": "Vaikom Gas Stove & Commercial Burner Repair",
+    "en": "Vaikom Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1998",
+    "name": "Vaikom Anti-Termite & Mosquito Pest Extermination",
+    "en": "Vaikom Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Vaikom Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_1999",
+    "name": "Ettumanoor Electrician & Power Maintenance",
+    "en": "Ettumanoor Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2000",
+    "name": "Ettumanoor Emergency Plumbing & Water Solution",
+    "en": "Ettumanoor Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2001",
+    "name": "Ettumanoor AC Installation & Cool Care Service",
+    "en": "Ettumanoor AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2002",
+    "name": "Ettumanoor Custom Carpentry & Furniture Restoring",
+    "en": "Ettumanoor Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2003",
+    "name": "Ettumanoor Weatherproof Wall Painting & Damp Proofing",
+    "en": "Ettumanoor Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2004",
+    "name": "Ettumanoor Civil Masonry & Concrete Repair",
+    "en": "Ettumanoor Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2005",
+    "name": "Ettumanoor Truss Roofing & Structural Steel Fabrication",
+    "en": "Ettumanoor Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2006",
+    "name": "Ettumanoor On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Ettumanoor On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2007",
+    "name": "Ettumanoor Professional Driver & Taxi Ride Hire",
+    "en": "Ettumanoor Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2008",
+    "name": "Ettumanoor Home Deep Cleaning & Waste Management",
+    "en": "Ettumanoor Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2009",
+    "name": "Ettumanoor Coconut Tree & Farm Care Service",
+    "en": "Ettumanoor Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2010",
+    "name": "Ettumanoor Catering & Traditional Feast Cooking",
+    "en": "Ettumanoor Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2011",
+    "name": "Ettumanoor Wedding Photography & Drone Cinematography",
+    "en": "Ettumanoor Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2012",
+    "name": "Ettumanoor Stage Sound System & Light Decoration",
+    "en": "Ettumanoor Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2013",
+    "name": "Ettumanoor Home Nursing & Elderly Patient Attendant",
+    "en": "Ettumanoor Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2014",
+    "name": "Ettumanoor Academic Home Tuition & Skill Training",
+    "en": "Ettumanoor Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2015",
+    "name": "Ettumanoor CCTV Security Camera & Automation Setup",
+    "en": "Ettumanoor CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2016",
+    "name": "Ettumanoor Designer Tailoring & Stitching Service",
+    "en": "Ettumanoor Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2017",
+    "name": "Ettumanoor Bridal Beauty Makeup & Personal Care",
+    "en": "Ettumanoor Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2018",
+    "name": "Ettumanoor Solar Rooftop & Inverter Power System",
+    "en": "Ettumanoor Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2019",
+    "name": "Ettumanoor TV, Computer & Home Appliance Repair",
+    "en": "Ettumanoor TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2020",
+    "name": "Ettumanoor Open Well Digging & Mud Deep Cleaning",
+    "en": "Ettumanoor Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2021",
+    "name": "Ettumanoor Interlock Paver Block & Driveway Laying",
+    "en": "Ettumanoor Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2022",
+    "name": "Ettumanoor Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Ettumanoor Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2023",
+    "name": "Ettumanoor Aluminium Glass Sliding & Cabin Partition",
+    "en": "Ettumanoor Aluminium Glass Sliding & Cabin Partition",
+    "icon": "🪟",
+    "category": "welding",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2024",
+    "name": "Ettumanoor Household Packing & Moving Shifting Assist",
+    "en": "Ettumanoor Household Packing & Moving Shifting Assist",
+    "icon": "📦",
+    "category": "vehicles",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2025",
+    "name": "Ettumanoor Gas Stove & Commercial Burner Repair",
+    "en": "Ettumanoor Gas Stove & Commercial Burner Repair",
+    "icon": "🍳",
+    "category": "mechanic",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2026",
+    "name": "Ettumanoor Anti-Termite & Mosquito Pest Extermination",
+    "en": "Ettumanoor Anti-Termite & Mosquito Pest Extermination",
+    "icon": "🐜",
+    "category": "cleaning",
+    "specs": [
+      "Ettumanoor Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2027",
+    "name": "Kanjirappally Electrician & Power Maintenance",
+    "en": "Kanjirappally Electrician & Power Maintenance",
+    "icon": "⚡",
+    "category": "electrician",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2028",
+    "name": "Kanjirappally Emergency Plumbing & Water Solution",
+    "en": "Kanjirappally Emergency Plumbing & Water Solution",
+    "icon": "🚰",
+    "category": "plumber",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2029",
+    "name": "Kanjirappally AC Installation & Cool Care Service",
+    "en": "Kanjirappally AC Installation & Cool Care Service",
+    "icon": "❄️",
+    "category": "acrepair",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2030",
+    "name": "Kanjirappally Custom Carpentry & Furniture Restoring",
+    "en": "Kanjirappally Custom Carpentry & Furniture Restoring",
+    "icon": "🪚",
+    "category": "carpenter",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2031",
+    "name": "Kanjirappally Weatherproof Wall Painting & Damp Proofing",
+    "en": "Kanjirappally Weatherproof Wall Painting & Damp Proofing",
+    "icon": "🎨",
+    "category": "painter",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2032",
+    "name": "Kanjirappally Civil Masonry & Concrete Repair",
+    "en": "Kanjirappally Civil Masonry & Concrete Repair",
+    "icon": "🧱",
+    "category": "mason",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2033",
+    "name": "Kanjirappally Truss Roofing & Structural Steel Fabrication",
+    "en": "Kanjirappally Truss Roofing & Structural Steel Fabrication",
+    "icon": "🔥",
+    "category": "welding",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2034",
+    "name": "Kanjirappally On-Call Auto Mechanic & Car Breakdown Assist",
+    "en": "Kanjirappally On-Call Auto Mechanic & Car Breakdown Assist",
+    "icon": "🔧",
+    "category": "mechanic",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2035",
+    "name": "Kanjirappally Professional Driver & Taxi Ride Hire",
+    "en": "Kanjirappally Professional Driver & Taxi Ride Hire",
+    "icon": "🚗",
+    "category": "vehicles",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2036",
+    "name": "Kanjirappally Home Deep Cleaning & Waste Management",
+    "en": "Kanjirappally Home Deep Cleaning & Waste Management",
+    "icon": "🧹",
+    "category": "cleaning",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2037",
+    "name": "Kanjirappally Coconut Tree & Farm Care Service",
+    "en": "Kanjirappally Coconut Tree & Farm Care Service",
+    "icon": "🌴",
+    "category": "gardening",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2038",
+    "name": "Kanjirappally Catering & Traditional Feast Cooking",
+    "en": "Kanjirappally Catering & Traditional Feast Cooking",
+    "icon": "🍲",
+    "category": "catering",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2039",
+    "name": "Kanjirappally Wedding Photography & Drone Cinematography",
+    "en": "Kanjirappally Wedding Photography & Drone Cinematography",
+    "icon": "📷",
+    "category": "photography",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2040",
+    "name": "Kanjirappally Stage Sound System & Light Decoration",
+    "en": "Kanjirappally Stage Sound System & Light Decoration",
+    "icon": "🔊",
+    "category": "events",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2041",
+    "name": "Kanjirappally Home Nursing & Elderly Patient Attendant",
+    "en": "Kanjirappally Home Nursing & Elderly Patient Attendant",
+    "icon": "🩺",
+    "category": "nursing",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2042",
+    "name": "Kanjirappally Academic Home Tuition & Skill Training",
+    "en": "Kanjirappally Academic Home Tuition & Skill Training",
+    "icon": "📚",
+    "category": "tuition",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2043",
+    "name": "Kanjirappally CCTV Security Camera & Automation Setup",
+    "en": "Kanjirappally CCTV Security Camera & Automation Setup",
+    "icon": "📹",
+    "category": "cctv",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2044",
+    "name": "Kanjirappally Designer Tailoring & Stitching Service",
+    "en": "Kanjirappally Designer Tailoring & Stitching Service",
+    "icon": "🧵",
+    "category": "tailoring",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2045",
+    "name": "Kanjirappally Bridal Beauty Makeup & Personal Care",
+    "en": "Kanjirappally Bridal Beauty Makeup & Personal Care",
+    "icon": "💄",
+    "category": "beautician",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2046",
+    "name": "Kanjirappally Solar Rooftop & Inverter Power System",
+    "en": "Kanjirappally Solar Rooftop & Inverter Power System",
+    "icon": "☀️",
+    "category": "solar",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2047",
+    "name": "Kanjirappally TV, Computer & Home Appliance Repair",
+    "en": "Kanjirappally TV, Computer & Home Appliance Repair",
+    "icon": "📺",
+    "category": "electronics",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2048",
+    "name": "Kanjirappally Open Well Digging & Mud Deep Cleaning",
+    "en": "Kanjirappally Open Well Digging & Mud Deep Cleaning",
+    "icon": "🪣",
+    "category": "plumber",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2049",
+    "name": "Kanjirappally Interlock Paver Block & Driveway Laying",
+    "en": "Kanjirappally Interlock Paver Block & Driveway Laying",
+    "icon": "📐",
+    "category": "mason",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
+    ]
+  },
+  {
+    "id": "tr_2050",
+    "name": "Kanjirappally Septic Tank Vacuum Suction & Waste Flush",
+    "en": "Kanjirappally Septic Tank Vacuum Suction & Waste Flush",
+    "icon": "🚛",
+    "category": "cleaning",
+    "specs": [
+      "Kanjirappally Local Area Coverage",
+      "Direct In-App Contact & Chat",
+      "Experienced Verified Providers",
+      "Fast On-Site Response"
     ]
   }
 ];
+
+  window.TRADES_CATALOG_500 = catalog;
+  window.TRADES_CATALOG_2000 = catalog;
+  window.TRADES_CATALOG = catalog;
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = catalog;
+  }
 })();

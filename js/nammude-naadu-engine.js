@@ -6220,7 +6220,7 @@
         subBar.innerHTML = VEHICLE_SUB_TYPES.map(vt => {
           const isActive = (activeSub === vt.id);
           const style = isActive
-            ? 'background:#059669;color:#fff;border:1px solid #059669;padding:6px 12px;border-radius:20px;font-size:11.5px;font-weight:800;white-space:nowrap;cursor:pointer;display:inline-flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(5,150,105,0.25)'
+            ? 'background:#0C2B59;color:#fff;border:1px solid #0C2B59;padding:6px 12px;border-radius:20px;font-size:11.5px;font-weight:800;white-space:nowrap;cursor:pointer;display:inline-flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(12,43,89,0.25)'
             : 'background:#fff;color:#334155;border:1px solid #CBD5E1;padding:6px 12px;border-radius:20px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer;display:inline-flex;align-items:center;gap:4px';
           return `<button type="button" onclick="setVehicleSubFilter('${vt.id}')" style="${style}"><span>${vt.icon}</span><span>${vt.name}</span></button>`;
         }).join('');
@@ -7089,31 +7089,8 @@
     const catalog = (window.TRADES_CATALOG_500 && Array.isArray(window.TRADES_CATALOG_500)) ? window.TRADES_CATALOG_500 : TRADES_CATALOG;
 
     if (!q) {
-      const topPicks = [
-        { name: 'ഇലക്ട്രീഷ്യൻ', icon: '⚡' },
-        { name: 'പ്ലംബർ', icon: '🔧' },
-        { name: 'ഡ്രൈവർ / ടാക്സി', icon: '🚗' },
-        { name: 'കാർപെന്റർ', icon: '🪵' },
-        { name: 'പെയിന്റർ', icon: '🎨' },
-        { name: 'ക്ലീനിംഗ് സർവീസ്', icon: '🧹' },
-        { name: 'എസി മെക്കാനിക്', icon: '❄️' },
-        { name: 'ബ്യൂട്ടീഷ്യൻ', icon: '💇' }
-      ];
-      dropdown.innerHTML = `
-        <div style="padding:6px 10px 4px;font-size:0.72rem;font-weight:800;color:#64748B;display:flex;justify-content:space-between">
-          <span>🔥 ജനപ്രിയ സർവീസുകൾ (Popular)</span>
-          <span style="color:#059669;font-weight:700">ഓട്ടോ-ഫിൽ</span>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;padding:6px 8px 10px">
-          ${topPicks.map(p => `
-            <div onclick="selectServiceSearchSuggestion('${escapeHtml(p.name)}')" style="display:inline-flex;align-items:center;gap:5px;background:#F8FAFC;border:1px solid #E2E8F0;color:#1E293B;font-size:0.75rem;font-weight:700;padding:5px 10px;border-radius:9999px;cursor:pointer">
-              <span>${p.icon}</span>
-              <span>${escapeHtml(p.name)}</span>
-            </div>
-          `).join('')}
-        </div>
-      `;
-      dropdown.style.display = 'block';
+      dropdown.style.display = 'none';
+      dropdown.innerHTML = '';
       return;
     }
 
@@ -7155,7 +7132,7 @@
               <div class="trade-sugg-sub" style="font-size:0.72rem;color:#64748B">${escapeHtml(p.trade || 'സേവനം')} • 📍 ${escapeHtml(p.location || '')}</div>
             </div>
           </div>
-          <span style="font-size:11px;color:#059669;font-weight:700;flex-shrink:0">കാണുക ➔</span>
+          <span style="font-size:11px;color:#0C2B59;font-weight:700;flex-shrink:0">കാണുക ➔</span>
         </div>
       `).join('');
     }

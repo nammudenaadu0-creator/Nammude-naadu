@@ -2324,18 +2324,18 @@
             font-weight: 700 !important;
         }
 
-        /* Malayalam & High-Contrast Forest Green Typography */
-        h1,
-        h2,
-        h3,
-        h4,
-        .section-title,
-        .screen-title,
-        .round-hero-greeting,
-        .profile-name-text,
-        .mock-sec-title {
-            color: #064E3B !important;
-            font-weight: 800 !important;
+        /* Malayalam & High-Contrast Forest Green Typography (Scoped to Home Screen Only) */
+        #screen-home h1,
+        #screen-home h2,
+        #screen-home h3,
+        #screen-home h4,
+        #screen-home .section-title,
+        #screen-home .screen-title,
+        #screen-home .round-hero-greeting,
+        #screen-home .profile-name-text,
+        #screen-home .mock-sec-title {
+            color: #064E3B;
+            font-weight: 800;
         }
 
         .round-hero-sub,
@@ -5723,12 +5723,12 @@
             font-weight: 800 !important;
         }
 
-        .round-back-btn,
-        .profile-top-btn {
-            background: #FEF9C3 !important;
-            border: 1.5px solid #FDE047 !important;
-            color: #064E3B !important;
-            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2) !important;
+        #screen-home .round-back-btn,
+        #screen-home .profile-top-btn {
+            background: #FEF9C3;
+            border: 1.5px solid #FDE047;
+            color: #064E3B;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
         }
 
         .round-back-btn:hover,

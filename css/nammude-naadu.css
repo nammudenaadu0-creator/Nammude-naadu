@@ -6109,3 +6109,86 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   color: #FFFFFF !important;
 }
 
+
+
+/* ==============================================================
+   ZERO GREEN ON BLUE HEADERS & TOP BARS (100% PURE WHITE & NAVY)
+   ============================================================== */
+.services-kerala-top-bar,
+.superapp-header,
+.jobs-header,
+.rentals-header,
+.blood-header,
+#screen-services .services-kerala-top-bar,
+#screen-business .services-kerala-top-bar,
+#screen-jobs .superapp-header,
+#screen-rentals .superapp-header,
+#screen-blood .superapp-header {
+  color: #FFFFFF !important;
+}
+
+.services-kerala-top-bar h1,
+.services-kerala-top-bar h2,
+.services-kerala-top-bar h3,
+.services-kerala-top-bar div,
+.services-kerala-top-bar span,
+.services-kerala-top-bar p,
+.superapp-header h1,
+.superapp-header h2,
+.superapp-header h3,
+.superapp-header div,
+.superapp-header span,
+.superapp-header p,
+.superapp-header .superapp-brand-title,
+.superapp-header .superapp-brand-sub,
+.superapp-header .user-live-city-name,
+#screen-services .services-kerala-top-bar h1,
+#screen-services .services-kerala-top-bar .user-live-city-name,
+#screen-business .services-kerala-top-bar h1,
+#screen-business .services-kerala-top-bar .user-live-city-name {
+  color: #FFFFFF !important;
+}
+
+/* Crisp white round back button with pure white chevron */
+.services-kerala-top-bar .round-back-btn,
+#screen-services .round-back-btn,
+#screen-business .round-back-btn,
+.superapp-round-back-btn {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  color: #FFFFFF !important;
+}
+
+/* Crisp white action buttons in top bars (+ രജിസ്റ്റർ / + തൊഴിൽ നൽകാം) */
+#screen-services .services-kerala-top-bar button:not(.round-back-btn),
+#screen-business .services-kerala-top-bar button:not(.round-back-btn) {
+  background: #FFFFFF !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+#screen-services .services-kerala-top-bar button:not(.round-back-btn) *,
+#screen-business .services-kerala-top-bar button:not(.round-back-btn) * {
+  color: #0C2B59 !important;
+  font-weight: 800 !important;
+}
+
+/* Services Search Bar Icons & Action Button (NO GREEN) */
+#screen-services .home-kerala-search-btn-icon,
+#screen-business .home-kerala-search-btn-icon {
+  background: #0C2B59 !important;
+  color: #FFFFFF !important;
+}
+#screen-services .home-kerala-search-action-btn,
+#screen-business .home-kerala-search-action-btn {
+  background: linear-gradient(135deg, #0C2B59 0%, #163E75 100%) !important;
+  color: #FFFFFF !important;
+}
+#screen-services .home-kerala-search-action-btn *,
+#screen-business .home-kerala-search-action-btn * {
+  color: #FFFFFF !important;
+}
+
+/* Hide bulky auto-suggestions overlay when not explicitly needed */
+.trade-suggestions-dropdown:empty {
+  display: none !important;
+}
