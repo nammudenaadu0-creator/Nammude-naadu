@@ -5364,3 +5364,748 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   border-color: #1D4ED8 !important;
   box-shadow: 0 2px 8px rgba(29, 78, 216, 0.25) !important;
 }
+
+/* ==============================================================
+   NAMMUDE NAADU UNIFIED SUPER APP DESIGN SYSTEM
+   Matches the 3-Screen Royal Navy Architecture
+   ============================================================== */
+:root {
+  --nn-navy-dark: #0A2240;
+  --nn-navy-primary: #0C2B59;
+  --nn-navy-light: #163E75;
+  --nn-navy-surface: #F0F4F8;
+  --nn-navy-card-border: #E2E8F0;
+  --nn-navy-text-main: #0F172A;
+  --nn-navy-text-muted: #64748B;
+}
+
+.superapp-screen {
+  background: #F0F4F8 !important;
+  min-height: 100vh;
+  padding-bottom: 90px;
+}
+
+/* 1. Header */
+.superapp-header {
+  padding: 16px 16px 14px;
+  background: linear-gradient(135deg, #0A2240 0%, #0C2B59 55%, #163E75 100%);
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  box-shadow: 0 4px 18px rgba(10, 34, 64, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 10;
+}
+
+.superapp-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.superapp-round-back-btn {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.1s ease, background 0.15s ease;
+  touch-action: manipulation;
+}
+.superapp-round-back-btn:active {
+  transform: scale(0.92);
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.superapp-header-brand {
+  display: flex;
+  flex-direction: column;
+}
+
+.superapp-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.superapp-brand-logo {
+  font-size: 19px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.superapp-brand-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -0.2px;
+  line-height: 1.2;
+}
+
+.superapp-brand-sub {
+  font-size: 10.5px;
+  color: rgba(255, 255, 255, 0.78);
+  margin-top: 1px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+}
+
+.superapp-loc-pill {
+  background: rgba(10, 34, 64, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 9999px;
+  padding: 6px 12px;
+  color: #FFFFFF;
+  font-size: 11.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+.superapp-loc-pill:active {
+  transform: scale(0.95);
+}
+.superapp-loc-arrow {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-left: 2px;
+}
+
+/* 2. Floating Search Bar */
+.superapp-search-wrap {
+  margin: 14px 16px 10px;
+  position: relative;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 9999px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+  display: flex;
+  align-items: center;
+  padding: 2px 8px 2px 14px;
+}
+
+.superapp-search-icon {
+  font-size: 15px;
+  color: #64748B;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.superapp-search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 12.5px;
+  color: #0F172A;
+  font-weight: 500;
+  padding: 9px 0;
+  font-family: inherit;
+}
+.superapp-search-input::placeholder {
+  color: #94A3B8;
+  font-weight: 400;
+}
+
+.superapp-search-mic {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  color: #0C2B59;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 3. Radius Distance Pills */
+.superapp-radius-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 16px 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.superapp-radius-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.superapp-radius-pill {
+  flex-shrink: 0;
+  padding: 6px 13px;
+  border-radius: 9999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+}
+.superapp-radius-pill.active {
+  background: #0C2B59 !important;
+  color: #FFFFFF !important;
+  border-color: #0C2B59 !important;
+  box-shadow: 0 3px 8px rgba(12, 43, 89, 0.28);
+}
+
+/* 4. Hero Action Banner Card (Unified Home & Service Blue Theme) */
+.superapp-hero-card {
+  margin: 0 16px 12px;
+  border-radius: 20px;
+  padding: 16px 16px 14px;
+  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%) !important;
+  border: 1.5px solid #BFDBFE !important;
+  box-shadow: 0 3px 12px rgba(8, 120, 209, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.superapp-hero-card.blood-hero,
+.superapp-hero-card.hero-blood,
+.superapp-hero-card.jobs-hero,
+.superapp-hero-card.hero-jobs,
+.superapp-hero-card.rentals-hero,
+.superapp-hero-card.hero-rentals,
+.superapp-hero-card.services-hero,
+.superapp-hero-card.hero-services {
+  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%) !important;
+  border-color: #BFDBFE !important;
+}
+
+.superapp-hero-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.superapp-hero-icon-wrap,
+.superapp-hero-icon-wrap.blood-icon,
+.superapp-hero-icon-wrap.jobs-icon,
+.superapp-hero-icon-wrap.rentals-icon,
+.superapp-hero-icon-wrap.services-icon,
+.superapp-hero-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(8, 120, 209, 0.12);
+  background: #FFFFFF !important;
+  border: 1.5px solid #BFDBFE !important;
+  color: #0878D1 !important;
+}
+
+.superapp-hero-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0A2240;
+  line-height: 1.2;
+}
+
+.superapp-hero-sub {
+  font-size: 11.5px;
+  color: #0369A1;
+  margin-top: 2px;
+  font-weight: 600;
+}
+
+.superapp-hero-actions {
+  display: flex;
+  gap: 9px;
+}
+
+.superapp-btn-solid-blue,
+.superapp-hero-btn.solid {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: #0C2B59 !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  border-radius: 12px;
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(12, 43, 89, 0.25);
+  transition: transform 0.1s ease, background 0.15s ease;
+}
+.superapp-btn-solid-blue:active,
+.superapp-hero-btn.solid:active {
+  transform: scale(0.97);
+  background: #081C38 !important;
+}
+
+.superapp-btn-outline,
+.superapp-hero-btn.outline {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: #FFFFFF !important;
+  color: #0C2B59 !important;
+  border: 1.5px solid #CBD5E1 !important;
+  border-radius: 12px;
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  transition: transform 0.1s ease, border-color 0.15s ease;
+}
+.superapp-btn-outline:active,
+.superapp-hero-btn.outline:active {
+  transform: scale(0.97);
+  border-color: #0C2B59 !important;
+}
+
+/* 5. Filter Chips Bar */
+.superapp-chips-bar {
+  display: flex;
+  gap: 7px;
+  padding: 2px 16px 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.superapp-chips-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.superapp-chip {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+.superapp-chip.active {
+  background: #0C2B59 !important;
+  color: #FFFFFF !important;
+  border-color: #0C2B59 !important;
+  box-shadow: 0 2px 6px rgba(12, 43, 89, 0.25);
+}
+
+/* 6. Counters & Callout Banners */
+.superapp-stat-row {
+  margin: 0 16px 12px;
+  display: flex;
+  gap: 10px;
+}
+
+.superapp-stat-box,
+.superapp-stat-card {
+  flex: 1;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+}
+
+.superapp-stat-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.superapp-stat-icon {
+  font-size: 20px;
+  color: #0C2B59;
+}
+
+.superapp-stat-val,
+.superapp-stat-number {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0A2240;
+  line-height: 1.1;
+}
+
+.superapp-stat-lbl,
+.superapp-stat-label {
+  font-size: 11px;
+  color: #64748B;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.superapp-callout-banner {
+  margin: 0 16px 12px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.03);
+}
+
+.superapp-callout-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.superapp-callout-title {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #0F172A;
+  line-height: 1.25;
+}
+
+.superapp-callout-sub {
+  font-size: 11px;
+  color: #64748B;
+  font-weight: 500;
+  margin-top: 2px;
+  line-height: 1.3;
+}
+
+/* 7. Super App Item Card */
+.superapp-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 18px;
+  padding: 13px 14px;
+  margin: 0 16px 10px;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.superapp-card:active {
+  transform: scale(0.99);
+}
+
+.superapp-card-img {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid #E2E8F0;
+  flex-shrink: 0;
+}
+
+.superapp-card-thumb {
+  width: 72px;
+  height: 72px;
+  border-radius: 14px;
+  object-fit: cover;
+  border: 1px solid #E2E8F0;
+  flex-shrink: 0;
+}
+
+.superapp-card-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: #0C2B59;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 800;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(12, 43, 89, 0.2);
+}
+
+.superapp-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.superapp-card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.2;
+}
+
+.superapp-card-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0F172A;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.superapp-badge-red,
+.superapp-badge-blue {
+  background: #EFF6FF !important;
+  color: #0878D1 !important;
+  border: 1px solid #BFDBFE !important;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.superapp-badge-green {
+  background: #EFF6FF !important;
+  color: #0284C7 !important;
+  border: 1px solid #BAE6FD !important;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.superapp-card-meta {
+  font-size: 11px;
+  color: #64748B;
+  margin-top: 3px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.superapp-card-price {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #0878D1 !important;
+  margin-top: 3px;
+}
+
+.superapp-action-circle {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+  border: none;
+  font-size: 15px;
+}
+.superapp-action-circle:active {
+  transform: scale(0.92);
+}
+.superapp-action-circle.solid-blue {
+  background: #0C2B59;
+  color: #FFFFFF;
+  box-shadow: 0 2px 6px rgba(12, 43, 89, 0.25);
+}
+.superapp-action-circle.outline-chat {
+  background: #FFFFFF;
+  color: #0C2B59;
+  border: 1.5px solid #CBD5E1;
+}
+
+.superapp-card-chevron {
+  font-size: 18px;
+  color: #94A3B8;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+/* 8. Bottom Empty / Callout Card */
+.superapp-bottom-empty-card {
+  margin: 12px 16px 20px;
+  background: #FFFFFF;
+  border: 1px dashed #CBD5E1;
+  border-radius: 18px;
+  padding: 20px 16px;
+  text-align: center;
+}
+.superapp-bottom-empty-icon {
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+.superapp-bottom-empty-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #0F172A;
+}
+.superapp-bottom-empty-sub {
+  font-size: 11.5px;
+  color: #64748B;
+  margin: 3px 0 12px;
+}
+.superapp-bottom-empty-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+
+
+/* ==============================================================
+   SERVICES & BUSINESSES ROYAL NAVY THEME (NO GREEN)
+   ============================================================== */
+#screen-services .services-kerala-top-bar,
+#screen-business .services-kerala-top-bar {
+  background: linear-gradient(135deg, #0A2240 0%, #0C2B59 55%, #163E75 100%) !important;
+  box-shadow: 0 4px 18px rgba(10, 34, 64, 0.22) !important;
+}
+
+#screen-services .services-kerala-top-bar h1,
+#screen-business .services-kerala-top-bar h1 {
+  color: #FFFFFF !important;
+}
+
+#screen-services .services-kerala-top-bar button:not(.round-back-btn),
+#screen-business .services-kerala-top-bar button:not(.round-back-btn) {
+  background: #FFFFFF !important;
+  color: #0C2B59 !important;
+  font-weight: 800 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+}
+
+#screen-services .home-kerala-search-wrap,
+#screen-business .home-kerala-search-wrap {
+  border-color: #BFDBFE !important;
+  box-shadow: 0 4px 14px rgba(12, 43, 89, 0.08) !important;
+}
+
+#screen-services .home-kerala-search-btn-icon,
+#screen-business .home-kerala-search-btn-icon {
+  background: linear-gradient(135deg, #0A2240 0%, #0C2B59 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 3px 8px rgba(10, 34, 64, 0.25) !important;
+}
+
+#screen-services .home-kerala-search-action-btn,
+#screen-business .home-kerala-search-action-btn {
+  background: linear-gradient(135deg, #0C2B59 0%, #163E75 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 3px 10px rgba(12, 43, 89, 0.25) !important;
+}
+
+#screen-services .home-kerala-sec-header .home-kerala-grid-box,
+#screen-business .home-kerala-sec-header .home-kerala-grid-box {
+  background: #0C2B59 !important;
+}
+
+#screen-services .home-kerala-sec-title,
+#screen-business .home-kerala-sec-title {
+  color: #0A2240 !important;
+}
+
+#screen-services .home-kerala-sec-sub,
+#screen-business .home-kerala-sec-sub {
+  color: #163E75 !important;
+}
+
+/* ==============================================================
+   UNIVERSAL ROYAL NAVY MODAL & FORM SHEET THEME (ZERO GREEN)
+   Matches the 3-Screen Architecture for ALL inside forms
+   ============================================================== */
+.modal-overlay .modal-sheet {
+  border-top: 4px solid #0C2B59 !important;
+}
+
+.modal-overlay .modal-sheet h2,
+.modal-overlay .modal-sheet h3,
+.modal-overlay .modal-sheet h4,
+.modal-overlay .modal-sheet .modal-title {
+  color: #0A2240 !important;
+  font-weight: 900 !important;
+}
+
+/* Universal primary submit buttons across all forms */
+.modal-overlay .modal-sheet button[type="submit"],
+.modal-overlay .modal-sheet .btn-primary,
+.modal-overlay .modal-sheet .submit-btn,
+.modal-overlay .modal-sheet button.submit,
+.modal-overlay .modal-sheet .prov-submit-btn,
+.modal-overlay .modal-sheet .post-job-submit-btn,
+.modal-overlay .modal-sheet .rental-submit-btn,
+.modal-overlay .modal-sheet .blood-submit-btn,
+.modal-overlay .modal-sheet .service-submit-btn {
+  background: linear-gradient(135deg, #0A2240 0%, #0C2B59 55%, #163E75 100%) !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  box-shadow: 0 4px 14px rgba(12, 43, 89, 0.28) !important;
+  font-weight: 800 !important;
+  transition: transform 0.12s ease !important;
+}
+.modal-overlay .modal-sheet button[type="submit"]:active {
+  transform: scale(0.98) !important;
+}
+
+/* Form active tabs & selectors */
+.modal-overlay .modal-sheet .reg-mode-btn.active,
+.modal-overlay .modal-sheet .tab-btn.active,
+.modal-overlay .modal-sheet .pill-btn.active {
+  background: #0C2B59 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 6px rgba(12, 43, 89, 0.2) !important;
+}
+
+/* Form input focus styles */
+.modal-overlay .modal-sheet input:focus,
+.modal-overlay .modal-sheet select:focus,
+.modal-overlay .modal-sheet textarea:focus {
+  border-color: #0C2B59 !important;
+  box-shadow: 0 0 0 3px rgba(12, 43, 89, 0.12) !important;
+  outline: none !important;
+}
+
+/* Form close button */
+.modal-overlay .modal-sheet .modal-close-btn {
+  background: #EFF6FF !important;
+  color: #0C2B59 !important;
+  border: 1px solid #BFDBFE !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+}
+
+/* Service Detail Modal Hero */
+.service-detail-hero {
+  background: linear-gradient(135deg, #0A2240 0%, #0C2B59 55%, #163E75 100%) !important;
+  color: #FFFFFF !important;
+}
+

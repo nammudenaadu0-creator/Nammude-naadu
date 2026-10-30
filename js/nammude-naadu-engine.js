@@ -1759,10 +1759,10 @@
       btn.style.borderColor = isActive ? '#059669' : '#6EE7B7';
     });
 
-    // Synchronize Nearby Screen radius chips
-    document.querySelectorAll('.radius-chip').forEach(btn => {
+    // Synchronize Nearby Screen & SuperApp radius chips
+    document.querySelectorAll('.radius-chip, .superapp-radius-pill').forEach(btn => {
       const chipKm = parseFloat(btn.textContent) || 0;
-      const isAll = btn.textContent.includes('എല്ലാം');
+      const isAll = btn.textContent.includes('എല്ലാം') || btn.textContent.includes('All') || btn.textContent.includes('മാക്സ്');
       const isActive = (isAll && r >= 1000) || (!isAll && chipKm === r);
       btn.classList.toggle('active', isActive);
     });
@@ -1783,6 +1783,10 @@
   window.setGlobalRadius = setGlobalRadius;
 
   function setRadiusFilter(module, radiusKm, clickedChip) {
+    if (clickedChip && clickedChip.parentElement) {
+      clickedChip.parentElement.querySelectorAll('.superapp-radius-pill, .radius-chip').forEach(c => c.classList.remove('active'));
+      clickedChip.classList.add('active');
+    }
     setGlobalRadius(radiusKm, clickedChip);
   }
   window.setRadiusFilter = setRadiusFilter;
@@ -7555,6 +7559,7 @@
     const container = document.getElementById('bloodDonorsListContainer');
     if (!container) return;
 
+    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'en')) === 'en';
     const maxRadius = APP_STATE.radiusFilters.blood || APP_STATE.activeRadiusKm || 50;
 
     let list = [...(APP_STATE.bloodDonors || [])];
@@ -7563,6 +7568,12 @@
       d._calculatedDist = getItemDistanceKm(d, APP_STATE.location.lat, APP_STATE.location.lon);
     });
     list.sort((a, b) => (Number(a._calculatedDist) || 0) - (Number(b._calculatedDist) || 0));
+
+    // Update stats row
+    const countBadge = document.getElementById('bloodDonorsCountBadge');
+    if (countBadge) countBadge.textContent = String(list.length);
+    const radiusValEl = document.getElementById('bloodRadiusValTxt');
+    if (radiusValEl) radiusValEl.textContent = maxRadius >= 1000 ? (isEn ? 'All Kerala' : 'മുഴുവൻ') : `${maxRadius} km`;
 
     // Filter by blood group
     if (APP_STATE.activeBloodGroup !== 'all') {
@@ -7577,50 +7588,87 @@
       // Fallback: show nearby donors registered across Kerala so user isn't shown empty screen!
       inRadius = list;
       noticeHtml = `
-        <div style="background:#FFF1F2;border:1px solid #FECDD3;border-radius:12px;padding:9px 12px;font-size:12px;color:#991B1B;font-weight:700;display:flex;align-items:center;gap:6px;margin-bottom:6px">
+        <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:14px;padding:9px 12px;font-size:12px;color:#1E40AF;font-weight:700;display:flex;align-items:center;gap:6px;margin:0 16px 8px">
           <span>📍</span>
-          <span>സമീപ പ്രദേശങ്ങളിലെ രജിസ്റ്റർ ചെയ്ത രക്തദാതാക്കളെ ഉൾപ്പെടുത്തിയിരിക്കുന്നു (${list.length} പേർ).</span>
+          <span>${isEn ? `Showing all registered volunteer donors (${list.length} donors)` : `സമീപ പ്രദേശങ്ങളിലെ രജിസ്റ്റർ ചെയ്ത രക്തദാതാക്കളെ ഉൾപ്പെടുത്തിയിരിക്കുന്നു (${list.length} പേർ).`}</span>
         </div>
       `;
     }
 
     if (inRadius.length === 0) {
       container.innerHTML = `
-        <div style="text-align:center;padding:32px 16px;background:#fff;border-radius:16px;border:1px dashed #FECACA">
-          <div style="font-size:32px;margin-bottom:6px">🩸</div>
-          <div style="font-weight:800;font-size:14px;color:#1E293B">രക്തദാതാക്കൾ ലഭ്യമായിട്ടില്ല</div>
-          <div style="font-size:12px;color:#64748B;margin:4px 0 14px">ഈ ഗ്രൂപ്പിൽ രക്തദാതാക്കൾ ഇതുവരെ രജിസ്റ്റർ ചെയ്തിട്ടില്ല. താങ്കൾക്ക് രക്തദാതാവായി രജിസ്റ്റർ ചെയ്യാം.</div>
-          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-            <button onclick="openRegisterDonorModal()" style="padding:9px 16px;background:#DC2626;color:#fff;border:none;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer">🩸 രക്തദാതാവായി രജിസ്റ്റർ ചെയ്യാം</button>
+        <div class="superapp-bottom-empty-card">
+          <div class="superapp-bottom-empty-icon">🩸</div>
+          <div class="superapp-bottom-empty-title">${isEn ? 'No blood donors found' : 'രക്തദാതാക്കൾ ലഭ്യമായിട്ടില്ല'}</div>
+          <div class="superapp-bottom-empty-sub">${isEn ? 'No volunteer donors registered for this group in this area yet.' : 'ഈ ഗ്രൂപ്പിൽ രക്തദാതാക്കൾ ഇതുവരെ രജിസ്റ്റർ ചെയ്തിട്ടില്ല. താങ്കൾക്ക് രക്തദാതാവായി രജിസ്റ്റർ ചെയ്യാം.'}</div>
+          <div class="superapp-bottom-empty-actions">
+            <button class="superapp-hero-btn solid" onclick="openRegisterDonorModal()" style="padding:10px 20px">
+              <span>➕</span> <span>${isEn ? 'Become a Donor' : 'രക്തദാതാവാകാം'}</span>
+            </button>
           </div>
         </div>
       `;
       return;
     }
 
-    container.innerHTML = noticeHtml + inRadius.map(d => {
-      const donorAvatar = getRegisteredUserAvatar(d.phone || d.id || d.name);
+    const cardsHtml = inRadius.map(d => {
+      const donorPhone = d.phone || '';
+      const donorName = getRegisteredUserName(donorPhone || d.id || d.name, d.name || (isEn ? 'Blood Donor' : 'രക്തദാതാവ്'));
+      const donorAvatar = getRegisteredUserAvatar(donorPhone || d.id || donorName);
+      const locText = isEn 
+        ? (window.NN_I18N ? window.NN_I18N.translatePlace(resolveItemLocation(d) || APP_STATE.location.name) : (resolveItemLocation(d) || APP_STATE.location.name))
+        : (resolveItemLocation(d) || APP_STATE.location.name || 'തത്സമയ ലൊക്കേഷൻ');
+      const distLabel = isEn ? `${d._calculatedDist} km` : `${d._calculatedDist} km അകലെ`;
+      const statusText = d.status 
+        ? (isEn ? (window.NN_I18N ? window.NN_I18N.translateText(d.status) : d.status) : d.status)
+        : (isEn ? 'Available Now' : 'ഇപ്പോൾ ലഭ്യമാണ്');
+
       return `
-      <div style="background:#fff;border-radius:16px;padding:14px;border:1px solid #FECACA;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,0.03)">
-        <div style="display:flex;align-items:center;gap:12px">
-          <div style="position:relative;width:46px;height:46px;flex-shrink:0">
-            <img src="${donorAvatar}" alt="${escapeHtml(d.name || 'രക്തദാതാവ്')}" style="width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid #FECACA" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
-            <span style="position:absolute;bottom:-2px;right:-2px;background:#DC2626;color:#fff;font-size:9.5px;font-weight:900;padding:1px 5px;border-radius:6px;border:1.5px solid #fff;line-height:1.2">${d.group || 'O+'}</span>
+        <div class="superapp-card" onclick="openChatForDonor('${donorName.replace(/'/g, "\\'")}', '${donorPhone}', '${d.group || 'O+'}')">
+          <img src="${donorAvatar}" alt="${escapeHtml(donorName)}" class="superapp-card-img" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
+          <div class="superapp-card-body">
+            <div class="superapp-card-title-row">
+              <span class="superapp-card-title">${escapeHtml(donorName)}</span>
+              <span class="superapp-badge-blue">${d.group || 'O+'}</span>
+            </div>
+            <div class="superapp-card-meta">
+              <span>📍 ${escapeHtml(locText)} (${distLabel})</span>
+            </div>
+            <div style="font-size:11px;font-weight:700;color:#059669;margin-top:2px;display:flex;align-items:center;gap:4px">
+              <span>🟢</span> <span>${escapeHtml(statusText)}</span>
+            </div>
+            ${donorPhone ? `<div style="font-size:11px;color:#64748B;font-weight:600;margin-top:2px">${donorPhone.startsWith('+') ? donorPhone : ('+91 ' + donorPhone.slice(-10))}</div>` : ''}
           </div>
-          <div>
-            <div style="font-weight:800;font-size:14px;color:#111827">${escapeHtml(d.name || 'രക്തദാതാവ്')}</div>
-            <div style="font-size:11px;color:#6B7280">📍 ${escapeHtml(resolveItemLocation(d) || APP_STATE.location.name || 'തത്സമയ ലൊക്കേഷൻ')} • <span style="color:#059669;font-weight:800">${d._calculatedDist} km അകലെ</span>${d.status ? ` • <span style="color:#10B981;font-weight:700">${escapeHtml(d.status)}</span>` : ''}</div>
+          <div style="display:flex;align-items:center;gap:8px" onclick="event.stopPropagation()">
+            ${donorPhone ? `
+              <a href="tel:${donorPhone}" class="superapp-action-circle solid-blue" title="${isEn ? 'Call Donor' : 'വിളിക്കൂ'}">
+                📞
+              </a>
+            ` : ''}
+            <button type="button" class="superapp-action-circle outline-chat" onclick="openChatForDonor('${donorName.replace(/'/g, "\\'")}', '${donorPhone}', '${d.group || 'O+'}')" title="${isEn ? 'Chat' : 'ചാറ്റ്'}">
+              💬
+            </button>
           </div>
         </div>
-        <div>
-          <button onclick="openChatForDonor('${(d.name || 'രക്തദാതാവ്').replace(/'/g, "\\'")}', '${d.phone || ''}', '${d.group || 'O+'}')" style="background:linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);color:#fff;border:none;padding:9px 14px;border-radius:10px;cursor:pointer;font-size:12.5px;font-weight:800;display:flex;align-items:center;gap:6px;box-shadow:0 2px 6px rgba(220,38,38,0.25)">
-            <span>💬 ചാറ്റ്</span>
+      `;
+    }).join('');
+
+    const bottomCardHtml = `
+      <div class="superapp-bottom-empty-card">
+        <div class="superapp-bottom-empty-icon">💧</div>
+        <div class="superapp-bottom-empty-title">${isEn ? 'No more donors nearby?' : 'കൂടുതൽ ദാതാക്കൾ പരിസരത്ത് ഇല്ലേ?'}</div>
+        <div class="superapp-bottom-empty-sub">${isEn ? 'Consider becoming a donor and help save lives.' : 'രക്തദാതാവായി സ്വയം രജിസ്റ്റർ ചെയ്ത് ജീവൻ രക്ഷിക്കാൻ പങ്കാളിയാകൂ.'}</div>
+        <div class="superapp-bottom-empty-actions">
+          <button class="superapp-hero-btn solid" onclick="openRegisterDonorModal()" style="padding:10px 22px">
+            <span>➕</span> <span>${isEn ? 'Become a Donor' : 'രക്തദാതാവാകാം'}</span>
           </button>
         </div>
       </div>
     `;
-    }).join('');
+
+    container.innerHTML = noticeHtml + cardsHtml + bottomCardHtml;
   }
+  window.renderBloodDonorsList = renderBloodDonorsList;
 
   function openBloodModal() {
     navTo('blood');
@@ -9483,11 +9531,28 @@
   }
   window.switchJobsTab = switchJobsTab;
 
-  function filterJobCategory(cat) {
+  function filterJobCategory(cat, btn) {
     APP_STATE.activeJobCategory = cat;
-    document.querySelectorAll('.job-cat-chip').forEach(c => {
-      c.classList.toggle('active', c.dataset.cat === cat);
+    document.querySelectorAll('.job-cat-chip, #jobsCategoriesChipsBar .superapp-chip').forEach(c => {
+      c.classList.toggle('active', c.dataset.cat === cat || (cat === 'all' && (c.dataset.cat === 'all' || c.textContent.trim() === 'All')));
     });
+    if (btn && btn.parentElement) {
+      btn.parentElement.querySelectorAll('.superapp-chip, .job-cat-chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+    }
+    renderJobsScreen();
+  }
+  window.filterJobCategory = filterJobCategory;
+
+  function filterJobCategory(cat, btn) {
+    APP_STATE.activeJobCategory = cat;
+    document.querySelectorAll('.job-cat-chip, #jobsCategoriesChipsBar .superapp-chip').forEach(c => {
+      c.classList.toggle('active', c.dataset.cat === cat || (cat === 'all' && (c.dataset.cat === 'all' || c.textContent.trim() === 'All')));
+    });
+    if (btn && btn.parentElement) {
+      btn.parentElement.querySelectorAll('.superapp-chip, .job-cat-chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+    }
     renderJobsScreen();
   }
   window.filterJobCategory = filterJobCategory;
@@ -9496,7 +9561,8 @@
     const jobsListEl = document.getElementById('jobsListContainer');
     if (!jobsListEl) return;
 
-    const maxRadius = APP_STATE.radiusFilters.jobs;
+    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'en')) === 'en';
+    const maxRadius = APP_STATE.radiusFilters.jobs || APP_STATE.activeRadiusKm || 25;
     const searchInput = document.getElementById('jobSearchInput');
     const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
 
@@ -9509,61 +9575,100 @@
     });
 
     allMatchingJobs.sort((a, b) => a._calculatedDist - b._calculatedDist);
-
     let filteredJobs = (maxRadius >= 1000) ? allMatchingJobs : allMatchingJobs.filter(j => j._calculatedDist <= maxRadius);
 
     if (filteredJobs.length === 0) {
-      const radiusLabel = (maxRadius >= 1000) ? '' : ` (${maxRadius} km)`;
       jobsListEl.innerHTML = `
-        <div style="text-align:center;padding:36px 16px;background:#fff;border-radius:16px;border:1px solid #E2E8F0">
-          <div style="font-size:36px;margin-bottom:8px">💼</div>
-          <h3 style="margin:0 0 6px;color:#111827">ഈ പ്രദേശത്ത് തൊഴിലുകൾ ലഭ്യമല്ല</h3>
-          <p style="color:#6B7280;margin:0 0 14px;font-size:13px"><b>${escapeHtml(APP_STATE.location.name)}</b> പരിസരത്ത്${radiusLabel} തൊഴിൽ അവസരങ്ങളൊന്നും കണ്ടെത്തിയില്ല.</p>
-          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-            <button onclick="setGlobalRadius(25, null)" style="background:#EFF6FF;color:#0284C7;border:1px solid #BAE6FD;border-radius:10px;padding:8px 14px;font-weight:700;font-size:12px;cursor:pointer">25 km പരിധി</button>
-            <button onclick="setGlobalRadius(1000, null)" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;border-radius:10px;padding:8px 14px;font-weight:700;font-size:12px;cursor:pointer">മുഴുവൻ കാണുക</button>
-            <button onclick="openPostJobModal()" style="background:#0878D1;color:#fff;border:none;border-radius:10px;padding:8px 16px;font-weight:800;font-size:12px;cursor:pointer">➕ തൊഴിൽ നൽകാം</button>
+        <div class="superapp-bottom-empty-card">
+          <div class="superapp-bottom-empty-icon">🔍</div>
+          <div class="superapp-bottom-empty-title">${isEn ? 'No jobs found in this area.' : 'ഈ പ്രദേശത്ത് തൊഴിലുകൾ ലഭ്യമല്ല'}</div>
+          <div class="superapp-bottom-empty-sub">${isEn ? 'Try increasing the search radius or post a job.' : 'പരിധി വർദ്ധിപ്പിക്കുകയോ പുതിയ തൊഴിൽ അവസരം നൽകുകയോ ചെയ്യാം.'}</div>
+          <div class="superapp-bottom-empty-actions">
+            <button class="superapp-hero-btn outline" onclick="setRadiusFilter('jobs', 25, null)" style="padding:9px 18px">
+              <span>${isEn ? 'Increase Radius' : '25 km പരിധി'}</span>
+            </button>
+            <button class="superapp-hero-btn solid" onclick="openPostJobModal()" style="padding:9px 18px">
+              <span>➕</span> <span>${isEn ? 'Post a Job' : 'തൊഴിൽ നൽകാം'}</span>
+            </button>
           </div>
         </div>
       `;
-    } else {
-      jobsListEl.innerHTML = filteredJobs.map(j => `
-        <div class="job-card">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start">
-            <div>
-              <h3 style="margin:0 0 4px;font-size:15px;color:#111827">${j.title}</h3>
-              <div style="font-size:12px;color:#0284C7;font-weight:700">${j.employer}</div>
-            </div>
-            <span class="job-salary-badge">💰 ${formatPrice(j.salary)}</span>
-          </div>
-
-          <div style="font-size:12.5px;color:#4B5563;line-height:1.5">${j.description}</div>
-
-          <div style="font-size:11px;color:#6B7280;display:flex;align-items:center;gap:6px">
-            <span>📍 ${j.location}</span>
-            <span>•</span>
-            <span style="color:#0E7043;font-weight:700">${j._calculatedDist} km അകലെ</span>
-          </div>
-
-          <div style="display:flex;gap:8px;margin-top:6px">
-            <button onclick="openApplyJobModal('${j.id}', '${j.title.replace(/'/g, "\\'")}', '${j.employer.replace(/'/g, "\\'")}', '${j.employerPhone}')" 
-                    style="flex:1;background:#0878D1;color:#fff;border:none;padding:10px;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer">
-              📝 അപേക്ഷിക്കുക
-            </button>
-            <button onclick="openChatForJob('${j.id}')" 
-                    style="flex:1;background:#E0F2FE;color:#0369A1;border:1px solid #BAE6FD;padding:10px 14px;border-radius:10px;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
-              💬 ചാറ്റ്
-            </button>
-          </div>
-        </div>
-      `).join('');
+      return;
     }
+
+    const categoryIcons = {
+      it: '</>',
+      education: '🎓',
+      sales: '📢',
+      finance: '💰',
+      healthcare: '🏥',
+      driver: '🚗',
+      hotel: '🍳',
+      delivery: '🛵',
+      other: '💼'
+    };
+
+    const cardsHtml = filteredJobs.map(j => {
+      const employerName = getRegisteredUserName(j.employerPhone || j.employer, j.employer);
+      const iconText = categoryIcons[j.category] || '💼';
+      const locText = isEn
+        ? (window.NN_I18N ? window.NN_I18N.translatePlace(j.location) : j.location)
+        : (j.location || 'കേരളം');
+      const distText = isEn ? `${j._calculatedDist} km` : `${j._calculatedDist} km അകലെ`;
+      const salaryText = formatPrice(j.salary);
+      const jobTypeTag = isEn ? 'Full Time' : 'മുഴുവൻ സമയം';
+      const catLabel = isEn
+        ? (window.NN_I18N ? window.NN_I18N.translateTrade(j.category) : j.category)
+        : j.category;
+
+      return `
+        <div class="superapp-card" onclick="openJobDetailModal('${j.id}')">
+          <div class="superapp-card-icon-box">${iconText}</div>
+          <div class="superapp-card-body">
+            <div class="superapp-card-title">${escapeHtml(j.title)}</div>
+            <div style="font-size:11.5px;color:#0C2B59;font-weight:700;margin-top:2px">🏢 ${escapeHtml(employerName)}</div>
+            <div class="superapp-card-meta">
+              <span>📍 ${escapeHtml(locText)} (${distText})</span>
+            </div>
+            ${salaryText ? `<div class="superapp-card-price">${salaryText}</div>` : ''}
+            <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
+              <span class="superapp-badge-blue">${jobTypeTag}</span>
+              ${catLabel ? `<span class="superapp-badge-green">${escapeHtml(catLabel)}</span>` : ''}
+            </div>
+          </div>
+          <span class="superapp-card-chevron">›</span>
+        </div>
+      `;
+    }).join('');
+
+    const bottomCardHtml = `
+      <div class="superapp-bottom-empty-card">
+        <div class="superapp-bottom-empty-icon">🔍</div>
+        <div class="superapp-bottom-empty-title">${isEn ? 'No more jobs in this range?' : 'കൂടുതൽ തൊഴിലുകൾ തിരയുകയാണോ?'}</div>
+        <div class="superapp-bottom-empty-sub">${isEn ? 'Try increasing the search radius or post a new job vacancy.' : 'പരിധി വർദ്ധിപ്പിക്കുകയോ നിങ്ങളുടെ സ്ഥാപനത്തിലെ ഒഴിവുകൾ പോസ്റ്റ് ചെയ്യുകയോ ചെയ്യാം.'}</div>
+        <div class="superapp-bottom-empty-actions">
+          <button class="superapp-hero-btn outline" onclick="setRadiusFilter('jobs', 50, null)" style="padding:9px 18px">
+            <span>${isEn ? 'Increase Radius' : 'പരിധി വർദ്ധിപ്പിക്കാം'}</span>
+          </button>
+          <button class="superapp-hero-btn solid" onclick="openPostJobModal()" style="padding:9px 18px">
+            <span>➕</span> <span>${isEn ? 'Post a Job' : 'തൊഴിൽ നൽകാം'}</span>
+          </button>
+        </div>
+      </div>
+    `;
+
+    jobsListEl.innerHTML = cardsHtml + bottomCardHtml;
   }
 
   function filterRentalCategory(cat, btn) {
     APP_STATE.activeRentalCategory = cat;
-    document.querySelectorAll('.rental-cat-chip').forEach(c => c.classList.remove('active'));
-    if (btn) btn.classList.add('active');
+    document.querySelectorAll('.rental-cat-chip, #rentalsCategoriesChipsBar .superapp-chip').forEach(c => {
+      c.classList.toggle('active', c.dataset.cat === cat || (cat === 'all' && (c.dataset.cat === 'all' || c.textContent.trim() === 'All')));
+    });
+    if (btn && btn.parentElement) {
+      btn.parentElement.querySelectorAll('.superapp-chip, .rental-cat-chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+    }
     renderRentalsScreen();
   }
   window.filterRentalCategory = filterRentalCategory;
@@ -9572,6 +9677,7 @@
     const rentalsListEl = document.getElementById('rentalsListContainer');
     if (!rentalsListEl) return;
 
+    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'en')) === 'en';
     const maxRadius = APP_STATE.radiusFilters.rentals || 10;
     const searchInput = document.getElementById('rentalSearchInput');
     const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
@@ -9600,57 +9706,79 @@
     });
 
     allMatchingRentals.sort((a, b) => a._calculatedDist - b._calculatedDist);
-
     let filteredRentals = (maxRadius >= 1000) ? allMatchingRentals : allMatchingRentals.filter(r => r._calculatedDist <= maxRadius);
 
     if (filteredRentals.length === 0) {
-      const radiusLabel = (maxRadius >= 1000) ? '' : ` (${maxRadius} km)`;
       rentalsListEl.innerHTML = `
-        <div style="text-align:center;padding:36px 16px;background:#fff;border-radius:16px;border:1px solid #E2E8F0">
-          <div style="font-size:36px;margin-bottom:8px">🏠</div>
-          <h3 style="margin:0 0 6px;color:#111827">ഈ പ്രദേശത്ത് ഇനങ്ങൾ ലഭ്യമല്ല</h3>
-          <p style="color:#6B7280;margin:0 0 14px;font-size:13px"><b>${escapeHtml(APP_STATE.location.name)}</b> പരിസരത്ത്${radiusLabel} വാടക/വിൽപന ഇനങ്ങൾ കണ്ടെത്തിയില്ല.</p>
-          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-            <button onclick="setGlobalRadius(25, null)" style="background:#ECFDF5;color:#0E7043;border:1px solid #A7F3D0;border-radius:10px;padding:8px 14px;font-weight:700;font-size:12px;cursor:pointer">25 km പരിധി</button>
-            <button onclick="setGlobalRadius(1000, null)" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;border-radius:10px;padding:8px 14px;font-weight:700;font-size:12px;cursor:pointer">മുഴുവൻ കാണുക</button>
-            <button onclick="openAddRentalModal()" style="background:#0E7043;color:#fff;border:none;border-radius:10px;padding:8px 16px;font-weight:800;font-size:12px;cursor:pointer">➕ ലിസ്റ്റ് ചെയ്യാം</button>
+        <div class="superapp-bottom-empty-card">
+          <div class="superapp-bottom-empty-icon">🛍️</div>
+          <div class="superapp-bottom-empty-title">${isEn ? 'No listings found in this area.' : 'ഈ പ്രദേശത്ത് ഇനങ്ങൾ ലഭ്യമല്ല'}</div>
+          <div class="superapp-bottom-empty-sub">${isEn ? 'Try increasing the search radius or add a listing.' : 'പരിധി വർദ്ധിപ്പിക്കുകയോ പുതിയ വാടക/വിൽപന ഇനം ലിസ്റ്റ് ചെയ്യുകയോ ചെയ്യാം.'}</div>
+          <div class="superapp-bottom-empty-actions">
+            <button class="superapp-hero-btn outline" onclick="setRadiusFilter('rentals', 25, null)" style="padding:9px 18px">
+              <span>${isEn ? 'Increase Radius' : '25 km പരിധി'}</span>
+            </button>
+            <button class="superapp-hero-btn solid" onclick="openAddRentalModal()" style="padding:9px 18px">
+              <span>➕</span> <span>${isEn ? 'Add Listing' : 'ലിസ്റ്റ് ചെയ്യാം'}</span>
+            </button>
           </div>
         </div>
       `;
-    } else {
-      rentalsListEl.innerHTML = filteredRentals.map(r => {
-        const isSale = r.listingType === 'sale' || (r.type && r.type.includes('വിൽപന')) || (r.title && r.title.includes('വിൽപന'));
-        const typeBadge = isSale
-          ? '<span style="background:#EFF6FF;color:#1D4ED8;border:1px solid #BFDBFE;padding:3px 8px;border-radius:6px;font-weight:800;font-size:11px;display:inline-flex;align-items:center;gap:3px"><span>🏷️</span><span>വിൽപനയ്ക്ക്</span></span>'
-          : '<span style="background:#ECFDF5;color:#047857;border:1px solid #A7F3D0;padding:3px 8px;border-radius:6px;font-weight:800;font-size:11px;display:inline-flex;align-items:center;gap:3px"><span>🏠</span><span>വാടകയ്ക്ക്</span></span>';
-
-        const priceBadgeColor = isSale ? '#1D4ED8' : '#B45309';
-        const priceBadgeBg = isSale ? '#EFF6FF' : '#FEF3C7';
-        const priceText = isSale ? `വില: ${formatPrice(r.rate || r.price)}` : formatPrice(r.rate || r.price);
-
-        return `
-          <div class="job-card" style="background:#fff;border-radius:16px;padding:14px;border:1px solid #E2E8F0;box-shadow:0 1px 3px rgba(0,0,0,0.04);margin-bottom:10px">
-            ${r.image ? `<img src="${r.image}" style="width:100%;height:160px;object-fit:cover;border-radius:12px;margin-bottom:10px;border:1px solid #E2E8F0">` : ''}
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
-              <div>
-                <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
-                  ${typeBadge}
-                  <span style="font-size:11px;color:#64748B;font-weight:700">${escapeHtml(r.type || 'ജനറൽ')}</span>
-                </div>
-                <h3 style="margin:0 0 4px;font-size:15px;font-weight:800;color:#0F172A">${escapeHtml(r.title)}</h3>
-              </div>
-              <span style="background:${priceBadgeBg};color:${priceBadgeColor};padding:4px 10px;border-radius:8px;font-size:12.5px;font-weight:800;white-space:nowrap">${priceText}</span>
-            </div>
-            <div style="font-size:12px;color:#64748B;margin-top:4px">
-              <span>ഉടമസ്ഥൻ: <b>${escapeHtml(r.owner)}</b></span> • <span>📍 ${escapeHtml(r.location)}</span> • <span style="color:#0E7043;font-weight:800">${r._calculatedDist || 1.2} km അകലെ</span>
-            </div>
-            <div style="margin-top:10px">
-              <button onclick="openChatForRental('${r.id}')" style="width:100%;background:#0E7043;color:#fff;border:none;padding:10px;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 6px rgba(14,112,67,0.2)">💬 ചാറ്റ്</button>
-            </div>
-          </div>
-        `;
-      }).join('');
+      return;
     }
+
+    const cardsHtml = filteredRentals.map(r => {
+      const isSale = r.listingType === 'sale' || (r.type && r.type.includes('വിൽപന')) || (r.title && r.title.includes('വിൽപന'));
+      const typeBadge = isSale 
+        ? `<span class="superapp-badge-blue">${isEn ? 'For Sale' : 'വിൽപനയ്ക്ക്'}</span>`
+        : `<span class="superapp-badge-green">${isEn ? 'For Rent' : 'വാടകയ്ക്ക്'}</span>`;
+
+      const priceVal = formatPrice(r.rate || r.price);
+      const priceText = isSale ? priceVal : (isEn ? `${priceVal} / month` : `${priceVal} / മാസം`);
+      const ownerName = getRegisteredUserName(r.ownerPhone || r.owner, r.owner);
+      const locText = isEn 
+        ? (window.NN_I18N ? window.NN_I18N.translatePlace(r.location) : r.location)
+        : (r.location || 'കേരളം');
+      const distText = isEn ? `${r._calculatedDist || 1.2} km` : `${r._calculatedDist || 1.2} km അകലെ`;
+      const thumbImg = r.image || 'assets/cat-rentals-3d.jpg';
+
+      return `
+        <div class="superapp-card" onclick="openChatForRental('${r.id}')">
+          <img src="${thumbImg}" class="superapp-card-thumb" alt="${escapeHtml(r.title)}" onerror="this.src='assets/cat-rentals-3d.jpg'">
+          <div class="superapp-card-body">
+            <div class="superapp-card-title-row">
+              ${typeBadge}
+              <span style="font-size:11px;color:#64748B;font-weight:700">• ${escapeHtml(isEn && window.NN_I18N ? window.NN_I18N.translateTrade(r.type || 'General') : (r.type || 'ജനറൽ'))}</span>
+            </div>
+            <div class="superapp-card-title" style="margin-top:2px">${escapeHtml(r.title)}</div>
+            <div class="superapp-card-meta">
+              <span>📍 ${escapeHtml(locText)} (${distText})</span>
+            </div>
+            <div class="superapp-card-price">${priceText}</div>
+            <div style="font-size:11px;color:#64748B;margin-top:3px">👤 ${escapeHtml(ownerName)}</div>
+          </div>
+          <span class="superapp-card-chevron">›</span>
+        </div>
+      `;
+    }).join('');
+
+    const bottomCardHtml = `
+      <div class="superapp-bottom-empty-card">
+        <div class="superapp-bottom-empty-icon">🛍️</div>
+        <div class="superapp-bottom-empty-title">${isEn ? 'No more listings in this area?' : 'കൂടുതൽ ലിസ്റ്റിംഗുകൾ കാണുന്നില്ലേ?'}</div>
+        <div class="superapp-bottom-empty-sub">${isEn ? 'Try increasing the search radius or add your own property / vehicle listing.' : 'പരിധി വർദ്ധിപ്പിക്കുകയോ നിങ്ങളുടെ സ്വന്തം വീട്, വാഹനം, വസ്തു ലിസ്റ്റ് ചെയ്യുകയോ ചെയ്യാം.'}</div>
+        <div class="superapp-bottom-empty-actions">
+          <button class="superapp-hero-btn outline" onclick="setRadiusFilter('rentals', 50, null)" style="padding:9px 18px">
+            <span>${isEn ? 'Increase Radius' : 'പരിധി വർദ്ധിപ്പിക്കാം'}</span>
+          </button>
+          <button class="superapp-hero-btn solid" onclick="openAddRentalModal()" style="padding:9px 18px">
+            <span>➕</span> <span>${isEn ? 'Add Listing' : 'ലിസ്റ്റ് ചെയ്യാം'}</span>
+          </button>
+        </div>
+      </div>
+    `;
+
+    rentalsListEl.innerHTML = cardsHtml + bottomCardHtml;
   }
 
   function openApplyJobModal(id, title, employer, phone) {
