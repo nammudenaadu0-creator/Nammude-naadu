@@ -6050,6 +6050,11 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   font-weight: 900 !important;
 }
 
+#modal-location .modal-sheet > div:first-child h3,
+#modal-location h3 {
+  color: #FFFFFF !important;
+}
+
 /* Universal primary submit buttons across all forms */
 .modal-overlay .modal-sheet button[type="submit"],
 .modal-overlay .modal-sheet .btn-primary,

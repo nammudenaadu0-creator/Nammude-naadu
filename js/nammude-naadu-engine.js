@@ -497,44 +497,44 @@
   // 2. KERALA DISTRICTS & PRESET TOWNS DATABASE
   // ==============================================================
   const KERALA_PRESETS = [
-    { name: 'കണ്ണൂർ (Kannur)', district: 'Kannur', lat: 11.8745, lon: 75.3704 },
-    { name: 'തലശ്ശേരി (Thalassery), കണ്ണൂർ', district: 'Kannur', lat: 11.7480, lon: 75.4894 },
-    { name: 'പയ്യന്നൂർ (Payyanur), കണ്ണൂർ', district: 'Kannur', lat: 12.1009, lon: 75.2038 },
-    { name: 'തളിപ്പറമ്പ് (Taliparamba), കണ്ണൂർ', district: 'Kannur', lat: 12.0437, lon: 75.3585 },
-    { name: 'കാസർഗോഡ് (Kasaragod)', district: 'Kasaragod', lat: 12.5102, lon: 74.9852 },
-    { name: 'കാഞ്ഞങ്ങാട് (Kanhangad), കാസർഗോഡ്', district: 'Kasaragod', lat: 12.3082, lon: 75.0937 },
-    { name: 'കോഴിക്കോട് (Kozhikode)', district: 'Kozhikode', lat: 11.2588, lon: 75.7804 },
-    { name: 'വടകര (Vadakara), കോഴിക്കോട്', district: 'Kozhikode', lat: 11.6033, lon: 75.5908 },
-    { name: 'കൊയിലാണ്ടി (Koyilandy), കോഴിക്കോട്', district: 'Kozhikode', lat: 11.4428, lon: 75.6961 },
-    { name: 'കൽപ്പറ്റ (Kalpetta), വയനാട്', district: 'Wayanad', lat: 11.6103, lon: 76.0827 },
-    { name: 'സുൽത്താൻ ബത്തേരി (Sulthan Bathery), വയനാട്', district: 'Wayanad', lat: 11.6644, lon: 76.2571 },
-    { name: 'മാനന്തവാടി (Mananthavady), വയനാട്', district: 'Wayanad', lat: 11.8026, lon: 76.0033 },
-    { name: 'മലപ്പുറം (Malappuram)', district: 'Malappuram', lat: 11.0732, lon: 76.0740 },
-    { name: 'മഞ്ചേരി (Manjeri), മലപ്പുറം', district: 'Malappuram', lat: 11.1189, lon: 76.1227 },
-    { name: 'പെരിന്തൽമണ്ണ (Perinthalmanna), മലപ്പുറം', district: 'Malappuram', lat: 10.9760, lon: 76.2254 },
-    { name: 'തിരൂർ (Tirur), മലപ്പുറം', district: 'Malappuram', lat: 10.9146, lon: 75.9228 },
-    { name: 'പാലക്കാട് (Palakkad)', district: 'Palakkad', lat: 10.7867, lon: 76.6548 },
-    { name: 'ഒറ്റപ്പാലം (Ottapalam), പാലക്കാട്', district: 'Palakkad', lat: 10.7719, lon: 76.3762 },
-    { name: 'തൃശ്ശൂർ (Thrissur)', district: 'Thrissur', lat: 10.5276, lon: 76.2144 },
-    { name: 'ചാലക്കുടി (Chalakudy), തൃശ്ശൂർ', district: 'Thrissur', lat: 10.3070, lon: 76.3338 },
-    { name: 'ഗുരുവായൂർ (Guruvayur), തൃശ്ശൂർ', district: 'Thrissur', lat: 10.5947, lon: 76.0409 },
-    { name: 'കൊച്ചി (Kochi), എറണാകുളം', district: 'Ernakulam', lat: 9.9816, lon: 76.2999 },
-    { name: 'ആലുവ (Aluva), എറണാകുളം', district: 'Ernakulam', lat: 10.1076, lon: 76.3516 },
-    { name: 'അങ്കമാലി (Angamaly), എറണാകുളം', district: 'Ernakulam', lat: 10.1960, lon: 76.3860 },
-    { name: 'തൊടുപുഴ (Thodupuzha), ഇടുക്കി', district: 'Idukki', lat: 9.8959, lon: 76.7184 },
-    { name: 'മൂന്നാർ (Munnar), ഇടുക്കി', district: 'Idukki', lat: 10.0889, lon: 77.0595 },
-    { name: 'കോട്ടയം (Kottayam)', district: 'Kottayam', lat: 9.5916, lon: 76.5222 },
-    { name: 'പാലാ (Pala), കോട്ടയം', district: 'Kottayam', lat: 9.7107, lon: 76.6841 },
-    { name: 'ആലപ്പുഴ (Alappuzha)', district: 'Alappuzha', lat: 9.4981, lon: 76.3388 },
-    { name: 'ചേർത്തല (Cherthala), ആലപ്പുഴ', district: 'Alappuzha', lat: 9.6845, lon: 76.3323 },
-    { name: 'പത്തനംതിട്ട (Pathanamthitta)', district: 'Pathanamthitta', lat: 9.2648, lon: 76.7870 },
-    { name: 'അടൂർ (Adoor), പത്തനംതിട്ട', district: 'Pathanamthitta', lat: 9.1530, lon: 76.7356 },
-    { name: 'തിരുവല്ല (Thiruvalla), പത്തനംതിട്ട', district: 'Pathanamthitta', lat: 9.3835, lon: 76.5741 },
-    { name: 'കൊല്ലം (Kollam)', district: 'Kollam', lat: 8.8932, lon: 76.6141 },
-    { name: 'കൊട്ടാരക്കര (Kottarakkara), കൊല്ലം', district: 'Kollam', lat: 8.9989, lon: 76.7709 },
-    { name: 'തിരുവനന്തപുരം (Thiruvananthapuram)', district: 'Thiruvananthapuram', lat: 8.5241, lon: 76.9366 },
-    { name: 'ആറ്റിങ്ങൽ (Attingal), തിരുവനന്തപുരം', district: 'Thiruvananthapuram', lat: 8.6960, lon: 76.8140 },
-    { name: 'വർക്കല (Varkala), തിരുവനന്തപുരം', district: 'Thiruvananthapuram', lat: 8.7379, lon: 76.7163 }
+    { name: 'Kannur', enName: 'Kannur', mlName: 'കണ്ണൂർ', district: 'Kannur', mlDistrict: 'കണ്ണൂർ', lat: 11.8745, lon: 75.3704 },
+    { name: 'Thalassery, Kannur', enName: 'Thalassery, Kannur', mlName: 'തലശ്ശേരി, കണ്ണൂർ', district: 'Kannur', mlDistrict: 'കണ്ണൂർ', lat: 11.7480, lon: 75.4894 },
+    { name: 'Payyanur, Kannur', enName: 'Payyanur, Kannur', mlName: 'പയ്യന്നൂർ, കണ്ണൂർ', district: 'Kannur', mlDistrict: 'കണ്ണൂർ', lat: 12.1009, lon: 75.2038 },
+    { name: 'Taliparamba, Kannur', enName: 'Taliparamba, Kannur', mlName: 'തളിപ്പറമ്പ്, കണ്ണൂർ', district: 'Kannur', mlDistrict: 'കണ്ണൂർ', lat: 12.0437, lon: 75.3585 },
+    { name: 'Kasaragod', enName: 'Kasaragod', mlName: 'കാസർഗോഡ്', district: 'Kasaragod', mlDistrict: 'കാസർഗോഡ്', lat: 12.5102, lon: 74.9852 },
+    { name: 'Kanhangad, Kasaragod', enName: 'Kanhangad, Kasaragod', mlName: 'കാഞ്ഞങ്ങാട്, കാസർഗോഡ്', district: 'Kasaragod', mlDistrict: 'കാസർഗോഡ്', lat: 12.3082, lon: 75.0937 },
+    { name: 'Kozhikode', enName: 'Kozhikode', mlName: 'കോഴിക്കോട്', district: 'Kozhikode', mlDistrict: 'കോഴിക്കോട്', lat: 11.2588, lon: 75.7804 },
+    { name: 'Vadakara, Kozhikode', enName: 'Vadakara, Kozhikode', mlName: 'വടകര, കോഴിക്കോട്', district: 'Kozhikode', mlDistrict: 'കോഴിക്കോട്', lat: 11.6033, lon: 75.5908 },
+    { name: 'Koyilandy, Kozhikode', enName: 'Koyilandy, Kozhikode', mlName: 'കൊയിലാണ്ടി, കോഴിക്കോട്', district: 'Kozhikode', mlDistrict: 'കോഴിക്കോട്', lat: 11.4428, lon: 75.6961 },
+    { name: 'Kalpetta, Wayanad', enName: 'Kalpetta, Wayanad', mlName: 'കൽപ്പറ്റ, വയനാട്', district: 'Wayanad', mlDistrict: 'വയനാട്', lat: 11.6103, lon: 76.0827 },
+    { name: 'Sulthan Bathery, Wayanad', enName: 'Sulthan Bathery, Wayanad', mlName: 'സുൽത്താൻ ബത്തേരി, വയനാട്', district: 'Wayanad', mlDistrict: 'വയനാട്', lat: 11.6644, lon: 76.2571 },
+    { name: 'Mananthavady, Wayanad', enName: 'Mananthavady, Wayanad', mlName: 'മാനന്തവാടി, വയനാട്', district: 'Wayanad', mlDistrict: 'വയനാട്', lat: 11.8026, lon: 76.0033 },
+    { name: 'Malappuram', enName: 'Malappuram', mlName: 'മലപ്പുറം', district: 'Malappuram', mlDistrict: 'മലപ്പുറം', lat: 11.0732, lon: 76.0740 },
+    { name: 'Manjeri, Malappuram', enName: 'Manjeri, Malappuram', mlName: 'മഞ്ചേരി, മലപ്പുറം', district: 'Malappuram', mlDistrict: 'മലപ്പുറം', lat: 11.1189, lon: 76.1227 },
+    { name: 'Perinthalmanna, Malappuram', enName: 'Perinthalmanna, Malappuram', mlName: 'പെരിന്തൽമണ്ണ, മലപ്പുറം', district: 'Malappuram', mlDistrict: 'മലപ്പുറം', lat: 10.9760, lon: 76.2254 },
+    { name: 'Tirur, Malappuram', enName: 'Tirur, Malappuram', mlName: 'തിരൂർ, മലപ്പുറം', district: 'Malappuram', mlDistrict: 'മലപ്പുറം', lat: 10.9146, lon: 75.9228 },
+    { name: 'Palakkad', enName: 'Palakkad', mlName: 'പാലക്കാട്', district: 'Palakkad', mlDistrict: 'പാലക്കാട്', lat: 10.7867, lon: 76.6548 },
+    { name: 'Ottapalam, Palakkad', enName: 'Ottapalam, Palakkad', mlName: 'ഒറ്റപ്പാലം, പാലക്കാട്', district: 'Palakkad', mlDistrict: 'പാലക്കാട്', lat: 10.7719, lon: 76.3762 },
+    { name: 'Thrissur', enName: 'Thrissur', mlName: 'തൃശ്ശൂർ', district: 'Thrissur', mlDistrict: 'തൃശ്ശൂർ', lat: 10.5276, lon: 76.2144 },
+    { name: 'Chalakudy, Thrissur', enName: 'Chalakudy, Thrissur', mlName: 'ചാലക്കുടി, തൃശ്ശൂർ', district: 'Thrissur', mlDistrict: 'തൃശ്ശൂർ', lat: 10.3070, lon: 76.3338 },
+    { name: 'Guruvayur, Thrissur', enName: 'Guruvayur, Thrissur', mlName: 'ഗുരുവായൂർ, തൃശ്ശൂർ', district: 'Thrissur', mlDistrict: 'തൃശ്ശൂർ', lat: 10.5947, lon: 76.0409 },
+    { name: 'Kochi, Ernakulam', enName: 'Kochi, Ernakulam', mlName: 'കൊച്ചി, എറണാകുളം', district: 'Ernakulam', mlDistrict: 'എറണാകുളം', lat: 9.9816, lon: 76.2999 },
+    { name: 'Aluva, Ernakulam', enName: 'Aluva, Ernakulam', mlName: 'ആലുവ, എറണാകുളം', district: 'Ernakulam', mlDistrict: 'എറണാകുളം', lat: 10.1076, lon: 76.3516 },
+    { name: 'Angamaly, Ernakulam', enName: 'Angamaly, Ernakulam', mlName: 'അങ്കമാലി, എറണാകുളം', district: 'Ernakulam', mlDistrict: 'എറണാകുളം', lat: 10.1960, lon: 76.3860 },
+    { name: 'Thodupuzha, Idukki', enName: 'Thodupuzha, Idukki', mlName: 'തൊടുപുഴ, ഇടുക്കി', district: 'Idukki', mlDistrict: 'ഇടുക്കി', lat: 9.8959, lon: 76.7184 },
+    { name: 'Munnar, Idukki', enName: 'Munnar, Idukki', mlName: 'മൂന്നാർ, ഇടുക്കി', district: 'Idukki', mlDistrict: 'ഇടുക്കി', lat: 10.0889, lon: 77.0595 },
+    { name: 'Kottayam', enName: 'Kottayam', mlName: 'കോട്ടയം', district: 'Kottayam', mlDistrict: 'കോട്ടയം', lat: 9.5916, lon: 76.5222 },
+    { name: 'Pala, Kottayam', enName: 'Pala, Kottayam', mlName: 'പാലാ, കോട്ടയം', district: 'Kottayam', mlDistrict: 'കോട്ടയം', lat: 9.7107, lon: 76.6841 },
+    { name: 'Alappuzha', enName: 'Alappuzha', mlName: 'ആലപ്പുഴ', district: 'Alappuzha', mlDistrict: 'ആലപ്പുഴ', lat: 9.4981, lon: 76.3388 },
+    { name: 'Cherthala, Alappuzha', enName: 'Cherthala, Alappuzha', mlName: 'ചേർത്തല, ആലപ്പുഴ', district: 'Alappuzha', mlDistrict: 'ആലപ്പുഴ', lat: 9.6845, lon: 76.3323 },
+    { name: 'Pathanamthitta', enName: 'Pathanamthitta', mlName: 'പത്തനംതിട്ട', district: 'Pathanamthitta', mlDistrict: 'പത്തനംതിട്ട', lat: 9.2648, lon: 76.7870 },
+    { name: 'Adoor, Pathanamthitta', enName: 'Adoor, Pathanamthitta', mlName: 'അടൂർ, പത്തനംതിട്ട', district: 'Pathanamthitta', mlDistrict: 'പത്തനംതിട്ട', lat: 9.1530, lon: 76.7356 },
+    { name: 'Thiruvalla, Pathanamthitta', enName: 'Thiruvalla, Pathanamthitta', mlName: 'തിരുവല്ല, പത്തനംതിട്ട', district: 'Pathanamthitta', mlDistrict: 'പത്തനംതിട്ട', lat: 9.3835, lon: 76.5741 },
+    { name: 'Kollam', enName: 'Kollam', mlName: 'കൊല്ലം', district: 'Kollam', mlDistrict: 'കൊല്ലം', lat: 8.8932, lon: 76.6141 },
+    { name: 'Kottarakkara, Kollam', enName: 'Kottarakkara, Kollam', mlName: 'കൊട്ടാരക്കര, കൊല്ലം', district: 'Kollam', mlDistrict: 'കൊല്ലം', lat: 8.9989, lon: 76.7709 },
+    { name: 'Thiruvananthapuram', enName: 'Thiruvananthapuram', mlName: 'തിരുവനന്തപുരം', district: 'Thiruvananthapuram', mlDistrict: 'തിരുവനന്തപുരം', lat: 8.5241, lon: 76.9366 },
+    { name: 'Attingal, Thiruvananthapuram', enName: 'Attingal, Thiruvananthapuram', mlName: 'ആറ്റിങ്ങൽ, തിരുവനന്തപുരം', district: 'Thiruvananthapuram', mlDistrict: 'തിരുവനന്തപുരം', lat: 8.6960, lon: 76.8140 },
+    { name: 'Varkala, Thiruvananthapuram', enName: 'Varkala, Thiruvananthapuram', mlName: 'വർക്കല, തിരുവനന്തപുരം', district: 'Thiruvananthapuram', mlDistrict: 'തിരുവനന്തപുരം', lat: 8.7379, lon: 76.7163 }
   ];
 
   // Helper to extract and normalize coordinates from any database item (handles lat/lon, latitude/longitude, strings, and town fallback)
@@ -1608,24 +1608,28 @@
   window.detectLiveGpsLocation = detectLiveGpsLocation;
 
   function openLocationModal() {
+    const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en') || (typeof localStorage !== 'undefined' && localStorage.getItem('nn_app_language') === 'en');
     renderPresetLocationsList();
     const curRad = APP_STATE.activeRadiusKm || 5;
     const modalLabel = document.getElementById('modalActiveRadiusLabel');
     if (modalLabel) {
-      modalLabel.textContent = curRad >= 1000 ? 'മുഴുവൻ കേരളം' : (curRad + ' km');
+      modalLabel.textContent = curRad >= 1000 ? (isEn ? 'All Kerala' : 'മുഴുവൻ കേരളം') : (curRad + ' km');
     }
     document.querySelectorAll('.modal-rad-chip').forEach(c => {
       const cRad = parseFloat(c.getAttribute('data-rad') || '0');
       if (cRad === curRad) {
-        c.style.background = '#0E7043';
+        c.style.background = 'linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%)';
         c.style.color = '#fff';
-        c.style.borderColor = '#0E7043';
+        c.style.borderColor = '#1D4ED8';
       } else {
         c.style.background = '#fff';
-        c.style.color = '#064E3B';
-        c.style.borderColor = '#BBF7D0';
+        c.style.color = '#0C2B59';
+        c.style.borderColor = '#BFDBFE';
       }
     });
+    if (typeof applyTranslationsToDOM === 'function') {
+      applyTranslationsToDOM();
+    }
     openModal('modal-location');
   }
   window.openLocationModal = openLocationModal;
@@ -1636,30 +1640,37 @@
     const items = itemsToRender || KERALA_PRESETS;
     let customOptionHtml = '';
     const qClean = (searchQuery || '').trim();
+    const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en') || (typeof localStorage !== 'undefined' && localStorage.getItem('nn_app_language') === 'en');
+
     if (qClean) {
       customOptionHtml = `
         <div onclick="searchAndSetCustomLocation('${qClean.replace(/'/g, "\\'")}')" 
-             style="padding:10px 14px;border-radius:12px;background:#ECFDF5;border:1.5px dashed #059669;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background 0.2s;margin-bottom:6px">
+             style="padding:10px 14px;border-radius:12px;background:#EFF6FF;border:1.5px dashed #1D4ED8;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background 0.2s;margin-bottom:6px">
           <div>
-            <div style="font-weight:800;font-size:13px;color:#065F46">📍 '${qClean}' ലൊക്കേഷനായി എടുക്കുക</div>
-            <div style="font-size:11px;color:#047857">ഈ കൃത്യമായ സ്ഥലം മാപ്പിൽ നേരിട്ട് സജ്ജീകരിക്കാം</div>
+            <div style="font-weight:800;font-size:13px;color:#0C2B59">📍 ${isEn ? `Use '${qClean}' as location` : `'${qClean}' ലൊക്കേഷനായി എടുക്കുക`}</div>
+            <div style="font-size:11px;color:#1D4ED8">${isEn ? 'Set this exact place directly on map' : 'ഈ കൃത്യമായ സ്ഥലം മാപ്പിൽ നേരിട്ട് സജ്ജീകരിക്കാം'}</div>
           </div>
-          <span style="font-size:11px;background:#059669;color:#fff;padding:3px 10px;border-radius:8px;font-weight:800">സെറ്റ് ചെയ്യുക ➔</span>
+          <span style="font-size:11px;background:#1D4ED8;color:#fff;padding:3px 10px;border-radius:8px;font-weight:800">${isEn ? 'Set Location ➔' : 'സെറ്റ് ചെയ്യുക ➔'}</span>
         </div>
       `;
     }
 
     if (items.length === 0 && !customOptionHtml) {
-      list.innerHTML = `<div style="text-align:center;padding:16px;color:#64748B;font-size:13px">ഫലങ്ങളൊന്നും കണ്ടെത്തിയില്ല.</div>`;
+      list.innerHTML = `<div style="text-align:center;padding:16px;color:#64748B;font-size:13px">${isEn ? 'No locations found.' : 'ഫലങ്ങളൊന്നും കണ്ടെത്തിയില്ല.'}</div>`;
       return;
     }
-    list.innerHTML = customOptionHtml + items.map(p => `
-      <div onclick="selectPresetLocation('${p.name.replace(/'/g, "\\'")}', '${p.district}', ${p.lat}, ${p.lon})" 
-           style="padding:10px 14px;border-radius:12px;background:#F9FAFB;border:1px solid #E5E7EB;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background 0.2s">
-        <span style="font-weight:700;font-size:13.5px;color:#111827">📍 ${p.name}</span>
-        <span style="font-size:11px;background:#ECFDF5;color:#0E7043;padding:2px 8px;border-radius:8px;font-weight:800">${p.district}</span>
-      </div>
-    `).join('');
+    list.innerHTML = customOptionHtml + items.map(p => {
+      const displayName = isEn ? (p.enName || p.name.replace(/\s*\([^)]*\)/g, '')) : (p.mlName || p.name.replace(/\s*\([^)]*\)/g, ''));
+      const displayDist = isEn ? (p.enDistrict || p.district) : (p.mlDistrict || p.district);
+      const chosenName = isEn ? (p.enName || p.name) : (p.mlName || p.name);
+      return `
+        <div onclick="selectPresetLocation('${chosenName.replace(/'/g, "\\'")}', '${p.district}', ${p.lat}, ${p.lon})" 
+             style="padding:10px 14px;border-radius:12px;background:#F8FAFC;border:1px solid #E2E8F0;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:all 0.15s ease">
+          <span style="font-weight:700;font-size:13.5px;color:#0F172A">📍 ${escapeHtml(displayName)}</span>
+          <span style="font-size:11px;background:#EFF6FF;color:#1D4ED8;padding:2px 8px;border-radius:8px;font-weight:800;border:1px solid #BFDBFE">${escapeHtml(displayDist)}</span>
+        </div>
+      `;
+    }).join('');
   }
 
   function filterPresetLocations(query) {
@@ -1723,29 +1734,31 @@
       localStorage.setItem('nn_user_chosen_radius', String(r));
     } catch (_) {}
 
+    const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en') || (typeof localStorage !== 'undefined' && localStorage.getItem('nn_app_language') === 'en');
+
     // Update single compact location button badge
     const badge = document.getElementById('homeLiveRadiusBadge');
     if (badge) {
-      badge.textContent = r >= 1000 ? 'മുഴുവൻ' : (r + ' km');
+      badge.textContent = r >= 1000 ? (isEn ? 'All' : 'മുഴുവൻ') : (r + ' km');
     }
 
     // Update modal active indicator
     const modalLabel = document.getElementById('modalActiveRadiusLabel');
     if (modalLabel) {
-      modalLabel.textContent = r >= 1000 ? 'മുഴുവൻ കേരളം' : (r + ' km');
+      modalLabel.textContent = r >= 1000 ? (isEn ? 'All Kerala' : 'മുഴുവൻ കേരളം') : (r + ' km');
     }
 
     // Highlight active chip in modal
     document.querySelectorAll('.modal-rad-chip').forEach(c => {
       const cRad = parseFloat(c.getAttribute('data-rad') || '0');
       if (cRad === r) {
-        c.style.background = '#0E7043';
+        c.style.background = 'linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%)';
         c.style.color = '#fff';
-        c.style.borderColor = '#0E7043';
+        c.style.borderColor = '#1D4ED8';
       } else {
         c.style.background = '#fff';
-        c.style.color = '#064E3B';
-        c.style.borderColor = '#BBF7D0';
+        c.style.color = '#0C2B59';
+        c.style.borderColor = '#BFDBFE';
       }
     });
 
@@ -12418,20 +12431,21 @@
 
   function openSettingsModal() {
     const user = (APP_STATE && APP_STATE.currentUser) || {};
+    const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en') || (typeof localStorage !== 'undefined' && localStorage.getItem('nn_preferred_lang') === 'en');
     const nameEl = document.getElementById('settingsUserName');
-    if (nameEl) nameEl.textContent = user.name || 'നാട്ടുകാരൻ';
+    if (nameEl) nameEl.textContent = user.name || (isEn ? 'Citizen' : 'നാട്ടുകാരൻ');
 
     const phoneEl = document.getElementById('settingsUserPhone');
-    if (phoneEl) phoneEl.textContent = user.phone ? '📱 ' + user.phone : 'ഫോൺ നമ്പർ നൽകിയിട്ടില്ല';
+    if (phoneEl) phoneEl.textContent = user.phone ? '📱 ' + user.phone : (isEn ? 'No phone number provided' : 'ഫോൺ നമ്പർ നൽകിയിട്ടില്ല');
 
     const avatarEl = document.getElementById('settingsUserAvatar');
     if (avatarEl) avatarEl.src = user.avatar || window.DEFAULT_USER_AVATAR;
 
     const locEl = document.getElementById('settingsUserLoc');
-    if (locEl) locEl.textContent = '📍 ' + ((APP_STATE && APP_STATE.location && APP_STATE.location.name) || 'തത്സമയ ലൊക്കേഷൻ');
+    if (locEl) locEl.textContent = '📍 ' + ((APP_STATE && APP_STATE.location && APP_STATE.location.name) || (isEn ? 'Live Location' : 'തത്സമയ ലൊക്കേഷൻ'));
 
     const radEl = document.getElementById('settingsUserRadius');
-    if (radEl) radEl.textContent = ((APP_STATE && APP_STATE.location && APP_STATE.location.radius) || 5) + ' km പരിധി';
+    if (radEl) radEl.textContent = ((APP_STATE && APP_STATE.location && APP_STATE.location.radius) || 5) + (isEn ? ' km radius' : ' km പരിധി');
 
     const verEl = document.getElementById('settingsAppVersion');
     if (verEl) verEl.textContent = 'v' + ((window.APP_BUILD_INFO && window.APP_BUILD_INFO.versionName) || '1.0.2');
@@ -12441,6 +12455,10 @@
     if (adminRow) {
       const isAdmin = (typeof checkIsAdmin === 'function') ? checkIsAdmin() : (String(user.phone || '').replace(/\D/g, '').slice(-10) === '9605406699');
       adminRow.style.display = isAdmin ? 'flex' : 'none';
+    }
+
+    if (typeof applyTranslationsToDOM === 'function') {
+      applyTranslationsToDOM();
     }
 
     openModal('modal-settings');

@@ -432,17 +432,36 @@
       if (c6Sub) c6Sub.textContent = isEn ? 'Get help from people nearby (1–10 km)' : 'അടുത്തുള്ളവരിൽ നിന്ന് (1-10 km)';
     }
 
-    // 3. Home Business Showcase Banner
-    const bizBanner = document.querySelector('.home-3d-business-banner');
-    if (bizBanner) {
-      const bTitle = bizBanner.querySelector('div > div > div > span:first-child');
-      const bBadge = bizBanner.querySelector('div > div > div > span:last-child');
-      const divs = bizBanner.querySelectorAll('div > div > div');
-      if (bTitle) bTitle.textContent = isEn ? 'Businesses & Shops' : 'വ്യാപാരങ്ങൾ & കടകൾ';
-      if (bBadge) bBadge.textContent = isEn ? 'NEW' : 'പുതിയത്';
-      if (divs[1]) divs[1].textContent = isEn ? 'Supermarkets, hotels, bakeries & offers' : 'സൂപ്പർമാർക്കറ്റ്, ഹോട്ടൽ, ബേക്കറി & ഓഫറുകൾ';
-      if (divs[2]) divs[2].textContent = isEn ? 'Local shops • Order through chat' : 'നാട്ടിലെ കടകൾ • ഒരൊറ്റ ചാറ്റ് ബോക്സ് ഓർഡർ';
-    }
+    // 3. Home Business Showcase Banner & Community Feed
+    const hbTitle = document.getElementById('homeBizTitle');
+    if (hbTitle) hbTitle.textContent = isEn ? 'Businesses & Shops' : 'വ്യാപാരങ്ങൾ & കടകൾ';
+
+    const hbBadge = document.getElementById('homeBizBadge');
+    if (hbBadge) hbBadge.textContent = isEn ? 'NEW' : 'പുതിയത്';
+
+    const hbSub1 = document.getElementById('homeBizSub1');
+    if (hbSub1) hbSub1.textContent = isEn ? 'Supermarkets, hotels, bakeries & offers' : 'സൂപ്പർമാർക്കറ്റ്, ഹോട്ടൽ, ബേക്കറി & ഓഫറുകൾ';
+
+    const hbSub2 = document.getElementById('homeBizSub2');
+    if (hbSub2) hbSub2.textContent = isEn ? 'Local shops • Order through chat' : 'നാട്ടിലെ കടകൾ • ഒരൊറ്റ ചാറ്റ് ബോക്സ് ഓർഡർ';
+
+    const hcTitle = document.getElementById('homeCommTitle');
+    if (hcTitle) hcTitle.textContent = isEn ? 'Community Updates' : 'കമ്മ്യൂണിറ്റി വിശേഷങ്ങൾ';
+
+    const hcSub = document.getElementById('homeCommSub');
+    if (hcSub) hcSub.textContent = isEn ? 'See recent posts from neighbors' : 'നാട്ടുകാർ പങ്കുവെച്ച പുതിയ പോസ്റ്റുകൾ കാണാം';
+
+    const hNearLbl = document.getElementById('homeTopNearLabel');
+    if (hNearLbl) hNearLbl.textContent = isEn ? '🔥 Nearby' : '🔥 അടുത്തുള്ളവർ';
+
+    const hTopProv = document.getElementById('homeTopProvidersTitle');
+    if (hTopProv) hTopProv.textContent = isEn ? 'Top Service Providers' : 'പ്രമുഖ സേവനദാതാക്കൾ';
+
+    const hNearBtn = document.getElementById('homeNearbyHelpBtn');
+    if (hNearBtn) hNearBtn.textContent = isEn ? '🤝 Help Requests ›' : '🤝 സഹായങ്ങൾ ›';
+
+    const nearTitle = document.getElementById('nearbyScreenHeaderTitle');
+    if (nearTitle) nearTitle.textContent = isEn ? 'Nearby Help' : 'ഒരു ഹെൽപ്പ് വേണം';
 
     // 4. Bottom Navigation Bar Items (Precise ID-based selection)
     const nh = document.getElementById('navHomeLabel');
@@ -733,8 +752,81 @@
     const setDelBtn = document.getElementById('settingsDeleteAccountTxt');
     if (setDelBtn) setDelBtn.textContent = isEn ? 'Delete Account Permanently' : 'അക്കൗണ്ട് ശാശ്വതമായി ഡിലീറ്റ് ചെയ്യാം';
 
+    const setDelBtnAlt = document.getElementById('settingsDeleteAccountBtnTxt');
+    if (setDelBtnAlt) setDelBtnAlt.textContent = isEn ? 'Delete Account Permanently' : 'അക്കൗണ്ട് ശാശ്വതമായി ഒഴിവാക്കാം';
+
     const setDelWarn = document.getElementById('settingsDeleteWarningTxt');
     if (setDelWarn) setDelWarn.textContent = isEn ? 'Permanently removes your profile, listings, services and chat messages from cloud servers.' : 'ഡിലീറ്റ് ചെയ്താൽ നിങ്ങളുടെ പ്രൊഫൈൽ, സർവീസുകൾ, മെസ്സേജുകൾ എന്നിവ ക്ലൗഡിൽ നിന്നും പൂർണ്ണമായി മായ്ക്കപ്പെടും.';
+
+    const setDelWarnAlt = document.getElementById('settingsDeleteAccountWarningTxt');
+    if (setDelWarnAlt) setDelWarnAlt.textContent = isEn ? 'Deleting your account will permanently remove your profile, posts, services, and chat messages from cloud.' : 'അക്കൗണ്ട് ഡിലീറ്റ് ചെയ്താൽ നിങ്ങളുടെ പ്രൊഫൈൽ, പോസ്റ്റുകൾ, സർവീസുകൾ, മെസ്സേജുകൾ എന്നിവ Supabase ക്ലൗഡിൽ നിന്നും പൂർണ്ണമായി മായ്ക്കപ്പെടും.';
+
+    const setUserName = document.getElementById('settingsUserName');
+    if (setUserName && (setUserName.textContent.trim() === 'Citizen' || setUserName.textContent.trim() === 'നാട്ടുകാരൻ')) {
+      setUserName.textContent = isEn ? 'Citizen' : 'നാട്ടുകാരൻ';
+    }
+
+    const setUserPhone = document.getElementById('settingsUserPhone');
+    if (setUserPhone) {
+      const curTxt = setUserPhone.textContent.trim();
+      if (curTxt.includes('ഫോൺ നമ്പർ') || curTxt.includes('Phone Number') || curTxt === '📱') {
+        const phone = (window.APP_STATE && window.APP_STATE.currentUser && window.APP_STATE.currentUser.phone) || '';
+        setUserPhone.textContent = phone ? ('📱 ' + phone) : (isEn ? '📱 Phone Number' : '📱 ഫോൺ നമ്പർ');
+      }
+    }
+
+    const setLangSecTitle = document.getElementById('settingsLangSecTitle');
+    if (setLangSecTitle) setLangSecTitle.textContent = isEn ? 'App Language' : 'ആപ്പ് ഭാഷ';
+
+    const setLangMoreBtn = document.getElementById('settingsLangMoreBtn');
+    if (setLangMoreBtn) setLangMoreBtn.textContent = isEn ? 'Details ›' : 'വിശദമായി ›';
+
+    const setLangSecSub = document.getElementById('settingsLangSecSub');
+    if (setLangSecSub) setLangSecSub.textContent = isEn ? 'Choose preferred app language' : 'ആപ്പിൽ ഉപയോഗിക്കേണ്ട ഭാഷ തിരഞ്ഞെടുക്കാം';
+
+    const setLocSecTitle = document.getElementById('settingsLocSecTitle');
+    if (setLocSecTitle) setLocSecTitle.textContent = isEn ? 'Location & Radius' : 'ലൊക്കേഷൻ & പരിധി';
+
+    const setUserLoc = document.getElementById('settingsUserLoc');
+    if (setUserLoc) {
+      const curT = setUserLoc.textContent.trim();
+      if (curT.includes('തത്സമയ') || curT.includes('Live')) {
+        setUserLoc.textContent = isEn ? '📍 Live Location' : '📍 തത്സമയ ലൊക്കേഷൻ';
+      }
+    }
+
+    const setUserRad = document.getElementById('settingsUserRadius');
+    if (setUserRad) {
+      const curR = (window.APP_STATE && window.APP_STATE.activeRadiusKm) || 5;
+      setUserRad.textContent = curR >= 1000 ? (isEn ? 'All Kerala' : 'മുഴുവൻ') : (curR + (isEn ? ' km Radius' : ' km പരിധി'));
+    }
+
+    const setVerSec = document.getElementById('settingsVerSecTitle');
+    if (setVerSec) setVerSec.textContent = isEn ? 'App Version & Updates' : 'ആപ്പ് വേർഷൻ & അപ്ഡേറ്റുകൾ';
+
+    const setVerSub = document.getElementById('settingsVerSecSub');
+    if (setVerSub) setVerSub.textContent = isEn ? 'Latest Version' : 'ഏറ്റവും പുതിയ വേർഷൻ';
+
+    const setCheckUp = document.getElementById('settingsCheckUpdatesBtn');
+    if (setCheckUp) setCheckUp.textContent = isEn ? 'Check' : 'പരിശോധിക്കാം';
+
+    const setLocBtn = document.getElementById('settingsLocChangeBtn');
+    if (setLocBtn) setLocBtn.textContent = isEn ? 'Change' : 'മാറ്റാം';
+
+    const setNotifBtn = document.getElementById('settingsNotifSetupBtn');
+    if (setNotifBtn) setNotifBtn.textContent = isEn ? 'Setup' : 'സജ്ജീകരിക്കാം';
+
+    const setEditBtn = document.getElementById('settingsEditBtnTxt');
+    if (setEditBtn) setEditBtn.textContent = isEn ? 'Edit' : 'എഡിറ്റ്';
+
+    const setAdminTitle = document.getElementById('settingsAdminHubTitle');
+    if (setAdminTitle) setAdminTitle.textContent = isEn ? 'Admin Console' : 'അഡ്മിൻ കൺസോൾ';
+
+    const setAdminSub = document.getElementById('settingsAdminHubSub');
+    if (setAdminSub) setAdminSub.textContent = isEn ? 'Manage services and helpline contacts' : 'സർവീസുകളും ഹെൽപ്പ്‌ലൈൻ നമ്പറുകളും കൈകാര്യം ചെയ്യാം';
+
+    const setAdminBtn = document.getElementById('settingsAdminHubBtn');
+    if (setAdminBtn) setAdminBtn.textContent = isEn ? 'Open ›' : 'തുറക്കുക ›';
 
     // Synchronize settings language chips
     document.querySelectorAll('.settings-lang-chip').forEach(btn => {
@@ -751,6 +843,30 @@
         btn.style.fontWeight = '600';
       }
     });
+
+    // 15. Location Modal Elements
+    const locTitle = document.getElementById('modalLocationTitle');
+    if (locTitle) locTitle.textContent = isEn ? 'Location & Radius' : 'ലൊക്കേഷൻ & പരിധി';
+
+    const locGpsBtn = document.getElementById('modalLocationGpsBtnTxt');
+    if (locGpsBtn) locGpsBtn.textContent = isEn ? 'Live GPS Location' : 'തത്സമയ GPS ലൊക്കേഷൻ';
+
+    const locRadSec = document.getElementById('modalLocationRadiusSecTitle');
+    if (locRadSec) locRadSec.textContent = isEn ? 'Search Radius' : 'തിരച്ചിൽ പരിധി';
+
+    const locRadAll = document.getElementById('modalRadChipAll');
+    if (locRadAll) locRadAll.textContent = isEn ? 'All Kerala' : 'മുഴുവൻ';
+
+    const locSearchLbl = document.getElementById('modalLocationSearchLabel');
+    if (locSearchLbl) locSearchLbl.textContent = isEn ? 'Search / Select Place:' : 'സ്ഥലം തിരയുക / തിരഞ്ഞെടുക്കുക:';
+
+    const locSearchInp = document.getElementById('presetTownSearchInput');
+    if (locSearchInp) locSearchInp.placeholder = isEn ? 'Search city or panchayat...' : 'നഗരം അല്ലെങ്കിൽ പഞ്ചായത്ത് തിരയുക...';
+
+    if (typeof window.renderPresetLocationsList === 'function' && document.getElementById('presetLocationsList')) {
+      const q = locSearchInp ? locSearchInp.value : '';
+      window.renderPresetLocationsList(null, q);
+    }
 
     const fPriv = document.getElementById('footerPrivacyLink');
     if (fPriv) fPriv.textContent = isEn ? 'Privacy Policy' : 'സ്വകാര്യതാ നയം';
@@ -979,4 +1095,5 @@
   };
   window.setAppLanguage = setAppLanguage;
   window.getTranslation = getTranslation;
+  window.getCurrentLanguage = () => currentLang;
 })();
