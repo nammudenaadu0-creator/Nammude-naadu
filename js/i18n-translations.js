@@ -82,7 +82,35 @@
       requestBlood: 'രക്തം ആവശ്യപ്പെടാം',
       registeredDonors: 'രജിസ്റ്റർ ചെയ്തവർ',
       nearYou: 'സമീപം',
-      newChat: 'പുതിയ ചാറ്റ്'
+      newChat: 'പുതിയ ചാറ്റ്',
+      settingsTitle: 'ക്രമീകരണങ്ങൾ',
+      settingsSubtitle: 'നമ്മുടെ നാട് ആപ്പ് മുൻഗണനകൾ & നിയന്ത്രണങ്ങൾ',
+      settingsLangSection: 'ആപ്പ് ഭാഷ',
+      settingsLangSub: 'ആപ്പിൽ ഉപയോഗിക്കേണ്ട ഭാഷ തിരഞ്ഞെടുക്കാം',
+      settingsLocSection: 'ലൊക്കേഷൻ & പരിധി',
+      settingsVersionSection: 'ആപ്പ് വേർഷൻ & അപ്‌ഡേറ്റുകൾ',
+      settingsNotifSection: 'അറിയിപ്പുകൾ',
+      settingsNotifSub: 'തത്സമയ അറിയിപ്പുകൾ & അലർട്ടുകൾ',
+      settingsPrivacySection: 'സ്വകാര്യത & നിയമപരമായ വിവരങ്ങൾ',
+      settingsPrivacyPolicy: 'പ്രൈവസി പോളിസി',
+      settingsTerms: 'നിബന്ധനകളും പെരുമാറ്റച്ചട്ടവും',
+      settingsDataSecurity: 'ഡാറ്റാ സംരക്ഷണവും സുരക്ഷയും',
+      settingsExportData: 'എന്റെ ഡാറ്റ ഡൗൺലോഡ് ചെയ്യാം',
+      settingsClearCache: 'ആപ്പ് കാഷെ ക്ലിയർ ചെയ്യാം',
+      settingsLogout: 'ലോഗ് ഔട്ട് / അക്കൗണ്ട് മാറ്റാം',
+      settingsDeleteAccount: 'അക്കൗണ്ട് ശാശ്വതമായി ഡിലീറ്റ് ചെയ്യാം',
+      settingsDeleteWarning: 'ഡിലീറ്റ് ചെയ്താൽ നിങ്ങളുടെ പ്രൊഫൈൽ, സർവീസുകൾ, മെസ്സേജുകൾ എന്നിവ ക്ലൗഡിൽ നിന്നും പൂർണ്ണമായി മായ്ക്കപ്പെടും.',
+      changeBtn: 'മാറ്റാം',
+      checkBtn: 'പരിശോധിക്കാം',
+      setupBtn: 'സജ്ജീകരിക്കാം',
+      editBtn: 'എഡിറ്റ്',
+      langPickerTitle: 'ഭാഷ തിരഞ്ഞെടുക്കുക',
+      langPickerSub: 'ആപ്പിൽ ഉപയോഗിക്കാൻ ആഗ്രഹിക്കുന്ന ഭാഷ തിരഞ്ഞെടുക്കൂ',
+      langPickerMalayalam: 'മലയാളം',
+      langPickerMalayalamSub: 'കേരളത്തിന്റെ സ്വന്തം ഭാഷ (ഡിഫോൾട്ട്)',
+      langPickerEnglish: 'English',
+      langPickerEnglishSub: 'Universal & Global Language',
+      continueBtn: 'തുടങ്ങാം ➔',
     },
     en: {
       appName: 'Nammude Naadu',
@@ -158,7 +186,35 @@
       requestBlood: 'Request Blood',
       registeredDonors: 'Registered Donors',
       nearYou: 'Near You',
-      newChat: 'New Chat'
+      newChat: 'New Chat',
+      settingsTitle: 'Settings',
+      settingsSubtitle: 'App Preferences & Controls',
+      settingsLangSection: 'App Language',
+      settingsLangSub: 'Choose language to use in the app',
+      settingsLocSection: 'Location & Radius',
+      settingsVersionSection: 'App Version & Updates',
+      settingsNotifSection: 'Notifications',
+      settingsNotifSub: 'Real-time alerts & messaging notifications',
+      settingsPrivacySection: 'Privacy & Legal Compliance',
+      settingsPrivacyPolicy: 'Privacy Policy',
+      settingsTerms: 'Terms of Service & Guidelines',
+      settingsDataSecurity: 'Data Security & Protection',
+      settingsExportData: 'Export / Download My Data',
+      settingsClearCache: 'Clear App Cache & Refresh',
+      settingsLogout: 'Logout / Switch Account',
+      settingsDeleteAccount: 'Delete Account Permanently',
+      settingsDeleteWarning: 'Permanently removes your profile, listings, services and chat messages from cloud servers.',
+      changeBtn: 'Change',
+      checkBtn: 'Check',
+      setupBtn: 'Configure',
+      editBtn: 'Edit',
+      langPickerTitle: 'Select Language',
+      langPickerSub: 'Choose your preferred language to continue',
+      langPickerMalayalam: 'മലയാളം',
+      langPickerMalayalamSub: 'Kerala Native Language (Default)',
+      langPickerEnglish: 'English',
+      langPickerEnglishSub: 'Universal & Global Language',
+      continueBtn: 'Continue ➔',
     },
     hi: {
       appName: 'नम्मुडे नाडु (हमारा गांव)',
@@ -577,6 +633,82 @@
       if (divs[1]) divs[1].textContent = isEn ? 'Supermarkets, hotels, bakeries & offers' : 'സൂപ്പർമാർക്കറ്റുകൾ, ഹോട്ടലുകൾ, ബേക്കറികൾ';
       if (divs[2]) divs[2].textContent = isEn ? 'Local shops • Order through chat' : 'നാട്ടിലെ കടകൾ • ചാറ്റ് വഴി ഓർഡർ ചെയ്യാം';
     }
+
+    // Settings Modal elements
+    const setHeader = document.querySelector('#modal-settings h3');
+    if (setHeader) setHeader.textContent = dict.settingsTitle;
+
+    const setSub = document.querySelector('#modal-settings .settings-header-sub');
+    if (setSub) setSub.textContent = dict.settingsSubtitle;
+
+    const setLangSec = document.getElementById('settingsLangSecTitle');
+    if (setLangSec) setLangSec.textContent = dict.settingsLangSection;
+
+    const setLangSub = document.getElementById('settingsLangSecSub');
+    if (setLangSub) setLangSub.textContent = dict.settingsLangSub;
+
+    const setLocSec = document.getElementById('settingsLocSecTitle');
+    if (setLocSec) setLocSec.textContent = dict.settingsLocSection;
+
+    const setNotifSec = document.getElementById('settingsNotifSecTitle');
+    if (setNotifSec) setNotifSec.textContent = dict.settingsNotifSection;
+
+    const setNotifSub = document.getElementById('settingsNotifSecSub');
+    if (setNotifSub) setNotifSub.textContent = dict.settingsNotifSub;
+
+    const setVerSec = document.getElementById('settingsVerSecTitle');
+    if (setVerSec) setVerSec.textContent = dict.settingsVersionSection;
+
+    const setPrivSec = document.getElementById('settingsPrivacySecTitle');
+    if (setPrivSec) setPrivSec.textContent = dict.settingsPrivacySection;
+
+    const setPrivLink = document.getElementById('settingsPrivacyPolicyTxt');
+    if (setPrivLink) setPrivLink.textContent = dict.settingsPrivacyPolicy;
+
+    const setTermsLink = document.getElementById('settingsTermsTxt');
+    if (setTermsLink) setTermsLink.textContent = dict.settingsTerms;
+
+    const setSecLink = document.getElementById('settingsDataSecurityTxt');
+    if (setSecLink) setSecLink.textContent = dict.settingsDataSecurity;
+
+    const setExportLink = document.getElementById('settingsExportDataTxt');
+    if (setExportLink) setExportLink.textContent = dict.settingsExportData;
+
+    const setCacheLink = document.getElementById('settingsClearCacheTxt');
+    if (setCacheLink) setCacheLink.textContent = dict.settingsClearCache;
+
+    const setLogoutLink = document.getElementById('settingsLogoutTxt');
+    if (setLogoutLink) setLogoutLink.textContent = dict.settingsLogout;
+
+    const setDelBtn = document.getElementById('settingsDeleteAccountTxt');
+    if (setDelBtn) setDelBtn.textContent = dict.settingsDeleteAccount;
+
+    const setDelWarn = document.getElementById('settingsDeleteWarningTxt');
+    if (setDelWarn) setDelWarn.textContent = dict.settingsDeleteWarning;
+
+    // Language Picker Modal
+    const lpTitle = document.getElementById('langPickerModalTitle');
+    if (lpTitle) lpTitle.textContent = dict.langPickerTitle;
+
+    const lpSub = document.getElementById('langPickerModalSub');
+    if (lpSub) lpSub.textContent = dict.langPickerSub;
+
+    const lpConf = document.getElementById('langConfirmBtn');
+    if (lpConf) lpConf.textContent = dict.continueBtn;
+
+    // Synchronize settings language chips
+    document.querySelectorAll('.settings-lang-chip').forEach(btn => {
+      const l = btn.getAttribute('data-lang');
+      if (l === currentLang) {
+        btn.style.background = '#0C2B59';
+        btn.style.color = '#FFFFFF';
+        btn.style.borderColor = '#0C2B59';
+      } else {
+        btn.style.background = '#FFFFFF';
+        btn.style.color = '#334155';
+        btn.style.borderColor = '#CBD5E1';
+      }
+    });
 
     // Profile Screen Sub-tabs
     const tabTimeline = document.querySelector('.profile-subtab-btn[data-tab="posts"]');

@@ -4798,17 +4798,278 @@
     <!-- ============================================================== -->
     <!-- MODAL: APP SETTINGS & CITIZEN PREFERENCES                      -->
     <!-- ============================================================== -->
-    <div id="modal-settings" class="modal-overlay" style="display:none;align-items:flex-end;justify-content:center;z-index:999999;background:rgba(0,0,0,0.72)" onclick="if(event.target===this)closeModal('modal-settings')">
-        <div style="background:#fff;width:100%;max-width:480px;border-radius:24px 24px 0 0;max-height:88vh;overflow-y:auto;box-shadow:0 -10px 40px rgba(0,0,0,0.25);animation:modalSlideUp 0.3s cubic-bezier(0.16,1,0.3,1)">
+    
+    <!-- ============================================================== -->
+    <!-- MODAL: APP OPEN LANGUAGE SELECTION (മലയാളം / ENGLISH)          -->
+    <!-- ============================================================== -->
+    <div id="modal-language-picker" class="modal-overlay" style="display:none;align-items:center;justify-content:center;z-index:9999999;background:rgba(10,34,64,0.85);backdrop-filter:blur(8px)" onclick="if(event.target===this)closeModal('modal-language-picker')">
+        <div style="background:#FFFFFF;width:90%;max-width:400px;border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.35);border:1.5px solid #BFDBFE">
+            <!-- Header -->
+            <div style="background:linear-gradient(135deg, #0A2540 0%, #0F2942 55%, #1D4ED8 100%);color:#FFFFFF;padding:24px 20px 18px;text-align:center;position:relative">
+                <button type="button" onclick="closeModal('modal-language-picker')" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,0.2);border:none;color:#FFFFFF;border-radius:50%;width:30px;height:30px;font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer">✕</button>
+                <div style="width:60px;height:60px;border-radius:18px;background:#FFFFFF;padding:3px;margin:0 auto 10px;box-shadow:0 4px 14px rgba(0,0,0,0.25)">
+                    <img src="assets/kerala-logo-badge.jpg" style="width:100%;height:100%;border-radius:15px;object-fit:cover" alt="നമ്മുടെ നാട്">
+                </div>
+                <h2 id="langPickerModalTitle" style="margin:0 0 4px;font-size:20px;font-weight:900">ഭാഷ തിരഞ്ഞെടുക്കുക</h2>
+                <div id="langPickerModalSub" style="font-size:12px;color:rgba(255,255,255,0.92);font-weight:600">Choose your preferred language / ഭാഷ തിരഞ്ഞെടുക്കൂ</div>
+            </div>
+
+            <!-- Two Language Cards -->
+            <div style="padding:18px 18px 22px;display:flex;flex-direction:column;gap:12px">
+                <!-- Malayalam -->
+                <div onclick="selectAppLanguageAndProceed('ml')" id="langOptMl"
+                    style="background:#EFF6FF;border:2px solid #1D4ED8;border-radius:16px;padding:14px 16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(29,78,216,0.12)">
+                    <div style="display:flex;align-items:center;gap:12px">
+                        <span style="font-size:28px">🌴</span>
+                        <div>
+                            <div style="font-size:16px;font-weight:900;color:#0C2B59">മലയാളം</div>
+                            <div style="font-size:11px;color:#1D4ED8;font-weight:700">കേരളത്തിന്റെ സ്വന്തം ഭാഷ (ഡിഫോൾട്ട്)</div>
+                        </div>
+                    </div>
+                    <div id="langCheckMl" style="width:24px;height:24px;border-radius:50%;background:#1D4ED8;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900">✓</div>
+                </div>
+
+                <!-- English -->
+                <div onclick="selectAppLanguageAndProceed('en')" id="langOptEn"
+                    style="background:#F8FAFC;border:2px solid #E2E8F0;border-radius:16px;padding:14px 16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between">
+                    <div style="display:flex;align-items:center;gap:12px">
+                        <span style="font-size:28px">🌐</span>
+                        <div>
+                            <div style="font-size:16px;font-weight:900;color:#0F172A">English</div>
+                            <div style="font-size:11px;color:#64748B;font-weight:600">Universal & Global Language</div>
+                        </div>
+                    </div>
+                    <div id="langCheckEn" style="width:24px;height:24px;border-radius:50%;background:#E2E8F0;color:#94A3B8;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900">○</div>
+                </div>
+
+                <button type="button" onclick="confirmLanguageChoiceAndClose()" id="langConfirmBtn"
+                    style="margin-top:6px;background:linear-gradient(135deg, #0C2B59 0%, #1D4ED8 100%);color:#FFFFFF;border:none;padding:13px;border-radius:14px;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 4px 14px rgba(29,78,216,0.25)">
+                    തുടങ്ങാം (Continue) ➔
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ============================================================== -->
+    <!-- MODAL: APP SETTINGS & PRIVACY COMPLIANCE CONTROLLER            -->
+    <!-- ============================================================== -->
+    <div id="modal-settings" class="modal-overlay" style="display:none;align-items:flex-end;justify-content:center;z-index:999999;background:rgba(10,34,64,0.78);backdrop-filter:blur(6px)" onclick="if(event.target===this)closeModal('modal-settings')">
+        <div style="background:#fff;width:100%;max-width:480px;border-radius:24px 24px 0 0;max-height:90vh;overflow-y:auto;box-shadow:0 -10px 40px rgba(0,0,0,0.3);animation:modalSlideUp 0.3s cubic-bezier(0.16,1,0.3,1)">
             <!-- Top Header -->
             <div style="padding:18px 20px 14px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:2">
                 <div style="display:flex;align-items:center;gap:10px">
                     <span style="font-size:22px">⚙️</span>
                     <div>
-                        <h3 style="margin:0;font-size:18px;font-weight:900;color:#0F172A">ക്രമീകരണങ്ങൾ (Settings)</h3>
-                        <div style="font-size:11px;color:#64748B;font-weight:600">നമ്മുടെ നാട് ആപ്പ് മുൻഗണനകൾ</div>
+                        <h3 style="margin:0;font-size:18px;font-weight:900;color:#0F172A">ക്രമീകരണങ്ങൾ</h3>
+                        <div class="settings-header-sub" style="font-size:11px;color:#64748B;font-weight:600">നമ്മുടെ നാട് ആപ്പ് മുൻഗണനകൾ & നിയന്ത്രണങ്ങൾ</div>
                     </div>
                 </div>
+                <button type="button" onclick="closeModal('modal-settings')" class="modal-close-btn"
+                    title="ക്ലോസ് ചെയ്യാം">✕</button>
+            </div>
+
+            <div style="padding:16px 20px 32px;display:flex;flex-direction:column;gap:14px">
+                <!-- Citizen Card Summary -->
+                <div style="background:linear-gradient(135deg, #0A2540 0%, #0F2942 50%, #1D4ED8 100%);color:#fff;padding:16px;border-radius:18px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 14px rgba(12,43,89,0.25)">
+                    <div style="display:flex;align-items:center;gap:12px">
+                        <div style="width:48px;height:48px;border-radius:50%;background:#fff;padding:2px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.15);overflow:hidden">
+                            <img id="settingsUserAvatar" src="assets/kerala-logo-badge.jpg" onerror="this.src=window.DEFAULT_USER_AVATAR||''" style="width:100%;height:100%;border-radius:50%;object-fit:cover">
+                        </div>
+                        <div>
+                            <div id="settingsUserName" style="font-size:16px;font-weight:800">നാട്ടുകാരൻ</div>
+                            <div id="settingsUserPhone" style="font-size:12px;color:#BFDBFE;font-weight:600">📱 ഫോൺ നമ്പർ</div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="closeModal('modal-settings');openEditProfileModal()" style="background:rgba(255,255,255,0.22);border:1px solid rgba(255,255,255,0.35);color:#fff;padding:6px 14px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer">
+                        ✏️ എഡിറ്റ്
+                    </button>
+                </div>
+
+                <!-- 1. APP LANGUAGE SWITCHER (DIRECT IN SETTINGS) -->
+                <div style="background:#F8FAFC;border:1.5px solid #BFDBFE;border-radius:16px;padding:14px">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                        <div style="font-size:11px;font-weight:800;color:#1D4ED8;text-transform:uppercase;letter-spacing:0.5px" id="settingsLangSecTitle">
+                            ആപ്പ് ഭാഷ
+                        </div>
+                        <button type="button" onclick="openLanguagePickerModal()" style="background:none;border:none;color:#1D4ED8;font-size:11.5px;font-weight:700;cursor:pointer;padding:0">
+                            വിശദമായി ›
+                        </button>
+                    </div>
+                    <div style="font-size:11.5px;color:#64748B;margin-bottom:10px" id="settingsLangSecSub">
+                        ആപ്പിൽ ഉപയോഗിക്കേണ്ട ഭാഷ തിരഞ്ഞെടുക്കാം
+                    </div>
+                    <div style="display:flex;gap:8px">
+                        <button type="button" class="settings-lang-chip" data-lang="ml" onclick="setAppLanguage('ml')"
+                            style="flex:1;padding:10px 12px;border-radius:12px;border:1.5px solid #0C2B59;background:#0C2B59;color:#FFFFFF;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+                            <span>🌴</span> <span>മലയാളം</span>
+                        </button>
+                        <button type="button" class="settings-lang-chip" data-lang="en" onclick="setAppLanguage('en')"
+                            style="flex:1;padding:10px 12px;border-radius:12px;border:1.5px solid #CBD5E1;background:#FFFFFF;color:#334155;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+                            <span>🌐</span> <span>English</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2. LOCATION & SEARCH RADIUS -->
+                <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:16px;padding:14px">
+                    <div style="font-size:11px;font-weight:800;color:#64748B;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px" id="settingsLocSecTitle">
+                        ലൊക്കേഷൻ & പരിധി
+                    </div>
+                    <div style="display:flex;align-items:center;justify-content:space-between">
+                        <div>
+                            <div style="font-size:14px;font-weight:800;color:#0F172A" id="settingsUserLoc">📍 തത്സമയ ലൊക്കേഷൻ</div>
+                            <div style="font-size:11.5px;color:#1D4ED8;font-weight:700" id="settingsUserRadius">5 km പരിധി</div>
+                        </div>
+                        <button type="button" onclick="closeModal('modal-settings');openLocationModal()" style="background:#1D4ED8;color:#fff;border:none;padding:7px 14px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer">
+                            മാറ്റാം
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3. NOTIFICATIONS -->
+                <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:16px;padding:14px">
+                    <div style="font-size:11px;font-weight:800;color:#64748B;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px" id="settingsNotifSecTitle">
+                        അറിയിപ്പുകൾ
+                    </div>
+                    <div style="display:flex;align-items:center;justify-content:space-between">
+                        <div style="display:flex;align-items:center;gap:10px">
+                            <span style="font-size:20px">🔔</span>
+                            <div>
+                                <div style="font-size:13.5px;font-weight:800;color:#0F172A" id="settingsNotifSecSub">തത്സമയ അറിയിപ്പുകൾ & അലർട്ടുകൾ</div>
+                                <div style="font-size:11px;color:#64748B">ചാറ്റ്, രക്തദാനം, പുതിയ സർവീസുകൾ</div>
+                            </div>
+                        </div>
+                        <button type="button" onclick="if(typeof requestNotificationPermission==='function')requestNotificationPermission();showToast('നോട്ടിഫിക്കേഷൻ ക്രമീകരിച്ചു ✅')" style="background:#EFF6FF;border:1px solid #BFDBFE;color:#1D4ED8;padding:6px 12px;border-radius:10px;font-size:11.5px;font-weight:800;cursor:pointer">
+                            സജ്ജീകരിക്കാം
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 4. PRIVACY LAW & COMPLIANCE SECTION -->
+                <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:16px;padding:14px">
+                    <div style="font-size:11px;font-weight:800;color:#64748B;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px" id="settingsPrivacySecTitle">
+                        സ്വകാര്യത & നിയമപരമായ വിവരങ്ങൾ
+                    </div>
+
+                    <div style="display:flex;flex-direction:column;gap:8px">
+                        <!-- Privacy Policy -->
+                        <a href="privacy-policy.html" target="_blank" style="background:#fff;padding:12px 14px;border-radius:12px;border:1px solid #E2E8F0;text-decoration:none;display:flex;align-items:center;justify-content:space-between;color:#0F172A">
+                            <span style="display:flex;align-items:center;gap:10px">
+                                <span>🛡️</span>
+                                <span style="font-size:13px;font-weight:700" id="settingsPrivacyPolicyTxt">പ്രൈവസി പോളിസി</span>
+                            </span>
+                            <span style="font-size:13px;color:#94A3B8">➔</span>
+                        </a>
+
+                        <!-- Terms of Service & Guidelines -->
+                        <div onclick="openTermsModal()" style="background:#fff;padding:12px 14px;border-radius:12px;border:1px solid #E2E8F0;cursor:pointer;display:flex;align-items:center;justify-content:space-between;color:#0F172A">
+                            <span style="display:flex;align-items:center;gap:10px">
+                                <span>📜</span>
+                                <span style="font-size:13px;font-weight:700" id="settingsTermsTxt">നിബന്ധനകളും പെരുമാറ്റച്ചട്ടവും</span>
+                            </span>
+                            <span style="font-size:13px;color:#94A3B8">➔</span>
+                        </div>
+
+                        <!-- Data Protection & Encryption Info -->
+                        <div onclick="openDataSecurityModal()" style="background:#fff;padding:12px 14px;border-radius:12px;border:1px solid #E2E8F0;cursor:pointer;display:flex;align-items:center;justify-content:space-between;color:#0F172A">
+                            <span style="display:flex;align-items:center;gap:10px">
+                                <span>🔒</span>
+                                <span style="font-size:13px;font-weight:700" id="settingsDataSecurityTxt">ഡാറ്റാ സംരക്ഷണവും സുരക്ഷയും</span>
+                            </span>
+                            <span style="font-size:13px;color:#94A3B8">➔</span>
+                        </div>
+
+                        <!-- Export / Download My Data -->
+                        <div onclick="exportUserPersonalData()" style="background:#fff;padding:12px 14px;border-radius:12px;border:1px solid #E2E8F0;cursor:pointer;display:flex;align-items:center;justify-content:space-between;color:#0F172A">
+                            <span style="display:flex;align-items:center;gap:10px">
+                                <span>📦</span>
+                                <span style="font-size:13px;font-weight:700" id="settingsExportDataTxt">എന്റെ ഡാറ്റ ഡൗൺലോഡ് ചെയ്യാം</span>
+                            </span>
+                            <span style="font-size:11px;background:#EFF6FF;color:#1D4ED8;padding:2px 8px;border-radius:6px;font-weight:800">JSON</span>
+                        </div>
+
+                        <!-- Clear Cache -->
+                        <div onclick="clearAppCacheAndRefresh()" style="background:#fff;padding:12px 14px;border-radius:12px;border:1px solid #E2E8F0;cursor:pointer;display:flex;align-items:center;justify-content:space-between;color:#0F172A">
+                            <span style="display:flex;align-items:center;gap:10px">
+                                <span>🧹</span>
+                                <span style="font-size:13px;font-weight:700" id="settingsClearCacheTxt">ആപ്പ് കാഷെ ക്ലിയർ ചെയ്യാം</span>
+                            </span>
+                            <span style="font-size:13px;color:#94A3B8">➔</span>
+                        </div>
+
+                        <!-- Logout -->
+                        <div onclick="closeModal('modal-settings');handleProfileLogout()" style="background:#fff;padding:12px 14px;border-radius:12px;border:1px solid #FECDD3;cursor:pointer;display:flex;align-items:center;justify-content:space-between;color:#E11D48">
+                            <span style="display:flex;align-items:center;gap:10px">
+                                <span>🚪</span>
+                                <span style="font-size:13px;font-weight:800" id="settingsLogoutTxt">ലോഗ് ഔട്ട് / അക്കൗണ്ട് മാറ്റാം</span>
+                            </span>
+                            <span style="font-size:13px;color:#E11D48">➔</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. DANGER ZONE: PERMANENT ACCOUNT & DATA DELETION -->
+                <div style="background:#FFF5F5;border:1.5px solid #FECACA;border-radius:16px;padding:14px;text-align:center">
+                    <button type="button" onclick="closeModal('modal-settings');handleDeleteUserAccount()"
+                        style="width:100%;background:#DC2626;color:#FFFFFF;border:none;padding:12px;border-radius:12px;font-size:13px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 8px rgba(220,38,38,0.25)">
+                        <span>🗑️</span> <span id="settingsDeleteAccountTxt">അക്കൗണ്ട് ശാശ്വതമായി ഡിലീറ്റ് ചെയ്യാം</span>
+                    </button>
+                    <div id="settingsDeleteWarningTxt" style="font-size:11px;color:#991B1B;margin-top:6px;line-height:1.4;font-weight:600">
+                        ഡിലീറ്റ് ചെയ്താൽ നിങ്ങളുടെ പ്രൊഫൈൽ, സർവീസുകൾ, മെസ്സേജുകൾ എന്നിവ ക്ലൗഡിൽ നിന്നും പൂർണ്ണമായി മായ്ക്കപ്പെടും.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: TERMS OF SERVICE & CITIZEN RULES                        -->
+    <!-- ============================================================== -->
+    <div id="modal-terms" class="modal-overlay" style="display:none;align-items:flex-end;justify-content:center;z-index:9999999;background:rgba(10,34,64,0.78)" onclick="if(event.target===this)closeModal('modal-terms')">
+        <div style="background:#fff;width:100%;max-width:480px;border-radius:24px 24px 0 0;max-height:85vh;overflow-y:auto;padding:20px;box-shadow:0 -10px 40px rgba(0,0,0,0.3)">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;border-bottom:1px solid #E2E8F0;padding-bottom:10px">
+                <div style="display:flex;align-items:center;gap:8px">
+                    <span style="font-size:22px">📜</span>
+                    <h3 style="margin:0;font-size:17px;font-weight:900;color:#0F172A">നിബന്ധനകളും പെരുമാറ്റച്ചട്ടവും</h3>
+                </div>
+                <button type="button" onclick="closeModal('modal-terms')" class="modal-close-btn">✕</button>
+            </div>
+            <div style="font-size:13px;color:#334155;line-height:1.6;display:flex;flex-direction:column;gap:10px">
+                <p><strong>1. പ്രാദേശിക ഐക്യം:</strong> നമ്മുടെ നാട് കേരളത്തിലെ തദ്ദേശവാസികൾക്കായി രൂപകൽപ്പന ചെയ്ത ഒരു സുതാര്യമായ പൊതു പ്ലാറ്റ്‌ഫോമാണ്.</p>
+                <p><strong>2. ബഹുമാനത്തോടെയുള്ള പെരുമാറ്റം:</strong> പൊതു കമ്മ്യൂണിറ്റി പോസ്റ്റുകളിലും ചാറ്റുകളിലും തെറ്റായ വാർത്തകൾ, വിദ്വേഷ പ്രചാരണങ്ങൾ, വ്യക്തിഹത്യ എന്നിവ കർശനമായി നിരോധിച്ചിരിക്കുന്നു.</p>
+                <p><strong>3. സത്യസന്ധമായ വിവരങ്ങൾ:</strong> രക്തദാനം, തൊഴിലുകൾ, വാടക, സർവീസ് എന്നിവയിൽ യഥാർത്ഥ വിവരങ്ങൾ മാത്രം നൽകുക.</p>
+                <p><strong>4. ദുരുപയോഗം:</strong> ആപ്പ് ദുരുപയോഗം ചെയ്യുന്ന അക്കൗണ്ടുകൾ അഡ്മിൻ പാനൽ വഴി മുന്നറിയിപ്പില്ലാതെ റദ്ദാക്കുന്നതായിരിക്കും.</p>
+            </div>
+            <button type="button" onclick="closeModal('modal-terms')" style="margin-top:16px;width:100%;padding:11px;background:#0C2B59;color:#fff;border:none;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer">ശരി, മനസ്സിലായി</button>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL: DATA SECURITY & ENCRYPTION GUARANTEE                    -->
+    <!-- ============================================================== -->
+    <div id="modal-data-security" class="modal-overlay" style="display:none;align-items:flex-end;justify-content:center;z-index:9999999;background:rgba(10,34,64,0.78)" onclick="if(event.target===this)closeModal('modal-data-security')">
+        <div style="background:#fff;width:100%;max-width:480px;border-radius:24px 24px 0 0;max-height:85vh;overflow-y:auto;padding:20px;box-shadow:0 -10px 40px rgba(0,0,0,0.3)">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;border-bottom:1px solid #E2E8F0;padding-bottom:10px">
+                <div style="display:flex;align-items:center;gap:8px">
+                    <span style="font-size:22px">🔒</span>
+                    <h3 style="margin:0;font-size:17px;font-weight:900;color:#0F172A">ഡാറ്റാ സംരക്ഷണവും സുരക്ഷയും</h3>
+                </div>
+                <button type="button" onclick="closeModal('modal-data-security')" class="modal-close-btn">✕</button>
+            </div>
+            <div style="font-size:13px;color:#334155;line-height:1.6;display:flex;flex-direction:column;gap:10px">
+                <div style="background:#EFF6FF;border:1px solid #BFDBFE;padding:12px;border-radius:12px">
+                    <strong style="color:#1D4ED8">🛡️ സീറോ ട്രാക്കിംഗ് ഗ്യാരണ്ടി:</strong>
+                    <div style="font-size:12px;color:#1E40AF;margin-top:3px">ഞങ്ങൾ മൂന്നാം കക്ഷി പരസ്യദാതാക്കൾക്കോ ഡാറ്റ ബ്രോക്കർമാർക്കോ നിങ്ങളുടെ ഒരു വിവരവും വിൽക്കുകയോ കൈമാറുകയോ ചെയ്യുന്നില്ല.</div>
+                </div>
+                <p><strong>🔐 എൻക്രിപ്റ്റഡ് ക്ലൗഡ് സ്റ്റോറേജ്:</strong> എല്ലാ വിവരങ്ങളും സുരക്ഷിതമായ Supabase PostgreSQL സെർവറുകളിൽ TLS 1.3 എൻക്രിപ്ഷൻ വഴി സംരക്ഷിക്കപ്പെടുന്നു.</p>
+                <p><strong>📍 ലൊക്കേഷൻ നിയന്ത്രണം:</strong> തത്സമയ ലൊക്കേഷൻ നിങ്ങളുടെ സമീപത്തുള്ള സേവനങ്ങളും രക്തദാതാക്കളും കണ്ടെത്താൻ മാത്രമാണ് ഉപയോഗിക്കുന്നത്.</p>
+                <p><strong>🗑️ റൈറ്റ് ടു ഇറേസ്:</strong> നിങ്ങളുടെ അക്കൗണ്ടും എല്ലാ വിവരങ്ങളും എപ്പോൾ വേണമെങ്കിലും ഒറ്റ ക്ലിക്കിൽ പൂർണ്ണമായി മായ്ച്ചുകളയാൻ നിങ്ങൾക്ക് അവകാശമുണ്ട്.</p>
+            </div>
+            <button type="button" onclick="closeModal('modal-data-security')" style="margin-top:16px;width:100%;padding:11px;background:#0C2B59;color:#fff;border:none;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer">ശരി, മനസ്സിലായി</button>
+        </div>
+    </div>
+
                 <button type="button" onclick="closeModal('modal-settings')" class="modal-close-btn"
                     title="ക്ലോസ് ചെയ്യാം">✕</button>
             </div>
@@ -4949,12 +5210,12 @@
     <script src="js/app-refresh.js?v=1.0"></script>
 
     <!-- MULTILINGUAL (i18n) ENGINE -->
-    <script src="js/i18n-translations.js?v=9.1"></script>
+    <script src="js/i18n-translations.js?v=9.2"></script>
 
     <!-- APPLICATION ENGINES -->
     <script src="js/kerala-police-stations-data.js?v=1.0"></script>
-    <script src="js/trades-catalog-500.js?v=9.1"></script>
-    <script src="js/nammude-naadu-engine.js?v=9.1"></script>
+    <script src="js/trades-catalog-500.js?v=9.2"></script>
+    <script src="js/nammude-naadu-engine.js?v=9.2"></script>
 </body>
 
 </html>

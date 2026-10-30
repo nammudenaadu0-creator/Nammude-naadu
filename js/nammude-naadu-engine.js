@@ -13053,6 +13053,147 @@
   }
   window.triggerAppUpdateDownload = triggerAppUpdateDownload;
 
+
+  // ==============================================================
+  // LANGUAGE PICKER ON LAUNCH & PREFERENCES CONTROLLER
+  // ==============================================================
+  function openLanguagePickerModal(isOnboarding = false) {
+    const modal = document.getElementById('modal-language-picker');
+    if (!modal) return;
+    const curLang = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage) ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'ml');
+    updateLanguagePickerUI(curLang);
+    modal.style.display = 'flex';
+  }
+  window.openLanguagePickerModal = openLanguagePickerModal;
+
+  function updateLanguagePickerUI(lang) {
+    const optMl = document.getElementById('langOptMl');
+    const optEn = document.getElementById('langOptEn');
+    const checkMl = document.getElementById('langCheckMl');
+    const checkEn = document.getElementById('langCheckEn');
+
+    if (optMl && optEn && checkMl && checkEn) {
+      if (lang === 'en') {
+        optEn.style.borderColor = '#1D4ED8';
+        optEn.style.background = '#EFF6FF';
+        checkEn.style.background = '#1D4ED8';
+        checkEn.style.color = '#FFFFFF';
+        checkEn.textContent = '✓';
+
+        optMl.style.borderColor = '#E2E8F0';
+        optMl.style.background = '#F8FAFC';
+        checkMl.style.background = '#E2E8F0';
+        checkMl.style.color = '#94A3B8';
+        checkMl.textContent = '○';
+      } else {
+        optMl.style.borderColor = '#1D4ED8';
+        optMl.style.background = '#EFF6FF';
+        checkMl.style.background = '#1D4ED8';
+        checkMl.style.color = '#FFFFFF';
+        checkMl.textContent = '✓';
+
+        optEn.style.borderColor = '#E2E8F0';
+        optEn.style.background = '#F8FAFC';
+        checkEn.style.background = '#E2E8F0';
+        checkEn.style.color = '#94A3B8';
+        checkEn.textContent = '○';
+      }
+    }
+  }
+  window.updateLanguagePickerUI = updateLanguagePickerUI;
+
+  function selectAppLanguageAndProceed(lang) {
+    try {
+      localStorage.setItem('nn_language_chosen', 'true');
+    } catch (_) {}
+    if (typeof window.setAppLanguage === 'function') {
+      window.setAppLanguage(lang, false);
+    }
+    updateLanguagePickerUI(lang);
+    closeModal('modal-language-picker');
+
+    setTimeout(() => {
+      if (typeof isUserRegistered === 'function' && !isUserRegistered()) {
+        if (typeof openMandatoryRegisterModal === 'function') {
+          openMandatoryRegisterModal();
+        }
+      }
+    }, 200);
+  }
+  window.selectAppLanguageAndProceed = selectAppLanguageAndProceed;
+
+  function confirmLanguageChoiceAndClose() {
+    try {
+      localStorage.setItem('nn_language_chosen', 'true');
+    } catch (_) {}
+    closeModal('modal-language-picker');
+    setTimeout(() => {
+      if (typeof isUserRegistered === 'function' && !isUserRegistered()) {
+        if (typeof openMandatoryRegisterModal === 'function') {
+          openMandatoryRegisterModal();
+        }
+      }
+    }, 200);
+  }
+  window.confirmLanguageChoiceAndClose = confirmLanguageChoiceAndClose;
+
+  // ==============================================================
+  // PRIVACY LAW COMPLIANCE: EXPORT DATA, TERMS & SECURITY MODALS
+  // ==============================================================
+  function exportUserPersonalData() {
+    const user = (APP_STATE && APP_STATE.currentUser) || {};
+    const phone = user.phone || localStorage.getItem('nn_user_phone') || '';
+    const myServices = (APP_STATE.services || []).filter(s => s.phone === phone || s.userId === user.id);
+    const myJobs = (APP_STATE.jobs || []).filter(j => j.employerPhone === phone || j.employer === user.name);
+    const myRentals = (APP_STATE.rentals || []).filter(r => r.ownerPhone === phone || r.owner === user.name);
+    const myPosts = (APP_STATE.posts || []).filter(p => p.authorPhone === phone || p.author === user.name);
+
+    const exportPayload = {
+      appName: 'Nammude Naadu (നമ്മുടെ നാട്)',
+      compliance: 'Indian DPDP Act 2023 & GDPR Right to Data Portability',
+      exportDate: new Date().toISOString(),
+      userProfile: {
+        name: user.name,
+        phone: user.phone,
+        email: user.email,
+        location: user.location,
+        district: user.district,
+        bloodGroup: user.bloodGroup,
+        isDonor: user.isDonor,
+        profession: user.trade,
+        bio: user.bio
+      },
+      myServices,
+      myJobs,
+      myRentals,
+      myPosts
+    };
+
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(exportPayload, null, 2));
+    const dlAnchor = document.createElement('a');
+    dlAnchor.setAttribute('href', dataStr);
+    dlAnchor.setAttribute('download', `NammudeNaadu-DataExport-${phone || 'user'}.json`);
+    document.body.appendChild(dlAnchor);
+    dlAnchor.click();
+    dlAnchor.remove();
+
+    if (typeof toast === 'function') {
+      const isEn = (localStorage.getItem('nn_app_language') || 'ml') === 'en';
+      toast(isEn ? '📦 Your personal data export has been downloaded!' : '📦 നിങ്ങളുടെ വിവരങ്ങൾ വിജയകരമായി ഡൗൺലോഡ് ചെയ്തു!');
+    }
+  }
+  window.exportUserPersonalData = exportUserPersonalData;
+
+  function openTermsModal() {
+    openModal('modal-terms');
+  }
+  window.openTermsModal = openTermsModal;
+
+  function openDataSecurityModal() {
+    openModal('modal-data-security');
+  }
+  window.openDataSecurityModal = openDataSecurityModal;
+
   let _engineBootstrapped = false;
   function _bootNammudeApp() {
     if (_engineBootstrapped) return;
@@ -13067,12 +13208,14 @@
     if (typeof updateVolunteerHelperUI === 'function') updateVolunteerHelperUI();
     if (typeof initNearbyVolunteerHelpListener === 'function') initNearbyVolunteerHelpListener();
 
-    // Mandatory Registration Gate on App Launch
+    // Language Picker Gate & Mandatory Registration on App Launch
     setTimeout(() => {
-      if (typeof isUserRegistered === 'function' && !isUserRegistered()) {
+      if (!localStorage.getItem('nn_language_chosen')) {
+        openLanguagePickerModal(true);
+      } else if (typeof isUserRegistered === 'function' && !isUserRegistered()) {
         openMandatoryRegisterModal();
       }
-    }, 120);
+    }, 150);
 
     // Safe Back Button & Hardware Navigation Support
     let _lastBackActionTime = 0;
