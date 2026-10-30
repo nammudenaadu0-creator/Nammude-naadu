@@ -949,10 +949,10 @@
         }
 
         .post-type-chip.active {
-            background: var(--primary-green-pill);
-            color: #ffffff;
-            border-color: var(--primary-green-pill);
-            box-shadow: 0 2px 8px rgba(6, 95, 70, 0.2);
+            background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%) !important;
+            color: #ffffff !important;
+            border-color: #1D4ED8 !important;
+            box-shadow: 0 2px 8px rgba(29, 78, 216, 0.25) !important;
         }
 
         /* Create Post Form */
@@ -2381,21 +2381,21 @@
             color: #10B981 !important;
         }
 
-        /* Primary Action Buttons: Emerald Gradient with Golden Hover */
+        /* Primary Action Buttons: Royal Blue Gradient */
         .primary-action-btn,
         .btn-action.green,
         .login-btn,
         .submit-btn {
-            background: linear-gradient(135deg, #10B981 0%, #047857 100%) !important;
+            background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%) !important;
             color: #ffffff !important;
-            border: 1px solid #059669 !important;
-            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.32) !important;
+            border: 1px solid #1D4ED8 !important;
+            box-shadow: 0 6px 18px rgba(29, 78, 216, 0.32) !important;
         }
 
         .primary-action-btn:hover,
         .btn-action.green:hover {
-            background: linear-gradient(135deg, #059669 0%, #064E3B 100%) !important;
-            box-shadow: 0 8px 22px rgba(16, 185, 129, 0.42) !important;
+            background: linear-gradient(135deg, #1E40AF 0%, #0C2B59 100%) !important;
+            box-shadow: 0 8px 22px rgba(29, 78, 216, 0.42) !important;
         }
 
         /* Badges & Tags with Golden Yellow Accents */
@@ -4568,7 +4568,7 @@
         button.primary,
         .btn-primary {
             border-radius: 24px !important;
-            background: #15803D !important;
+            background: #1D4ED8 !important;
             color: #ffffff !important;
             font-weight: 700 !important;
         }
@@ -5846,10 +5846,10 @@
         .submit-btn,
         .modal-submit-btn,
         .feed-publish-btn {
-            background: var(--primary-teal) !important;
+            background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%) !important;
             color: #FFFFFF !important;
-            border: 1.5px solid var(--primary-dark) !important;
-            box-shadow: 0 4px 14px rgba(15, 118, 110, 0.28) !important;
+            border: 1.5px solid #1D4ED8 !important;
+            box-shadow: 0 4px 14px rgba(29, 78, 216, 0.28) !important;
             font-weight: 700 !important;
             border-radius: var(--radius-btn) !important;
         }
@@ -5859,8 +5859,8 @@
         .submit-btn:hover,
         .modal-submit-btn:hover,
         .feed-publish-btn:hover {
-            background: var(--primary-hover) !important;
-            box-shadow: 0 6px 18px rgba(15, 118, 110, 0.35) !important;
+            background: linear-gradient(135deg, #1E40AF 0%, #0C2B59 100%) !important;
+            box-shadow: 0 6px 18px rgba(29, 78, 216, 0.35) !important;
         }
 
         /* Modals Modern Theme */

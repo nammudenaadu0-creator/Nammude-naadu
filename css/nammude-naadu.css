@@ -5335,3 +5335,32 @@ body, button, input, textarea, select {
   text-rendering: optimizeSpeed;
   -webkit-font-smoothing: antialiased;
 }
+
+/* ============================================================== */
+/* UNIFIED ROYAL BLUE FORM ACTION BUTTONS & CHIPS (HIGH PRIORITY)  */
+/* ============================================================== */
+button.primary-action-btn,
+button.submit-btn,
+button.modal-submit-btn,
+button.feed-publish-btn,
+button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"]) {
+  background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid #1D4ED8 !important;
+  box-shadow: 0 4px 14px rgba(29, 78, 216, 0.28) !important;
+}
+
+button.primary-action-btn:hover,
+button.submit-btn:hover,
+button.modal-submit-btn:hover,
+button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"]):hover {
+  background: linear-gradient(135deg, #1E40AF 0%, #0C2B59 100%) !important;
+  box-shadow: 0 6px 18px rgba(29, 78, 216, 0.38) !important;
+}
+
+.post-type-chip.active {
+  background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%) !important;
+  color: #FFFFFF !important;
+  border-color: #1D4ED8 !important;
+  box-shadow: 0 2px 8px rgba(29, 78, 216, 0.25) !important;
+}
