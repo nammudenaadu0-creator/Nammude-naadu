@@ -25,9 +25,9 @@
         rel="stylesheet">
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="css/main.css?v=7.0">
-    <link rel="stylesheet" href="css/jobs.css?v=7.0">
-    <link rel="stylesheet" href="css/nammude-naadu.css?v=7.0">
+    <link rel="stylesheet" href="css/main.css?v=8.0">
+    <link rel="stylesheet" href="css/jobs.css?v=8.0">
+    <link rel="stylesheet" href="css/nammude-naadu.css?v=8.0">
 </head>
 
 <body>
@@ -1248,54 +1248,58 @@
                 </section>
 
                 <!-- ============================================================== -->
-                <!-- SCREEN: CHAT / MESSAGES                                       -->
+                <!-- SCREEN: CHAT / MESSAGES (SUPERAPP ROYAL NAVY ARCHITECTURE)     -->
                 <!-- ============================================================== -->
-                <section id="screen-chat" class="screen">
-                    <div class="chat-screen-header"
-                        style="background:#fff;padding:14px 16px;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between">
-                        <button class="round-back-btn" onclick="navTo('home')">❮</button>
-                        <div style="text-align:center">
-                            <h2 style="margin:0;font-size:17px;font-weight:800">💬 സന്ദേശങ്ങൾ</h2>
+                <section id="screen-chat" class="screen" style="background:#F0F4F8">
+                    <!-- SUPERAPP ROYAL NAVY HEADER -->
+                    <div class="superapp-header">
+                        <div class="superapp-header-left">
+                            <button onclick="navTo('home')" class="superapp-round-back-btn" title="Back">❮</button>
+                            <div class="superapp-header-brand">
+                                <div class="superapp-brand-row">
+                                    <span class="superapp-brand-logo">💬</span>
+                                    <h1 class="superapp-brand-title">Nammude Naadu</h1>
+                                </div>
+                                <div class="superapp-brand-sub">Messages • Conversations • Community</div>
+                            </div>
                         </div>
                         <div style="display:flex;align-items:center;gap:6px">
-                            <button class="round-gear-btn" onclick="openNewChatModal()" title="പുതിയ ചാറ്റ് ആരംഭിക്കുക"
-                                style="background:linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);color:#fff;border:none;font-weight:900">➕</button>
-                            <button class="round-gear-btn" onclick="syncUserChatsLive()"
-                                title="സന്ദേശങ്ങൾ പുതുക്കുക">🔄</button>
+                            <button onclick="openNewChatModal()" class="superapp-hero-btn solid" style="padding:7px 12px;font-size:11.5px;min-height:34px;background:#FFFFFF!important;color:#0C2B59!important;border:none!important;box-shadow:0 2px 8px rgba(0,0,0,0.12)">
+                                <span>➕</span> <span>പുതിയ ചാറ്റ്</span>
+                            </button>
+                            <button onclick="syncUserChatsLive()" class="superapp-round-back-btn" title="പുതുക്കുക" style="width:34px;height:34px;min-width:34px;min-height:34px">
+                                🔄
+                            </button>
                         </div>
                     </div>
 
-                    <!-- SEARCH BAR IN CHAT -->
-                    <div style="padding:10px 16px 6px;background:#fff">
-                        <div
-                            style="display:flex;align-items:center;background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:12px;padding:8px 12px;gap:8px">
-                            <span style="font-size:15px;color:#64748B">🔍</span>
-                            <input type="text" id="chatSearchInput" placeholder="സന്ദേശങ്ങളോ ആളുകളെയോ തിരയുക..."
-                                oninput="filterChatList(this.value)"
-                                style="border:none;background:transparent;outline:none;width:100%;font-size:13px;font-weight:600;color:#0F172A">
-                        </div>
+                    <!-- WHITE CAPSULE SEARCH BAR -->
+                    <div class="superapp-search-wrap">
+                        <span class="superapp-search-icon">🔍</span>
+                        <input type="text" id="chatSearchInput" class="superapp-search-input"
+                            placeholder="സന്ദേശങ്ങളോ ആളുകളെയോ തിരയുക..." autocomplete="off"
+                            oninput="filterChatList(this.value)">
                     </div>
 
                     <!-- CATEGORY FILTER CHIPS IN CHAT -->
-                    <div
-                        style="display:flex;gap:6px;padding:8px 16px;background:#fff;border-bottom:1px solid #E5E7EB;overflow-x:auto;scrollbar-width:none">
-                        <button class="chat-filter-chip active" data-filter="all"
-                            onclick="filterChatCategory('all', this)">എല്ലാം</button>
-                        <button class="chat-filter-chip" data-filter="business"
+                    <div class="superapp-chips-bar" id="chatCategoryChipsBar">
+                        <button class="superapp-chip active chat-filter-chip" data-filter="all"
+                            onclick="filterChatCategory('all', this)">All</button>
+                        <button class="superapp-chip chat-filter-chip" data-filter="business"
                             onclick="filterChatCategory('business', this)">🏪 കടകൾ</button>
-                        <button class="chat-filter-chip" data-filter="service"
+                        <button class="superapp-chip chat-filter-chip" data-filter="service"
                             onclick="filterChatCategory('service', this)">🛠️ സർവീസുകൾ</button>
-                        <button class="chat-filter-chip" data-filter="blood"
+                        <button class="superapp-chip chat-filter-chip" data-filter="blood"
                             onclick="filterChatCategory('blood', this)">🩸 രക്തം</button>
-                        <button class="chat-filter-chip" data-filter="rental"
+                        <button class="superapp-chip chat-filter-chip" data-filter="rental"
                             onclick="filterChatCategory('rental', this)">🏠 വാടക</button>
-                        <button class="chat-filter-chip" data-filter="job" onclick="filterChatCategory('job', this)">💼
-                            ജോലി</button>
-                        <button class="chat-filter-chip" data-filter="other"
+                        <button class="superapp-chip chat-filter-chip" data-filter="job"
+                            onclick="filterChatCategory('job', this)">💼 ജോലി</button>
+                        <button class="superapp-chip chat-filter-chip" data-filter="other"
                             onclick="filterChatCategory('other', this)">👥 നാട്ടുകാർ</button>
                     </div>
 
-                    <div id="chatThreadsList" style="display:flex;flex-direction:column;gap:8px;padding:12px 16px">
+                    <div id="chatThreadsList" style="display:flex;flex-direction:column;gap:8px;padding:12px 16px 90px">
                     </div>
                 </section>
 
@@ -4939,8 +4943,8 @@
 
     <!-- APPLICATION ENGINES -->
     <script src="js/kerala-police-stations-data.js?v=1.0"></script>
-    <script src="js/trades-catalog-500.js?v=7.0"></script>
-    <script src="js/nammude-naadu-engine.js?v=7.0"></script>
+    <script src="js/trades-catalog-500.js?v=8.0"></script>
+    <script src="js/nammude-naadu-engine.js?v=8.0"></script>
 </body>
 
 </html>

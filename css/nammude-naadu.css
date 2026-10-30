@@ -6192,3 +6192,120 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
 .trade-suggestions-dropdown:empty {
   display: none !important;
 }
+
+
+/* ==============================================================
+   ROYAL NAVY DESIGN SYSTEM FOR CHAT SCREEN & MODAL CHAT
+   ============================================================== */
+#screen-chat {
+  background: #F0F4F8 !important;
+}
+
+#screen-chat .chat-filter-chip {
+  background: #FFFFFF !important;
+  color: #0C2B59 !important;
+  border: 1px solid #CBD5E1 !important;
+  font-weight: 700 !important;
+}
+
+#screen-chat .chat-filter-chip.active {
+  background: #0C2B59 !important;
+  color: #FFFFFF !important;
+  border-color: #0C2B59 !important;
+  box-shadow: 0 2px 8px rgba(12, 43, 89, 0.25) !important;
+}
+
+/* 1-on-1 Modal Chat Sheet & Header */
+.chat-modal-header,
+#modal-chat .chat-modal-header {
+  background: linear-gradient(135deg, #0A2240 0%, #0C2B59 55%, #163E75 100%) !important;
+  background-color: #0C2B59 !important;
+  color: #FFFFFF !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 4px 18px rgba(10, 34, 64, 0.25) !important;
+}
+
+.chat-modal-header *,
+#modal-chat .chat-modal-header * {
+  color: #FFFFFF !important;
+}
+
+.chat-modal-header .chat-back-to-inbox-btn,
+.chat-modal-header .chat-search-toggle-btn,
+.chat-modal-header .chat-call-btn,
+.chat-modal-header .chat-clear-btn,
+.chat-modal-header .modal-close-btn,
+#modal-chat .chat-modal-header .modal-close-btn {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border: 1px solid rgba(255, 255, 255, 0.28) !important;
+  color: #FFFFFF !important;
+}
+
+.chat-modal-header .chat-online-dot {
+  background: #38BDF8 !important;
+  box-shadow: 0 0 6px #38BDF8 !important;
+}
+
+/* Chat Send Button */
+.chat-send-btn,
+#modal-chat .chat-send-btn {
+  background: linear-gradient(135deg, #0A2240 0%, #0C2B59 55%, #163E75 100%) !important;
+  background-color: #0C2B59 !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  box-shadow: 0 4px 14px rgba(12, 43, 89, 0.35) !important;
+}
+
+.chat-send-btn *,
+#modal-chat .chat-send-btn * {
+  color: #FFFFFF !important;
+}
+
+/* Outgoing Message Bubble: Ice Blue & Royal Navy */
+.chat-bubble.outgoing,
+#modal-chat .chat-bubble.outgoing {
+  background: #EFF6FF !important;
+  background-color: #EFF6FF !important;
+  border: 1px solid #BFDBFE !important;
+  color: #0A2240 !important;
+  box-shadow: 0 1px 3px rgba(12, 43, 89, 0.08) !important;
+}
+
+.chat-bubble.outgoing .chat-bubble-content,
+#modal-chat .chat-bubble.outgoing .chat-bubble-content {
+  color: #0A2240 !important;
+}
+
+.chat-bubble.outgoing .chat-time-text,
+#modal-chat .chat-bubble.outgoing .chat-time-text {
+  color: #1E40AF !important;
+  font-weight: 600 !important;
+}
+
+/* Incoming Message Bubble: Crisp White */
+.chat-bubble.incoming,
+#modal-chat .chat-bubble.incoming {
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  color: #0F172A !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+.chat-bubble.incoming .chat-bubble-content,
+#modal-chat .chat-bubble.incoming .chat-bubble-content {
+  color: #0F172A !important;
+}
+
+/* Chat Input Bar */
+.chat-input-bar,
+#modal-chat .chat-input-bar {
+  background: #F8FAFC !important;
+  border-top: 1px solid #E2E8F0 !important;
+}
+
+.chat-input-field:focus,
+#modal-chat .chat-input-field:focus {
+  border-color: #0C2B59 !important;
+  box-shadow: 0 0 0 2px rgba(12, 43, 89, 0.15) !important;
+}

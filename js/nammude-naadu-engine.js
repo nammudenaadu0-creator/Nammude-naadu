@@ -5873,7 +5873,7 @@
               <div style="font-weight:800;font-size:14px;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(c.name)}</div>
               <div style="font-size:11.5px;color:#64748B;margin-top:2px">${escapeHtml(c.sub || '')}</div>
             </div>
-            <button style="background:#ECFDF5;border:1px solid #A7F3D0;color:#065F46;border-radius:10px;padding:6px 12px;font-size:12px;font-weight:800;cursor:pointer;flex-shrink:0">
+            <button style="background:#EFF6FF;border:1px solid #BFDBFE;color:#0C2B59;border-radius:10px;padding:6px 12px;font-size:12px;font-weight:800;cursor:pointer;flex-shrink:0">
               💬 ചാറ്റ്
             </button>
           </div>
@@ -5886,11 +5886,11 @@
       const directId = directPhone ? ('usr_' + directPhone) : ('usr_query_' + String(directTargetName).toLowerCase().replace(/[^a-z0-9]/g, '_'));
       html += `
         <div onclick="openChatModal('${escapeHtml(directTargetName).replace(/'/g, "\\'")}', '${directPhone}', '', '', '${directId}')"
-             style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#F0FDF4;border:1.5px dashed #86EFAC;border-radius:14px;cursor:pointer;margin-top:10px">
+             style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#EFF6FF;border:1.5px dashed #BFDBFE;border-radius:14px;cursor:pointer;margin-top:10px">
           <span style="font-size:22px">✉️</span>
           <div style="flex:1">
-            <div style="font-size:13px;font-weight:800;color:#166534">"${escapeHtml(activeChatSearchQuery)}" എന്ന പേരിലേക്ക് / നമ്പറിലേക്ക് സന്ദേശം അയക്കാം</div>
-            <div style="font-size:11px;color:#15803D;margin-top:2px">നേരിട്ട് ചാറ്റ് വിൻഡോ തുറക്കാൻ ഇവിടെ ക്ലിക്ക് ചെയ്യുക ➔</div>
+            <div style="font-size:13px;font-weight:800;color:#0C2B59">"${escapeHtml(activeChatSearchQuery)}" എന്ന പേരിലേക്ക് / നമ്പറിലേക്ക് സന്ദേശം അയക്കാം</div>
+            <div style="font-size:11px;color:#1E40AF;margin-top:2px">നേരിട്ട് ചാറ്റ് വിൻഡോ തുറക്കാൻ ഇവിടെ ക്ലിക്ക് ചെയ്യുക ➔</div>
           </div>
         </div>
       `;
@@ -5902,9 +5902,9 @@
     if (allKeys.length === 0) {
       const allCommunity = typeof getAllCommunityContacts === 'function' ? getAllCommunityContacts('all') : [];
       html += `
-        <div style="background:#F0FDF4;border:1.5px dashed #86EFAC;border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <div style="background:#EFF6FF;border:1.5px dashed #BFDBFE;border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:8px">
           <span style="font-size:24px">⚡</span>
-          <div style="font-size:12.5px;color:#166534;font-weight:700">താഴെ കാണുന്നവരിൽ ആർക്കും ഇപ്പോൾ നേരിട്ട് സന്ദേശം അയക്കാം (ഒരു സെക്കൻഡിൽ അപ്‌ഡേറ്റ്):</div>
+          <div style="font-size:12.5px;color:#0C2B59;font-weight:700">താഴെ കാണുന്നവരിൽ ആർക്കും ഇപ്പോൾ നേരിട്ട് സന്ദേശം അയക്കാം (ഒരു സെക്കൻഡിൽ അപ്‌ഡേറ്റ്):</div>
         </div>
         <div style="font-size:13px;font-weight:800;color:#0F172A;margin:6px 0 8px">⚡ സന്ദേശം അയക്കാൻ ലഭ്യമായവർ (Available to Chat)</div>
       `;
@@ -5915,13 +5915,13 @@
                style="display:flex;align-items:center;gap:12px;padding:11px 14px;background:#fff;border-radius:14px;border:1px solid #E2E8F0;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.02);transition:all 0.15s">
             <div style="position:relative;flex-shrink:0">
               <img src="${c.avatar || DEFAULT_USER_AVATAR}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:1.5px solid #CBD5E1" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
-              <span style="position:absolute;bottom:0;right:0;width:11px;height:11px;border-radius:50%;background:#10B981;border:2px solid #fff"></span>
+              <span style="position:absolute;bottom:0;right:0;width:11px;height:11px;border-radius:50%;background:#38BDF8;border:2px solid #fff"></span>
             </div>
             <div style="flex:1;min-width:0">
               <div style="font-weight:800;font-size:14px;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(c.name)}</div>
               <div style="font-size:11.5px;color:#64748B;margin-top:2px">${escapeHtml(c.sub || '')}</div>
             </div>
-            <button style="background:#ECFDF5;border:1px solid #A7F3D0;color:#065F46;border-radius:10px;padding:7px 14px;font-size:12px;font-weight:800;cursor:pointer;flex-shrink:0">
+            <button style="background:#EFF6FF;border:1px solid #BFDBFE;color:#0C2B59;border-radius:10px;padding:7px 14px;font-size:12px;font-weight:800;cursor:pointer;flex-shrink:0">
               💬 ചാറ്റ്
             </button>
           </div>
@@ -6029,11 +6029,11 @@
     return `
       <div onclick="openChatModalByKey('${k}')"
            style="display:flex;align-items:center;gap:13px;padding:13px 14px;
-                  background:${isUnread ? '#F0FDF4' : '#FFFFFF'};
+                  background:${isUnread ? '#EFF6FF' : '#FFFFFF'};
                   border-radius:18px;
-                  border:1.5px solid ${isUnread ? '#A7F3D0' : '#E2E8F0'};
+                  border:1.5px solid ${isUnread ? '#BFDBFE' : '#E2E8F0'};
                   cursor:pointer;
-                  box-shadow:${isUnread ? '0 2px 10px rgba(16,185,129,0.12)' : '0 1px 4px rgba(0,0,0,0.03)'};
+                  box-shadow:${isUnread ? '0 4px 14px rgba(12,43,89,0.12)' : '0 1px 4px rgba(0,0,0,0.03)'};
                   transition:all 0.18s ease;
                   margin-bottom:8px;
                   position:relative">
@@ -6059,11 +6059,11 @@
           <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px">
             <span style="font-weight:${isUnread ? '900' : '800'};
                          font-size:14.5px;
-                         color:${isUnread ? '#065F46' : '#0F172A'};
+                         color:${isUnread ? '#0C2B59' : '#0F172A'};
                          white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
                          max-width:calc(100% - 80px)">${escapeHtml(meta.name)}</span>
             <span style="font-size:11px;
-                         color:${isUnread ? '#059669' : '#94A3B8'};
+                         color:${isUnread ? '#1E40AF' : '#94A3B8'};
                          font-weight:${isUnread ? '800' : '600'};
                          flex-shrink:0;margin-left:8px">${smartTime}</span>
           </div>
@@ -6080,13 +6080,13 @@
                            white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(previewText)}</span>
             </div>
             ${isUnread ? `
-              <span style="background:#059669;color:#fff;
+              <span style="background:#0C2B59;color:#fff;
                            font-size:10.5px;font-weight:900;
                            min-width:20px;height:20px;
                            border-radius:10px;
                            display:inline-flex;align-items:center;justify-content:center;
                            padding:0 5px;flex-shrink:0;
-                           box-shadow:0 1px 4px rgba(5,150,105,0.4)">
+                           box-shadow:0 1px 4px rgba(12,43,89,0.35)">
                 ${unread > 99 ? '99+' : unread}
               </span>` : ''}
           </div>
