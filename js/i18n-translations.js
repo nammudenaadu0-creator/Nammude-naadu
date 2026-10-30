@@ -376,23 +376,110 @@
     const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.ml;
     const isEn = currentLang === 'en';
 
-    // 1. Bottom Navigation Bar items
-    const navHome = document.querySelector('.nav-item[data-page="home"] span:last-child');
-    if (navHome) navHome.textContent = dict.navHome;
+    // 1. Home Header & Search
+    const homeBrand = document.getElementById('homeBrandTitle');
+    if (homeBrand) homeBrand.textContent = isEn ? 'Nammude Naadu' : 'നമ്മുടെ നാട്';
 
-    const navServices = document.querySelector('.nav-item[data-page="services"] span:last-child');
-    if (navServices) navServices.textContent = dict.navServices;
+    const homeSearchInput = document.getElementById('homeSearchInput');
+    if (homeSearchInput) homeSearchInput.placeholder = isEn ? 'Search village services and people...' : 'സേവനങ്ങളും കടകളും ആളുകളും തിരയുക...';
 
-    const navAdd = document.querySelector('.nav-item[data-page="add"] span:last-child');
-    if (navAdd) navAdd.textContent = dict.navAdd;
+    const homeSearchBtn = document.getElementById('homeSearchBtnTxt');
+    if (homeSearchBtn) homeSearchBtn.textContent = isEn ? 'Search' : 'തിരയുക';
 
-    const navChat = document.querySelector('.nav-item[data-page="chat"] span:last-child');
-    if (navChat) navChat.textContent = dict.navChat;
+    const homeGlobalSearch = document.getElementById('homeGlobalSearchInput');
+    if (homeGlobalSearch) homeGlobalSearch.placeholder = isEn ? 'Search village services and people...' : 'സേവനങ്ങളും കടകളും ആളുകളും തിരയുക...';
 
-    const navCommunity = document.querySelector('.nav-item[data-page="community"] span:last-child');
-    if (navCommunity) navCommunity.textContent = dict.navCommunity;
+    const desktopSearch = document.getElementById('desktopSearchInput');
+    if (desktopSearch) desktopSearch.placeholder = isEn ? 'Search village services and people...' : 'സേവനങ്ങളും കടകളും ആളുകളും തിരയുക...';
 
-    // 2. Superapp Brand Titles & Subtitles across screens
+    const homeSecCat = document.getElementById('homeSecCategoriesTitle');
+    if (homeSecCat) homeSecCat.textContent = isEn ? 'Categories' : 'വിഭാഗങ്ങൾ';
+
+    const homeSecViewAll = document.getElementById('homeSecCategoriesViewAll');
+    if (homeSecViewAll) homeSecViewAll.textContent = isEn ? 'View All' : 'എല്ലാം കാണുക';
+
+    // 2. Home Screen 6 Category Cards (Strictly 100% Pure in both languages)
+    const catCards = document.querySelectorAll('.home-kerala-cat-grid .kerala-cat-card');
+    if (catCards && catCards.length >= 6) {
+      const c1Title = catCards[0].querySelector('.kerala-cat-title');
+      const c1Sub = catCards[0].querySelector('.kerala-cat-sub');
+      if (c1Title) c1Title.textContent = isEn ? 'Blood Donation' : 'രക്തദാനം';
+      if (c1Sub) c1Sub.textContent = isEn ? 'Donate blood... Save lives...' : 'രക്തം നൽകൂ... ജീവൻ രക്ഷിക്കൂ...';
+
+      const c2Title = catCards[1].querySelector('.kerala-cat-title');
+      const c2Sub = catCards[1].querySelector('.kerala-cat-sub');
+      if (c2Title) c2Title.textContent = isEn ? 'Emergency & Police' : 'അടിയന്തിരം & പോലീസ്';
+      if (c2Sub) c2Sub.textContent = isEn ? 'Police, ambulances, hospitals...' : 'പോലീസ്, ആംബുലൻസ്, ആശുപത്രികൾ...';
+
+      const c3Title = catCards[2].querySelector('.kerala-cat-title');
+      const c3Sub = catCards[2].querySelector('.kerala-cat-sub');
+      if (c3Title) c3Title.textContent = isEn ? 'Services' : 'സേവനങ്ങൾ';
+      if (c3Sub) c3Sub.textContent = isEn ? '18+ services in one place' : '18+ സേവനങ്ങൾ ഒരു കുടക്കീഴിൽ';
+
+      const c4Title = catCards[3].querySelector('.kerala-cat-title');
+      const c4Sub = catCards[3].querySelector('.kerala-cat-sub');
+      if (c4Title) c4Title.textContent = isEn ? 'Jobs' : 'തൊഴിലുകൾ';
+      if (c4Sub) c4Sub.textContent = isEn ? 'Job opportunities near you' : 'തൊഴിൽ അവസരങ്ങൾ നിങ്ങൾക്ക് സമീപം';
+
+      const c5Title = catCards[4].querySelector('.kerala-cat-title');
+      const c5Sub = catCards[4].querySelector('.kerala-cat-sub');
+      if (c5Title) c5Title.textContent = isEn ? 'Rentals & Marketplace' : 'വാടക & വിൽപന';
+      if (c5Sub) c5Sub.textContent = isEn ? 'Homes, rooms, and equipment for rent' : 'വാടക വീടുകൾ, റൂമുകൾ, ഉപകരണങ്ങൾ';
+
+      const c6Title = catCards[5].querySelector('.kerala-cat-title');
+      const c6Sub = catCards[5].querySelector('.kerala-cat-sub');
+      if (c6Title) c6Title.textContent = isEn ? 'Nearby Help' : 'സമീപ സഹായം';
+      if (c6Sub) c6Sub.textContent = isEn ? 'Get help from people nearby (1–10 km)' : 'അടുത്തുള്ളവരിൽ നിന്ന് (1-10 km)';
+    }
+
+    // 3. Home Business Showcase Banner
+    const bizBanner = document.querySelector('.home-3d-business-banner');
+    if (bizBanner) {
+      const bTitle = bizBanner.querySelector('div > div > div > span:first-child');
+      const bBadge = bizBanner.querySelector('div > div > div > span:last-child');
+      const divs = bizBanner.querySelectorAll('div > div > div');
+      if (bTitle) bTitle.textContent = isEn ? 'Businesses & Shops' : 'വ്യാപാരങ്ങൾ & കടകൾ';
+      if (bBadge) bBadge.textContent = isEn ? 'NEW' : 'പുതിയത്';
+      if (divs[1]) divs[1].textContent = isEn ? 'Supermarkets, hotels, bakeries & offers' : 'സൂപ്പർമാർക്കറ്റ്, ഹോട്ടൽ, ബേക്കറി & ഓഫറുകൾ';
+      if (divs[2]) divs[2].textContent = isEn ? 'Local shops • Order through chat' : 'നാട്ടിലെ കടകൾ • ഒരൊറ്റ ചാറ്റ് ബോക്സ് ഓർഡർ';
+    }
+
+    // 4. Bottom Navigation Bar Items (Precise ID-based selection)
+    const nh = document.getElementById('navHomeLabel');
+    if (nh) nh.textContent = isEn ? 'Home' : 'ഹോം';
+
+    const ns = document.getElementById('navServicesLabel');
+    if (ns) ns.textContent = isEn ? 'Services' : 'സേവനങ്ങൾ';
+
+    const na = document.getElementById('navAddLabel');
+    if (na) na.textContent = isEn ? 'Post' : 'പോസ്റ്റ്';
+
+    const nc = document.getElementById('navChatLabel');
+    if (nc) nc.textContent = isEn ? 'Chat' : 'ചാറ്റ്';
+
+    const ncomm = document.getElementById('navCommunityLabel');
+    if (ncomm) ncomm.textContent = isEn ? 'Community' : 'നാട്ടുകൂട്ടം';
+
+    // 5. Desktop Navigation Items
+    const desktopNavMap = {
+      home: isEn ? 'Home' : 'ഹോം',
+      community: isEn ? 'Community' : 'നാട്ടുകൂട്ടം',
+      services: isEn ? 'Services' : 'സേവനങ്ങൾ',
+      jobs: isEn ? 'Jobs' : 'തൊഴിൽ അവസരങ്ങൾ',
+      rentals: isEn ? 'Rentals & Marketplace' : 'വാടക & വിൽപന',
+      blood: isEn ? 'Blood Network' : 'രക്തദാനം',
+      nearby: isEn ? 'Nearby Help' : 'സമീപ സഹായം',
+      chat: isEn ? 'Chat' : 'ചാറ്റ്',
+      profile: isEn ? 'My Profile' : 'എന്റെ പ്രൊഫൈൽ',
+      settings: isEn ? 'Settings' : 'ക്രമീകരണങ്ങൾ',
+      admin: isEn ? 'Admin Console' : 'അഡ്മിൻ കൺസോൾ'
+    };
+    document.querySelectorAll('.desktop-nav-label').forEach(el => {
+      const k = el.getAttribute('data-nav');
+      if (desktopNavMap[k]) el.textContent = desktopNavMap[k];
+    });
+
+    // 6. Superapp Brand Titles & Subtitles across screens
     document.querySelectorAll('.superapp-brand-title').forEach(el => {
       el.textContent = isEn ? 'Nammude Naadu' : 'നമ്മുടെ നാട്';
     });
@@ -410,8 +497,7 @@
       }
     });
 
-    // 3. Screen Headers & Action Buttons
-    // Services Screen
+    // 7. Services Screen
     const servHeader = document.querySelector('#screen-services h1');
     if (servHeader) servHeader.textContent = isEn ? 'Services' : 'സേവനങ്ങൾ';
 
@@ -424,10 +510,10 @@
     const servSecTitle = document.querySelector('#screen-services .home-kerala-sec-title');
     if (servSecTitle) servSecTitle.textContent = isEn ? 'Categories' : 'വിഭാഗങ്ങൾ';
 
-    const servSecSub = document.querySelector('#screen-services .home-kerala-sec-sub');
-    if (servSecSub) servSecSub.textContent = ''; // Never mix (Categories)
+    const servSearch = document.getElementById('serviceSearchInput');
+    if (servSearch) servSearch.placeholder = isEn ? 'Plumber, driver, electrician, taxi...' : 'പ്ലംബർ, ഡ്രൈവർ, ഇലക്ട്രീഷ്യൻ, ടാക്സി...';
 
-    // Business Screen
+    // 8. Business Screen
     const bizHeader = document.querySelector('#screen-business h1');
     if (bizHeader) bizHeader.textContent = isEn ? 'Businesses & Shops' : 'വ്യാപാരങ്ങൾ & കടകൾ';
 
@@ -437,7 +523,7 @@
     const bizSecTitle = document.querySelector('#screen-business .home-kerala-sec-title');
     if (bizSecTitle) bizSecTitle.textContent = isEn ? 'Categories' : 'വിഭാഗങ്ങൾ';
 
-    // Jobs Screen
+    // 9. Jobs Screen
     const jobsHeroTitle = document.querySelector('#screen-jobs .superapp-hero-title');
     if (jobsHeroTitle) jobsHeroTitle.textContent = isEn ? 'Jobs & Careers' : 'തൊഴിൽ അവസരങ്ങൾ';
 
@@ -456,7 +542,10 @@
     const jobsBannerSub = document.getElementById('jobsBannerSub');
     if (jobsBannerSub) jobsBannerSub.textContent = isEn ? 'Get connected with local employers and career opportunities near you.' : 'നാട്ടിലെ തൊഴിൽദാതാക്കളുമായും മികച്ച അവസരങ്ങളുമായും ബന്ധപ്പെടാം.';
 
-    // Rentals Screen
+    const jobSearch = document.getElementById('jobSearchInput');
+    if (jobSearch) jobSearch.placeholder = isEn ? 'Search jobs, skills or company...' : 'തൊഴിലുകൾ, കഴിവുകൾ, സ്ഥാപനങ്ങൾ തിരയുക...';
+
+    // 10. Rentals Screen
     const rentHeroTitle = document.querySelector('#screen-rentals .superapp-hero-title');
     if (rentHeroTitle) rentHeroTitle.textContent = isEn ? 'Rentals & Marketplace' : 'വാടക & വ്യാപാരം';
 
@@ -475,7 +564,10 @@
     const rentalsBannerSub = document.getElementById('rentalsBannerSub');
     if (rentalsBannerSub) rentalsBannerSub.textContent = isEn ? 'Find the best deals near you.' : 'യഥാർത്ഥ ആളുകളിൽ നിന്ന് മികച്ച ഡീലുകൾ കണ്ടെത്താം.';
 
-    // Blood Screen
+    const rentSearch = document.getElementById('rentalSearchInput');
+    if (rentSearch) rentSearch.placeholder = isEn ? 'Search for properties, items or services...' : 'വാടക വീട്, വാഹനം, ഉപകരണങ്ങൾ തിരയുക...';
+
+    // 11. Blood Screen
     const bloodHeroTitle = document.querySelector('#screen-blood .superapp-hero-title');
     if (bloodHeroTitle) bloodHeroTitle.textContent = isEn ? 'Give Blood Save Lives' : 'രക്തം നൽകാം ജീവൻ രക്ഷിക്കാം';
 
@@ -494,37 +586,17 @@
     const bloodNearYouLabelTxt = document.getElementById('bloodNearYouLabelTxt');
     if (bloodNearYouLabelTxt) bloodNearYouLabelTxt.textContent = isEn ? 'Near You' : 'സമീപം';
 
-    // Chat Screen
-    const newChatBtn = document.querySelector('#screen-chat button[onclick*="openNewChatModal"] span:last-child');
-    if (newChatBtn) newChatBtn.textContent = isEn ? 'New Chat' : 'പുതിയ ചാറ്റ്';
-
-    // 4. Search Bar Placeholders
-    const homeSearch = document.getElementById('homeSearchInput');
-    if (homeSearch) homeSearch.placeholder = isEn ? 'Search village services and people...' : 'സേവനങ്ങളും കടകളും ആളുകളും തിരയുക...';
-
-    const homeGlobalSearch = document.getElementById('homeGlobalSearchInput');
-    if (homeGlobalSearch) homeGlobalSearch.placeholder = isEn ? 'Search village services and people...' : 'നാട്ടിലെ സേവനങ്ങളും ആളുകളും തിരയുക...';
-
-    const servSearch = document.getElementById('serviceSearchInput');
-    if (servSearch) servSearch.placeholder = isEn ? 'Plumber, driver, electrician, taxi...' : 'പ്ലംബർ, ഡ്രൈവർ, ഇലക്ട്രീഷ്യൻ, ടാക്സി...';
-
-    const chatSearch = document.getElementById('chatSearchInput');
-    if (chatSearch) chatSearch.placeholder = isEn ? 'Search messages or contacts...' : 'സന്ദേശങ്ങളോ ആളുകളെയോ തിരയുക...';
-
-    const jobSearch = document.getElementById('jobSearchInput');
-    if (jobSearch) jobSearch.placeholder = isEn ? 'Search jobs, skills or company...' : 'തൊഴിലുകൾ, കഴിവുകൾ, സ്ഥാപനങ്ങൾ തിരയുക...';
-
-    const rentSearch = document.getElementById('rentalSearchInput');
-    if (rentSearch) rentSearch.placeholder = isEn ? 'Search for properties, items or services...' : 'വാടക വീട്, വാഹനം, ഉപകരണങ്ങൾ തിരയുക...';
-
     const bloodSearch = document.getElementById('bloodSearchInput');
     if (bloodSearch) bloodSearch.placeholder = isEn ? 'Search by blood group, donor name or phone...' : 'രക്തഗ്രൂപ്പ് (O+, A+), ദാതാവിന്റെ പേര്, ഫോൺ...';
 
-    const newChatSearch = document.getElementById('newChatSearchInput');
-    if (newChatSearch) newChatSearch.placeholder = isEn ? 'Search by name or mobile number...' : 'പേരോ മൊബൈൽ നമ്പറോ തിരയുക...';
+    // 12. Chat Screen
+    const chatSearch = document.getElementById('chatSearchInput');
+    if (chatSearch) chatSearch.placeholder = isEn ? 'Search messages or contacts...' : 'സന്ദേശങ്ങളോ ആളുകളെയോ തിരയുക...';
 
-    // 5. Category Filter Chips across Screens
-    // Chat Chips
+    const newChatBtn = document.querySelector('#screen-chat button[onclick*="openNewChatModal"] span:last-child');
+    if (newChatBtn) newChatBtn.textContent = isEn ? 'New Chat' : 'പുതിയ ചാറ്റ്';
+
+    // 13. Chips across screens
     const chatChipMap = {
       'all': isEn ? 'All' : 'എല്ലാം',
       'business': isEn ? 'Shops' : 'കടകൾ',
@@ -544,12 +616,9 @@
     };
     document.querySelectorAll('#screen-chat .chat-filter-chip').forEach(btn => {
       const f = btn.getAttribute('data-filter');
-      if (chatChipMap[f]) {
-        btn.textContent = (chatIcons[f] || '') + chatChipMap[f];
-      }
+      if (chatChipMap[f]) btn.textContent = (chatIcons[f] || '') + chatChipMap[f];
     });
 
-    // Jobs Chips
     const jobChipMap = {
       'all': isEn ? 'All' : 'എല്ലാം',
       'it': isEn ? 'IT & Software' : 'ഐടി & സോഫ്റ്റ്‌വെയർ',
@@ -558,8 +627,6 @@
       'sales': isEn ? 'Sales & Marketing' : 'സെയിൽസ് & മാർക്കറ്റിംഗ്',
       'finance': isEn ? 'Finance' : 'ഫിനാൻസ്',
       'driver': isEn ? 'Driver' : 'ഡ്രൈവർ',
-      'hotel': isEn ? 'Hotel & Cook' : 'ഹോട്ടൽ & കുക്ക്',
-      'delivery': isEn ? 'Delivery' : 'ഡെലിവറി',
       'other': isEn ? 'Others' : 'മറ്റുള്ളവ'
     };
     document.querySelectorAll('#jobsCategoriesChipsBar .superapp-chip').forEach(btn => {
@@ -567,7 +634,6 @@
       if (jobChipMap[cat]) btn.textContent = jobChipMap[cat];
     });
 
-    // Rentals Chips
     const rentalChipMap = {
       'all': isEn ? 'All' : 'എല്ലാം',
       'rent': isEn ? 'For Rent' : 'വാടകയ്ക്ക്',
@@ -576,7 +642,6 @@
       'vehicle': isEn ? 'Vehicles' : 'വാഹനങ്ങൾ',
       'electronics': isEn ? 'Electronics' : 'ഇലക്ട്രോണിക്സ്',
       'furniture': isEn ? 'Furniture' : 'ഫർണിച്ചർ',
-      'tool': isEn ? 'Equipment & Tools' : 'യന്ത്രങ്ങൾ & ടൂളുകൾ',
       'other': isEn ? 'Other' : 'മറ്റുള്ളവ'
     };
     document.querySelectorAll('#rentalsCategoriesChipsBar .superapp-chip').forEach(btn => {
@@ -584,117 +649,57 @@
       if (rentalChipMap[cat]) btn.textContent = rentalChipMap[cat];
     });
 
-    // Blood Chips
     const bloodAllChip = document.querySelector('#bloodGroupChipsBar button[data-group="all"]');
     if (bloodAllChip) bloodAllChip.textContent = isEn ? 'All' : 'എല്ലാം';
 
-    // Home Screen Category Cards
-    const catCards = document.querySelectorAll('.home-kerala-cat-grid .kerala-cat-card');
-    if (catCards && catCards.length >= 6) {
-      const c1Title = catCards[0].querySelector('.kerala-cat-title');
-      const c1Sub = catCards[0].querySelector('.kerala-cat-sub');
-      if (c1Title) c1Title.textContent = isEn ? 'Blood Donation' : 'രക്തദാനം';
-      if (c1Sub) c1Sub.textContent = isEn ? 'Donate blood... Save lives...' : 'രക്തം നൽകാം... ജീവൻ രക്ഷിക്കാം...';
-
-      const c2Title = catCards[1].querySelector('.kerala-cat-title');
-      const c2Sub = catCards[1].querySelector('.kerala-cat-sub');
-      if (c2Title) c2Title.textContent = isEn ? 'Emergency & Police' : 'അടിയന്തിരം & പോലീസ്';
-      if (c2Sub) c2Sub.textContent = isEn ? 'Police, ambulances, hospitals...' : 'പോലീസ്, ആംബുലൻസ്, ഫയർഫോഴ്സ്...';
-
-      const c3Title = catCards[2].querySelector('.kerala-cat-title');
-      const c3Sub = catCards[2].querySelector('.kerala-cat-sub');
-      if (c3Title) c3Title.textContent = isEn ? 'Services' : 'സേവനങ്ങൾ';
-      if (c3Sub) c3Sub.textContent = isEn ? '18+ services in one place' : '18+ സേവനങ്ങൾ ഒരൊറ്റയിടത്ത്';
-
-      const c4Title = catCards[3].querySelector('.kerala-cat-title');
-      const c4Sub = catCards[3].querySelector('.kerala-cat-sub');
-      if (c4Title) c4Title.textContent = isEn ? 'Jobs' : 'തൊഴിലുകൾ';
-      if (c4Sub) c4Sub.textContent = isEn ? 'Job opportunities near you' : 'നിങ്ങളുടെ നാട്ടിലെ തൊഴിലവസരങ്ങൾ';
-
-      const c5Title = catCards[4].querySelector('.kerala-cat-title');
-      const c5Sub = catCards[4].querySelector('.kerala-cat-sub');
-      if (c5Title) c5Title.textContent = isEn ? 'Rentals & Marketplace' : 'വാടക & വ്യാപാരം';
-      if (c5Sub) c5Sub.textContent = isEn ? 'Homes, rooms, and equipment for rent' : 'വീടുകൾ, മുറികൾ, ഉപകരണങ്ങൾ വാടകയ്ക്ക്';
-
-      const c6Title = catCards[5].querySelector('.kerala-cat-title');
-      const c6Sub = catCards[5].querySelector('.kerala-cat-sub');
-      if (c6Title) c6Title.textContent = isEn ? 'Nearby Help' : 'സമീപ സഹായം';
-      if (c6Sub) c6Sub.textContent = isEn ? 'Get help from people nearby (1–10 km)' : 'നാട്ടുകാരുടെ അടിയന്തിര സഹായം (1-10 km)';
-    }
-
-    // Home Business Banner
-    const bizBanner = document.querySelector('.home-3d-business-banner');
-    if (bizBanner) {
-      const bTitle = bizBanner.querySelector('span:first-child');
-      const bBadge = bizBanner.querySelector('span:last-child');
-      const divs = bizBanner.querySelectorAll('div > div > div');
-      if (bTitle) bTitle.textContent = isEn ? 'Local Businesses & Shops' : 'പ്രാദേശിക വ്യാപാരങ്ങൾ & കടകൾ';
-      if (bBadge) bBadge.textContent = isEn ? 'NEW' : 'പുതിയത്';
-      if (divs[1]) divs[1].textContent = isEn ? 'Supermarkets, hotels, bakeries & offers' : 'സൂപ്പർമാർക്കറ്റുകൾ, ഹോട്ടലുകൾ, ബേക്കറികൾ';
-      if (divs[2]) divs[2].textContent = isEn ? 'Local shops • Order through chat' : 'നാട്ടിലെ കടകൾ • ചാറ്റ് വഴി ഓർഡർ ചെയ്യാം';
-    }
-
-    // Settings Modal elements
+    // 14. Settings Modal Elements (100% Pure Language Isolation)
     const setHeader = document.querySelector('#modal-settings h3');
-    if (setHeader) setHeader.textContent = dict.settingsTitle;
+    if (setHeader) setHeader.textContent = isEn ? 'Settings' : 'ക്രമീകരണങ്ങൾ';
 
     const setSub = document.querySelector('#modal-settings .settings-header-sub');
-    if (setSub) setSub.textContent = dict.settingsSubtitle;
+    if (setSub) setSub.textContent = isEn ? 'App Preferences & Controls' : 'നമ്മുടെ നാട് ആപ്പ് മുൻഗണനകൾ & നിയന്ത്രണങ്ങൾ';
 
     const setLangSec = document.getElementById('settingsLangSecTitle');
-    if (setLangSec) setLangSec.textContent = dict.settingsLangSection;
+    if (setLangSec) setLangSec.textContent = isEn ? 'App Language' : 'ആപ്പ് ഭാഷ';
 
     const setLangSub = document.getElementById('settingsLangSecSub');
-    if (setLangSub) setLangSub.textContent = dict.settingsLangSub;
+    if (setLangSub) setLangSub.textContent = isEn ? 'Choose language to use in the app' : 'ആപ്പിൽ ഉപയോഗിക്കേണ്ട ഭാഷ തിരഞ്ഞെടുക്കാം';
 
     const setLocSec = document.getElementById('settingsLocSecTitle');
-    if (setLocSec) setLocSec.textContent = dict.settingsLocSection;
+    if (setLocSec) setLocSec.textContent = isEn ? 'Location & Radius' : 'ലൊക്കേഷൻ & പരിധി';
 
     const setNotifSec = document.getElementById('settingsNotifSecTitle');
-    if (setNotifSec) setNotifSec.textContent = dict.settingsNotifSection;
+    if (setNotifSec) setNotifSec.textContent = isEn ? 'Notifications' : 'അറിയിപ്പുകൾ';
 
     const setNotifSub = document.getElementById('settingsNotifSecSub');
-    if (setNotifSub) setNotifSub.textContent = dict.settingsNotifSub;
-
-    const setVerSec = document.getElementById('settingsVerSecTitle');
-    if (setVerSec) setVerSec.textContent = dict.settingsVersionSection;
+    if (setNotifSub) setNotifSub.textContent = isEn ? 'Real-time alerts & messaging notifications' : 'തത്സമയ അറിയിപ്പുകൾ & അലർട്ടുകൾ';
 
     const setPrivSec = document.getElementById('settingsPrivacySecTitle');
-    if (setPrivSec) setPrivSec.textContent = dict.settingsPrivacySection;
+    if (setPrivSec) setPrivSec.textContent = isEn ? 'Privacy & Legal Compliance' : 'സ്വകാര്യത & നിയമപരമായ വിവരങ്ങൾ';
 
     const setPrivLink = document.getElementById('settingsPrivacyPolicyTxt');
-    if (setPrivLink) setPrivLink.textContent = dict.settingsPrivacyPolicy;
+    if (setPrivLink) setPrivLink.textContent = isEn ? 'Privacy Policy' : 'പ്രൈവസി പോളിസി';
 
     const setTermsLink = document.getElementById('settingsTermsTxt');
-    if (setTermsLink) setTermsLink.textContent = dict.settingsTerms;
+    if (setTermsLink) setTermsLink.textContent = isEn ? 'Terms of Service & Guidelines' : 'നിബന്ധനകളും പെരുമാറ്റച്ചട്ടവും';
 
     const setSecLink = document.getElementById('settingsDataSecurityTxt');
-    if (setSecLink) setSecLink.textContent = dict.settingsDataSecurity;
+    if (setSecLink) setSecLink.textContent = isEn ? 'Data Security & Protection' : 'ഡാറ്റാ സംരക്ഷണവും സുരക്ഷയും';
 
     const setExportLink = document.getElementById('settingsExportDataTxt');
-    if (setExportLink) setExportLink.textContent = dict.settingsExportData;
+    if (setExportLink) setExportLink.textContent = isEn ? 'Export / Download My Data' : 'എന്റെ ഡാറ്റ ഡൗൺലോഡ് ചെയ്യാം';
 
     const setCacheLink = document.getElementById('settingsClearCacheTxt');
-    if (setCacheLink) setCacheLink.textContent = dict.settingsClearCache;
+    if (setCacheLink) setCacheLink.textContent = isEn ? 'Clear App Cache & Refresh' : 'ആപ്പ് കാഷെ ക്ലിയർ ചെയ്യാം';
 
     const setLogoutLink = document.getElementById('settingsLogoutTxt');
-    if (setLogoutLink) setLogoutLink.textContent = dict.settingsLogout;
+    if (setLogoutLink) setLogoutLink.textContent = isEn ? 'Logout / Switch Account' : 'ലോഗ് ഔട്ട് / അക്കൗണ്ട് മാറ്റാം';
 
     const setDelBtn = document.getElementById('settingsDeleteAccountTxt');
-    if (setDelBtn) setDelBtn.textContent = dict.settingsDeleteAccount;
+    if (setDelBtn) setDelBtn.textContent = isEn ? 'Delete Account Permanently' : 'അക്കൗണ്ട് ശാശ്വതമായി ഡിലീറ്റ് ചെയ്യാം';
 
     const setDelWarn = document.getElementById('settingsDeleteWarningTxt');
-    if (setDelWarn) setDelWarn.textContent = dict.settingsDeleteWarning;
-
-    // Language Picker Modal
-    const lpTitle = document.getElementById('langPickerModalTitle');
-    if (lpTitle) lpTitle.textContent = dict.langPickerTitle;
-
-    const lpSub = document.getElementById('langPickerModalSub');
-    if (lpSub) lpSub.textContent = dict.langPickerSub;
-
-    const lpConf = document.getElementById('langConfirmBtn');
-    if (lpConf) lpConf.textContent = dict.continueBtn;
+    if (setDelWarn) setDelWarn.textContent = isEn ? 'Permanently removes your profile, listings, services and chat messages from cloud servers.' : 'ഡിലീറ്റ് ചെയ്താൽ നിങ്ങളുടെ പ്രൊഫൈൽ, സർവീസുകൾ, മെസ്സേജുകൾ എന്നിവ ക്ലൗഡിൽ നിന്നും പൂർണ്ണമായി മായ്ക്കപ്പെടും.';
 
     // Synchronize settings language chips
     document.querySelectorAll('.settings-lang-chip').forEach(btn => {
@@ -703,37 +708,27 @@
         btn.style.background = '#0C2B59';
         btn.style.color = '#FFFFFF';
         btn.style.borderColor = '#0C2B59';
+        btn.style.fontWeight = '800';
       } else {
         btn.style.background = '#FFFFFF';
         btn.style.color = '#334155';
         btn.style.borderColor = '#CBD5E1';
+        btn.style.fontWeight = '600';
       }
     });
 
-    // Profile Screen Sub-tabs
-    const tabTimeline = document.querySelector('.profile-subtab-btn[data-tab="posts"]');
-    if (tabTimeline) tabTimeline.innerHTML = '📝 ' + dict.tabTimeline;
+    const fPriv = document.getElementById('footerPrivacyLink');
+    if (fPriv) fPriv.textContent = isEn ? 'Privacy Policy' : 'സ്വകാര്യതാ നയം';
 
-    const tabPhotos = document.querySelector('.profile-subtab-btn[data-tab="photos"]');
-    if (tabPhotos) tabPhotos.innerHTML = '🖼️ ' + dict.tabPhotos;
+    // 15. Language Picker Modal
+    const lpTitle = document.getElementById('langPickerModalTitle');
+    if (lpTitle) lpTitle.textContent = isEn ? 'Select Language' : 'ഭാഷ തിരഞ്ഞെടുക്കുക';
 
-    const tabAbout = document.querySelector('.profile-subtab-btn[data-tab="about"]');
-    if (tabAbout) tabAbout.innerHTML = 'ℹ️ ' + dict.tabAbout;
+    const lpSub = document.getElementById('langPickerModalSub');
+    if (lpSub) lpSub.textContent = isEn ? 'Choose your preferred language to continue' : 'ആപ്പിൽ ഉപയോഗിക്കാൻ ആഗ്രഹിക്കുന്ന ഭാഷ തിരഞ്ഞെടുക്കൂ';
 
-    const tabListings = document.querySelector('.profile-subtab-btn[data-tab="services"]');
-    if (tabListings) tabListings.innerHTML = '🛠️ ' + dict.tabListings;
-
-    // Elements with data-i18n
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      if (dict[key]) el.textContent = dict[key];
-    });
-
-    // Elements with data-i18n-ph
-    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
-      const key = el.getAttribute('data-i18n-ph');
-      if (dict[key]) el.placeholder = dict[key];
-    });
+    const lpConf = document.getElementById('langConfirmBtn');
+    if (lpConf) lpConf.textContent = isEn ? 'Continue ➔' : 'തുടങ്ങാം ➔';
   }
 
   // Comprehensive Trade / Category Dictionaries for complete Malayalam -> English translation
