@@ -417,7 +417,7 @@
                             </div>
                             <div>
                                 <span class="home-kerala-sec-title">വിഭാഗങ്ങൾ</span>
-                                <span class="home-kerala-sec-sub">(Categories)</span>
+                                <span class="home-kerala-sec-sub"></span>
                             </div>
                         </div>
                         <div class="home-kerala-sec-viewall" onclick="navTo('services')">
@@ -886,7 +886,7 @@
                                 <span class="home-kerala-grid-box" style="background:#0878D1"></span>
                             </div>
                             <h2 class="home-kerala-sec-title" style="color:#0C4A6E">വിഭാഗങ്ങൾ</h2>
-                            <span class="home-kerala-sec-sub" style="color:#0284C7">(Categories)</span>
+                            <span class="home-kerala-sec-sub" style="color:#0284C7;display:none"></span>
                         </div>
                     </div>
 
@@ -1002,14 +1002,14 @@
                             <div class="superapp-header-brand">
                                 <div class="superapp-brand-row">
                                     <span class="superapp-brand-logo">💼</span>
-                                    <h1 class="superapp-brand-title">Nammude Naadu</h1>
+                                    <h1 class="superapp-brand-title">നമ്മുടെ നാട്</h1>
                                 </div>
-                                <div class="superapp-brand-sub">People • Support • Community</div>
+                                <div class="superapp-brand-sub">നാടിനൊപ്പം നാം 🌿</div>
                             </div>
                         </div>
                         <div class="superapp-loc-pill" onclick="openLocationModal()">
                             <span>📍</span>
-                            <span class="user-live-city-name">Live Location</span>
+                            <span class="user-live-city-name">തത്സമയ ലൊക്കേഷൻ</span>
                             <span style="font-size:10px;opacity:0.8">⌄</span>
                         </div>
                     </div>
@@ -1018,7 +1018,7 @@
                     <div class="superapp-search-wrap">
                         <span class="superapp-search-icon">🔍</span>
                         <input type="text" id="jobSearchInput" class="superapp-search-input"
-                            placeholder="Search jobs, skills or company..." autocomplete="off"
+                            placeholder="തൊഴിലുകൾ, കഴിവുകൾ, സ്ഥാപനങ്ങൾ തിരയുക..." autocomplete="off"
                             oninput="renderJobsScreen()">
                         <button type="button" class="superapp-mic-btn" id="jobVoiceSearchBtn" onclick="toggleVoiceSearch('jobSearchInput', this)" title="Voice Search">🎙️</button>
                     </div>
@@ -1036,39 +1036,39 @@
                     <div class="superapp-hero-card hero-jobs">
                         <div class="superapp-hero-top">
                             <div>
-                                <div class="superapp-hero-title">Jobs & Careers</div>
-                                <div class="superapp-hero-sub">Build your future</div>
+                                <div class="superapp-hero-title">തൊഴിൽ അവസരങ്ങൾ</div>
+                                <div class="superapp-hero-sub">നിങ്ങളുടെ ഭാവി രൂപപ്പെടുത്താം</div>
                             </div>
                             <div class="superapp-hero-icon">💼</div>
                         </div>
                         <div class="superapp-hero-actions">
                             <button class="superapp-hero-btn solid" onclick="openPostJobModal()">
-                                <span>➕</span> <span id="heroPostJobTxt">Post a Job</span>
+                                <span>➕</span> <span id="heroPostJobTxt">തൊഴിൽ നൽകാം</span>
                             </button>
                             <button class="superapp-hero-btn outline" onclick="document.getElementById('jobSearchInput').focus()">
-                                <span>🔍</span> <span id="heroSearchJobsTxt">Search Jobs</span>
+                                <span>🔍</span> <span id="heroSearchJobsTxt">തൊഴിൽ തിരയാം</span>
                             </button>
                         </div>
                     </div>
 
                     <!-- JOB CATEGORIES CHIPS BAR -->
                     <div class="superapp-chips-bar" id="jobsCategoriesChipsBar">
-                        <button class="superapp-chip active" data-cat="all" onclick="filterJobCategory('all', this)">All</button>
-                        <button class="superapp-chip" data-cat="it" onclick="filterJobCategory('it', this)">IT & Software</button>
-                        <button class="superapp-chip" data-cat="education" onclick="filterJobCategory('education', this)">Education</button>
-                        <button class="superapp-chip" data-cat="healthcare" onclick="filterJobCategory('healthcare', this)">Healthcare</button>
-                        <button class="superapp-chip" data-cat="sales" onclick="filterJobCategory('sales', this)">Sales & Marketing</button>
-                        <button class="superapp-chip" data-cat="finance" onclick="filterJobCategory('finance', this)">Finance</button>
-                        <button class="superapp-chip" data-cat="driver" onclick="filterJobCategory('driver', this)">Driver</button>
-                        <button class="superapp-chip" data-cat="other" onclick="filterJobCategory('other', this)">Others</button>
+                        <button class="superapp-chip active" data-cat="all" onclick="filterJobCategory('all', this)">എല്ലാം</button>
+                        <button class="superapp-chip" data-cat="it" onclick="filterJobCategory('it', this)">ഐടി & സോഫ്റ്റ്‌വെയർ</button>
+                        <button class="superapp-chip" data-cat="education" onclick="filterJobCategory('education', this)">വിദ്യാഭ്യാസം</button>
+                        <button class="superapp-chip" data-cat="healthcare" onclick="filterJobCategory('healthcare', this)">ആരോഗ്യം</button>
+                        <button class="superapp-chip" data-cat="sales" onclick="filterJobCategory('sales', this)">സെയിൽസ് & മാർക്കറ്റിംഗ്</button>
+                        <button class="superapp-chip" data-cat="finance" onclick="filterJobCategory('finance', this)">ഫിനാൻസ്</button>
+                        <button class="superapp-chip" data-cat="driver" onclick="filterJobCategory('driver', this)">ഡ്രൈവർ</button>
+                        <button class="superapp-chip" data-cat="other" onclick="filterJobCategory('other', this)">മറ്റുള്ളവ</button>
                     </div>
 
                     <!-- CALLOUT BANNER -->
                     <div class="superapp-callout-banner">
                         <span class="superapp-callout-icon">🎯</span>
                         <div>
-                            <div class="superapp-callout-title" id="jobsBannerTitle">Find the right job, in the right place.</div>
-                            <div class="superapp-callout-sub" id="jobsBannerSub">Get connected with local employers and career opportunities near you.</div>
+                            <div class="superapp-callout-title" id="jobsBannerTitle">ശരിയായ ജോലി, ശരിയായ സ്ഥലത്ത് കണ്ടെത്താം.</div>
+                            <div class="superapp-callout-sub" id="jobsBannerSub">നാട്ടിലെ തൊഴിൽദാതാക്കളുമായും മികച്ച അവസരങ്ങളുമായും ബന്ധപ്പെടാം.</div>
                         </div>
                     </div>
 
@@ -1087,14 +1087,14 @@
                             <div class="superapp-header-brand">
                                 <div class="superapp-brand-row">
                                     <span class="superapp-brand-logo">🏠</span>
-                                    <h1 class="superapp-brand-title">Nammude Naadu</h1>
+                                    <h1 class="superapp-brand-title">നമ്മുടെ നാട്</h1>
                                 </div>
-                                <div class="superapp-brand-sub">People • Support • Community</div>
+                                <div class="superapp-brand-sub">നാടിനൊപ്പം നാം 🌿</div>
                             </div>
                         </div>
                         <div class="superapp-loc-pill" onclick="openLocationModal()">
                             <span>📍</span>
-                            <span class="user-live-city-name">Live Location</span>
+                            <span class="user-live-city-name">തത്സമയ ലൊക്കേഷൻ</span>
                             <span style="font-size:10px;opacity:0.8">⌄</span>
                         </div>
                     </div>
@@ -1103,7 +1103,7 @@
                     <div class="superapp-search-wrap">
                         <span class="superapp-search-icon">🔍</span>
                         <input type="text" id="rentalSearchInput" class="superapp-search-input"
-                            placeholder="Search for properties, items or services..." autocomplete="off"
+                            placeholder="വാടക വീട്, വാഹനം, ഉപകരണങ്ങൾ തിരയുക..." autocomplete="off"
                             oninput="if(typeof handleRentalSearchInput==='function'){handleRentalSearchInput(this.value);}else if(typeof renderRentalsScreen==='function'){renderRentalsScreen();}">
                         <button type="button" class="superapp-mic-btn" id="rentalVoiceSearchBtn" onclick="toggleVoiceSearch('rentalSearchInput', this)" title="Voice Search">🎙️</button>
                     </div>
@@ -1121,39 +1121,39 @@
                     <div class="superapp-hero-card hero-rentals">
                         <div class="superapp-hero-top">
                             <div>
-                                <div class="superapp-hero-title">Rentals & Marketplace</div>
-                                <div class="superapp-hero-sub">Buy • Sell • Rent • Trade</div>
+                                <div class="superapp-hero-title">വാടക & വ്യാപാരം</div>
+                                <div class="superapp-hero-sub">വാങ്ങാം • വിൽക്കാം • വാടകയ്ക്ക്</div>
                             </div>
                             <div class="superapp-hero-icon">🏪</div>
                         </div>
                         <div class="superapp-hero-actions">
                             <button class="superapp-hero-btn solid" onclick="openAddRentalModal()">
-                                <span>➕</span> <span id="heroAddListingTxt">Add Listing</span>
+                                <span>➕</span> <span id="heroAddListingTxt">ലിസ്റ്റ് ചെയ്യാം</span>
                             </button>
                             <button class="superapp-hero-btn outline" onclick="navTo('profile')">
-                                <span>👤</span> <span id="heroMyListingsTxt">My Listings</span>
+                                <span>👤</span> <span id="heroMyListingsTxt">എന്റെ ലിസ്റ്റിംഗുകൾ</span>
                             </button>
                         </div>
                     </div>
 
                     <!-- RENTALS & MARKETPLACE CATEGORIES CHIPS BAR -->
                     <div class="superapp-chips-bar" id="rentalsCategoriesChipsBar">
-                        <button class="superapp-chip active" data-cat="all" onclick="filterRentalCategory('all', this)">All</button>
-                        <button class="superapp-chip" data-cat="rent" onclick="filterRentalCategory('rent', this)">For Rent</button>
-                        <button class="superapp-chip" data-cat="buysell" onclick="filterRentalCategory('buysell', this)">Buy & Sell</button>
-                        <button class="superapp-chip" data-cat="house" onclick="filterRentalCategory('house', this)">Homes & Plots</button>
-                        <button class="superapp-chip" data-cat="vehicle" onclick="filterRentalCategory('vehicle', this)">Vehicles</button>
-                        <button class="superapp-chip" data-cat="electronics" onclick="filterRentalCategory('electronics', this)">Electronics</button>
-                        <button class="superapp-chip" data-cat="furniture" onclick="filterRentalCategory('furniture', this)">Furniture</button>
-                        <button class="superapp-chip" data-cat="other" onclick="filterRentalCategory('other', this)">Other</button>
+                        <button class="superapp-chip active" data-cat="all" onclick="filterRentalCategory('all', this)">എല്ലാം</button>
+                        <button class="superapp-chip" data-cat="rent" onclick="filterRentalCategory('rent', this)">വാടകയ്ക്ക്</button>
+                        <button class="superapp-chip" data-cat="buysell" onclick="filterRentalCategory('buysell', this)">വിൽപനയ്ക്ക്</button>
+                        <button class="superapp-chip" data-cat="house" onclick="filterRentalCategory('house', this)">വീട് & സ്ഥലം</button>
+                        <button class="superapp-chip" data-cat="vehicle" onclick="filterRentalCategory('vehicle', this)">വാഹനങ്ങൾ</button>
+                        <button class="superapp-chip" data-cat="electronics" onclick="filterRentalCategory('electronics', this)">ഇലക്ട്രോണിക്സ്</button>
+                        <button class="superapp-chip" data-cat="furniture" onclick="filterRentalCategory('furniture', this)">ഫർണിച്ചർ</button>
+                        <button class="superapp-chip" data-cat="other" onclick="filterRentalCategory('other', this)">മറ്റുള്ളവ</button>
                     </div>
 
                     <!-- CALLOUT BANNER -->
                     <div class="superapp-callout-banner">
                         <span class="superapp-callout-icon">🏪</span>
                         <div>
-                            <div class="superapp-callout-title" id="rentalsBannerTitle">Local listings. Real people.</div>
-                            <div class="superapp-callout-sub" id="rentalsBannerSub">Find the best deals near you.</div>
+                            <div class="superapp-callout-title" id="rentalsBannerTitle">നാട്ടിലെ വിൽപന & വാടക ലിസ്റ്റിംഗുകൾ.</div>
+                            <div class="superapp-callout-sub" id="rentalsBannerSub">യഥാർത്ഥ ആളുകളിൽ നിന്ന് മികച്ച ഡീലുകൾ കണ്ടെത്താം.</div>
                         </div>
                     </div>
 
@@ -1172,14 +1172,14 @@
                             <div class="superapp-header-brand">
                                 <div class="superapp-brand-row">
                                     <span class="superapp-brand-logo">🩸</span>
-                                    <h1 class="superapp-brand-title">Nammude Naadu</h1>
+                                    <h1 class="superapp-brand-title">നമ്മുടെ നാട്</h1>
                                 </div>
-                                <div class="superapp-brand-sub">People • Support • Community</div>
+                                <div class="superapp-brand-sub">നാടിനൊപ്പം നാം 🌿</div>
                             </div>
                         </div>
                         <div class="superapp-loc-pill" onclick="openLocationModal()">
                             <span>📍</span>
-                            <span class="user-live-city-name">Live Location</span>
+                            <span class="user-live-city-name">തത്സമയ ലൊക്കേഷൻ</span>
                             <span style="font-size:10px;opacity:0.8">⌄</span>
                         </div>
                     </div>
@@ -1188,8 +1188,8 @@
                     <div class="superapp-search-wrap">
                         <span class="superapp-search-icon">🔍</span>
                         <input type="text" id="bloodSearchInput" class="superapp-search-input"
-                            placeholder="Search by blood group, donor name or phone..." autocomplete="off"
-                            oninput="if(typeof handleBloodSearchInput==='function'){handleBloodSearchInput(this.value);}else if(typeof renderBloodDonorsList==='function'){renderBloodDonorsList();}">
+                            placeholder="രക്തഗ്രൂപ്പ് (O+, A+), ദാതാവിന്റെ പേര്, ഫോൺ..." autocomplete="off"
+                            oninput="filterBloodDonors(this.value)">
                         <button type="button" class="superapp-mic-btn" id="bloodVoiceSearchBtn" onclick="toggleVoiceSearch('bloodSearchInput', this)" title="Voice Search">🎙️</button>
                     </div>
 
@@ -1198,46 +1198,56 @@
                         <button class="superapp-radius-pill" onclick="setRadiusFilter('blood', 0.5, this)">500 m</button>
                         <button class="superapp-radius-pill" onclick="setRadiusFilter('blood', 1, this)">1 km</button>
                         <button class="superapp-radius-pill" onclick="setRadiusFilter('blood', 5, this)">5 km</button>
-                        <button class="superapp-radius-pill active" onclick="setRadiusFilter('blood', 10, this)">10 km</button>
-                        <button class="superapp-radius-pill" onclick="setRadiusFilter('blood', 25, this)">25 km</button>
+                        <button class="superapp-radius-pill" onclick="setRadiusFilter('blood', 10, this)">10 km</button>
+                        <button class="superapp-radius-pill active" onclick="setRadiusFilter('blood', 50, this)">50 km</button>
                     </div>
 
                     <!-- HERO CARD: Give Blood Save Lives -->
                     <div class="superapp-hero-card hero-blood">
                         <div class="superapp-hero-top">
                             <div>
-                                <div class="superapp-hero-title">Give Blood<br>Save Lives</div>
-                                <div class="superapp-hero-sub">Be a donor. Be a hero.</div>
+                                <div class="superapp-hero-title">രക്തം നൽകാം ജീവൻ രക്ഷിക്കാം</div>
+                                <div class="superapp-hero-sub">ഒരു രക്തദാതാവാകൂ. ഒരു ജീവൻ രക്ഷിക്കൂ.</div>
                             </div>
                             <div class="superapp-hero-icon">🩸</div>
                         </div>
                         <div class="superapp-hero-actions">
-                            <button id="bloodRegisterDonorBtn" class="superapp-hero-btn solid" onclick="openRegisterDonorModal()">
-                                <span>➕</span> <span id="heroBecomeDonorTxt">Become a Donor</span>
+                            <button class="superapp-hero-btn solid" onclick="openRegisterDonorModal()">
+                                <span>🩸</span> <span id="heroBecomeDonorTxt">രക്തദാതാവാകാം</span>
                             </button>
-                            <button id="bloodRequestModalBtn" class="superapp-hero-btn outline" onclick="openBloodRequestModal()">
-                                <span>💧</span> <span id="heroRequestBloodTxt">Request Blood</span>
+                            <button class="superapp-hero-btn outline" onclick="openBloodRequestModal()">
+                                <span>🚨</span> <span id="heroRequestBloodTxt">രക്തം ആവശ്യപ്പെടാം</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- 8 BLOOD GROUP FILTER CHIPS -->
-                    <div class="superapp-chips-bar" id="bloodGroupsChipsBar"></div>
+                    <!-- BLOOD GROUP CHIPS BAR -->
+                    <div class="superapp-chips-bar" id="bloodGroupChipsBar">
+                        <button class="superapp-chip active" data-group="all" onclick="filterBloodGroup('all', this)">എല്ലാം</button>
+                        <button class="superapp-chip" data-group="A+" onclick="filterBloodGroup('A+', this)">A+</button>
+                        <button class="superapp-chip" data-group="A-" onclick="filterBloodGroup('A-', this)">A-</button>
+                        <button class="superapp-chip" data-group="B+" onclick="filterBloodGroup('B+', this)">B+</button>
+                        <button class="superapp-chip" data-group="B-" onclick="filterBloodGroup('B-', this)">B-</button>
+                        <button class="superapp-chip" data-group="AB+" onclick="filterBloodGroup('AB+', this)">AB+</button>
+                        <button class="superapp-chip" data-group="AB-" onclick="filterBloodGroup('AB-', this)">AB-</button>
+                        <button class="superapp-chip" data-group="O+" onclick="filterBloodGroup('O+', this)">O+</button>
+                        <button class="superapp-chip" data-group="O-" onclick="filterBloodGroup('O-', this)">O-</button>
+                    </div>
 
-                    <!-- STAT SUMMARY ROW -->
-                    <div class="superapp-stat-row">
-                        <div class="superapp-stat-card">
-                            <span class="superapp-stat-icon">👥</span>
+                    <!-- STATS / COUNT BAR -->
+                    <div class="superapp-stats-row">
+                        <div class="superapp-stat-box">
+                            <div class="superapp-stat-icon">👥</div>
                             <div>
-                                <div class="superapp-stat-number" id="bloodDonorsCountBadge">0</div>
-                                <div class="superapp-stat-label" id="bloodDonorsLabelTxt">Registered Donors</div>
+                                <div class="superapp-stat-val" id="bloodDonorsCountBadge">0</div>
+                                <div class="superapp-stat-label" id="bloodDonorsLabelTxt">രജിസ്റ്റർ ചെയ്തവർ</div>
                             </div>
                         </div>
-                        <div class="superapp-stat-card">
-                            <span class="superapp-stat-icon">📍</span>
+                        <div class="superapp-stat-box">
+                            <div class="superapp-stat-icon">📍</div>
                             <div>
-                                <div class="superapp-stat-number" id="bloodRadiusValTxt">10 km</div>
-                                <div class="superapp-stat-label" id="bloodNearYouLabelTxt">Near You</div>
+                                <div class="superapp-stat-val" id="bloodRadiusValTxt">50 km</div>
+                                <div class="superapp-stat-label" id="bloodNearYouLabelTxt">സമീപം</div>
                             </div>
                         </div>
                     </div>
@@ -1258,9 +1268,9 @@
                             <div class="superapp-header-brand">
                                 <div class="superapp-brand-row">
                                     <span class="superapp-brand-logo">💬</span>
-                                    <h1 class="superapp-brand-title">Nammude Naadu</h1>
+                                    <h1 class="superapp-brand-title">നമ്മുടെ നാട്</h1>
                                 </div>
-                                <div class="superapp-brand-sub">Messages • Conversations • Community</div>
+                                <div class="superapp-brand-sub">സന്ദേശങ്ങൾ • സംഭാഷണം • കൂട്ടായ്മ</div>
                             </div>
                         </div>
                         <div style="display:flex;align-items:center;gap:6px">
@@ -1284,7 +1294,7 @@
                     <!-- CATEGORY FILTER CHIPS IN CHAT -->
                     <div class="superapp-chips-bar" id="chatCategoryChipsBar">
                         <button class="superapp-chip active chat-filter-chip" data-filter="all"
-                            onclick="filterChatCategory('all', this)">All</button>
+                            onclick="filterChatCategory('all', this)">എല്ലാം</button>
                         <button class="superapp-chip chat-filter-chip" data-filter="business"
                             onclick="filterChatCategory('business', this)">🏪 കടകൾ</button>
                         <button class="superapp-chip chat-filter-chip" data-filter="service"
@@ -4939,12 +4949,12 @@
     <script src="js/app-refresh.js?v=1.0"></script>
 
     <!-- MULTILINGUAL (i18n) ENGINE -->
-    <script src="js/i18n-translations.js?v=1.1"></script>
+    <script src="js/i18n-translations.js?v=9.1"></script>
 
     <!-- APPLICATION ENGINES -->
     <script src="js/kerala-police-stations-data.js?v=1.0"></script>
-    <script src="js/trades-catalog-500.js?v=8.0"></script>
-    <script src="js/nammude-naadu-engine.js?v=8.0"></script>
+    <script src="js/trades-catalog-500.js?v=9.1"></script>
+    <script src="js/nammude-naadu-engine.js?v=9.1"></script>
 </body>
 
 </html>

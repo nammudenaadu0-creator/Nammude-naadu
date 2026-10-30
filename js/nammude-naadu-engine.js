@@ -6099,66 +6099,70 @@
   // 11. LOCAL SERVICES DIRECTORY (16+ CATEGORIES)
   // ==============================================================
   const SERVICE_CATEGORIES = [
-    { id: 'all', name: 'എല്ലാം', icon: '🛠️' },
-    { id: 'vehicles', name: 'വാഹനങ്ങൾ', icon: '🚗' },
-    { id: 'electrician', name: 'ഇലക്ട്രീഷ്യൻ', icon: '⚡' },
-    { id: 'plumber', name: 'പ്ലംബർ', icon: '🚰' },
-    { id: 'acrepair', name: 'എസി & ഫ്രിഡ്ജ്', icon: '❄️' },
-    { id: 'carpenter', name: 'ആശാരി', icon: '🪚' },
-    { id: 'painter', name: 'പെയിന്റർ', icon: '🎨' },
-    { id: 'cleaning', name: 'ക്ലീനിംഗ്', icon: '🧹' },
-    { id: 'mason', name: 'മേസൺ & വാർപ്പ്', icon: '🧱' },
-    { id: 'welding', name: 'വെൽഡിങ് & ഗ്രിൽ', icon: '🔥' },
-    { id: 'gardening', name: 'കൃഷി & തോട്ടം', icon: '🌴' },
-    { id: 'beautician', name: 'ബ്യൂട്ടീഷ്യൻ', icon: '💄' },
-    { id: 'cctv', name: 'സിസിടിവി', icon: '📹' },
-    { id: 'catering', name: 'കാറ്ററിംഗ്', icon: '🍲' },
-    { id: 'tailoring', name: 'ടൈലറിംഗ്', icon: '🧵' },
-    { id: 'nursing', name: 'ഹോം നഴ്സിംഗ്', icon: '🩺' },
-    { id: 'tuition', name: 'ട്യൂഷൻ', icon: '📚' },
-    { id: 'water', name: 'വാട്ടർ സപ്ലൈ', icon: '💧' },
-    { id: 'mechanic', name: 'വർക്ക്‌ഷോപ്പ്', icon: '🔧' },
-    { id: 'electronics', name: 'ടിവി & മെഷീൻ', icon: '📺' },
-    { id: 'tiles', name: 'ടൈൽ & ഗ്രാനൈറ്റ്', icon: '📐' },
-    { id: 'roofing', name: 'റൂഫിംഗ് ട്രസ്സ്', icon: '🏠' },
-    { id: 'aluminium', name: 'അലുമിനിയം വർക്ക്', icon: '🪟' },
-    { id: 'packers', name: 'പാക്കേഴ്സ് മൂവേഴ്സ്', icon: '📦' },
-    { id: 'waste', name: 'സെപ്റ്റിക് ടാങ്ക്', icon: '🚛' },
-    { id: 'thekku', name: 'തെങ്ങ് കയറ്റം', icon: '🥥' },
-    { id: 'kinar', name: 'കിണർ പണി', icon: '🪣' },
-    { id: 'solar', name: 'സോളാർ സിസ്റ്റം', icon: '☀️' },
-    { id: 'photography', name: 'ഫോട്ടോഗ്രാഫി', icon: '📷' },
-    { id: 'sound', name: 'സൗണ്ട് & ലൈറ്റ്', icon: '🔊' },
-    { id: 'gas', name: 'ഗ്യാസ് സ്റ്റൗ', icon: '🍳' },
-    { id: 'pestcontrol', name: 'പെസ്റ്റ് കൺട്രോൾ', icon: '🐜' }
+    { id: 'all', name: 'എല്ലാം', name_ml: 'എല്ലാം', name_en: 'All', icon: '🛠️' },
+    { id: 'vehicles', name: 'വാഹനങ്ങൾ', name_ml: 'വാഹനങ്ങൾ', name_en: 'Vehicles', icon: '🚗' },
+    { id: 'electrician', name: 'ഇലക്ട്രീഷ്യൻ', name_ml: 'ഇലക്ട്രീഷ്യൻ', name_en: 'Electrician', icon: '⚡' },
+    { id: 'plumber', name: 'പ്ലംബർ', name_ml: 'പ്ലംബർ', name_en: 'Plumber', icon: '🚰' },
+    { id: 'acrepair', name: 'എസി & ഫ്രിഡ്ജ്', name_ml: 'എസി & ഫ്രിഡ്ജ്', name_en: 'AC & Fridge', icon: '❄️' },
+    { id: 'carpenter', name: 'ആശാരി', name_ml: 'ആശാരി', name_en: 'Carpenter', icon: '🪚' },
+    { id: 'painter', name: 'പെയിന്റർ', name_ml: 'പെയിന്റർ', name_en: 'Painter', icon: '🎨' },
+    { id: 'cleaning', name: 'ക്ലീനിംഗ്', name_ml: 'ക്ലീനിംഗ്', name_en: 'Cleaning', icon: '🧹' },
+    { id: 'mason', name: 'മേസൺ & വാർപ്പ്', name_ml: 'മേസൺ & വാർപ്പ്', name_en: 'Masonry & Concrete', icon: '🧱' },
+    { id: 'welding', name: 'വെൽഡിങ് & ഗ്രിൽ', name_ml: 'വെൽഡിങ് & ഗ്രിൽ', name_en: 'Welding & Grills', icon: '🔥' },
+    { id: 'gardening', name: 'കൃഷി & തോട്ടം', name_ml: 'കൃഷി & തോട്ടം', name_en: 'Farming & Garden', icon: '🌴' },
+    { id: 'beautician', name: 'ബ്യൂട്ടീഷ്യൻ', name_ml: 'ബ്യൂട്ടീഷ്യൻ', name_en: 'Beautician', icon: '💄' },
+    { id: 'cctv', name: 'സിസിടിവി', name_ml: 'സിസിടിവി', name_en: 'CCTV Security', icon: '📹' },
+    { id: 'catering', name: 'കാറ്ററിംഗ്', name_ml: 'കാറ്ററിംഗ്', name_en: 'Catering', icon: '🍲' },
+    { id: 'tailoring', name: 'ടൈലറിംഗ്', name_ml: 'ടൈലറിംഗ്', name_en: 'Tailoring', icon: '🧵' },
+    { id: 'nursing', name: 'ഹോം നഴ്സിംഗ്', name_ml: 'ഹോം നഴ്സിംഗ്', name_en: 'Home Nursing', icon: '🩺' },
+    { id: 'tuition', name: 'ട്യൂഷൻ', name_ml: 'ട്യൂഷൻ', name_en: 'Tuition & Classes', icon: '📚' },
+    { id: 'water', name: 'വാട്ടർ സപ്ലൈ', name_ml: 'വാട്ടർ സപ്ലൈ', name_en: 'Water Supply', icon: '💧' },
+    { id: 'mechanic', name: 'വർക്ക്‌ഷോപ്പ്', name_ml: 'വർക്ക്‌ഷോപ്പ്', name_en: 'Workshop & Garage', icon: '🔧' },
+    { id: 'electronics', name: 'ടിവി & മെഷീൻ', name_ml: 'ടിവി & മെഷീൻ', name_en: 'TV & Appliances', icon: '📺' },
+    { id: 'tiles', name: 'ടൈൽ & ഗ്രാനൈറ്റ്', name_ml: 'ടൈൽ & ഗ്രാനൈറ്റ്', name_en: 'Tiles & Granite', icon: '📐' },
+    { id: 'roofing', name: 'റൂഫിംഗ് ട്രസ്സ്', name_ml: 'റൂഫിംഗ് ട്രസ്സ്', name_en: 'Roofing & Truss', icon: '🏠' },
+    { id: 'aluminium', name: 'അലുമിനിയം വർക്ക്', name_ml: 'അലുമിനിയം വർക്ക്', name_en: 'Aluminium Work', icon: '🪟' },
+    { id: 'packers', name: 'പാക്കേഴ്സ് മൂവേഴ്സ്', name_ml: 'പാക്കേഴ്സ് മൂവേഴ്സ്', name_en: 'Packers & Movers', icon: '📦' },
+    { id: 'waste', name: 'സെപ്റ്റിക് ടാങ്ക്', name_ml: 'സെപ്റ്റിക് ടാങ്ക്', name_en: 'Septic Cleaning', icon: '🚛' },
+    { id: 'thekku', name: 'തെങ്ങ് കയറ്റം', name_ml: 'തെങ്ങ് കയറ്റം', name_en: 'Tree Climber', icon: '🥥' },
+    { id: 'kinar', name: 'കിണർ പണി', name_ml: 'കിണർ പണി', name_en: 'Well Work', icon: '🪣' },
+    { id: 'solar', name: 'സോളാർ സിസ്റ്റം', name_ml: 'സോളാർ സിസ്റ്റം', name_en: 'Solar & Inverter', icon: '☀️' },
+    { id: 'photography', name: 'ഫോട്ടോഗ്രാഫി', name_ml: 'ഫോട്ടോഗ്രാഫി', name_en: 'Photography', icon: '📷' },
+    { id: 'sound', name: 'സൗണ്ട് & ലൈറ്റ്', name_ml: 'സൗണ്ട് & ലൈറ്റ്', name_en: 'Sound & Lights', icon: '🔊' },
+    { id: 'gas', name: 'ഗ്യാസ് സ്റ്റൗ', name_ml: 'ഗ്യാസ് സ്റ്റൗ', name_en: 'Gas Stove Repair', icon: '🍳' },
+    { id: 'pestcontrol', name: 'പെസ്റ്റ് കൺട്രോൾ', name_ml: 'പെസ്റ്റ് കൺട്രോൾ', name_en: 'Pest Control', icon: '🐜' }
   ];
 
   const VEHICLE_SUB_TYPES = [
-    { id: 'all', name: 'മുഴുവൻ വാഹനങ്ങളും', icon: '🌟' },
-    { id: 'auto', name: 'ഓട്ടോറിക്ഷ', icon: '🛺' },
-    { id: 'taxi', name: 'ടാക്സി കാർ', icon: '🚕' },
-    { id: 'traveller', name: 'ട്രാവലർ/വാൻ', icon: '🚐' },
-    { id: 'bus', name: 'ടൂറിസ്റ്റ് ബസ്', icon: '🚌' },
-    { id: 'pickup', name: 'പിക്കപ്പ് വാൻ', icon: '🛻' },
-    { id: 'goodsauto', name: 'ഗുഡ്സ് ഓട്ടോ', icon: '🛺📦' },
-    { id: 'jeep', name: 'ജീപ്പ് 4x4', icon: '🚙' },
-    { id: 'lorry', name: 'ലോറി/ടിപ്പർ', icon: '🚛' },
-    { id: 'jcb', name: 'JCB/ഹിറ്റാച്ചി', icon: '🚜' },
-    { id: 'crane', name: 'ക്രെയിൻ/റിക്കവറി', icon: '🏗️' },
-    { id: 'ambulance', name: 'ആംബുലൻസ്', icon: '🚑' }
+    { id: 'all', name: 'മുഴുവൻ വാഹനങ്ങളും', name_ml: 'മുഴുവൻ വാഹനങ്ങളും', name_en: 'All Vehicles', icon: '🌟' },
+    { id: 'auto', name: 'ഓട്ടോറിക്ഷ', name_ml: 'ഓട്ടോറിക്ഷ', name_en: 'Auto Rickshaw', icon: '🛺' },
+    { id: 'taxi', name: 'ടാക്സി കാർ', name_ml: 'ടാക്സി കാർ', name_en: 'Taxi Cab', icon: '🚕' },
+    { id: 'traveller', name: 'ട്രാവലർ/വാൻ', name_ml: 'ട്രാവലർ/വാൻ', name_en: 'Traveller / Van', icon: '🚐' },
+    { id: 'bus', name: 'ടൂറിസ്റ്റ് ബസ്', name_ml: 'ടൂറിസ്റ്റ് ബസ്', name_en: 'Tourist Bus', icon: '🚌' },
+    { id: 'pickup', name: 'പിക്കപ്പ് വാൻ', name_ml: 'പിക്കപ്പ് വാൻ', name_en: 'Pickup Van', icon: '🛻' },
+    { id: 'goodsauto', name: 'ഗുഡ്സ് ഓട്ടോ', name_ml: 'ഗുഡ്സ് ഓട്ടോ', name_en: 'Goods Auto', icon: '🛺📦' },
+    { id: 'jeep', name: 'ജീപ്പ് 4x4', name_ml: 'ജീപ്പ് 4x4', name_en: 'Jeep 4x4', icon: '🚙' },
+    { id: 'lorry', name: 'ലോറി/ടിപ്പർ', name_ml: 'ലോറി/ടിപ്പർ', name_en: 'Lorry / Tipper', icon: '🚛' },
+    { id: 'jcb', name: 'JCB/ഹിറ്റാച്ചി', name_ml: 'JCB/ഹിറ്റാച്ചി', name_en: 'JCB / Excavator', icon: '🚜' },
+    { id: 'crane', name: 'ക്രെയിൻ/റിക്കവറി', name_ml: 'ക്രെയിൻ/റിക്കവറി', name_en: 'Crane / Recovery', icon: '🏗️' },
+    { id: 'ambulance', name: 'ആംബുലൻസ്', name_ml: 'ആംബുലൻസ്', name_en: 'Ambulance 24x7', icon: '🚑' }
   ];
 
   function renderServicesCategoriesGrid() {
     const grid = document.getElementById('servicesCategoryGrid');
     if (!grid) return;
+    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'ml')) === 'en';
 
-    grid.innerHTML = SERVICE_CATEGORIES.map(cat => `
+    grid.innerHTML = SERVICE_CATEGORIES.map(cat => {
+      const displayName = isEn ? (cat.name_en || cat.name) : (cat.name_ml || cat.name);
+      return `
       <button class="cat-pill-btn ${APP_STATE.activeServiceCategory === cat.id ? 'active' : ''}" 
               onclick="filterServiceCategory('${cat.id}')">
         <span class="cat-pill-icon">${cat.icon}</span>
-        <span class="cat-pill-title">${cat.name}</span>
+        <span class="cat-pill-title">${displayName}</span>
       </button>
-    `).join('');
+    `;
+    }).join('');
   }
 
   function filterServiceCategory(catId) {
@@ -6217,12 +6221,14 @@
     if (subBar) {
       if (isVehicleSection) {
         subBar.style.display = 'flex';
+        const isEnVeh = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'ml')) === 'en';
         subBar.innerHTML = VEHICLE_SUB_TYPES.map(vt => {
           const isActive = (activeSub === vt.id);
+          const displayName = isEnVeh ? (vt.name_en || vt.name) : (vt.name_ml || vt.name);
           const style = isActive
             ? 'background:#0C2B59;color:#fff;border:1px solid #0C2B59;padding:6px 12px;border-radius:20px;font-size:11.5px;font-weight:800;white-space:nowrap;cursor:pointer;display:inline-flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(12,43,89,0.25)'
             : 'background:#fff;color:#334155;border:1px solid #CBD5E1;padding:6px 12px;border-radius:20px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer;display:inline-flex;align-items:center;gap:4px';
-          return `<button type="button" onclick="setVehicleSubFilter('${vt.id}')" style="${style}"><span>${vt.icon}</span><span>${vt.name}</span></button>`;
+          return `<button type="button" onclick="setVehicleSubFilter('${vt.id}')" style="${style}"><span>${vt.icon}</span><span>${displayName}</span></button>`;
         }).join('');
       } else {
         subBar.style.display = 'none';
@@ -6359,7 +6365,7 @@
               <div style="display:flex;justify-content:space-between;align-items:flex-start">
                 <div class="service-prov-name">
                   <span>${srv.name}</span>
-                  <span style="font-size:11px;background:#ECFDF5;color:#0E7043;padding:2px 8px;border-radius:8px;font-weight:700">★ ${srv.rating}</span>
+                  <span style="font-size:11px;background:#EFF6FF;color:#0C2B59;padding:2px 8px;border-radius:8px;font-weight:700">★ ${srv.rating}</span>
                   ${srv.isCloud ? '<span style="font-size:9.5px;background:#ECFDF5;color:#059669;border:1px solid #A7F3D0;padding:1px 6px;border-radius:6px;font-weight:800;margin-left:4px" title="ഫയർബേസ് ക്ലൗഡിൽ തത്സമയം രജിസ്റ്റർ ചെയ്തത്">☁️ ലൈവ്</span>' : ''}
                 </div>
                 <span class="provider-live-pill ${availClass}">${availLabel}</span>
@@ -6371,7 +6377,7 @@
               <div class="service-prov-loc">
                 <span>📍 ${resolveItemLocation(srv)}</span>
                 <span>•</span>
-                <span style="color:#0E7043;font-weight:800">${srv._calculatedDist} km അകലെ</span>
+                <span style="color:#0C2B59;font-weight:800">${((typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : 'ml') === 'en') ? (srv._calculatedDist + ' km away') : (srv._calculatedDist + ' km അകലെ')}</span>
               </div>
             </div>
           </div>
@@ -7536,7 +7542,7 @@
     const container = document.getElementById('bloodDonorsListContainer');
     if (!container) return;
 
-    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'en')) === 'en';
+    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'ml')) === 'en';
     const maxRadius = APP_STATE.radiusFilters.blood || APP_STATE.activeRadiusKm || 50;
 
     let list = [...(APP_STATE.bloodDonors || [])];
@@ -9538,7 +9544,7 @@
     const jobsListEl = document.getElementById('jobsListContainer');
     if (!jobsListEl) return;
 
-    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'en')) === 'en';
+    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'ml')) === 'en';
     const maxRadius = APP_STATE.radiusFilters.jobs || APP_STATE.activeRadiusKm || 25;
     const searchInput = document.getElementById('jobSearchInput');
     const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
@@ -9654,7 +9660,7 @@
     const rentalsListEl = document.getElementById('rentalsListContainer');
     if (!rentalsListEl) return;
 
-    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'en')) === 'en';
+    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'ml')) === 'en';
     const maxRadius = APP_STATE.radiusFilters.rentals || 10;
     const searchInput = document.getElementById('rentalSearchInput');
     const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
