@@ -6388,7 +6388,7 @@
 
           <div style="font-size:11.5px;color:#6B7280;display:flex;justify-content:space-between;border-top:1px dashed #E5E7EB;padding-top:8px">
             <span>🛠️ ${srv.experience}</span>
-            <span style="color:#059669;font-weight:700">വിശദാംശങ്ങൾ & റേറ്റിംഗ് ➔</span>
+            <span style="color:#0284C7;font-weight:700">വിശദാംശങ്ങൾ & റേറ്റിംഗ് ➔</span>
           </div>
 
           <!-- DIRECT ACTION: IN-APP CHAT ONLY -->
@@ -6433,7 +6433,7 @@
               <span style="background:rgba(255,255,255,0.25);padding:2px 8px;border-radius:8px;font-size:14px">${srv.icon || '🛠️'}</span>
               <span>${srv.trade}</span>
             </div>
-            <div style="font-size:0.78rem;opacity:0.9;margin-top:3px">📍 ${resolveItemLocation(srv)} • <b style="color:#A7F3D0">${dist} km അകലെ</b></div>
+            <div style="font-size:0.78rem;opacity:0.9;margin-top:3px">📍 ${resolveItemLocation(srv)} • <b style="color:#BFDBFE">${dist} km അകലെ</b></div>
           </div>
         </div>
       </div>
@@ -6443,7 +6443,7 @@
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
           <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:14px;padding:10px 12px">
             <div style="font-size:0.7rem;color:#64748B;font-weight:700">💰 വിസിറ്റിംഗ് നിരക്ക്</div>
-            <div style="font-size:0.86rem;font-weight:800;color:#0F766E;margin-top:2px">${formatPrice(srv.visitingFee || '₹200 വിസിറ്റിംഗ് നിരക്ക്')}</div>
+            <div style="font-size:0.86rem;font-weight:800;color:#0284C7;margin-top:2px">${formatPrice(srv.visitingFee || '₹200 വിസിറ്റിംഗ് നിരക്ക്')}</div>
           </div>
           <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:14px;padding:10px 12px">
             <div style="font-size:0.7rem;color:#64748B;font-weight:700">⏰ പ്രവൃത്തി സമയം</div>
@@ -6451,15 +6451,15 @@
           </div>
         </div>
 
-        <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:14px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between">
-          <span style="font-size:0.82rem;font-weight:700;color:#166534">ലഭ്യതാ സ്റ്റാറ്റസ്:</span>
+        <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:14px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between">
+          <span style="font-size:0.82rem;font-weight:700;color:#1E40AF">ലഭ്യതാ സ്റ്റാറ്റസ്:</span>
           <span class="provider-live-pill ${availClass}">${availLabel}</span>
         </div>
 
         <!-- VEHICLE SPECIFICATIONS (IF VEHICLE SERVICE) -->
         ${srv.vehicleDetails ? `
-          <div style="background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:14px;padding:12px;margin-top:2px">
-            <div style="font-size:0.82rem;font-weight:900;color:#065F46;margin-bottom:8px">🚗 വാഹന വിവരങ്ങൾ (Vehicle Specifications):</div>
+          <div style="background:#EFF6FF;border:1.5px solid #BFDBFE;border-radius:14px;padding:12px;margin-top:2px">
+            <div style="font-size:0.82rem;font-weight:900;color:#1E40AF;margin-bottom:8px">🚗 വാഹന വിവരങ്ങൾ (Vehicle Specifications):</div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:0.78rem">
               ${srv.vehicleDetails.model ? `<div><span style="color:#64748B">മോഡൽ/സീറ്റിംഗ്:</span> <b style="color:#0F172A">${escapeHtml(srv.vehicleDetails.model)}</b></div>` : ''}
               ${srv.vehicleDetails.number ? `<div><span style="color:#64748B">നമ്പർ:</span> <b style="color:#0F172A">${escapeHtml(srv.vehicleDetails.number)}</b></div>` : ''}

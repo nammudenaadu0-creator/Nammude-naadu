@@ -2751,13 +2751,13 @@ html, body {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);
   color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 18px;
-  box-shadow: 0 3px 8px rgba(5, 150, 105, 0.3);
+  box-shadow: 0 3px 8px rgba(29, 78, 216, 0.3);
   flex-shrink: 0;
   cursor: pointer;
 }
@@ -3125,7 +3125,7 @@ html, body {
 }
 
 .service-detail-hero {
-  background: linear-gradient(135deg, #064E3B 0%, #047857 55%, #0F766E 100%);
+  background: linear-gradient(135deg, #0284C7 0%, #0369A1 50%, #0878D1 100%);
   padding: 24px 20px 22px;
   color: #FFFFFF;
   position: relative;
@@ -4184,11 +4184,11 @@ body {
 
 /* 1. All Screen Backgrounds */
 .screen {
-  background: linear-gradient(180deg, #E8FDF5 0%, #F0FDF4 160px, #F8FAFC 100%) !important;
+  background: #F8FAFC !important;
   min-height: 100vh;
 }
 
-/* 2. Unified Kerala Headers Across All Screens */
+/* 2. Unified Royal Blue Headers Across All Screens */
 .app-header,
 .nearby-header,
 .yw-services-header,
@@ -4201,10 +4201,10 @@ body {
 #screen-chat > div:first-child,
 #screen-add > div:first-child,
 .community-header {
-  background: linear-gradient(180deg, #E6FBF0 0%, #F0FDF4 100%) !important;
-  border-bottom: 1.5px solid rgba(16, 185, 129, 0.22) !important;
-  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.07) !important;
-  color: #064E3B !important;
+  background: linear-gradient(135deg, #0284C7 0%, #0369A1 50%, #0878D1 100%) !important;
+  border-bottom: none !important;
+  box-shadow: 0 4px 16px rgba(8, 120, 209, 0.22) !important;
+  color: #FFFFFF !important;
 }
 
 /* Header Titles */
@@ -4216,7 +4216,7 @@ body {
 #screen-chat h2,
 #screen-add h2,
 .app-header h2 {
-  color: #064E3B !important;
+  color: #FFFFFF !important;
   font-family: 'Manjari', sans-serif !important;
   font-weight: 900 !important;
   letter-spacing: -0.3px !important;
@@ -4231,11 +4231,11 @@ body {
 #screen-blood button:first-child,
 #screen-chat .round-back-btn,
 #screen-services .yw-services-header button:first-child {
-  background: #FFFFFF !important;
-  border: 1.5px solid #E2E8F0 !important;
-  color: #064E3B !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  color: #FFFFFF !important;
   border-radius: 50% !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
   cursor: pointer !important;
   transition: transform 0.1s ease !important;
 }
@@ -4251,14 +4251,14 @@ body {
 #screen-rentals button[onclick*="openAddRentalModal"],
 #screen-blood button[onclick*="openRegisterDonorModal"],
 #screen-services button[onclick*="openAddServiceModal"] {
-  background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
-  color: #FFFFFF !important;
+  background: #FFFFFF !important;
+  color: #0878D1 !important;
   border: none !important;
   border-radius: 9999px !important;
   padding: 7px 14px !important;
   font-weight: 800 !important;
   font-size: 11.5px !important;
-  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3) !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12) !important;
   cursor: pointer !important;
   display: inline-flex !important;
   align-items: center !important;

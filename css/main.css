@@ -4500,16 +4500,16 @@
             color: #ffffff !important;
         }
 
-        /* 3. Service Provider Registration (Vibrant Kerala Green) */
+        /* 3. Service Provider Registration (Royal Blue Theme) */
         .form-theme-provider .modal-header-badge {
-            background: #DCFCE7;
-            color: #059669;
+            background: #EFF6FF;
+            color: #1D4ED8;
         }
 
         .form-theme-provider .form-submit-btn,
         .btn-bright-provider {
-            background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
-            box-shadow: 0 6px 18px rgba(5, 150, 105, 0.35) !important;
+            background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%) !important;
+            box-shadow: 0 6px 18px rgba(29, 78, 216, 0.35) !important;
             color: #ffffff !important;
         }
 
