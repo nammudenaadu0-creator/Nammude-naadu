@@ -12942,7 +12942,10 @@
   }
   window.triggerAppUpdateDownload = triggerAppUpdateDownload;
 
-  document.addEventListener('DOMContentLoaded', () => {
+  let _engineBootstrapped = false;
+  function _bootNammudeApp() {
+    if (_engineBootstrapped) return;
+    _engineBootstrapped = true;
     try { localStorage.removeItem('nn_is_admin'); } catch (_) {}
     initData();
     if (typeof updateAdminUI === 'function') updateAdminUI();
@@ -13678,7 +13681,12 @@
         }
       } catch (_) {}
     }, 3000);
+  }
 
-  });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', _bootNammudeApp);
+  } else {
+    _bootNammudeApp();
+  }
 
 })();

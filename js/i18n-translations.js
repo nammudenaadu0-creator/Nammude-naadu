@@ -271,9 +271,14 @@
   }
 
   // Initialize on load
-  document.addEventListener('DOMContentLoaded', () => {
+  const _initI18n = () => {
     setAppLanguage(currentLang, true);
-  });
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', _initI18n);
+  } else {
+    _initI18n();
+  }
 
   // Global exposure
   window.NN_I18N = {
