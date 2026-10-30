@@ -3,12 +3,12 @@
         /* Scoped strictly to #screen-jobs and job-specific modals       */
         /* ============================================================= */
         :root {
-            --job-blue-primary: #0F766E;
-            --job-blue-hover: #0D655E;
-            --job-blue-dark: #e7d406;
-            --job-blue-light: #F7F9FC;
-            --job-blue-border: #E5EAF0;
-            --job-blue-pill: #175246;
+            --job-blue-primary: #1D4ED8;
+            --job-blue-hover: #1E40AF;
+            --job-blue-dark: #0C2B59;
+            --job-blue-light: #EFF6FF;
+            --job-blue-border: #BFDBFE;
+            --job-blue-pill: #1D4ED8;
             --job-white: #FFFFFF;
             --job-text-muted: #667085;
             --job-card-shadow: 0 1px 3px rgba(16, 24, 40, 0.05), 0 1px 2px rgba(16, 24, 40, 0.03);
@@ -16,17 +16,17 @@
         }
 
         #screen-jobs {
-            background-color: #F7F9FC !important;
+            background-color: #F8FAFC !important;
             min-height: 100vh;
         }
 
         #screen-jobs .jobs-blue-header {
-            background: linear-gradient(135deg, #0F766E 0%, #115E59 100%) !important;
+            background: linear-gradient(135deg, #0284C7 0%, #0369A1 50%, #0878D1 100%) !important;
             padding: 16px 16px 14px;
             color: #FFFFFF;
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
-            box-shadow: 0 4px 16px rgba(15, 118, 110, 0.18);
+            box-shadow: 0 4px 16px rgba(8, 120, 209, 0.22);
         }
 
         #screen-jobs .jobs-header-top {
