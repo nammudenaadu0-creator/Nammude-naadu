@@ -2,15 +2,18 @@
 
 This is the high-concurrency **Erlang/OTP (BEAM VM)** chat microservice for **Nammude Naadu**, built with Elixir and Phoenix Channels (the exact same architecture that powers WhatsApp and Discord at scale).
 
+## Security status
+
+The current app does not provide a verifiable authentication token to this service. As a result, BEAM socket connections are not authorized to join chat channels; the WebSocket chat features below remain disabled until server-verified authentication and per-thread membership checks are implemented. Deployments currently provide health/status endpoints only. Do not enable channel access based on the `phone` or `user_id` socket parameters; clients can choose those values.
+
 ## Key Features
-- **Ultra-low latency (sub-5ms)** WebSocket message delivery.
-- **WhatsApp 3-Stage Tick Pipeline:**
+- **Planned:** Ultra-low latency WebSocket message delivery.
+- **Planned:** WhatsApp 3-Stage Tick Pipeline:
   - `✔` (Single Gray Tick): Server Received & Acknowledged.
   - `✔✔` (Double Gray Tick): Recipient device received & cached.
   - `✔✔` (Double Blue Tick): Recipient opened & viewed thread.
-- **Erlang CRDT Presence:** Real-time Online / Offline / Last Seen status.
-- **Live Typing Indicator:** Instant streaming of typing state.
-- **Fault-tolerant:** Uses Erlang OTP Supervision trees ("Let it crash" philosophy).
+- **Planned:** Erlang CRDT Presence and live typing indicators.
+- **Fault-tolerant runtime:** Uses Erlang OTP supervision trees.
 
 ---
 

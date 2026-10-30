@@ -17,6 +17,7 @@ defmodule NammudeChatBeamWeb.UserSocket do
       |> assign(:phone, phone)
       |> assign(:user_id, user_id)
       |> assign(:name, name)
+      |> assign(:authenticated, false)
 
     {:ok, socket}
   end

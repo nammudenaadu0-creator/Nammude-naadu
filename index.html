@@ -25,9 +25,9 @@
         rel="stylesheet">
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="css/main.css?v=8.0">
-    <link rel="stylesheet" href="css/jobs.css?v=8.0">
-    <link rel="stylesheet" href="css/nammude-naadu.css?v=8.0">
+    <link rel="stylesheet" href="css/main.css?v=8.1">
+    <link rel="stylesheet" href="css/jobs.css?v=8.1">
+    <link rel="stylesheet" href="css/nammude-naadu.css?v=8.1">
 </head>
 
 <body>
@@ -1791,14 +1791,14 @@
                 </div>
             </div>
 
-            <!-- WHATSAPP-STYLE REPLY PREVIEW BAR -->
+            <!-- CHAT REPLY PREVIEW BAR -->
             <div id="chatReplyPreviewBar" class="chat-reply-preview-bar" style="display:none">
                 <div class="chat-reply-accent-line"></div>
                 <div class="chat-reply-preview-content">
                     <div class="chat-reply-preview-sender" id="chatReplyPreviewSender">↩️ മറുപടി</div>
                     <div class="chat-reply-preview-text" id="chatReplyPreviewText">...</div>
                 </div>
-                <button type="button" class="chat-reply-cancel-btn" onclick="cancelChatReply()" title="മറുപടി റദ്ദാക്കുക">✕</button>
+                <button type="button" class="chat-reply-cancel-btn" id="chatReplyCancelBtn" onclick="cancelChatReply()" title="മറുപടി ഒഴിവാക്കുക">✕</button>
             </div>
 
             <!-- INPUT BAR WITH 📷 PHOTO, 😊 STICKER & 🎙️ VOICE CHAT BUTTON -->
@@ -1942,19 +1942,19 @@
             <div class="chat-menu-actions">
                 <button type="button" class="chat-menu-item" onclick="triggerMenuAction('reply')">
                     <span class="chat-menu-icon">↩️</span>
-                    <span class="chat-menu-label">മറുപടി നൽകുക (Reply)</span>
+                    <span class="chat-menu-label" id="chatMenuReplyLabel">മറുപടി നൽകുക</span>
                 </button>
                 <button type="button" class="chat-menu-item" onclick="triggerMenuAction('forward')">
                     <span class="chat-menu-icon">⏩</span>
-                    <span class="chat-menu-label">ഫോർവേഡ് ചെയ്യുക (Forward)</span>
+                    <span class="chat-menu-label" id="chatMenuForwardLabel">ഫോർവേഡ് ചെയ്യുക</span>
                 </button>
                 <button type="button" class="chat-menu-item" onclick="triggerMenuAction('copy')">
                     <span class="chat-menu-icon">📋</span>
-                    <span class="chat-menu-label">കോപ്പി ചെയ്യുക (Copy)</span>
+                    <span class="chat-menu-label" id="chatMenuCopyLabel">കോപ്പി ചെയ്യുക</span>
                 </button>
                 <button type="button" class="chat-menu-item chat-menu-item-danger" onclick="triggerMenuAction('delete')">
                     <span class="chat-menu-icon">🗑️</span>
-                    <span class="chat-menu-label">ഡിലീറ്റ് ചെയ്യുക (Delete)</span>
+                    <span class="chat-menu-label" id="chatMenuDeleteLabel">ഡിലീറ്റ് ചെയ്യുക</span>
                 </button>
             </div>
         </div>
@@ -4885,12 +4885,12 @@
     <script src="js/app-refresh.js?v=1.0"></script>
 
     <!-- MULTILINGUAL (i18n) ENGINE -->
-    <script src="js/i18n-translations.js?v=9.3"></script>
+    <script src="js/i18n-translations.js?v=9.4"></script>
 
     <!-- APPLICATION ENGINES -->
     <script src="js/kerala-police-stations-data.js?v=1.0"></script>
-    <script src="js/trades-catalog-500.js?v=9.3"></script>
-    <script src="js/nammude-naadu-engine.js?v=9.3"></script>
+    <script src="js/trades-catalog-500.js?v=9.4"></script>
+    <script src="js/nammude-naadu-engine.js?v=9.4"></script>
 </body>
 
 </html>

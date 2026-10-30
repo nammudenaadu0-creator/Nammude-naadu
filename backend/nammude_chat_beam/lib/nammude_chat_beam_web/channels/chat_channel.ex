@@ -9,16 +9,22 @@ defmodule NammudeChatBeamWeb.ChatChannel do
 
   @impl true
   def join("chat:thread:" <> _thread_key, _payload, socket) do
-    send(self(), :after_join)
-    {:ok, socket}
+    reject_unverified_socket(socket)
   end
 
   def join("chat:lobby", _payload, socket) do
-    send(self(), :after_join)
-    {:ok, socket}
+    reject_unverified_socket(socket)
   end
 
   def join("user:" <> user_target, _payload, socket) do
+    if socket.assigns.authenticated do
+      join_user_channel(user_target, socket)
+    else
+      {:error, %{reason: "authentication_required"}}
+    end
+  end
+
+  defp join_user_channel(user_target, socket) do
     my_clean = String.replace(socket.assigns.phone || "", ~r/\D/, "")
     target_clean = String.replace(user_target, ~r/\D/, "")
 
@@ -27,6 +33,14 @@ defmodule NammudeChatBeamWeb.ChatChannel do
       {:ok, socket}
     else
       {:error, %{reason: "unauthorized"}}
+    end
+  end
+
+  defp reject_unverified_socket(socket) do
+    if socket.assigns.authenticated do
+      {:error, %{reason: "thread_authorization_required"}}
+    else
+      {:error, %{reason: "authentication_required"}}
     end
   end
 
@@ -123,12 +137,7 @@ defmodule NammudeChatBeamWeb.ChatChannel do
   end
 
   # WhatsApp Delete For Everyone
-  def handle_in("delete_msg", %{"msg_id" => msg_id} = payload, socket) do
-    broadcast_from!(socket, "chat_message_deleted", %{
-      msg_id: msg_id,
-      chat_key: Map.get(payload, "chat_key")
-    })
-
-    {:reply, :ok, socket}
+  def handle_in("delete_msg", _payload, socket) do
+    {:reply, {:error, %{reason: "message_deletion_not_supported"}}, socket}
   end
 end

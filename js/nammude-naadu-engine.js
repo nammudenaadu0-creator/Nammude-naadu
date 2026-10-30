@@ -4223,12 +4223,13 @@
     const msg = thread.find(m => m && String(m.id) === String(msgId));
     if (!msg) return;
 
+    const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en') || (typeof localStorage !== 'undefined' && localStorage.getItem('nn_preferred_lang') === 'en');
     const isMe = (msg.sender === 'me');
-    const senderName = isMe ? 'നിങ്ങൾ (You)' : (APP_STATE.activeChatRecipient.name || 'സുഹൃത്ത്');
+    const senderName = isMe ? (isEn ? 'You' : 'നിങ്ങൾ') : (APP_STATE.activeChatRecipient.name || (isEn ? 'Friend' : 'സുഹൃത്ത്'));
     let previewText = msg.text || '';
-    if (previewText.startsWith('[voice:')) previewText = '🎙️ വോയ്‌സ് മെസ്സേജ്';
-    else if (previewText.startsWith('[image:')) previewText = '📷 ഫോട്ടോ';
-    else if (msg.type === 'sticker') previewText = '🎭 ' + (msg.stickerText || 'സ്റ്റിക്കർ');
+    if (previewText.startsWith('[voice:')) previewText = isEn ? '🎙️ Voice Message' : '🎙️ വോയ്‌സ് മെസ്സേജ്';
+    else if (previewText.startsWith('[image:')) previewText = isEn ? '📷 Photo' : '📷 ഫോട്ടോ';
+    else if (msg.type === 'sticker') previewText = '🎭 ' + (msg.stickerText || (isEn ? 'Sticker' : 'സ്റ്റിക്കർ'));
     if (previewText.length > 60) previewText = previewText.substring(0, 60) + '...';
 
     APP_STATE.activeChatReply = {
@@ -4240,7 +4241,7 @@
     const bar = document.getElementById('chatReplyPreviewBar');
     const senderEl = document.getElementById('chatReplyPreviewSender');
     const textEl = document.getElementById('chatReplyPreviewText');
-    if (senderEl) senderEl.textContent = '↩️ മറുപടി നൽകുന്നു: ' + senderName;
+    if (senderEl) senderEl.textContent = isEn ? ('↩️ Replying to: ' + senderName) : ('↩️ മറുപടി നൽകുന്നു: ' + senderName);
     if (textEl) textEl.textContent = previewText;
     if (bar) bar.style.display = 'flex';
 
@@ -4507,17 +4508,18 @@
 
     if (thread.length === 0) {
       box.dataset.renderedKey = chatKey;
+      const isEnChat = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en') || (typeof localStorage !== 'undefined' && localStorage.getItem('nn_preferred_lang') === 'en');
       box.innerHTML = `
-        <div style="text-align:center;padding:24px 18px;background:#FFFFFF;border-radius:18px;margin:24px auto;max-width:320px;box-shadow:0 2px 10px rgba(11,20,26,0.08);border:1px solid #E2E8F0">
-          <div style="width:54px;height:54px;border-radius:50%;background:#E8F5E9;border:2px solid #C8E6C9;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:26px">🔒</div>
-          <div style="font-weight:800;font-size:15px;color:#111B21">${escapeHtml(APP_STATE.activeChatRecipient.name)}</div>
-          <p style="font-size:12px;color:#54656F;margin:6px 0 0;line-height:1.5">ഈ സംഭാഷണം പൂർണ്ണമായും എൻഡ്-ടു-എൻഡ് സുരക്ഷിതമാണ്. സന്ദേശങ്ങൾ അയച്ച് തുടങ്ങാം.</p>
-          <div style="margin-top:12px;font-size:11px;font-weight:700;color:#008069;background:#E8F5E9;border:1px solid #A7F3D0;display:inline-flex;align-items:center;gap:4px;padding:4px 14px;border-radius:20px">
-            <span>⚡ തത്സമയ ചാറ്റ്</span>
+        <div style="text-align:center;padding:24px 18px;background:#FFFFFF;border-radius:18px;margin:24px auto;max-width:320px;box-shadow:0 4px 16px rgba(12,43,89,0.08);border:1px solid #CBD5E1">
+          <div style="width:54px;height:54px;border-radius:50%;background:#EFF6FF;border:2px solid #BFDBFE;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:26px">🔒</div>
+          <div style="font-weight:800;font-size:15px;color:#0C2B59">${escapeHtml(APP_STATE.activeChatRecipient.name)}</div>
+          <p style="font-size:12px;color:#475569;margin:6px 0 0;line-height:1.5">${isEnChat ? 'This conversation is end-to-end encrypted. Start sending messages.' : 'ഈ സംഭാഷണം പൂർണ്ണമായും സുരക്ഷിതമാണ്. സന്ദേശങ്ങൾ അയച്ച് തുടങ്ങാം.'}</p>
+          <div style="margin-top:12px;font-size:11px;font-weight:700;color:#1D4ED8;background:#EFF6FF;border:1px solid #BFDBFE;display:inline-flex;align-items:center;gap:4px;padding:4px 14px;border-radius:20px">
+            <span>⚡ ${isEnChat ? 'Live Chat' : 'തത്സമയ ചാറ്റ്'}</span>
           </div>
           <div style="margin-top:12px">
-            <button type="button" onclick="toggleChatStickers(true)" style="background:#008069;border:none;color:#FFFFFF;padding:8px 18px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 2px 8px rgba(0,128,105,0.25)">
-              <span>🎭</span> <span>സ്റ്റിക്കർ അയക്കൂ!</span>
+            <button type="button" onclick="toggleChatStickers(true)" style="background:linear-gradient(135deg,#0A2240 0%,#0C2B59 55%,#163E75 100%);border:none;color:#FFFFFF;padding:8px 18px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 3px 10px rgba(12,43,89,0.3)">
+              <span>🎭</span> <span>${isEnChat ? 'Send a Sticker!' : 'സ്റ്റിക്കർ അയക്കൂ!'}</span>
             </button>
           </div>
         </div>

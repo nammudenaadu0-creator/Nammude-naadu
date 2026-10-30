@@ -589,12 +589,47 @@
     const bloodSearch = document.getElementById('bloodSearchInput');
     if (bloodSearch) bloodSearch.placeholder = isEn ? 'Search by blood group, donor name or phone...' : 'രക്തഗ്രൂപ്പ് (O+, A+), ദാതാവിന്റെ പേര്, ഫോൺ...';
 
-    // 12. Chat Screen
+    // 12. Chat Screen & Chat Modal
     const chatSearch = document.getElementById('chatSearchInput');
     if (chatSearch) chatSearch.placeholder = isEn ? 'Search messages or contacts...' : 'സന്ദേശങ്ങളോ ആളുകളെയോ തിരയുക...';
 
     const newChatBtn = document.querySelector('#screen-chat button[onclick*="openNewChatModal"] span:last-child');
     if (newChatBtn) newChatBtn.textContent = isEn ? 'New Chat' : 'പുതിയ ചാറ്റ്';
+
+    const chatReplySender = document.getElementById('chatReplyPreviewSender');
+    if (chatReplySender && (!window.APP_STATE || !window.APP_STATE.activeChatReply)) {
+      chatReplySender.textContent = isEn ? '↩️ Reply' : '↩️ മറുപടി';
+    }
+
+    const chatReplyCancel = document.getElementById('chatReplyCancelBtn');
+    if (chatReplyCancel) chatReplyCancel.title = isEn ? 'Cancel Reply' : 'മറുപടി ഒഴിവാക്കുക';
+
+    const chatMenuReply = document.getElementById('chatMenuReplyLabel');
+    if (chatMenuReply) chatMenuReply.textContent = isEn ? 'Reply' : 'മറുപടി നൽകുക';
+
+    const chatMenuForward = document.getElementById('chatMenuForwardLabel');
+    if (chatMenuForward) chatMenuForward.textContent = isEn ? 'Forward' : 'ഫോർവേഡ് ചെയ്യുക';
+
+    const chatMenuCopy = document.getElementById('chatMenuCopyLabel');
+    if (chatMenuCopy) chatMenuCopy.textContent = isEn ? 'Copy' : 'കോപ്പി ചെയ്യുക';
+
+    const chatMenuDelete = document.getElementById('chatMenuDeleteLabel');
+    if (chatMenuDelete) chatMenuDelete.textContent = isEn ? 'Delete' : 'ഡിലീറ്റ് ചെയ്യുക';
+
+    const chatInputMsg = document.getElementById('chatInputMessage');
+    if (chatInputMsg) chatInputMsg.placeholder = isEn ? 'Type a message...' : 'സന്ദേശം ടൈപ്പ് ചെയ്യുക...';
+
+    const chatSend = document.getElementById('chatSendBtn');
+    if (chatSend) chatSend.title = isEn ? 'Send message' : 'സന്ദേശം അയക്കാം';
+
+    const chatPhoto = document.getElementById('chatPhotoBtn');
+    if (chatPhoto) chatPhoto.title = isEn ? 'Send Photo' : 'ഫോട്ടോ അയക്കാം';
+
+    const chatSticker = document.getElementById('chatStickerBtn');
+    if (chatSticker) chatSticker.title = isEn ? 'Send Stickers' : 'സ്റ്റിക്കറുകൾ അയക്കാം';
+
+    const chatVoice = document.getElementById('chatVoiceBtn');
+    if (chatVoice) chatVoice.title = isEn ? 'Record Voice Message' : 'വോയ്സ് മെസ്സേജ് റെക്കോർഡ് ചെയ്യാം';
 
     // 13. Chips across screens
     const chatChipMap = {

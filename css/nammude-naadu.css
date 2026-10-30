@@ -463,15 +463,15 @@ html, body {
 .chat-modal-header {
   padding: 12px 14px;
   padding-top: max(14px, calc(env(safe-area-inset-top, 0px) + 10px));
-  background: #008069 !important;
-  background-color: #008069 !important;
+  background: linear-gradient(135deg, #0A2240 0%, #0C2B59 55%, #163E75 100%) !important;
+  background-color: #0C2B59 !important;
   color: #FFFFFF !important;
-  border-bottom: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  box-shadow: 0 1px 3px rgba(11, 20, 26, 0.24) !important;
+  box-shadow: 0 4px 18px rgba(10, 34, 64, 0.25) !important;
   z-index: 10;
   box-sizing: border-box;
   flex-shrink: 0;
@@ -729,8 +729,8 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  background-color: #EFEAE2 !important;
-  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.04' fill-rule='evenodd'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' /%3E%3C/g%3E%3C/svg%3E") !important;
+  background-color: #F8FAFC !important;
+  background-image: none !important;
   overflow-anchor: auto !important;
   -webkit-overflow-scrolling: touch !important;
   overscroll-behavior: contain !important;
@@ -1356,8 +1356,8 @@ html, body {
 }
 
 .rec-send {
-  background: #0E7043;
-  color: #FFFFFF;
+  background: linear-gradient(135deg, #0A2240 0%, #0C2B59 55%, #163E75 100%) !important;
+  color: #FFFFFF !important;
 }
 
 /* Voice Message Bubble in Chat Thread */
@@ -1376,14 +1376,14 @@ html, body {
   min-width: 40px;
   min-height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #059669 0%, #0E7043 100%);
-  color: #FFFFFF;
+  background: linear-gradient(135deg, #1D4ED8 0%, #0C2B59 100%) !important;
+  color: #FFFFFF !important;
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(14, 112, 67, 0.3);
+  box-shadow: 0 2px 6px rgba(12, 43, 89, 0.3) !important;
   touch-action: manipulation;
   flex-shrink: 0;
   transition: transform 0.15s ease;
@@ -4115,8 +4115,8 @@ body {
 
 #modal-chat .chat-modal-sheet {
   position: relative !important;
-  background: #EFEAE2 !important;
-  background-color: #EFEAE2 !important;
+  background: #F8FAFC !important;
+  background-color: #F8FAFC !important;
   width: 95% !important;
   max-width: 480px !important;
   height: 90vh !important;
@@ -4962,8 +4962,8 @@ input, textarea, select {
 
 /* WhatsApp-Style Quoted Reply Box inside bubble */
 .chat-quoted-box {
-  background: rgba(0, 0, 0, 0.05) !important;
-  border-left: 4px solid #008069 !important;
+  background: rgba(29, 78, 216, 0.08) !important;
+  border-left: 4px solid #1D4ED8 !important;
   border-radius: 6px !important;
   padding: 5px 8px !important;
   margin-bottom: 6px !important;
@@ -4973,23 +4973,23 @@ input, textarea, select {
 }
 
 .chat-bubble.outgoing .chat-quoted-box {
-  background: rgba(0, 0, 0, 0.05) !important;
-  border-left-color: #008069 !important;
+  background: rgba(12, 43, 89, 0.08) !important;
+  border-left-color: #1E40AF !important;
 }
 
 .chat-quoted-sender {
   font-weight: 700 !important;
   font-size: 11.5px !important;
-  color: #008069 !important;
+  color: #1D4ED8 !important;
   margin-bottom: 1px !important;
 }
 
 .chat-bubble.outgoing .chat-quoted-sender {
-  color: #008069 !important;
+  color: #1E40AF !important;
 }
 
 .chat-quoted-text {
-  color: #54656F !important;
+  color: #1E293B !important;
   font-size: 12px !important;
   white-space: nowrap !important;
   overflow: hidden !important;
@@ -4998,7 +4998,7 @@ input, textarea, select {
 }
 
 .chat-bubble.outgoing .chat-quoted-text {
-  color: #54656F !important;
+  color: #1E293B !important;
 }
 
 /* Forwarded pill */
@@ -5037,9 +5037,9 @@ input, textarea, select {
   align-items: center !important;
   justify-content: space-between !important;
   padding: 8px 12px !important;
-  background: #F0F2F5 !important;
-  border-left: 4px solid #008069 !important;
-  border-top: 1px solid #E2E8F0 !important;
+  background: #EFF6FF !important;
+  border-left: 4px solid #1D4ED8 !important;
+  border-top: 1px solid #BFDBFE !important;
   gap: 10px !important;
   flex-shrink: 0 !important;
   animation: waMsgAppear 0.15s ease-out !important;
@@ -5053,13 +5053,13 @@ input, textarea, select {
 .chat-reply-preview-sender {
   font-size: 11.5px !important;
   font-weight: 700 !important;
-  color: #008069 !important;
+  color: #1D4ED8 !important;
   margin-bottom: 1px !important;
 }
 
 .chat-reply-preview-text {
   font-size: 12.5px !important;
-  color: #54656F !important;
+  color: #1E293B !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
@@ -5140,22 +5140,22 @@ input, textarea, select {
 }
 
 .chat-reply-cancel-btn {
-  background: rgba(203, 213, 225, 0.5);
-  border: none;
-  font-size: 14px;
-  color: #475569;
-  cursor: pointer;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background 0.15s ease;
+  background: #DBEAFE !important;
+  border: none !important;
+  font-size: 14px !important;
+  color: #1E40AF !important;
+  cursor: pointer !important;
+  width: 24px !important;
+  height: 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  transition: background 0.15s ease !important;
 }
 
 .chat-reply-cancel-btn:hover {
-  background: rgba(203, 213, 225, 0.9);
+  background: #BFDBFE !important;
 }
 
 /* Context Menu / Bottom Action Sheet */
