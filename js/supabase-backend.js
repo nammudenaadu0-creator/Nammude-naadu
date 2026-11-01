@@ -3151,73 +3151,6 @@
     }
   }
 
-  // ==============================================================
-  // 15. STUDIO QUOTE BOOKINGS API (ഫോട്ടോഗ്രഫി & സ്റ്റുഡിയോ)
-  // ==============================================================
-  function getLocalQuote(quoteId) {
-    try {
-      const raw = localStorage.getItem('nn_studio_quotes');
-      const map = raw ? JSON.parse(raw) : {};
-      return map[quoteId] || null;
-    } catch (_) {
-      return null;
-    }
-  }
-
-  function saveQuoteLocally(quote) {
-    if (!quote || !quote.id) return;
-    try {
-      const raw = localStorage.getItem('nn_studio_quotes');
-      const map = raw ? JSON.parse(raw) : {};
-      map[quote.id] = quote;
-      localStorage.setItem('nn_studio_quotes', JSON.stringify(map));
-    } catch (_) {}
-  }
-
-  async function fetchStudioQuote(quoteId) {
-    if (!quoteId) return null;
-    const cleanId = String(quoteId).trim();
-    if (client) {
-      try {
-        const { data, error } = await client
-          .from('studio_quotes')
-          .select('*')
-          .eq('id', cleanId)
-          .maybeSingle();
-        if (!error && data) {
-          saveQuoteLocally(data);
-          return data;
-        }
-      } catch (err) {
-        console.warn('[Supabase] Failed to fetch studio quote, using local cache:', err);
-      }
-    }
-    return getLocalQuote(cleanId);
-  }
-
-  async function saveStudioQuote(quoteData) {
-    if (!quoteData || !quoteData.id) return null;
-    const record = {
-      ...quoteData,
-      updated_at: new Date().toISOString()
-    };
-    saveQuoteLocally(record);
-
-    if (client) {
-      try {
-        const { data, error } = await client
-          .from('studio_quotes')
-          .upsert(record, { onConflict: 'id' })
-          .select()
-          .maybeSingle();
-        if (!error && data) return data;
-      } catch (err) {
-        console.warn('[Supabase] Failed to upsert studio quote, saved locally:', err);
-      }
-    }
-    return record;
-  }
-
   // EXPORT GLOBALLY & PROVIDE TRANSPARENT BACKWARDS COMPATIBILITY
   const api = {
     init: initSupabase,
@@ -3264,9 +3197,6 @@
     // Emergency & Helpline Directory
     saveEmergencyContact,
     syncEmergencyContacts,
-    // Studio Quote Bookings
-    fetchStudioQuote,
-    saveStudioQuote,
     // Admin Moderation & Live Operations
     approveServiceProvider,
     rejectServiceProvider,

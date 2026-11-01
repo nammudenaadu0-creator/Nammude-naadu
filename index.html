@@ -894,16 +894,6 @@
                         </div>
                     </div>
 
-                    <!-- STUDIO QUOTE BOOKING QUICK ACTION BANNER -->
-                    <div class="studio-quote-banner" onclick="openStudioQuoteModal()">
-                        <div class="studio-quote-banner-left">
-                            <div class="studio-quote-badge">📸 ഫോട്ടോഗ്രഫി & സ്റ്റുഡിയോ</div>
-                            <h4 class="studio-quote-title">ക്വോട്ട് ബുക്കിംഗ് ലിങ്ക് (Quote Booking)</h4>
-                            <p class="studio-quote-sub">കസ്റ്റമർക്ക് ലിങ്ക് അയക്കാം • ആവശ്യങ്ങൾ സ്വീകരിച്ച് റേറ്റ് നൽകാം • ഉടൻ ബുക്കിംഗ് നേടാം</p>
-                        </div>
-                        <button type="button" class="studio-quote-btn">ലിങ്ക് ഉണ്ടാക്കാം ➔</button>
-                    </div>
-
 
                     <!-- CATEGORIES SECTION HEADER WITH 4-SQUARE GRID ICON -->
                     <div class="home-kerala-sec-header" style="margin-bottom:8px">
@@ -2588,52 +2578,6 @@
 
                 <!-- Suggestions / Search Results Container -->
                 <div id="presetLocationsList"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================================== -->
-    <!-- MODAL: STUDIO QUOTE & BOOKING WORKFLOW (ഫോട്ടോഗ്രഫി & സ്റ്റുഡിയോ)-->
-    <!-- ============================================================== -->
-    <div id="modal-studio-quote" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-studio-quote')" style="z-index:10007">
-        <div class="studio-quote-modal">
-            <!-- Sheet Handle -->
-            <div class="swiggy-loc-handle"></div>
-
-            <!-- Header -->
-            <div class="studio-quote-header">
-                <div style="display:flex;align-items:center;gap:10px">
-                    <span style="font-size:24px">📸</span>
-                    <div>
-                        <h3 style="margin:0;font-size:16px;font-weight:800;color:#0F172A" id="quoteModalTitle">സ്റ്റുഡിയോ ക്വോട്ട് ബുക്കിംഗ്</h3>
-                        <div style="font-size:11px;color:#64748B" id="quoteModalSubtitle">തത്സമയ കൊട്ടേഷൻ & ബുക്കിംഗ് സിസ്റ്റം</div>
-                    </div>
-                </div>
-                <div style="display:flex;align-items:center;gap:8px">
-                    <button type="button" id="quoteModeToggleBtn" onclick="toggleStudioQuoteMode()" style="background:#EEF2FF;color:#4338CA;border:1px solid #C7D2FE;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap">🛠️ സ്റ്റുഡിയോ മോഡ്</button>
-                    <button type="button" onclick="closeModal('modal-studio-quote')" class="modal-close-btn" style="background:#F1F5F9;border:none;width:30px;height:30px;border-radius:50%;font-size:13px;color:#64748B;cursor:pointer;display:flex;align-items:center;justify-content:center" title="ക്ലോസ് ചെയ്യാം">✕</button>
-                </div>
-            </div>
-
-            <!-- Stepper Bar -->
-            <div class="studio-quote-stepper" id="quoteStepperBar">
-                <div class="quote-step-item active" id="stepPillReq">
-                    <span>1.</span> <span>ആവശ്യങ്ങൾ</span>
-                </div>
-                <div class="quote-step-item" id="stepPillRate">
-                    <span>2.</span> <span>റേറ്റ്</span>
-                </div>
-                <div class="quote-step-item" id="stepPillBook">
-                    <span>3.</span> <span>ബുക്കിംഗ്</span>
-                </div>
-                <div class="quote-step-item" id="stepPillThanks">
-                    <span>4.</span> <span>കൺഫർമേഷൻ 🎉</span>
-                </div>
-            </div>
-
-            <!-- Dynamic Content Body -->
-            <div id="studioQuoteBody" style="flex:1;overflow-y:auto;padding:16px 18px">
-                <!-- Dynamically rendered by renderStudioQuoteView() -->
             </div>
         </div>
     </div>
