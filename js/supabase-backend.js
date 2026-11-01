@@ -2681,7 +2681,7 @@
       const payload = {
         id: userId,
         name: userObj.name || 'നാട്ടുകാരൻ',
-        phone: rawPhone,
+        phone: cleanPhone || rawPhone,
         email: cleanEmail,
         place: userObj.location || '',
         avatar: userObj.avatar || '',
@@ -2705,6 +2705,12 @@
         return false;
       }
       console.info('✅ [Supabase] User profile synced to cloud with ID and coordinates:', userId, lat, lon);
+
+      // Instantly trigger background sync so everyone's profile list updates
+      setTimeout(() => {
+        try { syncProfiles(); } catch (_) {}
+      }, 500);
+
       return { success: true, id: userId };
     } catch (err) {
       console.error('❌ [Supabase] Profile save error:', err);

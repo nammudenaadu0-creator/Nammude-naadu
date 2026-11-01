@@ -15031,7 +15031,8 @@
       } catch (_) {}
     }, 6000);
 
-    // High-speed real-time sync (every 3s) for Community Posts and Chats when visible
+    // High-speed real-time sync for Community Posts, Chats, and Registered Citizen Profiles
+    let _syncProfilesTick = 0;
     setInterval(() => {
       try {
         if (typeof document !== 'undefined' && !document.hidden && typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES) {
@@ -15044,6 +15045,10 @@
             if (typeof window.NN_SUPABASE_SERVICES.syncUserChats === 'function') {
               window.NN_SUPABASE_SERVICES.syncUserChats();
             }
+          }
+          _syncProfilesTick++;
+          if (_syncProfilesTick % 2 === 0 && typeof window.NN_SUPABASE_SERVICES.syncProfiles === 'function') {
+            window.NN_SUPABASE_SERVICES.syncProfiles();
           }
         }
       } catch (_) {}
