@@ -2574,34 +2574,17 @@
                 </div>
 
                 <!-- Town Search & Presets -->
-                <div style="position:relative;margin-bottom:10px">
-                    <input type="text" id="presetTownSearchInput" placeholder="നഗരം അല്ലെങ്കിൽ പഞ്ചായത്ത് തിരയുക..."
+                <div style="position:relative;margin-bottom:12px">
+                    <input type="text" id="presetTownSearchInput" placeholder="നഗരം അല്ലെങ്കിൽ പഞ്ചായത്ത് തിരയുക (Search place)..."
+                        autocomplete="off"
                         oninput="filterPresetLocations(this.value)"
-                        style="width:100%;padding:11px 12px 11px 36px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13px;outline:none;background:#F8FAFC;box-sizing:border-box">
+                        style="width:100%;padding:13px 14px 13px 40px;border:1.5px solid #CBD5E1;border-radius:14px;font-size:14px;font-weight:600;outline:none;background:#F8FAFC;box-sizing:border-box;box-shadow:0 2px 6px rgba(0,0,0,0.02)">
                     <span
-                        style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;color:#94A3B8">🔍</span>
+                        style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;color:#64748B">🔍</span>
                 </div>
 
-                <!-- Quick District Pills (Swiggy Style) -->
-                <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;margin-bottom:10px;-webkit-overflow-scrolling:touch" class="no-scrollbar">
-                    <button type="button" onclick="filterPresetLocations('')" style="background:#0F172A;color:#fff;border:none;border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:800;white-space:nowrap;cursor:pointer">എല്ലാം (All)</button>
-                    <button type="button" onclick="filterPresetLocations('Kannur')" style="background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer">📍 കണ്ണൂർ</button>
-                    <button type="button" onclick="filterPresetLocations('Kozhikode')" style="background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer">📍 കോഴിക്കോട്</button>
-                    <button type="button" onclick="filterPresetLocations('Ernakulam')" style="background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer">📍 എറണാകുളം</button>
-                    <button type="button" onclick="filterPresetLocations('Thiruvananthapuram')" style="background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer">📍 തിരുവനന്തപുരം</button>
-                    <button type="button" onclick="filterPresetLocations('Malappuram')" style="background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer">📍 മലപ്പുറം</button>
-                    <button type="button" onclick="filterPresetLocations('Thrissur')" style="background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer">📍 തൃശ്ശൂർ</button>
-                    <button type="button" onclick="filterPresetLocations('Palakkad')" style="background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer">📍 പാലക്കാട്</button>
-                    <button type="button" onclick="filterPresetLocations('Kasaragod')" style="background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer">📍 കാസർഗോഡ്</button>
-                    <button type="button" onclick="filterPresetLocations('Wayanad')" style="background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer">📍 വയനാട്</button>
-                    <button type="button" onclick="filterPresetLocations('Kollam')" style="background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer">📍 കൊല്ലം</button>
-                    <button type="button" onclick="filterPresetLocations('Alappuzha')" style="background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer">📍 ആലപ്പുഴ</button>
-                    <button type="button" onclick="filterPresetLocations('Kottayam')" style="background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer">📍 കോട്ടയം</button>
-                    <button type="button" onclick="filterPresetLocations('Idukki')" style="background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer">📍 ഇടുക്കി</button>
-                    <button type="button" onclick="filterPresetLocations('Pathanamthitta')" style="background:#F1F5F9;color:#334155;border:1px solid #CBD5E1;border-radius:20px;padding:6px 12px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer">📍 പത്തനംതിട്ട</button>
-                </div>
                 <div id="presetLocationsList"
-                    style="display:flex;flex-direction:column;gap:7px;max-height:280px;overflow-y:auto"></div>
+                    style="display:flex;flex-direction:column;gap:7px;max-height:340px;overflow-y:auto"></div>
             </div>
         </div>
     </div>

@@ -1843,7 +1843,11 @@
 
   function openLocationModal() {
     const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en') || (typeof localStorage !== 'undefined' && localStorage.getItem('nn_app_language') === 'en');
-    renderPresetLocationsList();
+    const searchInput = document.getElementById('presetTownSearchInput');
+    if (searchInput) {
+      searchInput.value = '';
+    }
+    renderPresetLocationsList([], '');
     const curRad = APP_STATE.activeRadiusKm || 5;
     const modalLabel = document.getElementById('modalActiveRadiusLabel');
     if (modalLabel) {
@@ -1865,41 +1869,58 @@
       applyTranslationsToDOM();
     }
     openModal('modal-location');
+    setTimeout(() => {
+      if (searchInput) searchInput.focus();
+    }, 200);
   }
   window.openLocationModal = openLocationModal;
 
   function renderPresetLocationsList(itemsToRender = null, searchQuery = '') {
     const list = document.getElementById('presetLocationsList');
     if (!list) return;
-    const items = itemsToRender || KERALA_PRESETS;
-    let customOptionHtml = '';
     const qClean = (searchQuery || '').trim();
     const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en') || (typeof localStorage !== 'undefined' && localStorage.getItem('nn_app_language') === 'en');
 
-    if (qClean) {
-      customOptionHtml = `
-        <div onclick="searchAndSetCustomLocation('${qClean.replace(/'/g, "\\'")}')" 
-             style="padding:10px 14px;border-radius:12px;background:#EFF6FF;border:1.5px dashed #1D4ED8;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background 0.2s;margin-bottom:6px">
-          <div>
-            <div style="font-weight:800;font-size:13px;color:#0C2B59">📍 ${isEn ? `Use '${qClean}' as location` : `'${qClean}' ലൊക്കേഷനായി എടുക്കുക`}</div>
-            <div style="font-size:11px;color:#1D4ED8">${isEn ? 'Set this exact place directly on map' : 'ഈ കൃത്യമായ സ്ഥലം മാപ്പിൽ നേരിട്ട് സജ്ജീകരിക്കാം'}</div>
+    // When no search query is typed, DO NOT show the rest of the locations
+    if (!qClean) {
+      list.innerHTML = `
+        <div style="text-align:center;padding:26px 16px;color:#64748B;font-size:13px;line-height:1.5">
+          <div style="font-size:32px;margin-bottom:8px">🔍</div>
+          <div style="font-weight:700;color:#0F172A;font-size:14px;margin-bottom:4px">
+            ${isEn ? 'Search for your location' : 'സ്ഥലം തിരയുക'}
           </div>
-          <span style="font-size:11px;background:#1D4ED8;color:#fff;padding:3px 10px;border-radius:8px;font-weight:800">${isEn ? 'Set Location ➔' : 'സെറ്റ് ചെയ്യുക ➔'}</span>
+          <div>
+            ${isEn ? 'Type your city, town or panchayath in the box above.' : 'നിങ്ങളുടെ നഗരം, ടൗൺ അല്ലെങ്കിൽ പഞ്ചായത്ത് മുകളിലെ ബോക്സിൽ ടൈപ്പ് ചെയ്യുക.'}
+          </div>
         </div>
       `;
-    }
-
-    if (items.length === 0 && !customOptionHtml) {
-      list.innerHTML = `<div style="text-align:center;padding:16px;color:#64748B;font-size:13px">${isEn ? 'No locations found.' : 'ഫലങ്ങളൊന്നും കണ്ടെത്തിയില്ല.'}</div>`;
       return;
     }
+
+    let customOptionHtml = `
+      <div onclick="searchAndSetCustomLocation('${qClean.replace(/'/g, "\\'")}')" 
+           style="padding:12px 14px;border-radius:14px;background:#EFF6FF;border:1.5px dashed #1D4ED8;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background 0.2s;margin-bottom:8px">
+        <div>
+          <div style="font-weight:800;font-size:13.5px;color:#0C2B59">📍 ${isEn ? `Use '${qClean}' as location` : `'${qClean}' ലൊക്കേഷനായി എടുക്കുക`}</div>
+          <div style="font-size:11px;color:#1D4ED8;margin-top:2px">${isEn ? 'Search & set this place on map' : 'ഈ സ്ഥലം മാപ്പിൽ നേരിട്ട് സജ്ജീകരിക്കാം'}</div>
+        </div>
+        <span style="font-size:11.5px;background:#1D4ED8;color:#fff;padding:4px 12px;border-radius:20px;font-weight:800">${isEn ? 'Select ➔' : 'തിരഞ്ഞെടുക്കാം ➔'}</span>
+      </div>
+    `;
+
+    const items = itemsToRender || [];
+    if (items.length === 0) {
+      list.innerHTML = customOptionHtml;
+      return;
+    }
+
     list.innerHTML = customOptionHtml + items.map(p => {
       const displayName = isEn ? (p.enName || p.name.replace(/\s*\([^)]*\)/g, '')) : (p.mlName || p.name.replace(/\s*\([^)]*\)/g, ''));
       const displayDist = isEn ? (p.enDistrict || p.district) : (p.mlDistrict || p.district);
       const chosenName = isEn ? (p.enName || p.name) : (p.mlName || p.name);
       return `
         <div onclick="selectPresetLocation('${chosenName.replace(/'/g, "\\'")}', '${p.district}', ${p.lat}, ${p.lon})" 
-             style="padding:10px 14px;border-radius:12px;background:#F8FAFC;border:1px solid #E2E8F0;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:all 0.15s ease">
+             style="padding:11px 14px;border-radius:12px;background:#F8FAFC;border:1px solid #E2E8F0;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:all 0.15s ease">
           <span style="font-weight:700;font-size:13.5px;color:#0F172A">📍 ${escapeHtml(displayName)}</span>
           <span style="font-size:11px;background:#EFF6FF;color:#1D4ED8;padding:2px 8px;border-radius:8px;font-weight:800;border:1px solid #BFDBFE">${escapeHtml(displayDist)}</span>
         </div>
@@ -1910,10 +1931,10 @@
   function filterPresetLocations(query) {
     const q = (query || '').toLowerCase().trim();
     if (!q) {
-      renderPresetLocationsList(KERALA_PRESETS);
+      renderPresetLocationsList([], '');
       return;
     }
-    const filtered = KERALA_PRESETS.filter(p => {
+    const filtered = (KERALA_PRESETS || []).filter(p => {
       return p.name.toLowerCase().includes(q) || p.district.toLowerCase().includes(q);
     });
     renderPresetLocationsList(filtered, query);
