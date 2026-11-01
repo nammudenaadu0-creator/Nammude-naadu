@@ -845,12 +845,12 @@
       }
     });
 
-    // 15. Location Modal Elements
+    // 15. Location Modal Elements (Swiggy-style Place Picker)
     const locTitle = document.getElementById('modalLocationTitle');
-    if (locTitle) locTitle.textContent = isEn ? 'Location & Radius' : 'ലൊക്കേഷൻ & പരിധി';
+    if (locTitle) locTitle.textContent = isEn ? 'Select Location' : 'ലൊക്കേഷൻ തിരഞ്ഞെടുക്കാം';
 
     const locGpsBtn = document.getElementById('modalLocationGpsBtnTxt');
-    if (locGpsBtn) locGpsBtn.textContent = isEn ? 'Live GPS Location' : 'തത്സമയ GPS ലൊക്കേഷൻ';
+    if (locGpsBtn) locGpsBtn.textContent = isEn ? 'Use Live GPS Location' : 'തത്സമയ GPS ലൊക്കേഷൻ';
 
     const locRadSec = document.getElementById('modalLocationRadiusSecTitle');
     if (locRadSec) locRadSec.textContent = isEn ? 'Search Radius' : 'തിരച്ചിൽ പരിധി';
@@ -859,7 +859,7 @@
     if (locRadAll) locRadAll.textContent = isEn ? 'All Kerala' : 'മുഴുവൻ';
 
     const locSearchLbl = document.getElementById('modalLocationSearchLabel');
-    if (locSearchLbl) locSearchLbl.textContent = isEn ? 'Search / Select Place:' : 'സ്ഥലം തിരയുക / തിരഞ്ഞെടുക്കുക:';
+    if (locSearchLbl) locSearchLbl.textContent = isEn ? 'Or Search Place Directly:' : 'അല്ലെങ്കിൽ സ്ഥലം തിരയുക:';
 
     const locSearchInp = document.getElementById('presetTownSearchInput');
     if (locSearchInp) locSearchInp.placeholder = isEn ? 'Search city or panchayat...' : 'നഗരം അല്ലെങ്കിൽ പഞ്ചായത്ത് തിരയുക...';

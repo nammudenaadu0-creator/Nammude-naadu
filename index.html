@@ -312,18 +312,18 @@
                     <header class="home-top-navbar"
                         style="padding:12px 14px;background:linear-gradient(135deg, #0A2540 0%, #0F3B2E 40%, #065F46 75%, #047857 100%);border-bottom:1px solid rgba(16,185,129,0.25);display:flex;align-items:center;justify-content:space-between;width:100%;box-sizing:border-box;overflow:hidden;box-shadow:0 4px 14px rgba(10,37,64,0.18)">
                         <!-- Brand Logo & Title -->
-                        <div class="home-brand-block" style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1 1 auto;overflow:hidden" onclick="openLocationModal()" title="ലൊക്കേഷൻ മാറ്റുക">
+                        <div class="home-brand-block" style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1 1 auto;overflow:hidden" onclick="detectLiveGpsLocation(true)" title="സ്വിഗ്ഗി പോലെ തത്സമയ GPS ലൊക്കേഷൻ കണ്ടെത്തുക">
                             <img src="assets/kerala-logo-badge.jpg" alt="നമ്മുടെ നാട്"
                                 style="width:38px;height:38px;border-radius:12px;object-fit:cover;box-shadow:0 3px 10px rgba(0,0,0,0.25);border:2px solid #FFFFFF;flex-shrink:0">
                             <div style="min-width:0;overflow:hidden">
                                 <h1 id="homeBrandTitle" style="margin:0;font-size:clamp(15px, 4.2vw, 19px);font-weight:900;color:#FFFFFF;font-family:'Manjari', sans-serif;letter-spacing:-0.4px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 4px rgba(0,0,0,0.25)">നമ്മുടെ നാട്</h1>
-                                <div style="display:flex;align-items:center;gap:4px;margin-top:3px;white-space:nowrap;overflow:hidden" title="സ്ഥലം തിരഞ്ഞെടുക്കുക / മാറ്റുക">
+                                <div style="display:flex;align-items:center;gap:4px;margin-top:3px;white-space:nowrap;overflow:hidden" title="തത്സമയ GPS ലൊക്കേഷൻ കണ്ടെത്തുക">
                                     <span style="font-size:11px">📍</span>
                                     <span id="homeLiveLocText" class="user-live-city-name"
                                         style="font-size:11px;font-weight:700;color:#D1FAE5;max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">തത്സമയം</span>
-                                    <span style="font-size:8px;color:#A7F3D0">▼</span>
-                                    <span onclick="event.stopPropagation(); refreshActiveScreen(this);" title="വിവരങ്ങൾ പുതുക്കുക" style="font-size:11px;cursor:pointer;padding:0 2px;display:inline-flex;align-items:center">
-                                        <span class="refresh-spinner-icon" style="color:#A7F3D0">🔄</span>
+                                    <span onclick="event.stopPropagation(); openLocationModal();" title="സ്ഥലം നേരിട്ട് തിരഞ്ഞെടുക്കുക" style="font-size:9px;color:#A7F3D0;cursor:pointer;padding:2px 4px">▼</span>
+                                    <span onclick="event.stopPropagation(); detectLiveGpsLocation(true);" title="GPS പുതുക്കുക" style="font-size:11px;cursor:pointer;padding:0 2px;display:inline-flex;align-items:center">
+                                        <span id="homeLocRefreshIcon" class="refresh-spinner-icon" style="color:#A7F3D0">🔄</span>
                                     </span>
                                 </div>
                             </div>
@@ -2012,7 +2012,7 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- MODAL: LOCATION SELECTOR & RADIUS FILTER (ലൊക്കേഷൻ & പരിധി)    -->
+    <!-- MODAL: LOCATION SELECTOR (സ്വിഗ്ഗി മാതൃകയിലുള്ള ലൊക്കേഷൻ പിക്കർ) -->
     <!-- ============================================================== -->
     <div id="modal-location" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-location')">
         <div class="modal-sheet" style="max-height:88vh;display:flex;flex-direction:column;padding:0;overflow:hidden">
@@ -2022,7 +2022,7 @@
                 <div style="display:flex;align-items:center;gap:10px">
                     <span style="font-size:22px">📍</span>
                     <div>
-                        <h3 id="modalLocationTitle" style="margin:0;font-size:16px;font-weight:800;color:#fff !important">ലൊക്കേഷൻ & പരിധി</h3>
+                        <h3 id="modalLocationTitle" style="margin:0;font-size:16px;font-weight:800;color:#fff !important">ലൊക്കേഷൻ തിരഞ്ഞെടുക്കാം</h3>
                     </div>
                 </div>
                 <button onclick="closeModal('modal-location')" class="modal-close-btn modal-close-btn-light"
@@ -2030,60 +2030,34 @@
             </div>
 
             <div style="flex:1;overflow-y:auto;padding:16px">
-                <!-- GPS button -->
+                <!-- GPS button: One-tap Live GPS Detection like Swiggy -->
                 <button onclick="detectLiveGpsLocation(true);"
-                    style="width:100%;padding:11px;background:linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);color:#fff;border:none;border-radius:12px;font-weight:800;font-size:13px;margin-bottom:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 3px 10px rgba(29,78,216,0.25)">
-                    <span>🎯</span>
-                    <span id="modalLocationGpsBtnTxt">തത്സമയ GPS ലൊക്കേഷൻ</span>
+                    style="width:100%;padding:14px;background:linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);color:#fff;border:none;border-radius:14px;cursor:pointer;display:flex;align-items:center;gap:12px;box-shadow:0 3px 12px rgba(29,78,216,0.3);margin-bottom:14px">
+                    <span style="font-size:24px;line-height:1">🎯</span>
+                    <div style="text-align:left;flex:1">
+                        <div id="modalLocationGpsBtnTxt" style="font-weight:800;font-size:14px">തത്സമയ GPS ലൊക്കേഷൻ</div>
+                        <div style="font-size:11px;color:#DBEAFE;margin-top:2px">സ്വിഗ്ഗി പോലെ നിലവിലെ കൃത്യമായ സ്ഥലം സ്വയം എടുക്കുക</div>
+                    </div>
+                    <span style="font-size:16px;color:#93C5FD">➔</span>
                 </button>
 
-                <!-- Search Radius Section -->
-                <div
-                    style="background:#EFF6FF;border:1.5px solid #BFDBFE;border-radius:14px;padding:12px 14px;margin-bottom:14px">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-                        <div
-                            style="font-size:12.5px;font-weight:800;color:#0C2B59;display:flex;align-items:center;gap:6px">
-                            <span>📏</span>
-                            <span id="modalLocationRadiusSecTitle">തിരച്ചിൽ പരിധി</span>
-                        </div>
-                        <span id="modalActiveRadiusLabel"
-                            style="font-size:11.5px;font-weight:800;background:#1D4ED8;color:#fff;padding:2px 8px;border-radius:8px">5
-                            km</span>
-                    </div>
-                    <!-- Radius Chips Grid -->
-                    <div id="modalRadiusChipsList" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:8px">
-                        <button type="button" class="modal-rad-chip" data-rad="1" onclick="setGlobalRadius(1, this)"
-                            style="padding:8px 4px;border:1.5px solid #BFDBFE;background:#fff;border-radius:10px;font-size:12px;font-weight:800;color:#0C2B59;cursor:pointer">1
-                            km</button>
-                        <button type="button" class="modal-rad-chip" data-rad="2" onclick="setGlobalRadius(2, this)"
-                            style="padding:8px 4px;border:1.5px solid #BFDBFE;background:#fff;border-radius:10px;font-size:12px;font-weight:800;color:#0C2B59;cursor:pointer">2
-                            km</button>
-                        <button type="button" class="modal-rad-chip" data-rad="3" onclick="setGlobalRadius(3, this)"
-                            style="padding:8px 4px;border:1.5px solid #BFDBFE;background:#fff;border-radius:10px;font-size:12px;font-weight:800;color:#0C2B59;cursor:pointer">3
-                            km</button>
-                        <button type="button" class="modal-rad-chip" data-rad="5" onclick="setGlobalRadius(5, this)"
-                            style="padding:8px 4px;border:1.5px solid #1D4ED8;background:#1D4ED8;border-radius:10px;font-size:12px;font-weight:800;color:#fff;cursor:pointer">5
-                            km</button>
-                        <button type="button" class="modal-rad-chip" data-rad="10" onclick="setGlobalRadius(10, this)"
-                            style="padding:8px 4px;border:1.5px solid #BFDBFE;background:#fff;border-radius:10px;font-size:12px;font-weight:800;color:#0C2B59;cursor:pointer">10
-                            km</button>
-                        <button type="button" class="modal-rad-chip" data-rad="1000" id="modalRadChipAll"
-                            onclick="setGlobalRadius(1000, this)"
-                            style="padding:8px 4px;border:1.5px solid #BFDBFE;background:#fff;border-radius:10px;font-size:12px;font-weight:800;color:#0C2B59;cursor:pointer">മുഴുവൻ</button>
-                    </div>
+                <!-- Divider -->
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+                    <div style="flex:1;height:1px;background:#E2E8F0"></div>
+                    <span style="font-size:11.5px;font-weight:700;color:#64748B" id="modalLocationSearchLabel">അല്ലെങ്കിൽ സ്ഥലം തിരയുക:</span>
+                    <div style="flex:1;height:1px;background:#E2E8F0"></div>
                 </div>
 
                 <!-- Town Search & Presets -->
-                <div style="font-size:12px;font-weight:800;color:#374151;margin-bottom:6px" id="modalLocationSearchLabel">സ്ഥലം തിരയുക / തിരഞ്ഞെടുക്കുക:</div>
                 <div style="position:relative;margin-bottom:10px">
                     <input type="text" id="presetTownSearchInput" placeholder="നഗരം അല്ലെങ്കിൽ പഞ്ചായത്ത് തിരയുക..."
                         oninput="filterPresetLocations(this.value)"
-                        style="width:100%;padding:10px 12px 10px 36px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13px;outline:none;background:#F8FAFC">
+                        style="width:100%;padding:11px 12px 11px 36px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13px;outline:none;background:#F8FAFC;box-sizing:border-box">
                     <span
                         style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;color:#94A3B8">🔍</span>
                 </div>
                 <div id="presetLocationsList"
-                    style="display:flex;flex-direction:column;gap:7px;max-height:260px;overflow-y:auto"></div>
+                    style="display:flex;flex-direction:column;gap:7px;max-height:280px;overflow-y:auto"></div>
             </div>
         </div>
     </div>

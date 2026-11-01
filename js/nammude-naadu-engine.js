@@ -1531,6 +1531,9 @@
     }
 
     if (spinIcon) spinIcon.classList.add('spin-active');
+    if (showToastOnSuccess) {
+      toast('📡 തത്സമയ GPS ലൊക്കേഷൻ കണ്ടെത്തുന്നു...');
+    }
     console.info('[GPS Detection Started] Requesting device GPS coordinates...');
 
     const onGpsSuccess = async (pos) => {
@@ -1597,17 +1600,25 @@
       }
     };
 
-    // Use native Capacitor Geolocation plugin if available
+    // Use native Capacitor Geolocation plugin if available with runtime permission request
     if (env.hasCapacitorGeo) {
-      window.Capacitor.Plugins.Geolocation.getCurrentPosition({ enableHighAccuracy: true, timeout: 10000 })
-        .then(onGpsSuccess)
-        .catch(() => {
-          navigator.geolocation.getCurrentPosition(
-            onGpsSuccess,
-            (err) => onGpsError(err, true),
-            { timeout: 9000, enableHighAccuracy: true, maximumAge: 60000 }
-          );
-        });
+      const geo = window.Capacitor.Plugins.Geolocation;
+      const getDevicePos = () => {
+        geo.getCurrentPosition({ enableHighAccuracy: true, timeout: 12000 })
+          .then(onGpsSuccess)
+          .catch(() => {
+            navigator.geolocation.getCurrentPosition(
+              onGpsSuccess,
+              (err) => onGpsError(err, true),
+              { timeout: 9000, enableHighAccuracy: true, maximumAge: 60000 }
+            );
+          });
+      };
+      if (typeof geo.requestPermissions === 'function') {
+        geo.requestPermissions().then(getDevicePos).catch(getDevicePos);
+      } else {
+        getDevicePos();
+      }
       return;
     }
 
@@ -13254,6 +13265,13 @@
         openMandatoryRegisterModal();
       }
     }, 150);
+
+    // Automatic Swiggy-style Device Location Request on App Launch
+    setTimeout(() => {
+      if (typeof detectLiveGpsLocation === 'function') {
+        detectLiveGpsLocation(false);
+      }
+    }, 600);
 
     // Safe Back Button & Hardware Navigation Support
     let _lastBackActionTime = 0;
