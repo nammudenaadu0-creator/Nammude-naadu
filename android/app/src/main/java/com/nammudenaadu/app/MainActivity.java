@@ -24,6 +24,15 @@ public class MainActivity extends BridgeActivity {
         createNotificationChannels();
         configureWebViewPerformance();
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                }, 1002);
+            }
+        }
+
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -61,6 +70,7 @@ public class MainActivity extends BridgeActivity {
                 WebSettings settings = webView.getSettings();
                 settings.setDomStorageEnabled(true);
                 settings.setDatabaseEnabled(true);
+                settings.setGeolocationEnabled(true);
                 settings.setCacheMode(WebSettings.LOAD_DEFAULT);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     settings.setOffscreenPreRaster(true);

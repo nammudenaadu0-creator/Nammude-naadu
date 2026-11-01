@@ -2537,54 +2537,47 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- MODAL: LOCATION SELECTOR                                       -->
+    <!-- MODAL: LOCATION SELECTOR (SWIGGY / FLIPKART DESIGN SYSTEM)     -->
     <!-- ============================================================== -->
-    <div id="modal-location" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-location')">
-        <div class="modal-sheet" style="max-height:88vh;display:flex;flex-direction:column;padding:0;overflow:hidden">
+    <div id="modal-location" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-location')" style="z-index:10006">
+        <div class="swiggy-loc-modal">
+            <!-- Sheet Handle -->
+            <div class="swiggy-loc-handle"></div>
+
             <!-- Header -->
-            <div
-                style="background:linear-gradient(135deg, #0C2B59 0%, #1D4ED8 100%);padding:14px 16px;color:#fff;display:flex;align-items:center;justify-content:space-between">
-                <div style="display:flex;align-items:center;gap:10px">
-                    <span style="font-size:22px">📍</span>
-                    <div>
-                        <h3 id="modalLocationTitle" style="margin:0;font-size:16px;font-weight:800;color:#fff !important">ലൊക്കേഷൻ തിരഞ്ഞെടുക്കാം</h3>
-                    </div>
+            <div class="swiggy-loc-header">
+                <div style="display:flex;align-items:center;gap:8px">
+                    <span style="font-size:18px">📍</span>
+                    <h3 class="swiggy-loc-title" id="modalLocationTitle">സ്ഥലം തിരഞ്ഞെടുക്കാം</h3>
                 </div>
-                <button onclick="closeModal('modal-location')" class="modal-close-btn modal-close-btn-light"
-                    title="ക്ലോസ് ചെയ്യാം">✕</button>
+                <button type="button" onclick="closeModal('modal-location')" class="modal-close-btn" style="background:#F1F5F9;border:none;width:30px;height:30px;border-radius:50%;font-size:13px;color:#64748B;cursor:pointer;display:flex;align-items:center;justify-content:center" title="ക്ലോസ് ചെയ്യാം">✕</button>
             </div>
 
-            <div style="flex:1;overflow-y:auto;padding:16px">
-                <!-- GPS button: One-tap Live GPS Detection -->
-                <button onclick="detectLiveGpsLocation(true);"
-                    style="width:100%;padding:14px;background:linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);color:#fff;border:none;border-radius:14px;cursor:pointer;display:flex;align-items:center;gap:12px;box-shadow:0 3px 12px rgba(29,78,216,0.3);margin-bottom:14px">
-                    <span style="font-size:24px;line-height:1">🎯</span>
-                    <div style="text-align:left;flex:1">
-                        <div id="modalLocationGpsBtnTxt" style="font-weight:800;font-size:14px">തത്സമയ GPS ലൊക്കേഷൻ</div>
-                        <div id="modalLocationGpsSubTxt" style="font-size:11px;color:#DBEAFE;margin-top:2px">നിലവിലെ കൃത്യമായ സ്ഥലം തത്സമയം കണ്ടെത്താം</div>
+            <!-- Search Box -->
+            <div class="swiggy-loc-search-box">
+                <span class="swiggy-loc-search-icon">🔍</span>
+                <input type="text" id="presetTownSearchInput" class="swiggy-loc-search-input"
+                    placeholder="സ്ഥലം, നഗരം, പഞ്ചായത്ത് തിരയുക..."
+                    autocomplete="off"
+                    oninput="handleLocationSearchInput(this.value)">
+                <button type="button" id="locClearSearchBtn" class="swiggy-loc-clear-btn" onclick="clearLocationSearch()" style="display:none">✕</button>
+            </div>
+
+            <div style="max-height:60vh;overflow-y:auto;padding-bottom:16px">
+                <!-- GPS Row: Use Current Location (Swiggy / Flipkart style) -->
+                <div class="swiggy-gps-card" onclick="detectLiveGpsLocation(true)" id="swiggyGpsBtnCard">
+                    <div class="swiggy-gps-icon-wrap" id="swiggyGpsIconWrap">
+                        <span id="swiggyGpsTargetIcon">🎯</span>
                     </div>
-                    <span style="font-size:16px;color:#93C5FD">➔</span>
-                </button>
-
-                <!-- Divider -->
-                <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-                    <div style="flex:1;height:1px;background:#E2E8F0"></div>
-                    <span style="font-size:11.5px;font-weight:700;color:#64748B" id="modalLocationSearchLabel">അല്ലെങ്കിൽ സ്ഥലം തിരയുക:</span>
-                    <div style="flex:1;height:1px;background:#E2E8F0"></div>
+                    <div style="flex:1;min-width:0">
+                        <div class="swiggy-gps-title" id="modalLocationGpsBtnTxt">നിലവിലെ സ്ഥലം ഉപയോഗിക്കുക</div>
+                        <div class="swiggy-gps-sub" id="modalLocationGpsSubTxt">തത്സമയ GPS ലൊക്കേഷൻ കണ്ടെത്താം</div>
+                    </div>
+                    <span style="font-size:18px;color:#2563EB;font-weight:700">›</span>
                 </div>
 
-                <!-- Town Search & Presets -->
-                <div style="position:relative;margin-bottom:12px">
-                    <input type="text" id="presetTownSearchInput" placeholder="നഗരം അല്ലെങ്കിൽ പഞ്ചായത്ത് തിരയുക (Search place)..."
-                        autocomplete="off"
-                        oninput="filterPresetLocations(this.value)"
-                        style="width:100%;padding:13px 14px 13px 40px;border:1.5px solid #CBD5E1;border-radius:14px;font-size:14px;font-weight:600;outline:none;background:#F8FAFC;box-sizing:border-box;box-shadow:0 2px 6px rgba(0,0,0,0.02)">
-                    <span
-                        style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;color:#64748B">🔍</span>
-                </div>
-
-                <div id="presetLocationsList"
-                    style="display:flex;flex-direction:column;gap:7px;max-height:340px;overflow-y:auto"></div>
+                <!-- Suggestions / Search Results Container -->
+                <div id="presetLocationsList"></div>
             </div>
         </div>
     </div>

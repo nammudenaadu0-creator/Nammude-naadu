@@ -7777,6 +7777,193 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   border: 1px solid #E2E8F0 !important;
 }
 
+/* ============================================================== */
+/* SWIGGY / FLIPKART STYLE LOCATION PICKER DESIGN SYSTEM          */
+/* ============================================================== */
+.swiggy-loc-modal {
+  max-width: 500px !important;
+  width: 100% !important;
+  border-radius: 24px 24px 0 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 -10px 40px rgba(15, 23, 42, 0.16) !important;
+  margin: auto 0 0 !important;
+}
+
+@media (min-width: 640px) {
+  .swiggy-loc-modal {
+    border-radius: 24px !important;
+    margin: auto !important;
+  }
+}
+
+.swiggy-loc-handle {
+  width: 42px;
+  height: 4.5px;
+  background: #CBD5E1;
+  border-radius: 9999px;
+  margin: 10px auto 4px;
+}
+
+.swiggy-loc-header {
+  padding: 10px 18px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.swiggy-loc-title {
+  margin: 0;
+  font-size: 16.5px;
+  font-weight: 800;
+  color: #0F172A;
+  letter-spacing: -0.3px;
+}
+
+.swiggy-loc-search-box {
+  position: relative;
+  margin: 14px 18px 12px;
+}
+
+.swiggy-loc-search-input {
+  width: 100%;
+  padding: 13px 38px 13px 42px;
+  background: #F8FAFC;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0F172A;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.15s ease;
+}
+
+.swiggy-loc-search-input:focus {
+  background: #FFFFFF;
+  border-color: #2563EB;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.swiggy-loc-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 17px;
+  color: #64748B;
+  pointer-events: none;
+}
+
+.swiggy-loc-clear-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #E2E8F0;
+  border: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #475569;
+  cursor: pointer;
+}
+
+.swiggy-gps-card {
+  margin: 0 18px 14px;
+  padding: 12px 14px;
+  background: #FFFFFF;
+  border: 1.5px solid #DBEAFE;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.04);
+}
+
+.swiggy-gps-card:hover {
+  background: #F0FDF4;
+  border-color: #86EFAC;
+}
+
+.swiggy-gps-card:active {
+  transform: scale(0.985);
+}
+
+.swiggy-gps-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.swiggy-gps-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0F172A;
+  line-height: 1.25;
+}
+
+.swiggy-gps-sub {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #059669;
+  margin-top: 2px;
+}
+
+.swiggy-suggestion-item {
+  padding: 12px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #F1F5F9;
+  transition: background 0.12s ease;
+}
+
+.swiggy-suggestion-item:hover {
+  background: #F8FAFC;
+}
+
+.swiggy-suggestion-item:active {
+  background: #EFF6FF;
+}
+
+.swiggy-suggestion-pin {
+  font-size: 16px;
+  color: #64748B;
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+
+.swiggy-suggestion-main {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0F172A;
+  line-height: 1.3;
+}
+
+.swiggy-suggestion-sub {
+  font-size: 12px;
+  color: #64748B;
+  margin-top: 2px;
+  line-height: 1.3;
+}
+
 .nearby-help-card-modern {
   background: #FFFFFF !important;
   border: 1.5px solid #E2E8F0 !important;

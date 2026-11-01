@@ -519,11 +519,13 @@
     { name: 'Chalakudy, Thrissur', enName: 'Chalakudy, Thrissur', mlName: 'ചാലക്കുടി, തൃശ്ശൂർ', district: 'Thrissur', mlDistrict: 'തൃശ്ശൂർ', lat: 10.3070, lon: 76.3338 },
     { name: 'Guruvayur, Thrissur', enName: 'Guruvayur, Thrissur', mlName: 'ഗുരുവായൂർ, തൃശ്ശൂർ', district: 'Thrissur', mlDistrict: 'തൃശ്ശൂർ', lat: 10.5947, lon: 76.0409 },
     { name: 'Kochi, Ernakulam', enName: 'Kochi, Ernakulam', mlName: 'കൊച്ചി, എറണാകുളം', district: 'Ernakulam', mlDistrict: 'എറണാകുളം', lat: 9.9816, lon: 76.2999 },
+    { name: 'Kakkanad, Ernakulam', enName: 'Kakkanad, Ernakulam', mlName: 'കാക്കനാട്, എറണാകുളം', district: 'Ernakulam', mlDistrict: 'എറണാകുളം', lat: 10.0159, lon: 76.3419 },
     { name: 'Aluva, Ernakulam', enName: 'Aluva, Ernakulam', mlName: 'ആലുവ, എറണാകുളം', district: 'Ernakulam', mlDistrict: 'എറണാകുളം', lat: 10.1076, lon: 76.3516 },
     { name: 'Angamaly, Ernakulam', enName: 'Angamaly, Ernakulam', mlName: 'അങ്കമാലി, എറണാകുളം', district: 'Ernakulam', mlDistrict: 'എറണാകുളം', lat: 10.1960, lon: 76.3860 },
     { name: 'Thodupuzha, Idukki', enName: 'Thodupuzha, Idukki', mlName: 'തൊടുപുഴ, ഇടുക്കി', district: 'Idukki', mlDistrict: 'ഇടുക്കി', lat: 9.8959, lon: 76.7184 },
     { name: 'Munnar, Idukki', enName: 'Munnar, Idukki', mlName: 'മൂന്നാർ, ഇടുക്കി', district: 'Idukki', mlDistrict: 'ഇടുക്കി', lat: 10.0889, lon: 77.0595 },
     { name: 'Kottayam', enName: 'Kottayam', mlName: 'കോട്ടയം', district: 'Kottayam', mlDistrict: 'കോട്ടയം', lat: 9.5916, lon: 76.5222 },
+    { name: 'Changanassery, Kottayam', enName: 'Changanassery, Kottayam', mlName: 'ചങ്ങനാശ്ശേരി, കോട്ടയം', district: 'Kottayam', mlDistrict: 'കോട്ടയം', lat: 9.4449, lon: 76.5416 },
     { name: 'Pala, Kottayam', enName: 'Pala, Kottayam', mlName: 'പാലാ, കോട്ടയം', district: 'Kottayam', mlDistrict: 'കോട്ടയം', lat: 9.7107, lon: 76.6841 },
     { name: 'Alappuzha', enName: 'Alappuzha', mlName: 'ആലപ്പുഴ', district: 'Alappuzha', mlDistrict: 'ആലപ്പുഴ', lat: 9.4981, lon: 76.3388 },
     { name: 'Cherthala, Alappuzha', enName: 'Cherthala, Alappuzha', mlName: 'ചേർത്തല, ആലപ്പുഴ', district: 'Alappuzha', mlDistrict: 'ആലപ്പുഴ', lat: 9.6845, lon: 76.3323 },
@@ -1601,8 +1603,8 @@
   const GEO_CACHE = new Map();
 
   async function reverseGeocode(lat, lon) {
-    const validLat = Number.isFinite(Number(lat)) ? Number(lat) : 11.8745;
-    const validLon = Number.isFinite(Number(lon)) ? Number(lon) : 75.3704;
+    const validLat = Number.isFinite(Number(lat)) ? Number(lat) : 9.5915;
+    const validLon = Number.isFinite(Number(lon)) ? Number(lon) : 76.5221;
     const cacheKey = `${validLat.toFixed(3)}_${validLon.toFixed(3)}`;
 
     // Instant return if cached (0ms)
@@ -1610,42 +1612,55 @@
       return GEO_CACHE.get(cacheKey);
     }
 
-    // 1. Fast Edge Geocoder: Photon (sub-200ms latency)
+    // 1. Primary: BigDataCloud client reverse geocoding (fastest, most precise for Kerala local panchayaths & villages)
     try {
       const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 2000);
-      const url = `https://photon.komoot.io/reverse?lat=${validLat}&lon=${validLon}`;
+      const timer = setTimeout(() => ctrl.abort(), 3500);
+      const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${validLat}&longitude=${validLon}&localityLanguage=en`;
       const res = await fetch(url, { signal: ctrl.signal });
       clearTimeout(timer);
       if (res.ok) {
         const data = await res.json();
-        if (data && data.features && data.features.length > 0) {
-          const props = data.features[0].properties || {};
-          const exactPlace = props.name || props.district || props.locality || props.city || props.county;
-          const district = (props.district || props.city || props.state || '').replace(/\s*District$/i, '').trim();
-          if (exactPlace) {
-            const formatted = (district && district.toLowerCase() !== exactPlace.toLowerCase())
-              ? `${exactPlace}, ${district}`
-              : exactPlace;
-            const result = { formatted, district: district || exactPlace };
-            GEO_CACHE.set(cacheKey, result);
-            return result;
-          }
+        let exactPlace = data.locality;
+        if (!exactPlace && data.localityInfo && Array.isArray(data.localityInfo.informative)) {
+          const infoPlaces = data.localityInfo.informative.filter(inf => inf.name && !inf.name.includes('District') && !inf.name.includes('State') && !inf.name.includes('India'));
+          if (infoPlaces.length > 0) exactPlace = infoPlaces[0].name;
+        }
+        if (!exactPlace && data.localityInfo && Array.isArray(data.localityInfo.administrative)) {
+          const adminLevels = data.localityInfo.administrative;
+          const localAdmin = adminLevels.find(a => a.order >= 7 && a.name) || adminLevels.find(a => a.order >= 6 && a.name);
+          if (localAdmin) exactPlace = localAdmin.name;
+        }
+        if (!exactPlace) exactPlace = data.city || data.principalSubdivision;
+
+        let district = (data.principalSubdivision || '').replace(/\s*District$/i, '').trim();
+        if (data.localityInfo && Array.isArray(data.localityInfo.administrative)) {
+          const distAdmin = data.localityInfo.administrative.find(a => a.order === 5 && a.name);
+          if (distAdmin) district = distAdmin.name.replace(/\s*District$/i, '').trim();
+        }
+
+        if (exactPlace) {
+          const formatted = (district && district.toLowerCase() !== exactPlace.toLowerCase())
+            ? `${exactPlace}, ${district}`
+            : exactPlace;
+          const result = { formatted, district: district || exactPlace };
+          GEO_CACHE.set(cacheKey, result);
+          return result;
         }
       }
     } catch (_) {}
 
-    // 2. OpenStreetMap Nominatim zoom 18 (fallback with tight 2.5s timeout)
+    // 2. OpenStreetMap Nominatim zoom 18
     try {
       const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 2500);
+      const timer = setTimeout(() => ctrl.abort(), 3000);
       const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${validLat}&lon=${validLon}&zoom=18&addressdetails=1`;
-      const res = await fetch(url, { headers: { 'Accept-Language': 'ml,en' }, signal: ctrl.signal });
+      const res = await fetch(url, { headers: { 'Accept-Language': 'en,ml' }, signal: ctrl.signal });
       clearTimeout(timer);
       if (res.ok) {
         const data = await res.json();
         const addr = data.address || {};
-        const exactPlace = addr.village || addr.suburb || addr.hamlet || addr.neighbourhood || addr.residential || addr.quarter || addr.borough || addr.town || addr.municipality || addr.city;
+        const exactPlace = addr.suburb || addr.village || addr.hamlet || addr.neighbourhood || addr.residential || addr.quarter || addr.borough || addr.town || addr.municipality || addr.city;
         const district = (addr.state_district || addr.district || addr.county || '').replace(/\s*District$/i, '').trim();
         if (exactPlace) {
           const formatted = (district && district.toLowerCase() !== exactPlace.toLowerCase())
@@ -1658,41 +1673,34 @@
       }
     } catch (_) {}
 
-    // 3. BigDataCloud client reverse geocoding
+    // 3. Fallback: Photon
     try {
       const ctrl = new AbortController();
       const timer = setTimeout(() => ctrl.abort(), 2000);
-      const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${validLat}&longitude=${validLon}&localityLanguage=ml`;
+      const url = `https://photon.komoot.io/reverse?lat=${validLat}&lon=${validLon}`;
       const res = await fetch(url, { signal: ctrl.signal });
       clearTimeout(timer);
       if (res.ok) {
         const data = await res.json();
-        let exactPlace = data.locality;
-        if (!exactPlace && data.localityInfo && Array.isArray(data.localityInfo.administrative)) {
-          const adminLevels = data.localityInfo.administrative;
-          const localAdmin = adminLevels.find(a => a.order >= 7 && a.name) || adminLevels.find(a => a.order >= 5 && a.name);
-          if (localAdmin) exactPlace = localAdmin.name;
-        }
-        if (!exactPlace) exactPlace = data.city || data.principalSubdivision;
-        const district = (data.principalSubdivision || '').trim();
-        if (exactPlace) {
-          const formatted = (district && district.toLowerCase() !== exactPlace.toLowerCase())
-            ? `${exactPlace}, ${district}`
-            : exactPlace;
-          const result = { formatted, district: district || exactPlace };
-          GEO_CACHE.set(cacheKey, result);
-          return result;
+        if (data && data.features && data.features.length > 0) {
+          const props = data.features[0].properties || {};
+          const exactPlace = props.name || props.district || props.locality || props.city;
+          const district = (props.district || props.city || '').replace(/\s*District$/i, '').trim();
+          if (exactPlace) {
+            const formatted = (district && district.toLowerCase() !== exactPlace.toLowerCase())
+              ? `${exactPlace}, ${district}`
+              : exactPlace;
+            const result = { formatted, district: district || exactPlace };
+            GEO_CACHE.set(cacheKey, result);
+            return result;
+          }
         }
       }
     } catch (_) {}
 
-    // 4. Fallback: Only if completely offline or geocoders unavailable
+    // 4. Fallback: Nearest Kerala Preset
     const closest = getNearestKeralaPreset(validLat, validLon);
-    const dist = calculateDistanceKm(validLat, validLon, closest.lat, closest.lon);
-    if (dist <= 15) {
-      return { formatted: closest.name, district: closest.district };
-    }
-    return { formatted: 'തത്സമയ ലൊക്കേഷൻ (GPS)', district: closest.district };
+    return { formatted: closest.name, district: closest.district };
   }
 
   function checkGeolocationEnvironment() {
@@ -1742,14 +1750,46 @@
       return;
     }
 
-    if (spinIcon) spinIcon.classList.add('spin-active');
+    const targetIcon = document.getElementById('swiggyGpsTargetIcon');
+    const gpsBtnTxt = document.getElementById('modalLocationGpsBtnTxt');
+    const gpsSubTxt = document.getElementById('modalLocationGpsSubTxt');
+    const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en') || (typeof localStorage !== 'undefined' && localStorage.getItem('nn_app_language') === 'en');
+
+    const setGpsLoadingState = () => {
+      if (spinIcon) spinIcon.classList.add('spin-active');
+      if (targetIcon) {
+        targetIcon.textContent = '⏳';
+        targetIcon.style.display = 'inline-block';
+        targetIcon.style.animation = 'spin 1s infinite linear';
+      }
+      if (gpsBtnTxt) gpsBtnTxt.textContent = isEn ? 'Detecting location...' : 'ലൊക്കേഷൻ കണ്ടെത്തുന്നു...';
+      if (gpsSubTxt) {
+        gpsSubTxt.textContent = isEn ? '📡 Fetching high-accuracy GPS coordinates...' : '📡 കൃത്യമായ GPS സിഗ്നൽ സ്വീകരിക്കുന്നു...';
+        gpsSubTxt.style.color = '#2563EB';
+      }
+    };
+
+    const resetGpsBtnState = () => {
+      if (spinIcon) spinIcon.classList.remove('spin-active');
+      if (targetIcon) {
+        targetIcon.textContent = '🎯';
+        targetIcon.style.animation = '';
+      }
+      if (gpsBtnTxt) gpsBtnTxt.textContent = isEn ? 'Use Current Location' : 'നിലവിലെ സ്ഥലം ഉപയോഗിക്കുക';
+      if (gpsSubTxt) {
+        gpsSubTxt.textContent = isEn ? 'Using GPS • Accurate & instant' : 'തത്സമയ GPS ലൊക്കേഷൻ കണ്ടെത്താം';
+        gpsSubTxt.style.color = '#059669';
+      }
+    };
+
+    setGpsLoadingState();
     if (showToastOnSuccess) {
       toast('📡 തത്സമയ GPS ലൊക്കേഷൻ കണ്ടെത്തുന്നു...');
     }
     console.info('[GPS Detection Started] Requesting device GPS coordinates...');
 
     const onGpsSuccess = async (pos) => {
-      if (spinIcon) spinIcon.classList.remove('spin-active');
+      resetGpsBtnState();
       const lat = parseFloat(pos.coords.latitude);
       const lon = parseFloat(pos.coords.longitude);
       const accuracy = Math.round(pos.coords.accuracy || 0);
@@ -1765,6 +1805,7 @@
       const geoResult = await reverseGeocode(lat, lon);
       console.info(`[GPS Location Resolved] ${geoResult.formatted} (${geoResult.district})`);
 
+      saveRecentLocation(geoResult.formatted, geoResult.district, lat, lon);
       updateLocationDisplay(geoResult.formatted, geoResult.district, lat, lon);
 
       // Dismiss location modal upon successful detection
@@ -1787,19 +1828,19 @@
         return;
       }
 
-      if (spinIcon) spinIcon.classList.remove('spin-active');
-      let userMsg = '📍 GPS അനുമതി ലഭിച്ചില്ല, ദയവായി ലിസ്റ്റിൽ നിന്ന് തിരഞ്ഞെടുക്കുക.';
+      resetGpsBtnState();
+      let userMsg = '📍 GPS അനുമതി ലഭിച്ചില്ല, ദയവായി താഴെ നിന്ന് സ്ഥലം തിരഞ്ഞെടുക്കുക.';
 
       if (err) {
         if (err.code === 1) { // PERMISSION_DENIED
           console.warn('[GPS Error: PERMISSION_DENIED] Location access was denied by user or system policy.', err.message);
-          userMsg = '📍 ലൊക്കേഷൻ അനുമതി നിഷേധിച്ചു (Permission denied). ബ്രൗസറിൽ അനുമതി നൽകുക അല്ലെങ്കിൽ സ്ഥലം തിരഞ്ഞെടുക്കുക.';
+          userMsg = '📍 ലൊക്കേഷൻ അനുമതി നിഷേധിച്ചു. ദയവായി സെർച്ച് ബോക്സിൽ സ്ഥലം ടൈപ്പ് ചെയ്യുക.';
         } else if (err.code === 2) { // POSITION_UNAVAILABLE
           console.warn('[GPS Error: POSITION_UNAVAILABLE] Location unavailable. Device GPS may be turned off.', err.message);
-          userMsg = '📍 GPS സിഗ്നൽ ലഭ്യമല്ല (GPS off). ഫോണിലെ Location ഓൺ ചെയ്യുക അല്ലെങ്കിൽ ലിസ്റ്റിൽ നിന്ന് തിരഞ്ഞെടുക്കുക.';
+          userMsg = '📍 GPS സിഗ്നൽ ലഭ്യമല്ല. ഫോണിലെ Location ഓൺ ചെയ്യുക അല്ലെങ്കിൽ സ്ഥലം തിരയുക.';
         } else if (err.code === 3) { // TIMEOUT
           console.warn('[GPS Error: TIMEOUT] Location request timed out.', err.message);
-          userMsg = '📍 GPS കണ്ടെത്താൻ കഴിഞ്ഞില്ല (Timeout). ലിസ്റ്റിൽ നിന്ന് സ്ഥലം തിരഞ്ഞെടുക്കുക.';
+          userMsg = '📍 GPS കണ്ടെത്താൻ കഴിഞ്ഞില്ല. ദയവായി ലിസ്റ്റിൽ നിന്ന് സ്ഥലം തിരഞ്ഞെടുക്കുക.';
         } else {
           console.warn('[GPS Error]', err.message || err);
           userMsg = `📍 GPS തകരാർ: ${err.message || 'ലിസ്റ്റിൽ നിന്ന് സ്ഥലം തിരഞ്ഞെടുക്കുക.'}`;
@@ -1809,6 +1850,8 @@
       if (showToastOnSuccess) {
         toast(userMsg);
       }
+      const searchInput = document.getElementById('presetTownSearchInput');
+      if (searchInput) searchInput.focus();
     };
 
     // Use native Capacitor Geolocation plugin if available with runtime permission request
@@ -1841,11 +1884,121 @@
   }
   window.detectLiveGpsLocation = detectLiveGpsLocation;
 
+  // ==============================================================
+  // RECENT & POPULAR LOCATIONS CACHE
+  // ==============================================================
+  function getRecentLocations() {
+    try {
+      const raw = localStorage.getItem('nn_recent_locations');
+      return raw ? JSON.parse(raw) : [];
+    } catch (_) {
+      return [];
+    }
+  }
+
+  function saveRecentLocation(name, district, lat, lon) {
+    if (!name) return;
+    try {
+      let recents = getRecentLocations().filter(r => r.name.toLowerCase() !== name.toLowerCase());
+      recents.unshift({
+        name,
+        district: district || 'Kerala',
+        lat: Number.isFinite(Number(lat)) ? Number(lat) : null,
+        lon: Number.isFinite(Number(lon)) ? Number(lon) : null
+      });
+      if (recents.length > 5) recents = recents.slice(0, 5);
+      localStorage.setItem('nn_recent_locations', JSON.stringify(recents));
+    } catch (_) {}
+  }
+
+  // ==============================================================
+  // SWIGGY / FLIPKART STYLE LOCATION MODAL & SEARCH
+  // ==============================================================
+  let locSearchDebounceTimer = null;
+
+  function clearLocationSearch() {
+    const input = document.getElementById('presetTownSearchInput');
+    const clearBtn = document.getElementById('locClearSearchBtn');
+    if (input) {
+      input.value = '';
+      input.focus();
+    }
+    if (clearBtn) clearBtn.style.display = 'none';
+    renderPresetLocationsList([], '');
+  }
+  window.clearLocationSearch = clearLocationSearch;
+
+  function handleLocationSearchInput(val) {
+    const clearBtn = document.getElementById('locClearSearchBtn');
+    const q = (val || '').trim();
+    if (clearBtn) {
+      clearBtn.style.display = q ? 'flex' : 'none';
+    }
+    if (!q) {
+      renderPresetLocationsList([], '');
+      return;
+    }
+
+    // Instant local filtering first (0ms latency)
+    const localMatches = (KERALA_PRESETS || []).filter(p => {
+      return (p.name && p.name.toLowerCase().includes(q.toLowerCase())) ||
+             (p.district && p.district.toLowerCase().includes(q.toLowerCase())) ||
+             (p.mlName && p.mlName.includes(q)) ||
+             (p.enName && p.enName.toLowerCase().includes(q.toLowerCase()));
+    });
+    renderPresetLocationsList(localMatches, q);
+
+    // Debounced live geocoder suggestions (query Photon with Kerala bbox)
+    clearTimeout(locSearchDebounceTimer);
+    if (q.length >= 2) {
+      locSearchDebounceTimer = setTimeout(async () => {
+        try {
+          const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&bbox=74.8,8.1,77.6,12.9&limit=6`;
+          const res = await fetch(url);
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data.features && data.features.length > 0) {
+              const liveItems = [];
+              data.features.forEach(f => {
+                const p = f.properties || {};
+                const coords = f.geometry && f.geometry.coordinates ? f.geometry.coordinates : [];
+                const placeLon = coords[0];
+                const placeLat = coords[1];
+                const title = p.name || p.city || p.locality || p.district;
+                const sub = [p.district, p.state, p.country].filter(Boolean).join(', ');
+                if (title && !localMatches.some(m => m.name.toLowerCase() === title.toLowerCase())) {
+                  liveItems.push({
+                    name: title,
+                    district: p.district || 'Kerala',
+                    sub: sub || 'Kerala, India',
+                    lat: placeLat,
+                    lon: placeLon,
+                    isLive: true
+                  });
+                }
+              });
+              if (liveItems.length > 0) {
+                const merged = [...localMatches, ...liveItems];
+                renderPresetLocationsList(merged, q);
+              }
+            }
+          }
+        } catch (_) {}
+      }, 250);
+    }
+  }
+  window.handleLocationSearchInput = handleLocationSearchInput;
+  window.filterPresetLocations = handleLocationSearchInput;
+
   function openLocationModal() {
     const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en') || (typeof localStorage !== 'undefined' && localStorage.getItem('nn_app_language') === 'en');
     const searchInput = document.getElementById('presetTownSearchInput');
+    const clearBtn = document.getElementById('locClearSearchBtn');
     if (searchInput) {
       searchInput.value = '';
+    }
+    if (clearBtn) {
+      clearBtn.style.display = 'none';
     }
     renderPresetLocationsList([], '');
     const curRad = APP_STATE.activeRadiusKm || 5;
@@ -1881,30 +2034,74 @@
     const qClean = (searchQuery || '').trim();
     const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en') || (typeof localStorage !== 'undefined' && localStorage.getItem('nn_app_language') === 'en');
 
-    // When no search query is typed, DO NOT show the rest of the locations
+    // When no search query: Swiggy/Flipkart style view with Recent Locations + Popular Cities
     if (!qClean) {
-      list.innerHTML = `
-        <div style="text-align:center;padding:26px 16px;color:#64748B;font-size:13px;line-height:1.5">
-          <div style="font-size:32px;margin-bottom:8px">🔍</div>
-          <div style="font-weight:700;color:#0F172A;font-size:14px;margin-bottom:4px">
-            ${isEn ? 'Search for your location' : 'സ്ഥലം തിരയുക'}
+      const recents = getRecentLocations();
+      let html = '';
+
+      if (recents.length > 0) {
+        html += `
+          <div style="padding:10px 18px 6px;font-size:12px;font-weight:800;color:#64748B;letter-spacing:0.5px;text-transform:uppercase">
+            🕒 ${isEn ? 'Recent Locations' : 'സമീപകാല സ്ഥലങ്ങൾ'}
           </div>
-          <div>
-            ${isEn ? 'Type your city, town or panchayath in the box above.' : 'നിങ്ങളുടെ നഗരം, ടൗൺ അല്ലെങ്കിൽ പഞ്ചായത്ത് മുകളിലെ ബോക്സിൽ ടൈപ്പ് ചെയ്യുക.'}
+        `;
+        html += recents.map(r => `
+          <div class="swiggy-suggestion-item" onclick="selectPresetLocation('${escapeHtml(r.name).replace(/'/g, "\\'")}', '${escapeHtml(r.district || 'Kerala').replace(/'/g, "\\'")}', ${r.lat || 'null'}, ${r.lon || 'null'})">
+            <span class="swiggy-suggestion-pin">🕒</span>
+            <div style="flex:1;min-width:0">
+              <div class="swiggy-suggestion-main">${escapeHtml(r.name)}</div>
+              <div class="swiggy-suggestion-sub">${escapeHtml(r.district || 'Kerala')}</div>
+            </div>
+            <span style="font-size:16px;color:#94A3B8">›</span>
           </div>
+        `).join('');
+      }
+
+      const POPULAR_CITIES = [
+        { name: 'Kozhikode', mlName: 'കോഴിക്കോട്', district: 'Kozhikode', lat: 11.2588, lon: 75.7804 },
+        { name: 'Kochi, Ernakulam', mlName: 'കൊച്ചി, എറണാകുളം', district: 'Ernakulam', lat: 9.9816, lon: 76.2999 },
+        { name: 'Thiruvananthapuram', mlName: 'തിരുവനന്തപുരം', district: 'Thiruvananthapuram', lat: 8.5241, lon: 76.9366 },
+        { name: 'Kottayam', mlName: 'കോട്ടയം', district: 'Kottayam', lat: 9.5916, lon: 76.5222 },
+        { name: 'Thrissur', mlName: 'തൃശ്ശൂർ', district: 'Thrissur', lat: 10.5276, lon: 76.2144 },
+        { name: 'Kannur', mlName: 'കണ്ണൂർ', district: 'Kannur', lat: 11.8745, lon: 75.3704 },
+        { name: 'Kollam', mlName: 'കൊല്ലം', district: 'Kollam', lat: 8.8932, lon: 76.6141 },
+        { name: 'Malappuram', mlName: 'മലപ്പുറം', district: 'Malappuram', lat: 11.0732, lon: 76.0740 },
+        { name: 'Palakkad', mlName: 'പാലക്കാട്', district: 'Palakkad', lat: 10.7867, lon: 76.6548 },
+        { name: 'Alappuzha', mlName: 'ആലപ്പുഴ', district: 'Alappuzha', lat: 9.4981, lon: 76.3388 }
+      ];
+
+      html += `
+        <div style="padding:14px 18px 6px;font-size:12px;font-weight:800;color:#64748B;letter-spacing:0.5px;text-transform:uppercase">
+          ⭐ ${isEn ? 'Popular Places in Kerala' : 'പ്രമുഖ നഗരങ്ങൾ'}
         </div>
       `;
+      html += POPULAR_CITIES.map(c => {
+        const title = isEn ? c.name : c.mlName;
+        return `
+          <div class="swiggy-suggestion-item" onclick="selectPresetLocation('${title.replace(/'/g, "\\'")}', '${c.district}', ${c.lat}, ${c.lon})">
+            <span class="swiggy-suggestion-pin">📍</span>
+            <div style="flex:1;min-width:0">
+              <div class="swiggy-suggestion-main">${escapeHtml(title)}</div>
+              <div class="swiggy-suggestion-sub">${escapeHtml(c.district)} District</div>
+            </div>
+            <span style="font-size:16px;color:#94A3B8">›</span>
+          </div>
+        `;
+      }).join('');
+
+      list.innerHTML = html;
       return;
     }
 
+    // When user types in search box
     let customOptionHtml = `
-      <div onclick="searchAndSetCustomLocation('${qClean.replace(/'/g, "\\'")}')" 
-           style="padding:12px 14px;border-radius:14px;background:#EFF6FF;border:1.5px dashed #1D4ED8;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background 0.2s;margin-bottom:8px">
-        <div>
-          <div style="font-weight:800;font-size:13.5px;color:#0C2B59">📍 ${isEn ? `Use '${qClean}' as location` : `'${qClean}' ലൊക്കേഷനായി എടുക്കുക`}</div>
-          <div style="font-size:11px;color:#1D4ED8;margin-top:2px">${isEn ? 'Search & set this place on map' : 'ഈ സ്ഥലം മാപ്പിൽ നേരിട്ട് സജ്ജീകരിക്കാം'}</div>
+      <div class="swiggy-suggestion-item" style="background:#EFF6FF;border-bottom:1.5px solid #BFDBFE" onclick="searchAndSetCustomLocation('${qClean.replace(/'/g, "\\'")}')">
+        <span class="swiggy-suggestion-pin" style="color:#2563EB">🔍</span>
+        <div style="flex:1;min-width:0">
+          <div class="swiggy-suggestion-main" style="color:#1D4ED8">${isEn ? `Use '${escapeHtml(qClean)}'` : `'${escapeHtml(qClean)}' തിരഞ്ഞെടുക്കുക`}</div>
+          <div class="swiggy-suggestion-sub" style="color:#2563EB">${isEn ? 'Search and set this place directly' : 'മാപ്പിൽ ഈ സ്ഥലം നേരിട്ട് കണ്ടെത്താം'}</div>
         </div>
-        <span style="font-size:11.5px;background:#1D4ED8;color:#fff;padding:4px 12px;border-radius:20px;font-weight:800">${isEn ? 'Select ➔' : 'തിരഞ്ഞെടുക്കാം ➔'}</span>
+        <span style="font-size:12px;background:#2563EB;color:#fff;padding:4px 10px;border-radius:20px;font-weight:700">${isEn ? 'Select ➔' : 'തിരഞ്ഞെടുക്കാം ➔'}</span>
       </div>
     `;
 
@@ -1916,30 +2113,22 @@
 
     list.innerHTML = customOptionHtml + items.map(p => {
       const displayName = isEn ? (p.enName || p.name.replace(/\s*\([^)]*\)/g, '')) : (p.mlName || p.name.replace(/\s*\([^)]*\)/g, ''));
-      const displayDist = isEn ? (p.enDistrict || p.district) : (p.mlDistrict || p.district);
+      const displaySub = p.sub || ((isEn ? (p.enDistrict || p.district) : (p.mlDistrict || p.district)) + ', Kerala');
       const chosenName = isEn ? (p.enName || p.name) : (p.mlName || p.name);
+      const latVal = Number.isFinite(Number(p.lat)) ? Number(p.lat) : 'null';
+      const lonVal = Number.isFinite(Number(p.lon)) ? Number(p.lon) : 'null';
       return `
-        <div onclick="selectPresetLocation('${chosenName.replace(/'/g, "\\'")}', '${p.district}', ${p.lat}, ${p.lon})" 
-             style="padding:11px 14px;border-radius:12px;background:#F8FAFC;border:1px solid #E2E8F0;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:all 0.15s ease">
-          <span style="font-weight:700;font-size:13.5px;color:#0F172A">📍 ${escapeHtml(displayName)}</span>
-          <span style="font-size:11px;background:#EFF6FF;color:#1D4ED8;padding:2px 8px;border-radius:8px;font-weight:800;border:1px solid #BFDBFE">${escapeHtml(displayDist)}</span>
+        <div class="swiggy-suggestion-item" onclick="selectPresetLocation('${chosenName.replace(/'/g, "\\'")}', '${p.district || 'Kerala'}', ${latVal}, ${lonVal})">
+          <span class="swiggy-suggestion-pin">📍</span>
+          <div style="flex:1;min-width:0">
+            <div class="swiggy-suggestion-main">${escapeHtml(displayName)}</div>
+            <div class="swiggy-suggestion-sub">${escapeHtml(displaySub)}</div>
+          </div>
+          <span style="font-size:16px;color:#94A3B8">›</span>
         </div>
       `;
     }).join('');
   }
-
-  function filterPresetLocations(query) {
-    const q = (query || '').toLowerCase().trim();
-    if (!q) {
-      renderPresetLocationsList([], '');
-      return;
-    }
-    const filtered = (KERALA_PRESETS || []).filter(p => {
-      return p.name.toLowerCase().includes(q) || p.district.toLowerCase().includes(q);
-    });
-    renderPresetLocationsList(filtered, query);
-  }
-  window.filterPresetLocations = filterPresetLocations;
 
   async function searchAndSetCustomLocation(placeName) {
     const clean = (placeName || '').trim();
@@ -1967,6 +2156,7 @@
 
   function selectPresetLocation(name, district, lat, lon) {
     updateLocationDisplay(name, district, lat, lon);
+    saveRecentLocation(name, district, lat, lon);
     closeModal('modal-location');
     toast(`📍 ലൊക്കേഷൻ സജ്ജീകരിച്ചു: ${name}`);
   }
