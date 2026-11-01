@@ -1796,6 +1796,292 @@
                     </div>
                 </section>
 
+                <!-- ============================================================== -->
+                <!-- SCREEN 10: UNIFIED APP SETTINGS (COMPLETE CONTROL HUB)         -->
+                <!-- ============================================================== -->
+                <section id="screen-settings" class="screen" style="background:#F8FAFC">
+                    <!-- SUPERAPP ROYAL NAVY HEADER -->
+                    <div class="superapp-header">
+                        <div class="superapp-header-left">
+                            <button onclick="navTo('home')" class="superapp-round-back-btn" title="Back">❮</button>
+                            <div class="superapp-header-brand">
+                                <div class="superapp-brand-row">
+                                    <span class="superapp-brand-logo">⚙️</span>
+                                    <h1 class="superapp-brand-title" id="screenSettingsTitle">ക്രമീകരണങ്ങൾ</h1>
+                                </div>
+                                <div class="superapp-brand-sub" id="screenSettingsSub">ആപ്പ് മുൻഗണനകൾ & നിയന്ത്രണങ്ങൾ 🌿</div>
+                            </div>
+                        </div>
+                        <div class="superapp-loc-pill" onclick="openLocationModal()">
+                            <span>📍</span>
+                            <span class="user-live-city-name">തത്സമയം</span>
+                            <span style="font-size:10px;opacity:0.8">⌄</span>
+                        </div>
+                    </div>
+
+                    <div style="padding:16px;max-width:600px;margin:0 auto;display:flex;flex-direction:column;gap:14px">
+                        <!-- Citizen Card Summary -->
+                        <div style="background:linear-gradient(135deg, #0A2540 0%, #0F2942 50%, #1D4ED8 100%);color:#fff;padding:16px;border-radius:18px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 14px rgba(12,43,89,0.25)">
+                            <div style="display:flex;align-items:center;gap:12px;min-width:0">
+                                <div style="width:48px;height:48px;border-radius:50%;background:#fff;padding:2px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.15);overflow:hidden;flex-shrink:0">
+                                    <img class="settings-user-avatar" src="assets/kerala-logo-badge.jpg" onerror="this.src=window.DEFAULT_USER_AVATAR||''" style="width:100%;height:100%;border-radius:50%;object-fit:cover">
+                                </div>
+                                <div style="min-width:0;overflow:hidden">
+                                    <div class="settings-user-name" style="font-size:16px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">നാട്ടുകാരൻ</div>
+                                    <div class="settings-user-phone" style="font-size:12px;color:#BFDBFE;font-weight:600">📱 ഫോൺ നമ്പർ</div>
+                                </div>
+                            </div>
+                            <button type="button" onclick="openEditProfileModal()" style="background:rgba(255,255,255,0.22);border:1px solid rgba(255,255,255,0.35);color:#fff;padding:7px 14px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;flex-shrink:0">
+                                ✏️ <span>എഡിറ്റ്</span>
+                            </button>
+                        </div>
+
+                        <!-- 1. APP LANGUAGE -->
+                        <div style="background:#fff;border:1.5px solid #BFDBFE;border-radius:18px;padding:14px;box-shadow:0 2px 6px rgba(15,23,42,0.03)">
+                            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                                <div style="font-size:11px;font-weight:800;color:#1D4ED8;text-transform:uppercase;letter-spacing:0.5px">
+                                    🌐 ആപ്പ് ഭാഷ (App Language)
+                                </div>
+                            </div>
+                            <div style="font-size:12px;color:#64748B;margin-bottom:10px">
+                                നിങ്ങൾക്ക് സൗകര്യപ്രദമായ ഭാഷ തിരഞ്ഞെടുക്കാം:
+                            </div>
+                            <div style="display:flex;gap:8px">
+                                <button type="button" class="settings-lang-chip" data-lang="ml" onclick="setAppLanguage('ml')"
+                                    style="flex:1;padding:10px 12px;border-radius:12px;border:1.5px solid #0C2B59;background:#0C2B59;color:#FFFFFF;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+                                    <span>🌴</span> <span>മലയാളം</span>
+                                </button>
+                                <button type="button" class="settings-lang-chip" data-lang="en" onclick="setAppLanguage('en')"
+                                    style="flex:1;padding:10px 12px;border-radius:12px;border:1.5px solid #CBD5E1;background:#FFFFFF;color:#334155;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+                                    <span>🌐</span> <span>English</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 2. LOCATION & RADIUS -->
+                        <div style="background:#fff;border:1px solid #E2E8F0;border-radius:18px;padding:14px;box-shadow:0 2px 6px rgba(15,23,42,0.03)">
+                            <div style="font-size:11px;font-weight:800;color:#64748B;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px">
+                                📍 ലൊക്കേഷൻ & പരിധി (Location & Radius)
+                            </div>
+                            <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid #F1F5F9">
+                                <div>
+                                    <div class="settings-user-loc" style="font-size:14px;font-weight:800;color:#0F172A">📍 തത്സമയ ലൊക്കേഷൻ</div>
+                                    <div class="settings-user-radius" style="font-size:12px;color:#1D4ED8;font-weight:700">5 km പരിധി</div>
+                                </div>
+                                <button type="button" onclick="openLocationModal()" style="background:#1D4ED8;color:#fff;border:none;padding:8px 16px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer">
+                                    മാറ്റാം ›
+                                </button>
+                            </div>
+                            <div style="margin-top:10px;display:flex;align-items:center;justify-content:space-between">
+                                <div>
+                                    <div style="font-size:13px;font-weight:700;color:#0F172A">🛰️ തത്സമയ GPS ഓട്ടോ-ഡിറ്റക്ഷൻ</div>
+                                    <div style="font-size:11px;color:#64748B">ആപ്പ് തുറക്കുമ്പോൾ സ്വയം ലൊക്കേഷൻ കണ്ടെത്തുക</div>
+                                </div>
+                                <label class="settings-switch">
+                                    <input type="checkbox" id="screenToggleGpsAuto" checked onchange="handleSettingToggle('nn_pref_gps_auto', this)">
+                                    <span class="settings-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 3. NOTIFICATIONS & ALERTS -->
+                        <div style="background:#fff;border:1px solid #E2E8F0;border-radius:18px;padding:14px;box-shadow:0 2px 6px rgba(15,23,42,0.03)">
+                            <div style="font-size:11px;font-weight:800;color:#64748B;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px">
+                                🔔 അറിയിപ്പുകൾ & അലർട്ടുകൾ (Notifications)
+                            </div>
+                            <div style="display:flex;flex-direction:column;gap:12px">
+                                <div style="display:flex;align-items:center;justify-content:space-between">
+                                    <div>
+                                        <div style="font-size:13px;font-weight:700;color:#0F172A">പുഷ് അറിയിപ്പുകൾ (Push Notifications)</div>
+                                        <div style="font-size:11px;color:#64748B">പ്രധാന വിവരങ്ങളും സന്ദേശങ്ങളും ഫോൺ സ്ക്രീനിൽ കാണിക്കുക</div>
+                                    </div>
+                                    <label class="settings-switch">
+                                        <input type="checkbox" id="screenTogglePushNotif" checked onchange="handleSettingToggle('nn_pref_push_notif', this)">
+                                        <span class="settings-slider"></span>
+                                    </label>
+                                </div>
+                                <div style="display:flex;align-items:center;justify-content:space-between">
+                                    <div>
+                                        <div style="font-size:13px;font-weight:700;color:#0F172A">ശബ്ദവും അലർട്ടും (Sound & Ring)</div>
+                                        <div style="font-size:11px;color:#64748B">സന്ദേശങ്ങൾ വരുമ്പോൾ നോട്ടിഫിക്കേഷൻ സൗണ്ട് കേൾക്കുക</div>
+                                    </div>
+                                    <label class="settings-switch">
+                                        <input type="checkbox" id="screenToggleSound" checked onchange="handleSettingToggle('nn_pref_sound', this)">
+                                        <span class="settings-slider"></span>
+                                    </label>
+                                </div>
+                                <div style="display:flex;align-items:center;justify-content:space-between">
+                                    <div>
+                                        <div style="font-size:13px;font-weight:700;color:#0F172A">ചാറ്റ് സന്ദേശങ്ങൾ (Chat Alerts)</div>
+                                        <div style="font-size:11px;color:#64748B">നാട്ടുകാരുടെ പുതിയ മെസ്സേജുകൾ ഉടൻ അറിയിക്കുക</div>
+                                    </div>
+                                    <label class="settings-switch">
+                                        <input type="checkbox" id="screenToggleChatNotif" checked onchange="handleSettingToggle('nn_pref_chat_notif', this)">
+                                        <span class="settings-slider"></span>
+                                    </label>
+                                </div>
+                                <div style="display:flex;align-items:center;justify-content:space-between">
+                                    <div>
+                                        <div style="font-size:13px;font-weight:700;color:#DC2626">അടിയന്തിര രക്തദാന അലർട്ട് (Blood Emergency)</div>
+                                        <div style="font-size:11px;color:#64748B">സമീപ പ്രദേശത്തെ അടിയന്തിര രക്ത ആവശ്യങ്ങൾ</div>
+                                    </div>
+                                    <label class="settings-switch">
+                                        <input type="checkbox" id="screenToggleBloodNotif" checked onchange="handleSettingToggle('nn_pref_blood_notif', this)">
+                                        <span class="settings-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4. PRIVACY & SECURITY -->
+                        <div style="background:#fff;border:1px solid #E2E8F0;border-radius:18px;padding:14px;box-shadow:0 2px 6px rgba(15,23,42,0.03)">
+                            <div style="font-size:11px;font-weight:800;color:#64748B;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px">
+                                🔒 സ്വകാര്യത & സുരക്ഷ (Privacy & Security)
+                            </div>
+                            <div style="display:flex;flex-direction:column;gap:12px">
+                                <div style="display:flex;align-items:center;justify-content:space-between">
+                                    <div>
+                                        <div style="font-size:13px;font-weight:700;color:#0F172A">ഫോൺ നമ്പർ മറയ്ക്കുക (Private Phone)</div>
+                                        <div style="font-size:11px;color:#64748B">പ്രൊഫൈലിൽ നമ്പർ കാണിക്കാതെ ചാറ്റിൽ മാത്രം ബന്ധപ്പെടാൻ അനുവദിക്കുക</div>
+                                    </div>
+                                    <label class="settings-switch">
+                                        <input type="checkbox" id="screenToggleHidePhone" onchange="handleSettingToggle('nn_pref_hide_phone', this)">
+                                        <span class="settings-slider"></span>
+                                    </label>
+                                </div>
+                                <div style="display:flex;align-items:center;justify-content:space-between">
+                                    <div>
+                                        <div style="font-size:13px;font-weight:700;color:#0F172A">ഉദ്ദേശ്യ സ്ഥലം മാത്രം കാണിക്കുക (Approx Location)</div>
+                                        <div style="font-size:11px;color:#64748B">കൃത്യമായ വിലാസം ഒഴിവാക്കി കിലോമീറ്റർ ദൂരം മാത്രം കാണിക്കുക</div>
+                                    </div>
+                                    <label class="settings-switch">
+                                        <input type="checkbox" id="screenToggleApproxLoc" onchange="handleSettingToggle('nn_pref_approx_loc', this)">
+                                        <span class="settings-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div style="margin-top:14px;display:flex;flex-direction:column;gap:8px;border-top:1px solid #F1F5F9;padding-top:12px">
+                                <a href="privacy-policy.html" target="_blank" style="background:#F8FAFC;padding:10px 12px;border-radius:10px;border:1px solid #E2E8F0;text-decoration:none;display:flex;align-items:center;justify-content:space-between;color:#0F172A">
+                                    <span style="font-size:12.5px;font-weight:700">🛡️ പ്രൈവസി പോളിസി (Privacy Policy)</span>
+                                    <span style="font-size:12px;color:#94A3B8">➔</span>
+                                </a>
+                                <div onclick="openTermsModal()" style="background:#F8FAFC;padding:10px 12px;border-radius:10px;border:1px solid #E2E8F0;cursor:pointer;display:flex;align-items:center;justify-content:space-between;color:#0F172A">
+                                    <span style="font-size:12.5px;font-weight:700">📜 നിബന്ധനകളും പെരുമാറ്റച്ചട്ടവും (Terms)</span>
+                                    <span style="font-size:12px;color:#94A3B8">➔</span>
+                                </div>
+                                <div onclick="exportUserPersonalData()" style="background:#F8FAFC;padding:10px 12px;border-radius:10px;border:1px solid #E2E8F0;cursor:pointer;display:flex;align-items:center;justify-content:space-between;color:#0F172A">
+                                    <span style="font-size:12.5px;font-weight:700">📦 എന്റെ ഡാറ്റ ഡൗൺലോഡ് ചെയ്യാം (Export Data)</span>
+                                    <span style="font-size:10px;background:#EFF6FF;color:#1D4ED8;padding:2px 8px;border-radius:6px;font-weight:800">JSON</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 5. DISPLAY & PERFORMANCE -->
+                        <div style="background:#fff;border:1px solid #E2E8F0;border-radius:18px;padding:14px;box-shadow:0 2px 6px rgba(15,23,42,0.03)">
+                            <div style="font-size:11px;font-weight:800;color:#64748B;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px">
+                                🎨 ഡിസ്പ്ലേ & പെർഫോമൻസ് (Display & Performance)
+                            </div>
+                            <div style="display:flex;flex-direction:column;gap:12px">
+                                <div style="display:flex;align-items:center;justify-content:space-between">
+                                    <div>
+                                        <div style="font-size:13px;font-weight:700;color:#0F172A">ഡാർക്ക് മോഡ് (Dark Mode)</div>
+                                        <div style="font-size:11px;color:#64748B">രാത്രിയിൽ ഉപയോഗിക്കാൻ സുഖപ്രദമായ ഡാർക്ക് തീം</div>
+                                    </div>
+                                    <label class="settings-switch">
+                                        <input type="checkbox" id="screenToggleDarkMode" onchange="handleSettingToggle('nn_pref_dark_mode', this)">
+                                        <span class="settings-slider"></span>
+                                    </label>
+                                </div>
+                                <div style="display:flex;align-items:center;justify-content:space-between">
+                                    <div>
+                                        <div style="font-size:13px;font-weight:700;color:#0F172A">ഡാറ്റാ സേവർ മോഡ് (Data Saver)</div>
+                                        <div style="font-size:11px;color:#64748B">ചിത്രങ്ങൾ കംപ്രസ് ചെയ്ത് കുറഞ്ഞ ഇന്റർനെറ്റ് ഡാറ്റ ഉപയോഗിക്കുക</div>
+                                    </div>
+                                    <label class="settings-switch">
+                                        <input type="checkbox" id="screenToggleDataSaver" onchange="handleSettingToggle('nn_pref_data_saver', this)">
+                                        <span class="settings-slider"></span>
+                                    </label>
+                                </div>
+                                <div onclick="clearAppCacheAndRefresh()" style="background:#F8FAFC;padding:10px 12px;border-radius:10px;border:1px solid #E2E8F0;cursor:pointer;display:flex;align-items:center;justify-content:space-between;color:#0F172A;margin-top:2px">
+                                    <span style="font-size:12.5px;font-weight:700">🧹 ആപ്പ് കാഷെ ക്ലിയർ ചെയ്യാം (Clear Cache)</span>
+                                    <span style="font-size:12px;color:#94A3B8">➔</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 6. HELP & SUPPORT -->
+                        <div style="background:#fff;border:1px solid #E2E8F0;border-radius:18px;padding:14px;box-shadow:0 2px 6px rgba(15,23,42,0.03)">
+                            <div style="font-size:11px;font-weight:800;color:#64748B;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px">
+                                💬 സഹായവും സപ്പോർട്ടും (Help & Support)
+                            </div>
+                            <div style="display:flex;gap:10px">
+                                <a href="https://wa.me/919605406699?text=Hello%20Nammude%20Naadu%20Support" target="_blank" style="flex:1;background:#25D366;color:#fff;text-decoration:none;padding:10px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:12.5px;font-weight:800;box-shadow:0 2px 8px rgba(37,211,102,0.25)">
+                                    <span>💬 WhatsApp</span>
+                                </a>
+                                <a href="tel:9605406699" style="flex:1;background:#0C2B59;color:#fff;text-decoration:none;padding:10px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:12.5px;font-weight:800;box-shadow:0 2px 8px rgba(12,43,89,0.25)">
+                                    <span>📞 Helpline</span>
+                                </a>
+                            </div>
+                            <div style="text-align:center;margin-top:12px;font-size:11px;color:#94A3B8;font-weight:600">
+                                വേർഷൻ v1.0.2 • Made with ❤️ for Kerala • 2026
+                            </div>
+                        </div>
+
+                        <!-- 7. ADMIN HUB ROW (STRICTLY FOR 9605406699) -->
+                        <div class="settings-admin-row" style="display:none;background:linear-gradient(135deg, #0C2B59 0%, #1D4ED8 100%);color:#fff;border-radius:18px;padding:14px;align-items:center;justify-content:space-between;cursor:pointer;box-shadow:0 4px 12px rgba(12,43,89,0.25)" onclick="openAdminPortal()">
+                            <div style="display:flex;align-items:center;gap:10px">
+                                <span style="font-size:22px">🔐</span>
+                                <div>
+                                    <div style="font-size:14px;font-weight:800">അഡ്മിൻ കൺസോൾ (Admin Hub)</div>
+                                    <div style="font-size:11px;color:#BFDBFE;font-weight:600">സർവീസുകളും ഹെൽപ്പ്‌ലൈൻ നമ്പറുകളും കൈകാര്യം ചെയ്യാം</div>
+                                </div>
+                            </div>
+                            <span style="background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:10px;font-size:11.5px;font-weight:800">തുറക്കുക ›</span>
+                        </div>
+
+                        <!-- 8. ACCOUNT LOGOUT & DANGER ZONE -->
+                        <div style="background:#FFF5F5;border:1.5px solid #FECACA;border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:10px">
+                            <button type="button" onclick="handleProfileLogout()" style="background:#fff;border:1px solid #CBD5E1;padding:11px;border-radius:12px;color:#334155;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+                                <span>🚪</span> <span>ലോഗ് ഔട്ട് / അക്കൗണ്ട് മാറ്റാം (Log Out)</span>
+                            </button>
+                            <button type="button" onclick="handleDeleteUserAccount()" style="background:#DC2626;border:none;padding:11px;border-radius:12px;color:#FFFFFF;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 8px rgba(220,38,38,0.25)">
+                                <span>🗑️</span> <span>അക്കൗണ്ട് ശാശ്വതമായി ഡിലീറ്റ് ചെയ്യാം (Delete Account)</span>
+                            </button>
+                            <div style="font-size:10.5px;color:#991B1B;text-align:center;line-height:1.4;font-weight:600">
+                                ഡിലീറ്റ് ചെയ്താൽ നിങ്ങളുടെ പ്രൊഫൈൽ, സർവീസുകൾ, മെസ്സേജുകൾ എന്നിവ ക്ലൗഡിൽ നിന്നും പൂർണ്ണമായി മായ്ക്കപ്പെടും.
+                            </div>
+                        </div>
+
+                        <!-- SCREEN SUBPAGE FOOTER -->
+                        <div class="screen-subpage-footer" style="margin-top:20px;padding:22px 16px 110px;text-align:center;background:linear-gradient(180deg, rgba(248,250,252,0) 0%, #F1F5F9 100%);border-top:1px solid #E2E8F0;display:flex;flex-direction:column;align-items:center;gap:8px">
+                            <div style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:900;color:#0F172A">
+                                <span>🌿</span>
+                                <span>നമ്മുടെ നാട് • കേരള കമ്മ്യൂണിറ്റി നെറ്റ്‌വർക്ക്</span>
+                            </div>
+                            <div style="font-size:11px;color:#64748B;font-weight:600">
+                                തത്സമയ വിവരങ്ങളും സേവനങ്ങളും ഒരൊറ്റ കുടക്കീഴിൽ
+                            </div>
+                            <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;justify-content:center">
+                                <button type="button" onclick="openLocationModal()" style="background:#FFFFFF;border:1px solid #CBD5E1;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;color:#334155;cursor:pointer;display:inline-flex;align-items:center;gap:4px;box-shadow:0 1px 3px rgba(0,0,0,0.04)">
+                                    <span>📍 സ്ഥലം മാറ്റാം</span>
+                                </button>
+                                <button type="button" onclick="navTo('home')" style="background:#FFFFFF;border:1px solid #CBD5E1;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;color:#059669;cursor:pointer;display:inline-flex;align-items:center;gap:4px;box-shadow:0 1px 3px rgba(0,0,0,0.04)">
+                                    <span>🏠 ഹോംപേജ്</span>
+                                </button>
+                                <button type="button" onclick="navTo('chat')" style="background:#FFFFFF;border:1px solid #CBD5E1;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;color:#2563EB;cursor:pointer;display:inline-flex;align-items:center;gap:4px;box-shadow:0 1px 3px rgba(0,0,0,0.04)">
+                                    <span>💬 സന്ദേശങ്ങൾ</span>
+                                </button>
+                                <button type="button" onclick="openEmergencyModal()" style="background:#FEF2F2;border:1px solid #FECACA;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;color:#DC2626;cursor:pointer;display:inline-flex;align-items:center;gap:4px;box-shadow:0 1px 3px rgba(220,38,38,0.08)">
+                                    <span>🆘 എമർജൻസി</span>
+                                </button>
+                            </div>
+                            <div style="font-size:10px;color:#94A3B8;margin-top:2px;font-weight:600">
+                                🔒 100% സുരക്ഷിതം • Kerala Digital Network • 2026
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
             </main><!-- END .desktop-center-content -->
 
             <!-- 3. RIGHT SIDEBAR (WIDGETS & EMERGENCY HIGHLIGHTS) -->

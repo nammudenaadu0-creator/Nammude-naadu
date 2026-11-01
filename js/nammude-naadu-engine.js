@@ -1312,6 +1312,8 @@
         renderBusinessScreen();
       } else if (screenId === 'profile') {
         renderProfileScreen();
+      } else if (screenId === 'settings') {
+        renderSettingsScreen();
       }
     });
   }
@@ -12764,39 +12766,104 @@
   }
   window.handleSidebarUserCardClick = handleSidebarUserCardClick;
 
-  function openSettingsModal() {
-    const user = (APP_STATE && APP_STATE.currentUser) || {};
-    const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en') || (typeof localStorage !== 'undefined' && localStorage.getItem('nn_preferred_lang') === 'en');
-    const nameEl = document.getElementById('settingsUserName');
-    if (nameEl) nameEl.textContent = user.name || (isEn ? 'Citizen' : 'നാട്ടുകാരൻ');
-
-    const phoneEl = document.getElementById('settingsUserPhone');
-    if (phoneEl) phoneEl.textContent = user.phone ? '📱 ' + user.phone : (isEn ? 'No phone number provided' : 'ഫോൺ നമ്പർ നൽകിയിട്ടില്ല');
-
-    const avatarEl = document.getElementById('settingsUserAvatar');
-    if (avatarEl) avatarEl.src = user.avatar || window.DEFAULT_USER_AVATAR;
-
-    const locEl = document.getElementById('settingsUserLoc');
-    if (locEl) locEl.textContent = '📍 ' + ((APP_STATE && APP_STATE.location && APP_STATE.location.name) || (isEn ? 'Live Location' : 'തത്സമയ ലൊക്കേഷൻ'));
-
-    const radEl = document.getElementById('settingsUserRadius');
-    if (radEl) radEl.textContent = ((APP_STATE && APP_STATE.location && APP_STATE.location.radius) || 5) + (isEn ? ' km radius' : ' km പരിധി');
-
-    const verEl = document.getElementById('settingsAppVersion');
-    if (verEl) verEl.textContent = 'v' + ((window.APP_BUILD_INFO && window.APP_BUILD_INFO.versionName) || '1.0.2');
-
-    // Admin visibility strictly locked to 9605406699
-    const adminRow = document.getElementById('settingsAdminHubRow');
-    if (adminRow) {
-      const isAdmin = (typeof checkIsAdmin === 'function') ? checkIsAdmin() : (String(user.phone || '').replace(/\D/g, '').slice(-10) === '9605406699');
-      adminRow.style.display = isAdmin ? 'flex' : 'none';
-    }
-
+  function renderSettingsScreen() {
+    loadUserSettings();
     if (typeof applyTranslationsToDOM === 'function') {
       applyTranslationsToDOM();
     }
+  }
+  window.renderSettingsScreen = renderSettingsScreen;
 
-    openModal('modal-settings');
+  function loadUserSettings() {
+    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'ml')) === 'en';
+    const user = (APP_STATE && APP_STATE.currentUser) || {};
+    
+    // Update name, phone, avatar
+    document.querySelectorAll('.settings-user-name, #settingsUserName').forEach(el => {
+      el.textContent = user.name || (isEn ? 'Citizen' : 'നാട്ടുകാരൻ');
+    });
+    document.querySelectorAll('.settings-user-phone, #settingsUserPhone').forEach(el => {
+      el.textContent = user.phone ? '📱 ' + user.phone : (isEn ? 'No phone added' : 'ഫോൺ നമ്പർ നൽകിയിട്ടില്ല');
+    });
+    document.querySelectorAll('.settings-user-avatar, #settingsUserAvatar').forEach(el => {
+      el.src = user.avatar || window.DEFAULT_USER_AVATAR;
+    });
+    document.querySelectorAll('.settings-user-loc, #settingsUserLoc').forEach(el => {
+      el.textContent = '📍 ' + ((APP_STATE && APP_STATE.location && APP_STATE.location.name) || (isEn ? 'Live Location' : 'തത്സമയ ലൊക്കേഷൻ'));
+    });
+    document.querySelectorAll('.settings-user-radius, #settingsUserRadius').forEach(el => {
+      el.textContent = ((APP_STATE && APP_STATE.location && APP_STATE.location.radius) || 5) + (isEn ? ' km radius' : ' km പരിധി');
+    });
+
+    // Version
+    const verText = 'v' + ((window.APP_BUILD_INFO && window.APP_BUILD_INFO.versionName) || '1.0.2');
+    const verEl = document.getElementById('settingsAppVersion');
+    if (verEl) verEl.textContent = verText;
+
+    // Toggles mapping
+    const toggleMap = {
+      'screenTogglePushNotif': { key: 'nn_pref_push_notif', def: true },
+      'screenToggleSound': { key: 'nn_pref_sound', def: true },
+      'screenToggleChatNotif': { key: 'nn_pref_chat_notif', def: true },
+      'screenToggleBloodNotif': { key: 'nn_pref_blood_notif', def: true },
+      'screenToggleHidePhone': { key: 'nn_pref_hide_phone', def: false },
+      'screenToggleApproxLoc': { key: 'nn_pref_approx_loc', def: false },
+      'screenToggleDarkMode': { key: 'nn_pref_dark_mode', def: false },
+      'screenToggleDataSaver': { key: 'nn_pref_data_saver', def: false },
+      'screenToggleGpsAuto': { key: 'nn_pref_gps_auto', def: true },
+      'togglePushNotif': { key: 'nn_pref_push_notif', def: true },
+      'toggleSound': { key: 'nn_pref_sound', def: true },
+      'toggleChatNotif': { key: 'nn_pref_chat_notif', def: true },
+      'toggleBloodNotif': { key: 'nn_pref_blood_notif', def: true },
+      'toggleHidePhone': { key: 'nn_pref_hide_phone', def: false },
+      'toggleApproxLoc': { key: 'nn_pref_approx_loc', def: false },
+      'toggleDarkMode': { key: 'nn_pref_dark_mode', def: false },
+      'toggleDataSaver': { key: 'nn_pref_data_saver', def: false },
+      'toggleGpsAuto': { key: 'nn_pref_gps_auto', def: true }
+    };
+
+    Object.keys(toggleMap).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        const conf = toggleMap[id];
+        const val = localStorage.getItem(conf.key);
+        el.checked = (val !== null) ? (val === 'true') : conf.def;
+      }
+    });
+
+    // Admin visibility strictly locked to 9605406699
+    const isAdmin = (typeof checkIsAdmin === 'function') ? checkIsAdmin() : (String(user.phone || '').replace(/\D/g, '').slice(-10) === '9605406699');
+    document.querySelectorAll('.settings-admin-row, #settingsAdminHubRow').forEach(row => {
+      row.style.display = isAdmin ? 'flex' : 'none';
+    });
+  }
+  window.loadUserSettings = loadUserSettings;
+
+  function handleSettingToggle(key, el) {
+    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'ml')) === 'en';
+    const val = el ? el.checked : false;
+    try {
+      localStorage.setItem(key, String(val));
+    } catch (_) {}
+    
+    if (key === 'nn_pref_dark_mode') {
+      document.documentElement.classList.toggle('dark-theme', val);
+      if (typeof toast === 'function') toast(val ? (isEn ? 'Dark mode enabled 🌙' : 'ഡാർക്ക് മോഡ് ഓൺ ചെയ്തു 🌙') : (isEn ? 'Light mode enabled ☀️' : 'ലൈറ്റ് മോഡ് ഓൺ ചെയ്തു ☀️'));
+    } else if (key === 'nn_pref_push_notif') {
+      if (val && typeof requestNotificationPermission === 'function') requestNotificationPermission();
+      if (typeof toast === 'function') toast(val ? (isEn ? 'Notifications enabled 🔔' : 'അറിയിപ്പുകൾ ഓൺ ചെയ്തു 🔔') : (isEn ? 'Notifications muted 🔕' : 'അറിയിപ്പുകൾ ഓഫ് ചെയ്തു 🔕'));
+    } else if (key === 'nn_pref_hide_phone') {
+      if (typeof toast === 'function') toast(val ? (isEn ? 'Phone number hidden from public 🔒' : 'ഫോൺ നമ്പർ മറ്റുള്ളവരിൽ നിന്ന് മറച്ചു 🔒') : (isEn ? 'Phone number visible on profile 📱' : 'ഫോൺ നമ്പർ പ്രൊഫൈലിൽ കാണിക്കാം 📱'));
+    } else if (key === 'nn_pref_sound') {
+      if (typeof toast === 'function') toast(val ? (isEn ? 'Sound alerts enabled 🔊' : 'ശബ്ദ അലർട്ടുകൾ ഓൺ ചെയ്തു 🔊') : (isEn ? 'Sound alerts muted 🔇' : 'ശബ്ദ അലർട്ടുകൾ ഓഫ് ചെയ്തു 🔇'));
+    } else {
+      if (typeof toast === 'function') toast(isEn ? 'Settings saved ✅' : 'ക്രമീകരണങ്ങൾ സേവ് ചെയ്തു ✅');
+    }
+  }
+  window.handleSettingToggle = handleSettingToggle;
+
+  function openSettingsModal() {
+    navTo('settings');
   }
   window.openSettingsModal = openSettingsModal;
 

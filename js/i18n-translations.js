@@ -628,6 +628,12 @@
       if (secureEl) secureEl.textContent = isEn ? '🔒 100% Secure • Kerala Digital Network • 2026' : '🔒 100% സുരക്ഷിതം • Kerala Digital Network • 2026';
     });
 
+    const screenSettingsTitle = document.getElementById('screenSettingsTitle');
+    if (screenSettingsTitle) screenSettingsTitle.textContent = isEn ? 'Settings' : 'ക്രമീകരണങ്ങൾ';
+
+    const screenSettingsSub = document.getElementById('screenSettingsSub');
+    if (screenSettingsSub) screenSettingsSub.textContent = isEn ? 'App Preferences & Controls 🌿' : 'ആപ്പ് മുൻഗണനകൾ & നിയന്ത്രണങ്ങൾ 🌿';
+
     // 11. Blood Screen
     const bloodHeroTitle = document.querySelector('#screen-blood .superapp-hero-title');
     if (bloodHeroTitle) bloodHeroTitle.textContent = isEn ? 'Give Blood Save Lives' : 'രക്തം നൽകാം ജീവൻ രക്ഷിക്കാം';
