@@ -1305,25 +1305,37 @@
                             onclick="filterChatCategory('other', this)">👥 നാട്ടുകാർ</button>
                     </div>
 
-                    <!-- 🍵 NAATTUKOOTTAM VATTAMESHA LIVE BANNER -->
-                    <div class="naattukoottam-chat-banner" onclick="openNaattukoottamModal()">
-                        <div class="naattukoottam-banner-glow"></div>
-                        <div class="naattukoottam-banner-left">
-                            <div class="naattukoottam-table-icon-wrap">
-                                <span>☕</span>
-                                <span class="naattukoottam-table-live-dot"></span>
-                            </div>
-                            <div class="naattukoottam-banner-text">
-                                <h3>
+                    <!-- 🍵 NAATTUKOOTTAM VATTAMESHA PINNED DUMMY CHAT -->
+                    <div class="naattukoottam-chat-banner" onclick="openNaattukoottamModal()" style="margin:8px 16px 12px;background:#FFFFFF;border:1.5px solid #FCD34D;border-radius:16px;padding:12px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 3px 10px rgba(217,119,6,0.08);cursor:pointer;position:relative">
+                        <!-- Visual 6-Person Roundtable Avatar -->
+                        <div style="position:relative;width:50px;height:50px;border-radius:50%;background:radial-gradient(circle, #78350F 0%, #451A03 100%);border:2px solid #F59E0B;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(120,53,15,0.25)">
+                            <span style="font-size:22px;line-height:1">☕</span>
+                            <!-- 6 mini avatar dots around table -->
+                            <span style="position:absolute;top:-4px;left:50%;transform:translateX(-50%);font-size:11px">👴</span>
+                            <span style="position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);font-size:11px">👨</span>
+                            <span style="position:absolute;top:50%;left:-4px;transform:translateY(-50%);font-size:11px">👩</span>
+                            <span style="position:absolute;top:50%;right:-4px;transform:translateY(-50%);font-size:11px">🧔</span>
+                            <!-- Live Green Indicator -->
+                            <span style="position:absolute;bottom:0;right:0;width:12px;height:12px;border-radius:50%;background:#10B981;border:2px solid #fff;box-shadow:0 0 6px #10B981"></span>
+                        </div>
+
+                        <!-- Chat Info & Dummy Message -->
+                        <div style="flex:1;min-width:0">
+                            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
+                                <div style="font-weight:900;font-size:14.5px;color:#0F172A;display:flex;align-items:center;gap:6px">
                                     <span>നാട്ടുകൂട്ടം വട്ടമേശ</span>
-                                    <span style="font-size:10px;background:#22C55E;color:#fff;padding:1px 6px;border-radius:6px;font-weight:800">തത്സമയം</span>
-                                </h3>
-                                <p>6 പേർ ഒരുമിച്ചിരുന്ന് സംസാരിക്കുന്ന ലൈവ് വട്ടമേശ ചർച്ച</p>
+                                    <span style="font-size:9.5px;background:#DCFCE7;color:#15803D;padding:1px 6px;border-radius:6px;font-weight:800;border:1px solid #86EFAC">🟢 6 പേർ ലൈവ്</span>
+                                </div>
+                                <span style="font-size:11px;color:#94A3B8;font-weight:600">ഇപ്പോൾ</span>
+                            </div>
+                            <div id="vattameshaDummyChatSnippet" style="font-size:12.5px;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+                                <span style="font-weight:700;color:#0E7043">സുരേഷ്:</span> "ചായ കുടിച്ചോ എല്ലാവരും? നാട്ടുവിശേഷങ്ങൾ പറയാം ☕"
                             </div>
                         </div>
-                        <div class="naattukoottam-join-btn-pill">
-                            <span>ഇരിക്കാം</span>
-                            <span>➔</span>
+
+                        <!-- Join Pill -->
+                        <div style="background:linear-gradient(135deg, #0E7043 0%, #10B981 100%);color:#fff;font-size:11.5px;font-weight:800;padding:6px 12px;border-radius:10px;flex-shrink:0;box-shadow:0 2px 6px rgba(16,185,129,0.3)">
+                            കൂടാം
                         </div>
                     </div>
 

@@ -14217,6 +14217,20 @@
     }
     window.inviteFriendToRoundtable = inviteFriendToRoundtable;
 
+    // Periodic dynamic update for the dummy roundtable chat snippet
+    setInterval(() => {
+      try {
+        const snippetEl = document.getElementById('vattameshaDummyChatSnippet');
+        if (snippetEl && _neighborDialogues && _neighborDialogues.length > 0) {
+          const d = _neighborDialogues[Math.floor(Math.random() * _neighborDialogues.length)];
+          const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
+          const shortName = d.name.split(' ')[0];
+          const msg = isEn ? d.enText : d.text;
+          snippetEl.innerHTML = `<span style="font-weight:700;color:#0E7043">${escapeHtml(shortName)}:</span> "${escapeHtml(msg)}"`;
+        }
+      } catch (_) {}
+    }, 6000);
+
     // High-speed real-time sync (every 3s) for Community Posts and Chats when visible
     setInterval(() => {
       try {
