@@ -6547,53 +6547,175 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   cursor: pointer;
 }
 
-/* 3. The 3D Circular Roundtable Arena (The Heart of the Feature) */
+.vattamesha-floor-toggle-btn {
+  background: rgba(245, 158, 11, 0.2);
+  border: 1px solid #F59E0B;
+  color: #FEF3C7;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vattamesha-floor-toggle-btn:active {
+  transform: scale(0.95);
+}
+
+.vattamesha-react-btn.highlight-btn {
+  background: linear-gradient(135deg, #B45309 0%, #78350F 100%) !important;
+  color: #FFF !important;
+  border-color: #F59E0B !important;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4) !important;
+  font-weight: 900 !important;
+}
+
+/* 3. The 3D Animated Room Floor Arena (The Heart of the Feature) */
 .vattamesha-arena {
   flex: 1;
   position: relative;
   width: 100%;
   max-width: 440px;
   margin: 0 auto;
-  min-height: 340px;
+  min-height: 380px;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow: visible;
+  perspective: 900px;
+  perspective-origin: 50% 40%;
 }
 
-/* Floor Circular Ripple Ambient */
+/* Overhead Hanging Lantern */
+.vattamesha-overhead-lantern {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 26px;
+  z-index: 12;
+  filter: drop-shadow(0 4px 16px rgba(245, 158, 11, 0.9));
+  animation: lanternSway 3.6s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes lanternSway {
+  0%, 100% { transform: translateX(-50%) rotate(-4deg); }
+  50% { transform: translateX(-50%) rotate(4deg); }
+}
+
+/* 3D Isometric Animated Room Floor */
+.vattamesha-room-floor {
+  position: relative;
+  width: 330px;
+  height: 330px;
+  border-radius: 50%;
+  transform: rotateX(24deg);
+  transform-style: preserve-3d;
+  background: radial-gradient(circle at 50% 50%, #451A03 0%, #291205 60%, #150802 100%);
+  border: 4px solid #A16207;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 0 50px rgba(0, 0, 0, 0.9), 0 0 40px rgba(245, 158, 11, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: floorEnterZoom 0.45s cubic-bezier(0.16, 1, 0.3, 1), floorAmbientGlow 4s infinite alternate ease-in-out;
+  transition: all 0.4s ease;
+}
+
+.vattamesha-room-floor.courtyard-theme {
+  background: radial-gradient(circle at 50% 50%, #064E3B 0%, #022C22 65%, #021B15 100%);
+  border-color: #10B981;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 0 50px rgba(0, 0, 0, 0.9), 0 0 40px rgba(16, 185, 129, 0.25);
+}
+
+@keyframes floorEnterZoom {
+  0% { transform: rotateX(10deg) scale(0.85); opacity: 0; }
+  100% { transform: rotateX(24deg) scale(1); opacity: 1; }
+}
+
+@keyframes floorAmbientGlow {
+  0% { box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 0 50px rgba(0, 0, 0, 0.9), 0 0 25px rgba(245, 158, 11, 0.15); }
+  100% { box-shadow: 0 32px 64px rgba(0, 0, 0, 0.85), inset 0 0 40px rgba(0, 0, 0, 0.75), 0 0 45px rgba(245, 158, 11, 0.35); }
+}
+
+/* Floor Circular Sound Rings */
 .vattamesha-floor-ring {
   position: absolute;
-  width: 320px;
-  height: 320px;
   border-radius: 50%;
-  border: 1px dashed rgba(255, 255, 255, 0.08);
   pointer-events: none;
+}
+.vattamesha-floor-ring.ring-1 {
+  width: 290px;
+  height: 290px;
+  border: 1.5px dashed rgba(245, 158, 11, 0.18);
+  animation: ringPulseSlow 8s infinite linear;
+}
+.vattamesha-floor-ring.ring-2 {
+  width: 230px;
+  height: 230px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.vattamesha-floor-ring.ring-3 {
+  width: 170px;
+  height: 170px;
+  border: 1.5px dashed rgba(245, 158, 11, 0.22);
+}
+
+@keyframes ringPulseSlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Floating Fireflies */
+.vattamesha-firefly {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #FCD34D;
+  box-shadow: 0 0 8px #F59E0B;
+  pointer-events: none;
+  animation: fireflyFloat 4s infinite ease-in-out alternate;
+}
+.ff-1 { top: 25%; left: 30%; animation-delay: 0s; }
+.ff-2 { bottom: 30%; right: 28%; animation-delay: 1.4s; }
+.ff-3 { top: 40%; right: 20%; animation-delay: 2.2s; }
+
+@keyframes fireflyFloat {
+  0% { transform: translate(0, 0) scale(0.8); opacity: 0.3; }
+  50% { transform: translate(8px, -12px) scale(1.2); opacity: 0.9; }
+  100% { transform: translate(-6px, 10px) scale(0.8); opacity: 0.4; }
 }
 
 /* The Center Wooden Round Table */
 .vattamesha-center-table {
-  width: 140px;
-  height: 140px;
+  width: 136px;
+  height: 136px;
   border-radius: 50%;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   background: radial-gradient(circle, #854D0E 0%, #713F12 55%, #451A03 100%);
-  border: 6px solid #A16207;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), inset 0 2px 10px rgba(251, 191, 36, 0.35);
+  border: 5px solid #A16207;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.75), inset 0 2px 10px rgba(251, 191, 36, 0.45);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 4;
+  z-index: 5;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.vattamesha-center-table:active {
+  transform: translate(-50%, -50%) scale(0.96);
 }
 
 .vattamesha-table-kettle {
-  font-size: 32px;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
+  font-size: 30px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.6));
   position: relative;
 }
 
@@ -6614,16 +6736,31 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
 }
 
 .vattamesha-table-label {
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 900;
   color: #FEF3C7;
-  background: rgba(0, 0, 0, 0.45);
-  padding: 2px 8px;
+  background: rgba(0, 0, 0, 0.55);
+  padding: 2px 7px;
   border-radius: 8px;
-  margin-top: 2px;
-  border: 1px solid rgba(251, 191, 36, 0.3);
+  margin-top: 1px;
+  border: 1px solid rgba(251, 191, 36, 0.35);
   text-align: center;
 }
+
+/* 6 Ceramic Tea Cups placed at seat edges */
+.table-tea-cup {
+  position: absolute;
+  font-size: 12px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+  pointer-events: none;
+  transition: transform 0.35s ease;
+}
+.cup-1 { bottom: 5px; left: 50%; transform: translateX(-50%); }
+.cup-2 { bottom: 20px; left: 12px; }
+.cup-3 { top: 20px; left: 12px; }
+.cup-4 { top: 5px; left: 50%; transform: translateX(-50%); }
+.cup-5 { top: 20px; right: 12px; }
+.cup-6 { bottom: 20px; right: 12px; }
 
 /* 4. The 6 Interactive Seats Around the Table */
 .vattamesha-seat {
@@ -6633,52 +6770,87 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 6;
+  z-index: 7;
   cursor: pointer;
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   -webkit-tap-highlight-color: transparent;
 }
 
 .vattamesha-seat:active {
-  transform: scale(0.95);
+  transform: translate(-50%, -50%) scale(0.94) !important;
 }
 
 /* Exact Circular Coordinate Positioning for the 6 Seats */
-/* Seat 1: Bottom Center (You / Current User) */
 .vattamesha-seat-1 {
   left: 50%;
-  top: 86%;
+  top: 88%;
   transform: translate(-50%, -50%);
 }
-/* Seat 2: Bottom Left (Neighbor 1) */
 .vattamesha-seat-2 {
-  left: 14%;
-  top: 68%;
+  left: 12%;
+  top: 70%;
   transform: translate(-50%, -50%);
 }
-/* Seat 3: Top Left (Neighbor 2) */
 .vattamesha-seat-3 {
-  left: 14%;
-  top: 32%;
+  left: 12%;
+  top: 30%;
   transform: translate(-50%, -50%);
 }
-/* Seat 4: Top Center (Neighbor 3) */
 .vattamesha-seat-4 {
   left: 50%;
-  top: 14%;
+  top: 12%;
   transform: translate(-50%, -50%);
 }
-/* Seat 5: Top Right (Neighbor 4) */
 .vattamesha-seat-5 {
-  left: 86%;
-  top: 32%;
+  left: 88%;
+  top: 30%;
   transform: translate(-50%, -50%);
 }
-/* Seat 6: Bottom Right (Neighbor 5) */
 .vattamesha-seat-6 {
-  left: 86%;
-  top: 68%;
+  left: 88%;
+  top: 70%;
   transform: translate(-50%, -50%);
+}
+
+/* Chair Backrest Behind Avatar */
+.vattamesha-chair-back {
+  position: absolute;
+  top: -12px;
+  font-size: 26px;
+  opacity: 0.82;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Animated Sound Equalizer Bars */
+.vattamesha-sound-bars {
+  display: none;
+  align-items: flex-end;
+  gap: 2.5px;
+  height: 14px;
+  margin-bottom: 2px;
+  z-index: 10;
+}
+
+.vattamesha-seat.speaking .vattamesha-sound-bars {
+  display: flex;
+}
+
+.vbar {
+  width: 3px;
+  background: #22C55E;
+  border-radius: 2px;
+  animation: eqJump 0.6s infinite ease-in-out alternate;
+}
+.v1 { height: 4px; animation-delay: 0.1s; }
+.v2 { height: 13px; animation-delay: 0.3s; }
+.v3 { height: 7px; animation-delay: 0.15s; }
+.v4 { height: 11px; animation-delay: 0.4s; }
+
+@keyframes eqJump {
+  0% { height: 3px; }
+  100% { height: 14px; }
 }
 
 /* Avatar Styling */
@@ -6692,8 +6864,9 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   align-items: center;
   justify-content: center;
   position: relative;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
   transition: all 0.25s ease;
+  z-index: 2;
 }
 
 .vattamesha-avatar-wrap img {

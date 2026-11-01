@@ -14214,6 +14214,41 @@
     }
     window.inviteFriendToRoundtable = inviteFriendToRoundtable;
 
+    function serveTeaToRoundtable() {
+      const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
+      document.querySelectorAll('.table-tea-cup').forEach(c => {
+        c.style.transform = 'scale(1.4)';
+        setTimeout(() => { c.style.transform = ''; }, 450);
+      });
+      sendNaattukoottamReaction('☕');
+      showVattameshaBubble(4, isEn ? 'Hot Kerala tea served for all 6! ☕ Enjoy!' : 'എല്ലാവർക്കും ചൂടുള്ള നാടൻ ചായ റെഡി! ☕ കുടിക്കൂ!', 4000);
+      if (typeof toast === 'function') toast(isEn ? '☕ Hot Kerala tea poured for everyone!' : '☕ 6 പേർക്കും ചൂടുള്ള നാടൻ ചായ വിളമ്പി!');
+    }
+    window.serveTeaToRoundtable = serveTeaToRoundtable;
+
+    let _vattameshaFloorIsCourtyard = false;
+    function toggleVattameshaFloorTheme() {
+      _vattameshaFloorIsCourtyard = !_vattameshaFloorIsCourtyard;
+      const floor = document.getElementById('vattameshaRoomFloor');
+      const btn = document.getElementById('vattameshaFloorToggleBtn');
+      const lantern = document.getElementById('vattameshaLantern');
+      const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
+      if (floor) {
+        if (_vattameshaFloorIsCourtyard) {
+          floor.classList.add('courtyard-theme');
+          if (btn) btn.textContent = isEn ? '🌿 Courtyard Floor' : '🌿 തറവാട് മുറ്റം';
+          if (lantern) lantern.textContent = '🌙';
+          if (typeof toast === 'function') toast(isEn ? '🌿 Moonlight Courtyard floor active!' : '🌿 തറവാട് മുറ്റം ഫ്ലോർ ആക്ടീവ് ആയി!');
+        } else {
+          floor.classList.remove('courtyard-theme');
+          if (btn) btn.textContent = isEn ? '🏮 Tea Stall Floor' : '🏮 ചായക്കട ഫ്ലോർ';
+          if (lantern) lantern.textContent = '🏮';
+          if (typeof toast === 'function') toast(isEn ? '🏮 Kerala Tea Stall floor active!' : '🏮 നാടൻ ചായക്കട ഫ്ലോർ ആക്ടീവ് ആയി!');
+        }
+      }
+    }
+    window.toggleVattameshaFloorTheme = toggleVattameshaFloorTheme;
+
     // Periodic dynamic update for the dummy roundtable chat snippet
     setInterval(() => {
       try {
