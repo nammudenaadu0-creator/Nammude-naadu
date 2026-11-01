@@ -7659,7 +7659,7 @@
           <div class="superapp-card-body">
             <div class="superapp-card-title-row">
               <span class="superapp-card-title">${escapeHtml(donorName)}</span>
-              <span class="superapp-badge-blue">${d.group || 'O+'}</span>
+              <span class="superapp-badge-red">${d.group || 'O+'}</span>
             </div>
             <div class="superapp-card-meta">
               <span>📍 ${escapeHtml(locText)} (${distLabel})</span>
@@ -7671,7 +7671,7 @@
           </div>
           <div style="display:flex;align-items:center;gap:8px" onclick="event.stopPropagation()">
             ${donorPhone ? `
-              <a href="tel:${donorPhone}" class="superapp-action-circle solid-blue" title="${isEn ? 'Call Donor' : 'വിളിക്കൂ'}">
+              <a href="tel:${donorPhone}" class="superapp-action-circle solid-red" title="${isEn ? 'Call Donor' : 'വിളിക്കൂ'}">
                 📞
               </a>
             ` : ''}

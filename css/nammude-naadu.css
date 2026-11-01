@@ -4197,7 +4197,6 @@ body {
 #screen-services .yw-services-header,
 #screen-jobs > div:first-child,
 #screen-rentals > div:first-child,
-#screen-blood > div:first-child,
 #screen-chat > div:first-child,
 #screen-add > div:first-child,
 .community-header {
@@ -4212,7 +4211,6 @@ body {
 #screen-community h2,
 #screen-jobs h2,
 #screen-rentals h2,
-#screen-blood h2,
 #screen-chat h2,
 #screen-add h2,
 .app-header h2 {
@@ -4228,7 +4226,6 @@ body {
 #screen-community header button,
 #screen-jobs button:first-child,
 #screen-rentals button:first-child,
-#screen-blood button:first-child,
 #screen-chat .round-back-btn,
 #screen-services .yw-services-header button:first-child {
   background: rgba(255, 255, 255, 0.2) !important;
@@ -4249,7 +4246,6 @@ body {
 #screen-community header button[onclick*="navTo('add')"],
 #screen-jobs button[onclick*="openPostJobModal"],
 #screen-rentals button[onclick*="openAddRentalModal"],
-#screen-blood button[onclick*="openRegisterDonorModal"],
 #screen-services button[onclick*="openAddServiceModal"] {
   background: #FFFFFF !important;
   color: #0878D1 !important;
@@ -5873,7 +5869,6 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   text-overflow: ellipsis;
 }
 
-.superapp-badge-red,
 .superapp-badge-blue {
   background: #EFF6FF !important;
   color: #0878D1 !important;
@@ -5882,6 +5877,17 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   font-weight: 800;
   padding: 1px 6px;
   border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.superapp-badge-red {
+  background: #FEE2E2 !important;
+  color: #DC2626 !important;
+  border: 1px solid #FECDD3 !important;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 8px;
   flex-shrink: 0;
 }
 
@@ -5936,6 +5942,11 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   background: #0C2B59;
   color: #FFFFFF;
   box-shadow: 0 2px 6px rgba(12, 43, 89, 0.25);
+}
+.superapp-action-circle.solid-red {
+  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.35) !important;
 }
 .superapp-action-circle.outline-chat {
   background: #FFFFFF;
@@ -7147,4 +7158,167 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   z-index: 50;
   animation: floatUpReaction 1.8s forwards ease-out;
 }
+
+/* ==============================================================
+   BLOOD DONATION RED & WHITE MEDICAL THEME (#screen-blood)
+   ============================================================== */
+#screen-blood {
+  background: #FFF8F8 !important;
+  min-height: 100vh;
+}
+
+#screen-blood .superapp-header {
+  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 55%, #991B1B 100%) !important;
+  border-bottom: 2px solid rgba(254, 205, 211, 0.35) !important;
+  box-shadow: 0 4px 20px rgba(185, 28, 28, 0.28) !important;
+}
+
+#screen-blood .superapp-header .superapp-brand-title {
+  color: #FFFFFF !important;
+}
+
+#screen-blood .superapp-header .superapp-brand-sub {
+  color: #FECDD3 !important;
+}
+
+#screen-blood .superapp-header .superapp-loc-pill {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  color: #FFFFFF !important;
+}
+
+#screen-blood .superapp-header .superapp-loc-pill span {
+  color: #FFFFFF !important;
+}
+
+#screen-blood .superapp-header .superapp-round-back-btn {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  color: #FFFFFF !important;
+}
+
+#screen-blood .superapp-search-wrap {
+  background: #FFFFFF !important;
+  border: 1.5px solid #FECDD3 !important;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.06) !important;
+}
+
+#screen-blood .superapp-search-wrap:focus-within {
+  border-color: #DC2626 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15) !important;
+}
+
+#screen-blood .superapp-mic-btn {
+  background: #FEE2E2 !important;
+  color: #DC2626 !important;
+  border: 1px solid #FECDD3 !important;
+}
+
+#screen-blood .superapp-radius-pill {
+  background: #FFFFFF !important;
+  border: 1.2px solid #FECDD3 !important;
+  color: #991B1B !important;
+}
+
+#screen-blood .superapp-radius-pill.active {
+  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%) !important;
+  color: #FFFFFF !important;
+  border-color: #DC2626 !important;
+  box-shadow: 0 3px 8px rgba(220, 38, 38, 0.3) !important;
+}
+
+#screen-blood .superapp-hero-card,
+#screen-blood .superapp-hero-card.hero-blood {
+  background: linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 100%) !important;
+  border: 1.5px solid #FECDD3 !important;
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.08) !important;
+}
+
+#screen-blood .superapp-hero-icon {
+  background: #FFFFFF !important;
+  border: 1.5px solid #FECDD3 !important;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.12) !important;
+  color: #DC2626 !important;
+}
+
+#screen-blood .superapp-hero-title {
+  color: #881337 !important;
+}
+
+#screen-blood .superapp-hero-sub {
+  color: #9F1239 !important;
+}
+
+#screen-blood .superapp-hero-btn.solid {
+  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%) !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  box-shadow: 0 3px 10px rgba(220, 38, 38, 0.35) !important;
+}
+
+#screen-blood .superapp-hero-btn.outline {
+  background: #FFFFFF !important;
+  color: #DC2626 !important;
+  border: 1.5px solid #FCA5A5 !important;
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.08) !important;
+}
+
+#screen-blood .superapp-chip {
+  background: #FFFFFF !important;
+  border: 1.5px solid #FECDD3 !important;
+  color: #991B1B !important;
+  font-weight: 700;
+}
+
+#screen-blood .superapp-chip.active {
+  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%) !important;
+  border-color: #DC2626 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 3px 8px rgba(220, 38, 38, 0.3) !important;
+}
+
+#screen-blood .superapp-stat-box {
+  background: #FFFFFF !important;
+  border: 1px solid #FEE2E2 !important;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.05) !important;
+}
+
+#screen-blood .superapp-stat-val {
+  color: #DC2626 !important;
+}
+
+#screen-blood .superapp-stat-label {
+  color: #881337 !important;
+}
+
+#screen-blood .superapp-card {
+  background: #FFFFFF !important;
+  border: 1.2px solid #FFE4E6 !important;
+  box-shadow: 0 2px 10px rgba(220, 38, 38, 0.05) !important;
+}
+
+#screen-blood .superapp-card-title {
+  color: #1E293B !important;
+}
+
+#screen-blood .superapp-action-circle.outline-chat {
+  background: #FFFFFF !important;
+  color: #DC2626 !important;
+  border: 1.5px solid #FECDD3 !important;
+}
+
+#screen-blood .superapp-bottom-empty-card {
+  background: #FFFFFF !important;
+  border: 1.5px dashed #FECDD3 !important;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.04) !important;
+}
+
+#screen-blood .superapp-bottom-empty-title {
+  color: #881337 !important;
+}
+
+#screen-blood .superapp-bottom-empty-sub {
+  color: #9F1239 !important;
+}
+
 

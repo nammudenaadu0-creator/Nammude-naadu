@@ -1,5 +1,5 @@
 // High-Performance Service Worker for Nammude Naadu PWA
-const CACHE_NAME = 'nammude-naadu-v34';
+const CACHE_NAME = 'nammude-naadu-v35';
 const STATIC_ASSETS = [
   './',
   './index.html',
