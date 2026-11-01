@@ -909,6 +909,11 @@
     // 2. RECIPIENT VERIFICATION: STRICT PRIVACY ENFORCEMENT
     const phones = String(chatKey).match(/\d{10}/g) || [];
 
+    // STRICT GUARD: If message was sent by myself, never process as incoming!
+    if ((myPhone && senderPhone && myPhone === senderPhone) || (myId && senderId && myId === senderId) || (msgObj && msgObj.sender === 'me')) {
+      return;
+    }
+
     // Rule A: If this is a 2-phone 1-on-1 chat, the current user MUST be one of the two phones!
     if (phones.length >= 2) {
       if (!myPhone || !phones.includes(myPhone)) {

@@ -1143,6 +1143,13 @@
   // ==============================================================
   function navTo(screenId) {
     if (!screenId) return;
+
+    // Profile Gate: Do not allow entering home screen without registering/completing profile
+    if (screenId === 'home' && typeof isUserRegistered === 'function' && !isUserRegistered()) {
+      openMandatoryRegisterModal();
+      return;
+    }
+
     if (APP_STATE.currentScreen === screenId) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       if (typeof window.refreshActiveScreen === 'function') {
@@ -6479,12 +6486,28 @@
             <span style="color:#0284C7;font-weight:700">വിശദാംശങ്ങൾ & റേറ്റിംഗ് ➔</span>
           </div>
 
-          <!-- DIRECT ACTION: IN-APP CHAT ONLY -->
+          <!-- DIRECT ACTION: IN-APP CHAT OR EDIT FOR OWNER -->
           <div class="service-actions-row" onclick="event.stopPropagation()">
-            <button class="prov-btn-chat" onclick="openChatForService('${srv.id}')" title="ചാറ്റ്" style="flex:1;justify-content:center">
-              <span>💬</span>
-              <span>ചാറ്റ്</span>
-            </button>
+            ${(() => {
+              const myPhone = APP_STATE.currentUser?.phone;
+              const isMySrv = myPhone && srv.phone && (myPhone.replace(/\D/g, '').slice(-10) === srv.phone.replace(/\D/g, '').slice(-10));
+              if (isMySrv) {
+                return `
+                  <button onclick="openEditServiceModal('${srv.id}')" style="flex:1;background:#EFF6FF;color:#1D4ED8;border:1.5px solid #BFDBFE;padding:8px 12px;border-radius:12px;font-weight:800;font-size:12.5px;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer">
+                    <span>✏️</span> <span>എന്റെ സർവീസ് എഡിറ്റ് ചെയ്യാം</span>
+                  </button>
+                  <button onclick="deleteMyService('${srv.id}')" style="background:#FEF2F2;color:#DC2626;border:1.5px solid #FECACA;padding:8px 12px;border-radius:12px;font-size:12.5px;cursor:pointer" title="ഡിലീറ്റ് ചെയ്യാം">
+                    🗑️
+                  </button>
+                `;
+              }
+              return `
+                <button class="prov-btn-chat" onclick="openChatForService('${srv.id}')" title="ചാറ്റ്" style="flex:1;justify-content:center">
+                  <span>💬</span>
+                  <span>ചാറ്റ്</span>
+                </button>
+              `;
+            })()}
           </div>
         </div>
       `;
@@ -6862,7 +6885,48 @@
   }
   window.openAddVehicleModal = openAddVehicleModal;
 
+  let _editingServiceId = null;
+
+  function openEditServiceModal(srvId) {
+    const srv = (APP_STATE.services || []).find(s => s.id === srvId);
+    if (!srv) return;
+    _editingServiceId = srvId;
+    window._editingServiceId = srvId;
+    openAddServiceModal();
+
+    setTimeout(() => {
+      const nameEl = document.getElementById('regServiceName');
+      if (nameEl) nameEl.value = srv.name || '';
+      const tradeEl = document.getElementById('regServiceTrade');
+      if (tradeEl) tradeEl.value = srv.trade || '';
+      const phoneEl = document.getElementById('regServicePhone');
+      if (phoneEl) phoneEl.value = srv.phone || '';
+      const locEl = document.getElementById('regServiceLoc');
+      if (locEl) locEl.value = srv.location || '';
+      const feeEl = document.getElementById('regServiceFee');
+      if (feeEl) feeEl.value = srv.visitingFee || '';
+      const hoursEl = document.getElementById('regServiceHours');
+      if (hoursEl) hoursEl.value = srv.workingHours || '';
+      const specsEl = document.getElementById('regServiceSpecs');
+      if (specsEl) specsEl.value = (srv.specializations || []).join(', ');
+
+      const titleEl = document.getElementById('modalAddServiceTitle');
+      if (titleEl) titleEl.textContent = '✏️ സർവീസ് എഡിറ്റ് ചെയ്യാം';
+      const submitBtn = document.querySelector('#modal-add-service button[type="submit"]');
+      if (submitBtn) submitBtn.innerHTML = '<span>✅</span> <span>സേവനം പുതുക്കാം (Update Service)</span>';
+    }, 50);
+  }
+  window.openEditServiceModal = openEditServiceModal;
+
   function openAddServiceModal() {
+    if (!window._editingServiceId) {
+      _editingServiceId = null;
+      window._editingServiceId = null;
+      const titleEl = document.getElementById('modalAddServiceTitle');
+      if (titleEl) titleEl.textContent = '🛠️ പുതിയ സേവനം ചേർക്കാം';
+      const submitBtn = document.querySelector('#modal-add-service button[type="submit"]');
+      if (submitBtn) submitBtn.innerHTML = '<span>🚀</span> <span>സേവനം ലിസ്റ്റ് ചെയ്യാം (Register Service)</span>';
+    }
     openModal('modal-add-service');
 
     // Populate Mini Icon Palette dynamically including admin-added icons
@@ -7315,6 +7379,46 @@
     }
     if (specsList.length === 0) {
       specsList.push('ജനറൽ സർവീസ്', 'ദ്രുത സഹായം');
+    }
+
+    if (window._editingServiceId) {
+      const existingIdx = (APP_STATE.services || []).findIndex(s => s.id === window._editingServiceId);
+      if (existingIdx !== -1) {
+        const srv = APP_STATE.services[existingIdx];
+        srv.name = name;
+        srv.category = categoryKey;
+        srv.trade = typedTrade;
+        srv.icon = selectedIcon;
+        srv.customIcon = selectedIcon;
+        srv.phone = phone;
+        srv.visitingFee = fee;
+        srv.workingHours = hours;
+        srv.specializations = specsList;
+        srv.vehicleDetails = vehicleDetails;
+        srv.availability = avail;
+        srv.experience = exp;
+        srv.location = loc;
+        srv.district = resolvedDistrict;
+        srv.lat = APP_STATE.location.lat;
+        srv.lon = APP_STATE.location.lon;
+        srv.updatedAt = Date.now();
+
+        try {
+          localStorage.setItem('nn_services', JSON.stringify(APP_STATE.services));
+        } catch (_) {}
+
+        if (typeof window !== 'undefined' && window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveService === 'function') {
+          window.NN_SUPABASE_SERVICES.saveService(srv);
+        }
+
+        window._editingServiceId = null;
+        closeModal('modal-add-service');
+        renderServicesScreen();
+        renderHomeScreen();
+        renderProfileDashboard('services');
+        toast(`✅ "${typedTrade}" സർവീസ് വിവരങ്ങൾ വിജയകരമായി പുതുക്കി!`);
+        return;
+      }
     }
 
     const newService = {
@@ -11042,7 +11146,10 @@
                     <div style="font-weight:800;font-size:13px;color:#0F172A">${escapeHtml(s.trade)}</div>
                     <div style="font-size:11px;color:#64748B">📍 ${escapeHtml(s.location)} • 📞 ${escapeHtml(s.phone)}</div>
                   </div>
-                  <button onclick="deleteMyService('${s.id}')" style="background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;border-radius:8px;padding:4px 8px;font-size:11px;cursor:pointer">🗑️</button>
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <button onclick="openEditServiceModal('${s.id}')" style="background:#EFF6FF;color:#1D4ED8;border:1px solid #BFDBFE;border-radius:8px;padding:4px 8px;font-size:11.5px;font-weight:700;cursor:pointer">✏️ എഡിറ്റ്</button>
+                    <button onclick="deleteMyService('${s.id}')" style="background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;border-radius:8px;padding:4px 8px;font-size:11px;cursor:pointer">🗑️</button>
+                  </div>
                 </div>
               `).join('')
             }
@@ -12443,18 +12550,38 @@
       modalEl.style.display = 'none';
     }
 
-    // Instantly update interface
+    // Instantly update interface and open Profile screen
     updateAdminUI();
     updateUserAuthUI();
     renderProfileScreen();
     updatePostingProfileBar();
-    navTo('home');
-    renderHomeScreen();
+    navTo('profile');
 
     if (isAdmin) {
       toast(`👑 സ്വാഗതം അഡ്മിൻ! അഡ്മിൻ കൺസോൾ ആക്സസ് വിജയകരമായി സജീവമായി.`);
     } else {
-      toast(`🎉 സ്വാഗതം ${defaultName}! താങ്കൾ വിജയകരമായി രജിസ്റ്റർ ചെയ്തു.`);
+      toast(`🎉 സ്വാഗതം ${defaultName}! താങ്കളുടെ പ്രൊഫൈൽ വിജയകരമായി രജിസ്റ്റർ ചെയ്തു.`);
+    }
+
+    // Smoothly request and activate Push Notifications on registration
+    try {
+      if (typeof Notification !== 'undefined' && Notification.permission !== 'granted') {
+        Notification.requestPermission().then(perm => {
+          if (perm === 'granted' && typeof navigator !== 'undefined' && navigator.serviceWorker) {
+            navigator.serviceWorker.ready.then(reg => {
+              reg.showNotification('നമ്മുടെ നാട്', {
+                body: `സ്വാഗതം ${defaultName}! പുഷ് നോട്ടിഫിക്കേഷൻ സജീവമാക്കി 🔔`,
+                icon: 'assets/icon-192.png',
+                badge: 'assets/icon-192.png'
+              });
+            }).catch(() => {});
+          }
+        }).catch(() => {});
+      }
+    } catch (_) {}
+
+    if (window.NN_FCM && typeof window.NN_FCM.requestPermission === 'function') {
+      try { window.NN_FCM.requestPermission(); } catch (_) {}
     }
 
     // Async cloud sync
@@ -12654,8 +12781,13 @@
   function openModal(modalId) {
     const el = document.getElementById(modalId);
     if (el) {
-      el.style.display = 'flex';
+      el.style.removeProperty('display');
+      el.style.setProperty('display', 'flex', 'important');
       el.classList.add('active');
+      const sheet = el.querySelector('.modal-sheet, .chat-modal-sheet, .profile-preview-sheet');
+      if (sheet) {
+        sheet.style.removeProperty('transform');
+      }
       autoFillRegisteredUserDetails(el);
     }
   }
@@ -12680,10 +12812,66 @@
     const el = document.getElementById(modalId);
     if (el) {
       el.classList.remove('active');
-      el.style.display = 'none';
+      el.style.removeProperty('display');
+      el.style.setProperty('display', 'none', 'important');
     }
   }
   window.closeModal = closeModal;
+
+  // Voice Search Web Speech API Integration
+  let _activeSpeechRecognition = null;
+  function toggleVoiceSearch(inputId, btnEl) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      toast('⚠️ താങ്കളുടെ ഫോണിൽ/ബ്രൗസറിൽ വോയ്സ് സെർച്ച് ലഭ്യമല്ല.');
+      return;
+    }
+    const targetInput = document.getElementById(inputId);
+    if (!targetInput) return;
+
+    if (_activeSpeechRecognition) {
+      try { _activeSpeechRecognition.stop(); } catch (_) {}
+      _activeSpeechRecognition = null;
+      if (btnEl) btnEl.style.color = '#64748B';
+      toast('🎙️ വോയ്സ് സെർച്ച് നിർത്തി.');
+      return;
+    }
+
+    try {
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'ml-IN';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      if (btnEl) btnEl.style.color = '#EF4444';
+      toast('🎙️ സംസാരിക്കൂ... (Listening in Malayalam)');
+
+      recognition.onresult = function(event) {
+        const transcript = event.results && event.results[0] && event.results[0][0] && event.results[0][0].transcript;
+        if (transcript) {
+          targetInput.value = transcript;
+          targetInput.dispatchEvent(new Event('input', { bubbles: true }));
+          toast(`🔍 "${transcript}" തിരയുന്നു...`);
+        }
+      };
+      recognition.onerror = function() {
+        if (btnEl) btnEl.style.color = '#64748B';
+        _activeSpeechRecognition = null;
+      };
+      recognition.onend = function() {
+        if (btnEl) btnEl.style.color = '#64748B';
+        _activeSpeechRecognition = null;
+      };
+
+      _activeSpeechRecognition = recognition;
+      recognition.start();
+    } catch (err) {
+      if (btnEl) btnEl.style.color = '#64748B';
+      _activeSpeechRecognition = null;
+      toast('⚠️ വോയ്സ് സെർച്ച് ആരംഭിക്കാൻ കഴിഞ്ഞില്ല.');
+    }
+  }
+  window.toggleVoiceSearch = toggleVoiceSearch;
 
   // ==============================================================
   // AUTO-ROTATING HOME ADS CAROUSEL (4 SECONDS ROTATION)
@@ -13008,12 +13196,28 @@
             ${(srv.specializations || []).slice(0, 2).map(s => `<span class="provider-spec-tag">${s}</span>`).join('')}
           </div>
 
-          <!-- DIRECT ACTION: IN-APP CHAT ONLY -->
+          <!-- DIRECT ACTION: IN-APP CHAT OR EDIT FOR OWNER -->
           <div class="service-actions-row" onclick="event.stopPropagation()">
-            <button class="prov-btn-chat" onclick="openChatForService('${srv.id}')" title="ചാറ്റ്" style="flex:1;justify-content:center">
-              <span>💬</span>
-              <span>ചാറ്റ്</span>
-            </button>
+            ${(() => {
+              const myPhone = APP_STATE.currentUser?.phone;
+              const isMySrv = myPhone && srv.phone && (myPhone.replace(/\D/g, '').slice(-10) === srv.phone.replace(/\D/g, '').slice(-10));
+              if (isMySrv) {
+                return `
+                  <button onclick="openEditServiceModal('${srv.id}')" style="flex:1;background:#EFF6FF;color:#1D4ED8;border:1.5px solid #BFDBFE;padding:8px 12px;border-radius:12px;font-weight:800;font-size:12.5px;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer">
+                    <span>✏️</span> <span>എന്റെ സർവീസ് എഡിറ്റ് ചെയ്യാം</span>
+                  </button>
+                  <button onclick="deleteMyService('${srv.id}')" style="background:#FEF2F2;color:#DC2626;border:1.5px solid #FECACA;padding:8px 12px;border-radius:12px;font-size:12.5px;cursor:pointer" title="ഡിലീറ്റ് ചെയ്യാം">
+                    🗑️
+                  </button>
+                `;
+              }
+              return `
+                <button class="prov-btn-chat" onclick="openChatForService('${srv.id}')" title="ചാറ്റ്" style="flex:1;justify-content:center">
+                  <span>💬</span>
+                  <span>ചാറ്റ്</span>
+                </button>
+              `;
+            })()}
           </div>
         </div>
       `;
@@ -14239,21 +14443,11 @@
     function openCreateNaattukoottamModal(e) {
       if (e && e.stopPropagation) e.stopPropagation();
       try {
-        const modal = document.getElementById('modal-create-naattukoottam');
-        if (modal) {
-          modal.style.setProperty('display', 'flex', 'important');
-          modal.classList.add('active');
-          const sheet = modal.querySelector('.modal-sheet');
-          if (sheet) {
-            sheet.style.setProperty('transform', 'translateY(0)', 'important');
-            sheet.style.setProperty('display', 'block', 'important');
-          }
-        }
         const nameInp = document.getElementById('nkGroupNameInput');
         const topicInp = document.getElementById('nkGroupTopicInput');
         if (nameInp) { nameInp.value = ''; try { nameInp.focus(); } catch (_) {} }
         if (topicInp) topicInp.value = '';
-        if (typeof openModal === 'function') openModal('modal-create-naattukoottam');
+        openModal('modal-create-naattukoottam');
       } catch (err) {
         console.error('[openCreateNaattukoottamModal error]', err);
       }
@@ -14316,17 +14510,6 @@
     function openNaattukoottamInviteModal(targetSeat, e) {
       if (e && e.stopPropagation) e.stopPropagation();
       try {
-        const modal = document.getElementById('modal-naattukoottam-invite');
-        if (modal) {
-          modal.style.setProperty('display', 'flex', 'important');
-          modal.classList.add('active');
-          const sheet = modal.querySelector('.modal-sheet');
-          if (sheet) {
-            sheet.style.setProperty('transform', 'translateY(0)', 'important');
-            sheet.style.setProperty('display', 'block', 'important');
-          }
-        }
-
         _vattameshaPendingInviteSeat = targetSeat || null;
 
         // If currently in default simulated room or no room, start/switch to user's 6-seat host group

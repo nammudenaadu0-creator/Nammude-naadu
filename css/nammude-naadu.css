@@ -4133,8 +4133,8 @@ body {
 @media (max-width: 500px) {
   #modal-chat.modal-overlay.active {
     align-items: center !important;
-    justify-content: center !important;
-    padding: max(4px, env(safe-area-inset-top, 0px)) max(6px, env(safe-area-inset-right, 0px)) max(6px, env(safe-area-inset-bottom, 0px)) max(6px, env(safe-area-inset-left, 0px)) !important;
+    justify-content: flex-end !important;
+    padding: max(28px, calc(env(safe-area-inset-top, 0px) + 16px)) max(6px, env(safe-area-inset-right, 0px)) max(12px, calc(env(safe-area-inset-bottom, 0px) + 8px)) max(6px, env(safe-area-inset-left, 0px)) !important;
     background: rgba(15, 23, 42, 0.82) !important;
     box-sizing: border-box !important;
   }
@@ -4142,12 +4142,12 @@ body {
     position: relative !important;
     max-width: calc(100vw - 12px) !important;
     width: calc(100vw - 12px) !important;
-    height: calc(100dvh - 12px) !important;
-    max-height: calc(100dvh - 12px) !important;
-    border-radius: 20px !important;
+    height: calc(100dvh - max(56px, calc(env(safe-area-inset-top, 0px) + 40px))) !important;
+    max-height: calc(100dvh - 48px) !important;
+    border-radius: 24px 24px 0 0 !important;
     border: 1.5px solid #CBD5E1 !important;
-    margin: auto !important;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45) !important;
+    margin: 0 auto !important;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.45) !important;
     box-sizing: border-box !important;
     overflow: hidden !important;
   }

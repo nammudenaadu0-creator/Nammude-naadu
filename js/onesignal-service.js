@@ -40,12 +40,15 @@
           // Set user alias / external ID so direct messages can target their phone number
           this.syncUserIdentity();
 
-          // Suppress redundant status bar alert while app is actively in foreground (Supabase Realtime handles in-app delivery)
+          // Allow notifications to display in notification tray even while app is in foreground
           try {
             window.plugins.OneSignal.Notifications.addEventListener('foregroundWillDisplay', (event) => {
-              if (event && typeof event.preventDefault === 'function') {
-                event.preventDefault();
-              }
+              try {
+                if (event && typeof event.getNotification === 'function') {
+                  const notif = event.getNotification();
+                  console.info('🔔 [OneSignal] Foreground notification received:', notif?.title);
+                }
+              } catch (_) {}
             });
           } catch (_) {}
 
