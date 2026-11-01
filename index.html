@@ -1345,10 +1345,10 @@
 
                         <!-- Bottom Quick Actions Row (Create Group / Invite 5 Friends) -->
                         <div style="display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:8px;border-top:1px dashed #FEF3C7">
-                            <button type="button" onclick="openCreateNaattukoottamModal()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:6px 10px;background:#FEF3C7;color:#92400E;border:1px solid #FDE68A;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer">
+                            <button type="button" onclick="event.stopPropagation(); openCreateNaattukoottamModal(event);" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 10px;background:#FEF3C7;color:#92400E;border:1.5px solid #FDE68A;border-radius:12px;font-size:11.5px;font-weight:800;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform 0.12s ease" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'">
                                 <span>➕</span> <span>6-പേർ കൂട്ടം ഉണ്ടാക്കാം</span>
                             </button>
-                            <button type="button" onclick="openNaattukoottamInviteModal()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:6px 10px;background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer">
+                            <button type="button" onclick="event.stopPropagation(); openNaattukoottamInviteModal(null, event);" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 10px;background:#ECFDF5;color:#065F46;border:1.5px solid #A7F3D0;border-radius:12px;font-size:11.5px;font-weight:800;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform 0.12s ease" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'">
                                 <span>👥</span> <span>5 പേരെ ക്ഷണിക്കാം</span>
                             </button>
                         </div>
@@ -5126,8 +5126,8 @@
     <!-- ============================================================== -->
     <!-- 👥 MODAL: CREATE 6-PERSON NAATTUKOOTTAM GROUP                   -->
     <!-- ============================================================== -->
-    <div id="modal-create-naattukoottam" class="modal-overlay" style="display:none;z-index:99999999;background:rgba(15,23,42,0.85);backdrop-filter:blur(8px);align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeModal('modal-create-naattukoottam')">
-        <div class="modal-sheet" style="max-height:85vh;overflow-y:auto;border-radius:24px 24px 0 0;padding:20px;background:#FFFFFF;box-shadow:0 -10px 40px rgba(0,0,0,0.3)">
+    <div id="modal-create-naattukoottam" class="modal-overlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;z-index:99999999;background:rgba(15,23,42,0.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeModal('modal-create-naattukoottam')">
+        <div class="modal-sheet" style="width:100%;max-width:480px;max-height:85vh;overflow-y:auto;border-radius:24px 24px 0 0;padding:20px;background:#FFFFFF;box-shadow:0 -10px 40px rgba(0,0,0,0.3);transform:translateY(0)">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1.5px solid #FEF3C7;padding-bottom:12px">
                 <div style="display:flex;align-items:center;gap:10px">
                     <span style="font-size:26px">☕</span>
@@ -5167,8 +5167,8 @@
     <!-- ============================================================== -->
     <!-- 👥 MODAL: INVITE 5 MEMBERS TO ROUNDTABLE                        -->
     <!-- ============================================================== -->
-    <div id="modal-naattukoottam-invite" class="modal-overlay" style="display:none;z-index:99999999;background:rgba(15,23,42,0.85);backdrop-filter:blur(8px);align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeModal('modal-naattukoottam-invite')">
-        <div class="modal-sheet" style="max-height:85vh;overflow-y:auto;border-radius:24px 24px 0 0;padding:20px;background:#FFFFFF;box-shadow:0 -10px 40px rgba(0,0,0,0.3);display:flex;flex-direction:column;gap:12px">
+    <div id="modal-naattukoottam-invite" class="modal-overlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;z-index:99999999;background:rgba(15,23,42,0.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeModal('modal-naattukoottam-invite')">
+        <div class="modal-sheet" style="width:100%;max-width:480px;max-height:85vh;overflow-y:auto;border-radius:24px 24px 0 0;padding:20px;background:#FFFFFF;box-shadow:0 -10px 40px rgba(0,0,0,0.3);display:flex;flex-direction:column;gap:12px;transform:translateY(0)">
             <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1.5px solid #E2E8F0;padding-bottom:12px">
                 <div style="display:flex;align-items:center;gap:10px">
                     <span style="font-size:26px">👥</span>

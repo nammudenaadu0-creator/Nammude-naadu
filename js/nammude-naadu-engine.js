@@ -14236,12 +14236,27 @@
     }
     window.openNaattukoottamModal = openNaattukoottamModal;
 
-    function openCreateNaattukoottamModal() {
-      const nameInp = document.getElementById('nkGroupNameInput');
-      const topicInp = document.getElementById('nkGroupTopicInput');
-      if (nameInp) nameInp.value = '';
-      if (topicInp) topicInp.value = '';
-      openModal('modal-create-naattukoottam');
+    function openCreateNaattukoottamModal(e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      try {
+        const modal = document.getElementById('modal-create-naattukoottam');
+        if (modal) {
+          modal.style.setProperty('display', 'flex', 'important');
+          modal.classList.add('active');
+          const sheet = modal.querySelector('.modal-sheet');
+          if (sheet) {
+            sheet.style.setProperty('transform', 'translateY(0)', 'important');
+            sheet.style.setProperty('display', 'block', 'important');
+          }
+        }
+        const nameInp = document.getElementById('nkGroupNameInput');
+        const topicInp = document.getElementById('nkGroupTopicInput');
+        if (nameInp) { nameInp.value = ''; try { nameInp.focus(); } catch (_) {} }
+        if (topicInp) topicInp.value = '';
+        if (typeof openModal === 'function') openModal('modal-create-naattukoottam');
+      } catch (err) {
+        console.error('[openCreateNaattukoottamModal error]', err);
+      }
     }
     window.openCreateNaattukoottamModal = openCreateNaattukoottamModal;
 
@@ -14298,42 +14313,101 @@
     }
     window.handleCreateNaattukoottamGroup = handleCreateNaattukoottamGroup;
 
-    function openNaattukoottamInviteModal(targetSeat) {
-      _vattameshaPendingInviteSeat = targetSeat || null;
-      const room = getNaattukoottamRoom(_vattameshaActiveRoomId);
-      const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
-
-      const occupiedCount = (room.members || []).filter(m => m && m.name).length;
-      const remaining = Math.max(0, 6 - occupiedCount);
-
-      const statusEl = document.getElementById('nkInviteSeatCountStatus');
-      if (statusEl) {
-        statusEl.textContent = remaining === 0
-          ? (isEn ? '🎉 All 6 seats filled!' : '🎉 6 സീറ്റുകളും ഫുൾ ആണ്!')
-          : (isEn ? `${remaining} vacant seats left (Total 6)` : `${remaining} സീറ്റുകൾ ബാക്കിയുണ്ട് (ആകെ 6 പേർ)`);
-      }
-
-      // Render 6 mini chairs
-      const chairsRow = document.getElementById('nkSeatsVisualRow');
-      if (chairsRow) {
-        let chairsHtml = '';
-        for (let s = 1; s <= 6; s++) {
-          const mem = (room.members || []).find(m => m && m.seat === s);
-          if (s === 1) {
-            chairsHtml += `<div class="nk-mini-chair host" title="നിങ്ങൾ (അഡ്മിൻ)">🪑 1</div>`;
-          } else if (mem && mem.name) {
-            chairsHtml += `<div class="nk-mini-chair occupied" title="${escapeHtml(mem.name)}">🟢 ${s}</div>`;
-          } else {
-            chairsHtml += `<div class="nk-mini-chair vacant" onclick="openNaattukoottamInviteModal(${s})" title="ഒഴിഞ്ഞ സീറ്റ് ${s}">➕ ${s}</div>`;
+    function openNaattukoottamInviteModal(targetSeat, e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      try {
+        const modal = document.getElementById('modal-naattukoottam-invite');
+        if (modal) {
+          modal.style.setProperty('display', 'flex', 'important');
+          modal.classList.add('active');
+          const sheet = modal.querySelector('.modal-sheet');
+          if (sheet) {
+            sheet.style.setProperty('transform', 'translateY(0)', 'important');
+            sheet.style.setProperty('display', 'block', 'important');
           }
         }
-        chairsRow.innerHTML = chairsHtml;
+
+        _vattameshaPendingInviteSeat = targetSeat || null;
+
+        // If currently in default simulated room or no room, start/switch to user's 6-seat host group
+        let room = null;
+        if (!_vattameshaActiveRoomId || _vattameshaActiveRoomId === 'live_default') {
+          const user = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) || {};
+          const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
+          const myGroupId = 'nk_grp_my_vattamesha';
+          const rooms = getStoredNaattukoottamRooms();
+          if (!rooms[myGroupId]) {
+            rooms[myGroupId] = {
+              id: myGroupId,
+              name: isEn ? 'My Roundtable Group' : 'എന്റെ നാട്ടുകൂട്ടം',
+              topic: isEn ? 'Topic: Village Chat & Friends 🌾' : 'വിഷയം: നാട്ടുകാര്യങ്ങളും സൗഹൃദവും 🌾',
+              createdAt: Date.now(),
+              createdBy: user.phone || user.id || 'me',
+              isDefault: false,
+              members: [
+                {
+                  seat: 1,
+                  name: user.name || (isEn ? 'You' : 'നിങ്ങൾ'),
+                  role: isEn ? 'Host (Admin)' : 'അഡ്മിൻ (നിങ്ങൾ)',
+                  avatar: user.avatar || window.DEFAULT_USER_AVATAR,
+                  isHost: true
+                }
+              ],
+              messages: [
+                { author: isEn ? 'System' : 'സിസ്റ്റം', text: isEn ? 'Roundtable room ready! Invite 5 friends ☕' : 'വട്ടമേശ ഗ്രൂപ്പ് തയ്യാറായി! 5 സുഹൃത്തുക്കളെ ക്ഷണിക്കൂ ☕' }
+              ]
+            };
+            saveStoredNaattukoottamRooms(rooms);
+          }
+          _vattameshaActiveRoomId = myGroupId;
+          room = rooms[myGroupId];
+        } else {
+          room = getNaattukoottamRoom(_vattameshaActiveRoomId);
+        }
+
+        if (!room) {
+          room = { members: [{ seat: 1, name: 'നിങ്ങൾ', isHost: true }] };
+        }
+
+        const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
+        const occupiedCount = (room.members || []).filter(m => m && m.name).length;
+        const remaining = Math.max(0, 6 - occupiedCount);
+
+        const statusEl = document.getElementById('nkInviteSeatCountStatus');
+        if (statusEl) {
+          statusEl.textContent = remaining === 0
+            ? (isEn ? '🎉 All 6 seats filled!' : '🎉 6 സീറ്റുകളും ഫുൾ ആണ്!')
+            : (isEn ? `${remaining} vacant seats left (Total 6)` : `${remaining} സീറ്റുകൾ ബാക്കിയുണ്ട് (ആകെ 6 പേർ)`);
+        }
+
+        // Render 6 mini chairs
+        const chairsRow = document.getElementById('nkSeatsVisualRow');
+        if (chairsRow) {
+          let chairsHtml = '';
+          for (let s = 1; s <= 6; s++) {
+            const mem = (room.members || []).find(m => m && m.seat === s);
+            if (s === 1) {
+              chairsHtml += `<div class="nk-mini-chair host" title="നിങ്ങൾ (അഡ്മിൻ)">🪑 1</div>`;
+            } else if (mem && mem.name) {
+              chairsHtml += `<div class="nk-mini-chair occupied" title="${escapeHtml(mem.name)}">🟢 ${s}</div>`;
+            } else {
+              chairsHtml += `<div class="nk-mini-chair vacant" onclick="openNaattukoottamInviteModal(${s}, event)" title="ഒഴിഞ്ഞ സീറ്റ് ${s}">➕ ${s}</div>`;
+            }
+          }
+          chairsRow.innerHTML = chairsHtml;
+        }
+
+        // Render Contacts List
+        try {
+          renderNaattukoottamInviteContacts();
+        } catch (cErr) {
+          console.warn('[renderNaattukoottamInviteContacts error]', cErr);
+        }
+
+        if (typeof openModal === 'function') openModal('modal-naattukoottam-invite');
+      } catch (err) {
+        console.error('[openNaattukoottamInviteModal error]', err);
       }
-
-      // Render Contacts List
-      renderNaattukoottamInviteContacts();
-
-      openModal('modal-naattukoottam-invite');
     }
     window.openNaattukoottamInviteModal = openNaattukoottamInviteModal;
 
@@ -14341,9 +14415,19 @@
       const container = document.getElementById('nkInviteContactsList');
       if (!container) return;
 
-      const room = getNaattukoottamRoom(_vattameshaActiveRoomId);
+      const room = getNaattukoottamRoom(_vattameshaActiveRoomId) || { members: [] };
       const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
-      const allCommunity = typeof getAllCommunityContacts === 'function' ? getAllCommunityContacts('all') : [];
+      let allCommunity = typeof getAllCommunityContacts === 'function' ? getAllCommunityContacts('all') : [];
+      if (!allCommunity || allCommunity.length === 0) {
+        allCommunity = [
+          { id: 'usr_suresh', name: 'സുരേഷ് കുമാർ', sub: '🛺 ഓട്ടോ ഡ്രൈവർ • 📍 കക്കാട്', avatar: 'assets/cat-driver-3d.jpg' },
+          { id: 'usr_fathima', name: 'ഫാത്തിമ റഹ്മാൻ', sub: '📚 ഹൈസ്കൂൾ ടീച്ചർ • 📍 ടൗൺ', avatar: 'assets/cat-tutor-3d.jpg' },
+          { id: 'usr_muhammed', name: 'മുഹമ്മദ് ഷാഫി', sub: '🏪 വ്യാപാരി • 📍 മാർക്കറ്റ് ജംഗ്ഷൻ', avatar: 'assets/cat-business-3d.jpg' },
+          { id: 'usr_anoop', name: 'അനൂപ് രാജ്', sub: '⚡ ഇലക്ട്രീഷ്യൻ • 📍 റെയിൽവേ സ്റ്റേഷൻ', avatar: 'assets/cat-electrician-3d.jpg' },
+          { id: 'usr_priya', name: 'പ്രിയ വേണുഗോപാൽ', sub: '🩸 രക്തദാതാവ് & നഴ്സ് • 📍 ഹോസ്പിറ്റൽ റോഡ്', avatar: 'assets/cat-blood-3d.jpg' },
+          { id: 'usr_haridas', name: 'ഹരിദാസൻ പി', sub: '🌾 കർഷകൻ • 📍 അമ്പലപ്പടി', avatar: 'assets/cat-farmer-3d.jpg' }
+        ];
+      }
       const query = (filterText || '').toLowerCase().trim();
 
       const seatedNames = new Set((room.members || []).map(m => (m.name || '').toLowerCase()));
