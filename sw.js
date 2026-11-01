@@ -1,17 +1,18 @@
 // High-Performance Service Worker for Nammude Naadu PWA
-const CACHE_NAME = 'nammude-naadu-v39';
+const CACHE_NAME = 'nammude-naadu-v41';
 const STATIC_ASSETS = [
   './',
   './index.html',
   './version.json',
   './assets/icon-192.png',
   './assets/icon-512.png',
-  './css/main.css?v=4.5',
-  './css/jobs.css?v=4.5',
-  './css/nammude-naadu.css?v=4.5',
+  './css/main.css?v=4.6',
+  './css/jobs.css?v=4.6',
+  './css/nammude-naadu.css?v=4.7',
   './img/kerala-splash.jpg',
-  './js/trades-catalog-500.js?v=2.5',
-  './js/nammude-naadu-engine.js?v=4.5',
+  './js/trades-catalog-500.js?v=2.6',
+  './js/nammude-naadu-engine.js?v=9.9',
+  './js/i18n-translations.js?v=9.9',
   './js/supabase-sdk.js',
   './js/supabase-backend.js?v=3.0',
   './manifest.json'
@@ -48,6 +49,26 @@ self.addEventListener('fetch', (event) => {
       url.hostname.includes('bigdatacloud.net') ||
       url.protocol === 'ws:' ||
       url.protocol === 'wss:') {
+    return;
+  }
+
+  // Network-First for Navigation (Ensures live website always loads newest changes)
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request).then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const clone = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+        }
+        return networkResponse;
+      }).catch(async () => {
+        const cached = await caches.match(event.request) || await caches.match('./index.html') || await caches.match('./');
+        return cached || new Response('Offline: ഇന്റർനെറ്റ് കണക്ഷൻ ലഭ്യമല്ല.', {
+          status: 503,
+          headers: new Headers({ 'Content-Type': 'text/plain; charset=utf-8' })
+        });
+      })
+    );
     return;
   }
 

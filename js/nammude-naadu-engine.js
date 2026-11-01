@@ -13843,9 +13843,21 @@
       checkAppUpdates(true);
     }, 3500);
 
-    // Register service worker if available
+    // Register service worker if available with auto-reload on update
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js').catch(err => {
+      navigator.serviceWorker.register('./sw.js').then(reg => {
+        reg.onupdatefound = () => {
+          const worker = reg.installing;
+          if (worker) {
+            worker.onstatechange = () => {
+              if (worker.state === 'installed' && navigator.serviceWorker.controller) {
+                console.log('[SW] New version ready, auto-refreshing...');
+                window.location.reload();
+              }
+            };
+          }
+        };
+      }).catch(err => {
         console.info('[SW] Service Worker note:', err.message);
       });
     }
