@@ -15707,7 +15707,750 @@
         }
       } catch (_) {}
     }, 3000);
+
+    // Deep link check for Studio Quotation (?quote=NNQ-12345 or #quote=NNQ-12345)
+    try {
+      if (typeof window !== 'undefined' && window.location) {
+        const urlParams = new URLSearchParams(window.location.search);
+        let qId = urlParams.get('quote') || urlParams.get('quote_id');
+        if (!qId && window.location.hash && window.location.hash.includes('quote=')) {
+          qId = window.location.hash.split('quote=')[1].split('&')[0];
+        }
+        if (qId) {
+          setTimeout(() => {
+            if (typeof openStudioQuoteModal === 'function') {
+              openStudioQuoteModal(qId);
+            }
+          }, 600);
+        }
+      }
+    } catch (_) {}
   }
+
+  // ==============================================================
+  // 17. STUDIO QUOTE BOOKING WORKFLOW (ഫോട്ടോഗ്രഫി & സ്റ്റുഡിയോ)
+  // ==============================================================
+  window._activeQuote = null;
+  window._studioQuoteMode = 'customer'; // 'customer' or 'studio'
+  window._quoteSelectedServices = new Set(['Candid Photography', 'Cinematic Video', 'Premium Album']);
+  window._quoteSelectedEventType = 'Wedding (വിവാഹം)';
+
+  function getStudioQuoteShareUrl(quoteId) {
+    const origin = (typeof window !== 'undefined' && window.location.origin) ? window.location.origin : '';
+    const pathname = (typeof window !== 'undefined' && window.location.pathname) ? window.location.pathname : '';
+    const base = (origin && origin !== 'null' && origin !== 'file://') ? (origin + pathname) : 'https://nammudenaadu.com/';
+    return `${base}?quote=${encodeURIComponent(quoteId || '')}`;
+  }
+  window.getStudioQuoteShareUrl = getStudioQuoteShareUrl;
+
+  async function openStudioQuoteModal(quoteId = null, mode = null) {
+    if (mode) {
+      window._studioQuoteMode = mode;
+    } else if (APP_STATE && APP_STATE.currentUser && (APP_STATE.currentUser.role === 'business' || (APP_STATE.currentUser.profession && (APP_STATE.currentUser.profession.toLowerCase().includes('studio') || APP_STATE.currentUser.profession.toLowerCase().includes('photo'))))) {
+      window._studioQuoteMode = 'studio';
+    } else {
+      window._studioQuoteMode = 'customer';
+    }
+
+    if (quoteId) {
+      if (typeof toast === 'function') toast('⏳ കൊട്ടേഷൻ ലോഡ് ചെയ്യുന്നു...');
+      let quote = null;
+      if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.fetchStudioQuote === 'function') {
+        quote = await window.NN_SUPABASE_SERVICES.fetchStudioQuote(quoteId);
+      }
+      if (!quote) {
+        try {
+          const raw = localStorage.getItem('nn_studio_quotes');
+          const map = raw ? JSON.parse(raw) : {};
+          quote = map[quoteId] || null;
+        } catch (_) {}
+      }
+      if (quote) {
+        window._activeQuote = quote;
+        if (Array.isArray(quote.services)) {
+          window._quoteSelectedServices = new Set(quote.services);
+        }
+        if (quote.event_type) {
+          window._quoteSelectedEventType = quote.event_type;
+        }
+      } else {
+        initNewDraftQuote(quoteId);
+      }
+    } else {
+      initNewDraftQuote();
+    }
+
+    renderStudioQuoteView();
+    openModal('modal-studio-quote');
+  }
+  window.openStudioQuoteModal = openStudioQuoteModal;
+
+  function initNewDraftQuote(forcedId = null) {
+    const id = forcedId || ('NNQ-' + Math.floor(100000 + Math.random() * 900000));
+    const user = (APP_STATE && APP_STATE.currentUser) ? APP_STATE.currentUser : {};
+    window._activeQuote = {
+      id,
+      studio_id: user.id || 'studio_kerala',
+      studio_name: user.businessName || (user.name && user.name !== 'നാട്ടുകാരൻ' ? user.name + ' സ്റ്റുഡിയോ' : 'റോയൽ വെഡിങ് സ്റ്റുഡിയോ (Royal Studio)'),
+      studio_phone: user.phone || '9447000000',
+      studio_location: (APP_STATE.location && APP_STATE.location.name) ? APP_STATE.location.name : 'Kottayam, Kerala',
+      customer_name: (window._studioQuoteMode === 'customer' && user.name && user.name !== 'നാട്ടുകാരൻ') ? user.name : '',
+      customer_phone: (window._studioQuoteMode === 'customer' && user.phone) ? user.phone : '',
+      event_type: 'Wedding (വിവാഹം)',
+      event_date: '',
+      event_time: 'Full Day (മുഴുവൻ ദിവസം)',
+      event_venue: '',
+      services: Array.from(window._quoteSelectedServices),
+      customer_notes: '',
+      quote_amount: null,
+      advance_amount: null,
+      deliverables: '2 Candid Photographers + 1 Traditional 4K Video + Drone Aerial Highlights + 40-sheet Premium Album',
+      studio_notes: 'നിങ്ങളുടെ തീയതി ഇപ്പോൾ ലഭ്യമാണ്. വേഗത്തിൽ ബുക്കിംഗ് ഉറപ്പാക്കാം.',
+      status: 'draft',
+      created_at: Date.now()
+    };
+  }
+
+  function toggleStudioQuoteMode() {
+    window._studioQuoteMode = window._studioQuoteMode === 'customer' ? 'studio' : 'customer';
+    if (typeof toast === 'function') {
+      toast(window._studioQuoteMode === 'studio' ? '🛠️ സ്റ്റുഡിയോ മോഡ് (റേറ്റ് നൽകാം)' : '👁️ കസ്റ്റമർ കാഴ്‌ച (ബുക്കിംഗ് പേജ്)');
+    }
+    renderStudioQuoteView();
+  }
+  window.toggleStudioQuoteMode = toggleStudioQuoteMode;
+
+  function selectQuoteEventType(type, el) {
+    window._quoteSelectedEventType = type;
+    if (window._activeQuote) window._activeQuote.event_type = type;
+    document.querySelectorAll('.quote-event-pill').forEach(p => p.classList.remove('active'));
+    if (el) el.classList.add('active');
+  }
+  window.selectQuoteEventType = selectQuoteEventType;
+
+  function toggleQuoteServiceChip(svc, el) {
+    if (window._quoteSelectedServices.has(svc)) {
+      window._quoteSelectedServices.delete(svc);
+      if (el) el.classList.remove('active');
+    } else {
+      window._quoteSelectedServices.add(svc);
+      if (el) el.classList.add('active');
+    }
+    if (window._activeQuote) {
+      window._activeQuote.services = Array.from(window._quoteSelectedServices);
+    }
+  }
+  window.toggleQuoteServiceChip = toggleQuoteServiceChip;
+
+  function renderStudioQuoteView() {
+    const q = window._activeQuote;
+    const body = document.getElementById('studioQuoteBody');
+    const toggleBtn = document.getElementById('quoteModeToggleBtn');
+    const titleEl = document.getElementById('quoteModalTitle');
+    const subEl = document.getElementById('quoteModalSubtitle');
+    if (!q || !body) return;
+
+    const isStudio = window._studioQuoteMode === 'studio';
+    if (toggleBtn) {
+      toggleBtn.textContent = isStudio ? '👁️ കസ്റ്റമർ കാഴ്‌ച' : '🛠️ സ്റ്റുഡിയോ മോഡ്';
+      toggleBtn.style.background = isStudio ? '#FEF3C7' : '#EEF2FF';
+      toggleBtn.style.color = isStudio ? '#B45309' : '#4338CA';
+      toggleBtn.style.borderColor = isStudio ? '#FDE68A' : '#C7D2FE';
+    }
+
+    if (titleEl) {
+      titleEl.textContent = `${q.studio_name} • കൊട്ടേഷൻ`;
+    }
+    if (subEl) {
+      subEl.textContent = `ക്വോട്ട് നമ്പർ: #${q.id}`;
+    }
+
+    // Update Stepper
+    const pReq = document.getElementById('stepPillReq');
+    const pRate = document.getElementById('stepPillRate');
+    const pBook = document.getElementById('stepPillBook');
+    const pThanks = document.getElementById('stepPillThanks');
+
+    const setStepState = (el, active, completed) => {
+      if (!el) return;
+      el.className = 'quote-step-item' + (completed ? ' completed' : (active ? ' active' : ''));
+    };
+
+    if (q.status === 'draft') {
+      setStepState(pReq, true, false);
+      setStepState(pRate, false, false);
+      setStepState(pBook, false, false);
+      setStepState(pThanks, false, false);
+    } else if (q.status === 'requirements_submitted') {
+      setStepState(pReq, false, true);
+      setStepState(pRate, true, false);
+      setStepState(pBook, false, false);
+      setStepState(pThanks, false, false);
+    } else if (q.status === 'quoted') {
+      setStepState(pReq, false, true);
+      setStepState(pRate, false, true);
+      setStepState(pBook, true, false);
+      setStepState(pThanks, false, false);
+    } else if (q.status === 'booked') {
+      setStepState(pReq, false, true);
+      setStepState(pRate, false, true);
+      setStepState(pBook, false, true);
+      setStepState(pThanks, true, true);
+    }
+
+    // ==========================================
+    // STAGE 4: BOOKED / CONFIRMED -> ADIPOLI THANKS CARD
+    // ==========================================
+    if (q.status === 'booked') {
+      const deliverablesList = (q.deliverables || (q.services && q.services.join(', ')) || 'Traditional + Candid Coverage');
+      body.innerHTML = `
+        <div class="studio-thanks-card">
+          <div class="thanks-confetti-emoji">🎉 🎊 ✨</div>
+          <div class="thanks-badge-pill">
+            <span>🤝 ബുക്കിംഗ് വിജയകരമായി ഉറപ്പിച്ചു!</span>
+          </div>
+          <h2 style="margin:4px 0 8px;font-size:20px;font-weight:900;color:#0F172A;line-height:1.25">
+            നന്ദി! നിങ്ങളുടെ ബുക്കിംഗ് വിജയകരമായി ഉറപ്പിച്ചു!
+          </h2>
+          <div style="font-size:13px;color:#64748B;margin-bottom:16px">
+            Thank you for booking with <strong>${escapeHtml(q.studio_name)}</strong>!
+          </div>
+
+          <div class="thanks-summary-box">
+            <div style="font-size:11.5px;font-weight:800;color:#64748B;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">
+              <span>ബുക്കിംഗ് രസീത് (Booking Receipt)</span>
+              <span style="color:#059669;font-weight:800">#${escapeHtml(q.id)}</span>
+            </div>
+            <div class="thanks-summary-row">
+              <span style="color:#64748B">ഇവന്റ് (Event):</span>
+              <strong style="color:#0F172A">${escapeHtml(q.event_type || 'Wedding')}</strong>
+            </div>
+            <div class="thanks-summary-row">
+              <span style="color:#64748B">തീയതി & സമയം:</span>
+              <strong style="color:#0F172A">${escapeHtml(q.event_date || 'തീയതി നിശ്ചയിച്ചു')} • ${escapeHtml(q.event_time || 'Full Day')}</strong>
+            </div>
+            <div class="thanks-summary-row">
+              <span style="color:#64748B">സ്ഥലം / ഹാൾ:</span>
+              <strong style="color:#0F172A">${escapeHtml(q.event_venue || 'സ്ഥലം നൽകിയിട്ടുണ്ട്')}</strong>
+            </div>
+            <div class="thanks-summary-row">
+              <span style="color:#64748B">ആകെ പാക്കേജ് തുക:</span>
+              <strong style="color:#059669;font-size:15px">₹${Number(q.quote_amount || 0).toLocaleString('en-IN')}</strong>
+            </div>
+            <div class="thanks-summary-row">
+              <span style="color:#64748B">മുൻകൂർ തുക (Advance):</span>
+              <strong style="color:#2563EB">₹${Number(q.advance_amount || 0).toLocaleString('en-IN')}</strong>
+            </div>
+            <div class="thanks-summary-row">
+              <span style="color:#64748B">സർവീസുകൾ:</span>
+              <span style="color:#334155;text-align:right;max-width:65%">${escapeHtml(deliverablesList)}</span>
+            </div>
+            <div class="thanks-summary-row">
+              <span style="color:#64748B">കസ്റ്റമർ:</span>
+              <strong style="color:#0F172A">${escapeHtml(q.customer_name || 'കസ്റ്റമർ')} (📞 ${escapeHtml(q.customer_phone || '')})</strong>
+            </div>
+            <div class="thanks-summary-row">
+              <span style="color:#64748B">സ്റ്റുഡിയോ:</span>
+              <strong style="color:#0F172A">${escapeHtml(q.studio_name)} (📞 ${escapeHtml(q.studio_phone)})</strong>
+            </div>
+          </div>
+
+          <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:14px;padding:12px;margin-bottom:16px;font-size:12.5px;color:#92400E;line-height:1.4">
+            "നിങ്ങളുടെ ജീവിതത്തിലെ ഏറ്റവും അവിസ്മരണീയ നിമിഷങ്ങൾ അതീവ മനോഹരമായി പകർത്താൻ ഞങ്ങളുടെ ഫോട്ടോഗ്രഫി ടീം പ്രതിജ്ഞാബദ്ധരാണ്! ❤️"
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <button type="button" class="quote-whatsapp-btn" onclick="shareStudioQuoteToWhatsApp()">
+              <span style="font-size:18px">💬</span>
+              <span>WhatsApp-ൽ സ്ഥിരീകരണ രസീത് അയക്കാം</span>
+            </button>
+            <div style="display:flex;gap:10px">
+              <a href="tel:${escapeHtml(q.studio_phone)}" style="flex:1;background:#F1F5F9;color:#0F172A;padding:12px;border-radius:14px;font-size:13px;font-weight:800;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px">
+                <span>📞</span> <span>സ്റ്റുഡിയോ വിളിക്കാം</span>
+              </a>
+              <button type="button" onclick="copyStudioQuoteLink()" style="flex:1;background:#EEF2FF;color:#4338CA;border:1px solid #C7D2FE;padding:12px;border-radius:14px;font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+                <span>📋</span> <span>ലിങ്ക് കോപ്പി ചെയ്യാം</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    // ==========================================
+    // STAGE 3: QUOTED -> CUSTOMER REVIEWS & BOOKS INSTANTLY
+    // ==========================================
+    if (q.status === 'quoted') {
+      const deliverablesList = (q.deliverables || (q.services && q.services.join(', ')) || '');
+      body.innerHTML = `
+        <div>
+          <!-- STUDIO BADGE & HEADER -->
+          <div style="background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:18px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:44px;height:44px;border-radius:12px;background:#EEF2FF;display:flex;align-items:center;justify-content:center;font-size:22px">📸</div>
+              <div>
+                <div style="font-weight:800;font-size:15px;color:#0F172A">${escapeHtml(q.studio_name)}</div>
+                <div style="font-size:11.5px;color:#64748B">📍 ${escapeHtml(q.studio_location || 'Kerala')} • 📞 ${escapeHtml(q.studio_phone)}</div>
+              </div>
+            </div>
+            <span style="font-size:11px;background:#ECFDF5;color:#059669;padding:4px 10px;border-radius:20px;font-weight:800;border:1px solid #A7F3D0">✨ കൊട്ടേഷൻ റെഡി</span>
+          </div>
+
+          <!-- GREEN HERO RATE CARD -->
+          <div class="quote-rate-hero">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+              <span style="font-size:12px;text-transform:uppercase;letter-spacing:0.5px;color:#A7F3D0;font-weight:800">ആകെ പാക്കേജ് തുക (Total Rate)</span>
+              <span style="font-size:12px;background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:10px">പ്രത്യേക ഓഫർ</span>
+            </div>
+            <div style="font-size:32px;font-weight:900;letter-spacing:-0.5px;margin-bottom:6px">
+              ₹${Number(q.quote_amount || 0).toLocaleString('en-IN')}
+            </div>
+            <div style="font-size:13px;color:#D1FAE5;display:flex;align-items:center;gap:6px">
+              <span>💳 മുൻകൂർ നൽകേണ്ടത് (Advance):</span>
+              <strong style="color:#FFFFFF;font-size:15px">₹${Number(q.advance_amount || 0).toLocaleString('en-IN')}</strong>
+            </div>
+          </div>
+
+          <!-- DELIVERABLES & INCLUSIONS -->
+          <div style="background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:18px;padding:16px;margin-bottom:14px">
+            <h4 style="margin:0 0 10px;font-size:13.5px;font-weight:800;color:#0F172A;display:flex;align-items:center;gap:6px">
+              <span>📦</span> <span>ഉൾപ്പെടുന്ന കാര്യങ്ങൾ (Deliverables):</span>
+            </h4>
+            <div style="font-size:13px;color:#334155;line-height:1.6;background:#F8FAFC;padding:12px;border-radius:12px;border:1px solid #F1F5F9;white-space:pre-line">
+              ${escapeHtml(deliverablesList || 'സേവനങ്ങൾ ഉൾപ്പെടുത്തിയിട്ടുണ്ട്')}
+            </div>
+            ${q.studio_notes ? `
+              <div style="margin-top:10px;font-size:12.5px;color:#64748B;font-style:italic">
+                💬 സന്ദേശം: "${escapeHtml(q.studio_notes)}"
+              </div>
+            ` : ''}
+          </div>
+
+          <!-- EVENT SUMMARY RECAP -->
+          <div style="background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:16px;padding:14px;margin-bottom:16px">
+            <div style="font-size:11.5px;font-weight:800;color:#64748B;text-transform:uppercase;margin-bottom:8px">ഇവന്റ് വിവരങ്ങൾ (Event Details)</div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px">
+              <span style="color:#64748B">ഇവന്റ്:</span>
+              <strong style="color:#0F172A">${escapeHtml(q.event_type || 'Wedding')}</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px">
+              <span style="color:#64748B">തീയതി:</span>
+              <strong style="color:#0F172A">${escapeHtml(q.event_date || 'Not set')} (${escapeHtml(q.event_time || '')})</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:13px">
+              <span style="color:#64748B">സ്ഥലം / ഹാൾ:</span>
+              <strong style="color:#0F172A">${escapeHtml(q.event_venue || 'Not set')}</strong>
+            </div>
+          </div>
+
+          <!-- ACTION BUTTONS -->
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <button type="button" onclick="confirmCustomerQuoteBooking()" 
+                    style="width:100%;padding:14px;background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#FFFFFF;border:none;border-radius:16px;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 4px 16px rgba(5,150,105,0.3);display:flex;align-items:center;justify-content:center;gap:8px">
+              <span>🤝</span> <span>കൊട്ടേഷൻ സ്വീകരിച്ചു ബുക്ക് ചെയ്യാം (Accept & Book Now)</span>
+            </button>
+
+            <div style="display:flex;gap:10px">
+              <a href="tel:${escapeHtml(q.studio_phone)}" style="flex:1;background:#F1F5F9;color:#0F172A;padding:11px;border-radius:12px;font-size:12.5px;font-weight:800;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px">
+                <span>📞</span> <span>വിളിച്ചു സംസാരിക്കാം</span>
+              </a>
+              <button type="button" class="quote-whatsapp-btn" style="flex:1;padding:11px;font-size:12.5px" onclick="shareStudioQuoteToWhatsApp()">
+                <span>💬</span> <span>WhatsApp</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    // ==========================================
+    // STAGE 2: REQUIREMENTS SUBMITTED -> STUDIO ADDS RATE
+    // ==========================================
+    if (q.status === 'requirements_submitted') {
+      if (isStudio) {
+        // STUDIO OWNER VIEW: Fill in rate
+        body.innerHTML = `
+          <div>
+            <div style="background:#ECFDF5;border:1.5px solid #A7F3D0;border-radius:16px;padding:14px;margin-bottom:14px">
+              <div style="display:flex;align-items:center;gap:8px;font-weight:800;color:#065F46;font-size:13.5px;margin-bottom:6px">
+                <span>🔔</span> <span>കസ്റ്റമർ ആവശ്യങ്ങൾ നൽകിയിട്ടുണ്ട്!</span>
+              </div>
+              <div style="font-size:12px;color:#047857;line-height:1.4">
+                താഴെ കാണുന്ന ആവശ്യങ്ങൾ പരിശോധിച്ച് നിങ്ങളുടെ ആകെ നിരക്കും മുൻകൂർ തുകയും നൽകുക. കസ്റ്റമർക്ക് ഉടൻ തന്നെ ഈ ലിങ്കിൽ കാണാൻ കഴിയും.
+              </div>
+            </div>
+
+            <!-- CUSTOMER DETAILS SUMMARY -->
+            <div style="background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:16px;padding:14px;margin-bottom:14px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                <span style="font-size:12px;font-weight:800;color:#64748B;text-transform:uppercase">കസ്റ്റമർ വിവരങ്ങൾ</span>
+                <a href="tel:${escapeHtml(q.customer_phone)}" style="background:#2563EB;color:#fff;padding:4px 10px;border-radius:20px;font-size:11.5px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;gap:4px">
+                  <span>📞</span> <span>വിളിക്കുക</span>
+                </a>
+              </div>
+              <div style="font-size:13.5px;font-weight:800;color:#0F172A;margin-bottom:4px">
+                👤 ${escapeHtml(q.customer_name || 'കസ്റ്റമർ')} (📞 ${escapeHtml(q.customer_phone || '')})
+              </div>
+              <div style="font-size:12.5px;color:#475569;margin-bottom:4px">
+                💍 ഇവന്റ്: <strong>${escapeHtml(q.event_type || 'Wedding')}</strong> • 📅 ${escapeHtml(q.event_date || 'Date not set')} (${escapeHtml(q.event_time || '')})
+              </div>
+              <div style="font-size:12.5px;color:#475569;margin-bottom:6px">
+                📍 ഹാൾ / സ്ഥലം: <strong>${escapeHtml(q.event_venue || 'Venue not set')}</strong>
+              </div>
+              <div style="font-size:12px;color:#2563EB;background:#EFF6FF;padding:8px 10px;border-radius:10px">
+                ✨ ആവശ്യങ്ങൾ: <strong>${Array.isArray(q.services) ? q.services.join(', ') : 'All coverage'}</strong>
+              </div>
+              ${q.customer_notes ? `
+                <div style="margin-top:6px;font-size:12px;color:#64748B;font-style:italic">
+                  കുറിപ്പ്: "${escapeHtml(q.customer_notes)}"
+                </div>
+              ` : ''}
+            </div>
+
+            <!-- STUDIO RATE ENTRY FORM -->
+            <div style="background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:18px;padding:16px;margin-bottom:16px">
+              <h4 style="margin:0 0 12px;font-size:14px;font-weight:800;color:#0F172A">
+                💰 കൊട്ടേഷൻ നിരക്ക് നൽകാം (Quotation Details):
+              </h4>
+
+              <div style="margin-bottom:12px">
+                <label style="display:block;font-size:12px;font-weight:700;color:#475569;margin-bottom:4px">ആകെ പാക്കേജ് തുക (Total Package Rate ₹) *</label>
+                <div style="position:relative">
+                  <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-weight:800;color:#64748B">₹</span>
+                  <input type="number" id="quoteRateAmount" value="${q.quote_amount || ''}" placeholder="ഉദാ: 45000" 
+                         style="width:100%;padding:11px 12px 11px 32px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:15px;font-weight:800;box-sizing:border-box">
+                </div>
+              </div>
+
+              <div style="margin-bottom:12px">
+                <label style="display:block;font-size:12px;font-weight:700;color:#475569;margin-bottom:4px">മുൻകൂർ നൽകേണ്ട തുക (Advance Amount ₹)</label>
+                <div style="position:relative">
+                  <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-weight:800;color:#64748B">₹</span>
+                  <input type="number" id="quoteAdvanceAmount" value="${q.advance_amount || ''}" placeholder="ഉദാ: 10000" 
+                         style="width:100%;padding:11px 12px 11px 32px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:14px;font-weight:700;box-sizing:border-box">
+                </div>
+              </div>
+
+              <div style="margin-bottom:12px">
+                <label style="display:block;font-size:12px;font-weight:700;color:#475569;margin-bottom:4px">ഉൾപ്പെടുന്ന സേവനങ്ങൾ & ആൽബം (Deliverables)</label>
+                <textarea id="quoteDeliverables" rows="3" placeholder="ഉദാ: 2 Candid Photographers, 1 Traditional, 4K Cinematic Highlights, 40-sheet Metallic Album + Drone Included" 
+                          style="width:100%;padding:10px 12px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13px;font-weight:600;box-sizing:border-box;resize:vertical">${escapeHtml(q.deliverables || '')}</textarea>
+              </div>
+
+              <div style="margin-bottom:14px">
+                <label style="display:block;font-size:12px;font-weight:700;color:#475569;margin-bottom:4px">കസ്റ്റമർക്കുള്ള സന്ദേശം (Studio Note)</label>
+                <input type="text" id="quoteStudioNotes" value="${escapeHtml(q.studio_notes || '')}" placeholder="ഉദാ: നിങ്ങളുടെ തീയതി ഇപ്പോൾ ലഭ്യമാണ്. വേഗം ബുക്ക് ചെയ്യുക." 
+                       style="width:100%;padding:10px 12px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13px;box-sizing:border-box">
+              </div>
+
+              <button type="button" onclick="submitStudioQuotationRate()" 
+                      style="width:100%;padding:13px;background:linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);color:#FFFFFF;border:none;border-radius:14px;font-size:14.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 3px 12px rgba(29,78,216,0.3)">
+                <span>📨</span> <span>റേറ്റ് കസ്റ്റമർക്ക് നൽകാം (Send Quotation)</span>
+              </button>
+            </div>
+          </div>
+        `;
+      } else {
+        // CUSTOMER VIEW: Waiting for Studio Rate
+        body.innerHTML = `
+          <div style="text-align:center;padding:10px 0">
+            <div style="font-size:44px;margin-bottom:8px">⏳</div>
+            <div style="font-size:12px;background:#EFF6FF;color:#1D4ED8;padding:4px 12px;border-radius:20px;font-weight:800;display:inline-block;margin-bottom:10px">
+              ആവശ്യങ്ങൾ സമർപ്പിച്ചു
+            </div>
+            <h3 style="margin:0 0 6px;font-size:18px;font-weight:800;color:#0F172A">
+              സ്റ്റുഡിയോ കൊട്ടേഷൻ തയ്യാറാക്കുന്നു...
+            </h3>
+            <p style="margin:0 0 16px;font-size:13px;color:#64748B;line-height:1.4">
+              നിങ്ങളുടെ ഇവന്റ് വിവരങ്ങൾ <strong>${escapeHtml(q.studio_name)}</strong>-ക്ക് കൈമാറിയിട്ടുണ്ട്. സ്റ്റുഡിയോക്കാരൻ ഉടൻ തന്നെ ഇതിൽ നിരക്ക് നൽകും.
+            </p>
+
+            <div style="background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:18px;padding:16px;text-align:left;margin-bottom:16px">
+              <div style="font-size:11.5px;font-weight:800;color:#64748B;text-transform:uppercase;margin-bottom:10px">നിങ്ങൾ നൽകിയ വിവരങ്ങൾ:</div>
+              <div style="font-size:13px;margin-bottom:6px">💍 ഇവന്റ്: <strong>${escapeHtml(q.event_type)}</strong></div>
+              <div style="font-size:13px;margin-bottom:6px">📅 തീയതി: <strong>${escapeHtml(q.event_date || 'Date not set')} • ${escapeHtml(q.event_time)}</strong></div>
+              <div style="font-size:13px;margin-bottom:6px">📍 സ്ഥലം: <strong>${escapeHtml(q.event_venue || 'Venue not set')}</strong></div>
+              <div style="font-size:13px;margin-bottom:6px">✨ സർവീസുകൾ: <strong>${Array.isArray(q.services) ? q.services.join(', ') : ''}</strong></div>
+              <div style="font-size:13px">👤 കസ്റ്റമർ: <strong>${escapeHtml(q.customer_name)} (📞 ${escapeHtml(q.customer_phone)})</strong></div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <button type="button" onclick="openStudioQuoteModal('${escapeHtml(q.id)}')" 
+                      style="width:100%;padding:12px;background:#F8FAFC;border:1.5px solid #CBD5E1;border-radius:14px;font-size:13px;font-weight:800;color:#0F172A;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+                <span>🔄</span> <span>സ്റ്റാറ്റസ് റീഫ്രഷ് ചെയ്യാം</span>
+              </button>
+              <div style="display:flex;gap:10px">
+                <a href="tel:${escapeHtml(q.studio_phone)}" style="flex:1;background:#2563EB;color:#FFFFFF;padding:12px;border-radius:14px;font-size:13px;font-weight:800;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px">
+                  <span>📞</span> <span>സ്റ്റുഡിയോ വിളിക്കാം</span>
+                </a>
+                <button type="button" class="quote-whatsapp-btn" style="flex:1" onclick="shareStudioQuoteToWhatsApp()">
+                  <span>💬</span> <span>WhatsApp</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      return;
+    }
+
+    // ==========================================
+    // STAGE 1: DRAFT -> CUSTOMER REQUIREMENT FORM
+    // ==========================================
+    const EVENT_TYPES = [
+      { id: 'Wedding (വിവാഹം)', icon: '💍', label: 'വിവാഹം' },
+      { id: 'Engagement (നിശ്ചയം)', icon: '💐', label: 'നിശ്ചയം' },
+      { id: 'Birthday (ജന്മദിനം)', icon: '🎂', label: 'ജന്മദിനം' },
+      { id: 'Baptism (മാമോദീസ)', icon: '👶', label: 'മാമോദീസ' },
+      { id: 'Housewarming (ഹൗസ് വാമിംഗ്)', icon: '🏡', label: 'ഹൗസ് വാമിംഗ്' },
+      { id: 'Modeling / Portfolio', icon: '📸', label: 'മോഡലിംഗ്' },
+      { id: 'Other Events (മറ്റുള്ളവ)', icon: '🌟', label: 'മറ്റുള്ളവ' }
+    ];
+
+    const ALL_SERVICES = [
+      { id: 'Traditional Photography', label: '📸 ട്രഡീഷണൽ ഫോട്ടോ' },
+      { id: 'Candid Photography', label: '✨ കാൻഡിഡ് ഫോട്ടോ' },
+      { id: 'Cinematic Video', label: '🎥 4K സിനിമാറ്റിക്' },
+      { id: 'Drone Shoot', label: '🛸 ഡ്രോൺ ഷൂട്ട്' },
+      { id: 'Premium Album', label: '📖 പ്രീമിയം ആൽബം' },
+      { id: 'Live Streaming', label: '🔴 യൂട്യൂബ് ലൈവ്' },
+      { id: 'Pre/Post Wedding Outdoor', label: '📷 ഔട്ട്ഡോർ ഷൂട്ട്' }
+    ];
+
+    body.innerHTML = `
+      <div>
+        <!-- STUDIO INFO BAR -->
+        <div style="background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:18px;padding:14px 16px;margin-bottom:14px">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:40px;height:40px;border-radius:12px;background:#EEF2FF;display:flex;align-items:center;justify-content:center;font-size:20px">📸</div>
+              <div>
+                <div style="font-weight:800;font-size:14.5px;color:#0F172A">${escapeHtml(q.studio_name)}</div>
+                <div style="font-size:11.5px;color:#64748B">📍 ${escapeHtml(q.studio_location || 'Kerala')} • 📞 ${escapeHtml(q.studio_phone)}</div>
+              </div>
+            </div>
+            <button type="button" onclick="copyStudioQuoteLink()" style="background:#F1F5F9;border:none;padding:5px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">📋 ലിങ്ക്</button>
+          </div>
+        </div>
+
+        <!-- SHARE TO CUSTOMER ROW (IF STUDIO OWNER) -->
+        <div style="background:#EFF6FF;border:1px dashed #93C5FD;border-radius:14px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px">
+          <div style="font-size:12px;color:#1E40AF">
+            💬 <strong>കസ്റ്റമർക്ക് അയക്കാം:</strong> ഈ ലിങ്ക് അയച്ചു കൊടുത്താൽ കസ്റ്റമർക്ക് ആവശ്യങ്ങൾ പൂരിപ്പിക്കാം.
+          </div>
+          <button type="button" class="quote-whatsapp-btn" style="width:auto;padding:6px 12px;font-size:11.5px" onclick="shareStudioQuoteToWhatsApp()">
+            <span>WhatsApp</span>
+          </button>
+        </div>
+
+        <!-- EVENT REQUIREMENT FORM -->
+        <div style="background:#FFFFFF;border:1.5px solid #E2E8F0;border-radius:18px;padding:16px;margin-bottom:16px">
+          <h4 style="margin:0 0 12px;font-size:14px;font-weight:800;color:#0F172A">
+            📋 ഇവന്റ് വിവരങ്ങൾ നൽകുക (Event Requirements):
+          </h4>
+
+          <!-- EVENT TYPE CHIPS -->
+          <div style="margin-bottom:14px">
+            <label style="display:block;font-size:12px;font-weight:700;color:#475569;margin-bottom:6px">ഇവന്റ് തരം (Event Type) *</label>
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              ${EVENT_TYPES.map(e => `
+                <button type="button" class="quote-chip quote-event-pill ${window._quoteSelectedEventType === e.id ? 'active' : ''}" 
+                        onclick="selectQuoteEventType('${e.id}', this)">
+                  <span>${e.icon}</span> <span>${e.label}</span>
+                </button>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- EVENT DATE & TIME -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+            <div>
+              <label style="display:block;font-size:12px;font-weight:700;color:#475569;margin-bottom:4px">ഇവന്റ് തീയതി (Date) *</label>
+              <input type="date" id="quoteEventDate" value="${q.event_date || ''}" 
+                     style="width:100%;padding:10px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13px;font-weight:700;box-sizing:border-box">
+            </div>
+            <div>
+              <label style="display:block;font-size:12px;font-weight:700;color:#475569;margin-bottom:4px">സമയം / Duration</label>
+              <select id="quoteEventTime" style="width:100%;padding:10px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13px;font-weight:700;box-sizing:border-box">
+                <option value="Full Day (മുഴുവൻ ദിവസം)" ${q.event_time.includes('Full') ? 'selected' : ''}>Full Day</option>
+                <option value="Morning / പകൽ" ${q.event_time.includes('Morning') ? 'selected' : ''}>Morning</option>
+                <option value="Evening / വൈകുന്നേരം" ${q.event_time.includes('Evening') ? 'selected' : ''}>Evening</option>
+                <option value="2 Days (രണ്ട് ദിവസം)" ${q.event_time.includes('2') ? 'selected' : ''}>2 Days</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- VENUE / AUDITORIUM -->
+          <div style="margin-bottom:14px">
+            <label style="display:block;font-size:12px;font-weight:700;color:#475569;margin-bottom:4px">സ്ഥലം / ഹാൾ / ഓഡിറ്റോറിയം (Venue) *</label>
+            <input type="text" id="quoteEventVenue" value="${escapeHtml(q.event_venue || '')}" placeholder="ഉദാ: ടൗൺ ഹാൾ, കോട്ടയം" 
+                   style="width:100%;padding:11px 12px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13.5px;box-sizing:border-box">
+          </div>
+
+          <!-- SERVICES DESIRED (MULTI-SELECT CHIPS) -->
+          <div style="margin-bottom:14px">
+            <label style="display:block;font-size:12px;font-weight:700;color:#475569;margin-bottom:6px">ആവശ്യമുള്ള സർവീസുകൾ (Services Required)</label>
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              ${ALL_SERVICES.map(s => `
+                <button type="button" class="quote-chip ${window._quoteSelectedServices.has(s.id) ? 'active' : ''}" 
+                        onclick="toggleQuoteServiceChip('${s.id}', this)">
+                  ${s.label}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- CUSTOMER CONTACT -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+            <div>
+              <label style="display:block;font-size:12px;font-weight:700;color:#475569;margin-bottom:4px">നിങ്ങളുടെ പേര് (Name) *</label>
+              <input type="text" id="quoteCustomerName" value="${escapeHtml(q.customer_name || '')}" placeholder="പേര്" 
+                     style="width:100%;padding:10px 12px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13px;font-weight:700;box-sizing:border-box">
+            </div>
+            <div>
+              <label style="display:block;font-size:12px;font-weight:700;color:#475569;margin-bottom:4px">മൊബൈൽ നമ്പർ (Phone) *</label>
+              <input type="tel" id="quoteCustomerPhone" value="${escapeHtml(q.customer_phone || '')}" placeholder="ഫോൺ നമ്പർ" 
+                     style="width:100%;padding:10px 12px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13px;font-weight:700;box-sizing:border-box">
+            </div>
+          </div>
+
+          <!-- EXTRA NOTES -->
+          <div style="margin-bottom:16px">
+            <label style="display:block;font-size:12px;font-weight:700;color:#475569;margin-bottom:4px">പ്രത്യേക ആവശ്യങ്ങൾ / കുറിപ്പുകൾ (Optional)</label>
+            <textarea id="quoteCustomerNotes" rows="2" placeholder="ഉദാ: ഡ്രോൺ ഷൂട്ട് രാവിലെ ആവശ്യമാണ്..." 
+                      style="width:100%;padding:10px 12px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13px;box-sizing:border-box;resize:vertical">${escapeHtml(q.customer_notes || '')}</textarea>
+          </div>
+
+          <button type="button" onclick="submitCustomerRequirements()" 
+                  style="width:100%;padding:13px;background:linear-gradient(135deg, #4338CA 0%, #312E81 100%);color:#FFFFFF;border:none;border-radius:14px;font-size:14.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 3px 12px rgba(67,56,202,0.3)">
+            <span>💾</span> <span>ആവശ്യങ്ങൾ സ്റ്റുഡിയോക്ക് സമർപ്പിക്കാം ➔</span>
+          </button>
+        </div>
+      </div>
+    `;
+  }
+  window.renderStudioQuoteView = renderStudioQuoteView;
+
+  async function submitCustomerRequirements() {
+    const q = window._activeQuote;
+    if (!q) return;
+
+    const dateVal = document.getElementById('quoteEventDate')?.value;
+    const timeVal = document.getElementById('quoteEventTime')?.value;
+    const venueVal = document.getElementById('quoteEventVenue')?.value;
+    const nameVal = document.getElementById('quoteCustomerName')?.value;
+    const phoneVal = document.getElementById('quoteCustomerPhone')?.value;
+    const notesVal = document.getElementById('quoteCustomerNotes')?.value;
+
+    if (!nameVal || !nameVal.trim()) {
+      if (typeof toast === 'function') toast('⚠️ ദയവായി നിങ്ങളുടെ പേര് നൽകുക.');
+      return;
+    }
+    if (!phoneVal || phoneVal.trim().length < 7) {
+      if (typeof toast === 'function') toast('⚠️ ദയവായി സാധുവായ മൊബൈൽ നമ്പർ നൽകുക.');
+      return;
+    }
+
+    q.customer_name = nameVal.trim();
+    q.customer_phone = phoneVal.trim();
+    q.event_date = dateVal || '';
+    q.event_time = timeVal || 'Full Day';
+    q.event_venue = venueVal ? venueVal.trim() : '';
+    q.customer_notes = notesVal ? notesVal.trim() : '';
+    q.services = Array.from(window._quoteSelectedServices);
+    q.event_type = window._quoteSelectedEventType || 'Wedding (വിവാഹം)';
+    q.status = 'requirements_submitted';
+
+    if (typeof toast === 'function') toast('💾 ആവശ്യങ്ങൾ സേവ് ചെയ്യുന്നു...');
+    if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveStudioQuote === 'function') {
+      await window.NN_SUPABASE_SERVICES.saveStudioQuote(q);
+    }
+    if (typeof toast === 'function') toast('🎉 ആവശ്യങ്ങൾ സ്റ്റുഡിയോക്ക് സമർപ്പിച്ചു!');
+    renderStudioQuoteView();
+  }
+  window.submitCustomerRequirements = submitCustomerRequirements;
+
+  async function submitStudioQuotationRate() {
+    const q = window._activeQuote;
+    if (!q) return;
+
+    const rateVal = parseFloat(document.getElementById('quoteRateAmount')?.value || '0');
+    const advanceVal = parseFloat(document.getElementById('quoteAdvanceAmount')?.value || '0');
+    const deliverablesVal = document.getElementById('quoteDeliverables')?.value;
+    const studioNotesVal = document.getElementById('quoteStudioNotes')?.value;
+
+    if (!rateVal || rateVal <= 0) {
+      if (typeof toast === 'function') toast('⚠️ ദയവായി ആകെ തുക നൽകുക.');
+      return;
+    }
+
+    q.quote_amount = rateVal;
+    q.advance_amount = advanceVal || 0;
+    q.deliverables = deliverablesVal ? deliverablesVal.trim() : '';
+    q.studio_notes = studioNotesVal ? studioNotesVal.trim() : '';
+    q.status = 'quoted';
+
+    if (typeof toast === 'function') toast('💾 കൊട്ടേഷൻ സേവ് ചെയ്യുന്നു...');
+    if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveStudioQuote === 'function') {
+      await window.NN_SUPABASE_SERVICES.saveStudioQuote(q);
+    }
+    if (typeof toast === 'function') toast('📨 കൊട്ടേഷൻ സേവ് ചെയ്തു! കസ്റ്റമർക്ക് കാണാം.');
+    renderStudioQuoteView();
+  }
+  window.submitStudioQuotationRate = submitStudioQuotationRate;
+
+  async function confirmCustomerQuoteBooking() {
+    const q = window._activeQuote;
+    if (!q) return;
+
+    q.status = 'booked';
+    if (typeof toast === 'function') toast('🎉 ബുക്കിംഗ് ഉറപ്പാക്കുന്നു...');
+    if (window.NN_SUPABASE_SERVICES && typeof window.NN_SUPABASE_SERVICES.saveStudioQuote === 'function') {
+      await window.NN_SUPABASE_SERVICES.saveStudioQuote(q);
+    }
+    if (typeof toast === 'function') toast('🎉 അഭിനന്ദനങ്ങൾ! ബുക്കിംഗ് വിജയകരമായി ഉറപ്പിച്ചു!');
+    renderStudioQuoteView();
+  }
+  window.confirmCustomerQuoteBooking = confirmCustomerQuoteBooking;
+
+  function shareStudioQuoteToWhatsApp() {
+    const q = window._activeQuote;
+    if (!q) return;
+    const url = getStudioQuoteShareUrl(q.id);
+    let msg = '';
+
+    if (q.status === 'draft') {
+      msg = `നമസ്കാരം! നിങ്ങളുടെ ഇവന്റ് ഫോട്ടോഗ്രഫി/വീഡിയോ ആവശ്യങ്ങൾ നൽകുന്നതിനായി താഴെ കാണുന്ന ലിങ്കിൽ ക്ലിക്ക് ചെയ്യുക. ഞങ്ങൾ ഏറ്റവും മികച്ച കൊട്ടേഷൻ നൽകുന്നതാണ്:\n${url}\n- ${q.studio_name}`;
+    } else if (q.status === 'requirements_submitted') {
+      msg = `പ്രിയ ${q.studio_name},\nഞങ്ങളുടെ ${q.event_type} ഇവന്റ് ഫോട്ടോഗ്രഫി ആവശ്യങ്ങൾ ലിങ്കിൽ സമർപ്പിച്ചിട്ടുണ്ട്. ദയവായി പരിശോധിച്ചു റേറ്റ് നൽകുക:\n${url}\n- ${q.customer_name}`;
+    } else if (q.status === 'quoted') {
+      msg = `പ്രിയ ${q.customer_name},\nനിങ്ങളുടെ ${q.event_type} ഇവന്റിനായുള്ള ഞങ്ങളുടെ കൊട്ടേഷൻ തയ്യാറാണ്!\n💰 ആകെ പാക്കേജ് തുക: ₹${Number(q.quote_amount).toLocaleString('en-IN')} (മുൻകൂർ: ₹${Number(q.advance_amount).toLocaleString('en-IN')})\nവിശദവിവരങ്ങൾ കാണാനും ഉടൻ ബുക്ക് ചെയ്യാനും ക്ലിക്ക് ചെയ്യുക:\n${url}\n- ${q.studio_name}`;
+    } else if (q.status === 'booked') {
+      msg = `🎉 അഭിനന്ദനങ്ങൾ! ഫോട്ടോഗ്രഫി ബുക്കിംഗ് വിജയകരമായി ഉറപ്പിച്ചു!\n🔖 ബുക്കിംഗ് ഐഡി: #${q.id}\n💍 ഇവന്റ്: ${q.event_type}\n📅 തീയതി: ${q.event_date || 'നിശ്ചയിച്ച തീയതി'}\n📍 സ്ഥലം: ${q.event_venue || 'നിശ്ചയിച്ച ഹാൾ'}\n💰 ആകെ തുക: ₹${Number(q.quote_amount).toLocaleString('en-IN')}\n📸 സ്റ്റുഡിയോ: ${q.studio_name} (📞 ${q.studio_phone})\nലിങ്ക് കാണാം: ${url}\nനന്ദി!`;
+    }
+
+    const waUrl = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+    window.open(waUrl, '_blank');
+  }
+  window.shareStudioQuoteToWhatsApp = shareStudioQuoteToWhatsApp;
+
+  function copyStudioQuoteLink() {
+    const q = window._activeQuote;
+    if (!q) return;
+    const url = getStudioQuoteShareUrl(q.id);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(() => {
+        if (typeof toast === 'function') toast('📋 കൊട്ടേഷൻ ലിങ്ക് കോപ്പി ചെയ്തു!');
+      }).catch(() => {
+        if (typeof toast === 'function') toast(`📋 ലിങ്ക്: ${url}`);
+      });
+    } else {
+      if (typeof toast === 'function') toast(`📋 ലിങ്ക്: ${url}`);
+    }
+  }
+  window.copyStudioQuoteLink = copyStudioQuoteLink;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', _bootNammudeApp);

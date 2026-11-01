@@ -769,6 +769,41 @@ for update using (
   or (auth.role() = 'service_role')
 );
 
+-- 15. STUDIO QUOTE BOOKINGS TABLE (ഫോട്ടോഗ്രഫി & സ്റ്റുഡിയോ കൊട്ടേഷൻ ബുക്കിംഗ്)
+create table if not exists public.studio_quotes (
+  id text primary key,
+  studio_id text,
+  studio_name text not null,
+  studio_phone text not null,
+  studio_location text,
+  customer_name text,
+  customer_phone text,
+  event_type text,
+  event_date text,
+  event_time text,
+  event_venue text,
+  services jsonb default '[]'::jsonb,
+  customer_notes text,
+  quote_amount numeric,
+  advance_amount numeric,
+  deliverables text,
+  studio_notes text,
+  status text default 'draft', -- draft, requirements_submitted, quoted, booked, completed
+  created_at bigint not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now())
+);
+
+create index if not exists idx_studio_quotes_created_at on public.studio_quotes(created_at desc);
+
+alter table public.studio_quotes enable row level security;
+drop policy if exists "Allow public select studio_quotes" on public.studio_quotes;
+drop policy if exists "Allow public insert studio_quotes" on public.studio_quotes;
+drop policy if exists "Allow public update studio_quotes" on public.studio_quotes;
+
+create policy "Allow public select studio_quotes" on public.studio_quotes for select using (true);
+create policy "Allow public insert studio_quotes" on public.studio_quotes for insert with check (true);
+create policy "Allow public update studio_quotes" on public.studio_quotes for update using (true);
+
 create policy "Allow delete own notifications" on public.notifications
 for delete using (
   (auth.uid() is not null and user_id = auth.uid()::text)
