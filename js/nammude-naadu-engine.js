@@ -1143,7 +1143,7 @@
   // ==============================================================
   function navTo(screenId) {
     if (!screenId) return;
-    if (screenId !== 'splash' && typeof isUserRegistered === 'function' && !isUserRegistered()) {
+    if (screenId !== 'splash' && screenId !== 'home' && typeof isUserRegistered === 'function' && !isUserRegistered()) {
       if (typeof openMandatoryRegisterModal === 'function') {
         openMandatoryRegisterModal();
       }
@@ -1156,6 +1156,18 @@
       }
       return;
     }
+    if (!APP_STATE.screenHistory) {
+      APP_STATE.screenHistory = ['home'];
+    }
+    if (APP_STATE.currentScreen && APP_STATE.currentScreen !== screenId) {
+      if (APP_STATE.screenHistory[APP_STATE.screenHistory.length - 1] !== screenId) {
+        APP_STATE.screenHistory.push(screenId);
+      }
+    }
+    try {
+      history.pushState({ screen: screenId }, '', '#' + screenId);
+    } catch (_) {}
+
     APP_STATE.previousScreen = APP_STATE.currentScreen;
     APP_STATE.currentScreen = screenId;
 
@@ -13243,30 +13255,14 @@
 
     function handleAndroidHardwareBack() {
       const now = Date.now();
-      // Debounce rapid double-triggers within 350ms
-      if (now - _lastBackActionTime < 350) {
+      // Debounce rapid double-triggers within 250ms
+      if (now - _lastBackActionTime < 250) {
         return true;
       }
       _lastBackActionTime = now;
 
-      // Unregistered users cannot bypass registration modal using back button
-      if (typeof isUserRegistered === 'function' && !isUserRegistered()) {
-        if (now - _lastExitPromptTime < 2000) {
-          if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
-            try { window.Capacitor.Plugins.App.exitApp(); } catch (_) {}
-          }
-          return false;
-        } else {
-          _lastExitPromptTime = now;
-          if (typeof toast === 'function') {
-            toast('പുറത്തുകടക്കാൻ ഒരിക്കൽ കൂടി ബാക്ക് അമർത്തുക (Press back again to exit)');
-          }
-          return true;
-        }
-      }
-
-      // 1. Check for open modals (prioritizing chat modal)
-      const openModals = Array.from(document.querySelectorAll('.modal-overlay.active, .modal-overlay[style*="display: flex"], .modal-overlay[style*="display:flex"]'))
+      // 1. Check for open modals and sheets
+      const openModals = Array.from(document.querySelectorAll('.modal-overlay.active, .modal-overlay[style*="display: flex"], .modal-overlay[style*="display: block"], .modal-overlay[style*="display:flex"], .modal-overlay[style*="display:block"]'))
         .filter(el => {
           try {
             const style = window.getComputedStyle(el);
@@ -13280,28 +13276,61 @@
         // If modal-chat is open, close it cleanly
         const chatModal = openModals.find(m => m.id === 'modal-chat');
         if (chatModal) {
-          closeModal('modal-chat');
+          if (typeof closeModal === 'function') closeModal('modal-chat');
+          else chatModal.style.display = 'none';
           return true;
         }
-        // Otherwise close the topmost active modal
+
+        // Check if mandatory register modal is open and user is truly unregistered
+        const regModal = openModals.find(m => m.id === 'modal-register' || m.id === 'modal-mandatory-register' || m.id === 'modal-login');
+        if (regModal && typeof isUserRegistered === 'function' && !isUserRegistered()) {
+          // If mandatory login is forced on startup, double-tap back exits app
+          if (now - _lastExitPromptTime < 2000) {
+            if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+              try { window.Capacitor.Plugins.App.exitApp(); } catch (_) {}
+            }
+            return false;
+          } else {
+            _lastExitPromptTime = now;
+            const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en') || (typeof localStorage !== 'undefined' && localStorage.getItem('nn_app_language') === 'en');
+            if (typeof toast === 'function') {
+              toast(isEn ? 'Press back again to exit' : 'പുറത്തുകടക്കാൻ ഒരിക്കൽ കൂടി ബാക്ക് അമർത്തുക');
+            }
+            return true;
+          }
+        }
+
+        // Close the topmost active modal
         const topModal = openModals[openModals.length - 1];
         if (topModal && topModal.id) {
-          closeModal(topModal.id);
+          if (typeof closeModal === 'function') {
+            closeModal(topModal.id);
+          } else {
+            topModal.style.display = 'none';
+            topModal.classList.remove('active');
+          }
           return true;
         }
       }
 
-      // 2. If no modal is open, check if on a sub-screen (like chat, community, services, jobs, rentals, blood, profile)
-      if (APP_STATE.currentScreen && APP_STATE.currentScreen !== 'home') {
-        if (APP_STATE.previousScreen && APP_STATE.previousScreen !== 'splash' && APP_STATE.previousScreen !== APP_STATE.currentScreen) {
-          navTo(APP_STATE.previousScreen);
-        } else {
-          navTo('home');
-        }
+      // 2. Close search dropdown if open
+      const searchDrop = document.getElementById('homeSearchResultsDropdown');
+      if (searchDrop && searchDrop.style.display !== 'none') {
+        searchDrop.style.display = 'none';
         return true;
       }
 
-      // 3. If already on 'home' screen: Double-tap back within 2 seconds to exit app
+      // 3. If on a subscreen (not 'home'), navigate back through history stack
+      if (APP_STATE.currentScreen && APP_STATE.currentScreen !== 'home') {
+        if (!APP_STATE.screenHistory) APP_STATE.screenHistory = ['home'];
+        // Pop current screen
+        APP_STATE.screenHistory.pop();
+        const prevTarget = (APP_STATE.screenHistory.length > 0) ? APP_STATE.screenHistory[APP_STATE.screenHistory.length - 1] : 'home';
+        navTo(prevTarget || 'home');
+        return true;
+      }
+
+      // 4. If already on 'home' screen: Double-tap back within 2 seconds to exit app
       if (now - _lastExitPromptTime < 2000) {
         if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
           try { window.Capacitor.Plugins.App.exitApp(); } catch (_) {}
@@ -13309,8 +13338,9 @@
         return false; // allow Android activity to exit
       } else {
         _lastExitPromptTime = now;
+        const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en') || (typeof localStorage !== 'undefined' && localStorage.getItem('nn_app_language') === 'en');
         if (typeof toast === 'function') {
-          toast('പുറത്തുകടക്കാൻ ഒരിക്കൽ കൂടി ബാക്ക് അമർത്തുക (Press back again to exit)');
+          toast(isEn ? 'Press back again to exit' : 'പുറത്തുകടക്കാൻ ഒരിക്കൽ കൂടി ബാക്ക് അമർത്തുക');
         }
         return true; // handled, keep app open!
       }

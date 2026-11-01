@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.webkit.WebView;
 import android.webkit.WebSettings;
 import android.view.View;
+import androidx.activity.OnBackPressedCallback;
 import com.getcapacitor.BridgeActivity;
 
 public class MainActivity extends BridgeActivity {
@@ -22,6 +23,29 @@ public class MainActivity extends BridgeActivity {
         super.onCreate(savedInstanceState);
         createNotificationChannels();
         configureWebViewPerformance();
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                WebView webView = getBridge() != null ? getBridge().getWebView() : null;
+                if (webView != null) {
+                    webView.evaluateJavascript(
+                        "(function() { return window.handleAndroidHardwareBack ? window.handleAndroidHardwareBack() : false; })()",
+                        result -> {
+                            if ("false".equals(result)) {
+                                setEnabled(false);
+                                getOnBackPressedDispatcher().onBackPressed();
+                                setEnabled(true);
+                            }
+                        }
+                    );
+                } else {
+                    setEnabled(false);
+                    getOnBackPressedDispatcher().onBackPressed();
+                    setEnabled(true);
+                }
+            }
+        });
     }
 
     @Override

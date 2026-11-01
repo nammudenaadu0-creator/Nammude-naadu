@@ -310,34 +310,34 @@
                 <section id="screen-home" class="screen home-3d-root active">
                     <!-- KERALA BRAND & PROFILE TOP BAR (EXACT MATCH TO REFERENCE DESIGN) -->
                     <header class="home-top-navbar"
-                        style="padding:10px 14px 10px;background:linear-gradient(180deg, #E0F9ED 0%, #EBFDF5 100%);border-bottom:1px solid rgba(16,185,129,0.12);display:flex;align-items:center;justify-content:space-between;width:100%;box-sizing:border-box;overflow:hidden">
+                        style="padding:12px 14px;background:linear-gradient(135deg, #0A2540 0%, #0F3B2E 40%, #065F46 75%, #047857 100%);border-bottom:1px solid rgba(16,185,129,0.25);display:flex;align-items:center;justify-content:space-between;width:100%;box-sizing:border-box;overflow:hidden;box-shadow:0 4px 14px rgba(10,37,64,0.18)">
                         <!-- Brand Logo & Title -->
-                        <div class="home-brand-block" style="display:flex;align-items:center;gap:6px;cursor:pointer;min-width:0;flex:1 1 auto;overflow:hidden" onclick="openLocationModal()" title="ലൊക്കേഷൻ മാറ്റുക">
+                        <div class="home-brand-block" style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1 1 auto;overflow:hidden" onclick="openLocationModal()" title="ലൊക്കേഷൻ മാറ്റുക">
                             <img src="assets/kerala-logo-badge.jpg" alt="നമ്മുടെ നാട്"
-                                style="width:36px;height:36px;border-radius:10px;object-fit:cover;box-shadow:0 3px 10px rgba(14,112,67,0.18);border:2px solid #FFFFFF;flex-shrink:0">
+                                style="width:38px;height:38px;border-radius:12px;object-fit:cover;box-shadow:0 3px 10px rgba(0,0,0,0.25);border:2px solid #FFFFFF;flex-shrink:0">
                             <div style="min-width:0;overflow:hidden">
-                                <h1 id="homeBrandTitle" style="margin:0;font-size:clamp(14px, 4.1vw, 18px);font-weight:900;color:#0F5132;font-family:'Manjari', sans-serif;letter-spacing:-0.4px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">നമ്മുടെ നാട്</h1>
-                                <div style="display:flex;align-items:center;gap:3px;margin-top:2px;white-space:nowrap;overflow:hidden" title="സ്ഥലം തിരഞ്ഞെടുക്കുക / മാറ്റുക">
+                                <h1 id="homeBrandTitle" style="margin:0;font-size:clamp(15px, 4.2vw, 19px);font-weight:900;color:#FFFFFF;font-family:'Manjari', sans-serif;letter-spacing:-0.4px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 4px rgba(0,0,0,0.25)">നമ്മുടെ നാട്</h1>
+                                <div style="display:flex;align-items:center;gap:4px;margin-top:3px;white-space:nowrap;overflow:hidden" title="സ്ഥലം തിരഞ്ഞെടുക്കുക / മാറ്റുക">
                                     <span style="font-size:11px">📍</span>
                                     <span id="homeLiveLocText" class="user-live-city-name"
-                                        style="font-size:10.5px;font-weight:700;color:#065F46;max-width:85px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">തത്സമയം</span>
-                                    <span style="font-size:8px;color:#059669">▼</span>
+                                        style="font-size:10.5px;font-weight:700;color:#D1FAE5;max-width:85px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">തത്സമയം</span>
+                                    <span style="font-size:8px;color:#A7F3D0">▼</span>
                                     <span id="homeLiveRadiusBadge"
-                                        style="font-size:9px;font-weight:800;background:rgba(5,150,105,0.12);color:#065F46;padding:1px 5px;border-radius:8px">5km</span>
+                                        style="font-size:9.5px;font-weight:800;background:rgba(16,185,129,0.3);color:#ECFDF5;padding:2px 6px;border-radius:8px;border:1px solid rgba(52,211,153,0.4)">5km</span>
                                     <span onclick="event.stopPropagation(); refreshActiveScreen(this);" title="വിവരങ്ങൾ പുതുക്കുക" style="font-size:11px;cursor:pointer;padding:0 2px;display:inline-flex;align-items:center">
-                                        <span class="refresh-spinner-icon">🔄</span>
+                                        <span class="refresh-spinner-icon" style="color:#A7F3D0">🔄</span>
                                     </span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Top Right Actions: Admin Shortcut, Settings & Profile -->
-                        <div class="top-navbar-right-actions" style="display:flex;align-items:center;gap:5px;flex-shrink:0;margin-left:4px">
+                        <div class="top-navbar-right-actions" style="display:flex;align-items:center;gap:6px;flex-shrink:0;margin-left:4px">
 
                             <!-- Admin Shortcut Button: visible strictly for Admin 9605406699 -->
                             <button id="homeAdminBtn" type="button" onclick="openAdminPortal()"
                                 title="അഡ്മിൻ കൺസോൾ (Admin Hub)"
-                                style="display:none;align-items:center;gap:4px;background:linear-gradient(135deg, #064E3B 0%, #0E7043 100%);color:#fff;border:none;border-radius:10px;padding:5px 8px;font-size:11px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(6,78,59,0.25)">
+                                style="display:none;align-items:center;gap:4px;background:linear-gradient(135deg, #F59E0B 0%, #D97706 100%);color:#fff;border:none;border-radius:10px;padding:6px 10px;font-size:11px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(217,119,6,0.35)">
                                 <span>🔐</span>
                                 <span>അഡ്മിൻ</span>
                             </button>
@@ -345,25 +345,24 @@
                             <!-- Mobile Login Chip: visible for Guest users -->
                             <button id="homeMobileLoginChip" type="button" onclick="openLoginModal()"
                                 title="ലോഗിൻ ചെയ്യാം"
-                                style="display:none;align-items:center;gap:3px;background:linear-gradient(135deg, #059669 0%, #10B981 100%);color:#fff;border:none;border-radius:10px;padding:5px 8px;font-size:11px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(16,185,129,0.3)">
+                                style="display:none;align-items:center;gap:3px;background:linear-gradient(135deg, #10B981 0%, #059669 100%);color:#fff;border:none;border-radius:10px;padding:6px 10px;font-size:11px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(16,185,129,0.3)">
                                 <span>🔑</span>
                                 <span>ലോഗിൻ</span>
                             </button>
 
-
                             <!-- Circular Bell Button with Red Indicator Dot -->
                             <button type="button" onclick="navTo('community')"
                                 title="അറിയിപ്പുകൾ"
-                                style="width:34px;height:34px;border-radius:50%;background:#FFFFFF;border:1.5px solid rgba(226,232,240,0.85);display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:transform 0.1s ease;flex-shrink:0">
+                                style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.18);border:1.5px solid rgba(255,255,255,0.35);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.12);transition:transform 0.1s ease;flex-shrink:0">
                                 <span style="font-size:16px">🔔</span>
                                 <span
-                                    style="position:absolute;top:5px;right:5px;width:6px;height:6px;border-radius:50%;background:#EF4444;border:1px solid #FFFFFF"></span>
+                                    style="position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:#EF4444;border:1.5px solid #FFFFFF"></span>
                             </button>
 
-                            <!-- Circular User Profile Button (Clean Green Avatar on White Disc) -->
+                            <!-- Circular User Profile Button -->
                             <div onclick="if(window._viewingOtherUser){window._viewingOtherUser=null;} navTo('profile')" title="എന്റെ പ്രൊഫൈൽ"
-                                style="width:34px;height:34px;border-radius:50%;background:#FFFFFF;border:1.5px solid rgba(226,232,240,0.85);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:transform 0.1s ease;flex-shrink:0">
-                                <div style="width:24px;height:24px;border-radius:50%;background:#059669;display:flex;align-items:center;justify-content:center;color:#FFFFFF;font-size:13px;overflow:hidden">
+                                style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.18);border:1.5px solid rgba(255,255,255,0.35);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.12);transition:transform 0.1s ease;flex-shrink:0">
+                                <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg, #10B981 0%, #059669 100%);border:1.5px solid #FFFFFF;display:flex;align-items:center;justify-content:center;color:#FFFFFF;font-size:13px;overflow:hidden">
                                     <img id="homeHeaderAvatar" src="assets/kerala-logo-badge.jpg" alt="Profile" style="width:100%;height:100%;object-fit:cover;display:none" onload="this.style.display='block'">
                                     <span>👤</span>
                                 </div>
@@ -409,17 +408,18 @@
                     <div class="home-kerala-sec-header">
                         <div class="home-kerala-sec-left">
                             <div class="home-kerala-grid-icon">
-                                <div class="home-kerala-grid-box"></div>
-                                <div class="home-kerala-grid-box"></div>
-                                <div class="home-kerala-grid-box"></div>
-                                <div class="home-kerala-grid-box"></div>
+                                <div class="home-kerala-grid-box" style="background:#10B981"></div>
+                                <div class="home-kerala-grid-box" style="background:#3B82F6"></div>
+                                <div class="home-kerala-grid-box" style="background:#F43F5E"></div>
+                                <div class="home-kerala-grid-box" style="background:#F59E0B"></div>
                             </div>
                             <div>
                                 <span class="home-kerala-sec-title" id="homeSecCategoriesTitle">വിഭാഗങ്ങൾ</span>
                                 <span class="home-kerala-sec-sub"></span>
                             </div>
                         </div>
-                        <div class="home-kerala-sec-viewall" onclick="navTo('services')">
+                        <div class="home-kerala-sec-viewall" onclick="navTo('services')"
+                            style="display:flex;align-items:center;gap:4px;font-size:11.5px;font-weight:800;color:#1D4ED8;background:linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);padding:5px 12px;border-radius:20px;border:1px solid #BFDBFE;cursor:pointer;box-shadow:0 2px 6px rgba(29,78,216,0.1)">
                             <span id="homeSecCategoriesViewAll">എല്ലാം കാണുക</span>
                             <span>➔</span>
                         </div>
@@ -429,96 +429,97 @@
                     <div class="home-kerala-cat-grid">
                         <!-- CARD 1: രക്തദാനം (BLOOD DONATION) -->
                         <div class="kerala-cat-card" onclick="openBloodModal()"
-                            style="background:linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 100%);border:1.5px solid #FECDD3">
+                            style="background:linear-gradient(145deg, #FFF1F2 0%, #FFE4E6 55%, #FECDD3 100%);border:1.5px solid #F43F5E;box-shadow:0 6px 16px rgba(244,63,94,0.16)">
                             <div class="kerala-cat-img-box">
                                 <img src="assets/cat-blood-3d.jpg" alt="രക്തദാനം" class="kerala-cat-img">
                             </div>
-                            <div class="kerala-cat-title" style="color:#991B1B">രക്തദാനം</div>
-                            <div class="kerala-cat-sub" style="color:#BE123C">രക്തം നൽകൂ... ജീവൻ രക്ഷിക്കൂ...</div>
-                            <div class="kerala-cat-arrow-btn" style="background:#E11D48">➔</div>
+                            <div class="kerala-cat-title" style="color:#BE123C;font-weight:900">രക്തദാനം</div>
+                            <div class="kerala-cat-sub" style="color:#E11D48">രക്തം നൽകൂ... ജീവൻ രക്ഷിക്കൂ...</div>
+                            <div class="kerala-cat-arrow-btn" style="background:linear-gradient(135deg, #F43F5E 0%, #BE123C 100%);color:#fff;box-shadow:0 3px 8px rgba(244,63,94,0.35)">➔</div>
                         </div>
 
                         <!-- CARD 2: അടിയന്തിരം & പോലീസ് (EMERGENCY & POLICE) -->
                         <div class="kerala-cat-card" onclick="openAmbulanceModal()"
-                            style="background:linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 100%);border:1.5px solid #FECDD3">
+                            style="background:linear-gradient(145deg, #FFF7ED 0%, #FFEDD5 55%, #FED7AA 100%);border:1.5px solid #F97316;box-shadow:0 6px 16px rgba(249,115,22,0.16)">
                             <div class="kerala-cat-img-box">
                                 <img src="assets/cat-ambulance-3d.jpg" alt="അടിയന്തിരം & പോലീസ്" class="kerala-cat-img">
                             </div>
-                            <div class="kerala-cat-title" style="color:#DC2626">അടിയന്തിരം & പോലീസ്</div>
-                            <div class="kerala-cat-sub" style="color:#E11D48">പോലീസ്, ആംബുലൻസ്, ആശുപത്രികൾ...</div>
-                            <div class="kerala-cat-arrow-btn" style="background:#DC2626">➔</div>
+                            <div class="kerala-cat-title" style="color:#C2410C;font-weight:900">അടിയന്തിരം & പോലീസ്</div>
+                            <div class="kerala-cat-sub" style="color:#EA580C">പോലീസ്, ആംബുലൻസ്, ആശുപത്രികൾ...</div>
+                            <div class="kerala-cat-arrow-btn" style="background:linear-gradient(135deg, #F97316 0%, #EA580C 100%);color:#fff;box-shadow:0 3px 8px rgba(249,115,22,0.35)">➔</div>
                         </div>
 
                         <!-- CARD 3: സേവനങ്ങൾ (SERVICES / TRADES) -->
                         <div class="kerala-cat-card" onclick="navTo('services')"
-                            style="background:linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);border:1.5px solid #BAE6FD">
+                            style="background:linear-gradient(145deg, #EFF6FF 0%, #DBEAFE 55%, #BFDBFE 100%);border:1.5px solid #3B82F6;box-shadow:0 6px 16px rgba(59,130,246,0.16)">
                             <div class="kerala-cat-img-box">
                                 <img src="assets/cat-services-3d.jpg" alt="സേവനങ്ങൾ" class="kerala-cat-img">
                             </div>
-                            <div class="kerala-cat-title" style="color:#0369A1">സേവനങ്ങൾ</div>
-                            <div class="kerala-cat-sub" style="color:#0284C7">18+ സേവനങ്ങൾ ഒരു കുടക്കീഴിൽ</div>
-                            <div class="kerala-cat-arrow-btn" style="background:#0284C7">➔</div>
+                            <div class="kerala-cat-title" style="color:#1D4ED8;font-weight:900">സേവനങ്ങൾ</div>
+                            <div class="kerala-cat-sub" style="color:#2563EB">18+ സേവനങ്ങൾ ഒരു കുടക്കീഴിൽ</div>
+                            <div class="kerala-cat-arrow-btn" style="background:linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);color:#fff;box-shadow:0 3px 8px rgba(37,99,235,0.35)">➔</div>
                         </div>
 
                         <!-- CARD 4: തൊഴിലുകൾ (JOBS) -->
                         <div class="kerala-cat-card" onclick="navTo('jobs')"
-                            style="background:linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%);border:1.5px solid #E9D5FF">
+                            style="background:linear-gradient(145deg, #FAF5FF 0%, #F3E8FF 55%, #E9D5FF 100%);border:1.5px solid #A855F7;box-shadow:0 6px 16px rgba(168,85,247,0.16)">
                             <div class="kerala-cat-img-box">
                                 <img src="assets/cat-jobs-3d.jpg" alt="തൊഴിലുകൾ" class="kerala-cat-img">
                             </div>
-                            <div class="kerala-cat-title" style="color:#6B21A8">തൊഴിലുകൾ</div>
-                            <div class="kerala-cat-sub" style="color:#7E22CE">തൊഴിൽ അവസരങ്ങൾ നിങ്ങൾക്ക് സമീപം</div>
-                            <div class="kerala-cat-arrow-btn" style="background:#9333EA">➔</div>
+                            <div class="kerala-cat-title" style="color:#7E22CE;font-weight:900">തൊഴിലുകൾ</div>
+                            <div class="kerala-cat-sub" style="color:#9333EA">തൊഴിൽ അവസരങ്ങൾ നിങ്ങൾക്ക് സമീപം</div>
+                            <div class="kerala-cat-arrow-btn" style="background:linear-gradient(135deg, #9333EA 0%, #7E22CE 100%);color:#fff;box-shadow:0 3px 8px rgba(147,51,234,0.35)">➔</div>
                         </div>
 
                         <!-- CARD 5: വാടക & വിൽപന (RENTALS & MARKETPLACE) -->
                         <div class="kerala-cat-card" onclick="navTo('rentals')"
-                            style="background:linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);border:1.5px solid #BBF7D0">
+                            style="background:linear-gradient(145deg, #ECFDF5 0%, #D1FAE5 55%, #A7F3D0 100%);border:1.5px solid #10B981;box-shadow:0 6px 16px rgba(16,185,129,0.16)">
                             <div class="kerala-cat-img-box">
                                 <img src="assets/cat-rentals-3d.jpg" alt="വാടക & വിൽപന" class="kerala-cat-img">
                             </div>
-                            <div class="kerala-cat-title" style="color:#166534">വാടക & വിൽപന</div>
-                            <div class="kerala-cat-sub" style="color:#15803D">വാടക വീടുകൾ, റൂമുകൾ, ഉപകരണങ്ങൾ</div>
-                            <div class="kerala-cat-arrow-btn" style="background:#16A34A">➔</div>
+                            <div class="kerala-cat-title" style="color:#047857;font-weight:900">വാടക & വിൽപന</div>
+                            <div class="kerala-cat-sub" style="color:#059669">വാടക വീടുകൾ, റൂമുകൾ, ഉപകരണങ്ങൾ</div>
+                            <div class="kerala-cat-arrow-btn" style="background:linear-gradient(135deg, #10B981 0%, #059669 100%);color:#fff;box-shadow:0 3px 8px rgba(16,185,129,0.35)">➔</div>
                         </div>
 
                         <!-- CARD 6: ഒരു ഹെൽപ്പ് വേണം (NEARBY DISCOVERY & LIVE HELP) -->
                         <div class="kerala-cat-card" onclick="navTo('nearby')"
-                            style="background:linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);border:1.5px solid #A7F3D0">
+                            style="background:linear-gradient(145deg, #FFFBEB 0%, #FEF3C7 55%, #FDE68A 100%);border:1.5px solid #F59E0B;box-shadow:0 6px 16px rgba(245,158,11,0.16)">
                             <div class="kerala-cat-img-box">
                                 <img src="assets/cat-nearby-3d.jpg" alt="ഒരു ഹെൽപ്പ് വേണം" class="kerala-cat-img">
                             </div>
-                            <div class="kerala-cat-title" style="color:#065F46">ഒരു ഹെൽപ്പ് വേണം</div>
-                            <div class="kerala-cat-sub" style="color:#047857">അടുത്തുള്ളവരിൽ നിന്ന് (1-10 km)</div>
-                            <div class="kerala-cat-arrow-btn" style="background:#059669">➔</div>
+                            <div class="kerala-cat-title" style="color:#B45309;font-weight:900">ഒരു ഹെൽപ്പ് വേണം</div>
+                            <div class="kerala-cat-sub" style="color:#D97706">അടുത്തുള്ളവരിൽ നിന്ന് (1-10 km)</div>
+                            <div class="kerala-cat-arrow-btn" style="background:linear-gradient(135deg, #F59E0B 0%, #D97706 100%);color:#fff;box-shadow:0 3px 8px rgba(245,158,11,0.35)">➔</div>
                         </div>
                     </div>
 
                     <!-- 3D LOCAL BUSINESS & SHOPS SHOWCASE CARD -->
                     <div class="home-3d-business-banner" onclick="navTo('business')"
-                        style="margin:0 16px 14px;background:linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 50%, #FEF3C7 100%);border:1.5px solid #86EFAC;border-radius:20px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 6px 20px rgba(16,185,129,0.12);cursor:pointer;position:relative;overflow:hidden">
+                        style="margin:0 16px 14px;background:linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 40%, #FEF3C7 85%, #FDE68A 100%);border:2px solid #34D399;border-radius:20px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 8px 24px rgba(16,185,129,0.18);cursor:pointer;position:relative;overflow:hidden">
                         <div style="display:flex;align-items:center;gap:12px;position:relative;z-index:2">
                             <img src="assets/cat-business-3d.jpg" alt="വ്യാപാരങ്ങൾ"
-                                style="width:58px;height:58px;border-radius:16px;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,0.1);border:2px solid #fff;flex-shrink:0">
+                                style="width:58px;height:58px;border-radius:16px;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,0.12);border:2px solid #fff;flex-shrink:0">
                             <div>
                                 <div style="display:flex;align-items:center;gap:6px">
                                     <span id="homeBizTitle" style="font-size:15px;font-weight:900;color:#064E3B;letter-spacing:-0.2px">വ്യാപാരങ്ങൾ & കടകൾ</span>
-                                    <span id="homeBizBadge" style="font-size:9.5px;background:#059669;color:#fff;padding:1px 6px;border-radius:8px;font-weight:800">പുതിയത്</span>
+                                    <span id="homeBizBadge" style="font-size:9.5px;background:linear-gradient(135deg, #F59E0B 0%, #D97706 100%);color:#fff;padding:2px 8px;border-radius:10px;font-weight:900;box-shadow:0 2px 6px rgba(217,119,6,0.3)">പുതിയത്</span>
                                 </div>
                                 <div id="homeBizSub1" style="font-size:11.5px;color:#047857;font-weight:700;margin-top:2px">സൂപ്പർമാർക്കറ്റ്, ഹോട്ടൽ, ബേക്കറി & ഓഫറുകൾ</div>
                                 <div id="homeBizSub2" style="font-size:10.5px;color:#64748B;margin-top:2px">നാട്ടിലെ കടകൾ • ഒരൊറ്റ ചാറ്റ് ബോക്സ് ഓർഡർ</div>
                             </div>
                         </div>
-                        <div style="width:34px;height:34px;border-radius:50%;background:#059669;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;flex-shrink:0;box-shadow:0 3px 8px rgba(5,150,105,0.3);position:relative;z-index:2">
+                        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;flex-shrink:0;box-shadow:0 4px 12px rgba(5,150,105,0.35);position:relative;z-index:2;border:2px solid #fff">
                             ➔
                         </div>
                     </div>
 
                     <!-- 5. 3D COMMUNITY FEED SHORTCUT BANNER -->
-                    <div class="home-3d-community-card" onclick="navTo('community')">
+                    <div class="home-3d-community-card" onclick="navTo('community')"
+                        style="margin:0 16px 14px;background:linear-gradient(135deg, #1E1B4B 0%, #312E81 35%, #4338CA 70%, #6366F1 100%);border:1.5px solid rgba(129,140,248,0.5);border-radius:20px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 8px 24px rgba(67,56,202,0.28);cursor:pointer;color:#fff">
                         <div style="display:flex;align-items:center;gap:12px">
                             <div
-                                style="width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:22px">
+                                style="width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,0.22);border:1px solid rgba(255,255,255,0.35);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 2px 8px rgba(0,0,0,0.1)">
                                 📢
                             </div>
                             <div>
@@ -526,18 +527,18 @@
                                 <div id="homeCommSub" style="font-size:11.5px;opacity:0.9">നാട്ടുകാർ പങ്കുവെച്ച പുതിയ പോസ്റ്റുകൾ കാണാം</div>
                             </div>
                         </div>
-                        <span style="font-size:20px;font-weight:900">➔</span>
+                        <span style="font-size:20px;font-weight:900;background:rgba(255,255,255,0.2);width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.3)">➔</span>
                     </div>
 
                     <!-- TOP RATED PROVIDERS NEARBY (DIRECT CALL & IN-APP CHAT) -->
                     <div style="margin: 16px 16px 20px;">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
                             <div>
-                                <div id="homeTopNearLabel" style="font-size:0.75rem;font-weight:800;color:#059669;letter-spacing:0.5px">🔥 അടുത്തുള്ളവർ</div>
-                                <h3 id="homeTopProvidersTitle" style="margin:2px 0 0;font-size:1.02rem;font-weight:800;color:#0F172A">പ്രമുഖ സേവനദാതാക്കൾ</h3>
+                                <div id="homeTopNearLabel" style="font-size:0.75rem;font-weight:800;color:#D97706;letter-spacing:0.5px;display:inline-flex;align-items:center;gap:4px;background:#FEF3C7;padding:3px 8px;border-radius:8px;border:1px solid #FDE68A">🔥 അടുത്തുള്ളവർ</div>
+                                <h3 id="homeTopProvidersTitle" style="margin:4px 0 0;font-size:1.05rem;font-weight:900;color:#0F172A">പ്രമുഖ സേവനദാതാക്കൾ</h3>
                             </div>
                             <span id="homeNearbyHelpBtn"
-                                style="font-size:0.75rem;font-weight:700;color:#059669;cursor:pointer;background:#ECFDF5;padding:5px 12px;border-radius:20px;border:1px solid #A7F3D0"
+                                style="font-size:0.75rem;font-weight:800;color:#047857;cursor:pointer;background:linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);padding:6px 14px;border-radius:20px;border:1.5px solid #86EFAC;box-shadow:0 2px 6px rgba(16,185,129,0.15)"
                                 onclick="navTo('nearby')">
                                 🤝 സഹായങ്ങൾ &rsaquo;
                             </span>
@@ -5118,12 +5119,12 @@
     <script src="js/app-refresh.js?v=1.0"></script>
 
     <!-- MULTILINGUAL (i18n) ENGINE -->
-    <script src="js/i18n-translations.js?v=9.6"></script>
+    <script src="js/i18n-translations.js?v=9.7"></script>
 
     <!-- APPLICATION ENGINES -->
     <script src="js/kerala-police-stations-data.js?v=1.0"></script>
-    <script src="js/trades-catalog-500.js?v=9.6"></script>
-    <script src="js/nammude-naadu-engine.js?v=9.6"></script>
+    <script src="js/trades-catalog-500.js?v=9.7"></script>
+    <script src="js/nammude-naadu-engine.js?v=9.7"></script>
 </body>
 
 </html>
