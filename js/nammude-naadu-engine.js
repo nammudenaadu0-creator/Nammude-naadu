@@ -1616,7 +1616,7 @@
     try {
       const ctrl = new AbortController();
       const timer = setTimeout(() => ctrl.abort(), 3500);
-      const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${validLat}&longitude=${validLon}&localityLanguage=en`;
+      const url = `https://api-bdc.io/data/reverse-geocode-client?latitude=${validLat}&longitude=${validLon}&localityLanguage=en`;
       const res = await fetch(url, { signal: ctrl.signal });
       clearTimeout(timer);
       if (res.ok) {
@@ -1728,28 +1728,8 @@
     };
   }
 
-  function detectLiveGpsLocation(showToastOnSuccess = true) {
-    const env = checkGeolocationEnvironment();
+  async function detectLiveGpsLocation(showToastOnSuccess = true) {
     const spinIcon = document.getElementById('homeLocRefreshIcon');
-
-    // 1. Protocol & Non-HTTPS / Custom IP check
-    if (!env.isSecure) {
-      console.warn(`[GPS Geolocation Warning] Insecure context (${env.protocol}//${env.hostname}). Browsers restrict Geolocation on non-HTTPS origins/custom IPs.`);
-      if (showToastOnSuccess) {
-        toast('⚠️ സുരക്ഷിത കണക്ഷൻ (HTTPS) ആവശ്യമാണ്.');
-      }
-      return;
-    }
-
-    // 2. Geolocation API availability check
-    if (!env.supported) {
-      console.warn('[GPS Geolocation] Geolocation API is not supported on this device/browser.');
-      if (showToastOnSuccess) {
-        toast('⚠️ ഈ ഉപകരണത്തിൽ GPS ലഭ്യമല്ല.');
-      }
-      return;
-    }
-
     const targetIcon = document.getElementById('swiggyGpsTargetIcon');
     const gpsBtnTxt = document.getElementById('modalLocationGpsBtnTxt');
     const gpsSubTxt = document.getElementById('modalLocationGpsSubTxt');
@@ -1764,7 +1744,7 @@
       }
       if (gpsBtnTxt) gpsBtnTxt.textContent = isEn ? 'Detecting location...' : 'ലൊക്കേഷൻ കണ്ടെത്തുന്നു...';
       if (gpsSubTxt) {
-        gpsSubTxt.textContent = isEn ? '📡 Fetching high-accuracy GPS coordinates...' : '📡 കൃത്യമായ GPS സിഗ്നൽ സ്വീകരിക്കുന്നു...';
+        gpsSubTxt.textContent = isEn ? 'Connecting to GPS / Network...' : '📡 കൃത്യമായ ലൊക്കേഷൻ കണ്ടെത്തുന്നു...';
         gpsSubTxt.style.color = '#2563EB';
       }
     };
@@ -1784,103 +1764,135 @@
 
     setGpsLoadingState();
     if (showToastOnSuccess) {
-      toast('📡 തത്സമയ GPS ലൊക്കേഷൻ കണ്ടെത്തുന്നു...');
+      toast('📡 തത്സമയ ലൊക്കേഷൻ കണ്ടെത്തുന്നു...');
     }
-    console.info('[GPS Detection Started] Requesting device GPS coordinates...');
 
-    const onGpsSuccess = async (pos) => {
-      resetGpsBtnState();
-      const lat = parseFloat(pos.coords.latitude);
-      const lon = parseFloat(pos.coords.longitude);
-      const accuracy = Math.round(pos.coords.accuracy || 0);
-
-      console.info(`[GPS Success] Latitude: ${lat}, Longitude: ${lon}, Accuracy: ±${accuracy}m`);
-
-      if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
-        console.error('[GPS Error] Received invalid coordinates:', pos);
-        if (showToastOnSuccess) toast('⚠️ ലൊക്കേഷൻ കോർഡിനേറ്റുകൾ ലഭിച്ചില്ല.');
-        return;
-      }
-
-      const geoResult = await reverseGeocode(lat, lon);
-      console.info(`[GPS Location Resolved] ${geoResult.formatted} (${geoResult.district})`);
-
-      saveRecentLocation(geoResult.formatted, geoResult.district, lat, lon);
-      updateLocationDisplay(geoResult.formatted, geoResult.district, lat, lon);
-
-      // Dismiss location modal upon successful detection
-      closeModal('modal-location');
-
-      if (showToastOnSuccess) {
-        toast(`📍 ലൊക്കേഷൻ കണ്ടെത്തി: ${geoResult.formatted}`);
-      }
-    };
-
-    const onGpsError = (err, isHighAccuracyAttempt = true) => {
-      // If high-accuracy timed out, retry once quickly with low accuracy (network/Wi-Fi positioning)
-      if (isHighAccuracyAttempt && err && err.code === 3 && typeof navigator !== 'undefined' && navigator.geolocation) {
-        console.info('[GPS High Accuracy Timeout] Retrying with network/Wi-Fi low accuracy positioning...');
-        navigator.geolocation.getCurrentPosition(
-          onGpsSuccess,
-          (fallbackErr) => onGpsError(fallbackErr, false),
-          { timeout: 7000, enableHighAccuracy: false, maximumAge: 90000 }
-        );
-        return;
-      }
-
-      resetGpsBtnState();
-      let userMsg = '📍 GPS അനുമതി ലഭിച്ചില്ല, ദയവായി താഴെ നിന്ന് സ്ഥലം തിരഞ്ഞെടുക്കുക.';
-
-      if (err) {
-        if (err.code === 1) { // PERMISSION_DENIED
-          console.warn('[GPS Error: PERMISSION_DENIED] Location access was denied by user or system policy.', err.message);
-          userMsg = '📍 ലൊക്കേഷൻ അനുമതി നിഷേധിച്ചു. ദയവായി സെർച്ച് ബോക്സിൽ സ്ഥലം ടൈപ്പ് ചെയ്യുക.';
-        } else if (err.code === 2) { // POSITION_UNAVAILABLE
-          console.warn('[GPS Error: POSITION_UNAVAILABLE] Location unavailable. Device GPS may be turned off.', err.message);
-          userMsg = '📍 GPS സിഗ്നൽ ലഭ്യമല്ല. ഫോണിലെ Location ഓൺ ചെയ്യുക അല്ലെങ്കിൽ സ്ഥലം തിരയുക.';
-        } else if (err.code === 3) { // TIMEOUT
-          console.warn('[GPS Error: TIMEOUT] Location request timed out.', err.message);
-          userMsg = '📍 GPS കണ്ടെത്താൻ കഴിഞ്ഞില്ല. ദയവായി ലിസ്റ്റിൽ നിന്ന് സ്ഥലം തിരഞ്ഞെടുക്കുക.';
-        } else {
-          console.warn('[GPS Error]', err.message || err);
-          userMsg = `📍 GPS തകരാർ: ${err.message || 'ലിസ്റ്റിൽ നിന്ന് സ്ഥലം തിരഞ്ഞെടുക്കുക.'}`;
+    // Helper to finish detection with coordinates
+    const applyLocationResult = async (lat, lon, source = 'GPS') => {
+      try {
+        const geoResult = await reverseGeocode(lat, lon);
+        console.info(`[Location Resolved via ${source}] ${geoResult.formatted} (${geoResult.district})`);
+        saveRecentLocation(geoResult.formatted, geoResult.district, lat, lon);
+        updateLocationDisplay(geoResult.formatted, geoResult.district, lat, lon);
+        closeModal('modal-location');
+        resetGpsBtnState();
+        if (showToastOnSuccess) {
+          toast(`📍 ലൊക്കേഷൻ കണ്ടെത്തി: ${geoResult.formatted}`);
         }
+        return true;
+      } catch (err) {
+        console.error('[Location Apply Error]', err);
+        return false;
       }
-
-      if (showToastOnSuccess) {
-        toast(userMsg);
-      }
-      const searchInput = document.getElementById('presetTownSearchInput');
-      if (searchInput) searchInput.focus();
     };
 
-    // Use native Capacitor Geolocation plugin if available with runtime permission request
-    if (env.hasCapacitorGeo) {
-      const geo = window.Capacitor.Plugins.Geolocation;
-      const getDevicePos = () => {
-        geo.getCurrentPosition({ enableHighAccuracy: true, timeout: 12000 })
-          .then(onGpsSuccess)
-          .catch(() => {
-            navigator.geolocation.getCurrentPosition(
-              onGpsSuccess,
-              (err) => onGpsError(err, true),
-              { timeout: 9000, enableHighAccuracy: true, maximumAge: 60000 }
-            );
-          });
-      };
-      if (typeof geo.requestPermissions === 'function') {
-        geo.requestPermissions().then(getDevicePos).catch(getDevicePos);
-      } else {
-        getDevicePos();
+    // Resilient IP Fallback when GPS / HTTPS is unavailable
+    const fallbackToIpLocation = async () => {
+      try {
+        console.info('[Location Fallback] Querying IP Geolocation via api-bdc.io...');
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), 4000);
+        const res = await fetch('https://api-bdc.io/data/reverse-geocode-client', { signal: ctrl.signal });
+        clearTimeout(timer);
+        if (res.ok) {
+          const data = await res.json();
+          const lat = parseFloat(data.latitude);
+          const lon = parseFloat(data.longitude);
+          let place = data.locality || data.city;
+          let district = (data.principalSubdivision || '').replace(/\s*District$/i, '').trim();
+          if (data.localityInfo && Array.isArray(data.localityInfo.administrative)) {
+            const distAdmin = data.localityInfo.administrative.find(a => a.order === 8 || a.order === 5);
+            if (distAdmin && distAdmin.name) district = distAdmin.name.replace(/\s*District$/i, '').trim();
+          }
+          if (place) {
+            const formatted = (district && district.toLowerCase() !== place.toLowerCase()) ? `${place}, ${district}` : place;
+            saveRecentLocation(formatted, district || 'Kerala', lat, lon);
+            updateLocationDisplay(formatted, district || 'Kerala', lat, lon);
+            closeModal('modal-location');
+            resetGpsBtnState();
+            if (showToastOnSuccess) {
+              toast(`📍 ലൊക്കേഷൻ കണ്ടെത്തി: ${formatted}`);
+            }
+            return true;
+          }
+        }
+      } catch (e) {
+        console.warn('[IP Location Fallback Failed]', e);
       }
+
+      // Default safe fallback: Kerala Preset
+      resetGpsBtnState();
+      const defaultPreset = (KERALA_PRESETS && KERALA_PRESETS.length > 0) ? KERALA_PRESETS[0] : { name: 'Kottayam', district: 'Kottayam', lat: 9.5916, lon: 76.5222 };
+      applyLocationResult(defaultPreset.lat, defaultPreset.lon, 'Preset Fallback');
+      return false;
+    };
+
+    const env = checkGeolocationEnvironment();
+
+    // 1. If native Capacitor Geolocation plugin is available (Android app)
+    if (env.hasCapacitorGeo) {
+      try {
+        const geo = window.Capacitor.Plugins.Geolocation;
+        if (typeof geo.requestPermissions === 'function') {
+          try { await geo.requestPermissions(); } catch (_) {}
+        }
+        const pos = await geo.getCurrentPosition({ enableHighAccuracy: false, timeout: 6000 });
+        if (pos && pos.coords && Number.isFinite(pos.coords.latitude)) {
+          const ok = await applyLocationResult(pos.coords.latitude, pos.coords.longitude, 'Capacitor');
+          if (ok) return;
+        }
+      } catch (capErr) {
+        console.warn('[Capacitor Geo Warning, trying fallback]', capErr);
+      }
+    }
+
+    // 2. Browser / WebView navigator.geolocation
+    if (typeof navigator !== 'undefined' && navigator.geolocation) {
+      let isResolved = false;
+
+      // Fast network location attempt (low accuracy, sub-second latency)
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          if (isResolved) return;
+          isResolved = true;
+          await applyLocationResult(pos.coords.latitude, pos.coords.longitude, 'Browser Fast');
+        },
+        async (err) => {
+          console.warn('[Browser Fast Geo Failed, retrying with high accuracy]', err);
+          if (!isResolved) {
+            navigator.geolocation.getCurrentPosition(
+              async (pos2) => {
+                if (isResolved) return;
+                isResolved = true;
+                await applyLocationResult(pos2.coords.latitude, pos2.coords.longitude, 'Browser High Accuracy');
+              },
+              async (err2) => {
+                if (isResolved) return;
+                isResolved = true;
+                console.warn('[Browser Geolocation completely failed, falling back to IP]', err2);
+                await fallbackToIpLocation();
+              },
+              { timeout: 4500, enableHighAccuracy: true, maximumAge: 60000 }
+            );
+          }
+        },
+        { timeout: 3500, enableHighAccuracy: false, maximumAge: 120000 }
+      );
+
+      // Safety timeout: if browser doesn't respond within 5s, trigger IP fallback so user is NEVER left waiting
+      setTimeout(() => {
+        if (!isResolved) {
+          isResolved = true;
+          console.info('[Geo Safety Timeout] Falling back to IP location...');
+          fallbackToIpLocation();
+        }
+      }, 5000);
+
       return;
     }
 
-    navigator.geolocation.getCurrentPosition(
-      onGpsSuccess,
-      (err) => onGpsError(err, true),
-      { timeout: 9000, enableHighAccuracy: true, maximumAge: 60000 }
-    );
+    // 3. If navigator.geolocation is not available at all, immediately use IP geolocation
+    await fallbackToIpLocation();
   }
   window.detectLiveGpsLocation = detectLiveGpsLocation;
 

@@ -964,13 +964,13 @@
 
     // 15. Location Modal Elements (Swiggy-style Place Picker)
     const locTitle = document.getElementById('modalLocationTitle');
-    if (locTitle) locTitle.textContent = isEn ? 'Select Location' : 'ലൊക്കേഷൻ തിരഞ്ഞെടുക്കാം';
+    if (locTitle) locTitle.textContent = isEn ? 'Select Location' : 'സ്ഥലം തിരഞ്ഞെടുക്കാം';
 
     const locGpsBtn = document.getElementById('modalLocationGpsBtnTxt');
-    if (locGpsBtn) locGpsBtn.textContent = isEn ? 'Use Live GPS Location' : 'തത്സമയ GPS ലൊക്കേഷൻ';
+    if (locGpsBtn) locGpsBtn.textContent = isEn ? 'Use Current Location' : 'നിലവിലെ സ്ഥലം ഉപയോഗിക്കുക';
 
     const locGpsSub = document.getElementById('modalLocationGpsSubTxt');
-    if (locGpsSub) locGpsSub.textContent = isEn ? 'Automatically detect current precise location' : 'നിലവിലെ കൃത്യമായ സ്ഥലം തത്സമയം കണ്ടെത്താം';
+    if (locGpsSub) locGpsSub.textContent = isEn ? 'Using GPS • Accurate & instant' : 'തത്സമയ GPS ലൊക്കേഷൻ കണ്ടെത്താം';
 
     const locRadSec = document.getElementById('modalLocationRadiusSecTitle');
     if (locRadSec) locRadSec.textContent = isEn ? 'Search Radius' : 'തിരച്ചിൽ പരിധി';
