@@ -7475,7 +7475,8 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   padding: 10px 18px !important;
 }
 
-.rental-card-modern {
+.rental-card-modern,
+.service-card-modern {
   background: #FFFFFF !important;
   border: 1.5px solid #E2E8F0 !important;
   border-radius: 20px !important;
@@ -7490,16 +7491,19 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   transition: transform 0.12s ease, box-shadow 0.15s ease, border-color 0.15s ease !important;
 }
 
-.rental-card-modern:hover {
+.rental-card-modern:hover,
+.service-card-modern:hover {
   border-color: #CBD5E1 !important;
   box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06) !important;
 }
 
-.rental-card-modern:active {
+.rental-card-modern:active,
+.service-card-modern:active {
   transform: scale(0.99) !important;
 }
 
-.rental-thumb {
+.rental-thumb,
+.service-thumb {
   width: 90px !important;
   height: 90px !important;
   min-width: 90px !important;
@@ -7509,13 +7513,15 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   background: #F1F5F9 !important;
 }
 
-.rental-info {
+.rental-info,
+.service-info {
   flex: 1 !important;
   min-width: 0 !important;
   padding-right: 28px !important;
 }
 
-.rental-badge {
+.rental-badge,
+.service-badge {
   display: inline-block !important;
   padding: 2.5px 11px !important;
   border-radius: 9999px !important;
@@ -7525,17 +7531,20 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   margin-bottom: 3px !important;
 }
 
-.rental-badge.badge-rent {
+.rental-badge.badge-rent,
+.service-badge.badge-cat {
   background: #EFF6FF !important;
   color: #1D4ED8 !important;
 }
 
-.rental-badge.badge-sale {
+.rental-badge.badge-sale,
+.service-badge.badge-avail {
   background: #E0F2FE !important;
   color: #0284C7 !important;
 }
 
-.rental-title {
+.rental-title,
+.service-title {
   font-size: 15px !important;
   font-weight: 800 !important;
   color: #0F172A !important;
@@ -7545,7 +7554,8 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   text-overflow: ellipsis !important;
 }
 
-.rental-location {
+.rental-location,
+.service-location {
   display: flex !important;
   align-items: center !important;
   gap: 4px !important;
@@ -7558,12 +7568,14 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   text-overflow: ellipsis !important;
 }
 
-.rental-pin {
+.rental-pin,
+.service-pin {
   color: #0284C7 !important;
   font-size: 12px !important;
 }
 
-.rental-price {
+.rental-price,
+.service-price {
   font-size: 15px !important;
   font-weight: 800 !important;
   color: #059669 !important;
@@ -7573,13 +7585,15 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   gap: 4px !important;
 }
 
-.rental-price span {
+.rental-price span,
+.service-price span {
   font-size: 12px !important;
   color: #64748B !important;
   font-weight: 600 !important;
 }
 
-.rental-tags {
+.rental-tags,
+.service-tags {
   display: flex !important;
   align-items: center !important;
   gap: 6px !important;
@@ -7590,7 +7604,8 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   flex-wrap: wrap !important;
 }
 
-.rental-tag-item {
+.rental-tag-item,
+.service-tag-item {
   display: inline-flex !important;
   align-items: center !important;
   gap: 4px !important;
@@ -7602,7 +7617,8 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   color: #475569 !important;
 }
 
-.rental-card-side {
+.rental-card-side,
+.service-card-side {
   position: absolute !important;
   top: 12px !important;
   right: 12px !important;
@@ -7613,7 +7629,8 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   align-items: center !important;
 }
 
-.rental-fav-btn {
+.rental-fav-btn,
+.service-fav-btn {
   background: none !important;
   border: none !important;
   padding: 4px !important;
@@ -7626,16 +7643,19 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   transition: transform 0.15s ease !important;
 }
 
-.rental-fav-btn:active {
+.rental-fav-btn:active,
+.service-fav-btn:active {
   transform: scale(1.2) !important;
 }
 
-.rental-fav-btn.active svg {
+.rental-fav-btn.active svg,
+.service-fav-btn.active svg {
   fill: #DC2626 !important;
   stroke: #DC2626 !important;
 }
 
-.rental-chevron {
+.rental-chevron,
+.service-chevron {
   font-size: 18px !important;
   color: #1E3A8A !important;
   font-weight: 700 !important;

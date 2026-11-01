@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="carpGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D97706"/>
+      <stop offset="100%" stop-color="#B45309"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="20" fill="url(#carpGrad)"/>
+  <!-- Wood Planks -->
+  <rect x="20" y="24" width="80" height="14" rx="3" fill="#FDE68A" stroke="#78350F" stroke-width="1.5"/>
+  <rect x="20" y="44" width="80" height="14" rx="3" fill="#FDE68A" stroke="#78350F" stroke-width="1.5"/>
+  <!-- Hand Saw -->
+  <g transform="rotate(-25 60 70)">
+    <path d="M30 65 L85 60 L85 75 L30 75 Z" fill="#E2E8F0" stroke="#475569" stroke-width="1.5"/>
+    <!-- Teeth -->
+    <path d="M35 75 L38 78 L41 75 L44 78 L47 75 L50 78 L53 75 L56 78 L59 75 L62 78 L65 75 L68 78 L71 75 L74 78 L77 75 L80 78 L83 75" fill="#475569"/>
+    <!-- Handle -->
+    <path d="M22 60 C18 60 16 66 16 72 C16 78 18 84 22 84 L32 82 L32 62 Z" fill="#92400E" stroke="#451A03" stroke-width="2"/>
+    <circle cx="24" cy="72" r="4" fill="#E2E8F0"/>
+  </g>
+</svg>

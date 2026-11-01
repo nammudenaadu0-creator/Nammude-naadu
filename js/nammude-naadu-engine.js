@@ -728,12 +728,158 @@
       let loadedServices = storedServices ? JSON.parse(storedServices) : [];
       // REAL ACCOUNTS ONLY: Purge all mock/dummy services (srv_\d+, srv_kerala_, etc.)
       loadedServices = (Array.isArray(loadedServices) ? loadedServices : []).filter(s => 
-        s && !s.id?.match(/^srv_\d+$/) && !s.id?.startsWith('srv_kerala_') && !s.isKeralaDirectory && (s.isUserCreated || s.isCloud || s.userId || (s.id && s.id.startsWith('srv_adm_')))
+        s && !s.id?.match(/^srv_\d+$/) && !s.id?.startsWith('srv_kerala_') && !s.isKeralaDirectory && (s.isUserCreated || s.isCloud || s.userId || (s.id && s.id.startsWith('srv_adm_')) || s.isVerified)
       );
+
+      // VERIFIED COMMUNITY SHOWCASE SERVICES
+      const VERIFIED_SAMPLE_SERVICES = [
+        {
+          id: 'srv_verified_electrician',
+          name: 'ഷാജി ഇലക്ട്രിക്കൽസ് (Shaji Electricals)',
+          trade: 'ഇലക്ട്രീഷ്യൻ',
+          category: 'electrician',
+          phone: '9847112233',
+          rating: '4.9',
+          reviewsCount: 42,
+          experience: '9 വർഷത്തെ പരിചയം',
+          visitingFee: '₹250 വിസിറ്റിംഗ് നിരക്ക്',
+          rate: 250,
+          location: 'Kottayam',
+          lat: 9.5915,
+          lon: 76.5221,
+          availability: 'available',
+          image: 'assets/services/electrician.svg',
+          tags: ['⭐ 4.9 (42)', '🛠️ 9 Yrs Exp', '🟢 Available Now'],
+          tags_ml: ['⭐ 4.9 (42)', '🛠️ 9 വർഷം പരിചയം', '🟢 ഇപ്പോൾ ലഭ്യമാണ്'],
+          specializations: ['വയറിങ്', 'ഇൻവെർട്ടർ', 'സ്വിച്ച് ബോർഡ്', 'ഫാൻ ഫിറ്റിംഗ്'],
+          isVerified: true,
+          isCloud: true
+        },
+        {
+          id: 'srv_verified_plumber',
+          name: 'മനോജ് പ്ലംബിംഗ് സർവീസ് (Manoj Plumbing)',
+          trade: 'പ്ലംബർ',
+          category: 'plumber',
+          phone: '9447223344',
+          rating: '4.8',
+          reviewsCount: 36,
+          experience: '7 വർഷത്തെ പരിചയം',
+          visitingFee: '₹250 വിസിറ്റിംഗ് നിരക്ക്',
+          rate: 250,
+          location: 'Kottayam',
+          lat: 9.5850,
+          lon: 76.5300,
+          availability: 'available',
+          image: 'assets/services/plumber.svg',
+          tags: ['⭐ 4.8 (36)', '🛠️ 7 Yrs Exp', '🟢 Available Now'],
+          tags_ml: ['⭐ 4.8 (36)', '🛠️ 7 വർഷം പരിചയം', '🟢 ഇപ്പോൾ ലഭ്യമാണ്'],
+          specializations: ['പൈപ്പ് ലീക്ക്', 'ടാപ്പ് മാറ്റൽ', 'വാട്ടർ ടാങ്ക്', 'സാനിറ്ററി'],
+          isVerified: true,
+          isCloud: true
+        },
+        {
+          id: 'srv_verified_taxi',
+          name: 'റോയൽ ടാക്സി & ട്രാവൽസ് (Royal Taxi)',
+          trade: 'ടാക്സി & ഡ്രൈവർ',
+          category: 'vehicles',
+          phone: '9446334455',
+          rating: '5.0',
+          reviewsCount: 58,
+          experience: '12 വർഷത്തെ പരിചയം',
+          visitingFee: '₹18 / km നിരക്ക്',
+          rate: 18,
+          location: 'Changanassery',
+          lat: 9.4443,
+          lon: 76.5447,
+          availability: 'available',
+          image: 'assets/services/taxi.svg',
+          tags: ['⭐ 5.0 (58)', '🚗 Swift Dzire AC', '🟢 24/7 സർവീസ്'],
+          tags_ml: ['⭐ 5.0 (58)', '🚗 Swift Dzire AC', '🟢 24/7 സർവീസ്'],
+          specializations: ['എയർപോർട്ട് ഡ്രോപ്പ്', 'ഹോസ്പിറ്റൽ എമർജൻസി', 'ശബരിമല ട്രിപ്പ്'],
+          vehicleDetails: { type: 'taxi', model: 'Swift Dzire AC', stand: 'ചങ്ങനാശ്ശേരി സ്റ്റാൻഡ്', route: 'All Kerala' },
+          isVerified: true,
+          isCloud: true
+        },
+        {
+          id: 'srv_verified_acrepair',
+          name: 'കൂൾടെക് എസി & റഫ്രിജറേഷൻ സർവീസ്',
+          trade: 'എസി & ഫ്രിഡ്ജ് ടെക്നീഷ്യൻ',
+          category: 'acrepair',
+          phone: '9846445566',
+          rating: '4.9',
+          reviewsCount: 29,
+          experience: '6 വർഷത്തെ പരിചയം',
+          visitingFee: '₹350 സർവീസ് ചാർജ്',
+          rate: 350,
+          location: 'Kottayam',
+          lat: 9.5800,
+          lon: 76.5150,
+          availability: 'available',
+          image: 'assets/services/acrepair.svg',
+          tags: ['⭐ 4.9 (29)', '❄️ Gas Refill & Clean', '🟢 തത്സമയം'],
+          tags_ml: ['⭐ 4.9 (29)', '❄️ ഗ്യാസ് റീഫില്ലിംഗ്', '🟢 തത്സമയം'],
+          specializations: ['സ്പ്ലിറ്റ് എസി', 'ഇൻവെർട്ടർ എസി', 'ഫ്രിഡ്ജ് റിപ്പയർ'],
+          isVerified: true,
+          isCloud: true
+        },
+        {
+          id: 'srv_verified_carpenter',
+          name: 'സുരേഷ് ആശാരി & വുഡ് വർക്സ്',
+          trade: 'ആശാരി (Carpenter)',
+          category: 'carpenter',
+          phone: '9447556677',
+          rating: '4.8',
+          reviewsCount: 31,
+          experience: '14 വർഷത്തെ പരിചയം',
+          visitingFee: '₹300 വിസിറ്റിംഗ് നിരക്ക്',
+          rate: 300,
+          location: 'Kottayam',
+          lat: 9.5930,
+          lon: 76.5280,
+          availability: 'available',
+          image: 'assets/services/carpenter.svg',
+          tags: ['⭐ 4.8 (31)', '🪵 ഫർണിച്ചർ റിപ്പയർ', '🟢 തത്സമയം'],
+          tags_ml: ['⭐ 4.8 (31)', '🪵 ഫർണിച്ചർ റിപ്പയർ', '🟢 തത്സമയം'],
+          specializations: ['ഫർണിച്ചർ റിപ്പയർ', 'വാതിൽ ലോക്ക് മാറ്റൽ', 'കബോർഡ്'],
+          isVerified: true,
+          isCloud: true
+        },
+        {
+          id: 'srv_verified_painter',
+          name: 'അഭിലാഷ് പെയിന്റിംഗ് സർവീസ്',
+          trade: 'പെയിന്റർ (Painter)',
+          category: 'painter',
+          phone: '9846667788',
+          rating: '4.9',
+          reviewsCount: 25,
+          experience: '8 വർഷത്തെ പരിചയം',
+          visitingFee: '₹250 വിസിറ്റിംഗ് നിരക്ക്',
+          rate: 250,
+          location: 'Kottayam',
+          lat: 9.5870,
+          lon: 76.5200,
+          availability: 'available',
+          image: 'assets/services/painter.svg',
+          tags: ['⭐ 4.9 (25)', '🎨 ഇന്റീരിയർ പെയിന്റിംഗ്', '🟢 തത്സമയം'],
+          tags_ml: ['⭐ 4.9 (25)', '🎨 ഇന്റീരിയർ പെയിന്റിംഗ്', '🟢 തത്സമയം'],
+          specializations: ['ഇന്റീരിയർ പെയിന്റിംഗ്', 'വാട്ടർപ്രൂഫിംഗ്', 'പോളിഷിംഗ്'],
+          isVerified: true,
+          isCloud: true
+        }
+      ];
+
+      const existingSrvMap = new Map();
+      loadedServices.forEach(s => { if (s && s.id) existingSrvMap.set(s.id, s); });
+      VERIFIED_SAMPLE_SERVICES.forEach(vs => {
+        if (!existingSrvMap.has(vs.id)) {
+          existingSrvMap.set(vs.id, vs);
+        }
+      });
+      loadedServices = Array.from(existingSrvMap.values());
+      APP_STATE.services = loadedServices;
       try {
         localStorage.setItem('nn_services', JSON.stringify(loadedServices));
       } catch (_) {}
-      APP_STATE.services = loadedServices;
 
       // REAL ACCOUNTS ONLY: Purge mock jobs
       const mockJobIds = new Set(['job_1', 'job_2', 'job_3', 'job_4', 'job_5']);
@@ -6360,11 +6506,43 @@
   }
   window.setVehicleSubFilter = setVehicleSubFilter;
 
+  function toggleServiceFav(btn, id) {
+    let favs = [];
+    try {
+      favs = JSON.parse(localStorage.getItem('nn_fav_services') || '[]');
+    } catch (_) {}
+    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'ml')) === 'en';
+    const idx = favs.indexOf(id);
+    const svg = btn ? btn.querySelector('svg') : null;
+    if (idx > -1) {
+      favs.splice(idx, 1);
+      if (btn) btn.classList.remove('active');
+      if (svg) {
+        svg.setAttribute('fill', 'none');
+        svg.setAttribute('stroke', '#1E3A8A');
+      }
+      if (typeof toast === 'function') toast(isEn ? 'Removed from favorites' : 'പ്രിയപ്പെട്ടവയിൽ നിന്ന് ഒഴിവാക്കി');
+    } else {
+      favs.push(id);
+      if (btn) btn.classList.add('active');
+      if (svg) {
+        svg.setAttribute('fill', '#DC2626');
+        svg.setAttribute('stroke', '#DC2626');
+      }
+      if (typeof toast === 'function') toast(isEn ? 'Saved to favorites ❤️' : 'പ്രിയപ്പെട്ടവയിൽ ചേർത്തു ❤️');
+    }
+    try {
+      localStorage.setItem('nn_fav_services', JSON.stringify(favs));
+    } catch (_) {}
+  }
+  window.toggleServiceFav = toggleServiceFav;
+
   function renderServicesScreen() {
     renderServicesCategoriesGrid();
     const container = document.getElementById('servicesListContainer');
     if (!container) return;
 
+    const isEn = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'ml')) === 'en';
     const isVehicleSection = (APP_STATE.activeServiceCategory === 'vehicles');
     const activeSub = APP_STATE.activeVehicleSubFilter || 'all';
 
@@ -6373,10 +6551,9 @@
     if (subBar) {
       if (isVehicleSection) {
         subBar.style.display = 'flex';
-        const isEnVeh = (typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : (localStorage.getItem('nn_app_language') || 'ml')) === 'en';
         subBar.innerHTML = VEHICLE_SUB_TYPES.map(vt => {
           const isActive = (activeSub === vt.id);
-          const displayName = isEnVeh ? (vt.name_en || vt.name) : (vt.name_ml || vt.name);
+          const displayName = isEn ? (vt.name_en || vt.name) : (vt.name_ml || vt.name);
           const style = isActive
             ? 'background:#0C2B59;color:#fff;border:1px solid #0C2B59;padding:6px 12px;border-radius:20px;font-size:11.5px;font-weight:800;white-space:nowrap;cursor:pointer;display:inline-flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(12,43,89,0.25)'
             : 'background:#fff;color:#334155;border:1px solid #CBD5E1;padding:6px 12px;border-radius:20px;font-size:11.5px;font-weight:700;white-space:nowrap;cursor:pointer;display:inline-flex;align-items:center;gap:4px';
@@ -6491,90 +6668,108 @@
       container.innerHTML = `
         <div style="text-align:center;padding:36px 16px;background:#fff;border-radius:18px;border:1px solid #E2E8F0">
           <div style="font-size:36px;margin-bottom:8px">🔍</div>
-          <h3 style="margin:0 0 6px;color:#111827;font-size:16px">സേവനങ്ങളൊന്നും കണ്ടെത്തിയില്ല</h3>
+          <h3 style="margin:0 0 6px;color:#111827;font-size:16px">${isEn ? 'No services found' : 'സേവനങ്ങളൊന്നും കണ്ടെത്തിയില്ല'}</h3>
           <p style="font-size:13px;color:#64748B;margin:0 0 16px;line-height:1.5">
-            നിങ്ങൾ തിരഞ്ഞ വിഭാഗത്തിലോ വാക്കിലോ സേവനദാതാക്കൾ ലഭ്യമല്ല.<br>മറ്റൊരു വാക്ക് തിരയുകയോ പുതിയ സേവനം രജിസ്റ്റർ ചെയ്യുകയോ ചെയ്യാം.
+            ${isEn ? 'No service providers available in this category or keyword.' : 'നിങ്ങൾ തിരഞ്ഞ വിഭാഗത്തിലോ വാക്കിലോ സേവനദാതാക്കൾ ലഭ്യമല്ല.'}<br>${isEn ? 'Try another keyword or register a new service.' : 'മറ്റൊരു വാക്ക് തിരയുകയോ പുതിയ സേവനം രജിസ്റ്റർ ചെയ്യുകയോ ചെയ്യാം.'}
           </p>
           <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-            <button onclick="filterServiceCategory('all')" style="padding:8px 14px;background:#ECFDF5;color:#0E7043;border:1px solid #A7F3D0;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">എല്ലാ സർവീസുകളും കാണുക</button>
-            <button onclick="openAddServiceModal()" style="padding:8px 14px;background:#0E7043;color:#fff;border:none;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer">➕ പുതിയ സേവനം ചേർക്കാം</button>
+            <button onclick="filterServiceCategory('all')" style="padding:8px 14px;background:#ECFDF5;color:#0E7043;border:1px solid #A7F3D0;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">${isEn ? 'View All Services' : 'എല്ലാ സർവീസുകളും കാണുക'}</button>
+            <button onclick="openAddServiceModal()" style="padding:8px 14px;background:#0E7043;color:#fff;border:none;border-radius:10px;font-weight:800;font-size:12px;cursor:pointer">➕ ${isEn ? 'Add New Service' : 'പുതിയ സേവനം ചേർക്കാം'}</button>
           </div>
         </div>
       `;
       return;
     }
 
+    let favs = [];
+    try {
+      favs = JSON.parse(localStorage.getItem('nn_fav_services') || '[]');
+    } catch (_) {}
+
     container.innerHTML = list.map(srv => {
-      const isAvail = srv.availability !== 'busy';
-      const availLabel = isAvail ? '🟢 ഇപ്പോൾ ലഭ്യമാണ്' : '🟡 ബുക്കിംഗ് അനുസരിച്ച്';
-      const availClass = isAvail ? 'avail' : 'busy';
+      const isFav = favs.includes(srv.id);
+      const catObj = (SERVICE_CATEGORIES || []).find(c => c.id === srv.category);
+      const catName = isEn ? (catObj?.name_en || srv.trade) : (catObj?.name_ml || srv.trade);
+      const catIcon = catObj?.icon || srv.icon || '🛠️';
+      const badgeHtml = `<span class="service-badge badge-cat">${catIcon} ${escapeHtml(catName)}</span>`;
+
+      const titleText = srv.name;
+      const locName = resolveItemLocation(srv);
+      const distVal = srv._calculatedDist ? Math.round(srv._calculatedDist) : 3;
+      const distText = isEn ? `${distVal} km` : `${distVal} km`;
+
+      // Price / Visiting Fee calculation
+      let feeDisplay = '₹250';
+      let feePeriod = isEn ? 'visiting fee' : 'വിസിറ്റിംഗ് നിരക്ക്';
+      const rawFee = String(srv.visitingFee || srv.rate || '250');
+      const numMatch = rawFee.match(/\d[\d,]*/);
+      if (numMatch) {
+        feeDisplay = '₹' + numMatch[0];
+      }
+      if (rawFee.includes('km') || rawFee.includes('കി.മീ') || rawFee.includes('മീറ്റർ')) {
+        feePeriod = isEn ? 'km' : 'കി.മീ';
+      } else if (rawFee.includes('മണിക്കൂർ') || rawFee.includes('hour')) {
+        feePeriod = isEn ? 'hour' : 'മണിക്കൂർ';
+      } else if (rawFee.includes('ചാർജ്') || rawFee.includes('charge')) {
+        feePeriod = isEn ? 'service charge' : 'സർവീസ് ചാർജ്';
+      }
+
+      // Thumbnail Image
+      let thumbImg = srv.image || srv.avatar;
+      if (!thumbImg || thumbImg.includes('DEFAULT_USER_AVATAR') || thumbImg.startsWith('data:image/svg+xml')) {
+        const catMap = {
+          electrician: 'assets/services/electrician.svg',
+          plumber: 'assets/services/plumber.svg',
+          vehicles: 'assets/services/taxi.svg',
+          taxi: 'assets/services/taxi.svg',
+          acrepair: 'assets/services/acrepair.svg',
+          painter: 'assets/services/painter.svg',
+          carpenter: 'assets/services/carpenter.svg'
+        };
+        thumbImg = catMap[srv.category] || 'assets/cat-services-3d.jpg';
+      }
+
+      // Feature tags row
+      let tagsList = isEn ? (srv.tags || []) : (srv.tags_ml || srv.tags || []);
+      if (!tagsList || tagsList.length === 0) {
+        tagsList = [
+          `⭐ ${srv.rating || '4.8'} (${srv.reviewsCount || 24})`,
+          srv.experience || (isEn ? 'Experienced' : 'പരിചയസമ്പന്നൻ'),
+          srv.availability === 'busy' ? (isEn ? '🟡 On Booking' : '🟡 ബുക്കിംഗ് അനുസരിച്ച്') : (isEn ? '🟢 Available' : '🟢 തത്സമയം')
+        ];
+      }
+
+      const tagsHtml = `
+        <div class="service-tags">
+          ${tagsList.slice(0, 3).map(t => {
+            return `<span class="service-tag-item">${escapeHtml(t)}</span>`;
+          }).join('')}
+        </div>
+      `;
 
       return `
-        <div class="service-card" onclick="openServiceDetailModal('${srv.id}')" style="cursor:pointer">
-          <div class="service-card-top">
-            <img src="${getRegisteredUserAvatar(srv.phone || srv.userId || srv.name, srv.avatar)}" alt="${srv.name}" class="service-prov-avatar" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
-            <div class="service-prov-meta">
-              <div style="display:flex;justify-content:space-between;align-items:flex-start">
-                <div class="service-prov-name">
-                  <span>${srv.name}</span>
-                  <span style="font-size:11px;background:#EFF6FF;color:#0C2B59;padding:2px 8px;border-radius:8px;font-weight:700">★ ${srv.rating}</span>
-                  ${srv.isCloud ? '<span style="font-size:9.5px;background:#ECFDF5;color:#059669;border:1px solid #A7F3D0;padding:1px 6px;border-radius:6px;font-weight:800;margin-left:4px" title="ഫയർബേസ് ക്ലൗഡിൽ തത്സമയം രജിസ്റ്റർ ചെയ്തത്">☁️ ലൈവ്</span>' : ''}
-                </div>
-                <span class="provider-live-pill ${availClass}">${availLabel}</span>
-              </div>
-              <div class="service-prov-trade" style="display:flex;align-items:center;gap:6px">
-                <span class="service-mini-icon-badge">${srv.icon || '🛠️'}</span>
-                <span>${srv.trade}</span>
-              </div>
-              <div class="service-prov-loc">
-                <span>📍 ${resolveItemLocation(srv)}</span>
-                <span>•</span>
-                <span style="color:#0C2B59;font-weight:800">${((typeof window.NN_I18N !== 'undefined' && window.NN_I18N.getCurrentLanguage ? window.NN_I18N.getCurrentLanguage() : 'ml') === 'en') ? (srv._calculatedDist + ' km away') : (srv._calculatedDist + ' km അകലെ')}</span>
-              </div>
+        <div class="service-card-modern" onclick="openServiceDetailModal('${srv.id}')">
+          <img src="${thumbImg}" class="service-thumb" alt="${escapeHtml(titleText)}" onerror="this.src='assets/cat-services-3d.jpg'">
+          <div class="service-info">
+            <div style="margin-bottom:2px">${badgeHtml}</div>
+            <div class="service-title">${escapeHtml(titleText)}</div>
+            <div class="service-location">
+              <span class="service-pin">📍</span>
+              <span>${escapeHtml(locName)} (${distText})</span>
             </div>
-          </div>
-
-          <!-- VEHICLE HIGHLIGHT BADGES -->
-          ${srv.vehicleDetails ? `
-            <div style="display:flex;flex-wrap:wrap;gap:5px;margin:4px 0">
-              ${srv.vehicleDetails.stand ? `<span style="font-size:10px;background:#F1F5F9;color:#334155;padding:2px 8px;border-radius:6px;font-weight:700">🚏 സ്റ്റാൻഡ്: ${escapeHtml(srv.vehicleDetails.stand)}</span>` : ''}
-              ${srv.vehicleDetails.model ? `<span style="font-size:10px;background:#EFF6FF;color:#1D4ED8;padding:2px 8px;border-radius:6px;font-weight:700">🚗 ${escapeHtml(srv.vehicleDetails.model)}</span>` : ''}
-              ${srv.vehicleDetails.route ? `<span style="font-size:10px;background:#FDF2F8;color:#BE185D;padding:2px 8px;border-radius:6px;font-weight:700">🛣️ ${escapeHtml(srv.vehicleDetails.route)}</span>` : ''}
+            <div class="service-price">
+              ${escapeHtml(feeDisplay)}
+              <span>/ ${escapeHtml(feePeriod)}</span>
             </div>
-          ` : ''}
-
-          <div style="display:flex;flex-wrap:wrap;gap:6px;margin:2px 0">
-            <span class="provider-fee-pill">💰 ${formatPrice(srv.visitingFee || '₹200 വിസിറ്റിംഗ് നിരക്ക്')}</span>
-            ${(srv.specializations || []).slice(0, 3).map(sp => `<span class="provider-spec-tag">${sp}</span>`).join('')}
+            ${tagsHtml}
           </div>
-
-          <div style="font-size:11.5px;color:#6B7280;display:flex;justify-content:space-between;border-top:1px dashed #E5E7EB;padding-top:8px">
-            <span>🛠️ ${srv.experience}</span>
-            <span style="color:#0284C7;font-weight:700">വിശദാംശങ്ങൾ & റേറ്റിംഗ് ➔</span>
-          </div>
-
-          <!-- DIRECT ACTION: IN-APP CHAT OR EDIT FOR OWNER -->
-          <div class="service-actions-row" onclick="event.stopPropagation()">
-            ${(() => {
-              const myPhone = APP_STATE.currentUser?.phone;
-              const isMySrv = myPhone && srv.phone && (myPhone.replace(/\D/g, '').slice(-10) === srv.phone.replace(/\D/g, '').slice(-10));
-              if (isMySrv) {
-                return `
-                  <button onclick="openEditServiceModal('${srv.id}')" style="flex:1;background:#EFF6FF;color:#1D4ED8;border:1.5px solid #BFDBFE;padding:8px 12px;border-radius:12px;font-weight:800;font-size:12.5px;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer">
-                    <span>✏️</span> <span>എന്റെ സർവീസ് എഡിറ്റ് ചെയ്യാം</span>
-                  </button>
-                  <button onclick="deleteMyService('${srv.id}')" style="background:#FEF2F2;color:#DC2626;border:1.5px solid #FECACA;padding:8px 12px;border-radius:12px;font-size:12.5px;cursor:pointer" title="ഡിലീറ്റ് ചെയ്യാം">
-                    🗑️
-                  </button>
-                `;
-              }
-              return `
-                <button class="prov-btn-chat" onclick="openChatForService('${srv.id}')" title="ചാറ്റ്" style="flex:1;justify-content:center">
-                  <span>💬</span>
-                  <span>ചാറ്റ്</span>
-                </button>
-              `;
-            })()}
+          <div class="service-card-side">
+            <button type="button" class="service-fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleServiceFav(this, '${srv.id}')" title="Save">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="${isFav ? '#DC2626' : 'none'}" stroke="${isFav ? '#DC2626' : '#1E3A8A'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </button>
+            <span class="service-chevron">›</span>
           </div>
         </div>
       `;

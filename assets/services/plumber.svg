@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="plumbGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284C7"/>
+      <stop offset="100%" stop-color="#0369A1"/>
+    </linearGradient>
+    <radialGradient id="waterGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="120" height="120" rx="20" fill="url(#plumbGrad)"/>
+  <circle cx="60" cy="60" r="46" fill="url(#waterGlow)"/>
+  <!-- Pipe network -->
+  <path d="M22 65 h30 v30" stroke="rgba(255,255,255,0.22)" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <!-- Water drops -->
+  <path d="M72 26 C72 26, 88 48, 88 58 C88 67, 81 74, 72 74 C63 74, 56 67, 56 58 C56 48, 72 26, 72 26 Z" fill="#38BDF8" opacity="0.65"/>
+  <!-- Pipe Wrench -->
+  <g transform="rotate(-35 60 60)">
+    <rect x="54" y="30" width="12" height="60" rx="5" fill="#E2E8F0" stroke="#475569" stroke-width="2"/>
+    <path d="M46 24 h28 v16 h-28 Z" fill="#EF4444" stroke="#B91C1C" stroke-width="2"/>
+    <rect x="52" y="16" width="16" height="10" rx="2" fill="#E2E8F0" stroke="#475569" stroke-width="2"/>
+  </g>
+</svg>
