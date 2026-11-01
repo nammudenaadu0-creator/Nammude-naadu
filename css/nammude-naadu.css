@@ -5033,7 +5033,7 @@ input, textarea, select {
 
 /* Reply Preview Bar above input */
 .chat-reply-preview-bar {
-  display: flex !important;
+  display: none !important;
   align-items: center !important;
   justify-content: space-between !important;
   padding: 8px 12px !important;
@@ -5043,6 +5043,10 @@ input, textarea, select {
   gap: 10px !important;
   flex-shrink: 0 !important;
   animation: waMsgAppear 0.15s ease-out !important;
+}
+
+.chat-reply-preview-bar.active {
+  display: flex !important;
 }
 
 .chat-reply-preview-content {

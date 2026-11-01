@@ -4283,7 +4283,10 @@
       senderEl.innerHTML = replySvg + '<span>' + escapeHtml(label) + '</span>';
     }
     if (textEl) textEl.textContent = previewText;
-    if (bar) bar.style.display = 'flex';
+    if (bar) {
+      bar.classList.add('active');
+      bar.style.setProperty('display', 'flex', 'important');
+    }
 
     const inp = document.getElementById('chatInputMessage');
     if (inp) {
@@ -4295,7 +4298,10 @@
   function cancelChatReply() {
     APP_STATE.activeChatReply = null;
     const bar = document.getElementById('chatReplyPreviewBar');
-    if (bar) bar.style.display = 'none';
+    if (bar) {
+      bar.classList.remove('active');
+      bar.style.setProperty('display', 'none', 'important');
+    }
     const textEl = document.getElementById('chatReplyPreviewText');
     if (textEl) textEl.textContent = '';
   }
