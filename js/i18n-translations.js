@@ -617,7 +617,8 @@
 
     const chatReplySender = document.getElementById('chatReplyPreviewSender');
     if (chatReplySender && (!window.APP_STATE || !window.APP_STATE.activeChatReply)) {
-      chatReplySender.textContent = isEn ? '↩️ Reply' : '↩️ മറുപടി';
+      const replySvg = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;flex-shrink:0"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>';
+      chatReplySender.innerHTML = replySvg + '<span>' + (isEn ? 'Reply' : 'മറുപടി') + '</span>';
     }
 
     const chatReplyCancel = document.getElementById('chatReplyCancelBtn');

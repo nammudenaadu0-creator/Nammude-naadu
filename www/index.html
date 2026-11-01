@@ -266,7 +266,7 @@
                             style="display:none;margin-top:12px;border-top:1px dashed #CBD5E1;padding-top:12px;color:#0F766E"
                             title="അഡ്മിൻ കൺസോൾ">
                             <span class="desktop-nav-icon">🔐</span>
-                            <span>അഡ്മിൻ കൺസോൾ (Admin)</span>
+                            <span>അഡ്മിൻ കൺസോൾ</span>
                         </a>
                     </div>
                 </div>
@@ -320,10 +320,8 @@
                                 <div style="display:flex;align-items:center;gap:4px;margin-top:3px;white-space:nowrap;overflow:hidden" title="സ്ഥലം തിരഞ്ഞെടുക്കുക / മാറ്റുക">
                                     <span style="font-size:11px">📍</span>
                                     <span id="homeLiveLocText" class="user-live-city-name"
-                                        style="font-size:10.5px;font-weight:700;color:#D1FAE5;max-width:85px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">തത്സമയം</span>
+                                        style="font-size:11px;font-weight:700;color:#D1FAE5;max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">തത്സമയം</span>
                                     <span style="font-size:8px;color:#A7F3D0">▼</span>
-                                    <span id="homeLiveRadiusBadge"
-                                        style="font-size:9.5px;font-weight:800;background:rgba(16,185,129,0.3);color:#ECFDF5;padding:2px 6px;border-radius:8px;border:1px solid rgba(52,211,153,0.4)">5km</span>
                                     <span onclick="event.stopPropagation(); refreshActiveScreen(this);" title="വിവരങ്ങൾ പുതുക്കുക" style="font-size:11px;cursor:pointer;padding:0 2px;display:inline-flex;align-items:center">
                                         <span class="refresh-spinner-icon" style="color:#A7F3D0">🔄</span>
                                     </span>
@@ -331,13 +329,13 @@
                             </div>
                         </div>
 
-                        <!-- Top Right Actions: Admin Shortcut, Settings & Profile -->
+                        <!-- Top Right Actions: Settings & Profile -->
                         <div class="top-navbar-right-actions" style="display:flex;align-items:center;gap:6px;flex-shrink:0;margin-left:4px">
 
-                            <!-- Admin Shortcut Button: visible strictly for Admin 9605406699 -->
+                            <!-- Admin Shortcut Button: strictly hidden from top bar -->
                             <button id="homeAdminBtn" type="button" onclick="openAdminPortal()"
-                                title="അഡ്മിൻ കൺസോൾ (Admin Hub)"
-                                style="display:none;align-items:center;gap:4px;background:linear-gradient(135deg, #F59E0B 0%, #D97706 100%);color:#fff;border:none;border-radius:10px;padding:6px 10px;font-size:11px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(217,119,6,0.35)">
+                                title="അഡ്മിൻ കൺസോൾ"
+                                style="display:none !important;align-items:center;gap:4px;background:linear-gradient(135deg, #F59E0B 0%, #D97706 100%);color:#fff;border:none;border-radius:10px;padding:6px 10px;font-size:11px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(217,119,6,0.35)">
                                 <span>🔐</span>
                                 <span>അഡ്മിൻ</span>
                             </button>
@@ -1816,8 +1814,11 @@
             <div id="chatReplyPreviewBar" class="chat-reply-preview-bar" style="display:none">
                 <div class="chat-reply-accent-line"></div>
                 <div class="chat-reply-preview-content">
-                    <div class="chat-reply-preview-sender" id="chatReplyPreviewSender">↩️ മറുപടി</div>
-                    <div class="chat-reply-preview-text" id="chatReplyPreviewText">...</div>
+                    <div class="chat-reply-preview-sender" id="chatReplyPreviewSender">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;flex-shrink:0"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>
+                        <span id="chatReplyPreviewSenderName">മറുപടി</span>
+                    </div>
+                    <div class="chat-reply-preview-text" id="chatReplyPreviewText"></div>
                 </div>
                 <button type="button" class="chat-reply-cancel-btn" id="chatReplyCancelBtn" onclick="cancelChatReply()" title="മറുപടി ഒഴിവാക്കുക">✕</button>
             </div>
@@ -1962,7 +1963,7 @@
             <!-- Actions List -->
             <div class="chat-menu-actions">
                 <button type="button" class="chat-menu-item" onclick="triggerMenuAction('reply')">
-                    <span class="chat-menu-icon">↩️</span>
+                    <span class="chat-menu-icon" style="display:inline-flex;align-items:center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg></span>
                     <span class="chat-menu-label" id="chatMenuReplyLabel">മറുപടി നൽകുക</span>
                 </button>
                 <button type="button" class="chat-menu-item" onclick="triggerMenuAction('forward')">
@@ -2043,7 +2044,7 @@
                         <div
                             style="font-size:12.5px;font-weight:800;color:#0C2B59;display:flex;align-items:center;gap:6px">
                             <span>📏</span>
-                            <span id="modalLocationRadiusSecTitle">തിരച്ചിൽ പരിധി (Radius)</span>
+                            <span id="modalLocationRadiusSecTitle">തിരച്ചിൽ പരിധി</span>
                         </div>
                         <span id="modalActiveRadiusLabel"
                             style="font-size:11.5px;font-weight:800;background:#1D4ED8;color:#fff;padding:2px 8px;border-radius:8px">5
@@ -2737,7 +2738,7 @@
                 <div style="display:flex;align-items:center;gap:6px">
                     <button id="emgAddNumberAdminBtn" onclick="openAdminPortal('numbers')"
                         style="display:none;background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:14px;padding:4px 10px;font-size:11px;font-weight:800;cursor:pointer">
-                        ➕ നമ്പർ ചേർക്കാം (Admin)
+                        ➕ നമ്പർ ചേർക്കാം
                     </button>
                     <button onclick="closeModal('modal-emergency')" class="modal-close-btn modal-close-btn-light"
                         title="ക്ലോസ് ചെയ്യാം">✕</button>

@@ -4266,7 +4266,11 @@
     const bar = document.getElementById('chatReplyPreviewBar');
     const senderEl = document.getElementById('chatReplyPreviewSender');
     const textEl = document.getElementById('chatReplyPreviewText');
-    if (senderEl) senderEl.textContent = isEn ? ('↩️ Replying to: ' + senderName) : ('↩️ മറുപടി നൽകുന്നു: ' + senderName);
+    const replySvg = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;flex-shrink:0"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>';
+    if (senderEl) {
+      const label = isEn ? ('Replying to: ' + senderName) : (senderName + ' - മറുപടി');
+      senderEl.innerHTML = replySvg + '<span>' + escapeHtml(label) + '</span>';
+    }
     if (textEl) textEl.textContent = previewText;
     if (bar) bar.style.display = 'flex';
 
@@ -4281,6 +4285,8 @@
     APP_STATE.activeChatReply = null;
     const bar = document.getElementById('chatReplyPreviewBar');
     if (bar) bar.style.display = 'none';
+    const textEl = document.getElementById('chatReplyPreviewText');
+    if (textEl) textEl.textContent = '';
   }
   window.cancelChatReply = cancelChatReply;
 
@@ -8309,7 +8315,7 @@
     if (desktopAdminHeaderBtn) desktopAdminHeaderBtn.style.display = isAdmin ? 'inline-flex' : 'none';
 
     const homeAdminBtn = document.getElementById('homeAdminBtn');
-    if (homeAdminBtn) homeAdminBtn.style.display = isAdmin ? 'inline-flex' : 'none';
+    if (homeAdminBtn) homeAdminBtn.style.display = 'none'; // Strictly hidden from home header for all users
 
     const settingsAdminRow = document.getElementById('settingsAdminHubRow');
     if (settingsAdminRow) settingsAdminRow.style.display = isAdmin ? 'flex' : 'none';

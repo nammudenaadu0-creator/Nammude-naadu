@@ -47,11 +47,6 @@
       triggerBtn.classList.add('refreshing-btn');
     }
 
-    // 2. Light haptic tap on refresh start
-    if (typeof navigator !== 'undefined' && navigator.vibrate) {
-      try { navigator.vibrate(30); } catch (_) {}
-    }
-
     try {
       const cur = (typeof APP_STATE !== 'undefined' && APP_STATE.currentScreen) ? APP_STATE.currentScreen : 'home';
       const syncTasks = [];
@@ -109,11 +104,6 @@
 
       // Keep transition natural
       await new Promise(r => setTimeout(r, 350));
-
-      // Haptic confirmation
-      if (typeof navigator !== 'undefined' && navigator.vibrate) {
-        try { navigator.vibrate([25, 45, 25]); } catch (_) {}
-      }
 
       if (typeof window.showToast === 'function') {
         window.showToast('✅ ആപ്പ് വിവരങ്ങൾ വിജയകരമായി പുതുക്കി!');

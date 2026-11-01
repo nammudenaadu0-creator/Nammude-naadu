@@ -68,6 +68,7 @@ public class MainActivity extends BridgeActivity {
                 webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
                 webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
                 webView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+                webView.setHapticFeedbackEnabled(false);
             }
         } catch (Exception ignored) {}
     }
