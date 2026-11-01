@@ -658,6 +658,44 @@
     const screenChatHeaderSub = document.getElementById('screenChatHeaderSub');
     if (screenChatHeaderSub) screenChatHeaderSub.textContent = isEn ? 'Live Conversations 🌿' : 'തത്സമയ സംഭാഷണങ്ങൾ 🌿';
 
+    // 11. Nearby Help Screen
+    const screenNearbyHeaderTitle = document.getElementById('screenNearbyHeaderTitle');
+    if (screenNearbyHeaderTitle) screenNearbyHeaderTitle.textContent = isEn ? 'Nearby Help' : 'സമീപ സഹായം';
+
+    const screenNearbyHeaderSub = document.getElementById('screenNearbyHeaderSub');
+    if (screenNearbyHeaderSub) screenNearbyHeaderSub.textContent = isEn ? 'Community Support • Connect & Assist 🌿' : 'പരസ്പരം സഹായിക്കാം • Community Help 🌿';
+
+    const nearbyHeroTitle = document.getElementById('nearbyHeroTitle');
+    if (nearbyHeroTitle) nearbyHeroTitle.textContent = isEn ? 'Need Help from Neighbors?' : 'ഒരു ഹെൽപ്പ് വേണോ?';
+
+    const nearbyHeroSub = document.getElementById('nearbyHeroSub');
+    if (nearbyHeroSub) nearbyHeroSub.textContent = isEn ? 'Ask your community or offer a helping hand' : 'നാട്ടുകാർ കൈകോർക്കുന്നു • ചോദിക്കാം സഹായിക്കാം';
+
+    const nearbyHeroAskBtnTxt = document.getElementById('nearbyHeroAskBtnTxt');
+    if (nearbyHeroAskBtnTxt) nearbyHeroAskBtnTxt.textContent = isEn ? 'Ask for Help' : 'സഹായം ചോദിക്കാം';
+
+    const nearbyHeroVolunteerBtnTxt = document.getElementById('nearbyHeroVolunteerBtnTxt');
+    if (nearbyHeroVolunteerBtnTxt) nearbyHeroVolunteerBtnTxt.textContent = isEn ? 'Volunteer Mode' : 'ഞാൻ സഹായിക്കാം';
+
+    const nearbyCatMap = {
+      all: isEn ? '🌟 All' : '🌟 എല്ലാം',
+      emergency: isEn ? '🚨 Emergency' : '🚨 അടിയന്തിരം',
+      vehicle: isEn ? '🛞 Vehicle' : '🛞 വാഹനം',
+      medicine: isEn ? '💊 Medicine' : '💊 മരുന്ന്',
+      repair: isEn ? '🛠️ Repair' : '🛠️ റിപ്പയർ',
+      home: isEn ? '📦 Home Help' : '📦 വീട്ടുസഹായം'
+    };
+    document.querySelectorAll('#nearbyCategoriesChipsBar .superapp-chip').forEach(chip => {
+      const cat = chip.getAttribute('data-cat');
+      if (nearbyCatMap[cat]) chip.textContent = nearbyCatMap[cat];
+    });
+
+    const nearbyBannerTitle = document.getElementById('nearbyBannerTitle');
+    if (nearbyBannerTitle) nearbyBannerTitle.textContent = isEn ? 'Live Community Help Network' : 'തത്സമയ സമീപ സഹായം';
+
+    const nearbySearch = document.getElementById('nearbySearchInput');
+    if (nearbySearch) nearbySearch.placeholder = isEn ? 'Search help requests...' : 'സഹായങ്ങൾ തിരയുക (Search help requests)...';
+
     // 11. Blood Screen
     const bloodHeroTitle = document.querySelector('#screen-blood .superapp-hero-title');
     if (bloodHeroTitle) bloodHeroTitle.textContent = isEn ? 'Give Blood Save Lives' : 'രക്തം നൽകാം ജീവൻ രക്ഷിക്കാം';

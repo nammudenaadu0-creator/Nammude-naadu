@@ -10234,7 +10234,7 @@
   // ==============================================================
   function setNearbyCategory(category, clickedBtn) {
     APP_STATE.activeNearbyCategory = category || 'all';
-    document.querySelectorAll('.nearby-cat-chip').forEach(btn => {
+    document.querySelectorAll('#nearbyCategoriesChipsBar .superapp-chip, .nearby-cat-chip').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.cat === APP_STATE.activeNearbyCategory);
     });
     if (clickedBtn && !clickedBtn.classList.contains('active')) {
@@ -10382,20 +10382,20 @@
     const countBadge = document.getElementById('nearbyFoundCountText');
     if (countBadge) {
       const radiusLabel = maxRadius >= 1000 ? 'മുഴുവൻ' : (maxRadius + ' km പരിധിയിൽ');
-      countBadge.textContent = `🆘 ${inRadiusItems.length} സഹായ അഭ്യർത്ഥനകൾ (${radiusLabel})`;
+      countBadge.textContent = `${inRadiusItems.length} സഹായ അഭ്യർത്ഥനകൾ ലഭ്യമാണ് (${radiusLabel})`;
     }
 
     if (inRadiusItems.length === 0) {
       const radiusLabel = maxRadius >= 1000 ? '' : ` (${maxRadius} km)`;
       container.innerHTML = `
-        <div style="text-align:center;padding:40px 16px;background:#fff;border-radius:16px;border:1px solid #E2E8F0">
+        <div style="text-align:center;padding:40px 16px;background:#fff;border-radius:20px;border:1.5px solid #E2E8F0;box-shadow:0 3px 12px rgba(15,23,42,0.03)">
           <div style="font-size:42px;margin-bottom:10px">🤝</div>
           <h3 style="margin:0 0 6px;font-size:16px;font-weight:800;color:#0F172A">ഈ പരിധിയിൽ പുതിയ സഹായങ്ങളൊന്നുമില്ല</h3>
           <p style="color:#64748B;margin:0 0 16px;font-size:12.5px"><b>${escapeHtml(userTown)}</b> പരിസരത്ത്${radiusLabel} ആരും സഹായം ചോദിച്ചിട്ടില്ല. നിങ്ങൾക്ക് സഹായം വേണമെങ്കിൽ താഴെ ക്ലിക്ക് ചെയ്ത് പോസ്റ്റ് ചെയ്യാം.</p>
           <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-            <button onclick="openNearbyHelpModal()" style="background:linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);color:#fff;border:none;padding:10px 16px;border-radius:10px;font-weight:800;font-size:12.5px;cursor:pointer;box-shadow:0 2px 6px rgba(220,38,38,0.25)">🆘 സഹായം ചോദിക്കാം</button>
-            <button onclick="setRadiusFilter('nearby', 10, document.querySelector('.radius-chip:nth-child(6)'))" style="background:#ECFDF5;color:#0E7043;border:1px solid #A7F3D0;padding:10px 16px;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">10 km പരിധി കാണുക</button>
-            <button onclick="setRadiusFilter('nearby', 99999, document.querySelector('.radius-chip:last-child'))" style="background:#F8FAFC;color:#334155;border:1px solid #CBD5E1;padding:10px 16px;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">മുഴുവൻ കാണുക</button>
+            <button onclick="openNearbyHelpModal()" style="background:linear-gradient(135deg, #0A2540 0%, #1E3A8A 100%);color:#fff;border:none;padding:10px 18px;border-radius:9999px;font-weight:800;font-size:12.5px;cursor:pointer;box-shadow:0 2px 8px rgba(10,37,64,0.18)">🆘 സഹായം ചോദിക്കാം</button>
+            <button onclick="setRadiusFilter('nearby', 10, document.querySelector('#screen-nearby .superapp-radius-pill:nth-child(5)'))" style="background:#FFFFFF;color:#334155;border:1.5px solid #CBD5E1;padding:10px 18px;border-radius:9999px;font-weight:700;font-size:12px;cursor:pointer">10 km പരിധി കാണുക</button>
+            <button onclick="setRadiusFilter('nearby', 99999, document.querySelector('#screen-nearby .superapp-radius-pill:last-child'))" style="background:#FFFFFF;color:#334155;border:1.5px solid #CBD5E1;padding:10px 18px;border-radius:9999px;font-weight:700;font-size:12px;cursor:pointer">മുഴുവൻ കാണുക</button>
           </div>
         </div>
       `;
@@ -10408,40 +10408,46 @@
 
     container.innerHTML = displayItems.map((item, idx) => {
       const isMine = item.isMine;
+      const isUrgent = item.urgency === 'urgent';
       return `
-        <div class="nearby-help-card" style="background:#ffffff;border-radius:16px;padding:14px;border:1.5px solid ${isMine ? '#10B981' : '#FECACA'};box-shadow:0 2px 8px rgba(220,38,38,0.06);margin-bottom:2px">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
-            <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1">
-              <div style="width:42px;height:42px;border-radius:12px;background:#FEE2E2;border:1.5px solid #FCA5A5;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">
+        <div class="nearby-help-card-modern">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+            <div style="display:flex;align-items:center;gap:12px;min-width:0;flex:1">
+              <div style="width:46px;height:46px;border-radius:14px;background:${isUrgent ? '#FEE2E2' : '#EFF6FF'};border:1.5px solid ${isUrgent ? '#FECACA' : '#DBEAFE'};display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.04)">
                 ${item.icon || '🆘'}
               </div>
               <div style="min-width:0;flex:1">
-                <div style="display:flex;align-items:center;gap:6px">
-                  <span style="font-size:14px;font-weight:800;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(item.name)}</span>
-                  <span style="font-size:10px;font-weight:800;background:#FEF2F2;color:#DC2626;padding:2px 7px;border-radius:8px;border:1px solid #FECACA;flex-shrink:0">${escapeHtml(item.badge)}</span>
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                  <span style="font-size:14.5px;font-weight:800;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(item.name)}</span>
+                  <span style="font-size:10px;font-weight:800;background:${isUrgent ? '#FEF2F2' : '#F0FDF4'};color:${isUrgent ? '#DC2626' : '#059669'};padding:2px 8px;border-radius:9999px;border:1px solid ${isUrgent ? '#FECACA' : '#A7F3D0'};flex-shrink:0">
+                    ${escapeHtml(item.badge)}
+                  </span>
                 </div>
-                <div style="font-size:11.5px;font-weight:700;color:#64748B;margin-top:2px">
-                  📍 ${escapeHtml(item.location || 'സമീപത്ത്')} &bull; <strong style="color:#059669">${item.dist < 1 ? (Math.round(item.dist * 1000) + ' മീറ്റർ അകലെ') : (item.dist + ' km അകലെ')}</strong>
+                <div style="font-size:12px;font-weight:600;color:#64748B;margin-top:3px;display:flex;align-items:center;gap:5px">
+                  <span>📍</span>
+                  <span>${escapeHtml(item.location || 'സമീപത്ത്')}</span>
+                  <span style="color:#CBD5E1">•</span>
+                  <span style="color:#059669;font-weight:700">${item.dist < 1 ? (Math.round(item.dist * 1000) + ' m അകലെ') : (item.dist + ' km അകലെ')}</span>
                 </div>
               </div>
             </div>
-            <span style="font-size:10.5px;font-weight:800;color:#B91C1C;background:#FEE2E2;padding:3px 8px;border-radius:12px;flex-shrink:0">
+            <span style="font-size:11px;font-weight:700;color:#475569;background:#F1F5F9;padding:4px 10px;border-radius:9999px;border:1px solid #E2E8F0;flex-shrink:0">
               ${escapeHtml(item.catTitle)}
             </span>
           </div>
 
-          <div style="margin:10px 0 12px;padding:10px 12px;background:#FFF5F5;border-left:3.5px solid #DC2626;border-radius:8px;font-size:13.5px;font-weight:700;color:#1F2937;line-height:1.45">
+          <div style="margin:12px 0 14px;padding:12px 14px;background:#F8FAFC;border-left:3.5px solid ${isUrgent ? '#EF4444' : '#3B82F6'};border-radius:12px;font-size:13.5px;font-weight:600;color:#1E293B;line-height:1.5">
             "${escapeHtml(item.subtitle)}"
           </div>
 
-          <div style="display:flex;gap:8px;align-items:center" onclick="event.stopPropagation()">
+          <div style="display:flex;gap:10px;align-items:center" onclick="event.stopPropagation()">
             ${item.phone ? `
-              <a href="tel:${escapeHtml(item.phone)}" style="flex:1;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:5px;background:#059669;color:#fff;padding:8px 10px;border-radius:10px;font-size:12px;font-weight:800;box-shadow:0 2px 4px rgba(5,150,105,0.2)">
+              <a href="tel:${escapeHtml(item.phone)}" style="flex:1;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;background:#FFFFFF;border:1.5px solid #059669;color:#059669;padding:9px 12px;border-radius:9999px;font-size:12.5px;font-weight:800;transition:all 0.15s ease">
                 <span>📞</span>
                 <span>വിളിക്കാം</span>
               </a>
             ` : ''}
-            <button type="button" onclick="openNearbyPersonChat(${idx})" style="flex:1.3;display:flex;align-items:center;justify-content:center;gap:5px;background:linear-gradient(135deg, #059669 0%, #047857 100%);color:#fff;border:none;padding:8px 10px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 2px 6px rgba(5,150,105,0.25)">
+            <button type="button" onclick="openNearbyPersonChat(${idx})" style="flex:1.4;display:inline-flex;align-items:center;justify-content:center;gap:6px;background:linear-gradient(135deg, #0A2540 0%, #1E3A8A 100%);color:#FFFFFF;border:none;padding:10px 14px;border-radius:9999px;font-size:12.5px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(10,37,64,0.18)">
               <span>🤝</span>
               <span>ഞാൻ സഹായിക്കാം</span>
             </button>

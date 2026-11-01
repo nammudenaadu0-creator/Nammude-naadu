@@ -5585,6 +5585,8 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
 .superapp-hero-card.hero-jobs,
 .superapp-hero-card.rentals-hero,
 .superapp-hero-card.hero-rentals,
+.superapp-hero-card.nearby-hero,
+.superapp-hero-card.hero-nearby,
 .superapp-hero-card.services-hero,
 .superapp-hero-card.hero-services {
   background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%) !important;
@@ -7684,6 +7686,96 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
 .settings-switch input:checked + .settings-slider:before {
   transform: translateX(20px);
 }
+
+/* ============================================================== */
+/* NEARBY HELP SCREEN SUPERAPP UPGRADE                            */
+/* ============================================================== */
+.hero-nearby .superapp-hero-btn.solid,
+.hero-nearby .superapp-hero-btn.outline {
+  border-radius: 9999px !important;
+  padding: 10px 18px !important;
+}
+
+.superapp-volunteer-card {
+  margin: 0 16px 12px !important;
+  background: #FFFFFF !important;
+  border: 1.5px solid #E2E8F0 !important;
+  border-radius: 18px !important;
+  padding: 12px 14px !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03) !important;
+}
+
+.superapp-volunteer-top {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+}
+
+.superapp-volunteer-info {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+  flex: 1 !important;
+}
+
+.superapp-volunteer-icon {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 12px !important;
+  background: #F0FDF4 !important;
+  border: 1px solid #BBF7D0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 20px !important;
+  flex-shrink: 0 !important;
+}
+
+.superapp-volunteer-title {
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  color: #0F172A !important;
+}
+
+.superapp-volunteer-status {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  color: #64748B !important;
+  margin-top: 2px !important;
+}
+
+.superapp-volunteer-note {
+  font-size: 10.5px !important;
+  color: #475569 !important;
+  margin-top: 8px !important;
+  line-height: 1.4 !important;
+  background: #F8FAFC !important;
+  padding: 7px 10px !important;
+  border-radius: 10px !important;
+  border: 1px solid #E2E8F0 !important;
+}
+
+.nearby-help-card-modern {
+  background: #FFFFFF !important;
+  border: 1.5px solid #E2E8F0 !important;
+  border-radius: 20px !important;
+  padding: 16px !important;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.03) !important;
+  margin-bottom: 12px !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease !important;
+}
+
+.nearby-help-card-modern:hover {
+  border-color: #CBD5E1 !important;
+  box-shadow: 0 5px 16px rgba(15, 23, 42, 0.06) !important;
+}
+
+.nearby-help-card-modern:active {
+  transform: scale(0.99) !important;
+}
+
 
 
 

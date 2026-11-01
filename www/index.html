@@ -552,145 +552,113 @@
                 </section>
 
                 <!-- ============================================================== -->
-                <!-- SCREEN 2: NEARBY (സമീപത്തുള്ളവർ & സേവനങ്ങൾ)                      -->
                 <!-- ============================================================== -->
-                <section id="screen-nearby" class="screen">
-                    <div class="nearby-header"
-                        style="background:#fff;padding:14px 16px;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between">
-                        <button class="round-back-btn" onclick="navTo('home')" aria-label="Back">❮</button>
-                        <div class="nearby-header-center" style="text-align:center">
-                            <h2 class="nearby-header-title" id="nearbyScreenHeaderTitle" style="margin:0;font-size:16px;font-weight:800">
-                                ഒരു ഹെൽപ്പ് വേണം</h2>
-                            <div class="nearby-header-sub" style="font-size:12px;color:#0E7043;font-weight:700">
-                                📍 <span class="user-live-city-name">തത്സമയ ലൊക്കേഷൻ</span>
-                            </div>
-                        </div>
-                        <button class="round-gear-btn" onclick="detectLiveGpsLocation(true)" title="GPS പുതുക്കുക"
-                            id="nearbyGpsRefreshBtn">🔄</button>
-                    </div>
-
-                    <!-- LOCATION SUMMARY RIBBON -->
-                    <div
-                        style="background:#F0FDF4;border-bottom:1px solid #DCFCE7;padding:9px 16px;display:flex;align-items:center;justify-content:space-between;font-size:12px">
-                        <div style="display:flex;align-items:center;gap:6px;min-width:0;flex:1">
-                            <span style="font-size:14px">📍</span>
-                            <span
-                                style="color:#166534;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
-                                പരിസരം: <strong class="user-live-city-name" style="color:#047857">തത്സമയ
-                                    ലൊക്കേഷൻ</strong>
-                            </span>
-                        </div>
-                        <button type="button" onclick="openLocationModal()"
-                            style="background:#fff;border:1px solid #86EFAC;color:#15803D;padding:4px 10px;border-radius:10px;font-size:11.5px;font-weight:800;cursor:pointer;flex-shrink:0">മാറ്റാം
-                            ✏️</button>
-                    </div>
-
-                    <!-- TWO MAIN ROLES: എന്തു സഹായം വേണം? VS ഞാൻ സഹായിക്കാം -->
-                    <div style="padding:12px 16px 8px;display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#fff">
-                        <!-- BUTTON 1: എന്തു സഹായം വേണം? (സഹായം ചോദിക്കാൻ) -->
-                        <div onclick="openNearbyHelpModal()"
-                            style="background:linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);border:1.5px solid #FCA5A5;border-radius:14px;padding:12px 10px;cursor:pointer;text-align:center;box-shadow:0 2px 8px rgba(220,38,38,0.08)">
-                            <div style="font-size:24px;margin-bottom:4px">🆘</div>
-                            <div style="font-size:13px;font-weight:800;color:#DC2626">എന്തു സഹായം വേണം?</div>
-                            <div style="font-size:10.5px;color:#991B1B;font-weight:700;margin-top:2px">സഹായം ചോദിക്കാം ➔</div>
-                        </div>
-
-                        <!-- BUTTON 2: ഞാൻ സഹായിക്കാം (സന്നദ്ധ സേവകൻ) -->
-                        <div onclick="openVolunteerHelperModal()" id="btnIAmReadyToHelpCard"
-                            style="background:linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);border:1.5px solid #86EFAC;border-radius:14px;padding:12px 10px;cursor:pointer;text-align:center;box-shadow:0 2px 8px rgba(16,185,129,0.08);position:relative">
-                            <div style="font-size:24px;margin-bottom:4px">🤝</div>
-                            <div style="font-size:13px;font-weight:800;color:#047857">ഞാൻ സഹായിക്കാം</div>
-                            <div id="volunteerCardStatusBadge" style="font-size:10px;color:#065F46;font-weight:800;margin-top:3px;display:inline-flex;align-items:center;gap:3px;background:rgba(5,150,105,0.12);padding:2px 8px;border-radius:10px">
-                                <span>സന്നദ്ധ സേവകൻ</span>
-                                <span id="volunteerCardTickIcon">⚪</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- VOLUNTEER HELPER INTERACTIVE SWITCH BANNER -->
-                    <div id="volunteerHelperBanner" style="margin:2px 16px 8px;padding:12px 14px;background:linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);border:1.5px solid #86EFAC;border-radius:16px;box-shadow:0 2px 8px rgba(16,185,129,0.08)">
-                        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
-                            <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1">
-                                <div style="width:36px;height:36px;border-radius:12px;background:#FFFFFF;border:1.5px solid #A7F3D0;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;box-shadow:0 2px 6px rgba(16,185,129,0.12)">
-                                    🤝
+                <!-- SCREEN 2: NEARBY (സമീപത്തുള്ളവർ & സഹായം - SUPERAPP ROYAL NAVY)  -->
+                <!-- ============================================================== -->
+                <section id="screen-nearby" class="screen" style="background:#F0F4F8">
+                    <!-- SUPERAPP ROYAL NAVY HEADER -->
+                    <div class="superapp-header">
+                        <div class="superapp-header-left">
+                            <button onclick="navTo('home')" class="superapp-round-back-btn" title="Back">❮</button>
+                            <div class="superapp-header-brand">
+                                <div class="superapp-brand-row">
+                                    <span class="superapp-brand-logo">🤝</span>
+                                    <h1 class="superapp-brand-title" id="screenNearbyHeaderTitle">സമീപ സഹായം</h1>
+                                    <span id="nearbyScreenHeaderTitle" style="display:none">സമീപ സഹായം</span>
                                 </div>
-                                <div style="min-width:0;flex:1">
-                                    <div style="font-size:12.5px;font-weight:900;color:#064E3B;letter-spacing:-0.2px;line-height:1.2">ഏത് സഹായത്തിനും ഞാൻ തയ്യാറാണ്</div>
-                                    <div id="volunteerBannerStatusText" style="font-size:10.5px;font-weight:800;color:#059669;margin-top:2px">
+                                <div class="superapp-brand-sub" id="screenNearbyHeaderSub">പരസ്പരം സഹായിക്കാം • Community Help 🌿</div>
+                            </div>
+                        </div>
+                        <div class="superapp-loc-pill" onclick="openLocationModal()">
+                            <span>📍</span>
+                            <span class="user-live-city-name">തത്സമയ ലൊക്കേഷൻ</span>
+                            <span style="font-size:10px;opacity:0.8">⌄</span>
+                        </div>
+                    </div>
+
+                    <!-- WHITE CAPSULE SEARCH BAR WITH MIC -->
+                    <div class="superapp-search-wrap">
+                        <span class="superapp-search-icon">🔍</span>
+                        <input type="text" id="nearbySearchInput" class="superapp-search-input"
+                            placeholder="സഹായങ്ങൾ തിരയുക (Search help requests)..." autocomplete="off"
+                            oninput="filterNearbyPeople(this.value)">
+                        <button type="button" class="superapp-mic-btn" id="nearbyVoiceSearchBtn" onclick="toggleVoiceSearch('nearbySearchInput', this)" title="Voice Search">🎙️</button>
+                        <button id="nearbyClearSearchBtn" onclick="clearNearbySearch()" style="display:none;border:none;background:none;color:#94A3B8;cursor:pointer;font-size:14px;padding:0 6px">✕</button>
+                    </div>
+
+                    <!-- RADIUS FILTER PILLS -->
+                    <div class="superapp-radius-bar">
+                        <button class="superapp-radius-pill" onclick="setRadiusFilter('nearby', 1, this)">1 km</button>
+                        <button class="superapp-radius-pill" onclick="setRadiusFilter('nearby', 2, this)">2 km</button>
+                        <button class="superapp-radius-pill" onclick="setRadiusFilter('nearby', 3, this)">3 km</button>
+                        <button class="superapp-radius-pill active" onclick="setRadiusFilter('nearby', 5, this)">5 km</button>
+                        <button class="superapp-radius-pill" onclick="setRadiusFilter('nearby', 10, this)">10 km</button>
+                        <button class="superapp-radius-pill" onclick="setRadiusFilter('nearby', 99999, this)">എല്ലാം (All)</button>
+                    </div>
+
+                    <!-- HERO CARD: Community Help & Volunteer Mode -->
+                    <div class="superapp-hero-card hero-nearby">
+                        <div class="superapp-hero-top">
+                            <div>
+                                <div class="superapp-hero-title" id="nearbyHeroTitle">ഒരു ഹെൽപ്പ് വേണോ?</div>
+                                <div class="superapp-hero-sub" id="nearbyHeroSub">നാട്ടുകാർ കൈകോർക്കുന്നു • ചോദിക്കാം സഹായിക്കാം</div>
+                            </div>
+                            <div class="superapp-hero-icon">🤝</div>
+                        </div>
+                        <div class="superapp-hero-actions">
+                            <button class="superapp-hero-btn solid" onclick="openNearbyHelpModal()">
+                                <span>🆘</span> <span id="nearbyHeroAskBtnTxt">സഹായം ചോദിക്കാം</span>
+                            </button>
+                            <button class="superapp-hero-btn outline" onclick="openVolunteerHelperModal()" id="btnIAmReadyToHelpCard">
+                                <span>🤝</span> <span id="nearbyHeroVolunteerBtnTxt">ഞാൻ സഹായിക്കാം</span>
+                                <span id="volunteerCardStatusBadge" style="display:none"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- VOLUNTEER HELPER INTERACTIVE SWITCH CARD (SLEEK & INTEGRATED) -->
+                    <div id="volunteerHelperBanner" class="superapp-volunteer-card">
+                        <div class="superapp-volunteer-top">
+                            <div class="superapp-volunteer-info">
+                                <div class="superapp-volunteer-icon">🤝</div>
+                                <div>
+                                    <div class="superapp-volunteer-title">സന്നദ്ധ സേവകൻ (Ready to Help)</div>
+                                    <div id="volunteerBannerStatusText" class="superapp-volunteer-status">
                                         ⚪ ഓഫാണ് (ടിക്ക് ചെയ്താൽ സന്നദ്ധനാകാം)
                                     </div>
                                 </div>
                             </div>
-                            <!-- Switch Toggle -->
                             <label class="volunteer-switch">
                                 <input type="checkbox" id="volunteerBannerCheckbox" onchange="toggleReadyToHelpVolunteer(this.checked)">
                                 <span class="volunteer-slider"></span>
                             </label>
                         </div>
-                        <div style="font-size:10px;color:#065F46;margin-top:8px;line-height:1.4;background:rgba(255,255,255,0.7);padding:6px 10px;border-radius:10px;border:1px dashed #A7F3D0">
-                            💡 <strong>പ്രത്യേകത:</strong> ഇത് ഓൺ ആക്കിയവർക്ക് <strong>മാത്രമേ</strong> പരിസരത്തെ (1-5 km) അടിയന്തിര സഹായ അഭ്യർത്ഥനകൾ നോട്ടിഫിക്കേഷനായി വരൂ.
+                        <div class="superapp-volunteer-note">
+                            💡 <strong>പ്രത്യേകത:</strong> ഇത് ഓൺ ആക്കിയവർക്ക് മാത്രമേ പരിസരത്തെ (1-5 km) അടിയന്തിര സഹായ അഭ്യർത്ഥനകൾ നോട്ടിഫിക്കേഷനായി വരൂ.
                         </div>
                     </div>
 
-                    <!-- LIVE SEARCH BAR -->
-                    <div style="padding:10px 16px 0;background:#fff">
-                        <div
-                            style="display:flex;align-items:center;background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:12px;padding:8px 12px;gap:8px">
-                            <span style="font-size:15px;color:#64748B">🔍</span>
-                            <input type="text" id="nearbySearchInput"
-                                placeholder="സഹായങ്ങൾ തിരയുക (Search help requests)..."
-                                oninput="filterNearbyPeople(this.value)"
-                                style="border:none;background:transparent;outline:none;width:100%;font-size:13px;font-weight:600;color:#0F172A">
-                            <button id="nearbyClearSearchBtn" onclick="clearNearbySearch()"
-                                style="border:none;background:none;color:#94A3B8;cursor:pointer;display:none;font-size:14px;padding:0 4px">✕</button>
+                    <!-- CATEGORY CHIPS BAR -->
+                    <div class="superapp-chips-bar" id="nearbyCategoriesChipsBar">
+                        <button class="superapp-chip active" data-cat="all" onclick="setNearbyCategory('all', this)">🌟 എല്ലാം</button>
+                        <button class="superapp-chip" data-cat="emergency" onclick="setNearbyCategory('emergency', this)">🚨 അടിയന്തിരം</button>
+                        <button class="superapp-chip" data-cat="vehicle" onclick="setNearbyCategory('vehicle', this)">🛞 വാഹനം</button>
+                        <button class="superapp-chip" data-cat="medicine" onclick="setNearbyCategory('medicine', this)">💊 മരുന്ന്</button>
+                        <button class="superapp-chip" data-cat="repair" onclick="setNearbyCategory('repair', this)">🛠️ റിപ്പയർ</button>
+                        <button class="superapp-chip" data-cat="home" onclick="setNearbyCategory('home', this)">📦 വീട്ടുസഹായം</button>
+                    </div>
+
+                    <!-- CALLOUT BANNER -->
+                    <div class="superapp-callout-banner" id="nearbyResultStatsBar">
+                        <span class="superapp-callout-icon">🤝</span>
+                        <div>
+                            <div class="superapp-callout-title" id="nearbyBannerTitle">തത്സമയ സമീപ സഹായം</div>
+                            <div class="superapp-callout-sub" id="nearbyFoundCountText">സമീപത്തുള്ള സഹായങ്ങൾ കണ്ടെത്തുന്നു...</div>
                         </div>
-                    </div>
-
-                    <!-- CATEGORY FILTER CHIPS (PURE HELP CATEGORIES) -->
-                    <div class="nearby-category-tabs"
-                        style="display:flex;gap:6px;padding:10px 16px;background:#fff;border-bottom:1px solid #E5E7EB;overflow-x:auto;scrollbar-width:none">
-                        <button class="nearby-cat-chip active" data-cat="all"
-                            onclick="setNearbyCategory('all', this)">🌟 എല്ലാ സഹായങ്ങളും</button>
-                        <button class="nearby-cat-chip" data-cat="emergency"
-                            onclick="setNearbyCategory('emergency', this)" style="color:#DC2626;font-weight:800">🚨 അടിയന്തിരം</button>
-                        <button class="nearby-cat-chip" data-cat="vehicle"
-                            onclick="setNearbyCategory('vehicle', this)">🛞 വാഹനം</button>
-                        <button class="nearby-cat-chip" data-cat="medicine"
-                            onclick="setNearbyCategory('medicine', this)">💊 മരുന്ന്</button>
-                        <button class="nearby-cat-chip" data-cat="repair"
-                            onclick="setNearbyCategory('repair', this)">🛠️ റിപ്പയർ</button>
-                        <button class="nearby-cat-chip" data-cat="home"
-                            onclick="setNearbyCategory('home', this)">📦 വീട്ടുസഹായം</button>
-                    </div>
-
-                    <!-- RADIUS FILTER CHIPS (1km, 2km, 3km, 5km, 10km, All) -->
-                    <div class="radius-filter-container"
-                        style="background:#F8FAFC;padding:10px 16px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;gap:6px;overflow-x:auto">
-                        <span class="radius-filter-label"
-                            style="font-size:11.5px;font-weight:800;color:#475569;white-space:nowrap">🎯 പരിധി:</span>
-                        <button class="radius-chip" onclick="setRadiusFilter('nearby', 1, this)">1 km</button>
-                        <button class="radius-chip" onclick="setRadiusFilter('nearby', 2, this)">2 km</button>
-                        <button class="radius-chip" onclick="setRadiusFilter('nearby', 3, this)">3 km</button>
-                        <button class="radius-chip active" onclick="setRadiusFilter('nearby', 5, this)">5 km</button>
-                        <button class="radius-chip" onclick="setRadiusFilter('nearby', 10, this)">10 km</button>
-                        <button class="radius-chip" onclick="setRadiusFilter('nearby', 99999, this)">എല്ലാം
-                            (All)</button>
-                    </div>
-
-                    <!-- RESULT COUNT & QUICK REQUEST ACTION BAR -->
-                    <div id="nearbyResultStatsBar"
-                        style="padding:8px 16px 2px;display:flex;align-items:center;justify-content:space-between;gap:8px">
-                        <span id="nearbyFoundCountText"
-                            style="font-size:11.5px;font-weight:800;color:#059669;background:#ECFDF5;padding:3px 10px;border-radius:20px;border:1px solid #A7F3D0">📍
-                            സമീപത്തുള്ള സഹായങ്ങൾ കണ്ടെത്തുന്നു...</span>
-                        <button type="button" onclick="openNearbyHelpModal()"
-                            style="background:linear-gradient(135deg,#DC2626,#B91C1C);color:#fff;border:none;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:800;cursor:pointer;flex-shrink:0;box-shadow:0 2px 4px rgba(220,38,38,0.2)">
-                            🆘 സഹായം ചോദിക്കാം
-                        </button>
                     </div>
 
                     <div id="nearbyPeopleListContainer"
-                        style="display:flex;flex-direction:column;gap:10px;padding:10px 16px 20px;"></div>
+                        style="display:flex;flex-direction:column;gap:12px;padding:10px 16px 20px;"></div>
 
                     <!-- SCREEN SUBPAGE FOOTER -->
                     <div class="screen-subpage-footer" style="margin-top:20px;padding:22px 16px 110px;text-align:center;background:linear-gradient(180deg, rgba(248,250,252,0) 0%, #F1F5F9 100%);border-top:1px solid #E2E8F0;display:flex;flex-direction:column;align-items:center;gap:8px">
