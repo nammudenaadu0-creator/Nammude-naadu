@@ -1144,12 +1144,6 @@
   function navTo(screenId) {
     if (!screenId) return;
 
-    // Profile Gate: Do not allow entering home screen without registering/completing profile
-    if (screenId === 'home' && typeof isUserRegistered === 'function' && !isUserRegistered()) {
-      openMandatoryRegisterModal();
-      return;
-    }
-
     if (APP_STATE.currentScreen === screenId) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       if (typeof window.refreshActiveScreen === 'function') {
@@ -14603,12 +14597,12 @@
       let allCommunity = typeof getAllCommunityContacts === 'function' ? getAllCommunityContacts('all') : [];
       if (!allCommunity || allCommunity.length === 0) {
         allCommunity = [
-          { id: 'usr_suresh', name: 'സുരേഷ് കുമാർ', sub: '🛺 ഓട്ടോ ഡ്രൈവർ • 📍 കക്കാട്', avatar: 'assets/cat-driver-3d.jpg' },
-          { id: 'usr_fathima', name: 'ഫാത്തിമ റഹ്മാൻ', sub: '📚 ഹൈസ്കൂൾ ടീച്ചർ • 📍 ടൗൺ', avatar: 'assets/cat-tutor-3d.jpg' },
+          { id: 'usr_suresh', name: 'സുരേഷ് കുമാർ', sub: '🛺 ഓട്ടോ ഡ്രൈവർ • 📍 കക്കാട്', avatar: 'assets/cat-services-3d.jpg' },
+          { id: 'usr_fathima', name: 'ഫാത്തിമ റഹ്മാൻ', sub: '📚 ഹൈസ്കൂൾ ടീച്ചർ • 📍 ടൗൺ', avatar: 'assets/cat-jobs-3d.jpg' },
           { id: 'usr_muhammed', name: 'മുഹമ്മദ് ഷാഫി', sub: '🏪 വ്യാപാരി • 📍 മാർക്കറ്റ് ജംഗ്ഷൻ', avatar: 'assets/cat-business-3d.jpg' },
-          { id: 'usr_anoop', name: 'അനൂപ് രാജ്', sub: '⚡ ഇലക്ട്രീഷ്യൻ • 📍 റെയിൽവേ സ്റ്റേഷൻ', avatar: 'assets/cat-electrician-3d.jpg' },
+          { id: 'usr_anoop', name: 'അനൂപ് രാജ്', sub: '⚡ ഇലക്ട്രീഷ്യൻ • 📍 റെയിൽവേ സ്റ്റേഷൻ', avatar: 'assets/cat-services-3d.jpg' },
           { id: 'usr_priya', name: 'പ്രിയ വേണുഗോപാൽ', sub: '🩸 രക്തദാതാവ് & നഴ്സ് • 📍 ഹോസ്പിറ്റൽ റോഡ്', avatar: 'assets/cat-blood-3d.jpg' },
-          { id: 'usr_haridas', name: 'ഹരിദാസൻ പി', sub: '🌾 കർഷകൻ • 📍 അമ്പലപ്പടി', avatar: 'assets/cat-farmer-3d.jpg' }
+          { id: 'usr_haridas', name: 'ഹരിദാസൻ പി', sub: '🌾 കർഷകൻ • 📍 അമ്പലപ്പടി', avatar: 'assets/cat-rentals-3d.jpg' }
         ];
       }
       const query = (filterText || '').toLowerCase().trim();

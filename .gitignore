@@ -4,3 +4,4 @@ node_modules/
 android/.gradle/
 android/app/build/
 *firebase-adminsdk*.json
+backups/
