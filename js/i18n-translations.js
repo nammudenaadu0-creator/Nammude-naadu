@@ -634,6 +634,30 @@
     const screenSettingsSub = document.getElementById('screenSettingsSub');
     if (screenSettingsSub) screenSettingsSub.textContent = isEn ? 'App Preferences & Controls 🌿' : 'ആപ്പ് മുൻഗണനകൾ & നിയന്ത്രണങ്ങൾ 🌿';
 
+    const screenJobsHeaderTitle = document.getElementById('screenJobsHeaderTitle');
+    if (screenJobsHeaderTitle) screenJobsHeaderTitle.textContent = isEn ? 'Jobs & Careers' : 'തൊഴിലവസരങ്ങൾ';
+
+    const screenJobsHeaderSub = document.getElementById('screenJobsHeaderSub');
+    if (screenJobsHeaderSub) screenJobsHeaderSub.textContent = isEn ? 'Find Local Opportunities 🌿' : 'ജോലികളും അവസരങ്ങളും 🌿';
+
+    const screenRentalsHeaderTitle = document.getElementById('screenRentalsHeaderTitle');
+    if (screenRentalsHeaderTitle) screenRentalsHeaderTitle.textContent = isEn ? 'Rentals & Marketplace' : 'വാടക & മാർക്കറ്റ്';
+
+    const screenRentalsHeaderSub = document.getElementById('screenRentalsHeaderSub');
+    if (screenRentalsHeaderSub) screenRentalsHeaderSub.textContent = isEn ? 'Buy • Sell • Rent • Trade 🌿' : 'വാങ്ങാം • വിൽക്കാം • വാടകയ്ക്ക് 🌿';
+
+    const screenBloodHeaderTitle = document.getElementById('screenBloodHeaderTitle');
+    if (screenBloodHeaderTitle) screenBloodHeaderTitle.textContent = isEn ? 'Blood Network' : 'രക്തദാനം';
+
+    const screenBloodHeaderSub = document.getElementById('screenBloodHeaderSub');
+    if (screenBloodHeaderSub) screenBloodHeaderSub.textContent = isEn ? 'Give Blood • Save Lives 🩸' : 'ജീവൻ രക്ഷിക്കാൻ ഒന്നിക്കാം 🌿';
+
+    const screenChatHeaderTitle = document.getElementById('screenChatHeaderTitle');
+    if (screenChatHeaderTitle) screenChatHeaderTitle.textContent = isEn ? 'Messages & Chat' : 'സന്ദേശങ്ങൾ';
+
+    const screenChatHeaderSub = document.getElementById('screenChatHeaderSub');
+    if (screenChatHeaderSub) screenChatHeaderSub.textContent = isEn ? 'Live Conversations 🌿' : 'തത്സമയ സംഭാഷണങ്ങൾ 🌿';
+
     // 11. Blood Screen
     const bloodHeroTitle = document.querySelector('#screen-blood .superapp-hero-title');
     if (bloodHeroTitle) bloodHeroTitle.textContent = isEn ? 'Give Blood Save Lives' : 'രക്തം നൽകാം ജീവൻ രക്ഷിക്കാം';
