@@ -13968,6 +13968,225 @@
       } catch (_) {}
     }, 1500);
 
+    // ==============================================================
+    // 🍵 NAATTUKOOTTAM VATTAMESHA (6-PERSON ROUNDTABLE CHAT ENGINE)
+    // ==============================================================
+    let _vattameshaMicActive = false;
+    let _vattameshaNeighborTimer = null;
+    let _currentTopicIndex = 0;
+    const _vattameshaTopics = [
+      'വിഷയം: നാട്ടിലെ വിശേഷങ്ങളും സഹായങ്ങളും 🌾',
+      'വിഷയം: വൈകുന്നേരത്തെ ചായ കുടിയും സൊറ പറച്ചിലും ☕',
+      'വിഷയം: നാട്ടിലെ പുതിയ റോഡ് പണിയും വികസനവും 🚜',
+      'വിഷയം: ഞായറാഴ്ചത്തെ രക്തദാന ക്യാമ്പ് 🩸',
+      'വിഷയം: കൃഷിയും വിപണിയും 🥬'
+    ];
+
+    const _neighborDialogues = [
+      { seat: 2, name: 'സുരേഷ് (ഡ്രൈവർ)', text: 'അതെ, നാട്ടിലെ കാര്യങ്ങൾ ഒരുമിച്ചിരുന്ന് സംസാരിക്കുന്നത് നല്ലതാണ്! 🌾', enText: 'True, discussing village matters together is wonderful!' },
+      { seat: 3, name: 'ഫാത്തിമ (ടീച്ചർ)', text: 'സ്കൂൾ അവധി തുടങ്ങിയതോടെ കുട്ടികൾക്ക് നല്ല സന്തോഷമാണ് 📚', enText: 'Children are so happy now that vacation has started!' },
+      { seat: 4, name: 'മുഹമ്മദ് (വ്യാപാരി)', text: 'എല്ലാവരും നല്ല ചൂടുള്ള ചായ കുടിക്കൂ! ☕ ഇന്നത്തെ കച്ചവടം ഉഷാറാണ്.', enText: 'Have some piping hot tea everyone! ☕ Business is lively today.' },
+      { seat: 5, name: 'അനൂപ് (ഇലക്ട്രീഷ്യൻ)', text: 'മഴക്കാലത്ത് മെയിൻ സ്വിച്ചും വയറിംഗും ഒന്ന് ശ്രദ്ധിക്കണേ ⚡', enText: 'Do check the main switch and wiring during rains ⚡' },
+      { seat: 6, name: 'പ്രിയ (സന്നദ്ധ പ്രവർത്തക)', text: 'ആർക്കെങ്കിലും എന്തെങ്കിലും സഹായം വേണമെങ്കിൽ ഇവിടെ പറയാം 🤝', enText: 'If anyone needs any local help, please speak up here 🤝' }
+    ];
+
+    function openNaattukoottamModal() {
+      const modal = document.getElementById('modal-naattukoottam');
+      if (!modal) return;
+
+      const user = (APP_STATE && APP_STATE.currentUser) || {};
+      const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en') || (typeof localStorage !== 'undefined' && localStorage.getItem('nn_app_language') === 'en');
+
+      // Update Seat 1 (You)
+      const av1 = document.getElementById('vattameshaAvatar1');
+      if (av1) av1.src = user.avatar || window.DEFAULT_USER_AVATAR || 'assets/kerala-logo-badge.jpg';
+      const nm1 = document.getElementById('vattameshaName1');
+      if (nm1) nm1.textContent = user.name || (isEn ? 'You' : 'നിങ്ങൾ');
+      const role1 = document.getElementById('vattameshaRole1');
+      if (role1) role1.textContent = isEn ? 'Citizen' : 'നാട്ടുകാരൻ';
+
+      // Update Room Titles
+      const rTitle = document.getElementById('vattameshaRoomTitle');
+      if (rTitle) rTitle.textContent = isEn ? '🍵 Naattukoottam Roundtable' : '🍵 നാട്ടുകൂട്ടം വട്ടമേശ';
+      const rSub = document.getElementById('vattameshaRoomSub');
+      if (rSub) rSub.textContent = isEn ? 'Live 6-Person Village Discussion' : 'തത്സമയ ഗ്രാമീണ വട്ടമേശ ചർച്ച • ലൈവ്';
+
+      // Show welcome speech bubble on Seat 1
+      showVattameshaBubble(1, isEn ? 'Hello everyone! Glad to join the table 🙏' : 'നമസ്കാരം കൂട്ടുകാരേ! വട്ടമേശയിൽ ഇരിക്കാൻ കഴിഞ്ഞതിൽ സന്തോഷം 🙏', 4000);
+
+      // Open Modal
+      openModal('modal-naattukoottam');
+
+      // Start gentle ambient conversation simulation if quiet
+      clearInterval(_vattameshaNeighborTimer);
+      _vattameshaNeighborTimer = setInterval(() => {
+        if (modal.style.display !== 'none' && modal.style.display !== '') {
+          triggerRandomNeighborChatter();
+        }
+      }, 14000);
+    }
+    window.openNaattukoottamModal = openNaattukoottamModal;
+
+    function showVattameshaBubble(seatIndex, text, durationMs = 4500) {
+      const bubble = document.getElementById(`vattameshaBubble${seatIndex}`);
+      const seat = document.getElementById(`vattameshaSeat${seatIndex}`);
+      if (!bubble || !seat) return;
+
+      bubble.textContent = text;
+      bubble.classList.add('active');
+      seat.classList.add('speaking');
+
+      setTimeout(() => {
+        bubble.classList.remove('active');
+        if (seatIndex !== 1 || !_vattameshaMicActive) {
+          seat.classList.remove('speaking');
+        }
+      }, durationMs);
+    }
+    window.showVattameshaBubble = showVattameshaBubble;
+
+    function addVattameshaChatLog(author, msg) {
+      const stream = document.getElementById('vattameshaChatStream');
+      if (!stream) return;
+
+      const entry = document.createElement('div');
+      entry.className = 'vattamesha-log-entry';
+      entry.innerHTML = `
+        <span class="vattamesha-log-author">${escapeHtml(author)}:</span>
+        <span class="vattamesha-log-msg">${escapeHtml(msg)}</span>
+      `;
+      stream.appendChild(entry);
+      stream.scrollTop = stream.scrollHeight;
+    }
+
+    function toggleNaattukoottamMic() {
+      _vattameshaMicActive = !_vattameshaMicActive;
+      const btn = document.getElementById('vattameshaMicToggleBtn');
+      const micBadge = document.getElementById('vattameshaMicBadge1');
+      const seat1 = document.getElementById('vattameshaSeat1');
+      const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
+
+      if (_vattameshaMicActive) {
+        if (btn) btn.classList.add('active');
+        if (seat1) seat1.classList.add('speaking');
+        if (micBadge) micBadge.textContent = '🔊';
+        showVattameshaBubble(1, isEn ? '🎙️ Speaking now... Listen in!' : '🎙️ ഞാൻ സംസാരിക്കുന്നു... കേൾക്കാമോ?', 5000);
+        addVattameshaChatLog(isEn ? 'You' : 'നിങ്ങൾ', isEn ? '🎙️ [Microphone Live]' : '🎙️ [മൈക്ക് ലൈവ് ആയി]');
+        if (typeof toast === 'function') toast(isEn ? '🎙️ Mic ON! Speaking at the roundtable...' : '🎙️ മൈക്ക് ഓൺ ആയി! നിങ്ങൾ വട്ടമേശയിൽ സംസാരിക്കുന്നു...');
+      } else {
+        if (btn) btn.classList.remove('active');
+        if (seat1) seat1.classList.remove('speaking');
+        if (micBadge) micBadge.textContent = '🎙️';
+        if (typeof toast === 'function') toast(isEn ? 'Mic muted' : 'മൈക്ക് ഓഫാക്കി');
+      }
+    }
+    window.toggleNaattukoottamMic = toggleNaattukoottamMic;
+
+    function handleNaattukoottamSend() {
+      const input = document.getElementById('vattameshaMsgInput');
+      if (!input) return;
+      const val = input.value.trim();
+      if (!val) return;
+
+      const user = (APP_STATE && APP_STATE.currentUser) || {};
+      const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
+      const authorName = user.name || (isEn ? 'You' : 'നിങ്ങൾ');
+
+      // 1. Show speech bubble over Seat 1
+      showVattameshaBubble(1, val, 5000);
+
+      // 2. Add to chat stream
+      addVattameshaChatLog(authorName, val);
+
+      input.value = '';
+
+      // 3. Trigger authentic village reply from one of the neighbors after 1.8s
+      setTimeout(() => {
+        const randomNeighbor = _neighborDialogues[Math.floor(Math.random() * _neighborDialogues.length)];
+        const replyText = isEn ? randomNeighbor.enText : randomNeighbor.text;
+        showVattameshaBubble(randomNeighbor.seat, replyText, 4500);
+        addVattameshaChatLog(randomNeighbor.name, replyText);
+      }, 1800);
+    }
+    window.handleNaattukoottamSend = handleNaattukoottamSend;
+
+    function focusNaattukoottamInput() {
+      const inp = document.getElementById('vattameshaMsgInput');
+      if (inp) inp.focus();
+    }
+    window.focusNaattukoottamInput = focusNaattukoottamInput;
+
+    function triggerSeatInteraction(seatNum) {
+      const neighbor = _neighborDialogues.find(n => n.seat === seatNum);
+      if (!neighbor) return;
+      const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
+      const msg = isEn ? neighbor.enText : neighbor.text;
+      showVattameshaBubble(seatNum, msg, 4500);
+      addVattameshaChatLog(neighbor.name, msg);
+    }
+    window.triggerSeatInteraction = triggerSeatInteraction;
+
+    function triggerRandomNeighborChatter() {
+      const neighbor = _neighborDialogues[Math.floor(Math.random() * _neighborDialogues.length)];
+      if (!neighbor) return;
+      const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
+      const msg = isEn ? neighbor.enText : neighbor.text;
+      showVattameshaBubble(neighbor.seat, msg, 4500);
+      addVattameshaChatLog(neighbor.name, msg);
+    }
+
+    function sendNaattukoottamReaction(emoji) {
+      const arena = document.getElementById('vattameshaArena');
+      if (!arena) return;
+
+      const floatEl = document.createElement('div');
+      floatEl.className = 'vattamesha-floating-reaction';
+      floatEl.textContent = emoji;
+      arena.appendChild(floatEl);
+
+      setTimeout(() => {
+        try { floatEl.remove(); } catch (_) {}
+      }, 1800);
+
+      const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
+      if (emoji === '☕') {
+        if (typeof toast === 'function') toast(isEn ? '☕ Hot Kerala tea offered at the table!' : '☕ വട്ടമേശയിലേക്ക് ചൂടുള്ള നാടൻ ചായ വിളമ്പി!');
+        addVattameshaChatLog(isEn ? 'Table' : 'വട്ടമേശ', isEn ? '☕ Tea shared with everyone!' : '☕ എല്ലാവർക്കും ചായ പങ്കുവെച്ചു!');
+        setTimeout(() => {
+          showVattameshaBubble(4, isEn ? 'Thanks! Nothing beats tea with friends ☕' : 'നന്ദി! ചായയും വർത്തമാനവും അടിപൊളി ☕', 4000);
+        }, 1200);
+      } else if (emoji === '👍' || emoji === '👏') {
+        addVattameshaChatLog(isEn ? 'You' : 'നിങ്ങൾ', `${emoji} [Reaction]`);
+      } else if (emoji === '😂') {
+        addVattameshaChatLog(isEn ? 'You' : 'നിങ്ങൾ', `😂 [Laughter]`);
+      }
+    }
+    window.sendNaattukoottamReaction = sendNaattukoottamReaction;
+
+    function changeNaattukoottamTopic() {
+      _currentTopicIndex = (_currentTopicIndex + 1) % _vattameshaTopics.length;
+      const topEl = document.getElementById('vattameshaCurrentTopic');
+      if (topEl) topEl.textContent = _vattameshaTopics[_currentTopicIndex];
+      const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
+      if (typeof toast === 'function') toast(isEn ? 'Discussion topic updated!' : 'വട്ടമേശ ചർച്ചാ വിഷയം മാറ്റി ✅');
+      addVattameshaChatLog(isEn ? 'Topic' : 'വിഷയം', _vattameshaTopics[_currentTopicIndex]);
+    }
+    window.changeNaattukoottamTopic = changeNaattukoottamTopic;
+
+    function inviteFriendToRoundtable() {
+      const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
+      if (navigator.share) {
+        navigator.share({
+          title: 'നമ്മുടെ നാട് - നാട്ടുകൂട്ടം വട്ടമേശ',
+          text: isEn ? 'Join our 6-person village roundtable chat on Nammude Naadu!' : 'നമ്മുടെ നാട്ടുകൂട്ടം വട്ടമേശയിൽ 6 പേർ ഒരുമിച്ചിരുന്ന് സംസാരിക്കാം! വരൂ:',
+          url: window.location.href
+        }).catch(() => {});
+      } else {
+        if (typeof toast === 'function') toast(isEn ? 'Invite link copied to clipboard! Share with friends' : 'നാട്ടുകൂട്ടം ലിങ്ക് കോപ്പി ചെയ്തു! സുഹൃത്തുക്കൾക്ക് അയച്ചു കൊടുക്കാം 📋');
+      }
+    }
+    window.inviteFriendToRoundtable = inviteFriendToRoundtable;
+
     // High-speed real-time sync (every 3s) for Community Posts and Chats when visible
     setInterval(() => {
       try {

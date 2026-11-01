@@ -6314,3 +6314,661 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   border-color: #0C2B59 !important;
   box-shadow: 0 0 0 2px rgba(12, 43, 89, 0.15) !important;
 }
+
+/* ============================================================== */
+/* 🍵 NAATTUKOOTTAM VATTAMESHA (ROUNDTABLE GATHERING OF 6 PERSONS) */
+/* ============================================================== */
+
+/* 1. Chat Screen Entry Banner */
+.naattukoottam-chat-banner {
+  margin: 10px 16px 14px;
+  background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 40%, #064E3B 100%);
+  border: 1.5px solid #F59E0B;
+  border-radius: 20px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.35);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.naattukoottam-chat-banner:active {
+  transform: scale(0.98);
+}
+
+.naattukoottam-banner-glow {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.naattukoottam-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 2;
+}
+
+.naattukoottam-table-icon-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: radial-gradient(circle, #78350F 0%, #451A03 100%);
+  border: 2px solid #F59E0B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.naattukoottam-table-live-dot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #22C55E;
+  border: 2px solid #0F172A;
+  box-shadow: 0 0 8px #22C55E;
+  animation: liveDotPulse 1.5s infinite;
+}
+
+@keyframes liveDotPulse {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.8; }
+}
+
+.naattukoottam-banner-text h3 {
+  margin: 0;
+  font-size: 15.5px;
+  font-weight: 900;
+  color: #FFFFFF;
+  letter-spacing: -0.2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.naattukoottam-banner-text p {
+  margin: 3px 0 0;
+  font-size: 11.5px;
+  color: #CBD5E1;
+  font-weight: 600;
+}
+
+.naattukoottam-join-btn-pill {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  color: #FFFFFF;
+  font-size: 11.5px;
+  font-weight: 800;
+  padding: 7px 13px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
+  flex-shrink: 0;
+  z-index: 2;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* 2. Full-Screen Naattukoottam Modal Sheet */
+#modal-naattukoottam {
+  background: rgba(10, 15, 29, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+}
+
+.vattamesha-modal-sheet {
+  width: 100%;
+  max-width: 520px;
+  height: 94vh;
+  max-height: 880px;
+  background: linear-gradient(180deg, #0A0F1D 0%, #151D33 50%, #0F172A 100%);
+  border-radius: 28px 28px 0 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  position: relative;
+}
+
+@media (min-width: 600px) {
+  .vattamesha-modal-sheet {
+    border-radius: 28px;
+    height: 90vh;
+  }
+}
+
+/* Top Navigation in Room */
+.vattamesha-header {
+  padding: 14px 18px;
+  background: rgba(15, 23, 42, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+.vattamesha-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.vattamesha-back-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.vattamesha-back-btn:active {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.vattamesha-title-row h2 {
+  margin: 0;
+  font-size: 16.5px;
+  font-weight: 900;
+  color: #FFFFFF;
+  letter-spacing: -0.2px;
+}
+
+.vattamesha-title-sub {
+  font-size: 11.5px;
+  color: #94A3B8;
+  font-weight: 600;
+  margin-top: 1px;
+}
+
+.vattamesha-seats-count-chip {
+  background: rgba(34, 197, 94, 0.18);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  color: #4ADE80;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Discussion Topic Banner */
+.vattamesha-topic-ribbon {
+  background: linear-gradient(90deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.25) 50%, rgba(245, 158, 11, 0.15) 100%);
+  border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #FDE68A;
+  font-weight: 700;
+}
+
+.vattamesha-topic-btn {
+  background: rgba(245, 158, 11, 0.25);
+  border: 1px solid #F59E0B;
+  color: #FFF;
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* 3. The 3D Circular Roundtable Arena (The Heart of the Feature) */
+.vattamesha-arena {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  min-height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Floor Circular Ripple Ambient */
+.vattamesha-floor-ring {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+}
+
+/* The Center Wooden Round Table */
+.vattamesha-center-table {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, #854D0E 0%, #713F12 55%, #451A03 100%);
+  border: 6px solid #A16207;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), inset 0 2px 10px rgba(251, 191, 36, 0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+  cursor: pointer;
+}
+
+.vattamesha-table-kettle {
+  font-size: 32px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
+  position: relative;
+}
+
+.vattamesha-steam {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  animation: steamRise 2s infinite ease-in-out;
+  opacity: 0.85;
+}
+
+@keyframes steamRise {
+  0% { transform: translate(-50%, 0) scale(0.8); opacity: 0.3; }
+  50% { transform: translate(-50%, -8px) scale(1.1); opacity: 0.9; }
+  100% { transform: translate(-50%, -16px) scale(1.3); opacity: 0; }
+}
+
+.vattamesha-table-label {
+  font-size: 10px;
+  font-weight: 900;
+  color: #FEF3C7;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 2px 8px;
+  border-radius: 8px;
+  margin-top: 2px;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  text-align: center;
+}
+
+/* 4. The 6 Interactive Seats Around the Table */
+.vattamesha-seat {
+  position: absolute;
+  width: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 6;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.vattamesha-seat:active {
+  transform: scale(0.95);
+}
+
+/* Exact Circular Coordinate Positioning for the 6 Seats */
+/* Seat 1: Bottom Center (You / Current User) */
+.vattamesha-seat-1 {
+  left: 50%;
+  top: 86%;
+  transform: translate(-50%, -50%);
+}
+/* Seat 2: Bottom Left (Neighbor 1) */
+.vattamesha-seat-2 {
+  left: 14%;
+  top: 68%;
+  transform: translate(-50%, -50%);
+}
+/* Seat 3: Top Left (Neighbor 2) */
+.vattamesha-seat-3 {
+  left: 14%;
+  top: 32%;
+  transform: translate(-50%, -50%);
+}
+/* Seat 4: Top Center (Neighbor 3) */
+.vattamesha-seat-4 {
+  left: 50%;
+  top: 14%;
+  transform: translate(-50%, -50%);
+}
+/* Seat 5: Top Right (Neighbor 4) */
+.vattamesha-seat-5 {
+  left: 86%;
+  top: 32%;
+  transform: translate(-50%, -50%);
+}
+/* Seat 6: Bottom Right (Neighbor 5) */
+.vattamesha-seat-6 {
+  left: 86%;
+  top: 68%;
+  transform: translate(-50%, -50%);
+}
+
+/* Avatar Styling */
+.vattamesha-avatar-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #1E293B;
+  border: 2.5px solid #64748B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  transition: all 0.25s ease;
+}
+
+.vattamesha-avatar-wrap img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Current User Avatar Special Border */
+.vattamesha-seat-1 .vattamesha-avatar-wrap {
+  border-color: #3B82F6;
+  box-shadow: 0 0 14px rgba(59, 130, 246, 0.5);
+}
+
+/* Speaking Wave Ripple */
+.vattamesha-seat.speaking .vattamesha-avatar-wrap {
+  border-color: #22C55E !important;
+  animation: vattameshaPulse 1.3s infinite;
+}
+
+@keyframes vattameshaPulse {
+  0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+  70% { box-shadow: 0 0 0 14px rgba(34, 197, 94, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+.vattamesha-seat-mic-badge {
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #0F172A;
+  border: 1.5px solid #22C55E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9.5px;
+  color: #22C55E;
+}
+
+.vattamesha-seat-name {
+  font-size: 11px;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-top: 4px;
+  white-space: nowrap;
+  max-width: 76px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.vattamesha-seat-role {
+  font-size: 9px;
+  font-weight: 700;
+  color: #94A3B8;
+  white-space: nowrap;
+  max-width: 76px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+/* 5. Comic / Speech Bubbles (Appears when someone speaks or chats) */
+.vattamesha-speech-bubble {
+  position: absolute;
+  background: #FFFFFF;
+  color: #0F172A;
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 800;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  white-space: normal;
+  max-width: 140px;
+  min-width: 70px;
+  text-align: center;
+  pointer-events: none;
+  z-index: 20;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.vattamesha-speech-bubble.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Bubble Tail Arrows */
+.vattamesha-seat-1 .vattamesha-speech-bubble {
+  bottom: 58px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.6);
+}
+.vattamesha-seat-1 .vattamesha-speech-bubble.active {
+  transform: translateX(-50%) scale(1);
+}
+
+.vattamesha-seat-2 .vattamesha-speech-bubble,
+.vattamesha-seat-3 .vattamesha-speech-bubble {
+  left: 54px;
+  top: 0;
+}
+
+.vattamesha-seat-4 .vattamesha-speech-bubble {
+  top: 56px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.6);
+}
+.vattamesha-seat-4 .vattamesha-speech-bubble.active {
+  transform: translateX(-50%) scale(1);
+}
+
+.vattamesha-seat-5 .vattamesha-speech-bubble,
+.vattamesha-seat-6 .vattamesha-speech-bubble {
+  right: 54px;
+  top: 0;
+}
+
+/* 6. Live Roundtable Chat Log (Bottom Drawer) */
+.vattamesha-chat-stream {
+  max-height: 110px;
+  overflow-y: auto;
+  padding: 8px 16px;
+  background: rgba(15, 23, 42, 0.55);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 11.5px;
+}
+
+.vattamesha-log-entry {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  color: #E2E8F0;
+}
+
+.vattamesha-log-author {
+  font-weight: 800;
+  color: #FBBF24;
+  flex-shrink: 0;
+}
+
+.vattamesha-log-msg {
+  color: #F1F5F9;
+  word-break: break-word;
+}
+
+/* 7. Bottom Interaction Controls Bar */
+.vattamesha-bottom-controls {
+  padding: 10px 14px 18px;
+  background: rgba(15, 23, 42, 0.95);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  backdrop-filter: blur(12px);
+  z-index: 10;
+}
+
+.vattamesha-reactions-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 6px;
+}
+
+.vattamesha-react-btn {
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #FFFFFF;
+  padding: 5px 11px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.vattamesha-react-btn:active {
+  transform: scale(0.92);
+  background: rgba(245, 158, 11, 0.3);
+}
+
+.vattamesha-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vattamesha-mic-toggle-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #334155;
+  border: 2px solid #64748B;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.vattamesha-mic-toggle-btn.active {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  border-color: #34D399;
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.6);
+  animation: liveDotPulse 1.2s infinite;
+}
+
+.vattamesha-text-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border-radius: 22px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #FFFFFF;
+  outline: none;
+}
+
+.vattamesha-text-input::placeholder {
+  color: #94A3B8;
+}
+
+.vattamesha-text-input:focus {
+  border-color: #F59E0B;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.vattamesha-send-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  border: none;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.35);
+}
+
+.vattamesha-send-btn:active {
+  transform: scale(0.92);
+}
+
+/* Floating Reaction Animation */
+@keyframes floatUpReaction {
+  0% { transform: translate(-50%, 0) scale(0.6); opacity: 0; }
+  20% { opacity: 1; transform: translate(-50%, -20px) scale(1.3); }
+  80% { opacity: 0.9; }
+  100% { transform: translate(-50%, -100px) scale(1.6); opacity: 0; }
+}
+
+.vattamesha-floating-reaction {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  font-size: 32px;
+  pointer-events: none;
+  z-index: 50;
+  animation: floatUpReaction 1.8s forwards ease-out;
+}
+

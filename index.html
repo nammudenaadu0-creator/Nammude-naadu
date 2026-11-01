@@ -1291,6 +1291,8 @@
                     <div class="superapp-chips-bar" id="chatCategoryChipsBar">
                         <button class="superapp-chip active chat-filter-chip" data-filter="all"
                             onclick="filterChatCategory('all', this)">എല്ലാം</button>
+                        <button class="superapp-chip chat-filter-chip" style="background:#FEF3C7;color:#B45309;border:1px solid #FCD34D;font-weight:800"
+                            onclick="openNaattukoottamModal()">☕ നാട്ടുകൂട്ടം വട്ടമേശ</button>
                         <button class="superapp-chip chat-filter-chip" data-filter="business"
                             onclick="filterChatCategory('business', this)">🏪 കടകൾ</button>
                         <button class="superapp-chip chat-filter-chip" data-filter="service"
@@ -1305,7 +1307,29 @@
                             onclick="filterChatCategory('other', this)">👥 നാട്ടുകാർ</button>
                     </div>
 
-                    <div id="chatThreadsList" style="display:flex;flex-direction:column;gap:8px;padding:12px 16px 90px">
+                    <!-- 🍵 NAATTUKOOTTAM VATTAMESHA LIVE BANNER -->
+                    <div class="naattukoottam-chat-banner" onclick="openNaattukoottamModal()">
+                        <div class="naattukoottam-banner-glow"></div>
+                        <div class="naattukoottam-banner-left">
+                            <div class="naattukoottam-table-icon-wrap">
+                                <span>☕</span>
+                                <span class="naattukoottam-table-live-dot"></span>
+                            </div>
+                            <div class="naattukoottam-banner-text">
+                                <h3>
+                                    <span>നാട്ടുകൂട്ടം വട്ടമേശ</span>
+                                    <span style="font-size:10px;background:#22C55E;color:#fff;padding:1px 6px;border-radius:6px;font-weight:800">തത്സമയം</span>
+                                </h3>
+                                <p>6 പേർ ഒരുമിച്ചിരുന്ന് സംസാരിക്കുന്ന ലൈവ് വട്ടമേശ ചർച്ച</p>
+                            </div>
+                        </div>
+                        <div class="naattukoottam-join-btn-pill">
+                            <span>ഇരിക്കാം</span>
+                            <span>➔</span>
+                        </div>
+                    </div>
+
+                    <div id="chatThreadsList" style="display:flex;flex-direction:column;gap:8px;padding:6px 16px 90px">
                     </div>
                 </section>
 
@@ -5094,6 +5118,150 @@
                 <p><strong>🗑️ റൈറ്റ് ടു ഇറേസ്:</strong> നിങ്ങളുടെ അക്കൗണ്ടും എല്ലാ വിവരങ്ങളും എപ്പോൾ വേണമെങ്കിലും ഒറ്റ ക്ലിക്കിൽ പൂർണ്ണമായി മായ്ച്ചുകളയാൻ നിങ്ങൾക്ക് അവകാശമുണ്ട്.</p>
             </div>
             <button type="button" onclick="closeModal('modal-data-security')" style="margin-top:16px;width:100%;padding:11px;background:#0C2B59;color:#fff;border:none;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer" id="securityModalCloseBtn">ശരി, മനസ്സിലായി</button>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- 🍵 MODAL: NAATTUKOOTTAM VATTAMESHA (6-PERSON ROUNDTABLE CHAT)  -->
+    <!-- ============================================================== -->
+    <div id="modal-naattukoottam" class="modal-overlay" style="display:none;align-items:flex-end;justify-content:center;z-index:9999999;background:rgba(10,15,29,0.85);backdrop-filter:blur(8px)" onclick="if(event.target===this)closeModal('modal-naattukoottam')">
+        <div class="vattamesha-modal-sheet" id="vattameshaModalSheet">
+            
+            <!-- Room Header -->
+            <div class="vattamesha-header">
+                <div class="vattamesha-header-left">
+                    <button type="button" class="vattamesha-back-btn" onclick="closeModal('modal-naattukoottam')" title="പുറത്തിറങ്ങാം">❮</button>
+                    <div class="vattamesha-title-row">
+                        <h2 id="vattameshaRoomTitle">🍵 നാട്ടുകൂട്ടം വട്ടമേശ</h2>
+                        <div class="vattamesha-title-sub" id="vattameshaRoomSub">തത്സമയ ഗ്രാമീണ വട്ടമേശ ചർച്ച • ലൈവ്</div>
+                    </div>
+                </div>
+                <div class="vattamesha-seats-count-chip" id="vattameshaSeatsCount">
+                    <span style="font-size:12px">🟢</span>
+                    <span id="vattameshaSeatsCountTxt">6 പേർ ഇരിക്കുന്നു</span>
+                </div>
+            </div>
+
+            <!-- Topic Ribbon -->
+            <div class="vattamesha-topic-ribbon">
+                <div style="display:flex;align-items:center;gap:6px;min-width:0;flex:1">
+                    <span>📢</span>
+                    <span id="vattameshaCurrentTopic" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">വിഷയം: നാട്ടിലെ വിശേഷങ്ങളും സഹായങ്ങളും 🌾</span>
+                </div>
+                <button type="button" class="vattamesha-topic-btn" onclick="changeNaattukoottamTopic()">വിഷയം മാറ്റാം ✏️</button>
+            </div>
+
+            <!-- The 3D Roundtable Arena -->
+            <div class="vattamesha-arena" id="vattameshaArena">
+                <!-- Circular Floor Ripple Texture -->
+                <div class="vattamesha-floor-ring"></div>
+
+                <!-- Center Teak Round Table -->
+                <div class="vattamesha-center-table" onclick="sendNaattukoottamReaction('☕')" title="ചായ കുടിക്കാം / ചായ കൊടുക്കാം">
+                    <div class="vattamesha-table-kettle">
+                        <span class="vattamesha-steam">♨️</span>
+                        ☕
+                    </div>
+                    <div class="vattamesha-table-label">വട്ടമേശ</div>
+                </div>
+
+                <!-- SEAT 1: YOU (Bottom Center) -->
+                <div class="vattamesha-seat vattamesha-seat-1" id="vattameshaSeat1" onclick="focusNaattukoottamInput()">
+                    <div class="vattamesha-speech-bubble" id="vattameshaBubble1">നമസ്കാരം കൂട്ടുകാരേ! 🙏</div>
+                    <div class="vattamesha-avatar-wrap">
+                        <img id="vattameshaAvatar1" src="assets/kerala-logo-badge.jpg" onerror="this.src=window.DEFAULT_USER_AVATAR||''" alt="You">
+                        <span class="vattamesha-seat-mic-badge" id="vattameshaMicBadge1">🎙️</span>
+                    </div>
+                    <div class="vattamesha-seat-name" id="vattameshaName1">നിങ്ങൾ</div>
+                    <div class="vattamesha-seat-role" style="color:#60A5FA" id="vattameshaRole1">നാട്ടുകാരൻ</div>
+                </div>
+
+                <!-- SEAT 2: Neighbor 1 (Bottom Left) -->
+                <div class="vattamesha-seat vattamesha-seat-2" id="vattameshaSeat2" onclick="triggerSeatInteraction(2)">
+                    <div class="vattamesha-speech-bubble" id="vattameshaBubble2">സുഖം തന്നെ എല്ലാവർക്കും? 🌾</div>
+                    <div class="vattamesha-avatar-wrap">
+                        <img id="vattameshaAvatar2" src="assets/cat-driver-3d.jpg" onerror="this.src='assets/kerala-logo-badge.jpg'" alt="സുരേഷ്">
+                        <span class="vattamesha-seat-mic-badge">👂</span>
+                    </div>
+                    <div class="vattamesha-seat-name">സുരേഷ്</div>
+                    <div class="vattamesha-seat-role" style="color:#34D399">ഡ്രൈവർ</div>
+                </div>
+
+                <!-- SEAT 3: Neighbor 2 (Top Left) -->
+                <div class="vattamesha-seat vattamesha-seat-3" id="vattameshaSeat3" onclick="triggerSeatInteraction(3)">
+                    <div class="vattamesha-speech-bubble" id="vattameshaBubble3">പുതിയ വിശേഷം എന്തെങ്കിലും? 📰</div>
+                    <div class="vattamesha-avatar-wrap">
+                        <img id="vattameshaAvatar3" src="assets/cat-tutor-3d.jpg" onerror="this.src='assets/kerala-logo-badge.jpg'" alt="ഫാത്തിമ">
+                        <span class="vattamesha-seat-mic-badge">👂</span>
+                    </div>
+                    <div class="vattamesha-seat-name">ഫാത്തിമ</div>
+                    <div class="vattamesha-seat-role" style="color:#F472B6">ടീച്ചർ</div>
+                </div>
+
+                <!-- SEAT 4: Neighbor 3 (Top Center) -->
+                <div class="vattamesha-seat vattamesha-seat-4" id="vattameshaSeat4" onclick="triggerSeatInteraction(4)">
+                    <div class="vattamesha-speech-bubble" id="vattameshaBubble4">നല്ലൊരു ചായ കുടിക്കാം! ☕</div>
+                    <div class="vattamesha-avatar-wrap">
+                        <img id="vattameshaAvatar4" src="assets/cat-business-3d.jpg" onerror="this.src='assets/kerala-logo-badge.jpg'" alt="മുഹമ്മദ്">
+                        <span class="vattamesha-seat-mic-badge">👂</span>
+                    </div>
+                    <div class="vattamesha-seat-name">മുഹമ്മദ്</div>
+                    <div class="vattamesha-seat-role" style="color:#FBBF24">വ്യാപാരി</div>
+                </div>
+
+                <!-- SEAT 5: Neighbor 4 (Top Right) -->
+                <div class="vattamesha-seat vattamesha-seat-5" id="vattameshaSeat5" onclick="triggerSeatInteraction(5)">
+                    <div class="vattamesha-speech-bubble" id="vattameshaBubble5">റോഡ് പണി തുടങ്ങി കേട്ടോ! 🚜</div>
+                    <div class="vattamesha-avatar-wrap">
+                        <img id="vattameshaAvatar5" src="assets/cat-electrician-3d.jpg" onerror="this.src='assets/kerala-logo-badge.jpg'" alt="അനൂപ്">
+                        <span class="vattamesha-seat-mic-badge">👂</span>
+                    </div>
+                    <div class="vattamesha-seat-name">അനൂപ്</div>
+                    <div class="vattamesha-seat-role" style="color:#A78BFA">ഇലക്ട്രീഷ്യൻ</div>
+                </div>
+
+                <!-- SEAT 6: Neighbor 5 (Bottom Right) -->
+                <div class="vattamesha-seat vattamesha-seat-6" id="vattameshaSeat6" onclick="triggerSeatInteraction(6)">
+                    <div class="vattamesha-speech-bubble" id="vattameshaBubble6">രക്തദാന ക്യാമ്പ് ഞായറാഴ്ചയാണ് 🩸</div>
+                    <div class="vattamesha-avatar-wrap">
+                        <img id="vattameshaAvatar6" src="assets/cat-blood-3d.jpg" onerror="this.src='assets/kerala-logo-badge.jpg'" alt="പ്രിയ">
+                        <span class="vattamesha-seat-mic-badge">👂</span>
+                    </div>
+                    <div class="vattamesha-seat-name">പ്രിയ</div>
+                    <div class="vattamesha-seat-role" style="color:#38BDF8">സന്നദ്ധ പ്രവർത്തക</div>
+                </div>
+            </div>
+
+            <!-- Live Roundtable Chat Log (Recent Messages) -->
+            <div class="vattamesha-chat-stream" id="vattameshaChatStream">
+                <div class="vattamesha-log-entry">
+                    <span class="vattamesha-log-author">മുഹമ്മദ്:</span>
+                    <span class="vattamesha-log-msg">എല്ലാവർക്കും വട്ടമേശയിലേക്ക് സ്വാഗതം! ☕</span>
+                </div>
+            </div>
+
+            <!-- Bottom Interaction Controls -->
+            <div class="vattamesha-bottom-controls">
+                <!-- Fast Reactions Row -->
+                <div class="vattamesha-reactions-row">
+                    <button type="button" class="vattamesha-react-btn" onclick="sendNaattukoottamReaction('☕')">☕ ചായ</button>
+                    <button type="button" class="vattamesha-react-btn" onclick="sendNaattukoottamReaction('👍')">👍 കൊള്ളാം</button>
+                    <button type="button" class="vattamesha-react-btn" onclick="sendNaattukoottamReaction('😂')">😂 ചിരി</button>
+                    <button type="button" class="vattamesha-react-btn" onclick="sendNaattukoottamReaction('👏')">👏 കയ്യടി</button>
+                    <button type="button" class="vattamesha-react-btn" onclick="inviteFriendToRoundtable()">👥 ക്ഷണിക്കാം</button>
+                </div>
+
+                <!-- Input Row -->
+                <div class="vattamesha-input-row">
+                    <button type="button" class="vattamesha-mic-toggle-btn" id="vattameshaMicToggleBtn" onclick="toggleNaattukoottamMic()" title="മൈക്ക് ഓൺ / ഓഫ് ചെയ്യാം">
+                        🎙️
+                    </button>
+                    <input type="text" id="vattameshaMsgInput" class="vattamesha-text-input" placeholder="വട്ടമേശയിൽ പറയാനുള്ളത് ഇവിടെ എഴുതാം..." autocomplete="off" onkeydown="if(event.key==='Enter')handleNaattukoottamSend()">
+                    <button type="button" class="vattamesha-send-btn" onclick="handleNaattukoottamSend()" title="സംസാരിക്കാം / അയക്കാം">
+                        ➔
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
                     <!-- Floating Toast Notification -->
