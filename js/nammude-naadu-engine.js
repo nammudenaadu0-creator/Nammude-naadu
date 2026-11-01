@@ -1143,12 +1143,6 @@
   // ==============================================================
   function navTo(screenId) {
     if (!screenId) return;
-    if (screenId !== 'splash' && screenId !== 'home' && typeof isUserRegistered === 'function' && !isUserRegistered()) {
-      if (typeof openMandatoryRegisterModal === 'function') {
-        openMandatoryRegisterModal();
-      }
-      return;
-    }
     if (APP_STATE.currentScreen === screenId) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       if (typeof window.refreshActiveScreen === 'function') {
@@ -14194,34 +14188,50 @@
     window.renderNaattukoottamRoom = renderNaattukoottamRoom;
 
     function openNaattukoottamModal(roomId) {
-      const modal = document.getElementById('modal-naattukoottam');
-      if (!modal) return;
+      try {
+        const modal = document.getElementById('modal-naattukoottam');
+        if (!modal) return;
 
-      if (roomId) {
-        _vattameshaActiveRoomId = roomId;
-      } else if (!_vattameshaActiveRoomId) {
-        _vattameshaActiveRoomId = 'live_default';
-      }
+        if (roomId) {
+          _vattameshaActiveRoomId = roomId;
+        } else if (!_vattameshaActiveRoomId) {
+          _vattameshaActiveRoomId = 'live_default';
+        }
 
-      renderNaattukoottamRoom(_vattameshaActiveRoomId);
+        try {
+          renderNaattukoottamRoom(_vattameshaActiveRoomId);
+        } catch (err) {
+          console.warn('[Naattukoottam] Error in renderNaattukoottamRoom:', err);
+        }
 
-      const room = getNaattukoottamRoom(_vattameshaActiveRoomId);
-      const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
+        modal.style.setProperty('display', 'flex', 'important');
+        modal.classList.add('active');
 
-      // Show welcome speech bubble on Seat 1
-      showVattameshaBubble(1, isEn ? 'Hello friends! Welcome to our roundtable 🙏' : 'നമസ്കാരം കൂട്ടുകാരേ! വട്ടമേശയിലേക്ക് സ്വാഗതം 🙏', 4000);
+        // Show welcome speech bubble on Seat 1
+        try {
+          const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
+          showVattameshaBubble(1, isEn ? 'Hello friends! Welcome to our roundtable 🙏' : 'നമസ്കാരം കൂട്ടുകാരേ! വട്ടമേശയിലേക്ക് സ്വാഗതം 🙏', 4000);
+        } catch (_) {}
 
-      // Open Modal
-      openModal('modal-naattukoottam');
-
-      // Ambient conversation simulation for default village room
-      clearInterval(_vattameshaNeighborTimer);
-      if (room.isDefault) {
-        _vattameshaNeighborTimer = setInterval(() => {
-          if (modal.style.display !== 'none' && modal.style.display !== '') {
-            triggerRandomNeighborChatter();
+        // Ambient conversation simulation for default village room
+        try {
+          clearInterval(_vattameshaNeighborTimer);
+          const room = getNaattukoottamRoom(_vattameshaActiveRoomId);
+          if (room && room.isDefault) {
+            _vattameshaNeighborTimer = setInterval(() => {
+              if (modal.style.display !== 'none' && modal.style.display !== '') {
+                triggerRandomNeighborChatter();
+              }
+            }, 14000);
           }
-        }, 14000);
+        } catch (_) {}
+      } catch (e) {
+        console.error('[Naattukoottam Modal Open Error]', e);
+        const modal = document.getElementById('modal-naattukoottam');
+        if (modal) {
+          modal.style.setProperty('display', 'flex', 'important');
+          modal.classList.add('active');
+        }
       }
     }
     window.openNaattukoottamModal = openNaattukoottamModal;
