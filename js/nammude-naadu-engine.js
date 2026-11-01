@@ -5885,6 +5885,43 @@
       </div>
     `;
 
+    // Render custom 6-person Naattukoottam Groups if any exist
+    try {
+      const customRooms = typeof getStoredNaattukoottamRooms === 'function'
+        ? Object.values(getStoredNaattukoottamRooms()).filter(r => r && !r.isDefault)
+        : [];
+      if (customRooms.length > 0) {
+        html += `
+          <div style="font-size:12.5px;font-weight:800;color:#92400E;margin:6px 0 6px;display:flex;align-items:center;gap:6px">
+            <span>☕ നിങ്ങളുടെ 6-പേർ നാട്ടുകൂട്ടം ഗ്രൂപ്പുകൾ (${customRooms.length})</span>
+          </div>
+        `;
+        html += customRooms.map(r => {
+          const memCount = (r.members || []).filter(m => m && m.name).length;
+          return `
+            <div onclick="openNaattukoottamModal('${r.id}')"
+                 style="display:flex;align-items:center;gap:12px;padding:11px 14px;background:#FFFBEB;border-radius:14px;border:1.5px solid #FCD34D;cursor:pointer;margin-bottom:8px;box-shadow:0 2px 8px rgba(217,119,6,0.06)">
+              <div style="position:relative;width:42px;height:42px;border-radius:50%;background:radial-gradient(circle, #78350F 0%, #451A03 100%);border:2px solid #F59E0B;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <span style="font-size:20px">☕</span>
+              </div>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;justify-content:space-between">
+                  <span style="font-weight:900;font-size:14px;color:#78350F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(r.name)}</span>
+                  <span style="font-size:10px;background:#FEF3C7;color:#92400E;padding:2px 7px;border-radius:8px;font-weight:800;border:1px solid #FDE68A;flex-shrink:0">${memCount}/6 പേർ</span>
+                </div>
+                <div style="font-size:11.5px;color:#64748B;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+                  ${escapeHtml(r.topic || '6 പേർ ഒരുമിച്ചിരുന്ന് സംസാരിക്കുന്ന വട്ടമേശ')}
+                </div>
+              </div>
+              <div style="background:linear-gradient(135deg, #0E7043 0%, #10B981 100%);color:#fff;font-size:11px;font-weight:800;padding:6px 12px;border-radius:10px;flex-shrink:0">
+                ഇരിക്കാം
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    } catch (_) {}
+
     // 1. IF SEARCH QUERY IS ACTIVE
     if (activeChatSearchQuery) {
       const q = activeChatSearchQuery.toLowerCase();
@@ -13998,9 +14035,14 @@
     // ==============================================================
     // 🍵 NAATTUKOOTTAM VATTAMESHA (6-PERSON ROUNDTABLE CHAT ENGINE)
     // ==============================================================
+    // 🍵 NAATTUKOOTTAM 6-PERSON ROUNDTABLE & GROUP SYSTEM
+    // ==============================================================
     let _vattameshaMicActive = false;
     let _vattameshaNeighborTimer = null;
     let _currentTopicIndex = 0;
+    let _vattameshaActiveRoomId = 'live_default';
+    let _vattameshaPendingInviteSeat = null;
+
     const _vattameshaTopics = [
       'വിഷയം: നാട്ടിലെ വിശേഷങ്ങളും സഹായങ്ങളും 🌾',
       'വിഷയം: വൈകുന്നേരത്തെ ചായ കുടിയും സൊറ പറച്ചിലും ☕',
@@ -14017,42 +14059,469 @@
       { seat: 6, name: 'പ്രിയ (സന്നദ്ധ പ്രവർത്തക)', text: 'ആർക്കെങ്കിലും എന്തെങ്കിലും സഹായം വേണമെങ്കിൽ ഇവിടെ പറയാം 🤝', enText: 'If anyone needs any local help, please speak up here 🤝' }
     ];
 
-    function openNaattukoottamModal() {
-      const modal = document.getElementById('modal-naattukoottam');
-      if (!modal) return;
+    function getStoredNaattukoottamRooms() {
+      try {
+        const raw = localStorage.getItem('nn_naattukoottam_rooms');
+        if (raw) return JSON.parse(raw);
+      } catch (_) {}
+      return {};
+    }
+
+    function saveStoredNaattukoottamRooms(rooms) {
+      try {
+        localStorage.setItem('nn_naattukoottam_rooms', JSON.stringify(rooms));
+      } catch (_) {}
+    }
+
+    function getNaattukoottamRoom(roomId) {
+      const rooms = getStoredNaattukoottamRooms();
+      if (roomId && rooms[roomId]) return rooms[roomId];
+      return {
+        id: 'live_default',
+        name: 'നാട്ടുകൂട്ടം വട്ടമേശ',
+        topic: 'വിഷയം: നാട്ടിലെ വിശേഷങ്ങളും സഹായങ്ങളും 🌾',
+        isDefault: true,
+        members: [
+          { seat: 1, name: 'നിങ്ങൾ', role: 'നാട്ടുകാരൻ', avatar: '', isHost: true },
+          { seat: 2, name: 'സുരേഷ്', role: 'ഡ്രൈവർ', avatar: 'assets/cat-driver-3d.jpg' },
+          { seat: 3, name: 'ഫാത്തിമ', role: 'ടീച്ചർ', avatar: 'assets/cat-tutor-3d.jpg' },
+          { seat: 4, name: 'മുഹമ്മദ്', role: 'വ്യാപാരി', avatar: 'assets/cat-business-3d.jpg' },
+          { seat: 5, name: 'അനൂപ്', role: 'ഇലക്ട്രീഷ്യൻ', avatar: 'assets/cat-electrician-3d.jpg' },
+          { seat: 6, name: 'പ്രിയ', role: 'സന്നദ്ധ പ്രവർത്തക', avatar: 'assets/cat-blood-3d.jpg' }
+        ],
+        messages: [
+          { author: 'മുഹമ്മദ്', text: 'എല്ലാവർക്കും വട്ടമേശ റൂമിലേക്ക് സ്വാഗതം! ☕' }
+        ]
+      };
+    }
+
+    function renderNaattukoottamRoom(roomId) {
+      const room = getNaattukoottamRoom(roomId);
+      if (!room) return;
 
       const user = (APP_STATE && APP_STATE.currentUser) || {};
       const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en') || (typeof localStorage !== 'undefined' && localStorage.getItem('nn_app_language') === 'en');
 
-      // Update Seat 1 (You)
-      const av1 = document.getElementById('vattameshaAvatar1');
-      if (av1) av1.src = user.avatar || window.DEFAULT_USER_AVATAR || 'assets/kerala-logo-badge.jpg';
-      const nm1 = document.getElementById('vattameshaName1');
-      if (nm1) nm1.textContent = user.name || (isEn ? 'You' : 'നിങ്ങൾ');
-      const role1 = document.getElementById('vattameshaRole1');
-      if (role1) role1.textContent = isEn ? 'Citizen' : 'നാട്ടുകാരൻ';
-
-      // Update Room Titles
+      // Update Titles
       const rTitle = document.getElementById('vattameshaRoomTitle');
-      if (rTitle) rTitle.textContent = isEn ? '🍵 Naattukoottam Roundtable' : '🍵 നാട്ടുകൂട്ടം വട്ടമേശ';
+      if (rTitle) rTitle.textContent = '🍵 ' + (room.name || 'നാട്ടുകൂട്ടം വട്ടമേശ');
+
       const rSub = document.getElementById('vattameshaRoomSub');
-      if (rSub) rSub.textContent = isEn ? 'Live 6-Person Village Discussion' : 'തത്സമയ ഗ്രാമീണ വട്ടമേശ ചർച്ച • ലൈവ്';
+      if (rSub) {
+        rSub.textContent = room.isDefault
+          ? (isEn ? 'Live 6-Person Village Roundtable' : 'തത്സമയ ഗ്രാമീണ വട്ടമേശ ചർച്ച • ലൈവ്')
+          : (isEn ? 'Custom 6-Person Roundtable Group' : 'നിങ്ങളുടെ 6 പേരുടെ കൂട്ടായ്മ • ലൈവ് റൂം');
+      }
+
+      // Update Topic
+      const topEl = document.getElementById('vattameshaCurrentTopic');
+      if (topEl) topEl.textContent = room.topic || _vattameshaTopics[0];
+
+      // Count occupied seats
+      const occupiedCount = (room.members || []).filter(m => m && m.name).length;
+      const countTxt = document.getElementById('vattameshaSeatsCountTxt');
+      if (countTxt) countTxt.textContent = `${occupiedCount}/6 പേർ`;
+
+      // Update pinned banner badge if present
+      const cardTitle = document.getElementById('nkCardTitleTxt');
+      if (cardTitle && room.name) cardTitle.textContent = room.name;
+      const cardBadge = document.getElementById('nkCardStatusBadge');
+      if (cardBadge) {
+        cardBadge.textContent = occupiedCount >= 6 ? '🟢 6 പേർ ലൈവ്' : `🟢 ${occupiedCount}/6 പേർ`;
+      }
+
+      // Render Seats 1 to 6
+      for (let s = 1; s <= 6; s++) {
+        const seatEl = document.getElementById('vattameshaSeat' + s);
+        const avWrap = document.getElementById('vattameshaAvatarWrap' + s);
+        const avImg = document.getElementById('vattameshaAvatar' + s);
+        const plusEl = document.getElementById('vattameshaVacantPlus' + s);
+        const nameEl = document.getElementById('vattameshaName' + s);
+        const roleEl = document.getElementById('vattameshaRole' + s);
+        const micBadge = document.getElementById('vattameshaMicBadge' + s);
+
+        if (!seatEl) continue;
+
+        if (s === 1) {
+          // Seat 1 is ALWAYS the host / current user
+          if (seatEl) seatEl.classList.remove('vacant');
+          if (avImg) {
+            avImg.style.display = 'block';
+            avImg.src = user.avatar || window.DEFAULT_USER_AVATAR || 'assets/kerala-logo-badge.jpg';
+          }
+          if (plusEl) plusEl.style.display = 'none';
+          if (nameEl) nameEl.textContent = user.name || (isEn ? 'You' : 'നിങ്ങൾ');
+          if (roleEl) roleEl.textContent = room.isDefault ? (isEn ? 'Citizen' : 'നാട്ടുകാരൻ') : (isEn ? 'Host (Admin)' : 'അഡ്മിൻ (നിങ്ങൾ)');
+          if (micBadge) micBadge.style.display = 'flex';
+          continue;
+        }
+
+        const member = (room.members || []).find(m => m && m.seat === s);
+        if (member && member.name) {
+          // Occupied Seat
+          seatEl.classList.remove('vacant');
+          if (avImg) {
+            avImg.style.display = 'block';
+            avImg.src = member.avatar || window.DEFAULT_USER_AVATAR || 'assets/kerala-logo-badge.jpg';
+          }
+          if (plusEl) plusEl.style.display = 'none';
+          if (nameEl) nameEl.textContent = member.name;
+          if (roleEl) roleEl.textContent = member.role || 'നാട്ടുകാരൻ';
+          if (micBadge) micBadge.style.display = 'flex';
+        } else {
+          // Vacant Seat (Waiting for invite)
+          seatEl.classList.add('vacant');
+          if (avImg) avImg.style.display = 'none';
+          if (plusEl) plusEl.style.display = 'flex';
+          if (nameEl) nameEl.textContent = isEn ? 'Vacant Seat' : 'ഒഴിഞ്ഞ സീറ്റ്';
+          if (roleEl) roleEl.textContent = isEn ? '+ Invite' : '+ ക്ഷണിക്കാം';
+          if (micBadge) micBadge.style.display = 'none';
+        }
+      }
+
+      // Populate chat stream
+      const stream = document.getElementById('vattameshaChatStream');
+      if (stream && room.messages && room.messages.length > 0) {
+        stream.innerHTML = room.messages.map(m => `
+          <div class="vattamesha-log-entry">
+            <span class="vattamesha-log-author">${escapeHtml(m.author)}:</span>
+            <span class="vattamesha-log-msg">${escapeHtml(m.text)}</span>
+          </div>
+        `).join('');
+        stream.scrollTop = stream.scrollHeight;
+      }
+    }
+    window.renderNaattukoottamRoom = renderNaattukoottamRoom;
+
+    function openNaattukoottamModal(roomId) {
+      const modal = document.getElementById('modal-naattukoottam');
+      if (!modal) return;
+
+      if (roomId) {
+        _vattameshaActiveRoomId = roomId;
+      } else if (!_vattameshaActiveRoomId) {
+        _vattameshaActiveRoomId = 'live_default';
+      }
+
+      renderNaattukoottamRoom(_vattameshaActiveRoomId);
+
+      const room = getNaattukoottamRoom(_vattameshaActiveRoomId);
+      const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
 
       // Show welcome speech bubble on Seat 1
-      showVattameshaBubble(1, isEn ? 'Hello everyone! Glad to join the table 🙏' : 'നമസ്കാരം കൂട്ടുകാരേ! വട്ടമേശയിൽ ഇരിക്കാൻ കഴിഞ്ഞതിൽ സന്തോഷം 🙏', 4000);
+      showVattameshaBubble(1, isEn ? 'Hello friends! Welcome to our roundtable 🙏' : 'നമസ്കാരം കൂട്ടുകാരേ! വട്ടമേശയിലേക്ക് സ്വാഗതം 🙏', 4000);
 
       // Open Modal
       openModal('modal-naattukoottam');
 
-      // Start gentle ambient conversation simulation if quiet
+      // Ambient conversation simulation for default village room
       clearInterval(_vattameshaNeighborTimer);
-      _vattameshaNeighborTimer = setInterval(() => {
-        if (modal.style.display !== 'none' && modal.style.display !== '') {
-          triggerRandomNeighborChatter();
-        }
-      }, 14000);
+      if (room.isDefault) {
+        _vattameshaNeighborTimer = setInterval(() => {
+          if (modal.style.display !== 'none' && modal.style.display !== '') {
+            triggerRandomNeighborChatter();
+          }
+        }, 14000);
+      }
     }
     window.openNaattukoottamModal = openNaattukoottamModal;
+
+    function openCreateNaattukoottamModal() {
+      const nameInp = document.getElementById('nkGroupNameInput');
+      const topicInp = document.getElementById('nkGroupTopicInput');
+      if (nameInp) nameInp.value = '';
+      if (topicInp) topicInp.value = '';
+      openModal('modal-create-naattukoottam');
+    }
+    window.openCreateNaattukoottamModal = openCreateNaattukoottamModal;
+
+    function handleCreateNaattukoottamGroup(e) {
+      if (e) e.preventDefault();
+      const nameInp = document.getElementById('nkGroupNameInput');
+      const topicInp = document.getElementById('nkGroupTopicInput');
+      const gName = (nameInp?.value || '').trim() || 'നമ്മുടെ നാട്ടുകൂട്ടം';
+      const gTopic = (topicInp?.value || '').trim() || 'നാട്ടുവിശേഷങ്ങളും ചർച്ചകളും 🌾';
+      const user = (APP_STATE && APP_STATE.currentUser) || {};
+      const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
+
+      const newRoomId = 'nk_grp_' + Date.now();
+      const newRoom = {
+        id: newRoomId,
+        name: gName,
+        topic: 'വിഷയം: ' + gTopic,
+        createdAt: Date.now(),
+        createdBy: user.phone || user.id || 'me',
+        isDefault: false,
+        members: [
+          {
+            seat: 1,
+            name: user.name || (isEn ? 'You' : 'നിങ്ങൾ'),
+            role: isEn ? 'Host (Admin)' : 'അഡ്മിൻ (നിങ്ങൾ)',
+            avatar: user.avatar || window.DEFAULT_USER_AVATAR,
+            isHost: true
+          }
+        ],
+        messages: [
+          { author: isEn ? 'System' : 'സിസ്റ്റം', text: `"${gName}" ${isEn ? '6-person roundtable group created! Invite 5 friends ☕' : '6 പേരുടെ വട്ടമേശ ഗ്രൂപ്പ് ആരംഭിച്ചു! 5 സുഹൃത്തുക്കളെ ക്ഷണിക്കൂ ☕'}` }
+        ]
+      };
+
+      const rooms = getStoredNaattukoottamRooms();
+      rooms[newRoomId] = newRoom;
+      saveStoredNaattukoottamRooms(rooms);
+
+      _vattameshaActiveRoomId = newRoomId;
+      closeModal('modal-create-naattukoottam');
+      openNaattukoottamModal(newRoomId);
+
+      // Re-render chat threads list so this group appears
+      if (typeof renderChatListScreen === 'function') renderChatListScreen();
+
+      if (typeof toast === 'function') {
+        toast(`🎉 "${gName}" 6 പേരുടെ വട്ടമേശ ഗ്രൂപ്പ് തയ്യാറായി!`);
+      }
+
+      // Prompt to invite 5 friends after 600ms
+      setTimeout(() => {
+        openNaattukoottamInviteModal();
+      }, 600);
+    }
+    window.handleCreateNaattukoottamGroup = handleCreateNaattukoottamGroup;
+
+    function openNaattukoottamInviteModal(targetSeat) {
+      _vattameshaPendingInviteSeat = targetSeat || null;
+      const room = getNaattukoottamRoom(_vattameshaActiveRoomId);
+      const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
+
+      const occupiedCount = (room.members || []).filter(m => m && m.name).length;
+      const remaining = Math.max(0, 6 - occupiedCount);
+
+      const statusEl = document.getElementById('nkInviteSeatCountStatus');
+      if (statusEl) {
+        statusEl.textContent = remaining === 0
+          ? (isEn ? '🎉 All 6 seats filled!' : '🎉 6 സീറ്റുകളും ഫുൾ ആണ്!')
+          : (isEn ? `${remaining} vacant seats left (Total 6)` : `${remaining} സീറ്റുകൾ ബാക്കിയുണ്ട് (ആകെ 6 പേർ)`);
+      }
+
+      // Render 6 mini chairs
+      const chairsRow = document.getElementById('nkSeatsVisualRow');
+      if (chairsRow) {
+        let chairsHtml = '';
+        for (let s = 1; s <= 6; s++) {
+          const mem = (room.members || []).find(m => m && m.seat === s);
+          if (s === 1) {
+            chairsHtml += `<div class="nk-mini-chair host" title="നിങ്ങൾ (അഡ്മിൻ)">🪑 1</div>`;
+          } else if (mem && mem.name) {
+            chairsHtml += `<div class="nk-mini-chair occupied" title="${escapeHtml(mem.name)}">🟢 ${s}</div>`;
+          } else {
+            chairsHtml += `<div class="nk-mini-chair vacant" onclick="openNaattukoottamInviteModal(${s})" title="ഒഴിഞ്ഞ സീറ്റ് ${s}">➕ ${s}</div>`;
+          }
+        }
+        chairsRow.innerHTML = chairsHtml;
+      }
+
+      // Render Contacts List
+      renderNaattukoottamInviteContacts();
+
+      openModal('modal-naattukoottam-invite');
+    }
+    window.openNaattukoottamInviteModal = openNaattukoottamInviteModal;
+
+    function renderNaattukoottamInviteContacts(filterText = '') {
+      const container = document.getElementById('nkInviteContactsList');
+      if (!container) return;
+
+      const room = getNaattukoottamRoom(_vattameshaActiveRoomId);
+      const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
+      const allCommunity = typeof getAllCommunityContacts === 'function' ? getAllCommunityContacts('all') : [];
+      const query = (filterText || '').toLowerCase().trim();
+
+      const seatedNames = new Set((room.members || []).map(m => (m.name || '').toLowerCase()));
+
+      const filtered = allCommunity.filter(c => {
+        if (!query) return true;
+        return (c.name && c.name.toLowerCase().includes(query)) ||
+               (c.phone && c.phone.includes(query)) ||
+               (c.sub && c.sub.toLowerCase().includes(query));
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div style="text-align:center;padding:24px 10px;color:#94A3B8;font-size:13px;font-weight:600">
+            നാട്ടുകാരെ കണ്ടെത്തിയില്ല. വാട്സാപ്പിൽ ലിങ്ക് അയച്ച് ക്ഷണിക്കാം 📲
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.slice(0, 30).map(c => {
+        const isSeated = seatedNames.has((c.name || '').toLowerCase());
+        const cleanRole = (c.sub || 'നാട്ടുകാരൻ').split('•')[0].replace(/[🩸📢🛠️💼🏠👥]/g, '').trim();
+
+        return `
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:14px">
+            <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1">
+              <img src="${c.avatar || window.DEFAULT_USER_AVATAR}" alt="${escapeHtml(c.name)}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:1.5px solid #CBD5E1;flex-shrink:0" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
+              <div style="min-width:0">
+                <div style="font-weight:800;font-size:13.5px;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(c.name)}</div>
+                <div style="font-size:11px;color:#64748B;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(cleanRole)}</div>
+              </div>
+            </div>
+            ${isSeated ? `
+              <span style="background:#DCFCE7;color:#15803D;padding:5px 10px;border-radius:10px;font-size:11px;font-weight:800;border:1px solid #86EFAC">
+                ✅ ഇരിക്കുന്നു
+              </span>
+            ` : `
+              <button type="button" onclick="inviteContactToNaattukoottam('${escapeHtml(c.id || '')}', '${escapeHtml(c.name || '')}', '${escapeHtml(c.avatar || '')}', '${escapeHtml(cleanRole)}')" style="background:linear-gradient(135deg, #0E7043 0%, #10B981 100%);color:#fff;border:none;padding:7px 14px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 2px 6px rgba(16,185,129,0.3);flex-shrink:0">
+                ➕ ഇരുത്താം
+              </button>
+            `}
+          </div>
+        `;
+      }).join('');
+    }
+    window.renderNaattukoottamInviteContacts = renderNaattukoottamInviteContacts;
+
+    function filterNaattukoottamInviteList(val) {
+      renderNaattukoottamInviteContacts(val);
+    }
+    window.filterNaattukoottamInviteList = filterNaattukoottamInviteList;
+
+    function inviteContactToNaattukoottam(id, name, avatar, role) {
+      const room = getNaattukoottamRoom(_vattameshaActiveRoomId);
+      if (!room) return;
+
+      room.members = room.members || [];
+
+      // Check if already seated
+      if (room.members.some(m => m && (m.name || '').toLowerCase() === (name || '').toLowerCase())) {
+        if (typeof toast === 'function') toast(`⚠️ ${name} ഇപ്പോൾ തന്നെ വട്ടമേശയിലുണ്ട്!`);
+        return;
+      }
+
+      // Find target seat (2 to 6)
+      let targetSeat = null;
+      if (_vattameshaPendingInviteSeat && _vattameshaPendingInviteSeat >= 2 && _vattameshaPendingInviteSeat <= 6) {
+        if (!room.members.some(m => m && m.seat === _vattameshaPendingInviteSeat)) {
+          targetSeat = _vattameshaPendingInviteSeat;
+        }
+      }
+
+      if (!targetSeat) {
+        for (let s = 2; s <= 6; s++) {
+          if (!room.members.some(m => m && m.seat === s)) {
+            targetSeat = s;
+            break;
+          }
+        }
+      }
+
+      if (!targetSeat) {
+        if (typeof toast === 'function') toast('⚠️ വട്ടമേശയിലെ 6 സീറ്റുകളും ഫുൾ ആണ്!');
+        return;
+      }
+
+      // Add member to seat
+      room.members.push({
+        seat: targetSeat,
+        id: id || ('usr_' + Date.now()),
+        name: name,
+        role: role || 'നാട്ടുകാരൻ',
+        avatar: avatar || window.DEFAULT_USER_AVATAR
+      });
+
+      // Add welcome message to group chat
+      room.messages = room.messages || [];
+      room.messages.push({
+        author: name,
+        text: 'നമസ്കാരം കൂട്ടുകാരേ! വട്ടമേശയിലേക്ക് സന്തോഷത്തോടെ ചേരുന്നു 🙏 ☕'
+      });
+
+      // Save room
+      const rooms = getStoredNaattukoottamRooms();
+      rooms[room.id] = room;
+      saveStoredNaattukoottamRooms(rooms);
+
+      _vattameshaPendingInviteSeat = null;
+
+      // Re-render Room Floor
+      renderNaattukoottamRoom(room.id);
+
+      // Re-render invite sheet
+      openNaattukoottamInviteModal();
+
+      // Show welcome bubble on newly occupied seat
+      showVattameshaBubble(targetSeat, `${name} വട്ടമേശയിൽ ഇരുന്നു! നമസ്കാരം ☕`, 4500);
+
+      // Pour tea
+      serveTeaToRoundtable();
+
+      if (typeof toast === 'function') {
+        toast(`🎉 ${name} വട്ടമേശയിൽ ഇരുന്നു!`);
+      }
+
+      // Check if room is fully complete (6/6)
+      const totalOccupied = room.members.filter(m => m && m.name).length;
+      if (totalOccupied >= 6) {
+        setTimeout(() => {
+          closeModal('modal-naattukoottam-invite');
+          sendNaattukoottamReaction('🎉');
+          if (typeof toast === 'function') {
+            toast('🎉 6 പേരും തികഞ്ഞു! ഗ്രൂപ്പ് പൂർണ്ണമായി. വട്ടമേശയിൽ ഉഷാറായി സംസാരിക്കാം!');
+          }
+        }, 800);
+      }
+    }
+    window.inviteContactToNaattukoottam = inviteContactToNaattukoottam;
+
+    function shareNaattukoottamWhatsAppInvite() {
+      const room = getNaattukoottamRoom(_vattameshaActiveRoomId);
+      const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
+      const roomName = room.name || 'നാട്ടുകൂട്ടം വട്ടമേശ';
+
+      const shareText = isEn
+        ? `You are invited to join our 6-person "${roomName}" roundtable group on Nammude Naadu! ☕🌿 Click the link to take your seat:\n${window.location.origin}${window.location.pathname}?nk=${room.id}`
+        : `നമ്മുടെ നാട് ആപ്പിലെ "${roomName}" 6 പേരുടെ വട്ടമേശ ഗ്രൂപ്പിലേക്ക് നിങ്ങളെ സ്നേഹപൂർവ്വം ക്ഷണിക്കുന്നു! ☕🌿 ഒരുമിച്ചിരുന്ന് സംസാരിക്കാം. വട്ടമേശയിൽ ഇരിക്കാൻ താഴെയുള്ള ലിങ്കിൽ ക്ലിക്ക് ചെയ്യുക:\n${window.location.origin}${window.location.pathname}?nk=${room.id}`;
+
+      if (navigator.share) {
+        navigator.share({
+          title: roomName,
+          text: shareText,
+          url: `${window.location.origin}${window.location.pathname}?nk=${room.id}`
+        }).catch(() => {
+          window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`, '_blank');
+        });
+      } else {
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`, '_blank');
+      }
+    }
+    window.shareNaattukoottamWhatsAppInvite = shareNaattukoottamWhatsAppInvite;
+
+    function handleSeatClick(seatNum) {
+      const room = getNaattukoottamRoom(_vattameshaActiveRoomId);
+      const member = (room.members || []).find(m => m && m.seat === seatNum);
+
+      if (!member || !member.name) {
+        // Seat is vacant -> open invite modal for this seat!
+        openNaattukoottamInviteModal(seatNum);
+        return;
+      }
+
+      if (seatNum === 1) {
+        focusNaattukoottamInput();
+        return;
+      }
+
+      // Occupied Seat
+      if (room.isDefault) {
+        triggerSeatInteraction(seatNum);
+      } else {
+        const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
+        showVattameshaBubble(seatNum, isEn ? 'Hot Kerala tea please! ☕' : 'നല്ല ചൂടുള്ള ചായ കുടിക്കാം ☕', 4000);
+        sendNaattukoottamReaction('☕');
+      }
+    }
+    window.handleSeatClick = handleSeatClick;
 
     function showVattameshaBubble(seatIndex, text, durationMs = 4500) {
       const bubble = document.getElementById(`vattameshaBubble${seatIndex}`);
@@ -14125,15 +14594,43 @@
       // 2. Add to chat stream
       addVattameshaChatLog(authorName, val);
 
+      // 3. Save to active room
+      const room = getNaattukoottamRoom(_vattameshaActiveRoomId);
+      if (room) {
+        room.messages = room.messages || [];
+        room.messages.push({ author: authorName, text: val });
+        const rooms = getStoredNaattukoottamRooms();
+        rooms[room.id] = room;
+        saveStoredNaattukoottamRooms(rooms);
+      }
+
       input.value = '';
 
-      // 3. Trigger authentic village reply from one of the neighbors after 1.8s
+      // 4. Trigger authentic reply from one of the other seated members
       setTimeout(() => {
-        const randomNeighbor = _neighborDialogues[Math.floor(Math.random() * _neighborDialogues.length)];
-        const replyText = isEn ? randomNeighbor.enText : randomNeighbor.text;
-        showVattameshaBubble(randomNeighbor.seat, replyText, 4500);
-        addVattameshaChatLog(randomNeighbor.name, replyText);
-      }, 1800);
+        if (room && room.isDefault) {
+          const randomNeighbor = _neighborDialogues[Math.floor(Math.random() * _neighborDialogues.length)];
+          const replyText = isEn ? randomNeighbor.enText : randomNeighbor.text;
+          showVattameshaBubble(randomNeighbor.seat, replyText, 4500);
+          addVattameshaChatLog(randomNeighbor.name, replyText);
+        } else if (room && room.members && room.members.length > 1) {
+          // One of the invited members in custom group responds
+          const otherMembers = room.members.filter(m => m && m.seat !== 1 && m.name);
+          if (otherMembers.length > 0) {
+            const responder = otherMembers[Math.floor(Math.random() * otherMembers.length)];
+            const friendlyReplies = [
+              'അതെ, പറഞ്ഞത് വളരെ ശരിയാണ്! ☕',
+              'നമുക്ക് ഒരുമിച്ച് ആലോചിച്ച് ചെയ്യാം 👍',
+              'നല്ല അഭിപ്രായം! എല്ലാവരും എന്താ പറയുന്നത്? 🌾',
+              'ചൂടുള്ള ചായ കുടിച്ച് സംസാരിക്കാം ☕',
+              'ഞാനും ഇതിനോട് യോജിക്കുന്നു! 🙌'
+            ];
+            const replyMsg = friendlyReplies[Math.floor(Math.random() * friendlyReplies.length)];
+            showVattameshaBubble(responder.seat, replyMsg, 4500);
+            addVattameshaChatLog(responder.name, replyMsg);
+          }
+        }
+      }, 1600);
     }
     window.handleNaattukoottamSend = handleNaattukoottamSend;
 

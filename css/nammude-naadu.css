@@ -7321,4 +7321,106 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   color: #9F1239 !important;
 }
 
+/* ==============================================================
+   NAATTUKOOTTAM 6-PERSON GROUP & INVITE SYSTEM
+   ============================================================== */
+.vattamesha-invite-badge-btn {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  border: 1px solid #34D399;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 5px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
+  transition: transform 0.1s ease;
+  white-space: nowrap;
+}
+.vattamesha-invite-badge-btn:active {
+  transform: scale(0.93);
+}
+
+/* Vacant Seat Animations on 3D Roundtable Floor */
+.vattamesha-seat.vacant .vattamesha-avatar-wrap {
+  border: 1.5px dashed rgba(255, 255, 255, 0.5) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.25) !important;
+  animation: vacantPulse 2.2s infinite ease-in-out;
+  cursor: pointer;
+}
+
+@keyframes vacantPulse {
+  0% { transform: scale(1); border-color: rgba(255, 255, 255, 0.4); }
+  50% { transform: scale(1.06); border-color: #38BDF8; box-shadow: 0 0 14px rgba(56, 189, 248, 0.55); }
+  100% { transform: scale(1); border-color: rgba(255, 255, 255, 0.4); }
+}
+
+.vattamesha-seat.vacant .vattamesha-avatar-wrap img {
+  display: none !important;
+}
+
+.vattamesha-seat.vacant .vattamesha-vacant-plus {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #38BDF8;
+  font-weight: 900;
+  width: 100%;
+  height: 100%;
+}
+
+.vattamesha-seat.vacant .vattamesha-seat-mic-badge {
+  display: none !important;
+}
+
+.vattamesha-seat.vacant .vattamesha-seat-name {
+  color: #94A3B8;
+  font-size: 10px;
+}
+
+.vattamesha-seat.vacant .vattamesha-seat-role {
+  color: #38BDF8;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+/* Mini Chair Indicators in Invite Modal */
+.nk-mini-chair {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  border: 1.5px solid #CBD5E1;
+  background: #FFFFFF;
+  position: relative;
+  transition: all 0.2s ease;
+}
+.nk-mini-chair.occupied {
+  border-color: #10B981;
+  background: #ECFDF5;
+  color: #065F46;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.2);
+}
+.nk-mini-chair.vacant {
+  border-color: #94A3B8;
+  border-style: dashed;
+  color: #94A3B8;
+  background: #F8FAFC;
+}
+.nk-mini-chair.host {
+  border-color: #3B82F6;
+  background: #EFF6FF;
+  color: #1D4ED8;
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.25);
+}
+
+
 

@@ -1308,36 +1308,49 @@
                     </div>
 
                     <!-- 🍵 NAATTUKOOTTAM VATTAMESHA PINNED DUMMY CHAT -->
-                    <div class="naattukoottam-chat-banner" onclick="openNaattukoottamModal()" style="margin:8px 16px 12px;background:#FFFFFF;border:1.5px solid #FCD34D;border-radius:16px;padding:12px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 3px 10px rgba(217,119,6,0.08);cursor:pointer;position:relative">
-                        <!-- Visual 6-Person Roundtable Avatar -->
-                        <div style="position:relative;width:50px;height:50px;border-radius:50%;background:radial-gradient(circle, #78350F 0%, #451A03 100%);border:2px solid #F59E0B;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(120,53,15,0.25)">
-                            <span style="font-size:22px;line-height:1">☕</span>
-                            <!-- 6 mini avatar dots around table -->
-                            <span style="position:absolute;top:-4px;left:50%;transform:translateX(-50%);font-size:11px">👴</span>
-                            <span style="position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);font-size:11px">👨</span>
-                            <span style="position:absolute;top:50%;left:-4px;transform:translateY(-50%);font-size:11px">👩</span>
-                            <span style="position:absolute;top:50%;right:-4px;transform:translateY(-50%);font-size:11px">🧔</span>
-                            <!-- Live Green Indicator -->
-                            <span style="position:absolute;bottom:0;right:0;width:12px;height:12px;border-radius:50%;background:#10B981;border:2px solid #fff;box-shadow:0 0 6px #10B981"></span>
-                        </div>
+                    <div class="naattukoottam-chat-banner" style="margin:8px 16px 12px;background:#FFFFFF;border:1.5px solid #FCD34D;border-radius:18px;padding:12px 14px 10px;box-shadow:0 3px 12px rgba(217,119,6,0.08);position:relative">
+                        <!-- Top Row: Card Info & Visual -->
+                        <div onclick="openNaattukoottamModal()" style="display:flex;align-items:center;gap:12px;cursor:pointer">
+                            <!-- Visual 6-Person Roundtable Avatar -->
+                            <div style="position:relative;width:50px;height:50px;border-radius:50%;background:radial-gradient(circle, #78350F 0%, #451A03 100%);border:2px solid #F59E0B;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(120,53,15,0.25)">
+                                <span style="font-size:22px;line-height:1">☕</span>
+                                <!-- 6 mini avatar dots around table -->
+                                <span style="position:absolute;top:-4px;left:50%;transform:translateX(-50%);font-size:11px">👴</span>
+                                <span style="position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);font-size:11px">👨</span>
+                                <span style="position:absolute;top:50%;left:-4px;transform:translateY(-50%);font-size:11px">👩</span>
+                                <span style="position:absolute;top:50%;right:-4px;transform:translateY(-50%);font-size:11px">🧔</span>
+                                <!-- Live Green Indicator -->
+                                <span style="position:absolute;bottom:0;right:0;width:12px;height:12px;border-radius:50%;background:#10B981;border:2px solid #fff;box-shadow:0 0 6px #10B981"></span>
+                            </div>
 
-                        <!-- Chat Info & Dummy Message -->
-                        <div style="flex:1;min-width:0">
-                            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
-                                <div style="font-weight:900;font-size:14.5px;color:#0F172A;display:flex;align-items:center;gap:6px">
-                                    <span>നാട്ടുകൂട്ടം വട്ടമേശ</span>
-                                    <span style="font-size:9.5px;background:#DCFCE7;color:#15803D;padding:1px 6px;border-radius:6px;font-weight:800;border:1px solid #86EFAC">🟢 6 പേർ ലൈവ്</span>
+                            <!-- Chat Info & Dummy Message -->
+                            <div style="flex:1;min-width:0">
+                                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
+                                    <div style="font-weight:900;font-size:14.5px;color:#0F172A;display:flex;align-items:center;gap:6px">
+                                        <span id="nkCardTitleTxt">നാട്ടുകൂട്ടം വട്ടമേശ</span>
+                                        <span id="nkCardStatusBadge" style="font-size:9.5px;background:#DCFCE7;color:#15803D;padding:1px 6px;border-radius:6px;font-weight:800;border:1px solid #86EFAC">🟢 6 പേർ ലൈവ്</span>
+                                    </div>
+                                    <span style="font-size:11px;color:#94A3B8;font-weight:600">ഇപ്പോൾ</span>
                                 </div>
-                                <span style="font-size:11px;color:#94A3B8;font-weight:600">ഇപ്പോൾ</span>
+                                <div id="vattameshaDummyChatSnippet" style="font-size:12.5px;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+                                    <span style="font-weight:700;color:#0E7043">സുരേഷ്:</span> "ചായ കുടിച്ചോ എല്ലാവരും? നാട്ടുവിശേഷങ്ങൾ പറയാം ☕"
+                                </div>
                             </div>
-                            <div id="vattameshaDummyChatSnippet" style="font-size:12.5px;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
-                                <span style="font-weight:700;color:#0E7043">സുരേഷ്:</span> "ചായ കുടിച്ചോ എല്ലാവരും? നാട്ടുവിശേഷങ്ങൾ പറയാം ☕"
+
+                            <!-- Join Pill -->
+                            <div style="background:linear-gradient(135deg, #0E7043 0%, #10B981 100%);color:#fff;font-size:11.5px;font-weight:800;padding:6px 12px;border-radius:10px;flex-shrink:0;box-shadow:0 2px 6px rgba(16,185,129,0.3)">
+                                കൂടാം
                             </div>
                         </div>
 
-                        <!-- Join Pill -->
-                        <div style="background:linear-gradient(135deg, #0E7043 0%, #10B981 100%);color:#fff;font-size:11.5px;font-weight:800;padding:6px 12px;border-radius:10px;flex-shrink:0;box-shadow:0 2px 6px rgba(16,185,129,0.3)">
-                            കൂടാം
+                        <!-- Bottom Quick Actions Row (Create Group / Invite 5 Friends) -->
+                        <div style="display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:8px;border-top:1px dashed #FEF3C7">
+                            <button type="button" onclick="openCreateNaattukoottamModal()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:6px 10px;background:#FEF3C7;color:#92400E;border:1px solid #FDE68A;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer">
+                                <span>➕</span> <span>6-പേർ കൂട്ടം ഉണ്ടാക്കാം</span>
+                            </button>
+                            <button type="button" onclick="openNaattukoottamInviteModal()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:6px 10px;background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer">
+                                <span>👥</span> <span>5 പേരെ ക്ഷണിക്കാം</span>
+                            </button>
                         </div>
                     </div>
 
@@ -5111,6 +5124,86 @@
     </div>
 
     <!-- ============================================================== -->
+    <!-- 👥 MODAL: CREATE 6-PERSON NAATTUKOOTTAM GROUP                   -->
+    <!-- ============================================================== -->
+    <div id="modal-create-naattukoottam" class="modal-overlay" style="display:none;z-index:99999999;background:rgba(15,23,42,0.85);backdrop-filter:blur(8px);align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeModal('modal-create-naattukoottam')">
+        <div class="modal-sheet" style="max-height:85vh;overflow-y:auto;border-radius:24px 24px 0 0;padding:20px;background:#FFFFFF;box-shadow:0 -10px 40px rgba(0,0,0,0.3)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1.5px solid #FEF3C7;padding-bottom:12px">
+                <div style="display:flex;align-items:center;gap:10px">
+                    <span style="font-size:26px">☕</span>
+                    <div>
+                        <h3 style="margin:0;font-size:16.5px;font-weight:900;color:#78350F">6 പേരുടെ നാട്ടുകൂട്ടം ഉണ്ടാക്കാം</h3>
+                        <div style="font-size:11.5px;color:#B45309;font-weight:700">6 പേർ ഒരുമിച്ചിരുന്ന് സംസാരിക്കുന്ന ലൈവ് വട്ടമേശ</div>
+                    </div>
+                </div>
+                <button type="button" onclick="closeModal('modal-create-naattukoottam')" class="modal-close-btn" style="background:#F1F5F9;border:none;border-radius:50%;width:34px;height:34px;font-size:14px;font-weight:800;color:#64748B;cursor:pointer">✕</button>
+            </div>
+
+            <form onsubmit="handleCreateNaattukoottamGroup(event)" style="display:flex;flex-direction:column;gap:12px">
+                <div>
+                    <label style="font-size:12.5px;font-weight:800;color:#334155;margin-bottom:5px;display:block">കൂട്ടത്തിന്റെ പേര് (Group Name) *</label>
+                    <input type="text" id="nkGroupNameInput" required placeholder="ഉദാ: പട്ടാമ്പി ചങ്ങാതിക്കൂട്ടം, സായാഹ്ന ചർച്ച..." style="width:100%;padding:12px 14px;border:1.5px solid #FCD34D;border-radius:12px;font-size:14px;outline:none;background:#FFFBEB;font-weight:600">
+                </div>
+
+                <div>
+                    <label style="font-size:12.5px;font-weight:800;color:#334155;margin-bottom:5px;display:block">ചർച്ചാ വിഷയം (Topic)</label>
+                    <input type="text" id="nkGroupTopicInput" placeholder="ഉദാ: നാട്ടുകാര്യങ്ങൾ, സൗഹൃദം, വികസനം..." style="width:100%;padding:12px 14px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:14px;outline:none;font-weight:500">
+                </div>
+
+                <div style="background:#ECFDF5;border:1.5px solid #A7F3D0;border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px">
+                    <span style="font-size:24px">🪑</span>
+                    <div style="font-size:12px;color:#065F46;line-height:1.45;font-weight:600">
+                        നിങ്ങൾ <b>ഒന്നാമത്തെ കസേരയിൽ</b> ഇരിക്കും. തുടർന്ന് ബാക്കി <b>5 പേരെ ഇൻവൈറ്റ് ചെയ്ത്</b> കൂട്ടം പൂർത്തിയാക്കാം!
+                    </div>
+                </div>
+
+                <button type="submit" style="margin-top:4px;background:linear-gradient(135deg, #0E7043 0%, #10B981 100%);color:#fff;border:none;padding:14px;border-radius:14px;font-weight:900;font-size:15px;cursor:pointer;box-shadow:0 4px 14px rgba(16,185,129,0.35);display:flex;align-items:center;justify-content:center;gap:8px">
+                    <span>🚀</span> <span>ഗ്രൂപ്പ് ഉണ്ടാക്കി വട്ടമേശയിലേക്ക് കയറാം</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- 👥 MODAL: INVITE 5 MEMBERS TO ROUNDTABLE                        -->
+    <!-- ============================================================== -->
+    <div id="modal-naattukoottam-invite" class="modal-overlay" style="display:none;z-index:99999999;background:rgba(15,23,42,0.85);backdrop-filter:blur(8px);align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeModal('modal-naattukoottam-invite')">
+        <div class="modal-sheet" style="max-height:85vh;overflow-y:auto;border-radius:24px 24px 0 0;padding:20px;background:#FFFFFF;box-shadow:0 -10px 40px rgba(0,0,0,0.3);display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1.5px solid #E2E8F0;padding-bottom:12px">
+                <div style="display:flex;align-items:center;gap:10px">
+                    <span style="font-size:26px">👥</span>
+                    <div>
+                        <h3 style="margin:0;font-size:16.5px;font-weight:900;color:#0F172A">5 പേരെ വട്ടമേശയിലേക്ക് ക്ഷണിക്കാം</h3>
+                        <div id="nkInviteSeatCountStatus" style="font-size:11.5px;color:#059669;font-weight:800">5 സീറ്റുകൾ ബാക്കിയുണ്ട് (ആകെ 6 പേർ)</div>
+                    </div>
+                </div>
+                <button type="button" onclick="closeModal('modal-naattukoottam-invite')" class="modal-close-btn" style="background:#F1F5F9;border:none;border-radius:50%;width:34px;height:34px;font-size:14px;font-weight:800;color:#64748B;cursor:pointer">✕</button>
+            </div>
+
+            <!-- WhatsApp Direct Share Button -->
+            <button type="button" onclick="shareNaattukoottamWhatsAppInvite()" style="background:linear-gradient(135deg, #25D366 0%, #128C7E 100%);color:#fff;border:none;padding:12px 14px;border-radius:14px;font-weight:800;font-size:13.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 3px 10px rgba(37,211,102,0.3)">
+                <span>📲</span> <span>വാട്സാപ്പിൽ ഇൻവൈറ്റ് ലിങ്ക് അയക്കാം</span>
+            </button>
+
+            <!-- Mini 6 Chairs Visual Row -->
+            <div id="nkSeatsVisualRow" style="display:flex;gap:8px;align-items:center;justify-content:center;padding:10px 12px;background:#F8FAFC;border-radius:14px;border:1px solid #E2E8F0">
+                <!-- Dynamically populated 6 chairs -->
+            </div>
+
+            <!-- Search Contacts Input -->
+            <div style="position:relative">
+                <input type="text" id="nkInviteSearchInput" placeholder="നാട്ടുകാരെയോ സുഹൃത്തുക്കളെയോ തിരയുക..." oninput="filterNaattukoottamInviteList(this.value)" style="width:100%;padding:10px 14px 10px 36px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13px;outline:none">
+                <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;color:#94A3B8">🔍</span>
+            </div>
+
+            <!-- Contacts List to pick from -->
+            <div id="nkInviteContactsList" style="display:flex;flex-direction:column;gap:8px;max-height:340px;overflow-y:auto;padding-right:2px">
+                <!-- Populated dynamically via renderNaattukoottamInviteContacts() -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
     <!-- 🍵 MODAL: NAATTUKOOTTAM VATTAMESHA (3D ANIMATED 6-PERSON ROOM) -->
     <!-- ============================================================== -->
     <div id="modal-naattukoottam" class="modal-overlay" style="display:none;align-items:flex-end;justify-content:center;z-index:9999999;background:rgba(10,15,29,0.88);backdrop-filter:blur(10px)" onclick="if(event.target===this)closeModal('modal-naattukoottam')">
@@ -5126,6 +5219,9 @@
                     </div>
                 </div>
                 <div style="display:flex;align-items:center;gap:6px">
+                    <button type="button" class="vattamesha-invite-badge-btn" onclick="openNaattukoottamInviteModal()" id="vattameshaInviteHeaderBtn" title="5 പേരെ വട്ടമേശയിലേക്ക് ക്ഷണിക്കാം">
+                        ➕ 5 പേരെ ക്ഷണിക്കാം
+                    </button>
                     <button type="button" class="vattamesha-floor-toggle-btn" onclick="toggleVattameshaFloorTheme()" id="vattameshaFloorToggleBtn" title="ഫ്ലോർ തീം മാറ്റാം">🏮 ചായക്കട ഫ്ലോർ</button>
                     <div class="vattamesha-seats-count-chip" id="vattameshaSeatsCount">
                         <span style="font-size:10px">🟢</span>
@@ -5140,7 +5236,10 @@
                     <span>📢</span>
                     <span id="vattameshaCurrentTopic" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">വിഷയം: നാട്ടിലെ വിശേഷങ്ങളും സഹായങ്ങളും 🌾</span>
                 </div>
-                <button type="button" class="vattamesha-topic-btn" onclick="changeNaattukoottamTopic()">വിഷയം മാറ്റാം ✏️</button>
+                <div style="display:flex;align-items:center;gap:6px">
+                    <button type="button" class="vattamesha-topic-btn" onclick="openCreateNaattukoottamModal()" title="പുതിയ 6 പേരുടെ കൂട്ടം ഉണ്ടാക്കാം">➕ പുതിയ ഗ്രൂപ്പ്</button>
+                    <button type="button" class="vattamesha-topic-btn" onclick="changeNaattukoottamTopic()" title="വിഷയം മാറ്റാം">✏️</button>
+                </div>
             </div>
 
             <!-- The 3D Animated Room Floor Arena -->
@@ -5183,87 +5282,93 @@
                             <span class="vbar v1"></span><span class="vbar v2"></span><span class="vbar v3"></span><span class="vbar v4"></span>
                         </div>
                         <div class="vattamesha-chair-back">🪑</div>
-                        <div class="vattamesha-avatar-wrap">
+                        <div class="vattamesha-avatar-wrap" id="vattameshaAvatarWrap1">
                             <img id="vattameshaAvatar1" src="assets/kerala-logo-badge.jpg" onerror="this.src=window.DEFAULT_USER_AVATAR||''" alt="You">
+                            <span class="vattamesha-vacant-plus" id="vattameshaVacantPlus1" style="display:none">➕</span>
                             <span class="vattamesha-seat-mic-badge" id="vattameshaMicBadge1">🎙️</span>
                         </div>
                         <div class="vattamesha-seat-name" id="vattameshaName1">നിങ്ങൾ</div>
                         <div class="vattamesha-seat-role" style="color:#60A5FA" id="vattameshaRole1">നാട്ടുകാരൻ</div>
                     </div>
 
-                    <!-- SEAT 2: Neighbor 1 (Bottom Left) -->
-                    <div class="vattamesha-seat vattamesha-seat-2" id="vattameshaSeat2" onclick="triggerSeatInteraction(2)">
+                    <!-- SEAT 2: Member 1 (Bottom Left) -->
+                    <div class="vattamesha-seat vattamesha-seat-2" id="vattameshaSeat2" onclick="handleSeatClick(2)">
                         <div class="vattamesha-speech-bubble" id="vattameshaBubble2">സുഖം തന്നെ എല്ലാവർക്കും? 🌾</div>
                         <div class="vattamesha-sound-bars" id="vattameshaBars2">
                             <span class="vbar v1"></span><span class="vbar v2"></span><span class="vbar v3"></span><span class="vbar v4"></span>
                         </div>
                         <div class="vattamesha-chair-back">🪑</div>
-                        <div class="vattamesha-avatar-wrap">
+                        <div class="vattamesha-avatar-wrap" id="vattameshaAvatarWrap2">
                             <img id="vattameshaAvatar2" src="assets/cat-driver-3d.jpg" onerror="this.src='assets/kerala-logo-badge.jpg'" alt="സുരേഷ്">
-                            <span class="vattamesha-seat-mic-badge">👂</span>
+                            <span class="vattamesha-vacant-plus" id="vattameshaVacantPlus2" style="display:none">➕</span>
+                            <span class="vattamesha-seat-mic-badge" id="vattameshaMicBadge2">👂</span>
                         </div>
-                        <div class="vattamesha-seat-name">സുരേഷ്</div>
-                        <div class="vattamesha-seat-role" style="color:#34D399">ഡ്രൈവർ</div>
+                        <div class="vattamesha-seat-name" id="vattameshaName2">സുരേഷ്</div>
+                        <div class="vattamesha-seat-role" style="color:#34D399" id="vattameshaRole2">ഡ്രൈവർ</div>
                     </div>
 
-                    <!-- SEAT 3: Neighbor 2 (Top Left) -->
-                    <div class="vattamesha-seat vattamesha-seat-3" id="vattameshaSeat3" onclick="triggerSeatInteraction(3)">
+                    <!-- SEAT 3: Member 2 (Top Left) -->
+                    <div class="vattamesha-seat vattamesha-seat-3" id="vattameshaSeat3" onclick="handleSeatClick(3)">
                         <div class="vattamesha-speech-bubble" id="vattameshaBubble3">പുതിയ വിശേഷം എന്തെങ്കിലും? 📰</div>
                         <div class="vattamesha-sound-bars" id="vattameshaBars3">
                             <span class="vbar v1"></span><span class="vbar v2"></span><span class="vbar v3"></span><span class="vbar v4"></span>
                         </div>
                         <div class="vattamesha-chair-back">🪑</div>
-                        <div class="vattamesha-avatar-wrap">
+                        <div class="vattamesha-avatar-wrap" id="vattameshaAvatarWrap3">
                             <img id="vattameshaAvatar3" src="assets/cat-tutor-3d.jpg" onerror="this.src='assets/kerala-logo-badge.jpg'" alt="ഫാത്തിമ">
-                            <span class="vattamesha-seat-mic-badge">👂</span>
+                            <span class="vattamesha-vacant-plus" id="vattameshaVacantPlus3" style="display:none">➕</span>
+                            <span class="vattamesha-seat-mic-badge" id="vattameshaMicBadge3">👂</span>
                         </div>
-                        <div class="vattamesha-seat-name">ഫാത്തിമ</div>
-                        <div class="vattamesha-seat-role" style="color:#F472B6">ടീച്ചർ</div>
+                        <div class="vattamesha-seat-name" id="vattameshaName3">ഫാത്തിമ</div>
+                        <div class="vattamesha-seat-role" style="color:#F472B6" id="vattameshaRole3">ടീച്ചർ</div>
                     </div>
 
-                    <!-- SEAT 4: Neighbor 3 (Top Center) -->
-                    <div class="vattamesha-seat vattamesha-seat-4" id="vattameshaSeat4" onclick="triggerSeatInteraction(4)">
+                    <!-- SEAT 4: Member 3 (Top Center) -->
+                    <div class="vattamesha-seat vattamesha-seat-4" id="vattameshaSeat4" onclick="handleSeatClick(4)">
                         <div class="vattamesha-speech-bubble" id="vattameshaBubble4">നല്ലൊരു ചായ കുടിക്കാം! ☕</div>
                         <div class="vattamesha-sound-bars" id="vattameshaBars4">
                             <span class="vbar v1"></span><span class="vbar v2"></span><span class="vbar v3"></span><span class="vbar v4"></span>
                         </div>
                         <div class="vattamesha-chair-back">🪑</div>
-                        <div class="vattamesha-avatar-wrap">
+                        <div class="vattamesha-avatar-wrap" id="vattameshaAvatarWrap4">
                             <img id="vattameshaAvatar4" src="assets/cat-business-3d.jpg" onerror="this.src='assets/kerala-logo-badge.jpg'" alt="മുഹമ്മദ്">
-                            <span class="vattamesha-seat-mic-badge">👂</span>
+                            <span class="vattamesha-vacant-plus" id="vattameshaVacantPlus4" style="display:none">➕</span>
+                            <span class="vattamesha-seat-mic-badge" id="vattameshaMicBadge4">👂</span>
                         </div>
-                        <div class="vattamesha-seat-name">മുഹമ്മദ്</div>
-                        <div class="vattamesha-seat-role" style="color:#FBBF24">വ്യാപാരി</div>
+                        <div class="vattamesha-seat-name" id="vattameshaName4">മുഹമ്മദ്</div>
+                        <div class="vattamesha-seat-role" style="color:#FBBF24" id="vattameshaRole4">വ്യാപാരി</div>
                     </div>
 
-                    <!-- SEAT 5: Neighbor 4 (Top Right) -->
-                    <div class="vattamesha-seat vattamesha-seat-5" id="vattameshaSeat5" onclick="triggerSeatInteraction(5)">
+                    <!-- SEAT 5: Member 4 (Top Right) -->
+                    <div class="vattamesha-seat vattamesha-seat-5" id="vattameshaSeat5" onclick="handleSeatClick(5)">
                         <div class="vattamesha-speech-bubble" id="vattameshaBubble5">റോഡ് പണി തുടങ്ങി കേട്ടോ! 🚜</div>
                         <div class="vattamesha-sound-bars" id="vattameshaBars5">
                             <span class="vbar v1"></span><span class="vbar v2"></span><span class="vbar v3"></span><span class="vbar v4"></span>
                         </div>
                         <div class="vattamesha-chair-back">🪑</div>
-                        <div class="vattamesha-avatar-wrap">
+                        <div class="vattamesha-avatar-wrap" id="vattameshaAvatarWrap5">
                             <img id="vattameshaAvatar5" src="assets/cat-electrician-3d.jpg" onerror="this.src='assets/kerala-logo-badge.jpg'" alt="അനൂപ്">
-                            <span class="vattamesha-seat-mic-badge">👂</span>
+                            <span class="vattamesha-vacant-plus" id="vattameshaVacantPlus5" style="display:none">➕</span>
+                            <span class="vattamesha-seat-mic-badge" id="vattameshaMicBadge5">👂</span>
                         </div>
-                        <div class="vattamesha-seat-name">അനൂപ്</div>
-                        <div class="vattamesha-seat-role" style="color:#A78BFA">ഇലക്ട്രീഷ്യൻ</div>
+                        <div class="vattamesha-seat-name" id="vattameshaName5">അനൂപ്</div>
+                        <div class="vattamesha-seat-role" style="color:#A78BFA" id="vattameshaRole5">ഇലക്ട്രീഷ്യൻ</div>
                     </div>
 
-                    <!-- SEAT 6: Neighbor 5 (Bottom Right) -->
-                    <div class="vattamesha-seat vattamesha-seat-6" id="vattameshaSeat6" onclick="triggerSeatInteraction(6)">
+                    <!-- SEAT 6: Member 5 (Bottom Right) -->
+                    <div class="vattamesha-seat vattamesha-seat-6" id="vattameshaSeat6" onclick="handleSeatClick(6)">
                         <div class="vattamesha-speech-bubble" id="vattameshaBubble6">രക്തദാന ക്യാമ്പ് ഞായറാഴ്ചയാണ് 🩸</div>
                         <div class="vattamesha-sound-bars" id="vattameshaBars6">
                             <span class="vbar v1"></span><span class="vbar v2"></span><span class="vbar v3"></span><span class="vbar v4"></span>
                         </div>
                         <div class="vattamesha-chair-back">🪑</div>
-                        <div class="vattamesha-avatar-wrap">
+                        <div class="vattamesha-avatar-wrap" id="vattameshaAvatarWrap6">
                             <img id="vattameshaAvatar6" src="assets/cat-blood-3d.jpg" onerror="this.src='assets/kerala-logo-badge.jpg'" alt="പ്രിയ">
-                            <span class="vattamesha-seat-mic-badge">👂</span>
+                            <span class="vattamesha-vacant-plus" id="vattameshaVacantPlus6" style="display:none">➕</span>
+                            <span class="vattamesha-seat-mic-badge" id="vattameshaMicBadge6">👂</span>
                         </div>
-                        <div class="vattamesha-seat-name">പ്രിയ</div>
-                        <div class="vattamesha-seat-role" style="color:#38BDF8">സന്നദ്ധ പ്രവർത്തക</div>
+                        <div class="vattamesha-seat-name" id="vattameshaName6">പ്രിയ</div>
+                        <div class="vattamesha-seat-role" style="color:#38BDF8" id="vattameshaRole6">സന്നദ്ധ പ്രവർത്തക</div>
                     </div>
                 </div>
             </div>
@@ -5285,11 +5390,7 @@
                     <button type="button" class="vattamesha-react-btn" onclick="sendNaattukoottamReaction('😂')">😂 ചിരി</button>
                     <button type="button" class="vattamesha-react-btn" onclick="sendNaattukoottamReaction('👏')">👏 കയ്യടി</button>
                     <button type="button" class="vattamesha-react-btn" onclick="sendNaattukoottamReaction('❤️')">❤️ സ്നേഹം</button>
-                    <button type="button" class="vattamesha-react-btn" onclick="inviteFriendToRoundtable()">👥 ക്ഷണിക്കാം</button>
-                </div>
-                    <button type="button" class="vattamesha-react-btn" onclick="sendNaattukoottamReaction('😂')">😂 ചിരി</button>
-                    <button type="button" class="vattamesha-react-btn" onclick="sendNaattukoottamReaction('👏')">👏 കയ്യടി</button>
-                    <button type="button" class="vattamesha-react-btn" onclick="inviteFriendToRoundtable()">👥 ക്ഷണിക്കാം</button>
+                    <button type="button" class="vattamesha-react-btn" onclick="openNaattukoottamInviteModal()">👥 5 പേരെ ക്ഷണിക്കാം</button>
                 </div>
 
                 <!-- Input Row -->
