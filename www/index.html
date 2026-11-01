@@ -4264,7 +4264,7 @@
                 നിങ്ങളുടെ 10-അക്ക മൊബൈൽ നമ്പർ നൽകി നേരിട്ട് ലോഗിൻ ചെയ്യാം. ഒടിപി അല്ലെങ്കിൽ പാസ്‌വേഡ് ആവശ്യമില്ല.
             </p>
 
-            <form id="citizenLoginForm" novalidate onsubmit="handleCitizenLoginSubmit(event)" style="display:flex;flex-direction:column;gap:14px">
+            <form id="citizenLoginForm" autocomplete="off" novalidate onsubmit="handleCitizenLoginSubmit(event)" style="display:flex;flex-direction:column;gap:14px">
                 <!-- Phone Number -->
                 <div>
                     <label style="font-size:12px;font-weight:800;color:#1E293B;display:block;margin-bottom:6px">
@@ -4272,7 +4272,7 @@
                     </label>
                     <div style="display:flex;align-items:center;background:#F8FAFC;border:1.5px solid #CBD5E1;border-radius:14px;overflow:hidden">
                         <span style="padding:12px 14px;background:#F1F5F9;color:#334155;font-weight:800;font-size:14px;border-right:1px solid #CBD5E1">+91</span>
-                        <input type="tel" id="citizenLoginPhone" placeholder="9447000000" maxlength="10" required
+                        <input type="tel" id="citizenLoginPhone" placeholder="9447000000" maxlength="10" required autocomplete="off"
                             style="flex:1;padding:12px 14px;border:none;background:transparent;font-size:15px;font-weight:700;color:#0F172A;outline:none"
                             oninput="handleLoginPhoneLookup(this.value)">
                     </div>
@@ -4284,7 +4284,7 @@
                     <label style="font-size:12px;font-weight:800;color:#1E293B;display:block;margin-bottom:6px">
                         ✉️ ഇമെയിൽ വിലാസം (Email ID - വെരിഫൈഡ് ഐഡന്റിഫിക്കേഷൻ)
                     </label>
-                    <input type="email" id="citizenLoginEmail" placeholder="ഉദാ: citizen@gmail.com"
+                    <input type="email" id="citizenLoginEmail" placeholder="ഉദാ: citizen@gmail.com" autocomplete="off"
                         style="width:100%;padding:12px 14px;border:1.5px solid #CBD5E1;border-radius:14px;font-size:14px;color:#0F172A;outline:none;background:#F8FAFC;box-sizing:border-box"
                         oninput="handleLoginEmailCheck(this.value)">
                     <div id="loginEmailStatusHint" style="font-size:11px;margin-top:4px;color:#1D4ED8;font-weight:700">
@@ -4297,7 +4297,7 @@
                     <label style="font-size:12px;font-weight:800;color:#1E293B;display:block;margin-bottom:6px">
                         👤 നിങ്ങളുടെ പൂർണ്ണ നാമം (Name) *
                     </label>
-                    <input type="text" id="citizenLoginName" placeholder="ഉദാ: രാഹുൽ കെ." required
+                    <input type="text" id="citizenLoginName" placeholder="ഉദാ: രാഹുൽ കെ." required autocomplete="off"
                         style="width:100%;padding:12px 14px;border:1.5px solid #CBD5E1;border-radius:14px;font-size:14px;color:#0F172A;outline:none;background:#F8FAFC;box-sizing:border-box">
                 </div>
 
@@ -4307,7 +4307,7 @@
                         <label style="font-size:12px;font-weight:800;color:#1E293B;display:block;margin-bottom:6px">
                             📍 നാട് / സ്ഥലം (Place)
                         </label>
-                        <input type="text" id="citizenLoginPlace" placeholder="ഉദാ: പയ്യന്നൂർ"
+                        <input type="text" id="citizenLoginPlace" placeholder="ഉദാ: പയ്യന്നൂർ" autocomplete="off"
                             style="width:100%;padding:11px 12px;border:1.5px solid #CBD5E1;border-radius:14px;font-size:13px;color:#0F172A;outline:none;background:#F8FAFC;box-sizing:border-box">
                     </div>
                     <div>

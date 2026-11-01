@@ -294,7 +294,9 @@
     }
   };
 
-  let currentLang = localStorage.getItem('nn_app_language') || 'ml';
+  let currentLang = localStorage.getItem('nn_app_language') || (
+    (typeof navigator !== 'undefined' && navigator.language && !navigator.language.startsWith('ml')) ? 'en' : 'ml'
+  );
 
   function getTranslation(key, defaultText) {
     const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.ml;
@@ -577,6 +579,22 @@
     const heroMyListingsTxt = document.getElementById('heroMyListingsTxt');
     if (heroMyListingsTxt) heroMyListingsTxt.textContent = isEn ? 'My Listings' : 'എന്റെ ലിസ്റ്റിംഗുകൾ';
 
+    // Rentals category filter chips
+    const rentalCatMap = {
+      all: isEn ? 'All' : 'എല്ലാം',
+      rent: isEn ? 'For Rent' : 'വാടകയ്ക്ക്',
+      buysell: isEn ? 'Buy & Sell' : 'വിൽപനയ്ക്ക്',
+      house: isEn ? 'Homes & Plots' : 'വീട് & സ്ഥലം',
+      vehicle: isEn ? 'Vehicles' : 'വാഹനങ്ങൾ',
+      electronics: isEn ? 'Electronics' : 'ഇലക്ട്രോണിക്സ്',
+      furniture: isEn ? 'Furniture' : 'ഫർണിച്ചർ',
+      other: isEn ? 'Other' : 'മറ്റുള്ളവ'
+    };
+    document.querySelectorAll('#rentalsCategoriesChipsBar .superapp-chip').forEach(chip => {
+      const cat = chip.getAttribute('data-cat');
+      if (rentalCatMap[cat]) chip.textContent = rentalCatMap[cat];
+    });
+
     const rentalsBannerTitle = document.getElementById('rentalsBannerTitle');
     if (rentalsBannerTitle) rentalsBannerTitle.textContent = isEn ? 'Local listings. Real people.' : 'നാട്ടിലെ വിൽപന & വാടക ലിസ്റ്റിംഗുകൾ.';
 
@@ -585,6 +603,30 @@
 
     const rentSearch = document.getElementById('rentalSearchInput');
     if (rentSearch) rentSearch.placeholder = isEn ? 'Search for properties, items or services...' : 'വാടക വീട്, വാഹനം, ഉപകരണങ്ങൾ തിരയുക...';
+
+    // Subpage footers translation across all screens
+    document.querySelectorAll('.screen-subpage-footer').forEach(footer => {
+      const titleEl = footer.querySelector('div:first-child span:last-child');
+      if (titleEl) titleEl.textContent = isEn ? 'Nammude Naadu • Kerala Community Network' : 'നമ്മുടെ നാട് • കേരള കമ്മ്യൂണിറ്റി നെറ്റ്‌വർക്ക്';
+      
+      const subEl = footer.querySelector('div:nth-child(2)');
+      if (subEl) subEl.textContent = isEn ? 'Live Local Services & Community In One Place' : 'തത്സമയ വിവരങ്ങളും സേവനങ്ങളും ഒരൊറ്റ കുടക്കീഴിൽ';
+
+      const locBtn = footer.querySelector('button[onclick*="openLocationModal"]');
+      if (locBtn) locBtn.innerHTML = isEn ? '<span>📍 Change Location</span>' : '<span>📍 സ്ഥലം മാറ്റാം</span>';
+
+      const homeBtn = footer.querySelector('button[onclick*="navTo(\'home\')"]');
+      if (homeBtn) homeBtn.innerHTML = isEn ? '<span>🏠 Home</span>' : '<span>🏠 ഹോംപേജ്</span>';
+
+      const chatBtn = footer.querySelector('button[onclick*="navTo(\'chat\')"]');
+      if (chatBtn) chatBtn.innerHTML = isEn ? '<span>💬 Messages</span>' : '<span>💬 സന്ദേശങ്ങൾ</span>';
+
+      const emgBtn = footer.querySelector('button[onclick*="openEmergencyModal"]');
+      if (emgBtn) emgBtn.innerHTML = isEn ? '<span>🆘 Emergency</span>' : '<span>🆘 എമർജൻസി</span>';
+
+      const secureEl = footer.querySelector('div:last-child');
+      if (secureEl) secureEl.textContent = isEn ? '🔒 100% Secure • Kerala Digital Network • 2026' : '🔒 100% സുരക്ഷിതം • Kerala Digital Network • 2026';
+    });
 
     // 11. Blood Screen
     const bloodHeroTitle = document.querySelector('#screen-blood .superapp-hero-title');
