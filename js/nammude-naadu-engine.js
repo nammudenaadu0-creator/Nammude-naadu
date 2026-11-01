@@ -1514,8 +1514,7 @@
     if (!env.isSecure) {
       console.warn(`[GPS Geolocation Warning] Insecure context (${env.protocol}//${env.hostname}). Browsers restrict Geolocation on non-HTTPS origins/custom IPs.`);
       if (showToastOnSuccess) {
-        toast('⚠️ സുരക്ഷിതമല്ലാത്ത കണക്ഷൻ (Non-HTTPS / IP). ലൊക്കേഷനായി HTTPS അല്ലെങ്കിൽ localhost ആവശ്യമാണ്. ലിസ്റ്റിൽ നിന്ന് തിരഞ്ഞെടുക്കുക.');
-        openLocationModal();
+        toast('⚠️ സുരക്ഷിത കണക്ഷൻ (HTTPS) ആവശ്യമാണ്.');
       }
       return;
     }
@@ -1524,8 +1523,7 @@
     if (!env.supported) {
       console.warn('[GPS Geolocation] Geolocation API is not supported on this device/browser.');
       if (showToastOnSuccess) {
-        toast('⚠️ നിങ്ങളുടെ ബ്രൗസറിൽ GPS ലഭ്യമല്ല. ലിസ്റ്റിൽ നിന്ന് സ്ഥലം തിരഞ്ഞെടുക്കുക.');
-        openLocationModal();
+        toast('⚠️ ഈ ഉപകരണത്തിൽ GPS ലഭ്യമല്ല.');
       }
       return;
     }
@@ -1596,7 +1594,6 @@
 
       if (showToastOnSuccess) {
         toast(userMsg);
-        openLocationModal();
       }
     };
 
