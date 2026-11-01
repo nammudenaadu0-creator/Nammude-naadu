@@ -969,6 +969,9 @@
     const locGpsBtn = document.getElementById('modalLocationGpsBtnTxt');
     if (locGpsBtn) locGpsBtn.textContent = isEn ? 'Use Live GPS Location' : 'തത്സമയ GPS ലൊക്കേഷൻ';
 
+    const locGpsSub = document.getElementById('modalLocationGpsSubTxt');
+    if (locGpsSub) locGpsSub.textContent = isEn ? 'Automatically detect current precise location' : 'നിലവിലെ കൃത്യമായ സ്ഥലം തത്സമയം കണ്ടെത്താം';
+
     const locRadSec = document.getElementById('modalLocationRadiusSecTitle');
     if (locRadSec) locRadSec.textContent = isEn ? 'Search Radius' : 'തിരച്ചിൽ പരിധി';
 

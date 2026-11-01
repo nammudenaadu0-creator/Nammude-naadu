@@ -312,12 +312,12 @@
                     <header class="home-top-navbar"
                         style="padding:12px 14px;background:linear-gradient(135deg, #0A2540 0%, #0F3B2E 40%, #065F46 75%, #047857 100%);border-bottom:1px solid rgba(16,185,129,0.25);display:flex;align-items:center;justify-content:space-between;width:100%;box-sizing:border-box;overflow:hidden;box-shadow:0 4px 14px rgba(10,37,64,0.18)">
                         <!-- Brand Logo & Title -->
-                        <div class="home-brand-block" style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1 1 auto;overflow:hidden" onclick="detectLiveGpsLocation(true)" title="സ്വിഗ്ഗി പോലെ തത്സമയ GPS ലൊക്കേഷൻ കണ്ടെത്തുക">
+                        <div class="home-brand-block" style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1 1 auto;overflow:hidden" onclick="detectLiveGpsLocation(true)" title="തത്സമയ GPS ലൊക്കേഷൻ കണ്ടെത്തുക">
                             <img src="assets/kerala-logo-badge.jpg" alt="നമ്മുടെ നാട്"
                                 style="width:38px;height:38px;border-radius:12px;object-fit:cover;box-shadow:0 3px 10px rgba(0,0,0,0.25);border:2px solid #FFFFFF;flex-shrink:0">
                             <div style="min-width:0;overflow:hidden">
                                 <h1 id="homeBrandTitle" style="margin:0;font-size:clamp(15px, 4.2vw, 19px);font-weight:900;color:#FFFFFF;font-family:'Manjari', sans-serif;letter-spacing:-0.4px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 4px rgba(0,0,0,0.25)">നമ്മുടെ നാട്</h1>
-                                <div onclick="event.stopPropagation(); openLocationModal();" style="display:inline-flex;align-items:center;gap:4px;margin-top:3px;cursor:pointer;background:rgba(255,255,255,0.18);padding:2px 8px;border-radius:12px;border:1px solid rgba(255,255,255,0.28);max-width:180px;white-space:nowrap;overflow:hidden" title="സ്വിഗ്ഗി പോലെ സ്ഥലം തിരഞ്ഞെടുക്കാം">
+                                <div onclick="event.stopPropagation(); openLocationModal();" style="display:inline-flex;align-items:center;gap:4px;margin-top:3px;cursor:pointer;background:rgba(255,255,255,0.18);padding:2px 8px;border-radius:12px;border:1px solid rgba(255,255,255,0.28);max-width:180px;white-space:nowrap;overflow:hidden" title="സ്ഥലം തിരഞ്ഞെടുക്കാം">
                                     <span style="font-size:11px">📍</span>
                                     <span id="homeLiveLocText" class="user-live-city-name"
                                         style="font-size:11px;font-weight:800;color:#FFFFFF;max-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">തത്സമയം</span>
@@ -2537,7 +2537,7 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- MODAL: LOCATION SELECTOR (സ്വിഗ്ഗി മാതൃകയിലുള്ള ലൊക്കേഷൻ പിക്കർ) -->
+    <!-- MODAL: LOCATION SELECTOR                                       -->
     <!-- ============================================================== -->
     <div id="modal-location" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-location')">
         <div class="modal-sheet" style="max-height:88vh;display:flex;flex-direction:column;padding:0;overflow:hidden">
@@ -2555,13 +2555,13 @@
             </div>
 
             <div style="flex:1;overflow-y:auto;padding:16px">
-                <!-- GPS button: One-tap Live GPS Detection like Swiggy -->
+                <!-- GPS button: One-tap Live GPS Detection -->
                 <button onclick="detectLiveGpsLocation(true);"
                     style="width:100%;padding:14px;background:linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);color:#fff;border:none;border-radius:14px;cursor:pointer;display:flex;align-items:center;gap:12px;box-shadow:0 3px 12px rgba(29,78,216,0.3);margin-bottom:14px">
                     <span style="font-size:24px;line-height:1">🎯</span>
                     <div style="text-align:left;flex:1">
                         <div id="modalLocationGpsBtnTxt" style="font-weight:800;font-size:14px">തത്സമയ GPS ലൊക്കേഷൻ</div>
-                        <div style="font-size:11px;color:#DBEAFE;margin-top:2px">സ്വിഗ്ഗി പോലെ നിലവിലെ കൃത്യമായ സ്ഥലം സ്വയം എടുക്കുക</div>
+                        <div id="modalLocationGpsSubTxt" style="font-size:11px;color:#DBEAFE;margin-top:2px">നിലവിലെ കൃത്യമായ സ്ഥലം തത്സമയം കണ്ടെത്താം</div>
                     </div>
                     <span style="font-size:16px;color:#93C5FD">➔</span>
                 </button>
