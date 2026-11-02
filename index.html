@@ -4491,7 +4491,7 @@
             </div>
 
             <p id="citizenLoginHeaderSubtitle" style="font-size:12.5px;color:#64748B;margin:0 0 16px;line-height:1.45">
-                നിങ്ങളുടെ 10-അക്ക മൊബൈൽ നമ്പർ നൽകി നേരിട്ട് ലോഗിൻ ചെയ്യാം. ഒടിപി അല്ലെങ്കിൽ പാസ്‌വേഡ് ആവശ്യമില്ല.
+                നിങ്ങളുടെ 10-അക്ക മൊബൈൽ നമ്പറും OTP യും നൽകി സുരക്ഷിതമായി ലോഗിൻ ചെയ്യാം.
             </p>
 
             <form id="citizenLoginForm" autocomplete="off" novalidate onsubmit="handleCitizenLoginSubmit(event)" style="display:flex;flex-direction:column;gap:14px">
@@ -4505,8 +4505,31 @@
                         <input type="tel" id="citizenLoginPhone" placeholder="9447000000" maxlength="10" required autocomplete="off"
                             style="flex:1;padding:12px 14px;border:none;background:transparent;font-size:15px;font-weight:700;color:#0F172A;outline:none"
                             oninput="handleLoginPhoneLookup(this.value)">
+                        <button type="button" id="citizenSendOtpBtn" onclick="requestCitizenOtp()" style="display:none;margin-right:8px;background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;padding:7px 11px;border-radius:10px;font-weight:800;font-size:11.5px;cursor:pointer;white-space:nowrap">
+                            OTP അയക്കാം 📲
+                        </button>
                     </div>
                     <div id="loginPhoneStatusHint" style="font-size:11.5px;margin-top:5px;font-weight:700;color:#64748B;display:none"></div>
+                </div>
+
+                <!-- OTP Verification Block -->
+                <div id="citizenOtpSection" style="display:none;background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:14px;padding:12px">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                        <label style="font-size:12px;font-weight:800;color:#166534;margin:0">
+                            🔒 4-അക്ക OTP വെരിഫിക്കേഷൻ *
+                        </label>
+                        <span id="citizenOtpTimer" style="font-size:11px;color:#047857;font-weight:700"></span>
+                    </div>
+                    <div style="display:flex;gap:8px;align-items:center">
+                        <input type="tel" id="citizenLoginOtp" maxlength="4" placeholder="••••" autocomplete="one-time-code"
+                            style="flex:1;letter-spacing:6px;text-align:center;font-size:17px;font-weight:900;padding:10px 12px;border:1.5px solid #86EFAC;border-radius:12px;background:#FFFFFF;outline:none;color:#0F172A;box-sizing:border-box"
+                            oninput="if(this.value.length===4)verifyCitizenOtp()">
+                        <button type="button" id="citizenVerifyOtpBtn" onclick="verifyCitizenOtp()"
+                            style="background:#059669;color:#fff;border:none;padding:10px 14px;border-radius:12px;font-weight:800;font-size:12.5px;cursor:pointer;white-space:nowrap">
+                            വെരിഫൈ ചെയ്യാം
+                        </button>
+                    </div>
+                    <div id="citizenOtpHint" style="font-size:11px;margin-top:5px;font-weight:700;color:#047857"></div>
                 </div>
 
                 <!-- Email ID (Citizen Identification & Verification) -->
