@@ -1605,14 +1605,103 @@
   async function reverseGeocode(lat, lon) {
     const validLat = Number.isFinite(Number(lat)) ? Number(lat) : 9.5915;
     const validLon = Number.isFinite(Number(lon)) ? Number(lon) : 76.5221;
-    const cacheKey = `${validLat.toFixed(3)}_${validLon.toFixed(3)}`;
+    const cacheKey = `${validLat.toFixed(4)}_${validLon.toFixed(4)}`;
 
     // Instant return if cached (0ms)
     if (GEO_CACHE.has(cacheKey)) {
       return GEO_CACHE.get(cacheKey);
     }
 
-    // 1. Primary: BigDataCloud client reverse geocoding (fastest, most precise for Kerala local panchayaths & villages)
+    // 1. Primary: OpenStreetMap Nominatim zoom 18 (Exact landmark, shop, building, street & village level precision)
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 4500);
+      const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${validLat}&lon=${validLon}&zoom=18&addressdetails=1`;
+      const res = await fetch(url, { headers: { 'Accept-Language': 'en,ml' }, signal: ctrl.signal });
+      clearTimeout(timer);
+      if (res.ok) {
+        const data = await res.json();
+        const addr = data.address || {};
+        const poi = data.name ||
+                    addr.amenity ||
+                    addr.shop ||
+                    addr.building ||
+                    addr.office ||
+                    addr.tourism ||
+                    addr.leisure ||
+                    addr.craft ||
+                    addr.house_name ||
+                    addr.place_of_worship;
+
+        const localArea = addr.road ||
+                          addr.suburb ||
+                          addr.neighbourhood ||
+                          addr.residential ||
+                          addr.hamlet ||
+                          addr.village ||
+                          addr.quarter ||
+                          addr.town ||
+                          addr.municipality;
+
+        const district = (addr.state_district || addr.district || addr.county || '').replace(/\s*District$/i, '').trim();
+
+        let formatted = '';
+        if (poi && localArea && poi.toLowerCase() !== localArea.toLowerCase()) {
+          formatted = `${poi}, ${localArea}`;
+        } else if (poi) {
+          formatted = (district && district.toLowerCase() !== poi.toLowerCase()) ? `${poi}, ${district}` : poi;
+        } else if (localArea) {
+          formatted = (district && district.toLowerCase() !== localArea.toLowerCase()) ? `${localArea}, ${district}` : localArea;
+        } else if (addr.city) {
+          formatted = (district && district.toLowerCase() !== addr.city.toLowerCase()) ? `${addr.city}, ${district}` : addr.city;
+        }
+
+        if (formatted) {
+          const result = { formatted, district: district || formatted.split(',').pop().trim() };
+          GEO_CACHE.set(cacheKey, result);
+          return result;
+        }
+      }
+    } catch (err) {
+      console.warn('[Nominatim Geocode Note]', err.message);
+    }
+
+    // 2. Secondary: Photon OSM reverse geocoder (Fast, POI-aware)
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 3500);
+      const url = `https://photon.komoot.io/reverse?lat=${validLat}&lon=${validLon}`;
+      const res = await fetch(url, { signal: ctrl.signal });
+      clearTimeout(timer);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.features && data.features.length > 0) {
+          const props = data.features[0].properties || {};
+          const poi = props.name;
+          const localArea = props.street || props.locality || props.district || props.city;
+          const district = (props.district || props.city || props.state || '').replace(/\s*District$/i, '').trim();
+
+          let formatted = '';
+          if (poi && localArea && poi.toLowerCase() !== localArea.toLowerCase()) {
+            formatted = `${poi}, ${localArea}`;
+          } else if (poi) {
+            formatted = (district && district.toLowerCase() !== poi.toLowerCase()) ? `${poi}, ${district}` : poi;
+          } else if (localArea) {
+            formatted = (district && district.toLowerCase() !== localArea.toLowerCase()) ? `${localArea}, ${district}` : localArea;
+          }
+
+          if (formatted) {
+            const result = { formatted, district: district || formatted.split(',').pop().trim() };
+            GEO_CACHE.set(cacheKey, result);
+            return result;
+          }
+        }
+      }
+    } catch (err) {
+      console.warn('[Photon Geocode Note]', err.message);
+    }
+
+    // 3. Fallback: BigDataCloud client reverse geocoding (Fast village/locality fallback)
     try {
       const ctrl = new AbortController();
       const timer = setTimeout(() => ctrl.abort(), 3500);
@@ -1646,54 +1735,6 @@
           const result = { formatted, district: district || exactPlace };
           GEO_CACHE.set(cacheKey, result);
           return result;
-        }
-      }
-    } catch (_) {}
-
-    // 2. OpenStreetMap Nominatim zoom 18
-    try {
-      const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 3000);
-      const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${validLat}&lon=${validLon}&zoom=18&addressdetails=1`;
-      const res = await fetch(url, { headers: { 'Accept-Language': 'en,ml' }, signal: ctrl.signal });
-      clearTimeout(timer);
-      if (res.ok) {
-        const data = await res.json();
-        const addr = data.address || {};
-        const exactPlace = addr.suburb || addr.village || addr.hamlet || addr.neighbourhood || addr.residential || addr.quarter || addr.borough || addr.town || addr.municipality || addr.city;
-        const district = (addr.state_district || addr.district || addr.county || '').replace(/\s*District$/i, '').trim();
-        if (exactPlace) {
-          const formatted = (district && district.toLowerCase() !== exactPlace.toLowerCase())
-            ? `${exactPlace}, ${district}`
-            : exactPlace;
-          const result = { formatted, district: district || exactPlace };
-          GEO_CACHE.set(cacheKey, result);
-          return result;
-        }
-      }
-    } catch (_) {}
-
-    // 3. Fallback: Photon
-    try {
-      const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 2000);
-      const url = `https://photon.komoot.io/reverse?lat=${validLat}&lon=${validLon}`;
-      const res = await fetch(url, { signal: ctrl.signal });
-      clearTimeout(timer);
-      if (res.ok) {
-        const data = await res.json();
-        if (data && data.features && data.features.length > 0) {
-          const props = data.features[0].properties || {};
-          const exactPlace = props.name || props.district || props.locality || props.city;
-          const district = (props.district || props.city || '').replace(/\s*District$/i, '').trim();
-          if (exactPlace) {
-            const formatted = (district && district.toLowerCase() !== exactPlace.toLowerCase())
-              ? `${exactPlace}, ${district}`
-              : exactPlace;
-            const result = { formatted, district: district || exactPlace };
-            GEO_CACHE.set(cacheKey, result);
-            return result;
-          }
         }
       }
     } catch (_) {}
@@ -1836,13 +1877,22 @@
         if (typeof geo.requestPermissions === 'function') {
           try { await geo.requestPermissions(); } catch (_) {}
         }
-        const pos = await geo.getCurrentPosition({ enableHighAccuracy: false, timeout: 6000 });
+        // High accuracy GPS satellite coordinates (±5m precision)
+        const pos = await geo.getCurrentPosition({ enableHighAccuracy: true, timeout: 8000, maximumAge: 0 });
         if (pos && pos.coords && Number.isFinite(pos.coords.latitude)) {
-          const ok = await applyLocationResult(pos.coords.latitude, pos.coords.longitude, 'Capacitor');
+          const ok = await applyLocationResult(pos.coords.latitude, pos.coords.longitude, 'Capacitor GPS High-Accuracy');
           if (ok) return;
         }
       } catch (capErr) {
-        console.warn('[Capacitor Geo Warning, trying fallback]', capErr);
+        console.warn('[Capacitor High-Accuracy Geo Warning, retrying standard]', capErr);
+        try {
+          const geo = window.Capacitor.Plugins.Geolocation;
+          const pos = await geo.getCurrentPosition({ enableHighAccuracy: false, timeout: 4000 });
+          if (pos && pos.coords && Number.isFinite(pos.coords.latitude)) {
+            const ok = await applyLocationResult(pos.coords.latitude, pos.coords.longitude, 'Capacitor Standard');
+            if (ok) return;
+          }
+        } catch (_) {}
       }
     }
 
@@ -1850,21 +1900,21 @@
     if (typeof navigator !== 'undefined' && navigator.geolocation) {
       let isResolved = false;
 
-      // Fast network location attempt (low accuracy, sub-second latency)
+      // High-accuracy GPS location (exact street, building & POI precision)
       navigator.geolocation.getCurrentPosition(
         async (pos) => {
           if (isResolved) return;
           isResolved = true;
-          await applyLocationResult(pos.coords.latitude, pos.coords.longitude, 'Browser Fast');
+          await applyLocationResult(pos.coords.latitude, pos.coords.longitude, 'Browser High Accuracy');
         },
         async (err) => {
-          console.warn('[Browser Fast Geo Failed, retrying with high accuracy]', err);
+          console.warn('[Browser High Accuracy Geo Failed, retrying standard]', err);
           if (!isResolved) {
             navigator.geolocation.getCurrentPosition(
               async (pos2) => {
                 if (isResolved) return;
                 isResolved = true;
-                await applyLocationResult(pos2.coords.latitude, pos2.coords.longitude, 'Browser High Accuracy');
+                await applyLocationResult(pos2.coords.latitude, pos2.coords.longitude, 'Browser Standard');
               },
               async (err2) => {
                 if (isResolved) return;
@@ -1872,21 +1922,21 @@
                 console.warn('[Browser Geolocation completely failed, falling back to IP]', err2);
                 await fallbackToIpLocation();
               },
-              { timeout: 4500, enableHighAccuracy: true, maximumAge: 60000 }
+              { timeout: 4000, enableHighAccuracy: false, maximumAge: 60000 }
             );
           }
         },
-        { timeout: 3500, enableHighAccuracy: false, maximumAge: 120000 }
+        { timeout: 8000, enableHighAccuracy: true, maximumAge: 0 }
       );
 
-      // Safety timeout: if browser doesn't respond within 5s, trigger IP fallback so user is NEVER left waiting
+      // Safety timeout: if browser doesn't respond within 9s, trigger IP fallback
       setTimeout(() => {
         if (!isResolved) {
           isResolved = true;
           console.info('[Geo Safety Timeout] Falling back to IP location...');
           fallbackToIpLocation();
         }
-      }, 5000);
+      }, 9000);
 
       return;
     }
