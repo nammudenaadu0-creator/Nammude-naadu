@@ -1818,16 +1818,6 @@
         closeModal('modal-location');
         resetGpsBtnState();
 
-        // Also autofill registration form fields if registration modal is open
-        const regPlaceInput = document.getElementById('citizenLoginPlace');
-        const regDistrictInput = document.getElementById('citizenLoginDistrict');
-        if (regPlaceInput && (!regPlaceInput.value || regPlaceInput.value === 'കേരളം' || regPlaceInput.value === 'തത്സമയ ലൊക്കേഷൻ')) {
-          regPlaceInput.value = geoResult.formatted;
-        }
-        if (regDistrictInput && geoResult.district) {
-          regDistrictInput.value = geoResult.district;
-        }
-
         if (showToastOnSuccess) {
           toast(`📍 ലൊക്കേഷൻ കണ്ടെത്തി: ${geoResult.formatted}`);
         }
@@ -1862,16 +1852,6 @@
             updateLocationDisplay(formatted, district || 'Kerala', lat, lon);
             closeModal('modal-location');
             resetGpsBtnState();
-
-            // Also autofill registration form fields if registration modal is open
-            const regPlaceInput = document.getElementById('citizenLoginPlace');
-            const regDistrictInput = document.getElementById('citizenLoginDistrict');
-            if (regPlaceInput && (!regPlaceInput.value || regPlaceInput.value === 'കേരളം' || regPlaceInput.value === 'തത്സമയ ലൊക്കേഷൻ')) {
-              regPlaceInput.value = formatted;
-            }
-            if (regDistrictInput && district) {
-              regDistrictInput.value = district;
-            }
 
             if (showToastOnSuccess) {
               toast(`📍 ലൊക്കേഷൻ കണ്ടെത്തി: ${formatted}`);
@@ -12965,28 +12945,14 @@
         : 'നിങ്ങളുടെ 10-അക്ക മൊബൈൽ നമ്പർ നൽകി നേരിട്ട് ലോഗിൻ ചെയ്യാം.';
     }
 
-    const user = (APP_STATE && APP_STATE.currentUser) || {};
-    const existingPhone = user.phone ? user.phone.replace(/\D/g, '').slice(-10) : (localStorage.getItem('nn_user_phone') || '');
-
-    if (phoneInput) phoneInput.value = existingPhone;
-    if (emailInput) emailInput.value = user.email || localStorage.getItem('nn_user_email') || '';
-    if (nameInput) nameInput.value = (user.name && user.name !== 'നാട്ടുകാരൻ') ? user.name : (localStorage.getItem('nn_user_name') || '');
-
-    // Autofill location from GPS or saved location
-    const knownLoc = (APP_STATE.location && APP_STATE.location.name && APP_STATE.location.name !== 'തത്സമയ ലൊക്കേഷൻ' && !APP_STATE.location.name.includes('കണ്ടെത്തുന്നു'))
-      ? APP_STATE.location.name
-      : (localStorage.getItem('nn_curr_loc_name') || localStorage.getItem('nn_user_loc') || '');
-    const knownDistrict = (APP_STATE.location && APP_STATE.location.district) || localStorage.getItem('nn_curr_district') || '';
-
-    if (placeInput) placeInput.value = knownLoc;
-    if (districtInput && knownDistrict) districtInput.value = knownDistrict;
-    if (bloodInput) bloodInput.value = user.bloodGroup || localStorage.getItem('nn_user_blood') || 'O+';
-    if (donorInput) donorInput.checked = user.isDonor !== false;
-
-    // Trigger instant background GPS detection if location is still empty
-    if (!knownLoc && typeof detectLiveGpsLocation === 'function') {
-      setTimeout(() => detectLiveGpsLocation(false), 200);
-    }
+    // Strict No-Autofill: Keep all fields clean & empty for fresh user entry
+    if (phoneInput) phoneInput.value = '';
+    if (emailInput) emailInput.value = '';
+    if (nameInput) nameInput.value = '';
+    if (placeInput) placeInput.value = '';
+    if (districtInput) districtInput.value = 'കോട്ടയം';
+    if (bloodInput) bloodInput.value = 'O+';
+    if (donorInput) donorInput.checked = true;
 
     if (hintEl) {
       hintEl.style.display = 'none';
@@ -13041,10 +13007,6 @@
     clearTimeout(_loginPhoneLookupTimer);
     const clean = String(val || '').replace(/\D/g, '').slice(-10);
     const hintEl = document.getElementById('loginPhoneStatusHint');
-    const nameInput = document.getElementById('citizenLoginName');
-    const emailInput = document.getElementById('citizenLoginEmail');
-    const placeInput = document.getElementById('citizenLoginPlace');
-    const districtInput = document.getElementById('citizenLoginDistrict');
     const btnText = document.getElementById('loginSubmitBtnText');
 
     if (clean.length < 10) {
@@ -13064,9 +13026,6 @@
         hintEl.style.border = '1.5px solid #F59E0B';
         hintEl.innerHTML = '👑 <b>സൂപ്പർ അഡ്മിൻ പ്രൊഫൈൽ (9605406699)</b> — അഡ്മിൻ കൺസോൾ ആക്സസ് ഓണാകും!';
       }
-      if (nameInput) nameInput.value = 'അഡ്മിൻ (നമ്മുടെ നാട്)';
-      if (emailInput && !emailInput.value) emailInput.value = 'admin@nammudenaadu.app';
-      if (placeInput && !placeInput.value) placeInput.value = 'കേരളം';
       if (btnText) btnText.textContent = '👑 അഡ്മിനായി ലോഗിൻ ചെയ്യാം';
       return;
     }
@@ -13093,18 +13052,6 @@
           hintEl.style.display = 'block';
           hintEl.style.color = '#059669';
           hintEl.innerHTML = `✅ പ്രൊഫൈൽ കണ്ടെത്തി: <b>${escapeHtml(profile.name)}</b> (📍 ${escapeHtml(profile.place || 'കേരളം')})`;
-        }
-        if (nameInput && (!nameInput.value || nameInput.value === 'നാട്ടുകാരൻ')) {
-          nameInput.value = profile.name;
-        }
-        if (emailInput && !emailInput.value && profile.email) {
-          emailInput.value = profile.email;
-        }
-        if (placeInput && (!placeInput.value || placeInput.value === 'തത്സമയ ലൊക്കേഷൻ') && profile.place) {
-          placeInput.value = profile.place;
-        }
-        if (districtInput && profile.district) {
-          districtInput.value = profile.district;
         }
         if (btnText) {
           btnText.textContent = `🚀 ലോഗിൻ ചെയ്യാം (${profile.name})`;
