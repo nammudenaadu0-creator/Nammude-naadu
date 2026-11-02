@@ -26,6 +26,7 @@
   let rentalsChannel = null;
   let bloodChannel = null;
   let emergencyChannel = null;
+  let citizensChannel = null;
   let dbChangesChannel = null;
   let isSettingUpChannels = false;
   let realtimeRetryCount = 0;
@@ -139,7 +140,7 @@
     isSettingUpChannels = true;
 
     // Unsubscribe and tear down previous channels first
-    const previousChannels = [chatChannel, postsChannel, servicesChannel, jobsChannel, rentalsChannel, bloodChannel, emergencyChannel];
+    const previousChannels = [chatChannel, postsChannel, servicesChannel, jobsChannel, rentalsChannel, bloodChannel, emergencyChannel, citizensChannel];
     previousChannels.forEach(ch => {
       if (ch) {
         try { ch.unsubscribe(); } catch (_) {}
@@ -211,6 +212,12 @@
         if (payload && payload.contact) handleIncomingEmergencyContact(payload.contact);
       });
       emergencyChannel.subscribe();
+
+      citizensChannel = client.channel('nn_community_citizens', { config: { broadcast: { self: false } } });
+      citizensChannel.on('broadcast', { event: 'new_citizen' }, ({ payload }) => {
+        if (payload && payload.citizen) handleIncomingCitizen(payload.citizen);
+      });
+      citizensChannel.subscribe();
     } catch (e) {
       console.warn('⚠️ [Supabase Realtime Setup Note]:', e.message);
     } finally {
@@ -1258,6 +1265,48 @@
       if (typeof renderCommunityScreen === 'function') renderCommunityScreen();
     }
   }
+
+  // Handle incoming registered citizen from another device
+  function handleIncomingCitizen(payload) {
+    if (!payload || !payload.citizen) return;
+    const citizen = payload.citizen;
+    if (typeof APP_STATE === 'undefined') return;
+    if (!APP_STATE.cloudProfiles) APP_STATE.cloudProfiles = [];
+
+    const cleanPhone = citizen.phone ? String(citizen.phone).replace(/\D/g, '').slice(-10) : '';
+    const myPhone = (APP_STATE.currentUser && APP_STATE.currentUser.phone)
+      ? String(APP_STATE.currentUser.phone).replace(/\D/g, '').slice(-10) : '';
+
+    // Ignore self
+    if (cleanPhone && myPhone && cleanPhone === myPhone) return;
+
+    const idx = APP_STATE.cloudProfiles.findIndex(p => p.id === citizen.id || (cleanPhone && p.phone && String(p.phone).replace(/\D/g, '').slice(-10) === cleanPhone));
+    if (idx >= 0) {
+      APP_STATE.cloudProfiles[idx] = Object.assign({}, APP_STATE.cloudProfiles[idx], citizen);
+    } else {
+      APP_STATE.cloudProfiles.unshift(citizen);
+    }
+
+    if (typeof renderCommunityScreen === 'function' && APP_STATE.currentScreen === 'community') {
+      renderCommunityScreen();
+    }
+    if (typeof renderHomeCommunityFeed === 'function') {
+      renderHomeCommunityFeed();
+    }
+    if (typeof renderNearbyCitizensList === 'function') {
+      renderNearbyCitizensList();
+    }
+
+    // Friendly local toast if they are in the user's location
+    const myLoc = (APP_STATE.location && (APP_STATE.location.district || APP_STATE.location.name)) || '';
+    const citLoc = citizen.place || '';
+    if (citizen.name && myLoc && citLoc && (citLoc.toLowerCase().includes(myLoc.toLowerCase()) || myLoc.toLowerCase().includes(citLoc.toLowerCase()))) {
+      if (typeof toast === 'function') {
+        toast(`🌴 പുതിയ നാട്ടുകാരൻ ചേർന്നു: ${citizen.name} (📍 ${citLoc})`);
+      }
+    }
+  }
+  window.handleIncomingCitizen = handleIncomingCitizen;
 
   // Handle incoming service from another user
   function handleIncomingService(payload) {
@@ -2705,6 +2754,16 @@
         return false;
       }
       console.info('✅ [Supabase] User profile synced to cloud with ID and coordinates:', userId, lat, lon);
+
+      // Realtime broadcast to other devices so they see the new citizen immediately
+      try {
+        const citizensCh = client.channel('nn_community_citizens');
+        citizensCh.send({
+          type: 'broadcast',
+          event: 'new_citizen',
+          payload: { citizen: payload }
+        }).catch(() => {});
+      } catch (_) {}
 
       // Instantly trigger background sync so everyone's profile list updates
       setTimeout(() => {

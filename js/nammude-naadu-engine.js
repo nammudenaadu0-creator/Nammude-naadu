@@ -11949,7 +11949,20 @@
     }
 
     if (idBadgeEl) {
-      idBadgeEl.style.display = 'none';
+      const cleanPhone = (user.phone ? String(user.phone).replace(/\D/g, '').slice(-10) : '');
+      const midDigits = cleanPhone.length === 10 ? cleanPhone.slice(3, 7) : '7123';
+      const endDigits = cleanPhone.length === 10 ? cleanPhone.slice(-2) : '56';
+      const cid = user.citizenId || (cleanPhone.length === 10 ? `CID-${midDigits}-${endDigits}` : (localStorage.getItem('nn_citizen_id') || 'CID-MEMBER'));
+      idBadgeEl.textContent = `🆔 ${cid}`;
+      idBadgeEl.style.display = 'inline-block';
+      idBadgeEl.style.background = '#EFF6FF';
+      idBadgeEl.style.color = '#1D4ED8';
+      idBadgeEl.style.border = '1px solid #BFDBFE';
+      idBadgeEl.style.padding = '3px 10px';
+      idBadgeEl.style.borderRadius = '9999px';
+      idBadgeEl.style.fontSize = '11.5px';
+      idBadgeEl.style.fontWeight = '800';
+      idBadgeEl.title = 'ഫോൺ നമ്പറിലെ നടുക്കത്തെ അക്കങ്ങൾ കൊണ്ടുള്ള സിറ്റിസൺ ഐഡി';
     }
 
     if (bioEl) {
@@ -13136,10 +13149,15 @@
     const bloodGroup = (bloodInput && bloodInput.value ? bloodInput.value : 'O+');
     const isDonor = donorInput ? donorInput.checked : true;
 
+    // Permanent Citizen ID derived from middle digits of the phone number
+    const midDigits = cleanPhone.slice(3, 7);
+    const endDigits = cleanPhone.slice(-2);
+    const citizenCardId = `CID-${midDigits}-${endDigits}`;
     const citizenId = 'usr_' + cleanPhone;
 
     APP_STATE.currentUser = {
       id: citizenId,
+      citizenId: citizenCardId,
       name: defaultName,
       phone: cleanPhone,
       email: rawEmail,
@@ -13162,6 +13180,7 @@
       localStorage.setItem('nn_user_id', cleanPhone);
       localStorage.setItem('nn_permanent_id', citizenId);
       localStorage.setItem('nn_permanent_phone', cleanPhone);
+      localStorage.setItem('nn_citizen_id', citizenCardId);
       localStorage.setItem('nn_user_phone', cleanPhone);
       localStorage.setItem('nn_user_email', rawEmail);
       localStorage.setItem('nn_user_name', defaultName);
@@ -13202,9 +13221,9 @@
     navTo('home');
 
     if (isAdmin) {
-      toast(`👑 സ്വാഗതം അഡ്മിൻ! അഡ്മിൻ കൺസോൾ ആക്സസ് വിജയകരമായി സജീവമായി.`);
+      toast(`👑 സ്വാഗതം അഡ്മിൻ! ഐഡി: ${citizenCardId}`);
     } else {
-      toast(`🎉 സ്വാഗതം ${defaultName}! താങ്കളുടെ പ്രൊഫൈൽ വിജയകരമായി രജിസ്റ്റർ ചെയ്തു.`);
+      toast(`🎉 സ്വാഗതം ${defaultName}! സിറ്റിസൺ ഐഡി: ${citizenCardId}`);
     }
 
     // Smoothly request and activate Push Notifications on registration
