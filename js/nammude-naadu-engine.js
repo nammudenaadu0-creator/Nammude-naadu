@@ -6086,7 +6086,7 @@
     list.innerHTML = filtered.slice(0, 30).map(c => `
       <div onclick="closeModal('modal-new-chat'); openChatModal('${escapeHtml(c.name).replace(/'/g, "\\'")}', '${c.phone}', '${c.avatar}', 'ഹലോ ${escapeHtml(c.name).replace(/'/g, "\\'")}', '${c.id}')"
            style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;cursor:pointer;transition:all 0.15s;box-shadow:0 1px 2px rgba(0,0,0,0.02)">
-        <img src="${c.avatar}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:1.5px solid #CBD5E1;flex-shrink:0" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
+        <img src="${c.avatar || window.DEFAULT_USER_AVATAR || ''}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:1.5px solid #CBD5E1;flex-shrink:0" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
         <div style="flex:1;min-width:0">
           <div style="font-size:13.5px;font-weight:800;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(c.name)}</div>
           <div style="font-size:11.5px;color:#64748B;margin-top:1px">${escapeHtml(c.sub)}</div>
@@ -13807,7 +13807,7 @@
         <div class="home-top-provider-card" onclick="openServiceDetailModal('${srv.id}')" style="cursor:pointer">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div style="display:flex;align-items:center;gap:12px">
-              <img src="${srv.avatar}" alt="${srv.name}" class="service-prov-avatar" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80'">
+              <img src="${srv.avatar || window.DEFAULT_USER_AVATAR || ''}" alt="${srv.name}" class="service-prov-avatar" onerror="this.src=window.DEFAULT_USER_AVATAR||''">
               <div>
                 <div style="display:flex;align-items:center;gap:6px">
                   <span style="font-weight:800;font-size:0.95rem;color:#0F172A">${srv.name}</span>
