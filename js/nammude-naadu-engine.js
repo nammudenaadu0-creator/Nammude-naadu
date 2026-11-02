@@ -1817,6 +1817,17 @@
         updateLocationDisplay(geoResult.formatted, geoResult.district, lat, lon);
         closeModal('modal-location');
         resetGpsBtnState();
+
+        // Also autofill registration form fields if registration modal is open
+        const regPlaceInput = document.getElementById('citizenLoginPlace');
+        const regDistrictInput = document.getElementById('citizenLoginDistrict');
+        if (regPlaceInput && (!regPlaceInput.value || regPlaceInput.value === 'കേരളം' || regPlaceInput.value === 'തത്സമയ ലൊക്കേഷൻ')) {
+          regPlaceInput.value = geoResult.formatted;
+        }
+        if (regDistrictInput && geoResult.district) {
+          regDistrictInput.value = geoResult.district;
+        }
+
         if (showToastOnSuccess) {
           toast(`📍 ലൊക്കേഷൻ കണ്ടെത്തി: ${geoResult.formatted}`);
         }
@@ -1851,6 +1862,17 @@
             updateLocationDisplay(formatted, district || 'Kerala', lat, lon);
             closeModal('modal-location');
             resetGpsBtnState();
+
+            // Also autofill registration form fields if registration modal is open
+            const regPlaceInput = document.getElementById('citizenLoginPlace');
+            const regDistrictInput = document.getElementById('citizenLoginDistrict');
+            if (regPlaceInput && (!regPlaceInput.value || regPlaceInput.value === 'കേരളം' || regPlaceInput.value === 'തത്സമയ ലൊക്കേഷൻ')) {
+              regPlaceInput.value = formatted;
+            }
+            if (regDistrictInput && district) {
+              regDistrictInput.value = district;
+            }
+
             if (showToastOnSuccess) {
               toast(`📍 ലൊക്കേഷൻ കണ്ടെത്തി: ${formatted}`);
             }
@@ -12943,14 +12965,28 @@
         : 'നിങ്ങളുടെ 10-അക്ക മൊബൈൽ നമ്പർ നൽകി നേരിട്ട് ലോഗിൻ ചെയ്യാം.';
     }
 
-    // Strict No-Autofill on Registration: Keep fields completely clean & empty for fresh entry
-    if (phoneInput) phoneInput.value = '';
-    if (emailInput) emailInput.value = '';
-    if (nameInput) nameInput.value = '';
-    if (placeInput) placeInput.value = '';
-    if (districtInput) districtInput.value = (APP_STATE.location && APP_STATE.location.district) || 'കണ്ണൂർ';
-    if (bloodInput) bloodInput.value = 'O+';
-    if (donorInput) donorInput.checked = true;
+    const user = (APP_STATE && APP_STATE.currentUser) || {};
+    const existingPhone = user.phone ? user.phone.replace(/\D/g, '').slice(-10) : (localStorage.getItem('nn_user_phone') || '');
+
+    if (phoneInput) phoneInput.value = existingPhone;
+    if (emailInput) emailInput.value = user.email || localStorage.getItem('nn_user_email') || '';
+    if (nameInput) nameInput.value = (user.name && user.name !== 'നാട്ടുകാരൻ') ? user.name : (localStorage.getItem('nn_user_name') || '');
+
+    // Autofill location from GPS or saved location
+    const knownLoc = (APP_STATE.location && APP_STATE.location.name && APP_STATE.location.name !== 'തത്സമയ ലൊക്കേഷൻ' && !APP_STATE.location.name.includes('കണ്ടെത്തുന്നു'))
+      ? APP_STATE.location.name
+      : (localStorage.getItem('nn_curr_loc_name') || localStorage.getItem('nn_user_loc') || '');
+    const knownDistrict = (APP_STATE.location && APP_STATE.location.district) || localStorage.getItem('nn_curr_district') || '';
+
+    if (placeInput) placeInput.value = knownLoc;
+    if (districtInput && knownDistrict) districtInput.value = knownDistrict;
+    if (bloodInput) bloodInput.value = user.bloodGroup || localStorage.getItem('nn_user_blood') || 'O+';
+    if (donorInput) donorInput.checked = user.isDonor !== false;
+
+    // Trigger instant background GPS detection if location is still empty
+    if (!knownLoc && typeof detectLiveGpsLocation === 'function') {
+      setTimeout(() => detectLiveGpsLocation(false), 200);
+    }
 
     if (hintEl) {
       hintEl.style.display = 'none';
@@ -12973,6 +13009,32 @@
     openLoginModal(true);
   }
   window.openMandatoryRegisterModal = openMandatoryRegisterModal;
+
+  async function detectRegFormGpsLocation() {
+    const placeInput = document.getElementById('citizenLoginPlace');
+    const districtInput = document.getElementById('citizenLoginDistrict');
+    const btn = document.getElementById('regFormGpsBtn');
+    if (btn) {
+      btn.innerHTML = '<span>⏳</span> <span>GPS...</span>';
+      btn.disabled = true;
+    }
+    try {
+      if (typeof detectLiveGpsLocation === 'function') {
+        await detectLiveGpsLocation(false);
+      }
+      if (placeInput && APP_STATE.location && APP_STATE.location.name && APP_STATE.location.name !== 'തത്സമയ ലൊക്കേഷൻ') {
+        placeInput.value = APP_STATE.location.name;
+      }
+      if (districtInput && APP_STATE.location && APP_STATE.location.district) {
+        districtInput.value = APP_STATE.location.district;
+      }
+    } catch (_) {}
+    if (btn) {
+      btn.innerHTML = '<span>🎯</span> <span>GPS</span>';
+      btn.disabled = false;
+    }
+  }
+  window.detectRegFormGpsLocation = detectRegFormGpsLocation;
 
   let _loginPhoneLookupTimer = null;
   function handleLoginPhoneLookup(val) {
@@ -13145,6 +13207,10 @@
       isCustomized: true
     };
 
+    // Update global app state location
+    APP_STATE.location.name = place;
+    APP_STATE.location.district = district;
+
     try {
       localStorage.setItem('nn_user_id', cleanPhone);
       localStorage.setItem('nn_permanent_id', citizenId);
@@ -13153,6 +13219,7 @@
       localStorage.setItem('nn_user_email', rawEmail);
       localStorage.setItem('nn_user_name', defaultName);
       localStorage.setItem('nn_user_loc', place);
+      localStorage.setItem('nn_curr_loc_name', place);
       localStorage.setItem('nn_curr_district', district);
       localStorage.setItem('nn_user_blood', bloodGroup);
       localStorage.setItem('nn_user_is_donor', isDonor ? 'true' : 'false');
@@ -13164,6 +13231,14 @@
       }
     } catch (_) {}
 
+    // Save and update location display globally
+    if (typeof updateLocationDisplay === 'function') {
+      updateLocationDisplay(place, district, APP_STATE.location.lat, APP_STATE.location.lon);
+    }
+    if (typeof saveRecentLocation === 'function') {
+      saveRecentLocation(place, district, APP_STATE.location.lat, APP_STATE.location.lon);
+    }
+
     // Force close modal now that isUserRegistered() is true
     const modalEl = document.getElementById('modal-citizen-login');
     if (modalEl) {
@@ -13171,12 +13246,13 @@
       modalEl.style.display = 'none';
     }
 
-    // Instantly update interface and open Profile screen
+    // Instantly update interface and navigate to Home screen
     updateAdminUI();
     updateUserAuthUI();
+    renderHomeScreen();
     renderProfileScreen();
     updatePostingProfileBar();
-    navTo('profile');
+    navTo('home');
 
     if (isAdmin) {
       toast(`👑 സ്വാഗതം അഡ്മിൻ! അഡ്മിൻ കൺസോൾ ആക്സസ് വിജയകരമായി സജീവമായി.`);
@@ -14181,14 +14257,14 @@
     if (typeof updateVolunteerHelperUI === 'function') updateVolunteerHelperUI();
     if (typeof initNearbyVolunteerHelpListener === 'function') initNearbyVolunteerHelpListener();
 
-    // Language Picker Gate & Mandatory Registration on App Launch
+    // Mandatory Registration Form Gate on App Launch: Registration comes FIRST!
     setTimeout(() => {
-      if (!localStorage.getItem('nn_language_chosen')) {
-        openLanguagePickerModal(true);
-      } else if (typeof isUserRegistered === 'function' && !isUserRegistered()) {
+      if (typeof isUserRegistered === 'function' && !isUserRegistered()) {
         openMandatoryRegisterModal();
+      } else if (!localStorage.getItem('nn_language_chosen')) {
+        openLanguagePickerModal(true);
       }
-    }, 150);
+    }, 120);
 
     // Automatic Swiggy-style Device Location Request on App Launch
     setTimeout(() => {

@@ -4534,10 +4534,15 @@
                 <!-- Location / Place & District -->
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
                     <div>
-                        <label style="font-size:12px;font-weight:800;color:#1E293B;display:block;margin-bottom:6px">
-                            📍 നാട് / സ്ഥലം (Place)
-                        </label>
-                        <input type="text" id="citizenLoginPlace" placeholder="ഉദാ: പയ്യന്നൂർ" autocomplete="off"
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                            <label style="font-size:12px;font-weight:800;color:#1E293B;margin:0">
+                                📍 നാട് / സ്ഥലം (Place)
+                            </label>
+                            <button type="button" id="regFormGpsBtn" onclick="detectRegFormGpsLocation()" style="background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;padding:2px 7px;border-radius:8px;font-size:10.5px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:3px">
+                                <span>🎯</span> <span>GPS</span>
+                            </button>
+                        </div>
+                        <input type="text" id="citizenLoginPlace" placeholder="ഉദാ: കോട്ടയം / ചങ്ങനാശ്ശേരി" autocomplete="off"
                             style="width:100%;padding:11px 12px;border:1.5px solid #CBD5E1;border-radius:14px;font-size:13px;color:#0F172A;outline:none;background:#F8FAFC;box-sizing:border-box">
                     </div>
                     <div>
