@@ -12780,6 +12780,9 @@
         localStorage.removeItem('nn_user_bio');
         localStorage.removeItem('nn_chats_store');
         localStorage.removeItem('nn_chats_meta');
+        localStorage.removeItem('nn_profile_completed');
+        localStorage.removeItem('nn_citizen_id');
+        localStorage.removeItem('nn_permanent_id');
       } catch (_) {}
 
       APP_STATE.chats = {};
@@ -12804,9 +12807,28 @@
       updatePostingProfileBar();
       renderHomeScreen();
       toast('🚪 വിജയകരമായി ലോഗ് ഔട്ട് ചെയ്തു.');
+
+      // Enforce immediate registration form on logout
+      setTimeout(() => {
+        if (typeof openMandatoryRegisterModal === 'function') {
+          openMandatoryRegisterModal();
+        }
+      }, 300);
     }
   }
   window.handleProfileLogout = handleProfileLogout;
+
+  // Global Fresh Reset: Wipes all test data and reboots into fresh registration
+  function freshResetApp() {
+    if (confirm('ആപ്പിലെ പഴയ എല്ലാ വിവരങ്ങളും മാറ്റി ഒരു പുതിയ ഫ്രെഷ് ആപ്പ് ആയി റീസെറ്റ് ചെയ്യണോ? രജിസ്ട്രേഷൻ ഫോം വീണ്ടും വരും.')) {
+      try {
+        localStorage.clear();
+        sessionStorage.clear();
+      } catch (_) {}
+      location.reload();
+    }
+  }
+  window.freshResetApp = freshResetApp;
 
   // COMPLETE ACCOUNT & DATA PURGE (Supabase Cloud + Local Storage)
   async function handleDeleteUserAccount() {
