@@ -360,7 +360,8 @@ html, body {
 .chat-modal-sheet {
   background-color: #F8FAFC !important;
   background: #F8FAFC !important;
-  border-radius: 28px 28px 0 0;
+  border-radius: 40px !important;
+  margin: auto !important;
   width: 100%;
   max-width: 520px;
   margin: 0 auto;
@@ -4058,7 +4059,9 @@ body {
 .modal-overlay .modal-sheet,
 .chat-modal-sheet,
 .vattamesha-modal-sheet,
-.profile-preview-sheet {
+.profile-preview-sheet,
+.swiggy-loc-modal,
+.yw-modal-sheet {
   width: 100% !important;
   max-width: 460px !important;
   max-height: calc(100vh - 40px) !important;
@@ -4073,6 +4076,30 @@ body {
   display: flex !important;
   flex-direction: column !important;
   animation: modalCardScale 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Universal Floating 4-Corner Curved Inner Subpage Screens */
+body.nn-inner-card-view,
+.app-container.nn-inner-card-view {
+  background: rgba(10, 18, 30, 0.88) !important;
+}
+
+.screen:not(#screen-home):not(#screen-splash).active {
+  display: flex !important;
+  flex-direction: column !important;
+  width: calc(100% - 24px) !important;
+  max-width: 456px !important;
+  margin: 14px auto calc(80px + env(safe-area-inset-bottom, 0px)) auto !important;
+  border-radius: 40px !important; /* ALL 4 CORNERS CURVED */
+  border: 1.5px solid rgba(255, 255, 255, 0.28) !important;
+  overflow: hidden !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45) !important;
+  background: #FFFFFF !important;
+  max-height: calc(100dvh - 100px - env(safe-area-inset-bottom, 0px)) !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  animation: modalCardScale 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-sizing: border-box !important;
 }
 
 .modal-overlay .modal-sheet > form,
@@ -4176,10 +4203,10 @@ body {
     width: calc(100vw - 12px) !important;
     height: calc(100dvh - max(56px, calc(env(safe-area-inset-top, 0px) + 40px))) !important;
     max-height: calc(100dvh - 48px) !important;
-    border-radius: 24px 24px 0 0 !important;
-    border: 1.5px solid #CBD5E1 !important;
-    margin: 0 auto !important;
-    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.45) !important;
+    border-radius: 40px !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.28) !important;
+    margin: auto !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45) !important;
     box-sizing: border-box !important;
     overflow: hidden !important;
   }
@@ -6533,7 +6560,8 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
   height: 94vh;
   max-height: 880px;
   background: linear-gradient(180deg, #0A0F1D 0%, #151D33 50%, #0F172A 100%);
-  border-radius: 28px 28px 0 0;
+  border-radius: 40px !important;
+  margin: auto !important;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -7819,12 +7847,12 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
 .swiggy-loc-modal {
   max-width: 500px !important;
   width: 100% !important;
-  border-radius: 24px 24px 0 0 !important;
+  border-radius: 40px !important;
   padding: 0 !important;
   overflow: hidden !important;
   background: #FFFFFF !important;
-  box-shadow: 0 -10px 40px rgba(15, 23, 42, 0.16) !important;
-  margin: auto 0 0 !important;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.35) !important;
+  margin: auto !important;
 }
 
 @media (min-width: 640px) {

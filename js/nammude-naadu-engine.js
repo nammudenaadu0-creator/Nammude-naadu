@@ -1412,6 +1412,16 @@
       target.classList.add('active');
     }
 
+    // Toggle inner floating card view backdrop
+    const appContainer = document.querySelector('.app-container');
+    if (screenId === 'home' || screenId === 'splash') {
+      document.body.classList.remove('nn-inner-card-view');
+      if (appContainer) appContainer.classList.remove('nn-inner-card-view');
+    } else {
+      document.body.classList.add('nn-inner-card-view');
+      if (appContainer) appContainer.classList.add('nn-inner-card-view');
+    }
+
     // Instant top scroll without thread-blocking smooth scroll
     window.scrollTo(0, 0);
 
