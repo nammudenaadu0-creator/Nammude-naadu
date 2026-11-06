@@ -4055,23 +4055,30 @@ body {
   visibility: visible !important;
 }
 
-.modal-overlay .modal-sheet {
+.modal-overlay .modal-sheet,
+.chat-modal-sheet,
+.vattamesha-modal-sheet,
+.profile-preview-sheet {
   width: 100% !important;
   max-width: 460px !important;
   max-height: calc(100vh - 40px) !important;
   max-height: calc(100dvh - 40px) !important;
   border-radius: 40px !important; /* ALL 4 CORNERS CURVED */
   border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
-  padding: 24px 20px 36px !important;
   margin: auto !important;
-  overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch !important;
+  overflow: hidden !important;
   box-sizing: border-box !important;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45) !important;
   background: #FFFFFF !important;
   display: flex !important;
   flex-direction: column !important;
   animation: modalCardScale 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.modal-overlay .modal-sheet > form,
+.modal-overlay .modal-sheet > div:last-child {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
 }
 
 @keyframes modalCardScale {
