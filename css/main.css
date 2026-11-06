@@ -1580,15 +1580,14 @@
         .modal-sheet {
             background: #ffffff !important;
             width: 100%;
-            max-width: 440px;
-            border-top-left-radius: 28px;
-            border-top-right-radius: 28px;
-            max-height: 88vh;
+            max-width: 460px;
+            border-radius: 40px !important;
+            max-height: calc(100vh - 40px);
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
-            padding: 20px 18px 84px !important;
+            padding: 24px 20px 84px !important;
             animation: slideUp 0.25s ease-out;
-            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
             position: relative;
             z-index: 12001 !important;
         }
@@ -4423,14 +4422,12 @@
             white-space: nowrap;
         }
 
-        /* Cards, Buttons, and Modal Sheets (Rounded Theme) */
+        /* Cards, Buttons, and Modal Sheets (Floating 4-Corner Curved Theme) */
         .modal-sheet {
             background: #ffffff !important;
-            border-top-left-radius: 24px !important;
-            border-top-right-radius: 24px !important;
-            max-height: 90vh !important;
-            padding: 0 !important;
-            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.25) !important;
+            border-radius: 40px !important;
+            max-height: calc(100vh - 40px) !important;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45) !important;
             position: relative !important;
             z-index: 12001 !important;
         }
