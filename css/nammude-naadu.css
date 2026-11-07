@@ -4350,9 +4350,11 @@ body.nn-inner-card-view,
 #screen-chat > div:first-child,
 #screen-add > div:first-child,
 .community-header {
-  background: linear-gradient(135deg, #0284C7 0%, #0369A1 50%, #0878D1 100%) !important;
+  background: linear-gradient(135deg, #0284C7 0%, #0369A1 50%, #075985 100%) !important;
   border-bottom: none !important;
-  box-shadow: 0 4px 16px rgba(8, 120, 209, 0.22) !important;
+  border-bottom-left-radius: 28px !important;
+  border-bottom-right-radius: 28px !important;
+  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.22) !important;
   color: #FFFFFF !important;
 }
 
@@ -4413,28 +4415,31 @@ body.nn-inner-card-view,
 
 /* 4. Filter Chips Across All Screens */
 .radius-chip,
+.superapp-radius-pill,
 .job-cat-chip,
 .rental-cat-chip,
 .chat-filter-chip {
   background: #FFFFFF !important;
-  border: 1.5px solid #E2E8F0 !important;
-  color: #334155 !important;
+  border: 1.5px solid #CBD5E1 !important;
+  color: #1E293B !important;
   font-weight: 800 !important;
   border-radius: 9999px !important;
-  padding: 6px 14px !important;
-  font-size: 11.5px !important;
+  padding: 7px 15px !important;
+  font-size: 12px !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .radius-chip.active,
+.superapp-radius-pill.active,
 .job-cat-chip.active,
 .rental-cat-chip.active,
 .chat-filter-chip.active {
-  background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%) !important;
-  border-color: #1D4ED8 !important;
+  background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important;
+  border-color: #0284C7 !important;
   color: #FFFFFF !important;
-  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.32) !important;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35) !important;
+  transform: scale(1.04) !important;
 }
 
 /* 5. Inputs & Search Fields Across All Screens: Seamless, clean without inner green box */
@@ -5537,287 +5542,333 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
 
 /* 1. Header */
 .superapp-header {
-  padding: 16px 16px 14px;
-  background: linear-gradient(135deg, #0A2240 0%, #0C2B59 55%, #163E75 100%);
-  border-bottom-left-radius: 24px;
-  border-bottom-right-radius: 24px;
-  box-shadow: 0 4px 18px rgba(10, 34, 64, 0.22);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-  z-index: 10;
+  padding: 16px 16px 16px !important;
+  background: linear-gradient(135deg, #0284C7 0%, #0369A1 50%, #075985 100%) !important;
+  border-bottom-left-radius: 28px !important;
+  border-bottom-right-radius: 28px !important;
+  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.24) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  position: relative !important;
+  z-index: 10 !important;
 }
 
 .superapp-header-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
 }
 
 .superapp-round-back-btn {
-  width: 38px;
-  height: 38px;
-  min-width: 38px;
-  min-height: 38px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.16);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  color: #FFFFFF;
-  font-size: 15px;
-  font-weight: 900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: transform 0.1s ease, background 0.15s ease;
-  touch-action: manipulation;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.22) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.4) !important;
+  color: #FFFFFF !important;
+  font-size: 16px !important;
+  font-weight: 900 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+  transition: transform 0.1s ease, background 0.15s ease !important;
+  touch-action: manipulation !important;
 }
 .superapp-round-back-btn:active {
-  transform: scale(0.92);
-  background: rgba(255, 255, 255, 0.25);
+  transform: scale(0.92) !important;
+  background: rgba(255, 255, 255, 0.35) !important;
 }
 
 .superapp-header-brand {
-  display: flex;
-  flex-direction: column;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 .superapp-brand-row {
-  display: flex;
-  align-items: center;
-  gap: 7px;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
 }
 
 .superapp-brand-logo {
-  font-size: 19px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 22px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .superapp-brand-title {
-  margin: 0;
-  font-size: 17px;
-  font-weight: 800;
-  color: #FFFFFF;
-  letter-spacing: -0.2px;
-  line-height: 1.2;
+  margin: 0 !important;
+  font-size: 19px !important;
+  font-weight: 900 !important;
+  color: #FFFFFF !important;
+  letter-spacing: -0.3px !important;
+  line-height: 1.2 !important;
+  font-family: 'Manjari', sans-serif !important;
 }
 
 .superapp-brand-sub {
-  font-size: 10.5px;
-  color: rgba(255, 255, 255, 0.78);
-  margin-top: 1px;
-  font-weight: 500;
-  letter-spacing: 0.1px;
+  font-size: 11.5px !important;
+  color: rgba(255, 255, 255, 0.92) !important;
+  margin-top: 2px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1px !important;
 }
 
 .superapp-loc-pill {
-  background: rgba(10, 34, 64, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 9999px;
-  padding: 6px 12px;
-  color: #FFFFFF;
-  font-size: 11.5px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  cursor: pointer;
-  transition: transform 0.1s ease;
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.42) !important;
+  border-radius: 9999px !important;
+  padding: 7px 14px !important;
+  color: #FFFFFF !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  cursor: pointer !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  transition: transform 0.1s ease, background 0.15s ease !important;
 }
 .superapp-loc-pill:active {
-  transform: scale(0.95);
+  transform: scale(0.95) !important;
+  background: rgba(255, 255, 255, 0.32) !important;
 }
 .superapp-loc-arrow {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.7);
-  margin-left: 2px;
+  font-size: 11px !important;
+  color: rgba(255, 255, 255, 0.85) !important;
+  margin-left: 2px !important;
 }
 
 /* 2. Floating Search Bar */
 .superapp-search-wrap {
-  margin: 14px 16px 10px;
-  position: relative;
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
-  border-radius: 9999px;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
-  display: flex;
-  align-items: center;
-  padding: 2px 8px 2px 14px;
+  margin: 14px 16px 10px !important;
+  position: relative !important;
+  background: #FFFFFF !important;
+  border: 1.5px solid #BAE6FD !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 4px 18px rgba(2, 132, 199, 0.08) !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 4px 6px 4px 16px !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.superapp-search-wrap:focus-within {
+  border-color: #0284C7 !important;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.16), 0 4px 18px rgba(2, 132, 199, 0.12) !important;
 }
 
 .superapp-search-icon {
-  font-size: 15px;
-  color: #64748B;
-  margin-right: 8px;
-  flex-shrink: 0;
+  font-size: 16px !important;
+  color: #0284C7 !important;
+  margin-right: 8px !important;
+  flex-shrink: 0 !important;
+  font-weight: 800 !important;
 }
 
 .superapp-search-input {
-  flex: 1;
-  border: none;
-  background: transparent;
-  outline: none;
-  font-size: 12.5px;
-  color: #0F172A;
-  font-weight: 500;
-  padding: 9px 0;
-  font-family: inherit;
+  flex: 1 !important;
+  border: none !important;
+  background: transparent !important;
+  outline: none !important;
+  font-size: 13.5px !important;
+  color: #0F172A !important;
+  font-weight: 600 !important;
+  padding: 9px 0 !important;
+  font-family: inherit !important;
 }
 .superapp-search-input::placeholder {
-  color: #94A3B8;
-  font-weight: 400;
+  color: #94A3B8 !important;
+  font-weight: 500 !important;
 }
 
-.superapp-search-mic {
-  background: transparent;
-  border: none;
-  font-size: 16px;
-  color: #0C2B59;
-  cursor: pointer;
-  padding: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.superapp-mic-btn {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important;
+  border: none !important;
+  color: #FFFFFF !important;
+  font-size: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 3px 10px rgba(2, 132, 199, 0.35) !important;
+  cursor: pointer !important;
+  transition: transform 0.15s ease, background 0.15s ease !important;
+  padding: 0 !important;
+  flex-shrink: 0 !important;
+}
+.superapp-mic-btn:active {
+  transform: scale(0.9) !important;
 }
 
-/* 3. Radius Distance Pills */
+/* 3. Radius Distance Pills (High Contrast & Luxury Elevation) */
 .superapp-radius-bar {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 4px 16px 10px;
-  overflow-x: auto;
-  scrollbar-width: none;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 4px 16px 12px !important;
+  overflow-x: auto !important;
+  scrollbar-width: none !important;
 }
 .superapp-radius-bar::-webkit-scrollbar {
-  display: none;
+  display: none !important;
 }
 
 .superapp-radius-pill {
-  flex-shrink: 0;
-  padding: 6px 13px;
-  border-radius: 9999px;
-  font-size: 11.5px;
-  font-weight: 700;
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
-  color: #475569;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+  flex-shrink: 0 !important;
+  padding: 7px 15px !important;
+  border-radius: 9999px !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  background: #FFFFFF !important;
+  border: 1.5px solid #CBD5E1 !important;
+  color: #1E293B !important; /* CRITICAL FIX: Crisp, dark, bold numbers */
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04) !important;
+}
+.superapp-radius-pill:hover {
+  border-color: #94A3B8 !important;
+  color: #0F172A !important;
 }
 .superapp-radius-pill.active {
-  background: #0C2B59 !important;
+  background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important;
   color: #FFFFFF !important;
-  border-color: #0C2B59 !important;
-  box-shadow: 0 3px 8px rgba(12, 43, 89, 0.28);
+  border-color: #0284C7 !important;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35) !important;
+  transform: scale(1.04) !important;
 }
 
-/* 4. Hero Action Banner Card (Unified Home & Service Blue Theme) */
+/* 4. Hero Action Banner Card (Kerala 3D Glassmorphic Card) */
 .superapp-hero-card {
-  margin: 0 16px 12px;
-  border-radius: 20px;
-  padding: 16px 16px 14px;
-  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%) !important;
-  border: 1.5px solid #BFDBFE !important;
-  box-shadow: 0 3px 12px rgba(8, 120, 209, 0.08);
-  position: relative;
-  overflow: hidden;
+  margin: 0 16px 14px !important;
+  border-radius: 22px !important;
+  padding: 18px 18px 16px !important;
+  background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 50%, #BAE6FD 100%) !important;
+  border: 1.5px solid #7DD3FC !important;
+  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.12) !important;
+  position: relative !important;
+  overflow: hidden !important;
 }
 
 .superapp-hero-card.blood-hero,
-.superapp-hero-card.hero-blood,
+.superapp-hero-card.hero-blood {
+  background: linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 100%) !important;
+  border-color: #FECDD3 !important;
+}
+
 .superapp-hero-card.jobs-hero,
-.superapp-hero-card.hero-jobs,
-.superapp-hero-card.rentals-hero,
-.superapp-hero-card.hero-rentals,
-.superapp-hero-card.nearby-hero,
-.superapp-hero-card.hero-nearby,
-.superapp-hero-card.services-hero,
-.superapp-hero-card.hero-services {
-  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%) !important;
-  border-color: #BFDBFE !important;
+.superapp-hero-card.hero-jobs {
+  background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%) !important;
+  border-color: #C7D2FE !important;
 }
 
 .superapp-hero-top {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  margin-bottom: 14px !important;
 }
 
 .superapp-hero-icon-wrap,
-.superapp-hero-icon-wrap.blood-icon,
-.superapp-hero-icon-wrap.jobs-icon,
-.superapp-hero-icon-wrap.rentals-icon,
-.superapp-hero-icon-wrap.services-icon,
 .superapp-hero-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(8, 120, 209, 0.12);
+  width: 50px !important;
+  height: 50px !important;
+  min-width: 50px !important;
+  border-radius: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 26px !important;
+  flex-shrink: 0 !important;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15) !important;
   background: #FFFFFF !important;
-  border: 1.5px solid #BFDBFE !important;
-  color: #0878D1 !important;
+  border: 1.5px solid #BAE6FD !important;
+  color: #0284C7 !important;
 }
 
 .superapp-hero-title {
-  font-size: 16px;
-  font-weight: 800;
-  color: #0A2240;
-  line-height: 1.2;
+  font-size: 18px !important;
+  font-weight: 900 !important;
+  color: #0369A1 !important;
+  line-height: 1.25 !important;
+  font-family: 'Manjari', sans-serif !important;
 }
 
 .superapp-hero-sub {
-  font-size: 11.5px;
-  color: #0369A1;
-  margin-top: 2px;
-  font-weight: 600;
+  font-size: 12px !important;
+  color: #0284C7 !important;
+  margin-top: 3px !important;
+  font-weight: 700 !important;
 }
 
 .superapp-hero-actions {
-  display: flex;
-  gap: 9px;
+  display: flex !important;
+  gap: 10px !important;
 }
 
 .superapp-btn-solid-blue,
 .superapp-hero-btn.solid {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 10px 14px;
-  background: #0C2B59 !important;
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  padding: 12px 16px !important;
+  background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important;
   color: #FFFFFF !important;
   border: none !important;
-  border-radius: 12px;
-  font-size: 12.5px;
-  font-weight: 800;
-  cursor: pointer;
-  box-shadow: 0 3px 8px rgba(12, 43, 89, 0.25);
-  transition: transform 0.1s ease, background 0.15s ease;
+  border-radius: 14px !important;
+  font-size: 13.5px !important;
+  font-weight: 900 !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3) !important;
+  transition: transform 0.1s ease, box-shadow 0.15s ease !important;
 }
 .superapp-btn-solid-blue:active,
 .superapp-hero-btn.solid:active {
-  transform: scale(0.97);
-  background: #081C38 !important;
+  transform: scale(0.96) !important;
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.2) !important;
 }
 
 .superapp-btn-outline,
 .superapp-hero-btn.outline {
-  flex: 1;
-  display: flex;
-  align-items: center;
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  padding: 12px 16px !important;
+  background: #FFFFFF !important;
+  color: #0369A1 !important;
+  border: 1.5px solid #BAE6FD !important;
+  border-radius: 14px !important;
+  font-size: 13.5px !important;
+  font-weight: 900 !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+  transition: transform 0.1s ease, background 0.15s ease !important;
+}
+.superapp-btn-outline:active,
+.superapp-hero-btn.outline:active {
+  transform: scale(0.96) !important;
+  background: #F0F9FF !important;
+}
   justify-content: center;
   gap: 6px;
   padding: 10px 14px;
@@ -5839,34 +5890,35 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
 
 /* 5. Filter Chips Bar */
 .superapp-chips-bar {
-  display: flex;
-  gap: 7px;
-  padding: 2px 16px 12px;
-  overflow-x: auto;
-  scrollbar-width: none;
+  display: flex !important;
+  gap: 8px !important;
+  padding: 4px 16px 14px !important;
+  overflow-x: auto !important;
+  scrollbar-width: none !important;
 }
 .superapp-chips-bar::-webkit-scrollbar {
-  display: none;
+  display: none !important;
 }
 
 .superapp-chip {
-  flex-shrink: 0;
-  padding: 6px 14px;
-  border-radius: 9999px;
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
-  color: #334155;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+  flex-shrink: 0 !important;
+  padding: 7px 16px !important;
+  border-radius: 9999px !important;
+  background: #FFFFFF !important;
+  border: 1.5px solid #CBD5E1 !important;
+  color: #334155 !important;
+  font-size: 12.5px !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04) !important;
 }
 .superapp-chip.active {
-  background: #0C2B59 !important;
+  background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important;
   color: #FFFFFF !important;
-  border-color: #0C2B59 !important;
-  box-shadow: 0 2px 6px rgba(12, 43, 89, 0.25);
+  border-color: #0284C7 !important;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3) !important;
+  transform: scale(1.03) !important;
 }
 
 /* 6. Counters & Callout Banners */
