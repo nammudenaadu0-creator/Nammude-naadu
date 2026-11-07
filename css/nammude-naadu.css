@@ -4066,40 +4066,131 @@ body {
   max-width: 460px !important;
   max-height: calc(100vh - 40px) !important;
   max-height: calc(100dvh - 40px) !important;
-  border-radius: 40px !important; /* ALL 4 CORNERS CURVED */
+  border-radius: 36px !important; /* ALL 4 CORNERS CURVED */
   border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
   margin: auto !important;
   overflow: hidden !important;
   box-sizing: border-box !important;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45) !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45) !important;
   background: #FFFFFF !important;
   display: flex !important;
   flex-direction: column !important;
+  padding: 0 !important;
   animation: modalCardScale 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
-/* Universal Floating 4-Corner Curved Inner Subpage Screens */
+/* ==============================================================
+   UNIFIED FORM HEADER CAPSULE DESIGN SYSTEM (ALL FORMS & MODALS)
+   Curved Shape Header Capsule: Eliminates harsh cut-offs, unified across all forms
+   ============================================================== */
+.nn-form-header-capsule {
+  margin: 12px 12px 10px 12px !important;
+  border-radius: 24px !important;
+  padding: 13px 15px !important;
+  color: #FFFFFF !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.16) !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.nn-form-header-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+  flex: 1 !important;
+}
+
+.nn-form-header-icon {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.22) !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 20px !important;
+  line-height: 1 !important;
+  flex-shrink: 0 !important;
+}
+
+.nn-form-header-titles {
+  display: flex !important;
+  flex-direction: column !important;
+  min-width: 0 !important;
+}
+
+.nn-form-header-title {
+  margin: 0 !important;
+  font-size: 15.5px !important;
+  font-weight: 800 !important;
+  color: #FFFFFF !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  font-family: 'Manjari', sans-serif !important;
+}
+
+.nn-form-header-sub {
+  font-size: 11px !important;
+  color: rgba(255, 255, 255, 0.88) !important;
+  font-weight: 600 !important;
+  margin-top: 2px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.nn-form-close-btn {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.22) !important;
+  border: 1px solid rgba(255, 255, 255, 0.38) !important;
+  color: #FFFFFF !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+  transition: transform 0.15s ease, background 0.15s ease !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  flex-shrink: 0 !important;
+}
+
+.nn-form-close-btn:active {
+  transform: scale(0.92) !important;
+  background: rgba(255, 255, 255, 0.35) !important;
+}
+
+.nn-form-body {
+  padding: 4px 16px 20px 16px !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  flex: 1 1 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-sizing: border-box !important;
+}
+
+/* Floating Modal Backdrop and Animation */
 body.nn-inner-card-view,
 .app-container.nn-inner-card-view {
   background: rgba(10, 18, 30, 0.88) !important;
-}
-
-.screen:not(#screen-home):not(#screen-splash).active {
-  display: flex !important;
-  flex-direction: column !important;
-  width: calc(100% - 24px) !important;
-  max-width: 456px !important;
-  margin: 14px auto calc(80px + env(safe-area-inset-bottom, 0px)) auto !important;
-  border-radius: 40px !important; /* ALL 4 CORNERS CURVED */
-  border: 1.5px solid rgba(255, 255, 255, 0.28) !important;
-  overflow: hidden !important;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45) !important;
-  background: #FFFFFF !important;
-  max-height: calc(100dvh - 100px - env(safe-area-inset-bottom, 0px)) !important;
-  overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch !important;
-  animation: modalCardScale 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  box-sizing: border-box !important;
 }
 
 .modal-overlay .modal-sheet > form,

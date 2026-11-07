@@ -27,7 +27,7 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="css/main.css?v=9.1">
     <link rel="stylesheet" href="css/jobs.css?v=9.1">
-    <link rel="stylesheet" href="css/nammude-naadu.css?v=9.2">
+    <link rel="stylesheet" href="css/nammude-naadu.css?v=9.3">
 </head>
 
 <body>
@@ -2391,19 +2391,18 @@
     <!-- MODAL: START NEW CHAT (DIRECT SEARCH / CITIZEN SELECTOR)       -->
     <!-- ============================================================== -->
     <div id="modal-new-chat" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-new-chat')">
-        <div class="modal-sheet" style="max-height:88vh;display:flex;flex-direction:column">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-                <div style="display:flex;align-items:center;gap:8px">
-                    <span style="font-size:22px">💬</span>
-                    <div>
-                        <h3 style="margin:0;color:#1D4ED8;font-size:16px;font-weight:800">ആരുമായും ചാറ്റ് ചെയ്യാം</h3>
-                        <div style="font-size:11px;color:#64748B">നാട്ടുകാരും സേവനദാതാക്കളുമായി നേരിട്ട് സംസാരിക്കാം
-                        </div>
+        <div class="modal-sheet">
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #1D4ED8 0%, #0C2B59 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">💬</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title">ആരുമായും ചാറ്റ് ചെയ്യാം</h3>
+                        <div class="nn-form-header-sub">നാട്ടുകാരും സേവനദാതാക്കളുമായി നേരിട്ട് സംസാരിക്കാം</div>
                     </div>
                 </div>
-                <button onclick="closeModal('modal-new-chat')" class="modal-close-btn"
-                    title="ക്ലോസ് ചെയ്യാം">✕</button>
+                <button onclick="closeModal('modal-new-chat')" class="nn-form-close-btn" title="ക്ലോസ് ചെയ്യാം">✕</button>
             </div>
+            <div class="nn-form-body">
 
             <!-- Instant Search by Name or Phone -->
             <form onsubmit="startDirectChatFromForm(event)"
@@ -2437,6 +2436,7 @@
             <!-- Community Contacts List -->
             <div id="newChatContactsList"
                 style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;max-height:360px"></div>
+            </div>
         </div>
     </div>
 
@@ -2541,16 +2541,15 @@
     <!-- ============================================================== -->
     <div id="modal-location" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-location')" style="z-index:10006">
         <div class="swiggy-loc-modal">
-            <!-- Sheet Handle -->
-            <div class="swiggy-loc-handle"></div>
-
-            <!-- Header -->
-            <div class="swiggy-loc-header">
-                <div style="display:flex;align-items:center;gap:8px">
-                    <span style="font-size:18px">📍</span>
-                    <h3 class="swiggy-loc-title" id="modalLocationTitle">സ്ഥലം തിരഞ്ഞെടുക്കാം</h3>
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #059669 0%, #065F46 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">📍</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title" id="modalLocationTitle">സ്ഥലം തിരഞ്ഞെടുക്കാം</h3>
+                        <div class="nn-form-header-sub">തത്സമയ GPS അല്ലെങ്കിൽ വാർഡ് / പഞ്ചായത്ത് തിരഞ്ഞെടുക്കാം</div>
+                    </div>
                 </div>
-                <button type="button" onclick="closeModal('modal-location')" class="modal-close-btn" style="background:#F1F5F9;border:none;width:30px;height:30px;border-radius:50%;font-size:13px;color:#64748B;cursor:pointer;display:flex;align-items:center;justify-content:center" title="ക്ലോസ് ചെയ്യാം">✕</button>
+                <button type="button" onclick="closeModal('modal-location')" class="nn-form-close-btn" title="ക്ലോസ് ചെയ്യാം">✕</button>
             </div>
 
             <!-- Search Box -->
@@ -2586,18 +2585,18 @@
     <!-- MODAL: REGISTER NEW LOCAL BUSINESS / SHOP (കട ചേർക്കാം)        -->
     <!-- ============================================================== -->
     <div id="modal-add-business" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-add-business')">
-        <div class="modal-sheet" style="max-height:90vh;overflow-y:auto">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-                <div style="display:flex;align-items:center;gap:8px">
-                    <span style="font-size:22px">🏪</span>
-                    <div>
-                        <h3 style="margin:0;font-size:16.5px;font-weight:900;color:#0C2B59">കട / സ്ഥാപനം ചേർക്കാം</h3>
-                        <div style="font-size:11px;color:#1D4ED8">നാട്ടിലെ എല്ലാവരിലേക്കും നിങ്ങളുടെ കട എത്തിക്കൂ</div>
+        <div class="modal-sheet">
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">🏪</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title">കട / സ്ഥാപനം ചേർക്കാം</h3>
+                        <div class="nn-form-header-sub">നാട്ടിലെ എല്ലാവരിലേക്കും നിങ്ങളുടെ കട എത്തിക്കൂ</div>
                     </div>
                 </div>
-                <button onclick="closeModal('modal-add-business')" class="modal-close-btn"
-                    title="ക്ലോസ് ചെയ്യാം">✕</button>
+                <button onclick="closeModal('modal-add-business')" class="nn-form-close-btn" title="ക്ലോസ് ചെയ്യാം">✕</button>
             </div>
+            <div class="nn-form-body">
 
             <form onsubmit="submitBusinessRegistration(event)" style="display:flex;flex-direction:column;gap:11px">
                 <!-- SHOP NAME -->
@@ -2679,6 +2678,7 @@
                     🏪 കട വിജയകരമായി ചേർക്കാം
                 </button>
             </form>
+            </div>
         </div>
     </div>
 
@@ -2687,12 +2687,17 @@
     <!-- ============================================================== -->
     <div id="modal-add-service" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-add-service')">
         <div class="modal-sheet">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-                <h3 style="margin:0;font-size:16px;font-weight:800;color:#0F172A" id="modalServiceTitle">🛠️ സേവനം
-                    രജിസ്റ്റർ ചെയ്യാം</h3>
-                <button onclick="closeModal('modal-add-service')" class="modal-close-btn"
-                    title="ക്ലോസ് ചെയ്യാം">✕</button>
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #059669 0%, #047857 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">🛠️</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title" id="modalServiceTitle">സേവനം രജിസ്റ്റർ ചെയ്യാം</h3>
+                        <div class="nn-form-header-sub">പ്ലംബർ, ഇലക്ട്രീഷ്യൻ, ഡ്രൈവർ, വർക്ക്‌ഷോപ്പ്...</div>
+                    </div>
+                </div>
+                <button onclick="closeModal('modal-add-service')" class="nn-form-close-btn" title="ക്ലോസ് ചെയ്യാം">✕</button>
             </div>
+            <div class="nn-form-body">
 
             <!-- REGISTRATION MODE SELECTOR: GENERAL SERVICE vs VEHICLE / TRANSPORT vs HOSPITAL -->
             <div style="display:flex;gap:5px;background:#F1F5F9;padding:4px;border-radius:12px;margin-bottom:12px">
@@ -2978,6 +2983,7 @@
                     style="background:linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);color:#fff;border:none;padding:14px;border-radius:14px;font-weight:800;font-size:15px;cursor:pointer;margin-top:10px;margin-bottom:24px;box-shadow:0 4px 14px rgba(29,78,216,0.3);width:100%;touch-action:manipulation">🚀
                     സേവനം രജിസ്റ്റർ ചെയ്യാം</button>
             </form>
+            </div>
         </div>
     </div>
 
@@ -2996,11 +3002,17 @@
     <!-- ============================================================== -->
     <div id="modal-apply-job" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-apply-job')">
         <div class="modal-sheet">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-                <h3 style="margin:0;font-size:17px;font-weight:800">📝 തൊഴിലിനായി അപേക്ഷിക്കാം</h3>
-                <button onclick="closeModal('modal-apply-job')" class="modal-close-btn"
-                    title="ക്ലോസ് ചെയ്യാം">✕</button>
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">📝</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title">തൊഴിലിനായി അപേക്ഷിക്കാം</h3>
+                        <div class="nn-form-header-sub">നിങ്ങളുടെ വിവരങ്ങൾ തൊഴിൽദാതാവിന് അയക്കാം</div>
+                    </div>
+                </div>
+                <button onclick="closeModal('modal-apply-job')" class="nn-form-close-btn" title="ക്ലോസ് ചെയ്യാം">✕</button>
             </div>
+            <div class="nn-form-body">
             <div
                 style="background:#EFF6FF;padding:10px 12px;border-radius:10px;border:1px solid #BFDBFE;margin-bottom:12px">
                 <div id="applyJobModalTitle" style="font-weight:800;font-size:14px;color:#1E40AF">Job Title</div>
@@ -3026,6 +3038,7 @@
                     style="background:#0878D1;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer">അപേക്ഷ
                     സമർപ്പിക്കുക</button>
             </form>
+            </div>
         </div>
     </div>
 
@@ -3034,11 +3047,17 @@
     <!-- ============================================================== -->
     <div id="modal-post-job" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-post-job')">
         <div class="modal-sheet">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-                <h3 style="margin:0;font-size:17px;font-weight:800">💼 തൊഴിൽ അവസരം നൽകാം</h3>
-                <button onclick="closeModal('modal-post-job')" class="modal-close-btn"
-                    title="ക്ലോസ് ചെയ്യാം">✕</button>
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #4338CA 0%, #3730A3 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">💼</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title">തൊഴിൽ അവസരം നൽകാം (Post Job)</h3>
+                        <div class="nn-form-header-sub">നാട്ടിലെ യോഗ്യരായ ഉദ്യോഗാർത്ഥികളെ കണ്ടെത്താം</div>
+                    </div>
+                </div>
+                <button onclick="closeModal('modal-post-job')" class="nn-form-close-btn" title="ക്ലോസ് ചെയ്യാം">✕</button>
             </div>
+            <div class="nn-form-body">
             <form onsubmit="submitJobPosting(event)" style="display:flex;flex-direction:column;gap:11px">
                 <div>
                     <label style="font-size:12px;font-weight:700;color:#374151">ജോലി തലക്കെട്ട് (Job Title) *</label>
@@ -3099,27 +3118,27 @@
                     🚀 തൊഴിൽ അവസരം പോസ്റ്റ് ചെയ്യുക
                 </button>
             </form>
+            </div>
         </div>
     </div>
 
-    <!-- ============================================================== -->
-    <!-- MODAL: EMERGENCY BLOOD REQUEST BROADCAST                       -->
-    <!-- ============================================================== -->
     <!-- ============================================================== -->
     <!-- MODAL: STATUTORY & LEGAL BLOOD REQUISITION FORM                 -->
     <!-- ============================================================== -->
     <div id="modal-blood-request" class="modal-overlay"
         onclick="if(event.target===this)closeModal('modal-blood-request')">
-        <div class="modal-sheet" style="max-height:90vh;overflow-y:auto">
-            <div
-                style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;border-bottom:1px solid #FECACA;padding-bottom:10px">
-                <h3
-                    style="margin:0;color:#DC2626;font-size:16px;font-weight:800;display:flex;align-items:center;gap:6px">
-                    <span>🩸</span> <span>രക്ത അപേക്ഷ</span>
-                </h3>
-                <button onclick="closeModal('modal-blood-request')" class="modal-close-btn"
-                    title="ക്ലോസ് ചെയ്യാം">✕</button>
+        <div class="modal-sheet">
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #DC2626 0%, #B91C1C 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">🩸</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title">അടിയന്തര രക്ത അപേക്ഷ</h3>
+                        <div class="nn-form-header-sub">രോഗികൾക്കായി സമീപത്തെ രക്തദാതാക്കളെ കണ്ടെത്താം</div>
+                    </div>
+                </div>
+                <button onclick="closeModal('modal-blood-request')" class="nn-form-close-btn" title="ക്ലോസ് ചെയ്യാം">✕</button>
             </div>
+            <div class="nn-form-body">
 
             <form onsubmit="submitBloodRequest(event)" style="display:flex;flex-direction:column;gap:11px">
                 <div>
@@ -3211,6 +3230,7 @@
                     📢 നിയമാനുസൃത അപേക്ഷ സമർപ്പിക്കാം
                 </button>
             </form>
+            </div>
         </div>
     </div>
 
@@ -3218,26 +3238,24 @@
     <!-- MODAL: EMERGENCY & ESSENTIAL DIRECTORY (DYNAMIC & SEARCHABLE)  -->
     <!-- ============================================================== -->
     <div id="modal-emergency" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-emergency')">
-        <div class="modal-sheet" style="max-height:90vh;display:flex;flex-direction:column;padding:0;overflow:hidden">
-            <!-- HEADER -->
-            <div
-                style="background:linear-gradient(135deg, #DC2626 0%, #991B1B 100%);padding:14px 16px;color:#fff;display:flex;align-items:center;justify-content:space-between">
-                <div style="display:flex;align-items:center;gap:10px">
-                    <span style="font-size:24px">🚨</span>
-                    <div>
-                        <h3 style="margin:0;font-size:16px;font-weight:800;color:#fff">അടിയന്തര & അവശ്യ സഹായം</h3>
-                        <div style="font-size:11px;color:rgba(255,255,255,0.85)">Emergency & Essential Helplines</div>
+        <div class="modal-sheet">
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #DC2626 0%, #991B1B 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">🚨</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title">അടിയന്തര & അവശ്യ സഹായം</h3>
+                        <div class="nn-form-header-sub">Emergency & Essential Helplines</div>
                     </div>
                 </div>
                 <div style="display:flex;align-items:center;gap:6px">
                     <button id="emgAddNumberAdminBtn" onclick="openAdminPortal('numbers')"
-                        style="display:none;background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:14px;padding:4px 10px;font-size:11px;font-weight:800;cursor:pointer">
+                        style="display:none;background:rgba(255,255,255,0.22);color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:14px;padding:4px 10px;font-size:11px;font-weight:800;cursor:pointer">
                         ➕ നമ്പർ ചേർക്കാം
                     </button>
-                    <button onclick="closeModal('modal-emergency')" class="modal-close-btn modal-close-btn-light"
-                        title="ക്ലോസ് ചെയ്യാം">✕</button>
+                    <button onclick="closeModal('modal-emergency')" class="nn-form-close-btn" title="ക്ലോസ് ചെയ്യാം">✕</button>
                 </div>
             </div>
+            <div class="nn-form-body">
 
             <!-- SEARCH & FILTER -->
             <div style="padding:10px 14px;background:#F8FAFC;border-bottom:1px solid #E2E8F0">
@@ -3294,6 +3312,7 @@
                 style="flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px">
                 <!-- Injected via renderEmergencyModalList() -->
             </div>
+            </div>
         </div>
     </div>
 
@@ -3301,20 +3320,18 @@
     <!-- MODAL: ADMIN CONSOLE — ADD SERVICES & NUMBERS                  -->
     <!-- ============================================================== -->
     <div id="modal-admin-hub" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-admin-hub')">
-        <div class="modal-sheet" style="max-height:90vh;display:flex;flex-direction:column;padding:0;overflow:hidden">
-            <!-- HEADER -->
-            <div
-                style="background:linear-gradient(135deg, #0C2B59 0%, #1D4ED8 100%);padding:14px 16px;color:#fff;display:flex;align-items:center;justify-content:space-between">
-                <div style="display:flex;align-items:center;gap:10px">
-                    <span style="font-size:24px">⚙️</span>
-                    <div>
-                        <h3 style="margin:0;font-size:16px;font-weight:800;color:#fff">അഡ്മിൻ കൺസോൾ (Admin Hub)</h3>
-                        <div style="font-size:11px;color:#BFDBFE">പുതിയ സർവീസുകളും സഹായ നമ്പറുകളും ചേർക്കാം</div>
+        <div class="modal-sheet">
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #1E1B4B 0%, #0F172A 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">🛡️</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title">അഡ്മിൻ കൺസോൾ (Admin Hub)</h3>
+                        <div class="nn-form-header-sub">പുതിയ സർവീസുകളും സഹായ നമ്പറുകളും ചേർക്കാം</div>
                     </div>
                 </div>
-                <button onclick="closeModal('modal-admin-hub')" class="modal-close-btn modal-close-btn-light"
-                    title="ക്ലോസ് ചെയ്യാം">✕</button>
+                <button onclick="closeModal('modal-admin-hub')" class="nn-form-close-btn" title="ക്ലോസ് ചെയ്യാം">✕</button>
             </div>
+            <div class="nn-form-body">
 
             <!-- TAB SWITCHER -->
             <div style="display:flex;border-bottom:1px solid #E2E8F0;background:#F8FAFC">
@@ -3737,6 +3754,7 @@
                     </div>
                 </div>
             </div>
+            </div>
         </div>
     </div>
 
@@ -3744,18 +3762,18 @@
     <!-- MODAL: AMBULANCE DIRECTORY & EMERGENCY CALL HUB                -->
     <!-- ============================================================== -->
     <div id="modal-ambulance" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-ambulance')">
-        <div class="modal-sheet" style="max-height:90vh;display:flex;flex-direction:column;padding:0;overflow:hidden">
-            <!-- HEADER -->
-            <div
-                style="background:linear-gradient(135deg, #BE123C 0%, #9F1239 100%);padding:14px 16px;color:#fff;display:flex;align-items:center;justify-content:space-between">
-                <div style="display:flex;align-items:center;gap:10px">
-                    <span style="font-size:24px">🚨</span>
-                    <div>
-                        <h3 style="margin:0;font-size:16px;font-weight:800;color:#fff">അടിയന്തിര സഹായം (24x7 Emergency)</h3>
-                        <div style="font-size:11px;color:rgba(255,255,255,0.85)">പോലീസ്, ആംബുലൻസ്, ആശുപത്രികൾ ഉടൻ വിളിക്കാം</div>
+        <div class="modal-sheet">
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #E11D48 0%, #BE123C 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">🚑</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title">ആംബുലൻസ് സർവീസ് (24x7 Ambulance)</h3>
+                        <div class="nn-form-header-sub">സമീപത്തെ ആംബുലൻസ് ഡ്രൈവർമാരെ ഉടൻ വിളിക്കാം</div>
                     </div>
                 </div>
-                <button onclick="closeModal('modal-ambulance')" class="modal-close-btn modal-close-btn-light"
+                <button onclick="closeModal('modal-ambulance')" class="nn-form-close-btn" title="ക്ലോസ് ചെയ്യാം">✕</button>
+            </div>
+            <div class="nn-form-body">
                     title="ക്ലോസ് ചെയ്യാം">✕</button>
             </div>
 
@@ -4007,6 +4025,7 @@
                     <div id="ambHospitalsListContainer" style="display:flex;flex-direction:column;gap:8px"></div>
                 </div>
             </div>
+            </div>
         </div>
     </div>
 
@@ -4015,23 +4034,18 @@
     <!-- ============================================================== -->
     <div id="modal-ambulance-driver" class="modal-overlay"
         onclick="if(event.target===this)closeModal('modal-ambulance-driver')">
-        <div class="modal-sheet" style="max-height:90vh;display:flex;flex-direction:column;padding:0;overflow:hidden">
-            <!-- HEADER -->
-            <div
-                style="background:linear-gradient(135deg, #0C2B59 0%, #1D4ED8 100%);padding:14px 16px;color:#fff;display:flex;align-items:center;justify-content:space-between">
-                <div style="display:flex;align-items:center;gap:10px">
-                    <span style="font-size:24px">🚑</span>
-                    <div>
-                        <h3 style="margin:0;font-size:16px;font-weight:800;color:#fff">ആംബുലൻസ് ഡ്രൈവർ രജിസ്ട്രേഷൻ</h3>
-                        <div style="font-size:11px;color:rgba(255,255,255,0.85)">നാട്ടുകാരുടെ അടിയന്തര ആവശ്യങ്ങൾക്ക്
-                            നിങ്ങളുടെ നമ്പർ നൽകാം</div>
+        <div class="modal-sheet">
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #0C2B59 0%, #1D4ED8 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">🚑</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title">ആംബുലൻസ് ഡ്രൈവർ രജിസ്ട്രേഷൻ</h3>
+                        <div class="nn-form-header-sub">നാട്ടുകാരുടെ അടിയന്തര ആവശ്യങ്ങൾക്ക് വാഹനം രജിസ്റ്റർ ചെയ്യാം</div>
                     </div>
                 </div>
-                <button onclick="closeModal('modal-ambulance-driver'); openAmbulanceModal();" class="modal-close-btn modal-close-btn-light"
-                    title="ക്ലോസ് ചെയ്യാം">✕</button>
+                <button onclick="closeModal('modal-ambulance-driver'); openAmbulanceModal();" class="nn-form-close-btn" title="ക്ലോസ് ചെയ്യാം">✕</button>
             </div>
-
-            <div style="padding:14px;overflow-y:auto;flex:1">
+            <div class="nn-form-body">
                 <form onsubmit="submitAmbulanceDriverRegistration(event)"
                     style="display:flex;flex-direction:column;gap:11px">
 
@@ -4116,6 +4130,7 @@
                     </button>
                 </form>
             </div>
+            </div>
         </div>
     </div>
 
@@ -4124,22 +4139,18 @@
     <!-- ============================================================== -->
     <div id="modal-register-hospital" class="modal-overlay"
         onclick="if(event.target===this)closeModal('modal-register-hospital')">
-        <div class="modal-sheet" style="max-height:92vh;display:flex;flex-direction:column;padding:0;overflow:hidden">
-            <!-- HEADER -->
-            <div
-                style="background:linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);padding:14px 16px;color:#fff;display:flex;align-items:center;justify-content:space-between">
-                <div style="display:flex;align-items:center;gap:10px">
-                    <span style="font-size:24px">🏥</span>
-                    <div>
-                        <h3 style="margin:0;font-size:16px;font-weight:800;color:#fff">ആശുപത്രി / ക്ലിനിക് രജിസ്ട്രേഷൻ</h3>
-                        <div style="font-size:11px;color:rgba(255,255,255,0.85)">നാട്ടുകാരുടെ അടിയന്തര ആവശ്യങ്ങൾക്ക് വിവരങ്ങൾ നൽകാം</div>
+        <div class="modal-sheet">
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">🏥</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title">ആശുപത്രി / ക്ലിനിക് രജിസ്ട്രേഷൻ</h3>
+                        <div class="nn-form-header-sub">നാട്ടുകാരുടെ അടിയന്തര ആവശ്യങ്ങൾക്ക് വിവരങ്ങൾ നൽകാം</div>
                     </div>
                 </div>
-                <button onclick="closeModal('modal-register-hospital'); openAmbulanceModal(); switchAmbHealthTab('hospital');" class="modal-close-btn modal-close-btn-light"
-                    title="ക്ലോസ് ചെയ്യാം">✕</button>
+                <button onclick="closeModal('modal-register-hospital'); openAmbulanceModal(); switchAmbHealthTab('hospital');" class="nn-form-close-btn" title="ക്ലോസ് ചെയ്യാം">✕</button>
             </div>
-
-            <div style="padding:14px;overflow-y:auto;flex:1">
+            <div class="nn-form-body">
                 <form onsubmit="submitHospitalRegistration(event)"
                     style="display:flex;flex-direction:column;gap:11px">
 
@@ -4235,6 +4246,7 @@
                     </button>
                 </form>
             </div>
+            </div>
         </div>
     </div>
 
@@ -4244,11 +4256,17 @@
     <div id="modal-register-donor" class="modal-overlay"
         onclick="if(event.target===this)closeModal('modal-register-donor')">
         <div class="modal-sheet">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-                <h3 style="margin:0;color:#DC2626;font-size:17px;font-weight:800">🩸 രക്തദാതാവായി രജിസ്റ്റർ ചെയ്യാം</h3>
-                <button onclick="closeModal('modal-register-donor')" class="modal-close-btn"
-                    title="ക്ലോസ് ചെയ്യാം">✕</button>
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #BE123C 0%, #9F1239 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">💉</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title">രക്തദാതാവായി രജിസ്റ്റർ ചെയ്യാം</h3>
+                        <div class="nn-form-header-sub">ജീവൻ രക്ഷിക്കാൻ സന്നദ്ധത അറിയിക്കാം</div>
+                    </div>
+                </div>
+                <button onclick="closeModal('modal-register-donor')" class="nn-form-close-btn" title="ക്ലോസ് ചെയ്യാം">✕</button>
             </div>
+            <div class="nn-form-body">
 
             <!-- STATUTORY LEGAL NOTICE (NATIONAL BLOOD POLICY & DRUGS AND COSMETICS ACT) -->
             <div
@@ -4318,6 +4336,7 @@
                     style="background:#DC2626;color:#fff;border:none;padding:14px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;margin-top:8px;margin-bottom:24px;width:100%;touch-action:manipulation">രജിസ്റ്റർ
                     ചെയ്യാം</button>
             </form>
+            </div>
         </div>
     </div>
 
@@ -4326,11 +4345,17 @@
     <!-- ============================================================== -->
     <div id="modal-add-rental" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-add-rental')">
         <div class="modal-sheet">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-                <h3 style="margin:0;color:#0C2B59;font-size:17px;font-weight:800">🏠 വാടക / വിൽപന ലിസ്റ്റ് ചെയ്യാം</h3>
-                <button onclick="closeModal('modal-add-rental')" class="modal-close-btn"
-                    title="ക്ലോസ് ചെയ്യാം">✕</button>
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #0D9488 0%, #0F766E 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">🏠</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title">വാടക / വിൽപന ലിസ്റ്റ് ചെയ്യാം</h3>
+                        <div class="nn-form-header-sub">വീട്, മുറി, സ്ഥലം, വാഹനം, ഉപകരണങ്ങൾ പോസ്റ്റ് ചെയ്യാം</div>
+                    </div>
+                </div>
+                <button onclick="closeModal('modal-add-rental')" class="nn-form-close-btn" title="ക്ലോസ് ചെയ്യാം">✕</button>
             </div>
+            <div class="nn-form-body">
             
             <!-- SEGMENTED TOGGLE: വാടകയ്ക്ക് vs വിൽപനയ്ക്ക് -->
             <div style="display:flex;gap:6px;background:#F1F5F9;padding:4px;border-radius:14px;margin-bottom:12px">
@@ -4416,6 +4441,7 @@
                 <button type="submit" id="rentSubmitBtn"
                     style="background:linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;margin-top:4px;box-shadow:0 3px 10px rgba(29,78,216,0.25)">🏠 വാടകയ്ക്ക് ലിസ്റ്റ് ചെയ്യാം</button>
             </form>
+            </div>
         </div>
     </div>
 
@@ -4424,12 +4450,18 @@
     <!-- ============================================================== -->
     <div id="modal-edit-post" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-edit-post')">
         <div class="modal-sheet">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-                <h3 style="margin:0;color:#0C2B59;font-size:17px;font-weight:800">✏️ പോസ്റ്റ് മാറ്റങ്ങൾ വരുത്താം</h3>
-                <button onclick="closeModal('modal-edit-post')" class="modal-close-btn"
-                    title="ക്ലോസ് ചെയ്യാം">✕</button>
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #0284C7 0%, #0369A1 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">✏️</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title">പോസ്റ്റ് മാറ്റങ്ങൾ വരുത്താം</h3>
+                        <div class="nn-form-header-sub">പോസ്റ്റിലെ വിവരങ്ങളും ചിത്രവും പുതുക്കാം</div>
+                    </div>
+                </div>
+                <button onclick="closeModal('modal-edit-post')" class="nn-form-close-btn" title="ക്ലോസ് ചെയ്യാം">✕</button>
             </div>
-            <form onsubmit="saveEditedPost(event)" style="display:flex;flex-direction:column;gap:12px">
+            <div class="nn-form-body">
+                <form onsubmit="saveEditedPost(event)" style="display:flex;flex-direction:column;gap:12px">
                 <input type="hidden" id="editPostId">
                 <div>
                     <label style="font-size:12px;font-weight:700">പോസ്റ്റ് വിവരണം (Content)</label>
@@ -4463,6 +4495,7 @@
                         ചെയ്യാം</button>
                 </div>
             </form>
+            </div>
         </div>
     </div>
 
@@ -4471,24 +4504,18 @@
     <!-- ============================================================== -->
     <div id="modal-citizen-login" class="modal-overlay"
         onclick="if(event.target===this && typeof isUserRegistered==='function' && isUserRegistered()) closeModal('modal-citizen-login')">
-        <div class="modal-sheet"
-            style="max-height:92vh;overflow-y:auto;padding:24px 20px 28px;border-radius:24px;box-shadow:0 12px 40px rgba(0,0,0,0.25);max-width:480px;margin:auto">
-            
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-                <div style="display:flex;align-items:center;gap:10px">
-                    <div
-                        style="width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);color:#1D4ED8;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 2px 8px rgba(29,78,216,0.2)">
-                        🔑</div>
-                    <div>
-                        <h3 id="citizenLoginHeaderTitle" style="margin:0;color:#0F172A;font-size:18px;font-weight:900">സിറ്റിസൺ ലോഗിൻ / രജിസ്റ്റർ</h3>
-                        <div style="font-size:11.5px;color:#1D4ED8;font-weight:700;margin-top:1px">
-                            🌴 നമ്മുടെ നാട് കമ്മ്യൂണിറ്റി പോർട്ടൽ
-                        </div>
+        <div class="modal-sheet">
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #1D4ED8 0%, #0C2B59 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">🔑</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title" id="citizenLoginHeaderTitle">സിറ്റിസൺ ലോഗിൻ / രജിസ്റ്റർ</h3>
+                        <div class="nn-form-header-sub">🌴 നമ്മുടെ നാട് കമ്മ്യൂണിറ്റി പോർട്ടൽ</div>
                     </div>
                 </div>
-                <button type="button" id="citizenLoginCloseBtn" onclick="if(typeof isUserRegistered==='function' && isUserRegistered()) closeModal('modal-citizen-login')" class="modal-close-btn"
-                    title="ക്ലോസ് ചെയ്യാം">✕</button>
+                <button type="button" id="citizenLoginCloseBtn" onclick="if(typeof isUserRegistered==='function' && isUserRegistered()) closeModal('modal-citizen-login')" class="nn-form-close-btn" title="ക്ലോസ് ചെയ്യാം">✕</button>
             </div>
+            <div class="nn-form-body">
 
             <p id="citizenLoginHeaderSubtitle" style="font-size:12.5px;color:#64748B;margin:0 0 16px;line-height:1.45">
                 നിങ്ങളുടെ 10-അക്ക മൊബൈൽ നമ്പറും OTP യും നൽകി സുരക്ഷിതമായി ലോഗിൻ ചെയ്യാം.
@@ -4888,6 +4915,7 @@
                     </div>
                 </div>
             </form>
+            </div>
         </div>
     </div>
     <!-- ============================================================== -->
@@ -4895,17 +4923,18 @@
     <!-- ============================================================== -->
     <div id="modal-quick-service-request" class="modal-overlay"
         onclick="if(event.target===this)closeModal('modal-quick-service-request')">
-        <div class="modal-sheet" style="max-height:90vh;overflow-y:auto">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-                <div>
-                    <span
-                        style="font-size:11px;background:#EFF6FF;color:#1D4ED8;padding:3px 8px;border-radius:12px;font-weight:800">⚡
-                        ഈസി വർക്ക്‌ഫ്ലോ</span>
-                    <h3 style="margin:4px 0 0;font-size:17px;font-weight:800;color:#0F172A">സേവനം ആവശ്യപ്പെടാം</h3>
+        <div class="modal-sheet">
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #0284C7 0%, #0369A1 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">⚡</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title">സേവനം ആവശ്യപ്പെടാം (Quick Request)</h3>
+                        <div class="nn-form-header-sub">നിങ്ങളുടെ ആവശ്യം സമീപത്തെ തൊഴിലാളികൾക്ക് അയക്കാം</div>
+                    </div>
                 </div>
-                <button onclick="closeModal('modal-quick-service-request')" class="modal-close-btn"
-                    title="ക്ലോസ് ചെയ്യാം">✕</button>
+                <button onclick="closeModal('modal-quick-service-request')" class="nn-form-close-btn" title="ക്ലോസ് ചെയ്യാം">✕</button>
             </div>
+            <div class="nn-form-body">
             <p style="font-size:12px;color:#64748B;margin:0 0 14px">നിങ്ങളുടെ ആവശ്യം അടുത്തുള്ള ലഭ്യമായ വെരിഫൈഡ്
                 വർക്കർമാർക്ക് ഉടൻ അയക്കുന്നു.</p>
 
@@ -5026,6 +5055,7 @@
                     🚀 അടുത്തുള്ള വർക്കർമാരെ അറിയിക്കാം
                 </button>
             </form>
+            </div>
         </div>
     </div>
 
@@ -5034,16 +5064,18 @@
     <!-- ============================================================== -->
     <div id="modal-nearby-help-request" class="modal-overlay"
         onclick="if(event.target===this)closeModal('modal-nearby-help-request')">
-        <div class="modal-sheet" style="max-height:90vh;overflow-y:auto">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-                <div style="display:flex;align-items:center;gap:8px">
-                    <span style="font-size:24px">🆘</span>
-                    <div>
-                        <div style="font-size:11px;background:#FEE2E2;color:#991B1B;padding:2px 8px;border-radius:10px;font-weight:800;display:inline-block">1 - 10 KM ലൈവ് ഹെൽപ്പ്</div>
-                        <h3 style="margin:2px 0 0;font-size:17px;font-weight:800;color:#0F172A">സമീപ സഹായം ചോദിക്കാം</h3>
+        <div class="modal-sheet">
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #D97706 0%, #B45309 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">🆘</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title">സമീപ സഹായം ചോദിക്കാം</h3>
+                        <div class="nn-form-header-sub">1 - 10 KM ചുറ്റളവിലുള്ള നാട്ടുകാരോട് സഹായം ചോദിക്കാം</div>
                     </div>
                 </div>
-                <button type="button" onclick="closeModal('modal-nearby-help-request')" class="modal-close-btn" title="ക്ലോസ്">✕</button>
+                <button type="button" onclick="closeModal('modal-nearby-help-request')" class="nn-form-close-btn" title="ക്ലോസ്">✕</button>
+            </div>
+            <div class="nn-form-body">
             </div>
             <p style="font-size:12px;color:#64748B;margin:0 0 14px">1 മുതൽ 10 കി.മീ ചുറ്റളവിലുള്ള സമീപവാസികളിലേക്കും വോളന്റിയർമാരിലേക്കും നിങ്ങളുടെ ആവശ്യം ഉടൻ എത്തും.</p>
 
@@ -5129,6 +5161,7 @@
                     <span>സഹായം ചോദിക്കാം (1-10km ചുറ്റളവിൽ)</span>
                 </button>
             </form>
+            </div>
         </div>
     </div>
 
@@ -5136,20 +5169,18 @@
     <!-- MODAL: VOLUNTEER HELPER SETTINGS (ഞാൻ സഹായിക്കാം - സന്നദ്ധ സേവകൻ) -->
     <!-- ============================================================== -->
     <div id="modal-volunteer-helper" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-volunteer-helper')">
-        <div class="modal-sheet" style="max-height:90vh;overflow-y:auto">
-            <!-- Header -->
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-                <div style="display:flex;align-items:center;gap:10px">
-                    <div style="width:44px;height:44px;border-radius:14px;background:#EFF6FF;border:1.5px solid #BFDBFE;display:flex;align-items:center;justify-content:center;font-size:24px">
-                        🤝
-                    </div>
-                    <div>
-                        <h3 style="margin:0;font-size:17.5px;font-weight:900;color:#0C2B59">ഞാൻ സഹായിക്കാം</h3>
-                        <span style="font-size:11.5px;color:#1D4ED8;font-weight:800">സന്നദ്ധ സേവകൻ (Community Volunteer)</span>
+        <div class="modal-sheet">
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #059669 0%, #047857 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">🤝</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title">ഞാൻ സഹായിക്കാം (Volunteer)</h3>
+                        <div class="nn-form-header-sub">സന്നദ്ധ സേവകൻ (Community Volunteer)</div>
                     </div>
                 </div>
-                <button type="button" onclick="closeModal('modal-volunteer-helper')" class="modal-close-btn" title="ക്ലോസ്">✕</button>
+                <button type="button" onclick="closeModal('modal-volunteer-helper')" class="nn-form-close-btn" title="ക്ലോസ്">✕</button>
             </div>
+            <div class="nn-form-body">
 
             <!-- Big Interactive Toggle Banner -->
             <div style="background:linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);border:1.5px solid #BFDBFE;border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 3px 10px rgba(29,78,216,0.1)">
@@ -5196,6 +5227,7 @@
                     <span>🤝</span>
                     <span>സഹായ ആവശ്യങ്ങൾ കാണാം</span>
                 </button>
+            </div>
             </div>
         </div>
     </div>
@@ -5310,6 +5342,7 @@
                     </button>
                 </div>
             </div>
+            </div>
         </div>
     </div>
 
@@ -5398,19 +5431,18 @@
     <!-- MODAL: APP SETTINGS & PRIVACY COMPLIANCE CONTROLLER            -->
     <!-- ============================================================== -->
     <div id="modal-settings" class="modal-overlay" style="display:none;align-items:center;justify-content:center;z-index:999999;background:rgba(10,34,64,0.78);backdrop-filter:blur(6px);padding:16px 14px;box-sizing:border-box" onclick="if(event.target===this)closeModal('modal-settings')">
-        <div style="background:#fff;width:100%;max-width:480px;border-radius:40px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.4);animation:modalSlideUp 0.3s cubic-bezier(0.16,1,0.3,1)">
-            <!-- Top Header -->
-            <div style="padding:18px 20px 14px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:2">
-                <div style="display:flex;align-items:center;gap:10px">
-                    <span style="font-size:22px">⚙️</span>
-                    <div>
-                        <h3 id="settingsModalTitle" style="margin:0;font-size:18px;font-weight:900;color:#0F172A">ക്രമീകരണങ്ങൾ</h3>
-                        <div class="settings-header-sub" id="settingsModalSub" style="font-size:11px;color:#64748B;font-weight:600">നമ്മുടെ നാട് ആപ്പ് മുൻഗണനകൾ & നിയന്ത്രണങ്ങൾ</div>
+        <div class="modal-sheet">
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #334155 0%, #1E293B 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">⚙️</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title" id="settingsModalTitle">ക്രമീകരണങ്ങൾ (Settings)</h3>
+                        <div class="nn-form-header-sub" id="settingsModalSub">നമ്മുടെ നാട് ആപ്പ് മുൻഗണനകൾ & നിയന്ത്രണങ്ങൾ</div>
                     </div>
                 </div>
-                <button type="button" onclick="closeModal('modal-settings')" class="modal-close-btn"
-                    title="ക്ലോസ് ചെയ്യാം">✕</button>
+                <button type="button" onclick="closeModal('modal-settings')" class="nn-form-close-btn" title="ക്ലോസ് ചെയ്യാം">✕</button>
             </div>
+            <div class="nn-form-body">
 
             <div style="padding:16px 20px 32px;display:flex;flex-direction:column;gap:14px">
                 <!-- Citizen Card Summary -->
@@ -5603,6 +5635,7 @@
                     </div>
                 </div>
             </div>
+            </div>
         </div>
     </div>
 
@@ -5610,21 +5643,26 @@
     <!-- MODAL: TERMS OF SERVICE & CITIZEN RULES                        -->
     <!-- ============================================================== -->
     <div id="modal-terms" class="modal-overlay" style="display:none;align-items:center;justify-content:center;z-index:9999999;background:rgba(10,34,64,0.78);padding:16px 14px;box-sizing:border-box" onclick="if(event.target===this)closeModal('modal-terms')">
-        <div style="background:#fff;width:100%;max-width:480px;border-radius:40px;max-height:85vh;overflow-y:auto;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,0.4)">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;border-bottom:1px solid #E2E8F0;padding-bottom:10px">
-                <div style="display:flex;align-items:center;gap:8px">
-                    <span style="font-size:22px">📜</span>
-                    <h3 style="margin:0;font-size:17px;font-weight:900;color:#0F172A" id="termsModalTitle">നിബന്ധനകളും പെരുമാറ്റച്ചട്ടവും</h3>
+        <div class="modal-sheet">
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #475569 0%, #334155 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">📜</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title" id="termsModalTitle">നിബന്ധനകളും പെരുമാറ്റച്ചട്ടവും</h3>
+                        <div class="nn-form-header-sub">നമ്മുടെ നാട് സുരക്ഷിത കമ്മ്യൂണിറ്റി മാർഗ്ഗരേഖകൾ</div>
+                    </div>
                 </div>
-                <button type="button" onclick="closeModal('modal-terms')" class="modal-close-btn">✕</button>
+                <button type="button" onclick="closeModal('modal-terms')" class="nn-form-close-btn">✕</button>
             </div>
-            <div style="font-size:13px;color:#334155;line-height:1.6;display:flex;flex-direction:column;gap:10px" id="termsModalBody">
+            <div class="nn-form-body">
+                <div style="font-size:13px;color:#334155;line-height:1.6;display:flex;flex-direction:column;gap:10px" id="termsModalBody">
                 <p><strong>1. പ്രാദേശിക ഐക്യം:</strong> നമ്മുടെ നാട് കേരളത്തിലെ തദ്ദേശവാസികൾക്കായി രൂപകൽപ്പന ചെയ്ത ഒരു സുതാര്യമായ പൊതു പ്ലാറ്റ്‌ഫോമാണ്.</p>
                 <p><strong>2. ബഹുമാനത്തോടെയുള്ള പെരുമാറ്റം:</strong> പൊതു കമ്മ്യൂണിറ്റി പോസ്റ്റുകളിലും ചാറ്റുകളിലും തെറ്റായ വാർത്തകൾ, വിദ്വേഷ പ്രചാരണങ്ങൾ, വ്യക്തിഹത്യ എന്നിവ കർശനമായി നിരോധിച്ചിരിക്കുന്നു.</p>
                 <p><strong>3. സത്യസന്ധമായ വിവരങ്ങൾ:</strong> രക്തദാനം, തൊഴിലുകൾ, വാടക, സർവീസ് എന്നിവയിൽ യഥാർത്ഥ വിവരങ്ങൾ മാത്രം നൽകുക.</p>
                 <p><strong>4. ദുരുപയോഗം:</strong> ആപ്പ് ദുരുപയോഗം ചെയ്യുന്ന അക്കൗണ്ടുകൾ അഡ്മിൻ പാനൽ വഴി മുന്നറിയിപ്പില്ലാതെ റദ്ദാക്കുന്നതായിരിക്കും.</p>
             </div>
             <button type="button" onclick="closeModal('modal-terms')" style="margin-top:16px;width:100%;padding:11px;background:#0C2B59;color:#fff;border:none;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer" id="termsModalCloseBtn">ശരി, മനസ്സിലായി</button>
+            </div>
         </div>
     </div>
 
@@ -5632,15 +5670,19 @@
     <!-- MODAL: DATA SECURITY & ENCRYPTION GUARANTEE                    -->
     <!-- ============================================================== -->
     <div id="modal-data-security" class="modal-overlay" style="display:none;align-items:center;justify-content:center;z-index:9999999;background:rgba(10,34,64,0.78);padding:16px 14px;box-sizing:border-box" onclick="if(event.target===this)closeModal('modal-data-security')">
-        <div style="background:#fff;width:100%;max-width:480px;border-radius:40px;max-height:85vh;overflow-y:auto;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,0.4)">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;border-bottom:1px solid #E2E8F0;padding-bottom:10px">
-                <div style="display:flex;align-items:center;gap:8px">
-                    <span style="font-size:22px">🔒</span>
-                    <h3 style="margin:0;font-size:17px;font-weight:900;color:#0F172A" id="securityModalTitle">ഡാറ്റാ സംരക്ഷണവും സുരക്ഷയും</h3>
+        <div class="modal-sheet">
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #0F766E 0%, #115E59 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">🔒</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title" id="securityModalTitle">ഡാറ്റാ സംരക്ഷണവും സുരക്ഷയും</h3>
+                        <div class="nn-form-header-sub">256-bit എൻക്രിപ്ഷനും ഉപയോക്തൃ സ്വകാര്യതയും</div>
+                    </div>
                 </div>
-                <button type="button" onclick="closeModal('modal-data-security')" class="modal-close-btn">✕</button>
+                <button type="button" onclick="closeModal('modal-data-security')" class="nn-form-close-btn">✕</button>
             </div>
-            <div style="font-size:13px;color:#334155;line-height:1.6;display:flex;flex-direction:column;gap:10px" id="securityModalBody">
+            <div class="nn-form-body">
+                <div style="font-size:13px;color:#334155;line-height:1.6;display:flex;flex-direction:column;gap:10px" id="securityModalBody">
                 <div style="background:#EFF6FF;border:1px solid #BFDBFE;padding:12px;border-radius:12px">
                     <strong style="color:#1D4ED8">🛡️ സീറോ ട്രാക്കിംഗ് ഗ്യാരണ്ടി:</strong>
                     <div style="font-size:12px;color:#1E40AF;margin-top:3px">ഞങ്ങൾ മൂന്നാം കക്ഷി പരസ്യദാതാക്കൾക്കോ ഡാറ്റ ബ്രോക്കർമാർക്കോ നിങ്ങളുടെ ഒരു വിവരവും വിൽക്കുകയോ കൈമാറുകയോ ചെയ്യുന്നില്ല.</div>
@@ -5650,6 +5692,7 @@
                 <p><strong>🗑️ റൈറ്റ് ടു ഇറേസ്:</strong> നിങ്ങളുടെ അക്കൗണ്ടും എല്ലാ വിവരങ്ങളും എപ്പോൾ വേണമെങ്കിലും ഒറ്റ ക്ലിക്കിൽ പൂർണ്ണമായി മായ്ച്ചുകളയാൻ നിങ്ങൾക്ക് അവകാശമുണ്ട്.</p>
             </div>
             <button type="button" onclick="closeModal('modal-data-security')" style="margin-top:16px;width:100%;padding:11px;background:#0C2B59;color:#fff;border:none;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer" id="securityModalCloseBtn">ശരി, മനസ്സിലായി</button>
+            </div>
         </div>
     </div>
 
@@ -5657,18 +5700,18 @@
     <!-- 👥 MODAL: CREATE 6-PERSON NAATTUKOOTTAM GROUP                   -->
     <!-- ============================================================== -->
     <div id="modal-create-naattukoottam" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-create-naattukoottam')">
-        <div class="modal-sheet" style="width:100%;max-width:480px;max-height:85vh;overflow-y:auto;border-radius:40px;padding:24px;background:#FFFFFF;box-shadow:0 20px 60px rgba(0,0,0,0.4);transform:translateY(0)">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1.5px solid #FEF3C7;padding-bottom:12px">
-                <div style="display:flex;align-items:center;gap:10px">
-                    <span style="font-size:26px">☕</span>
-                    <div>
-                        <h3 style="margin:0;font-size:16.5px;font-weight:900;color:#78350F">6 പേരുടെ നാട്ടുകൂട്ടം ഉണ്ടാക്കാം</h3>
-                        <div style="font-size:11.5px;color:#B45309;font-weight:700">6 പേർ ഒരുമിച്ചിരുന്ന് സംസാരിക്കുന്ന ലൈവ് വട്ടമേശ</div>
+        <div class="modal-sheet">
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #D97706 0%, #B45309 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">☕</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title">6 പേരുടെ നാട്ടുകൂട്ടം ഉണ്ടാക്കാം</h3>
+                        <div class="nn-form-header-sub">6 പേർ ഒരുമിച്ചിരുന്ന് സംസാരിക്കുന്ന ലൈവ് വട്ടമേശ</div>
                     </div>
                 </div>
-                <button type="button" onclick="closeModal('modal-create-naattukoottam')" class="modal-close-btn" style="background:#F1F5F9;border:none;border-radius:50%;width:34px;height:34px;font-size:14px;font-weight:800;color:#64748B;cursor:pointer">✕</button>
+                <button type="button" onclick="closeModal('modal-create-naattukoottam')" class="nn-form-close-btn">✕</button>
             </div>
-
+            <div class="nn-form-body">
             <form onsubmit="handleCreateNaattukoottamGroup(event)" style="display:flex;flex-direction:column;gap:12px">
                 <div>
                     <label style="font-size:12.5px;font-weight:800;color:#334155;margin-bottom:5px;display:block">കൂട്ടത്തിന്റെ പേര് (Group Name) *</label>
@@ -5691,6 +5734,7 @@
                     <span>🚀</span> <span>ഗ്രൂപ്പ് ഉണ്ടാക്കി വട്ടമേശയിലേക്ക് കയറാം</span>
                 </button>
             </form>
+            </div>
         </div>
     </div>
 
@@ -5698,17 +5742,18 @@
     <!-- 👥 MODAL: INVITE 5 MEMBERS TO ROUNDTABLE                        -->
     <!-- ============================================================== -->
     <div id="modal-naattukoottam-invite" class="modal-overlay" onclick="if(event.target===this)closeModal('modal-naattukoottam-invite')">
-        <div class="modal-sheet" style="width:100%;max-width:480px;max-height:85vh;overflow-y:auto;border-radius:40px;padding:24px;background:#FFFFFF;box-shadow:0 20px 60px rgba(0,0,0,0.4);display:flex;flex-direction:column;gap:12px;transform:translateY(0)">
-            <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1.5px solid #E2E8F0;padding-bottom:12px">
-                <div style="display:flex;align-items:center;gap:10px">
-                    <span style="font-size:26px">👥</span>
-                    <div>
-                        <h3 style="margin:0;font-size:16.5px;font-weight:900;color:#0F172A">5 പേരെ വട്ടമേശയിലേക്ക് ക്ഷണിക്കാം</h3>
-                        <div id="nkInviteSeatCountStatus" style="font-size:11.5px;color:#059669;font-weight:800">5 സീറ്റുകൾ ബാക്കിയുണ്ട് (ആകെ 6 പേർ)</div>
+        <div class="modal-sheet">
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #059669 0%, #047857 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">👥</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title">5 പേരെ വട്ടമേശയിലേക്ക് ക്ഷണിക്കാം</h3>
+                        <div class="nn-form-header-sub" id="nkInviteSeatCountStatus">5 സീറ്റുകൾ ബാക്കിയുണ്ട് (ആകെ 6 പേർ)</div>
                     </div>
                 </div>
-                <button type="button" onclick="closeModal('modal-naattukoottam-invite')" class="modal-close-btn" style="background:#F1F5F9;border:none;border-radius:50%;width:34px;height:34px;font-size:14px;font-weight:800;color:#64748B;cursor:pointer">✕</button>
+                <button type="button" onclick="closeModal('modal-naattukoottam-invite')" class="nn-form-close-btn">✕</button>
             </div>
+            <div class="nn-form-body">
 
             <!-- WhatsApp Direct Share Button -->
             <button type="button" onclick="shareNaattukoottamWhatsAppInvite()" style="background:linear-gradient(135deg, #25D366 0%, #128C7E 100%);color:#fff;border:none;padding:12px 14px;border-radius:14px;font-weight:800;font-size:13.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 3px 10px rgba(37,211,102,0.3)">
@@ -5729,6 +5774,7 @@
             <!-- Contacts List to pick from -->
             <div id="nkInviteContactsList" style="display:flex;flex-direction:column;gap:8px;max-height:340px;overflow-y:auto;padding-right:2px">
                 <!-- Populated dynamically via renderNaattukoottamInviteContacts() -->
+            </div>
             </div>
         </div>
     </div>
@@ -5933,6 +5979,7 @@
                         ➔
                     </button>
                 </div>
+            </div>
             </div>
         </div>
     </div>
