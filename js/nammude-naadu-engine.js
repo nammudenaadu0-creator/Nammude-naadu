@@ -1630,6 +1630,80 @@
 
   const GEO_CACHE = new Map();
 
+  function parseNominatimAddress(data) {
+    if (!data) return null;
+    const addr = data.address || {};
+    const poi = addr.junction ||
+                addr.neighbourhood ||
+                data.name ||
+                addr.amenity ||
+                addr.shop ||
+                addr.building ||
+                addr.place_of_worship ||
+                addr.office ||
+                addr.tourism ||
+                addr.house_name;
+
+    const microArea = addr.suburb ||
+                      addr.village ||
+                      addr.hamlet ||
+                      addr.residential ||
+                      addr.quarter;
+
+    const road = addr.road;
+    const town = addr.town || addr.city || addr.municipality;
+    const district = (addr.state_district || addr.district || addr.county || '').replace(/\s*District$/i, '').replace(/\s*ജില്ല$/i, '').trim();
+
+    let formatted = '';
+    if (poi && microArea && poi.toLowerCase() !== microArea.toLowerCase()) {
+      formatted = `${poi}, ${microArea}`;
+    } else if (poi && town && poi.toLowerCase() !== town.toLowerCase()) {
+      formatted = `${poi}, ${town}`;
+    } else if (poi && district && poi.toLowerCase() !== district.toLowerCase()) {
+      formatted = `${poi}, ${district}`;
+    } else if (microArea && town && microArea.toLowerCase() !== town.toLowerCase()) {
+      formatted = `${microArea}, ${town}`;
+    } else if (microArea && district && microArea.toLowerCase() !== district.toLowerCase()) {
+      formatted = `${microArea}, ${district}`;
+    } else if (road && microArea) {
+      formatted = `${road}, ${microArea}`;
+    } else if (road && district) {
+      formatted = `${road}, ${district}`;
+    } else if (town && district && town.toLowerCase() !== district.toLowerCase()) {
+      formatted = `${town}, ${district}`;
+    } else if (poi || microArea || town) {
+      formatted = poi || microArea || town;
+    }
+
+    return formatted ? { formatted, district: district || town || 'Kerala' } : null;
+  }
+
+  function parsePhotonProperties(props) {
+    if (!props) return null;
+    const poi = props.name;
+    const locality = props.locality || props.district;
+    const street = props.street;
+    const city = props.city || props.county;
+    const district = (props.district || props.county || props.city || props.state || '').replace(/\s*District$/i, '').replace(/\s*ജില്ല$/i, '').trim();
+
+    let formatted = '';
+    if (poi && locality && poi.toLowerCase() !== locality.toLowerCase()) {
+      formatted = `${poi}, ${locality}`;
+    } else if (poi && street && poi.toLowerCase() !== street.toLowerCase()) {
+      formatted = `${poi}, ${street}`;
+    } else if (poi && city && poi.toLowerCase() !== city.toLowerCase()) {
+      formatted = `${poi}, ${city}`;
+    } else if (locality && city && locality.toLowerCase() !== city.toLowerCase()) {
+      formatted = `${locality}, ${city}`;
+    } else if (street && city && street.toLowerCase() !== city.toLowerCase()) {
+      formatted = `${street}, ${city}`;
+    } else if (poi || locality || city) {
+      formatted = poi || locality || city;
+    }
+
+    return formatted ? { formatted, district: district || city || 'Kerala' } : null;
+  }
+
   async function reverseGeocode(lat, lon) {
     const validLat = Number.isFinite(Number(lat)) ? Number(lat) : 9.5915;
     const validLon = Number.isFinite(Number(lon)) ? Number(lon) : 76.5221;
@@ -1640,88 +1714,42 @@
       return GEO_CACHE.get(cacheKey);
     }
 
-    // 1. Primary: OpenStreetMap Nominatim zoom 18 (Exact landmark, shop, building, street & village level precision)
-    try {
-      const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 4500);
-      const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${validLat}&lon=${validLon}&zoom=18&addressdetails=1`;
-      const res = await fetch(url, { headers: { 'Accept-Language': 'en,ml' }, signal: ctrl.signal });
-      clearTimeout(timer);
-      if (res.ok) {
-        const data = await res.json();
-        const addr = data.address || {};
-        const poi = data.name ||
-                    addr.amenity ||
-                    addr.shop ||
-                    addr.building ||
-                    addr.office ||
-                    addr.tourism ||
-                    addr.leisure ||
-                    addr.craft ||
-                    addr.house_name ||
-                    addr.place_of_worship;
-
-        const localArea = addr.road ||
-                          addr.suburb ||
-                          addr.neighbourhood ||
-                          addr.residential ||
-                          addr.hamlet ||
-                          addr.village ||
-                          addr.quarter ||
-                          addr.town ||
-                          addr.municipality;
-
-        const district = (addr.state_district || addr.district || addr.county || '').replace(/\s*District$/i, '').trim();
-
-        let formatted = '';
-        if (poi && localArea && poi.toLowerCase() !== localArea.toLowerCase()) {
-          formatted = `${poi}, ${localArea}`;
-        } else if (poi) {
-          formatted = (district && district.toLowerCase() !== poi.toLowerCase()) ? `${poi}, ${district}` : poi;
-        } else if (localArea) {
-          formatted = (district && district.toLowerCase() !== localArea.toLowerCase()) ? `${localArea}, ${district}` : localArea;
-        } else if (addr.city) {
-          formatted = (district && district.toLowerCase() !== addr.city.toLowerCase()) ? `${addr.city}, ${district}` : addr.city;
+    // 1. Native CapacitorHttp (Android native bridge - sends proper User-Agent to OpenStreetMap Nominatim zoom 18)
+    if (typeof window !== 'undefined' && window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.CapacitorHttp) {
+      try {
+        const capRes = await window.Capacitor.Plugins.CapacitorHttp.get({
+          url: `https://nominatim.openstreetmap.org/reverse?format=json&lat=${validLat}&lon=${validLon}&zoom=18&addressdetails=1`,
+          headers: {
+            'User-Agent': 'NammudeNaadu/9.4 (Linux; Android; Kerala SuperApp)',
+            'Accept-Language': 'ml,en'
+          }
+        });
+        if (capRes && (capRes.status === 200 || capRes.status === 304) && capRes.data) {
+          const parsed = parseNominatimAddress(capRes.data);
+          if (parsed && parsed.formatted) {
+            GEO_CACHE.set(cacheKey, parsed);
+            return parsed;
+          }
         }
-
-        if (formatted) {
-          const result = { formatted, district: district || formatted.split(',').pop().trim() };
-          GEO_CACHE.set(cacheKey, result);
-          return result;
-        }
+      } catch (capErr) {
+        console.warn('[Native Geocode Note]', capErr);
       }
-    } catch (err) {
-      console.warn('[Nominatim Geocode Note]', err.message);
     }
 
-    // 2. Secondary: Photon OSM reverse geocoder (Fast, POI-aware)
+    // 2. Photon OSM reverse geocoder (Fast, Landmark/Junction/Micro-locality aware with zero CORS restrictions)
     try {
       const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 3500);
+      const timer = setTimeout(() => ctrl.abort(), 4000);
       const url = `https://photon.komoot.io/reverse?lat=${validLat}&lon=${validLon}`;
       const res = await fetch(url, { signal: ctrl.signal });
       clearTimeout(timer);
       if (res.ok) {
         const data = await res.json();
         if (data && data.features && data.features.length > 0) {
-          const props = data.features[0].properties || {};
-          const poi = props.name;
-          const localArea = props.street || props.locality || props.district || props.city;
-          const district = (props.district || props.city || props.state || '').replace(/\s*District$/i, '').trim();
-
-          let formatted = '';
-          if (poi && localArea && poi.toLowerCase() !== localArea.toLowerCase()) {
-            formatted = `${poi}, ${localArea}`;
-          } else if (poi) {
-            formatted = (district && district.toLowerCase() !== poi.toLowerCase()) ? `${poi}, ${district}` : poi;
-          } else if (localArea) {
-            formatted = (district && district.toLowerCase() !== localArea.toLowerCase()) ? `${localArea}, ${district}` : localArea;
-          }
-
-          if (formatted) {
-            const result = { formatted, district: district || formatted.split(',').pop().trim() };
-            GEO_CACHE.set(cacheKey, result);
-            return result;
+          const parsed = parsePhotonProperties(data.features[0].properties);
+          if (parsed && parsed.formatted) {
+            GEO_CACHE.set(cacheKey, parsed);
+            return parsed;
           }
         }
       }
@@ -1729,7 +1757,26 @@
       console.warn('[Photon Geocode Note]', err.message);
     }
 
-    // 3. Fallback: BigDataCloud client reverse geocoding (Fast village/locality fallback)
+    // 3. OpenStreetMap Nominatim zoom 18 via standard fetch (Exact landmark & village level precision)
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 3500);
+      const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${validLat}&lon=${validLon}&zoom=18&addressdetails=1`;
+      const res = await fetch(url, { headers: { 'Accept-Language': 'ml,en' }, signal: ctrl.signal });
+      clearTimeout(timer);
+      if (res.ok) {
+        const data = await res.json();
+        const parsed = parseNominatimAddress(data);
+        if (parsed && parsed.formatted) {
+          GEO_CACHE.set(cacheKey, parsed);
+          return parsed;
+        }
+      }
+    } catch (err) {
+      console.warn('[Nominatim Geocode Note]', err.message);
+    }
+
+    // 4. Fallback: BigDataCloud client reverse geocoding (Fast village/locality fallback)
     try {
       const ctrl = new AbortController();
       const timer = setTimeout(() => ctrl.abort(), 3500);
@@ -1767,7 +1814,7 @@
       }
     } catch (_) {}
 
-    // 4. Fallback: Nearest Kerala Preset
+    // 5. Fallback: Nearest Kerala Preset
     const closest = getNearestKeralaPreset(validLat, validLon);
     return { formatted: closest.name, district: closest.district };
   }
@@ -1818,7 +1865,7 @@
       }
     };
 
-    const resetGpsBtnState = () => {
+    const resetGpsBtnState = (accuracy = null) => {
       if (spinIcon) spinIcon.classList.remove('spin-active');
       if (targetIcon) {
         targetIcon.textContent = '🎯';
@@ -1826,7 +1873,8 @@
       }
       if (gpsBtnTxt) gpsBtnTxt.textContent = isEn ? 'Use Current Location' : 'നിലവിലെ സ്ഥലം ഉപയോഗിക്കുക';
       if (gpsSubTxt) {
-        gpsSubTxt.textContent = isEn ? 'Using GPS • Accurate & instant' : 'തത്സമയ GPS ലൊക്കേഷൻ കണ്ടെത്താം';
+        const accM = accuracy && Number.isFinite(Number(accuracy)) && Number(accuracy) <= 150 ? ` • ±${Math.round(accuracy)}m` : '';
+        gpsSubTxt.textContent = isEn ? `Using GPS${accM}` : `തത്സമയ GPS ലൊക്കേഷൻ കണ്ടെത്താം${accM}`;
         gpsSubTxt.style.color = '#059669';
       }
     };
@@ -1836,18 +1884,30 @@
       toast('📡 തത്സമയ ലൊക്കേഷൻ കണ്ടെത്തുന്നു...');
     }
 
-    // Helper to finish detection with coordinates
-    const applyLocationResult = async (lat, lon, source = 'GPS') => {
+    // Helper to finish detection with coordinates & exact accuracy
+    const applyLocationResult = async (lat, lon, source = 'GPS', accuracy = 10) => {
       try {
         const geoResult = await reverseGeocode(lat, lon);
-        console.info(`[Location Resolved via ${source}] ${geoResult.formatted} (${geoResult.district})`);
+        const accMeters = Math.round(Number(accuracy) || 10);
+        console.info(`[Location Resolved via ${source}] ${geoResult.formatted} (${geoResult.district}) ±${accMeters}m`);
         saveRecentLocation(geoResult.formatted, geoResult.district, lat, lon);
         updateLocationDisplay(geoResult.formatted, geoResult.district, lat, lon);
         closeModal('modal-location');
-        resetGpsBtnState();
+        resetGpsBtnState(accMeters);
 
+        // Also autofill registration form fields if registration modal is open
+        const regPlaceInput = document.getElementById('citizenLoginPlace');
+        const regDistrictInput = document.getElementById('citizenLoginDistrict');
+        if (regPlaceInput && (!regPlaceInput.value || regPlaceInput.value === 'കേരളം' || regPlaceInput.value === 'തത്സമയ ലൊക്കേഷൻ')) {
+          regPlaceInput.value = geoResult.formatted;
+        }
+        if (regDistrictInput && geoResult.district) {
+          regDistrictInput.value = geoResult.district;
+        }
+
+        const accBadge = (accMeters > 0 && accMeters <= 150) ? ` (±${accMeters}m)` : '';
         if (showToastOnSuccess) {
-          toast(`📍 ലൊക്കേഷൻ കണ്ടെത്തി: ${geoResult.formatted}`);
+          toast(`📍 ലൊക്കേഷൻ കണ്ടെത്തി: ${geoResult.formatted}${accBadge}`);
         }
         return true;
       } catch (err) {
@@ -1894,7 +1954,7 @@
       // Default safe fallback: Kerala Preset
       resetGpsBtnState();
       const defaultPreset = (KERALA_PRESETS && KERALA_PRESETS.length > 0) ? KERALA_PRESETS[0] : { name: 'Kottayam', district: 'Kottayam', lat: 9.5916, lon: 76.5222 };
-      applyLocationResult(defaultPreset.lat, defaultPreset.lon, 'Preset Fallback');
+      applyLocationResult(defaultPreset.lat, defaultPreset.lon, 'Preset Fallback', 50);
       return false;
     };
 
@@ -1907,19 +1967,21 @@
         if (typeof geo.requestPermissions === 'function') {
           try { await geo.requestPermissions(); } catch (_) {}
         }
-        // High accuracy GPS satellite coordinates (±5m precision)
-        const pos = await geo.getCurrentPosition({ enableHighAccuracy: true, timeout: 8000, maximumAge: 0 });
+        // High accuracy GPS satellite coordinates (±5m to ±10m precision)
+        const pos = await geo.getCurrentPosition({ enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 });
         if (pos && pos.coords && Number.isFinite(pos.coords.latitude)) {
-          const ok = await applyLocationResult(pos.coords.latitude, pos.coords.longitude, 'Capacitor GPS High-Accuracy');
+          const acc = Math.round(pos.coords.accuracy || 10);
+          const ok = await applyLocationResult(pos.coords.latitude, pos.coords.longitude, 'Capacitor GPS High-Accuracy', acc);
           if (ok) return;
         }
       } catch (capErr) {
         console.warn('[Capacitor High-Accuracy Geo Warning, retrying standard]', capErr);
         try {
           const geo = window.Capacitor.Plugins.Geolocation;
-          const pos = await geo.getCurrentPosition({ enableHighAccuracy: false, timeout: 4000 });
+          const pos = await geo.getCurrentPosition({ enableHighAccuracy: false, timeout: 5000 });
           if (pos && pos.coords && Number.isFinite(pos.coords.latitude)) {
-            const ok = await applyLocationResult(pos.coords.latitude, pos.coords.longitude, 'Capacitor Standard');
+            const acc = Math.round(pos.coords.accuracy || 30);
+            const ok = await applyLocationResult(pos.coords.latitude, pos.coords.longitude, 'Capacitor Standard', acc);
             if (ok) return;
           }
         } catch (_) {}
@@ -1935,7 +1997,8 @@
         async (pos) => {
           if (isResolved) return;
           isResolved = true;
-          await applyLocationResult(pos.coords.latitude, pos.coords.longitude, 'Browser High Accuracy');
+          const acc = Math.round(pos.coords.accuracy || 10);
+          await applyLocationResult(pos.coords.latitude, pos.coords.longitude, 'Browser High Accuracy', acc);
         },
         async (err) => {
           console.warn('[Browser High Accuracy Geo Failed, retrying standard]', err);
@@ -1944,7 +2007,8 @@
               async (pos2) => {
                 if (isResolved) return;
                 isResolved = true;
-                await applyLocationResult(pos2.coords.latitude, pos2.coords.longitude, 'Browser Standard');
+                const acc2 = Math.round(pos2.coords.accuracy || 30);
+                await applyLocationResult(pos2.coords.latitude, pos2.coords.longitude, 'Browser Standard', acc2);
               },
               async (err2) => {
                 if (isResolved) return;
@@ -1952,21 +2016,21 @@
                 console.warn('[Browser Geolocation completely failed, falling back to IP]', err2);
                 await fallbackToIpLocation();
               },
-              { timeout: 4000, enableHighAccuracy: false, maximumAge: 60000 }
+              { timeout: 5000, enableHighAccuracy: false, maximumAge: 60000 }
             );
           }
         },
-        { timeout: 8000, enableHighAccuracy: true, maximumAge: 0 }
+        { timeout: 15000, enableHighAccuracy: true, maximumAge: 10000 }
       );
 
-      // Safety timeout: if browser doesn't respond within 9s, trigger IP fallback
+      // Safety timeout: if browser doesn't respond within 16s, trigger IP fallback
       setTimeout(() => {
         if (!isResolved) {
           isResolved = true;
           console.info('[Geo Safety Timeout] Falling back to IP location...');
           fallbackToIpLocation();
         }
-      }, 9000);
+      }, 16000);
 
       return;
     }
@@ -2227,16 +2291,19 @@
     if (!clean) return;
     toast(`🔍 '${clean}' ലൊക്കേഷൻ കണ്ടെത്തുന്നു...`);
     try {
-      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(clean + ', Kerala')}&limit=1`;
-      const res = await fetch(url, { headers: { 'Accept-Language': 'ml,en' } });
+      const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(clean)}&bbox=74.8,8.1,77.6,12.9&limit=1`;
+      const res = await fetch(url);
       if (res.ok) {
         const data = await res.json();
-        if (data && data.length > 0) {
-          const item = data[0];
-          const lat = parseFloat(item.lat);
-          const lon = parseFloat(item.lon);
-          const name = item.display_name.split(',')[0].trim() || clean;
-          selectPresetLocation(name, 'Kerala', lat, lon);
+        if (data && data.features && data.features.length > 0) {
+          const f = data.features[0];
+          const coords = f.geometry && f.geometry.coordinates ? f.geometry.coordinates : [];
+          const lon = coords[0];
+          const lat = coords[1];
+          const p = f.properties || {};
+          const parsed = parsePhotonProperties(p);
+          const name = (parsed && parsed.formatted) ? parsed.formatted : (p.name || clean);
+          selectPresetLocation(name, p.district || p.city || 'Kerala', lat, lon);
           return;
         }
       }

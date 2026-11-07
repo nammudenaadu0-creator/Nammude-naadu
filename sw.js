@@ -1,5 +1,5 @@
 // High-Performance Service Worker for Nammude Naadu PWA
-const CACHE_NAME = 'nammude-naadu-v45';
+const CACHE_NAME = 'nammude-naadu-v46';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -47,6 +47,7 @@ self.addEventListener('fetch', (event) => {
       url.hostname.includes('openstreetmap.org') ||
       url.hostname.includes('komoot.io') ||
       url.hostname.includes('bigdatacloud.net') ||
+      url.hostname.includes('api-bdc.io') ||
       url.protocol === 'ws:' ||
       url.protocol === 'wss:') {
     return;
