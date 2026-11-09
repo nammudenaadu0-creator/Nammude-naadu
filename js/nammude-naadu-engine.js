@@ -6824,7 +6824,7 @@
     grid.innerHTML = SERVICE_CATEGORIES.map(cat => {
       const displayName = isEn ? (cat.name_en || cat.name) : (cat.name_ml || cat.name);
       return `
-      <button class="superapp-chip cat-pill-btn ${APP_STATE.activeServiceCategory === cat.id ? 'active' : ''}" 
+      <button class="superapp-chip ${APP_STATE.activeServiceCategory === cat.id ? 'active' : ''}" 
               onclick="filterServiceCategory('${cat.id}')">
         <span>${cat.icon}</span>
         <span>${displayName}</span>
@@ -6843,7 +6843,7 @@
     renderServicesCategoriesGrid();
     renderServicesScreen();
     setTimeout(() => {
-      const activePill = document.querySelector(`.cat-pill-btn[onclick*="${catId}"]`);
+      const activePill = document.querySelector(`.superapp-chip[onclick*="${catId}"]`);
       if (activePill) activePill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     }, 50);
   }
@@ -6864,7 +6864,7 @@
     if (searchInput) searchInput.value = '';
     navTo('services');
     setTimeout(() => {
-      const activePill = document.querySelector(`.cat-pill-btn[onclick*="${APP_STATE.activeServiceCategory}"]`);
+      const activePill = document.querySelector(`.superapp-chip[onclick*="${APP_STATE.activeServiceCategory}"]`);
       if (activePill) activePill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     }, 100);
   }
