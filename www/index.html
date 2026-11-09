@@ -27,7 +27,7 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="css/main.css?v=9.1">
     <link rel="stylesheet" href="css/jobs.css?v=9.1">
-    <link rel="stylesheet" href="css/nammude-naadu.css?v=9.6">
+    <link rel="stylesheet" href="css/nammude-naadu.css?v=9.7">
 </head>
 
 <body>
@@ -833,70 +833,68 @@
                 </section>
 
                 <!-- ============================================================== -->
-                <!-- SCREEN 5: SERVICES (16+ CATEGORIES)                            -->
+                <!-- SCREEN 5: SERVICES (SUPERAPP ROYAL NAVY ARCHITECTURE)          -->
                 <!-- ============================================================== -->
-                <section id="screen-services" class="screen" style="background:#F8FAFC">
-                    <!-- ROYAL BLUE BRAND SERVICES TOP BAR -->
-                    <div class="services-kerala-top-bar"
-                        style="padding:14px 16px 14px;background:linear-gradient(135deg, #0284C7 0%, #0369A1 50%, #0878D1 100%);box-shadow:0 4px 16px rgba(8,120,209,0.22);display:flex;align-items:center;justify-content:space-between">
-                        <div style="display:flex;align-items:center;gap:10px">
-                            <button onclick="navTo('home')" class="round-back-btn"
-                                style="width:42px;height:42px;min-width:42px;min-height:42px;border-radius:50%;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.35);color:#FFFFFF;font-size:17px;font-weight:900;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.12);transition:transform 0.1s ease;touch-action:manipulation"
-                                onactive="this.style.transform='scale(0.92)'">❮</button>
-                            <div>
-                                <h1 style="margin:0;font-size:22px;font-weight:900;color:#FFFFFF;font-family:'Manjari', sans-serif;letter-spacing:-0.4px;line-height:1.15">
-                                    സേവനങ്ങൾ
-                                </h1>
-                                <div onclick="openLocationModal()" style="font-size:11.5px;font-weight:700;color:rgba(255,255,255,0.92);margin-top:2px;display:flex;align-items:center;gap:4px;cursor:pointer">
-                                    <span>📍</span>
-                                    <span class="user-live-city-name">തത്സമയ ലൊക്കേഷൻ</span>
-                                    <span style="font-size:10px;color:rgba(255,255,255,0.8)">▼</span>
+                <section id="screen-services" class="screen" style="background:#F0F4F8">
+                    <!-- SUPERAPP ROYAL NAVY HEADER -->
+                    <div class="superapp-header">
+                        <div class="superapp-header-left">
+                            <button onclick="navTo('home')" class="superapp-round-back-btn" title="Back">❮</button>
+                            <div class="superapp-header-brand">
+                                <div style="display:flex;align-items:center;gap:6px">
+                                    <span class="superapp-brand-logo">⚡</span>
+                                    <h1 class="superapp-brand-title" id="screenServicesHeaderTitle">സേവനങ്ങൾ</h1>
                                 </div>
                             </div>
                         </div>
-                        <button onclick="openAddServiceModal()"
-                            style="background:#FFFFFF;color:#0878D1;border:none;border-radius:9999px;padding:8px 14px;font-size:12px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:5px;box-shadow:0 3px 10px rgba(0,0,0,0.12);font-family:inherit">
-                            <span>➕</span>
-                            <span>രജിസ്റ്റർ</span>
-                        </button>
+                        <div class="superapp-loc-pill" onclick="openLocationModal()">
+                            <span>📍</span>
+                            <span class="user-live-city-name">തത്സമയ ലൊക്കേഷൻ</span>
+                            <span style="font-size:10px;opacity:0.8">⌄</span>
+                        </div>
                     </div>
 
-                    <!-- ROYAL BLUE SEARCH CAPSULE BAR FOR SERVICES -->
-                    <div class="home-kerala-search-wrap" style="margin:12px 16px 10px;position:relative;background:#FFFFFF;border:1.5px solid #BAE6FD;border-radius:9999px;box-shadow:0 4px 14px rgba(8,120,209,0.08)">
-                        <div class="home-kerala-search-btn-icon" title="തിരയുക" style="color:#0878D1">
-                            🔍
-                        </div>
-                        <input type="text" id="serviceSearchInput" class="home-kerala-search-input"
+                    <!-- WHITE CAPSULE SEARCH BAR WITH MIC -->
+                    <div class="superapp-search-wrap">
+                        <span class="superapp-search-icon">🔍</span>
+                        <input type="text" id="serviceSearchInput" class="superapp-search-input"
                             placeholder="പ്ലംബർ, ഡ്രൈവർ, ഇലക്ട്രീഷ്യൻ, ടാക്സി..." autocomplete="off"
                             oninput="handleServicesSearchInput(this.value)"
                             onfocus="handleServicesSearchInput(this.value)">
-                        <button type="button" class="home-kerala-search-action-btn" onclick="openQuickServiceModal()"
-                            title="സേവനം ആവശ്യപ്പെടാം"
-                            style="background:linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);color:#FFFFFF;box-shadow:0 3px 10px rgba(29,78,216,0.25)">
-                            <span>ആവശ്യപ്പെടാം</span>
-                            <span>⚡</span>
-                        </button>
-                        <div id="servicesSearchSuggestions" class="trade-suggestions-dropdown" style="display:none">
-                        </div>
+                        <button type="button" class="superapp-mic-btn" id="serviceVoiceSearchBtn" onclick="toggleVoiceSearch('serviceSearchInput', this)" title="Voice Search">🎙️</button>
+                        <div id="servicesSearchSuggestions" class="trade-suggestions-dropdown" style="display:none"></div>
                     </div>
 
+                    <!-- RADIUS FILTER PILLS -->
+                    <div class="superapp-radius-bar">
+                        <button class="superapp-radius-pill" onclick="setRadiusFilter('services', 0.5, this)">500 m</button>
+                        <button class="superapp-radius-pill" onclick="setRadiusFilter('services', 1, this)">1 km</button>
+                        <button class="superapp-radius-pill" onclick="setRadiusFilter('services', 5, this)">5 km</button>
+                        <button class="superapp-radius-pill active" onclick="setRadiusFilter('services', 10, this)">10 km</button>
+                        <button class="superapp-radius-pill" onclick="setRadiusFilter('services', 25, this)">25 km</button>
+                    </div>
 
-                    <!-- CATEGORIES SECTION HEADER WITH 4-SQUARE GRID ICON -->
-                    <div class="home-kerala-sec-header" style="margin-bottom:8px">
-                        <div class="home-kerala-sec-left">
-                            <div class="home-kerala-grid-icon">
-                                <span class="home-kerala-grid-box" style="background:#0878D1"></span>
-                                <span class="home-kerala-grid-box" style="background:#0878D1"></span>
-                                <span class="home-kerala-grid-box" style="background:#0878D1"></span>
-                                <span class="home-kerala-grid-box" style="background:#0878D1"></span>
+                    <!-- HERO CARD: Services Directory -->
+                    <div class="superapp-hero-card hero-services">
+                        <div class="superapp-hero-top">
+                            <div>
+                                <div class="superapp-hero-title">വിദഗ്ദ്ധ സേവനങ്ങൾ</div>
+                                <div class="superapp-hero-sub">നാട്ടിലെ മികച്ച സേവനദാതാക്കൾ</div>
                             </div>
-                            <h2 class="home-kerala-sec-title" style="color:#0C4A6E">വിഭാഗങ്ങൾ</h2>
-                            <span class="home-kerala-sec-sub" style="color:#0284C7;display:none"></span>
+                            <div class="superapp-hero-icon">⚡</div>
+                        </div>
+                        <div class="superapp-hero-actions">
+                            <button class="superapp-hero-btn solid" onclick="openAddServiceModal()">
+                                <span>➕</span> <span id="heroAddServiceTxt">സേവനം നൽകാം</span>
+                            </button>
+                            <button class="superapp-hero-btn outline" onclick="openQuickServiceModal()">
+                                <span>⚡</span> <span id="heroRequestServiceTxt">ആവശ്യപ്പെടാം</span>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- 16+ CATEGORIES GRID (HORIZONTAL SCROLLING 3D SQUIRCLES) -->
-                    <div class="services-category-grid" id="servicesCategoryGrid"></div>
+                    <!-- SERVICES CATEGORIES CHIPS BAR -->
+                    <div class="superapp-chips-bar" id="servicesCategoryGrid"></div>
 
                     <!-- VEHICLE SUB-CATEGORIES BAR (SHOWN ONLY WHEN VEHICLES CATEGORY IS ACTIVE) -->
                     <div id="servicesVehicleSubFilterBar"
@@ -936,80 +934,71 @@
                 </section>
 
                 <!-- ============================================================== -->
-                <!-- SCREEN: BUSINESSES & LOCAL SHOPS (വ്യാപാരങ്ങൾ & കടകൾ)         -->
+                <!-- SCREEN: BUSINESSES & LOCAL SHOPS (SUPERAPP ROYAL NAVY)         -->
                 <!-- ============================================================== -->
-                <section id="screen-business" class="screen" style="background:#F8FAFC">
-                    <!-- KERALA BRAND BUSINESS TOP BAR -->
-                    <div class="services-kerala-top-bar"
-                        style="padding:14px 16px 14px;background:linear-gradient(135deg, #0284C7 0%, #0369A1 50%, #0878D1 100%);box-shadow:0 4px 16px rgba(8,120,209,0.22);display:flex;align-items:center;justify-content:space-between">
-                        <div style="display:flex;align-items:center;gap:10px">
-                            <button onclick="navTo('home')" class="round-back-btn"
-                                style="width:42px;height:42px;min-width:42px;min-height:42px;border-radius:50%;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.35);color:#FFFFFF;font-size:17px;font-weight:900;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.12);transition:transform 0.1s ease;touch-action:manipulation"
-                                onactive="this.style.transform='scale(0.92)'">❮</button>
-                            <div>
-                                <h1 style="margin:0;font-size:21px;font-weight:900;color:#FFFFFF;font-family:'Manjari', sans-serif;letter-spacing:-0.4px;line-height:1.15">
-                                    വ്യാപാരങ്ങൾ & കടകൾ
-                                </h1>
-                                <div onclick="openLocationModal()" style="font-size:11.5px;font-weight:700;color:rgba(255,255,255,0.92);margin-top:2px;display:flex;align-items:center;gap:4px;cursor:pointer">
-                                    <span>📍</span>
-                                    <span class="user-live-city-name">തത്സമയ ലൊക്കേഷൻ</span>
-                                    <span style="font-size:10px;color:rgba(255,255,255,0.8)">▼</span>
+                <section id="screen-business" class="screen" style="background:#F0F4F8">
+                    <!-- SUPERAPP ROYAL NAVY HEADER -->
+                    <div class="superapp-header">
+                        <div class="superapp-header-left">
+                            <button onclick="navTo('home')" class="superapp-round-back-btn" title="Back">❮</button>
+                            <div class="superapp-header-brand">
+                                <div style="display:flex;align-items:center;gap:6px">
+                                    <span class="superapp-brand-logo">🏪</span>
+                                    <h1 class="superapp-brand-title" id="screenBizHeaderTitle">വ്യാപാരങ്ങൾ & കടകൾ</h1>
                                 </div>
                             </div>
                         </div>
-                        <button onclick="openAddBusinessModal()"
-                            style="background:#FFFFFF;color:#0878D1;border:none;border-radius:9999px;padding:8px 14px;font-size:12px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:5px;box-shadow:0 3px 10px rgba(0,0,0,0.12);font-family:inherit">
-                            <span>➕</span>
-                            <span>കട ചേർക്കാം</span>
-                        </button>
+                        <div class="superapp-loc-pill" onclick="openLocationModal()">
+                            <span>📍</span>
+                            <span class="user-live-city-name">തത്സമയ ലൊക്കേഷൻ</span>
+                            <span style="font-size:10px;opacity:0.8">⌄</span>
+                        </div>
                     </div>
 
-                    <!-- KERALA NEON PILL SEARCH CAPSULE BAR FOR BUSINESS -->
-                    <div class="home-kerala-search-wrap" style="margin:12px 16px 8px;position:relative">
-                        <div class="home-kerala-search-btn-icon" title="തിരയുക" style="color:#FFFFFF">
-                            🔍
-                        </div>
-                        <input type="text" id="businessSearchInput" class="home-kerala-search-input"
+                    <!-- WHITE CAPSULE SEARCH BAR WITH MIC -->
+                    <div class="superapp-search-wrap">
+                        <span class="superapp-search-icon">🔍</span>
+                        <input type="text" id="businessSearchInput" class="superapp-search-input"
                             placeholder="സൂപ്പർമാർക്കറ്റ്, ഹോട്ടൽ, ബേക്കറി, തുണിക്കട, ഓഫർ..." autocomplete="off"
                             oninput="handleBusinessSearchInput(this.value)">
-                        <button type="button" onclick="openLocationModal()"
-                            style="background:#EFF6FF;border:1.5px solid #BFDBFE;color:#1D4ED8;border-radius:20px;padding:6px 10px;font-size:11.5px;font-weight:800;display:flex;align-items:center;gap:4px;cursor:pointer;white-space:nowrap;flex-shrink:0"
-                            title="സ്ഥലം മാറ്റുക">
-                            <span>📍</span>
-                            <span class="user-live-city-name" style="max-width:85px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">സ്ഥലം</span>
-                            <span style="font-size:9px">▼</span>
-                        </button>
+                        <button type="button" class="superapp-mic-btn" id="bizVoiceSearchBtn" onclick="toggleVoiceSearch('businessSearchInput', this)" title="Voice Search">🎙️</button>
                     </div>
 
-                    <!-- TODAY'S OFFERS BANNER -->
-                    <div style="margin:0 16px 10px;background:linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);border-radius:16px;padding:12px 16px;color:#FFFFFF;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 14px rgba(29,78,216,0.22)">
-                        <div style="display:flex;align-items:center;gap:10px">
-                            <span style="font-size:22px">🏷️</span>
+                    <!-- RADIUS FILTER PILLS -->
+                    <div class="superapp-radius-bar">
+                        <button class="superapp-radius-pill" onclick="setRadiusFilter('business', 0.5, this)">500 m</button>
+                        <button class="superapp-radius-pill" onclick="setRadiusFilter('business', 1, this)">1 km</button>
+                        <button class="superapp-radius-pill active" onclick="setRadiusFilter('business', 5, this)">5 km</button>
+                        <button class="superapp-radius-pill" onclick="setRadiusFilter('business', 10, this)">10 km</button>
+                        <button class="superapp-radius-pill" onclick="setRadiusFilter('business', 1000, this)">മുഴുവൻ</button>
+                    </div>
+
+                    <!-- HERO CARD: Business & Shops -->
+                    <div class="superapp-hero-card hero-business">
+                        <div class="superapp-hero-top">
                             <div>
-                                <div style="font-weight:900;font-size:13.5px">ഇന്നത്തെ നാട്ടിലെ ഓഫറുകൾ (Today's Deals)</div>
-                                <div style="font-size:11px;opacity:0.92;margin-top:1px">നാട്ടിലെ കടകളിലെ വിലക്കുറവും ഓഫറുകളും കാണാം</div>
+                                <div class="superapp-hero-title">നാട്ടിലെ കടകളും ഓഫറുകളും</div>
+                                <div class="superapp-hero-sub">വിലക്കുറവും പുതിയ ഓഫറുകളും കാണാം</div>
                             </div>
+                            <div class="superapp-hero-icon">🏪</div>
                         </div>
-                        <span onclick="openAddBusinessModal()" style="background:#FFFFFF;color:#1D4ED8;padding:5px 10px;border-radius:12px;font-size:10.5px;font-weight:800;cursor:pointer;white-space:nowrap">ഓഫർ ചേർക്കാം +</span>
-                    </div>
-
-                    <!-- RADIUS FILTER CHIPS (500m, 1km, 5km, 10km, All) -->
-                    <div class="radius-filter-container" style="padding:4px 16px 8px;background:transparent;border:none">
-                        <span class="radius-filter-label" style="color:#0C2B59;font-weight:800">🎯 പരിധി:</span>
-                        <button class="radius-chip" onclick="setRadiusFilter('business', 0.5, this)">500m</button>
-                        <button class="radius-chip" onclick="setRadiusFilter('business', 1, this)">1 km</button>
-                        <button class="radius-chip active" onclick="setRadiusFilter('business', 5, this)">5 km</button>
-                        <button class="radius-chip" onclick="setRadiusFilter('business', 10, this)">10 km</button>
-                        <button class="radius-chip" onclick="setRadiusFilter('business', 1000, this)">മുഴുവൻ</button>
+                        <div class="superapp-hero-actions">
+                            <button class="superapp-hero-btn solid" onclick="openAddBusinessModal()">
+                                <span>➕</span> <span id="heroAddBizTxt">കട ചേർക്കാം</span>
+                            </button>
+                            <button class="superapp-hero-btn outline" onclick="openAddBusinessModal()">
+                                <span>🏷️</span> <span id="heroAddDealTxt">ഓഫർ നൽകാം</span>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- BUSINESS CATEGORY CHIPS (HORIZONTAL SCROLL) -->
-                    <div class="business-category-tabs"
-                        style="display:flex;gap:7px;padding:6px 16px 12px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch">
-                        <button class="radius-chip active business-cat-chip" data-cat="all" onclick="filterBusinessCategory('all', this)">🌟 എല്ലാം</button>
-                        <button class="radius-chip business-cat-chip" data-cat="grocery" onclick="filterBusinessCategory('grocery', this)">🛒 സൂപ്പർമാർക്കറ്റ്</button>
-                        <button class="radius-chip business-cat-chip" data-cat="food" onclick="filterBusinessCategory('food', this)">🍲 ഹോട്ടൽ & ബേക്കറി</button>
-                        <button class="radius-chip business-cat-chip" data-cat="fashion" onclick="filterBusinessCategory('fashion', this)">👗 വസ്ത്രങ്ങൾ</button>
+                    <div class="superapp-chips-bar business-category-tabs"
+                        style="padding:4px 16px 14px">
+                        <button class="superapp-chip active business-cat-chip" data-cat="all" onclick="filterBusinessCategory('all', this)">🌟 എല്ലാം</button>
+                        <button class="superapp-chip business-cat-chip" data-cat="grocery" onclick="filterBusinessCategory('grocery', this)">🛒 സൂപ്പർമാർക്കറ്റ്</button>
+                        <button class="superapp-chip business-cat-chip" data-cat="food" onclick="filterBusinessCategory('food', this)">🍲 ഹോട്ടൽ & ബേക്കറി</button>
+                        <button class="superapp-chip business-cat-chip" data-cat="fashion" onclick="filterBusinessCategory('fashion', this)">👗 വസ്ത്രങ്ങൾ</button>
                         <button class="radius-chip business-cat-chip" data-cat="electronics" onclick="filterBusinessCategory('electronics', this)">📱 ഇലക്ട്രോണിക്സ്</button>
                         <button class="radius-chip business-cat-chip" data-cat="pharmacy" onclick="filterBusinessCategory('pharmacy', this)">💊 മെഡിക്കൽ & ഫാർമസി</button>
                         <button class="radius-chip business-cat-chip" data-cat="homemade" onclick="filterBusinessCategory('homemade', this)">🍯 ഹോം മെയ്ഡ് & നാടൻ</button>

@@ -519,30 +519,27 @@
     });
 
     // 7. Services Screen
-    const servHeader = document.querySelector('#screen-services h1');
+    const servHeader = document.getElementById('screenServicesHeaderTitle');
     if (servHeader) servHeader.textContent = isEn ? 'Services' : 'സേവനങ്ങൾ';
 
-    const servRegBtn = document.querySelector('#screen-services .services-kerala-top-bar button span:last-child');
-    if (servRegBtn) servRegBtn.textContent = isEn ? 'Register' : 'രജിസ്റ്റർ';
+    const servAddBtn = document.getElementById('heroAddServiceTxt');
+    if (servAddBtn) servAddBtn.textContent = isEn ? 'Provide Service' : 'സേവനം നൽകാം';
 
-    const servReqBtn = document.querySelector('#screen-services .home-kerala-search-action-btn span:first-child');
+    const servReqBtn = document.getElementById('heroRequestServiceTxt');
     if (servReqBtn) servReqBtn.textContent = isEn ? 'Request' : 'ആവശ്യപ്പെടാം';
-
-    const servSecTitle = document.querySelector('#screen-services .home-kerala-sec-title');
-    if (servSecTitle) servSecTitle.textContent = isEn ? 'Categories' : 'വിഭാഗങ്ങൾ';
 
     const servSearch = document.getElementById('serviceSearchInput');
     if (servSearch) servSearch.placeholder = isEn ? 'Plumber, driver, electrician, taxi...' : 'പ്ലംബർ, ഡ്രൈവർ, ഇലക്ട്രീഷ്യൻ, ടാക്സി...';
 
     // 8. Business Screen
-    const bizHeader = document.querySelector('#screen-business h1');
+    const bizHeader = document.getElementById('screenBizHeaderTitle');
     if (bizHeader) bizHeader.textContent = isEn ? 'Businesses & Shops' : 'വ്യാപാരങ്ങൾ & കടകൾ';
 
-    const bizAddBtn = document.querySelector('#screen-business .services-kerala-top-bar button span:last-child');
+    const bizAddBtn = document.getElementById('heroAddBizTxt');
     if (bizAddBtn) bizAddBtn.textContent = isEn ? 'Add Shop' : 'കട ചേർക്കാം';
 
-    const bizSecTitle = document.querySelector('#screen-business .home-kerala-sec-title');
-    if (bizSecTitle) bizSecTitle.textContent = isEn ? 'Categories' : 'വിഭാഗങ്ങൾ';
+    const bizDealBtn = document.getElementById('heroAddDealTxt');
+    if (bizDealBtn) bizDealBtn.textContent = isEn ? 'Add Deal' : 'ഓഫർ നൽകാം';
 
     // 9. Jobs Screen
     const jobsHeroTitle = document.querySelector('#screen-jobs .superapp-hero-title');

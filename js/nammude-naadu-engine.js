@@ -6824,10 +6824,10 @@
     grid.innerHTML = SERVICE_CATEGORIES.map(cat => {
       const displayName = isEn ? (cat.name_en || cat.name) : (cat.name_ml || cat.name);
       return `
-      <button class="cat-pill-btn ${APP_STATE.activeServiceCategory === cat.id ? 'active' : ''}" 
+      <button class="superapp-chip cat-pill-btn ${APP_STATE.activeServiceCategory === cat.id ? 'active' : ''}" 
               onclick="filterServiceCategory('${cat.id}')">
-        <span class="cat-pill-icon">${cat.icon}</span>
-        <span class="cat-pill-title">${displayName}</span>
+        <span>${cat.icon}</span>
+        <span>${displayName}</span>
       </button>
     `;
     }).join('');
