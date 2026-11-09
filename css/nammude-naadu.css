@@ -1471,13 +1471,13 @@ html, body {
    ============================================================== */
 .profile-preview-sheet {
   background: #FFFFFF;
-  border-radius: 24px 24px 0 0;
+  border-radius: 36px !important;
   width: 100%;
   max-width: 520px;
   margin: 0 auto;
   max-height: 85vh;
   overflow-y: auto;
-  box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.25);
 }
 
 .profile-preview-hero {
@@ -1900,7 +1900,7 @@ html, body {
   max-width: 520px;
   max-height: 90vh;
   overflow-y: auto;
-  border-radius: 24px 24px 0 0;
+  border-radius: 36px !important;
   background: #FFFFFF;
   padding: 20px;
 }
@@ -3094,15 +3094,16 @@ html, body {
    ============================================================== */
 .service-detail-sheet {
   background: #FFFFFF;
-  border-radius: 26px 26px 0 0;
+  border-radius: 36px !important;
   width: 100%;
   max-width: 540px;
   margin: 0 auto;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
   padding: 0 0 24px;
   position: relative;
+  overflow: hidden;
 }
 
 .service-detail-hero {
@@ -4040,6 +4041,7 @@ body {
 .chat-modal-sheet,
 .vattamesha-modal-sheet,
 .profile-preview-sheet,
+.service-detail-sheet,
 .swiggy-loc-modal,
 .yw-modal-sheet {
   width: 100% !important;
@@ -4932,12 +4934,15 @@ input, textarea, select {
     margin: 0 !important;
   }
 
-  .modal-sheet, .modal-card, .modal-dialog, .chat-modal-sheet {
+  .modal-sheet, .modal-card, .modal-dialog, .chat-modal-sheet, .service-detail-sheet, .profile-preview-sheet, .swiggy-loc-modal, .vattamesha-modal-sheet {
     box-sizing: border-box !important;
-    width: calc(100% - 8px) !important;
-    max-width: calc(100vw - 8px) !important;
-    margin: 0 auto !important;
-    max-height: calc(100dvh - 12px) !important;
+    width: calc(100% - 14px) !important;
+    max-width: 460px !important;
+    margin: auto !important;
+    border-radius: 36px !important;
+    -webkit-border-radius: 36px !important;
+    max-height: calc(100dvh - 24px) !important;
+    overflow: hidden !important;
   }
 }
 
@@ -6268,9 +6273,17 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
    UNIVERSAL ROYAL NAVY FLOATING 4-CORNER CURVED FORM SHEET THEME
    Matches the 3-Screen Architecture for ALL inside forms
    ============================================================== */
-.modal-overlay .modal-sheet {
+.modal-overlay .modal-sheet,
+.modal-overlay .chat-modal-sheet,
+.modal-overlay .vattamesha-modal-sheet,
+.modal-overlay .profile-preview-sheet,
+.modal-overlay .service-detail-sheet,
+.modal-overlay .swiggy-loc-modal,
+.modal-sheet {
   border-top: none !important;
-  border-radius: 40px !important;
+  border-radius: 36px !important;
+  -webkit-border-radius: 36px !important;
+  overflow: hidden !important;
 }
 
 .modal-overlay .modal-sheet h2,
