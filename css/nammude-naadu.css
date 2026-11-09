@@ -2654,75 +2654,64 @@ html, body {
 }
 
 .kerala-cat-card {
-  border-radius: 16px;
-  padding: 10px 4px 8px;
-  min-height: clamp(118px, 32vw, 142px);
-  text-align: center;
-  position: relative;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-  overflow: hidden;
-  box-sizing: border-box;
+  border-radius: 18px !important;
+  padding: 10px 4px !important;
+  min-height: auto !important;
+  height: clamp(96px, 26vw, 116px) !important;
+  text-align: center !important;
+  position: relative !important;
+  cursor: pointer !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
 }
 
 .kerala-cat-card:active {
-  transform: scale(0.96);
+  transform: scale(0.96) !important;
 }
 
 .kerala-cat-img-box {
-  width: clamp(48px, 13.5vw, 68px);
-  height: clamp(48px, 13.5vw, 68px);
-  margin: 0 auto 3px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+  width: clamp(44px, 12vw, 56px) !important;
+  height: clamp(44px, 12vw, 56px) !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
 }
 
 .kerala-cat-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  border-radius: 12px;
-  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12));
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  border-radius: 12px !important;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12)) !important;
 }
 
 .kerala-cat-title {
-  font-size: clamp(10.5px, 2.95vw, 13px);
-  font-weight: 900;
-  margin-bottom: 2px;
-  line-height: 1.18;
-  font-family: 'Manjari', sans-serif;
-  width: 100%;
-  word-break: break-word;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  font-size: clamp(11.5px, 3.2vw, 13.5px) !important;
+  font-weight: 900 !important;
+  margin: 0 !important;
+  line-height: 1.2 !important;
+  font-family: 'Manjari', sans-serif !important;
+  width: 100% !important;
+  word-break: break-word !important;
+  text-align: center !important;
 }
 
 .kerala-cat-sub {
-  font-size: clamp(8px, 2.2vw, 9.5px);
-  font-weight: 700;
-  line-height: 1.22;
-  margin-bottom: 6px;
-  width: 100%;
-  padding: 0 2px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  display: none !important;
 }
 
 .kerala-cat-arrow-btn {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
+  display: none !important;
+}
   width: 18px;
   height: 18px;
   border-radius: 50%;
@@ -4352,9 +4341,9 @@ body.nn-inner-card-view,
 .community-header {
   background: linear-gradient(135deg, #0284C7 0%, #0369A1 50%, #075985 100%) !important;
   border-bottom: none !important;
-  border-bottom-left-radius: 28px !important;
-  border-bottom-right-radius: 28px !important;
-  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.22) !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  box-shadow: 0 4px 16px rgba(2, 132, 199, 0.18) !important;
   color: #FFFFFF !important;
 }
 
@@ -4961,14 +4950,14 @@ input, textarea, select {
   }
 }
 
-/* Ensure all screens have breathing margin on sides so text/cards do not bleed into bezel */
+/* Ensure all screens sit flush edge-to-edge against mobile screen */
 .screen {
   box-sizing: border-box !important;
   width: 100% !important;
   max-width: 100% !important;
   overflow-x: hidden !important;
-  padding-left: max(8px, env(safe-area-inset-left, 0px)) !important;
-  padding-right: max(8px, env(safe-area-inset-right, 0px)) !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
   padding-bottom: max(96px, calc(96px + env(safe-area-inset-bottom, 0px))) !important;
 }
 
@@ -5542,11 +5531,11 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
 
 /* 1. Header */
 .superapp-header {
-  padding: 16px 16px 16px !important;
+  padding: 16px 16px 14px !important;
   background: linear-gradient(135deg, #0284C7 0%, #0369A1 50%, #075985 100%) !important;
-  border-bottom-left-radius: 28px !important;
-  border-bottom-right-radius: 28px !important;
-  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.24) !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  box-shadow: 0 4px 16px rgba(2, 132, 199, 0.18) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
@@ -6431,6 +6420,30 @@ button[type="submit"]:not(.danger-btn):not(#bReqSubmitBtn):not([style*="#DC2626"
 
 /* Hide bulky auto-suggestions overlay when not explicitly needed */
 .trade-suggestions-dropdown:empty {
+  display: none !important;
+}
+
+/* ==============================================================
+   CLEAN & STANDARD MOBILE DESIGN SYSTEM (FLUSH HEADERS & NO CLUTTER)
+   ============================================================== */
+.services-kerala-top-bar,
+.superapp-header,
+.home-top-navbar,
+.app-header,
+.nearby-header,
+.yw-services-header {
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  width: 100% !important;
+}
+
+.kerala-cat-sub,
+.superapp-brand-sub,
+.kerala-cat-arrow-btn,
+#homeBizSub2,
+#homeCommSub,
+.superapp-callout-sub,
+.superapp-callout-banner {
   display: none !important;
 }
 
