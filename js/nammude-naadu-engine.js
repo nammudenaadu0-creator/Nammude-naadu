@@ -2520,6 +2520,11 @@
                       style="background:#ECFDF5;border:1px solid #A7F3D0;color:#0E7043;padding:4px 8px;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer;margin-left:4px">
                 💬 ചാറ്റ്
               </button>
+              <button onclick="openReportContentModal({ type: 'post', id: '${post.id}', postId: '${post.id}', authorId: '${post.authorId || ''}', name: '${authorNameSafe}', phone: '${postPhone}', snippet: '${postSnippet}' })"
+                      title="റിപ്പോർട്ട് / ബ്ലോക്ക് ചെയ്യുക"
+                      style="background:#FEF2F2;border:1px solid #FECACA;color:#DC2626;padding:4px 7px;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer">
+                🚩
+              </button>
             `}
           </div>
         </div>
@@ -2576,7 +2581,13 @@
     const userTown = String(APP_STATE.location.name || '').toLowerCase().split(',')[0].trim();
     const userDist = String(APP_STATE.location.district || '').toLowerCase().trim();
 
-    const all = (APP_STATE.posts || []).map(p => {
+    const hiddenIds = getHiddenPostIds();
+    const all = (APP_STATE.posts || []).filter(p => {
+      if (!p) return false;
+      if (hiddenIds.includes(String(p.id))) return false;
+      if (isUserBlocked(p.authorId, p.authorPhone, p.authorName)) return false;
+      return true;
+    }).map(p => {
       p._calculatedDist = getItemDistanceKm(p, userLat, userLon);
       return p;
     });
@@ -2712,6 +2723,286 @@
     return digits.length >= 10 ? digits.slice(-10) : digits;
   }
   window.normalizePhone = normalizePhone;
+
+  // ==============================================================
+  // 8B. UGC SAFETY: BLOCK USER, REPORT CONTENT & CHAT MODERATION
+  // ==============================================================
+  let _pendingReportTarget = null;
+
+  function getBlockedUsers() {
+    try {
+      const raw = localStorage.getItem('nn_blocked_users');
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (_) {
+      return [];
+    }
+  }
+  window.getBlockedUsers = getBlockedUsers;
+
+  function saveBlockedUsers(list) {
+    try {
+      localStorage.setItem('nn_blocked_users', JSON.stringify(list || []));
+    } catch (_) {}
+    updateBlockedCountBadges();
+  }
+
+  function getHiddenPostIds() {
+    try {
+      const raw = localStorage.getItem('nn_hidden_post_ids');
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (_) {
+      return [];
+    }
+  }
+
+  function hideReportedPostId(id) {
+    if (!id) return;
+    const list = getHiddenPostIds();
+    const sid = String(id);
+    if (!list.includes(sid)) {
+      list.push(sid);
+      try { localStorage.setItem('nn_hidden_post_ids', JSON.stringify(list)); } catch (_) {}
+    }
+  }
+
+  function updateBlockedCountBadges() {
+    const count = getBlockedUsers().length;
+    document.querySelectorAll('.nn-blocked-count-badge').forEach(el => {
+      el.textContent = String(count);
+    });
+  }
+  window.updateBlockedCountBadges = updateBlockedCountBadges;
+
+  function buildBlockKey(id, phone, name) {
+    const cleanPhone = normalizePhone(phone);
+    if (cleanPhone && cleanPhone.length === 10) return 'ph_' + cleanPhone;
+    if (id && !String(id).startsWith('guest_')) return 'id_' + String(id).trim();
+    const cleanName = String(name || '').trim().toLowerCase();
+    return cleanName ? ('nm_' + cleanName) : '';
+  }
+
+  function isUserBlocked(id, phone, name) {
+    const blocked = getBlockedUsers();
+    if (!blocked.length) return false;
+    const cleanPhone = normalizePhone(phone);
+    const sid = id ? String(id).trim() : '';
+    const sname = String(name || '').trim().toLowerCase();
+    // Never block the active user's own items
+    const myPhone = normalizePhone(APP_STATE.currentUser && APP_STATE.currentUser.phone);
+    const myId = APP_STATE.currentUser && APP_STATE.currentUser.id;
+    if ((myPhone && cleanPhone && myPhone === cleanPhone) || (myId && sid && String(myId) === sid)) {
+      return false;
+    }
+    return blocked.some(b => {
+      if (!b) return false;
+      if (cleanPhone && b.phone && normalizePhone(b.phone) === cleanPhone) return true;
+      if (sid && b.id && String(b.id) === sid) return true;
+      if (!cleanPhone && !sid && sname && b.name && b.name.toLowerCase() === sname) return true;
+      return false;
+    });
+  }
+  window.isUserBlocked = isUserBlocked;
+
+  function refreshAllUgcViews() {
+    try { if (typeof renderCommunityFeed === 'function') renderCommunityFeed(); } catch (_) {}
+    try { if (typeof renderHomeCommunityFeed === 'function') renderHomeCommunityFeed(); } catch (_) {}
+    try { if (typeof renderServicesScreen === 'function') renderServicesScreen(); } catch (_) {}
+    try { if (typeof renderBusinessScreen === 'function') renderBusinessScreen(); } catch (_) {}
+    try { if (typeof renderJobsScreen === 'function') renderJobsScreen(); } catch (_) {}
+    try { if (typeof renderRentalsScreen === 'function') renderRentalsScreen(); } catch (_) {}
+    try { if (typeof renderChatListScreen === 'function') renderChatListScreen(); } catch (_) {}
+    try { if (typeof renderNearbyScreen === 'function') renderNearbyScreen(); } catch (_) {}
+    try { if (typeof updateChatBadgeCounter === 'function') updateChatBadgeCounter(); } catch (_) {}
+    updateBlockedCountBadges();
+  }
+
+  function blockUser(target, silent) {
+    if (!target) return false;
+    const cleanPhone = normalizePhone(target.phone);
+    const cleanId = target.id ? String(target.id).trim() : '';
+    const cleanName = String(target.name || 'ഉപയോക്താവ്').trim();
+    const myPhone = normalizePhone(APP_STATE.currentUser && APP_STATE.currentUser.phone);
+    const myId = APP_STATE.currentUser && APP_STATE.currentUser.id;
+
+    if ((myPhone && cleanPhone && myPhone === cleanPhone) || (myId && cleanId && String(myId) === cleanId)) {
+      if (!silent && typeof toast === 'function') toast('⚠️ സ്വന്തം അക്കൗണ്ട് ബ്ലോക്ക് ചെയ്യാൻ കഴിയില്ല.');
+      return false;
+    }
+
+    const key = buildBlockKey(cleanId, cleanPhone, cleanName);
+    if (!key) return false;
+
+    const list = getBlockedUsers();
+    if (!list.some(b => b.key === key || (cleanPhone && b.phone === cleanPhone) || (cleanId && b.id === cleanId))) {
+      list.unshift({
+        key: key,
+        id: cleanId,
+        phone: cleanPhone,
+        name: cleanName,
+        blockedAt: Date.now()
+      });
+      saveBlockedUsers(list);
+    }
+
+    if (APP_STATE.activeChatRecipient && isUserBlocked(APP_STATE.activeChatRecipient.id, APP_STATE.activeChatRecipient.phone, APP_STATE.activeChatRecipient.name)) {
+      closeModal('modal-chat');
+    }
+    closeModal('modal-author-profile');
+    refreshAllUgcViews();
+    if (!silent && typeof toast === 'function') {
+      toast(`🚫 ${cleanName} എന്നയാളെ ബ്ലോക്ക് ചെയ്തു. ഇവരുടെ പോസ്റ്റുകളും മെസ്സേജുകളും ഇനി കാണില്ല.`);
+    }
+    return true;
+  }
+  window.blockUser = blockUser;
+
+  function unblockUser(blockKey) {
+    const next = getBlockedUsers().filter(b => b && b.key !== blockKey);
+    saveBlockedUsers(next);
+    renderBlockedUsersList();
+    refreshAllUgcViews();
+    if (typeof toast === 'function') toast('✅ ബ്ലോക്ക് നീക്കം ചെയ്തു.');
+  }
+  window.unblockUser = unblockUser;
+
+  function renderBlockedUsersList() {
+    const container = document.getElementById('blockedUsersListContainer');
+    if (!container) return;
+    const list = getBlockedUsers();
+    if (!list.length) {
+      container.innerHTML = `
+        <div style="text-align:center;padding:28px 14px;background:#F8FAFC;border-radius:14px;border:1px solid #E2E8F0">
+          <div style="font-size:28px;margin-bottom:6px">🛡️</div>
+          <div style="font-size:13.5px;font-weight:800;color:#0F172A">ബ്ലോക്ക് ചെയ്തവരാരും ഇല്ല</div>
+          <div style="font-size:11.5px;color:#64748B;margin-top:4px">നിങ്ങൾ ആരെയെങ്കിലും ബ്ലോക്ക് ചെയ്താൽ ഇവിടെ കാണാം.</div>
+        </div>
+      `;
+      return;
+    }
+    container.innerHTML = list.map(u => `
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px">
+        <div style="min-width:0">
+          <div style="font-size:13.5px;font-weight:800;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(u.name || 'ഉപയോക്താവ്')}</div>
+          <div style="font-size:11px;color:#64748B;margin-top:2px">🚫 ബ്ലോക്ക് ചെയ്തത്: ${new Date(u.blockedAt || Date.now()).toLocaleDateString()}</div>
+        </div>
+        <button type="button" onclick="unblockUser('${String(u.key).replace(/'/g, "\\'")}')" style="background:#ECFDF5;color:#047857;border:1px solid #A7F3D0;padding:6px 12px;border-radius:10px;font-size:11.5px;font-weight:800;cursor:pointer;flex-shrink:0">
+          അൺബ്ലോക്ക്
+        </button>
+      </div>
+    `).join('');
+  }
+
+  function openBlockedUsersModal() {
+    renderBlockedUsersList();
+    updateBlockedCountBadges();
+    openModal('modal-blocked-users');
+  }
+  window.openBlockedUsersModal = openBlockedUsersModal;
+
+  function openReportContentModal(target) {
+    _pendingReportTarget = target || {};
+    const summaryEl = document.getElementById('reportUgcTargetSummary');
+    const notesEl = document.getElementById('reportUgcNotes');
+    const blockChk = document.getElementById('reportUgcAlsoBlock');
+    if (summaryEl) {
+      const label = target?.name ? escapeHtml(target.name) : 'ഉള്ളടക്കം';
+      const snippet = target?.snippet ? ` — "${escapeHtml(String(target.snippet).slice(0, 60))}"` : '';
+      summaryEl.innerHTML = `🚩 റിപ്പോർട്ട് ചെയ്യുന്നത്: <b>${label}</b>${snippet}`;
+    }
+    if (notesEl) notesEl.value = '';
+    if (blockChk) blockChk.checked = true;
+    openModal('modal-report-ugc');
+  }
+  window.openReportContentModal = openReportContentModal;
+
+  function submitUgcReport(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const reasonEl = document.getElementById('reportUgcReason');
+    const notesEl = document.getElementById('reportUgcNotes');
+    const blockChk = document.getElementById('reportUgcAlsoBlock');
+
+    const target = _pendingReportTarget || {};
+    const reason = reasonEl ? reasonEl.value : 'inappropriate';
+    const notes = notesEl ? notesEl.value.trim() : '';
+
+    const reportEntry = {
+      id: 'rep_' + Date.now(),
+      targetType: target.type || 'content',
+      targetId: target.id || '',
+      targetName: target.name || '',
+      targetPhone: normalizePhone(target.phone),
+      reason: reason,
+      notes: notes,
+      reporterPhone: normalizePhone(APP_STATE.currentUser && APP_STATE.currentUser.phone),
+      reportedAt: Date.now()
+    };
+
+    try {
+      const existing = JSON.parse(localStorage.getItem('nn_reported_ugc') || '[]');
+      existing.unshift(reportEntry);
+      localStorage.setItem('nn_reported_ugc', JSON.stringify(existing.slice(0, 100)));
+    } catch (_) {}
+
+    if (target.postId) {
+      hideReportedPostId(target.postId);
+    }
+
+    if (blockChk && blockChk.checked && (target.name || target.phone || target.authorId)) {
+      blockUser({ id: target.authorId || target.id, phone: target.phone, name: target.name }, true);
+    } else {
+      refreshAllUgcViews();
+    }
+
+    closeModal('modal-report-ugc');
+    _pendingReportTarget = null;
+    if (typeof toast === 'function') {
+      toast('🛡️ നിങ്ങളുടെ റിപ്പോർട്ട് സ്വീകരിച്ചു. മോഡറേഷൻ ടീം പരിശോധിക്കുന്നതാണ്.');
+    }
+  }
+  window.submitUgcReport = submitUgcReport;
+
+  function reportCurrentChatUser() {
+    const rec = APP_STATE.activeChatRecipient;
+    if (!rec) return;
+    openReportContentModal({
+      type: 'chat_user',
+      id: rec.id || '',
+      authorId: rec.id || '',
+      name: rec.name || 'ഉപയോക്താവ്',
+      phone: rec.phone || ''
+    });
+  }
+  window.reportCurrentChatUser = reportCurrentChatUser;
+
+  function blockCurrentChatUser() {
+    const rec = APP_STATE.activeChatRecipient;
+    if (!rec) return;
+    if (confirm(`"${rec.name || 'ഈ ഉപയോക്താവിനെ'}" ബ്ലോക്ക് ചെയ്യണോ? ഇവരുടെ മെസ്സേജുകളും പോസ്റ്റുകളും നിങ്ങൾക്ക് ഇനി കാണാൻ കഴിയില്ല.`)) {
+      blockUser({ id: rec.id || '', phone: rec.phone || '', name: rec.name || '' });
+    }
+  }
+  window.blockCurrentChatUser = blockCurrentChatUser;
+
+  function moderateChatText(text) {
+    const clean = String(text || '').trim().toLowerCase();
+    if (!clean) return { allowed: false, reason: 'ശൂന്യമായ സന്ദേശം' };
+    const blockedTerms = [
+      'fuck', 'shit', 'bitch', 'asshole', 'bastard', 'slut', 'whore', 'rape', 'kill yourself',
+      'nude', 'porn', 'xxx', 'sex video', 'മൈര്', 'തേവിടിശ്ശി', 'പൂറ്', 'കുണ്ണ', 'ചത്ത് തുലയ'
+    ];
+    for (let i = 0; i < blockedTerms.length; i++) {
+      if (clean.includes(blockedTerms[i])) {
+        return {
+          allowed: false,
+          reason: '⚠️ അശ്ലീലമോ മോശമോ ആയ വാക്കുകൾ അനുവദനീയമല്ല (Chat Moderation).'
+        };
+      }
+    }
+    return { allowed: true };
+  }
+  window.moderateChatText = moderateChatText;
 
   // ==============================================================
   // 9. DEDICATED USER PROFILE PREVIEW MODAL (FULL CAPABILITIES)
@@ -2865,6 +3156,16 @@
           <span>മുഴുവൻ പ്രൊഫൈൽ പേജിലേക്ക് പോകാം</span>
           <span>➔</span>
         </button>
+        ${!isEmergencyOrAmbulance ? `
+          <div style="display:flex;gap:8px">
+            <button type="button" onclick="openReportContentModal({ type: 'user', id: '${authorId || ''}', authorId: '${authorId || ''}', name: '${safeEscapedName}', phone: '${safeEscapedPhone}' })" style="flex:1;background:#FFFBEB;border:1px solid #FDE68A;color:#92400E;padding:9px;border-radius:12px;font-weight:800;font-size:12px;cursor:pointer">
+              🚩 റിപ്പോർട്ട് ചെയ്യാം
+            </button>
+            <button type="button" onclick="if(confirm('${safeEscapedName} എന്നയാളെ ബ്ലോക്ക് ചെയ്യണോ?')) blockUser({ id: '${authorId || ''}', phone: '${safeEscapedPhone}', name: '${safeEscapedName}' })" style="flex:1;background:#FEF2F2;border:1px solid #FECACA;color:#DC2626;padding:9px;border-radius:12px;font-weight:800;font-size:12px;cursor:pointer">
+              🚫 ബ്ലോക്ക് ചെയ്യാം
+            </button>
+          </div>
+        ` : ''}
       </div>
 
       <div style="padding:16px 18px 24px;display:flex;flex-direction:column;gap:14px">
@@ -3501,6 +3802,10 @@
     } catch (_) {}
     const safeName = recipientName || 'പ്രാദേശിക സുഹൃത്ത്';
     const safePhone = recipientPhone || '';
+    if (isUserBlocked(recipientId, safePhone, safeName)) {
+      if (typeof toast === 'function') toast('🚫 ഈ ഉപയോക്താവിനെ നിങ്ങൾ ബ്ലോക്ക് ചെയ്തിരിക്കുകയാണ്. ചാറ്റ് ചെയ്യാൻ Settings-ൽ നിന്ന് അൺബ്ലോക്ക് ചെയ്യുക.');
+      return;
+    }
     const safeAvatar = (recipientAvatar && recipientAvatar !== DEFAULT_USER_AVATAR) ? recipientAvatar : '';
 
     if (typeof reconcileChatThreads === 'function') {
@@ -4993,6 +5298,17 @@
     const text = (input ? input.value : '').trim();
     if (!text || !APP_STATE.activeChatRecipient) return;
 
+    if (isUserBlocked(APP_STATE.activeChatRecipient.id, APP_STATE.activeChatRecipient.phone, APP_STATE.activeChatRecipient.name)) {
+      if (typeof toast === 'function') toast('🚫 ബ്ലോക്ക് ചെയ്ത ഉപയോക്താവിന് സന്ദേശം അയക്കാൻ കഴിയില്ല.');
+      return;
+    }
+
+    const modResult = moderateChatText(text);
+    if (!modResult.allowed) {
+      if (typeof toast === 'function') toast(modResult.reason);
+      return;
+    }
+
     const chatKey = APP_STATE.activeChatRecipient.key;
     if (!APP_STATE.chats[chatKey]) APP_STATE.chats[chatKey] = [];
 
@@ -5460,6 +5776,7 @@
     const userLon = APP_STATE.location.lon;
 
     const filtered = APP_STATE.businesses.filter(b => {
+      if (!b || isUserBlocked(b.userId || b.id, b.phone, b.ownerName || b.name)) return false;
       // 1. Category Filter
       if (activeBusinessCategory !== 'all' && b.category !== activeBusinessCategory) {
         return false;
@@ -6063,6 +6380,7 @@
     // Apply category & search filtering for active threads
     const filteredKeys = allKeys.filter(k => {
       const meta = (APP_STATE.chatMeta && APP_STATE.chatMeta[k]) || {};
+      if (isUserBlocked(meta.recipientId || '', meta.phone || '', meta.name || '')) return false;
       const thread = (APP_STATE.chats && APP_STATE.chats[k]) || [];
       const name = (meta.name || k.replace('chat_', '')).toLowerCase();
       const cat = (meta.type || meta.category || '').toLowerCase();
@@ -6566,6 +6884,7 @@
 
     // Filter services by category and query
     let allMatching = APP_STATE.services.filter(srv => {
+      if (!srv || isUserBlocked(srv.userId || srv.id, srv.phone, srv.name)) return false;
       const srvCat = srv.category || '';
       let matchesCategory = false;
       if (APP_STATE.activeServiceCategory === 'all') {
@@ -9988,6 +10307,7 @@
     const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
 
     let allMatchingJobs = APP_STATE.jobs.filter(j => {
+      if (!j || isUserBlocked(j.userId || j.id, j.phone, j.employer)) return false;
       const matchesCat = (APP_STATE.activeJobCategory === 'all') || (j.category === APP_STATE.activeJobCategory);
       const matchesQuery = !query || j.title.toLowerCase().includes(query) || j.employer.toLowerCase().includes(query) || (j.description && j.description.toLowerCase().includes(query));
       const dist = getItemDistanceKm(j, APP_STATE.location.lat, APP_STATE.location.lon);
@@ -10136,6 +10456,7 @@
     const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
 
     let allMatchingRentals = APP_STATE.rentals.filter(r => {
+      if (!r || isUserBlocked(r.userId || r.id, r.phone, r.owner)) return false;
       let matchesCat = true;
       const isSale = r.listingType === 'sale' || (r.type && r.type.includes('വിൽപന')) || (r.title && r.title.includes('വിൽപന'));
       const isRent = !isSale;
@@ -10497,6 +10818,7 @@
     const seenReqIds = new Set();
     allHelpReqs.forEach(req => {
       if (!req || !req.id || seenReqIds.has(req.id)) return;
+      if (isUserBlocked(req.userId || req.id, req.phone, req.userName || req.name)) return;
       seenReqIds.add(req.id);
       const isMine = isCurrentUserEntity(req.userId || req.id, req.phone, req.userName || req.name, false);
       const dist = getItemDistanceKm(req, APP_STATE.location.lat, APP_STATE.location.lon);
@@ -13243,6 +13565,7 @@
     document.querySelectorAll('.settings-admin-row, #settingsAdminHubRow').forEach(row => {
       row.style.display = isAdmin ? 'flex' : 'none';
     });
+    updateBlockedCountBadges();
   }
   window.loadUserSettings = loadUserSettings;
 
@@ -13850,8 +14173,8 @@
   // 17. IN-APP INSTANT AUTO-UPDATE ENGINE (ZERO MANUAL RE-INSTALL)
   // ==============================================================
   const APP_BUILD_INFO = {
-    versionCode: 25,
-    versionName: "1.0.25",
+    versionCode: 26,
+    versionName: "1.0.26",
     buildDate: "2026-11-11"
   };
   window.APP_BUILD_INFO = APP_BUILD_INFO;
@@ -15492,6 +15815,11 @@
       if (!input) return;
       const val = input.value.trim();
       if (!val) return;
+      const mod = moderateChatText(val);
+      if (!mod.allowed) {
+        if (typeof toast === 'function') toast(mod.reason);
+        return;
+      }
 
       const user = (APP_STATE && APP_STATE.currentUser) || {};
       const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');

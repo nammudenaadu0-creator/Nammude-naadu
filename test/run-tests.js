@@ -32,8 +32,8 @@ runTest('Versions are synchronized across all configuration files', () => {
   const buildGradle = fs.readFileSync(path.join(__dirname, '../android/app/build.gradle'), 'utf8');
   const engineJs = fs.readFileSync(path.join(__dirname, '../js/nammude-naadu-engine.js'), 'utf8');
 
-  const expectedVersion = '1.0.25';
-  const expectedCode = 25;
+  const expectedVersion = '1.0.26';
+  const expectedCode = 26;
   assert.strictEqual(pkg.version, expectedVersion, `package.json version is ${pkg.version}`);
   assert.strictEqual(pkgLock.version, expectedVersion, `package-lock.json version is ${pkgLock.version}`);
   assert.strictEqual(versionJson.versionName, expectedVersion, `version.json versionName is ${versionJson.versionName}`);
@@ -175,6 +175,19 @@ runTest('No dummy sample profiles or fake fallback phone numbers remain in clien
   assert.ok(!engineJs.includes("id: 'usr_suresh'"), 'Fake Naattukoottam fallback contacts removed');
   assert.ok(!backendJs.includes("|| '9447000000'"), 'Dummy backend phone fallback removed');
   assert.ok(!backendJs.includes("|| '9847000000'"), 'Dummy backend rental phone fallback removed');
+});
+
+// 17. Play Store UGC Safety (User Blocking, Content Reporting & Chat Moderation)
+runTest('UGC safety controls (block user, report content, chat moderation) are present', () => {
+  const engineJs = fs.readFileSync(path.join(__dirname, '../js/nammude-naadu-engine.js'), 'utf8');
+  const indexHtml = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
+  assert.ok(engineJs.includes('function blockUser('), 'blockUser implemented in engine');
+  assert.ok(engineJs.includes('function isUserBlocked('), 'isUserBlocked implemented in engine');
+  assert.ok(engineJs.includes('function openReportContentModal('), 'openReportContentModal implemented in engine');
+  assert.ok(engineJs.includes('function moderateChatText('), 'moderateChatText implemented in engine');
+  assert.ok(indexHtml.includes('id="modal-report-ugc"'), 'Report UGC modal present in index.html');
+  assert.ok(indexHtml.includes('id="modal-blocked-users"'), 'Blocked users modal present in index.html');
+  assert.ok(indexHtml.includes('reportCurrentChatUser()') && indexHtml.includes('blockCurrentChatUser()'), 'Chat header report & block buttons present');
 });
 
 console.log(`\n========================================`);

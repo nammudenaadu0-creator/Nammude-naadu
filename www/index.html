@@ -1912,6 +1912,10 @@
                                     <span style="font-size:12.5px;font-weight:700">📜 നിബന്ധനകളും പെരുമാറ്റച്ചട്ടവും (Terms)</span>
                                     <span style="font-size:12px;color:#94A3B8">➔</span>
                                 </div>
+                                <div onclick="openBlockedUsersModal()" style="background:#FFF5F5;padding:10px 12px;border-radius:10px;border:1px solid #FECACA;cursor:pointer;display:flex;align-items:center;justify-content:space-between;color:#991B1B">
+                                    <span style="font-size:12.5px;font-weight:800">🚫 ബ്ലോക്ക് ചെയ്തവർ (Blocked Users)</span>
+                                    <span style="font-size:11px;background:#FEE2E2;color:#B91C1C;padding:2px 8px;border-radius:999px;font-weight:800" class="nn-blocked-count-badge">0</span>
+                                </div>
                                 <div onclick="exportUserPersonalData()" style="background:#F8FAFC;padding:10px 12px;border-radius:10px;border:1px solid #E2E8F0;cursor:pointer;display:flex;align-items:center;justify-content:space-between;color:#0F172A">
                                     <span style="font-size:12.5px;font-weight:700">📦 എന്റെ ഡാറ്റ ഡൗൺലോഡ് ചെയ്യാം (Export Data)</span>
                                     <span style="font-size:10px;background:#EFF6FF;color:#1D4ED8;padding:2px 8px;border-radius:6px;font-weight:800">JSON</span>
@@ -1966,7 +1970,7 @@
                                 </a>
                             </div>
                             <div style="text-align:center;margin-top:12px;font-size:11px;color:#94A3B8;font-weight:600">
-                                വേർഷൻ v1.0.25 • Made with ❤️ for Kerala • 2026
+                                വേർഷൻ v1.0.26 • Made with ❤️ for Kerala • 2026
                             </div>
                         </div>
 
@@ -2250,6 +2254,12 @@
                     <a id="chatRecipientCallBtn" href="tel:" class="chat-call-btn" title="വിളിക്കുക" style="display:none">
                         <span>📞</span>
                     </a>
+                    <button type="button" class="chat-clear-btn" onclick="reportCurrentChatUser()" title="റിപ്പോർട്ട് ചെയ്യുക (Report User)">
+                        <span>🚩</span>
+                    </button>
+                    <button type="button" class="chat-clear-btn" onclick="blockCurrentChatUser()" title="ബ്ലോക്ക് ചെയ്യുക (Block User)">
+                        <span>🚫</span>
+                    </button>
                     <button class="chat-clear-btn" onclick="clearCurrentChat()" title="ഈ ചാറ്റ് ക്ലിയർ ചെയ്യുക">
                         <span>🗑️</span>
                     </button>
@@ -5274,7 +5284,7 @@
                 </div>
                 <h3 id="appUpdateTitle" style="margin:0 0 6px;font-size:19px;font-weight:800;letter-spacing:-0.3px">പുതിയ അപ്‌ഡേറ്റ് ലഭ്യമാണ്!</h3>
                 <div id="appUpdateVersionPill" style="display:inline-block;background:#1D4ED8;color:#fff;font-size:11.5px;font-weight:800;padding:3px 12px;border-radius:20px;letter-spacing:0.3px">
-                    Version 1.0.25
+                    Version 1.0.26
                 </div>
             </div>
 
@@ -5472,7 +5482,7 @@
                             <span style="font-size:20px">🔄</span>
                             <div>
                                 <div style="font-size:13.5px;font-weight:800;color:#0F172A" id="settingsVerSecSub">ഏറ്റവും പുതിയ വേർഷൻ</div>
-                                <div style="font-size:11.5px;color:#1D4ED8;font-weight:700" id="settingsAppVersion">v1.0.25</div>
+                                <div style="font-size:11.5px;color:#1D4ED8;font-weight:700" id="settingsAppVersion">v1.0.26</div>
                             </div>
                         </div>
                         <button type="button" onclick="checkAppUpdates(false)" style="background:#EFF6FF;border:1px solid #BFDBFE;color:#1D4ED8;padding:6px 12px;border-radius:10px;font-size:11.5px;font-weight:800;cursor:pointer">
@@ -5544,6 +5554,15 @@
                                 <span style="font-size:13px;font-weight:700" id="settingsDataSecurityTxt">ഡാറ്റാ സംരക്ഷണവും സുരക്ഷയും</span>
                             </span>
                             <span style="font-size:13px;color:#94A3B8">➔</span>
+                        </div>
+
+                        <!-- Blocked Users Manager -->
+                        <div onclick="closeModal('modal-settings');openBlockedUsersModal()" style="background:#FFF5F5;padding:12px 14px;border-radius:12px;border:1px solid #FECACA;cursor:pointer;display:flex;align-items:center;justify-content:space-between;color:#991B1B">
+                            <span style="display:flex;align-items:center;gap:10px">
+                                <span>🚫</span>
+                                <span style="font-size:13px;font-weight:800">ബ്ലോക്ക് ചെയ്തവർ (Blocked Users)</span>
+                            </span>
+                            <span style="font-size:11px;background:#FEE2E2;color:#B91C1C;padding:2px 8px;border-radius:999px;font-weight:800" class="nn-blocked-count-badge">0</span>
                         </div>
 
                         <!-- Export / Download My Data -->
@@ -5652,6 +5671,77 @@
                 <p><strong>🗑️ റൈറ്റ് ടു ഇറേസ്:</strong> നിങ്ങളുടെ അക്കൗണ്ടും എല്ലാ വിവരങ്ങളും എപ്പോൾ വേണമെങ്കിലും ഒറ്റ ക്ലിക്കിൽ പൂർണ്ണമായി മായ്ച്ചുകളയാൻ നിങ്ങൾക്ക് അവകാശമുണ്ട്.</p>
             </div>
             <button type="button" onclick="closeModal('modal-data-security')" style="margin-top:16px;width:100%;padding:11px;background:#0C2B59;color:#fff;border:none;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer" id="securityModalCloseBtn">ശരി, മനസ്സിലായി</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- 🚩 MODAL: REPORT ABUSE / INAPPROPRIATE CONTENT (UGC SAFETY)    -->
+    <!-- ============================================================== -->
+    <div id="modal-report-ugc" class="modal-overlay" style="display:none;align-items:center;justify-content:center;z-index:9999999;background:rgba(10,34,64,0.78);padding:16px 14px;box-sizing:border-box" onclick="if(event.target===this)closeModal('modal-report-ugc')">
+        <div class="modal-sheet">
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #DC2626 0%, #991B1B 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">🚩</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title">ഉള്ളടക്കം / ഉപയോക്താവിനെ റിപ്പോർട്ട് ചെയ്യാം</h3>
+                        <div class="nn-form-header-sub">സുരക്ഷിതമായ കമ്മ്യൂണിറ്റിക്കായി അടിയന്തര നടപടി</div>
+                    </div>
+                </div>
+                <button type="button" onclick="closeModal('modal-report-ugc')" class="nn-form-close-btn">✕</button>
+            </div>
+            <div class="nn-form-body">
+                <div id="reportUgcTargetSummary" style="background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:10px 12px;font-size:12.5px;color:#7F1D1D;font-weight:700;margin-bottom:12px">
+                    റിപ്പോർട്ട് ചെയ്യുന്ന വിവരം
+                </div>
+                <form onsubmit="submitUgcReport(event)" style="display:flex;flex-direction:column;gap:12px">
+                    <div>
+                        <label style="font-size:12px;font-weight:800;color:#1E293B;display:block;margin-bottom:6px">
+                            കാരണം തിരഞ്ഞെടുക്കുക (Reason) *
+                        </label>
+                        <select id="reportUgcReason" required style="width:100%;padding:11px 12px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13px;font-weight:700;color:#0F172A;background:#F8FAFC;outline:none">
+                            <option value="spam">സ്പാം അല്ലെങ്കിൽ തട്ടിപ്പ് (Spam / Scam)</option>
+                            <option value="harassment">ഉപദ്രവം അല്ലെങ്കിൽ മോശം പെരുമാറ്റം (Harassment / Abuse)</option>
+                            <option value="inappropriate">അശ്ലീല ഉള്ളടക്കം / നഗ്നത (Nudity / Sexual Content)</option>
+                            <option value="violence">അക്രമം അല്ലെങ്കിൽ വിദ്വേഷ പ്രചാരണം (Violence / Hate Speech)</option>
+                            <option value="misleading">വ്യാജ വിവരങ്ങൾ / തെറ്റിദ്ധരിപ്പിക്കൽ (False Info)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size:12px;font-weight:800;color:#1E293B;display:block;margin-bottom:6px">
+                            കൂടുതൽ വിവരങ്ങൾ (Optional)
+                        </label>
+                        <textarea id="reportUgcNotes" rows="3" placeholder="ദയവായി നിങ്ങളുടെ പരാതി ചുരുക്കി എഴുതുക..." style="width:100%;padding:10px 12px;border:1.5px solid #CBD5E1;border-radius:12px;font-size:13px;outline:none;resize:vertical;box-sizing:border-box"></textarea>
+                    </div>
+                    <label style="display:flex;align-items:center;gap:8px;background:#FFF5F5;border:1px solid #FECACA;padding:10px 12px;border-radius:12px;font-size:12px;font-weight:800;color:#991B1B;cursor:pointer">
+                        <input type="checkbox" id="reportUgcAlsoBlock" checked style="accent-color:#DC2626;width:16px;height:16px">
+                        <span>ഈ ഉപയോക്താവിനെ കൂടി ബ്ലോക്ക് ചെയ്യുക (ഇവരുടെ എല്ലാ പോസ്റ്റുകളും മെസ്സേജുകളും മറയും)</span>
+                    </label>
+                    <button type="submit" style="width:100%;padding:13px;background:#DC2626;color:#fff;border:none;border-radius:14px;font-size:14px;font-weight:900;cursor:pointer">
+                        🚩 റിപ്പോർട്ട് സമർപ്പിക്കുക (Submit Report)
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- 🚫 MODAL: BLOCKED USERS MANAGER (UGC CONTROL)                  -->
+    <!-- ============================================================== -->
+    <div id="modal-blocked-users" class="modal-overlay" style="display:none;align-items:center;justify-content:center;z-index:9999999;background:rgba(10,34,64,0.78);padding:16px 14px;box-sizing:border-box" onclick="if(event.target===this)closeModal('modal-blocked-users')">
+        <div class="modal-sheet">
+            <div class="nn-form-header-capsule" style="background:linear-gradient(135deg, #334155 0%, #0F172A 100%)">
+                <div class="nn-form-header-left">
+                    <div class="nn-form-header-icon">🚫</div>
+                    <div class="nn-form-header-titles">
+                        <h3 class="nn-form-header-title">ബ്ലോക്ക് ചെയ്തവർ (Blocked Users)</h3>
+                        <div class="nn-form-header-sub">ബ്ലോക്ക് ചെയ്തവരുടെ പോസ്റ്റുകളും ചാറ്റുകളും ആപ്പിൽ കാണില്ല</div>
+                    </div>
+                </div>
+                <button type="button" onclick="closeModal('modal-blocked-users')" class="nn-form-close-btn">✕</button>
+            </div>
+            <div class="nn-form-body">
+                <div id="blockedUsersListContainer" style="display:flex;flex-direction:column;gap:10px;max-height:55vh;overflow-y:auto"></div>
             </div>
         </div>
     </div>
@@ -5971,7 +6061,7 @@
     <!-- APPLICATION ENGINES -->
     <script src="js/kerala-police-stations-data.js?v=1.0"></script>
     <script src="js/trades-catalog-500.js?v=9.9"></script>
-    <script src="js/nammude-naadu-engine.js?v=10.2"></script>
+    <script src="js/nammude-naadu-engine.js?v=10.3"></script>
 </body>
 
 </html>
