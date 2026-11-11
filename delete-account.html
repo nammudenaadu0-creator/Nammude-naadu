@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account & Data Deletion - നമ്മുടെ നാട് (Nammude Naadu)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Noto+Sans+Malayalam:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #047857;
+            --primary-dark: #064E3B;
+            --primary-light: #ECFDF5;
+            --danger: #DC2626;
+            --danger-light: #FEF2F2;
+            --text-dark: #0F172A;
+            --text-muted: #475569;
+            --bg: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --border: #E2E8F0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Manrope', 'Noto Sans Malayalam', sans-serif;
+            background: var(--bg);
+            color: var(--text-dark);
+            line-height: 1.65;
+            padding: 24px 16px;
+        }
+        .container {
+            max-width: 780px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 36px 28px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+        }
+        header {
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 20px;
+            margin-bottom: 24px;
+        }
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--danger-light);
+            color: var(--danger);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+        h1 { font-size: 26px; font-weight: 800; color: var(--primary-dark); margin-bottom: 6px; }
+        h2 { font-size: 18px; font-weight: 800; color: var(--primary-dark); margin: 24px 0 10px; }
+        p, li { font-size: 14.5px; color: var(--text-muted); margin-bottom: 10px; }
+        ul, ol { padding-left: 22px; margin-bottom: 14px; }
+        .card-box {
+            background: #F8FAFC;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            margin: 16px 0;
+        }
+        .form-group { margin-bottom: 14px; }
+        label { display: block; font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px; }
+        input, textarea, select {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid #CBD5E1;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            background: #FFFFFF;
+        }
+        input:focus, textarea:focus, select:focus { border-color: var(--primary); }
+        .btn-danger {
+            width: 100%;
+            padding: 13px 18px;
+            background: var(--danger);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+        .btn-danger:hover { background: #B91C1C; }
+        .result-box {
+            display: none;
+            margin-top: 16px;
+            background: var(--primary-light);
+            border: 1.5px solid #A7F3D0;
+            border-radius: 14px;
+            padding: 16px;
+            color: var(--primary-dark);
+            font-size: 14px;
+        }
+        footer {
+            margin-top: 28px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            color: #64748B;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        a { color: var(--primary); font-weight: 700; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="brand-badge">🗑️ Account &amp; Data Deletion Portal</div>
+            <h1>നമ്മുടെ നാട് (Nammude Naadu) — അക്കൗണ്ടും ഡാറ്റയും ഡിലീറ്റ് ചെയ്യാം</h1>
+            <p style="margin-bottom:0">Package ID: <code>com.nammudenaadu.app</code> &bull; Users can permanently delete their account and all associated data either directly inside the app or through this web request portal.</p>
+        </header>
+
+        <section>
+            <h2>Option 1: Instant Deletion Inside the App (വേഗത്തിൽ ആപ്പിൽ നിന്ന് ഡിലീറ്റ് ചെയ്യാൻ)</h2>
+            <div class="card-box">
+                <ol style="margin-bottom:0">
+                    <li>Open the <strong>നമ്മുടെ നാട് (Nammude Naadu)</strong> Android app.</li>
+                    <li>Go to <strong>Profile / Settings (സെറ്റിംഗ്സ്)</strong>.</li>
+                    <li>Scroll to the bottom and tap <strong>"🗑️ അക്കൗണ്ട് ശാശ്വതമായി ഡിലീറ്റ് ചെയ്യാം" (Delete Account)</strong>.</li>
+                    <li>Confirm deletion — your profile, listings, and messages are purged immediately from our servers.</li>
+                </ol>
+            </div>
+        </section>
+
+        <section>
+            <h2>Option 2: Request Account Deletion via Web (ആപ്പ് ഇല്ലാതെ ഡിലീറ്റ് അഭ്യർത്ഥന)</h2>
+            <p>If you have uninstalled the app or prefer to request deletion online, submit your registered phone number below or email us directly at <a href="mailto:support@nammudenaadu.app?subject=Account%20Deletion%20Request%20-%20Nammude%20Naadu">support@nammudenaadu.app</a>.</p>
+
+            <form id="deletionRequestForm" class="card-box" onsubmit="handleDeletionSubmit(event)">
+                <div class="form-group">
+                    <label for="delPhone">Registered 10-Digit Mobile Number (രജിസ്റ്റർ ചെയ്ത ഫോൺ നമ്പർ) *</label>
+                    <input type="tel" id="delPhone" required maxlength="15" placeholder="e.g., +91 9876543210">
+                </div>
+                <div class="form-group">
+                    <label for="delEmail">Email Address (Optional - ഇമെയിൽ)</label>
+                    <input type="email" id="delEmail" placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="delReason">Reason for Deletion (Optional)</label>
+                    <textarea id="delReason" rows="3" placeholder="Optional details..."></textarea>
+                </div>
+                <button type="submit" class="btn-danger">🗑️ Request Permanent Account Deletion</button>
+
+                <div id="deletionResultBox" class="result-box"></div>
+            </form>
+        </section>
+
+        <section>
+            <h2>What Data Is Deleted &amp; Retention Policy</h2>
+            <ul>
+                <li><strong>Deleted Data:</strong> Registered citizen profile (name, phone number, email, avatar, blood group), posted services, shops, jobs, rentals, nearby help requests, community posts, push notification tokens, and 1-on-1 chat history.</li>
+                <li><strong>Processing Time:</strong> In-app deletion is immediate. Web and email requests are verified and permanently completed within <strong>7 business days</strong>.</li>
+                <li><strong>Data Retention:</strong> Zero personal profile records are retained once deletion completes.</li>
+            </ul>
+        </section>
+
+        <footer>
+            <span><a href="privacy-policy.html">&larr; Privacy Policy</a></span>
+            <span>&copy; 2026 നമ്മുടെ നാട് (Nammude Naadu)</span>
+        </footer>
+    </div>
+
+    <script>
+        function handleDeletionSubmit(e) {
+            e.preventDefault();
+            var phone = (document.getElementById('delPhone').value || '').trim();
+            var email = (document.getElementById('delEmail').value || '').trim();
+            var reason = (document.getElementById('delReason').value || '').trim();
+            if (!phone) return;
+
+            var refId = 'DEL-' + Date.now().toString(36).toUpperCase();
+            var subject = encodeURIComponent('Account Deletion Request [' + refId + '] - Nammude Naadu');
+            var body = encodeURIComponent(
+                'Hello Nammude Naadu Support,\n\n' +
+                'Please permanently delete my Nammude Naadu (com.nammudenaadu.app) account and all associated data.\n\n' +
+                'Reference ID: ' + refId + '\n' +
+                'Registered Phone: ' + phone + '\n' +
+                (email ? ('Email: ' + email + '\n') : '') +
+                (reason ? ('Reason: ' + reason + '\n') : '') +
+                '\nThank you.'
+            );
+            var mailtoUrl = 'mailto:support@nammudenaadu.app?subject=' + subject + '&body=' + body;
+
+            var box = document.getElementById('deletionResultBox');
+            box.style.display = 'block';
+            box.innerHTML =
+                '<strong>✅ Deletion Request Prepared (Ref: ' + refId + ')</strong><br>' +
+                'Click below to send your verified deletion email, or open the app and tap <b>Settings &rarr; Delete Account</b> for instant deletion:<br><br>' +
+                '<a href="' + mailtoUrl + '" style="display:inline-block;background:#047857;color:#fff;padding:10px 16px;border-radius:10px;text-decoration:none;font-weight:800">✉️ Send Deletion Email (support@nammudenaadu.app)</a>';
+
+            try {
+                window.location.href = mailtoUrl;
+            } catch (_) {}
+        }
+    </script>
+</body>
+</html>
