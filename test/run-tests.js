@@ -30,13 +30,18 @@ runTest('Versions are synchronized across all configuration files', () => {
   const pkgLock = JSON.parse(fs.readFileSync(path.join(__dirname, '../package-lock.json'), 'utf8'));
   const versionJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../version.json'), 'utf8'));
   const buildGradle = fs.readFileSync(path.join(__dirname, '../android/app/build.gradle'), 'utf8');
+  const engineJs = fs.readFileSync(path.join(__dirname, '../js/nammude-naadu-engine.js'), 'utf8');
 
-  const expectedVersion = '1.0.24';
+  const expectedVersion = '1.0.25';
+  const expectedCode = 25;
   assert.strictEqual(pkg.version, expectedVersion, `package.json version is ${pkg.version}`);
   assert.strictEqual(pkgLock.version, expectedVersion, `package-lock.json version is ${pkgLock.version}`);
   assert.strictEqual(versionJson.versionName, expectedVersion, `version.json versionName is ${versionJson.versionName}`);
+  assert.strictEqual(versionJson.versionCode, expectedCode, `version.json versionCode is ${versionJson.versionCode}`);
   assert.ok(buildGradle.includes(`versionName "${expectedVersion}"`), 'build.gradle versionName matches');
-  assert.ok(buildGradle.includes(`versionCode 24`), 'build.gradle versionCode is 24');
+  assert.ok(buildGradle.includes(`versionCode ${expectedCode}`), `build.gradle versionCode is ${expectedCode}`);
+  assert.ok(engineJs.includes(`versionCode: ${expectedCode}`), `engine APP_BUILD_INFO.versionCode is ${expectedCode}`);
+  assert.ok(engineJs.includes(`versionName: "${expectedVersion}"`), `engine APP_BUILD_INFO.versionName is ${expectedVersion}`);
 });
 
 // 2. Android Security Settings

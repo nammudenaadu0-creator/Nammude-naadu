@@ -14226,11 +14226,23 @@
   // 17. IN-APP INSTANT AUTO-UPDATE ENGINE (ZERO MANUAL RE-INSTALL)
   // ==============================================================
   const APP_BUILD_INFO = {
-    versionCode: 8,
-    versionName: "1.0.8",
-    buildDate: "2026-10-23"
+    versionCode: 25,
+    versionName: "1.0.25",
+    buildDate: "2026-11-11"
   };
   window.APP_BUILD_INFO = APP_BUILD_INFO;
+
+  function syncAppVersionUI() {
+    const profVer = document.getElementById('profCurrentAppVersion');
+    if (profVer) profVer.textContent = 'വേർഷൻ v' + APP_BUILD_INFO.versionName;
+    const settingsVer = document.getElementById('settingsAppVersion');
+    if (settingsVer) settingsVer.textContent = 'v' + APP_BUILD_INFO.versionName;
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', syncAppVersionUI);
+  } else {
+    syncAppVersionUI();
+  }
 
   // Global pending update payload
   window._PENDING_UPDATE_DATA = null;
@@ -14311,16 +14323,23 @@
 
   function triggerAppUpdateDownload() {
     const data = window._PENDING_UPDATE_DATA || {};
+    const isNativeApp = !!(window.Capacitor && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform());
+    const playStoreUrl = data.playStoreUrl || 'https://play.google.com/store/apps/details?id=com.nammudenaadu.app';
     const apkUrl = data.apkUrl || 'https://github.com/nammudenaadu0-creator/Nammude-naadu/raw/main/NammudeNaadu.apk';
-
-    showToast('ഡൗൺലോഡ് ആരംഭിക്കുന്നു... പുതിയ വേർഷൻ ഓവർറൈറ്റ് ചെയ്യാം 🚀');
 
     // Close update modal after 600ms
     setTimeout(() => {
       closeModal('modal-app-update');
     }, 600);
 
-    // Direct download trigger
+    // Google Play Policy: Native Play Store apps must update via Google Play rather than sideloading APKs
+    if (isNativeApp) {
+      showToast('Google Play Store തുറക്കുന്നു... 🚀');
+      window.open(playStoreUrl, '_blank');
+      return;
+    }
+
+    showToast('ഡൗൺലോഡ് ആരംഭിക്കുന്നു... പുതിയ വേർഷൻ ഓവർറൈറ്റ് ചെയ്യാം 🚀');
     try {
       const a = document.createElement('a');
       a.href = apkUrl;
