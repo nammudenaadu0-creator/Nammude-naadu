@@ -164,6 +164,19 @@ runTest('Supabase Edge Function implements secure FCM HTTP v1 without leaking se
   assert.ok(edgeFn.includes('idempotencyKey'), 'Edge Function protects against duplicate sends');
 });
 
+// 16. Play Store Real-Data Only Guard (No Dummy Profiles / Fake Phone Numbers)
+runTest('No dummy sample profiles or fake fallback phone numbers remain in client engine', () => {
+  const engineJs = fs.readFileSync(path.join(__dirname, '../js/nammude-naadu-engine.js'), 'utf8');
+  const backendJs = fs.readFileSync(path.join(__dirname, '../js/supabase-backend.js'), 'utf8');
+  assert.ok(!engineJs.includes('VERIFIED_SAMPLE_SERVICES'), 'VERIFIED_SAMPLE_SERVICES removed');
+  assert.ok(!engineJs.includes('VERIFIED_SAMPLE_RENTALS'), 'VERIFIED_SAMPLE_RENTALS removed');
+  assert.ok(!engineJs.includes("id: 'help_seed_1'"), 'Fake nearby help seeds removed');
+  assert.ok(!engineJs.includes("id: 'biz_1'"), 'Fake SEED_BUSINESSES removed');
+  assert.ok(!engineJs.includes("id: 'usr_suresh'"), 'Fake Naattukoottam fallback contacts removed');
+  assert.ok(!backendJs.includes("|| '9447000000'"), 'Dummy backend phone fallback removed');
+  assert.ok(!backendJs.includes("|| '9847000000'"), 'Dummy backend rental phone fallback removed');
+});
+
 console.log(`\n========================================`);
 console.log(`🏁 Test Results: ${passedTests} passed, ${failedTests} failed.`);
 console.log(`========================================\n`);

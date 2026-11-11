@@ -746,156 +746,11 @@
 
       const storedServices = localStorage.getItem('nn_services');
       let loadedServices = storedServices ? JSON.parse(storedServices) : [];
-      // REAL ACCOUNTS ONLY: Purge all mock/dummy services (srv_\d+, srv_kerala_, etc.)
+      // REAL ACCOUNTS ONLY: Purge all mock/dummy/sample services (srv_\d+, srv_kerala_, srv_verified_, etc.)
       loadedServices = (Array.isArray(loadedServices) ? loadedServices : []).filter(s => 
-        s && !s.id?.match(/^srv_\d+$/) && !s.id?.startsWith('srv_kerala_') && !s.isKeralaDirectory && (s.isUserCreated || s.isCloud || s.userId || (s.id && s.id.startsWith('srv_adm_')) || s.isVerified)
+        s && !s.id?.match(/^srv_\d+$/) && !s.id?.startsWith('srv_kerala_') && !s.id?.startsWith('srv_verified_') && !s.isKeralaDirectory && (s.isUserCreated || s.isCloud || s.userId || (s.id && s.id.startsWith('srv_adm_')))
       );
 
-      // VERIFIED COMMUNITY SHOWCASE SERVICES
-      const VERIFIED_SAMPLE_SERVICES = [
-        {
-          id: 'srv_verified_electrician',
-          name: 'ഷാജി ഇലക്ട്രിക്കൽസ് (Shaji Electricals)',
-          trade: 'ഇലക്ട്രീഷ്യൻ',
-          category: 'electrician',
-          phone: '9847112233',
-          rating: '4.9',
-          reviewsCount: 42,
-          experience: '9 വർഷത്തെ പരിചയം',
-          visitingFee: '₹250 വിസിറ്റിംഗ് നിരക്ക്',
-          rate: 250,
-          location: 'Kottayam',
-          lat: 9.5915,
-          lon: 76.5221,
-          availability: 'available',
-          image: 'assets/services/electrician.svg',
-          tags: ['⭐ 4.9 (42)', '🛠️ 9 Yrs Exp', '🟢 Available Now'],
-          tags_ml: ['⭐ 4.9 (42)', '🛠️ 9 വർഷം പരിചയം', '🟢 ഇപ്പോൾ ലഭ്യമാണ്'],
-          specializations: ['വയറിങ്', 'ഇൻവെർട്ടർ', 'സ്വിച്ച് ബോർഡ്', 'ഫാൻ ഫിറ്റിംഗ്'],
-          isVerified: true,
-          isCloud: true
-        },
-        {
-          id: 'srv_verified_plumber',
-          name: 'മനോജ് പ്ലംബിംഗ് സർവീസ് (Manoj Plumbing)',
-          trade: 'പ്ലംബർ',
-          category: 'plumber',
-          phone: '9447223344',
-          rating: '4.8',
-          reviewsCount: 36,
-          experience: '7 വർഷത്തെ പരിചയം',
-          visitingFee: '₹250 വിസിറ്റിംഗ് നിരക്ക്',
-          rate: 250,
-          location: 'Kottayam',
-          lat: 9.5850,
-          lon: 76.5300,
-          availability: 'available',
-          image: 'assets/services/plumber.svg',
-          tags: ['⭐ 4.8 (36)', '🛠️ 7 Yrs Exp', '🟢 Available Now'],
-          tags_ml: ['⭐ 4.8 (36)', '🛠️ 7 വർഷം പരിചയം', '🟢 ഇപ്പോൾ ലഭ്യമാണ്'],
-          specializations: ['പൈപ്പ് ലീക്ക്', 'ടാപ്പ് മാറ്റൽ', 'വാട്ടർ ടാങ്ക്', 'സാനിറ്ററി'],
-          isVerified: true,
-          isCloud: true
-        },
-        {
-          id: 'srv_verified_taxi',
-          name: 'റോയൽ ടാക്സി & ട്രാവൽസ് (Royal Taxi)',
-          trade: 'ടാക്സി & ഡ്രൈവർ',
-          category: 'vehicles',
-          phone: '9446334455',
-          rating: '5.0',
-          reviewsCount: 58,
-          experience: '12 വർഷത്തെ പരിചയം',
-          visitingFee: '₹18 / km നിരക്ക്',
-          rate: 18,
-          location: 'Changanassery',
-          lat: 9.4443,
-          lon: 76.5447,
-          availability: 'available',
-          image: 'assets/services/taxi.svg',
-          tags: ['⭐ 5.0 (58)', '🚗 Swift Dzire AC', '🟢 24/7 സർവീസ്'],
-          tags_ml: ['⭐ 5.0 (58)', '🚗 Swift Dzire AC', '🟢 24/7 സർവീസ്'],
-          specializations: ['എയർപോർട്ട് ഡ്രോപ്പ്', 'ഹോസ്പിറ്റൽ എമർജൻസി', 'ശബരിമല ട്രിപ്പ്'],
-          vehicleDetails: { type: 'taxi', model: 'Swift Dzire AC', stand: 'ചങ്ങനാശ്ശേരി സ്റ്റാൻഡ്', route: 'All Kerala' },
-          isVerified: true,
-          isCloud: true
-        },
-        {
-          id: 'srv_verified_acrepair',
-          name: 'കൂൾടെക് എസി & റഫ്രിജറേഷൻ സർവീസ്',
-          trade: 'എസി & ഫ്രിഡ്ജ് ടെക്നീഷ്യൻ',
-          category: 'acrepair',
-          phone: '9846445566',
-          rating: '4.9',
-          reviewsCount: 29,
-          experience: '6 വർഷത്തെ പരിചയം',
-          visitingFee: '₹350 സർവീസ് ചാർജ്',
-          rate: 350,
-          location: 'Kottayam',
-          lat: 9.5800,
-          lon: 76.5150,
-          availability: 'available',
-          image: 'assets/services/acrepair.svg',
-          tags: ['⭐ 4.9 (29)', '❄️ Gas Refill & Clean', '🟢 തത്സമയം'],
-          tags_ml: ['⭐ 4.9 (29)', '❄️ ഗ്യാസ് റീഫില്ലിംഗ്', '🟢 തത്സമയം'],
-          specializations: ['സ്പ്ലിറ്റ് എസി', 'ഇൻവെർട്ടർ എസി', 'ഫ്രിഡ്ജ് റിപ്പയർ'],
-          isVerified: true,
-          isCloud: true
-        },
-        {
-          id: 'srv_verified_carpenter',
-          name: 'സുരേഷ് ആശാരി & വുഡ് വർക്സ്',
-          trade: 'ആശാരി (Carpenter)',
-          category: 'carpenter',
-          phone: '9447556677',
-          rating: '4.8',
-          reviewsCount: 31,
-          experience: '14 വർഷത്തെ പരിചയം',
-          visitingFee: '₹300 വിസിറ്റിംഗ് നിരക്ക്',
-          rate: 300,
-          location: 'Kottayam',
-          lat: 9.5930,
-          lon: 76.5280,
-          availability: 'available',
-          image: 'assets/services/carpenter.svg',
-          tags: ['⭐ 4.8 (31)', '🪵 ഫർണിച്ചർ റിപ്പയർ', '🟢 തത്സമയം'],
-          tags_ml: ['⭐ 4.8 (31)', '🪵 ഫർണിച്ചർ റിപ്പയർ', '🟢 തത്സമയം'],
-          specializations: ['ഫർണിച്ചർ റിപ്പയർ', 'വാതിൽ ലോക്ക് മാറ്റൽ', 'കബോർഡ്'],
-          isVerified: true,
-          isCloud: true
-        },
-        {
-          id: 'srv_verified_painter',
-          name: 'അഭിലാഷ് പെയിന്റിംഗ് സർവീസ്',
-          trade: 'പെയിന്റർ (Painter)',
-          category: 'painter',
-          phone: '9846667788',
-          rating: '4.9',
-          reviewsCount: 25,
-          experience: '8 വർഷത്തെ പരിചയം',
-          visitingFee: '₹250 വിസിറ്റിംഗ് നിരക്ക്',
-          rate: 250,
-          location: 'Kottayam',
-          lat: 9.5870,
-          lon: 76.5200,
-          availability: 'available',
-          image: 'assets/services/painter.svg',
-          tags: ['⭐ 4.9 (25)', '🎨 ഇന്റീരിയർ പെയിന്റിംഗ്', '🟢 തത്സമയം'],
-          tags_ml: ['⭐ 4.9 (25)', '🎨 ഇന്റീരിയർ പെയിന്റിംഗ്', '🟢 തത്സമയം'],
-          specializations: ['ഇന്റീരിയർ പെയിന്റിംഗ്', 'വാട്ടർപ്രൂഫിംഗ്', 'പോളിഷിംഗ്'],
-          isVerified: true,
-          isCloud: true
-        }
-      ];
-
-      const existingSrvMap = new Map();
-      loadedServices.forEach(s => { if (s && s.id) existingSrvMap.set(s.id, s); });
-      VERIFIED_SAMPLE_SERVICES.forEach(vs => {
-        if (!existingSrvMap.has(vs.id)) {
-          existingSrvMap.set(vs.id, vs);
-        }
-      });
-      loadedServices = Array.from(existingSrvMap.values());
       APP_STATE.services = loadedServices;
       try {
         localStorage.setItem('nn_services', JSON.stringify(loadedServices));
@@ -913,83 +768,13 @@
         localStorage.setItem('nn_jobs', JSON.stringify(loadedJobs));
       } catch (_) {}
 
-      // REAL ACCOUNTS & VERIFIED MARKETPLACE LISTINGS
-      const mockRentIds = new Set(['rent_1', 'rent_2', 'rent_3', 'rent_4', 'rent_5', 'rent_6']);
-      const VERIFIED_SAMPLE_RENTALS = [
-        {
-          id: 'rent_verified_house',
-          title: '2 BHK House',
-          title_ml: '2 BHK വീട്',
-          rate: 12000,
-          price: 12000,
-          listingType: 'rent',
-          type: 'വീട്',
-          category: 'house',
-          location: 'Kottayam',
-          lat: 9.5915,
-          lon: 76.5221,
-          image: 'assets/rentals/house.png',
-          tags: ['2 Beds', '1 Bath', '900 sq.ft'],
-          tags_ml: ['2 Beds', '1 Bath', '900 sq.ft'],
-          owner: 'ഷാജി മാത്യു',
-          ownerPhone: '9847012345',
-          isVerified: true
-        },
-        {
-          id: 'rent_verified_bike',
-          title: 'Royal Enfield Classic 350',
-          title_ml: 'Royal Enfield Classic 350',
-          rate: 185000,
-          price: 185000,
-          listingType: 'sale',
-          type: 'വാഹനങ്ങൾ',
-          category: 'vehicle',
-          location: 'Kottayam',
-          lat: 9.5850,
-          lon: 76.5300,
-          image: 'assets/rentals/bike.png',
-          tags: ['2019', '12,000 km', 'Good Condition'],
-          tags_ml: ['2019', '12,000 km', 'Good Condition'],
-          owner: 'അരുൺ കുമാർ',
-          ownerPhone: '9447098765',
-          isVerified: true
-        },
-        {
-          id: 'rent_verified_sofa',
-          title: 'Sofa Set (6 Seater)',
-          title_ml: 'Sofa Set (6 Seater)',
-          rate: 15000,
-          price: 15000,
-          listingType: 'rent',
-          type: 'ഫർണിച്ചർ',
-          category: 'furniture',
-          location: 'Changanassery',
-          lat: 9.4443,
-          lon: 76.5447,
-          image: 'assets/rentals/sofa.png',
-          tags: ['Home Delivery Available'],
-          tags_ml: ['Home Delivery Available'],
-          owner: 'റോയൽ ഫർണിച്ചർ',
-          ownerPhone: '9446011223',
-          isVerified: true
-        }
-      ];
-
+      // REAL ACCOUNTS ONLY: Purge mock/sample marketplace listings
+      const mockRentIds = new Set(['rent_1', 'rent_2', 'rent_3', 'rent_4', 'rent_5', 'rent_6', 'rent_verified_house', 'rent_verified_bike', 'rent_verified_sofa']);
       const storedRentals = localStorage.getItem('nn_rentals');
       let loadedRentals = storedRentals ? JSON.parse(storedRentals) : [];
       loadedRentals = (Array.isArray(loadedRentals) ? loadedRentals : []).filter(r => 
-        r && !mockRentIds.has(r.id) && (r.isUserCreated || r.userId || r.id?.startsWith('rent_adm_') || r.isCloud || r.isVerified)
+        r && !mockRentIds.has(r.id) && !r.id?.startsWith('rent_verified_') && (r.isUserCreated || r.userId || r.id?.startsWith('rent_adm_') || r.isCloud)
       );
-
-      // Ensure verified curated showcase listings from design are present
-      VERIFIED_SAMPLE_RENTALS.forEach(sample => {
-        const existingIdx = loadedRentals.findIndex(r => r.id === sample.id);
-        if (existingIdx > -1) {
-          loadedRentals[existingIdx] = Object.assign({}, sample, loadedRentals[existingIdx]);
-        } else {
-          loadedRentals.push(sample);
-        }
-      });
 
       APP_STATE.rentals = loadedRentals;
       try {
@@ -1094,69 +879,13 @@
 
       const storedHelpReqs = localStorage.getItem('nn_nearby_help_requests');
       try {
-        APP_STATE.nearbyHelpRequests = storedHelpReqs ? JSON.parse(storedHelpReqs) : [];
+        const parsedHelpReqs = storedHelpReqs ? JSON.parse(storedHelpReqs) : [];
+        APP_STATE.nearbyHelpRequests = (Array.isArray(parsedHelpReqs) ? parsedHelpReqs : []).filter(req =>
+          req && req.id && !String(req.id).startsWith('help_seed_') && !String(req.userId || '').startsWith('usr_volunteer_seed_')
+        );
+        localStorage.setItem('nn_nearby_help_requests', JSON.stringify(APP_STATE.nearbyHelpRequests));
       } catch (_) {
         APP_STATE.nearbyHelpRequests = [];
-      }
-      if (!Array.isArray(APP_STATE.nearbyHelpRequests) || APP_STATE.nearbyHelpRequests.length === 0) {
-        APP_STATE.nearbyHelpRequests = [
-          {
-            id: 'help_seed_1',
-            userId: 'usr_volunteer_seed_1',
-            userName: 'അൻവർ സാദത്ത്',
-            userAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
-            category: 'vehicle',
-            radius: 3,
-            description: 'ബൈക്ക് പഞ്ചറായി വഴിയിൽ നിൽക്കുകയാണ്, പമ്പ് വരെ എത്തിക്കാൻ ഒരു ലിഫ്റ്റ് വേണം.',
-            location: 'ടൗൺ ജംഗ്ഷൻ',
-            phone: '9847123987',
-            urgency: 'urgent',
-            created_at: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
-            isUserCreated: false
-          },
-          {
-            id: 'help_seed_2',
-            userId: 'usr_volunteer_seed_2',
-            userName: 'പ്രസന്നകുമാരി ടീച്ചർ',
-            userAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80',
-            category: 'medicine',
-            radius: 5,
-            description: 'പ്രായമായ അമ്മയ്ക്ക് ബിപിയുടെ മരുന്ന് മെഡിക്കൽ ഷോപ്പിൽ നിന്ന് എത്തിക്കാൻ സഹായം വേണം.',
-            location: 'മെയിൻ റോഡ്',
-            phone: '9447654321',
-            urgency: 'urgent',
-            created_at: new Date(Date.now() - 45 * 60 * 1000).toISOString(),
-            isUserCreated: false
-          },
-          {
-            id: 'help_seed_3',
-            userId: 'usr_volunteer_seed_3',
-            userName: 'ഷിഹാബ് കോട്ടക്കൽ',
-            userAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
-            category: 'repair',
-            radius: 2,
-            description: 'വീട്ടിൽ പ്രധാന വാട്ടർ പൈപ്പ് പൊട്ടി വെള്ളം ഒഴുകുന്നു, പെട്ടെന്ന് ഒരു പൈപ്പ് റെഞ്ച് അല്ലെങ്കിൽ ടാപ്പ് അടയ്ക്കാൻ സഹായിക്കാമോ?',
-            location: 'പള്ളിപ്പടി',
-            phone: '9745112233',
-            urgency: 'urgent',
-            created_at: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
-            isUserCreated: false
-          },
-          {
-            id: 'help_seed_4',
-            userId: 'usr_volunteer_seed_4',
-            userName: 'വിപിൻ ദാസ്',
-            userAvatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=200&q=80',
-            category: 'home',
-            radius: 3,
-            description: 'വീട്ടുസാധനങ്ങൾ വണ്ടിയിലേക്ക് കയറ്റാൻ 1 മണിക്കൂർ ചെറിയൊരു സഹായം ആവശ്യമുണ്ട്, അടുത്തുള്ളവർ സഹായിക്കാമോ?',
-            location: 'കവല പരിസരം',
-            phone: '9895001122',
-            urgency: 'normal',
-            created_at: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
-            isUserCreated: false
-          }
-        ];
       }
 
       // Enrich services with visiting fees, live availability, work hours & reviews
@@ -5569,123 +5298,18 @@
   // LOCAL BUSINESS DIRECTORY MODULE (വ്യാപാരങ്ങൾ & കടകൾ)
   // ==============================================================
 
-  const SEED_BUSINESSES = [
-    {
-      id: 'biz_1',
-      name: 'കണ്ണൂർ സൂപ്പർമാർക്കറ്റ് & ഗ്രോസറി',
-      category: 'grocery',
-      categoryName: 'സൂപ്പർമാർക്കറ്റ് & പലചരക്ക്',
-      icon: '🛒',
-      location: 'പഴയങ്ങാടി ബസ് സ്റ്റാൻഡ്, കണ്ണൂർ',
-      district: 'കണ്ണൂർ',
-      lat: 11.9360,
-      lon: 75.3620,
-      phone: '+919846011223',
-      whatsapp: '+919846011223',
-      timing: 'രാവിലെ 8:00 - രാത്രി 9:30',
-      offer: '🔥 ഈ ആഴ്ചയിലെ ഓഫർ: എല്ലാ പലചരക്ക് സാധനങ്ങൾക്കും 10% ഡിസ്കൗണ്ട്!',
-      delivery: true,
-      verified: true,
-      rating: 4.8
-    },
-    {
-      id: 'biz_2',
-      name: 'മലബാർ റോയൽ ബേക്കറി & കഫേ',
-      category: 'food',
-      categoryName: 'ഹോട്ടൽ & ബേക്കറി',
-      icon: '🍲',
-      location: 'തളിപ്പറമ്പ് മെയിൻ റോഡ്, കണ്ണൂർ',
-      district: 'കണ്ണൂർ',
-      lat: 12.0450,
-      lon: 75.3580,
-      phone: '+919847123456',
-      whatsapp: '+919847123456',
-      timing: 'രാവിലെ 7:00 - രാത്രി 10:00',
-      offer: '☕ വൈകുന്നേരത്തെ സ്പെഷ്യൽ: നാടൻ ചായയും ചൂടുള്ള നെയ്യപ്പവും',
-      delivery: true,
-      verified: true,
-      rating: 4.9
-    },
-    {
-      id: 'biz_3',
-      name: 'ശ്രീലക്ഷ്മി ടെക്സ്റ്റൈൽസ് & സിൽക്ക്സ്',
-      category: 'fashion',
-      categoryName: 'വസ്ത്രങ്ങൾ & ഫാഷൻ',
-      icon: '👗',
-      location: 'പയ്യന്നൂർ ടൗൺ, കണ്ണൂർ',
-      district: 'കണ്ണൂർ',
-      lat: 12.1000,
-      lon: 75.2000,
-      phone: '+919846234567',
-      whatsapp: '+919846234567',
-      timing: 'രാവിലെ 9:00 - രാത്രി 8:30',
-      offer: '✨ വിവാഹ പർച്ചേസുകൾക്ക് സൗജന്യ ഗിഫ്റ്റ് പാക്ക്',
-      delivery: false,
-      verified: true,
-      rating: 4.7
-    },
-    {
-      id: 'biz_4',
-      name: 'കേരള ഓർഗാനിക് തേൻ & നാടൻ ഉൽപ്പന്നങ്ങൾ',
-      category: 'homemade',
-      categoryName: 'ഹോം മെയ്ഡ് & നാടൻ',
-      icon: '🍯',
-      location: 'ശ്രീകണ്ഠപുരം, കണ്ണൂർ',
-      district: 'കണ്ണൂർ',
-      lat: 11.9800,
-      lon: 75.5200,
-      phone: '+919447345678',
-      whatsapp: '+919447345678',
-      timing: 'രാവിലെ 8:30 - രാത്രി 7:30',
-      offer: '🐝 ശുദ്ധമായ ചെറുതേനും നാടൻ വെളിച്ചെണ്ണയും നേരിട്ട് വാങ്ങാം',
-      delivery: true,
-      verified: true,
-      rating: 5.0
-    },
-    {
-      id: 'biz_5',
-      name: 'സ്മാർട്ട് മൊബൈൽ കെയർ & ഇലക്ട്രോണിക്സ്',
-      category: 'electronics',
-      categoryName: 'മൊബൈൽ & ഇലക്ട്രോണിക്സ്',
-      icon: '📱',
-      location: 'കണ്ണൂർ റെയിൽവേ സ്റ്റേഷൻ റോഡ്',
-      district: 'കണ്ണൂർ',
-      lat: 11.8745,
-      lon: 75.3704,
-      phone: '+919895456789',
-      whatsapp: '+919895456789',
-      timing: 'രാവിലെ 9:30 - രാത്രി 8:30',
-      offer: '⚡ സ്മാർട്ട്ഫോൺ ഡിസ്പ്ലേ ചേഞ്ചിംഗിന് 3 മാസത്തെ ഗ്യാരണ്ടി',
-      delivery: false,
-      verified: true,
-      rating: 4.8
-    },
-    {
-      id: 'biz_6',
-      name: 'ജനസേവന മെഡിക്കൽ & സർജിക്കൽസ്',
-      category: 'pharmacy',
-      categoryName: 'മെഡിക്കൽ & ഫാർമസി',
-      icon: '💊',
-      location: 'തോട്ടട, കണ്ണൂർ',
-      district: 'കണ്ണൂർ',
-      lat: 11.8380,
-      lon: 75.4050,
-      phone: '+919446567890',
-      whatsapp: '+919446567890',
-      timing: '24 മണിക്കൂറും പ്രവർത്തിക്കുന്നു (24x7)',
-      offer: '🚑 എല്ലാ പ്രിസ്‌ക്രിപ്ഷൻ മരുന്നുകൾക്കും 15% ഇളവ് & ഫ്രീ ഹോം ഡെലിവറി',
-      delivery: true,
-      verified: true,
-      rating: 4.9
-    }
-  ];
+  // REAL ACCOUNTS ONLY: No dummy businesses seeded
+  const SEED_BUSINESSES = [];
+  const MOCK_BUSINESS_IDS = new Set(['biz_1', 'biz_2', 'biz_3', 'biz_4', 'biz_5', 'biz_6']);
 
   if (!APP_STATE.businesses) {
     try {
       const stored = localStorage.getItem('nn_businesses');
-      APP_STATE.businesses = stored ? JSON.parse(stored) : [...SEED_BUSINESSES];
+      const parsedBiz = stored ? JSON.parse(stored) : [];
+      APP_STATE.businesses = (Array.isArray(parsedBiz) ? parsedBiz : []).filter(b => b && !MOCK_BUSINESS_IDS.has(b.id));
+      localStorage.setItem('nn_businesses', JSON.stringify(APP_STATE.businesses));
     } catch (_) {
-      APP_STATE.businesses = [...SEED_BUSINESSES];
+      APP_STATE.businesses = [];
     }
   }
 
@@ -5827,8 +5451,8 @@
     const container = document.getElementById('businessListContainer');
     if (!container) return;
 
-    if (!APP_STATE.businesses || APP_STATE.businesses.length === 0) {
-      APP_STATE.businesses = [...SEED_BUSINESSES];
+    if (!APP_STATE.businesses) {
+      APP_STATE.businesses = [];
     }
 
     const maxR = APP_STATE.activeRadiusKm || 5;
@@ -13889,7 +13513,7 @@
       desc: 'നിങ്ങളുടെ പ്രദേശത്തെ പ്രധാന കടകളിലും സൂപ്പർമാർക്കറ്റുകളിലും ലഭ്യമായ ഓഫറുകളും ഡിസ്കൗണ്ടുകളും അറിയാം. പ്രാദേശിക കച്ചവടക്കാരെ പിന്തുണയ്ക്കൂ, നാട്ടിലെ വിപണി സജീവമാക്കൂ!',
       art: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80',
       badge: '🛍️ സ്പെഷ്യൽ ഓഫർ',
-      phone: '9847123456',
+      phone: '',
       link: ''
     },
     {
@@ -15275,13 +14899,8 @@
       'വിഷയം: കൃഷിയും വിപണിയും 🥬'
     ];
 
-    const _neighborDialogues = [
-      { seat: 2, name: 'സുരേഷ് (ഡ്രൈവർ)', text: 'അതെ, നാട്ടിലെ കാര്യങ്ങൾ ഒരുമിച്ചിരുന്ന് സംസാരിക്കുന്നത് നല്ലതാണ്! 🌾', enText: 'True, discussing village matters together is wonderful!' },
-      { seat: 3, name: 'ഫാത്തിമ (ടീച്ചർ)', text: 'സ്കൂൾ അവധി തുടങ്ങിയതോടെ കുട്ടികൾക്ക് നല്ല സന്തോഷമാണ് 📚', enText: 'Children are so happy now that vacation has started!' },
-      { seat: 4, name: 'മുഹമ്മദ് (വ്യാപാരി)', text: 'എല്ലാവരും നല്ല ചൂടുള്ള ചായ കുടിക്കൂ! ☕ ഇന്നത്തെ കച്ചവടം ഉഷാറാണ്.', enText: 'Have some piping hot tea everyone! ☕ Business is lively today.' },
-      { seat: 5, name: 'അനൂപ് (ഇലക്ട്രീഷ്യൻ)', text: 'മഴക്കാലത്ത് മെയിൻ സ്വിച്ചും വയറിംഗും ഒന്ന് ശ്രദ്ധിക്കണേ ⚡', enText: 'Do check the main switch and wiring during rains ⚡' },
-      { seat: 6, name: 'പ്രിയ (സന്നദ്ധ പ്രവർത്തക)', text: 'ആർക്കെങ്കിലും എന്തെങ്കിലും സഹായം വേണമെങ്കിൽ ഇവിടെ പറയാം 🤝', enText: 'If anyone needs any local help, please speak up here 🤝' }
-    ];
+    // REAL COMMUNITY ONLY: No simulated/dummy personas at the roundtable
+    const _neighborDialogues = [];
 
     function getStoredNaattukoottamRooms() {
       try {
@@ -15300,21 +14919,17 @@
     function getNaattukoottamRoom(roomId) {
       const rooms = getStoredNaattukoottamRooms();
       if (roomId && rooms[roomId]) return rooms[roomId];
+      const user = (typeof APP_STATE !== 'undefined' && APP_STATE.currentUser) || {};
       return {
         id: 'live_default',
         name: 'നാട്ടുകൂട്ടം വട്ടമേശ',
         topic: 'വിഷയം: നാട്ടിലെ വിശേഷങ്ങളും സഹായങ്ങളും 🌾',
-        isDefault: true,
+        isDefault: false,
         members: [
-          { seat: 1, name: 'നിങ്ങൾ', role: 'നാട്ടുകാരൻ', avatar: '', isHost: true },
-          { seat: 2, name: 'സുരേഷ്', role: 'ഡ്രൈവർ', avatar: 'assets/cat-driver-3d.jpg' },
-          { seat: 3, name: 'ഫാത്തിമ', role: 'ടീച്ചർ', avatar: 'assets/cat-tutor-3d.jpg' },
-          { seat: 4, name: 'മുഹമ്മദ്', role: 'വ്യാപാരി', avatar: 'assets/cat-business-3d.jpg' },
-          { seat: 5, name: 'അനൂപ്', role: 'ഇലക്ട്രീഷ്യൻ', avatar: 'assets/cat-electrician-3d.jpg' },
-          { seat: 6, name: 'പ്രിയ', role: 'സന്നദ്ധ പ്രവർത്തക', avatar: 'assets/cat-blood-3d.jpg' }
+          { seat: 1, name: user.name || 'നിങ്ങൾ', role: 'നാട്ടുകാരൻ', avatar: user.avatar || '', isHost: true }
         ],
         messages: [
-          { author: 'മുഹമ്മദ്', text: 'എല്ലാവർക്കും വട്ടമേശ റൂമിലേക്ക് സ്വാഗതം! ☕' }
+          { author: 'വട്ടമേശ', text: 'വട്ടമേശ റൂമിലേക്ക് സ്വാഗതം! സുഹൃത്തുക്കളെ ക്ഷണിച്ച് ചർച്ച തുടങ്ങാം ☕' }
         ]
       };
     }
@@ -15627,16 +15242,7 @@
       const room = getNaattukoottamRoom(_vattameshaActiveRoomId) || { members: [] };
       const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
       let allCommunity = typeof getAllCommunityContacts === 'function' ? getAllCommunityContacts('all') : [];
-      if (!allCommunity || allCommunity.length === 0) {
-        allCommunity = [
-          { id: 'usr_suresh', name: 'സുരേഷ് കുമാർ', sub: '🛺 ഓട്ടോ ഡ്രൈവർ • 📍 കക്കാട്', avatar: 'assets/cat-services-3d.jpg' },
-          { id: 'usr_fathima', name: 'ഫാത്തിമ റഹ്മാൻ', sub: '📚 ഹൈസ്കൂൾ ടീച്ചർ • 📍 ടൗൺ', avatar: 'assets/cat-jobs-3d.jpg' },
-          { id: 'usr_muhammed', name: 'മുഹമ്മദ് ഷാഫി', sub: '🏪 വ്യാപാരി • 📍 മാർക്കറ്റ് ജംഗ്ഷൻ', avatar: 'assets/cat-business-3d.jpg' },
-          { id: 'usr_anoop', name: 'അനൂപ് രാജ്', sub: '⚡ ഇലക്ട്രീഷ്യൻ • 📍 റെയിൽവേ സ്റ്റേഷൻ', avatar: 'assets/cat-services-3d.jpg' },
-          { id: 'usr_priya', name: 'പ്രിയ വേണുഗോപാൽ', sub: '🩸 രക്തദാതാവ് & നഴ്സ് • 📍 ഹോസ്പിറ്റൽ റോഡ്', avatar: 'assets/cat-blood-3d.jpg' },
-          { id: 'usr_haridas', name: 'ഹരിദാസൻ പി', sub: '🌾 കർഷകൻ • 📍 അമ്പലപ്പടി', avatar: 'assets/cat-rentals-3d.jpg' }
-        ];
-      }
+      if (!Array.isArray(allCommunity)) allCommunity = [];
       const query = (filterText || '').toLowerCase().trim();
 
       const seatedNames = new Set((room.members || []).map(m => (m.name || '').toLowerCase()));
@@ -15908,32 +15514,6 @@
       }
 
       input.value = '';
-
-      // 4. Trigger authentic reply from one of the other seated members
-      setTimeout(() => {
-        if (room && room.isDefault) {
-          const randomNeighbor = _neighborDialogues[Math.floor(Math.random() * _neighborDialogues.length)];
-          const replyText = isEn ? randomNeighbor.enText : randomNeighbor.text;
-          showVattameshaBubble(randomNeighbor.seat, replyText, 4500);
-          addVattameshaChatLog(randomNeighbor.name, replyText);
-        } else if (room && room.members && room.members.length > 1) {
-          // One of the invited members in custom group responds
-          const otherMembers = room.members.filter(m => m && m.seat !== 1 && m.name);
-          if (otherMembers.length > 0) {
-            const responder = otherMembers[Math.floor(Math.random() * otherMembers.length)];
-            const friendlyReplies = [
-              'അതെ, പറഞ്ഞത് വളരെ ശരിയാണ്! ☕',
-              'നമുക്ക് ഒരുമിച്ച് ആലോചിച്ച് ചെയ്യാം 👍',
-              'നല്ല അഭിപ്രായം! എല്ലാവരും എന്താ പറയുന്നത്? 🌾',
-              'ചൂടുള്ള ചായ കുടിച്ച് സംസാരിക്കാം ☕',
-              'ഞാനും ഇതിനോട് യോജിക്കുന്നു! 🙌'
-            ];
-            const replyMsg = friendlyReplies[Math.floor(Math.random() * friendlyReplies.length)];
-            showVattameshaBubble(responder.seat, replyMsg, 4500);
-            addVattameshaChatLog(responder.name, replyMsg);
-          }
-        }
-      }, 1600);
     }
     window.handleNaattukoottamSend = handleNaattukoottamSend;
 
@@ -16048,20 +15628,6 @@
       }
     }
     window.toggleVattameshaFloorTheme = toggleVattameshaFloorTheme;
-
-    // Periodic dynamic update for the dummy roundtable chat snippet
-    setInterval(() => {
-      try {
-        const snippetEl = document.getElementById('vattameshaDummyChatSnippet');
-        if (snippetEl && _neighborDialogues && _neighborDialogues.length > 0) {
-          const d = _neighborDialogues[Math.floor(Math.random() * _neighborDialogues.length)];
-          const isEn = (typeof window.getCurrentLanguage === 'function' && window.getCurrentLanguage() === 'en');
-          const shortName = d.name.split(' ')[0];
-          const msg = isEn ? d.enText : d.text;
-          snippetEl.innerHTML = `<span style="font-weight:700;color:#0E7043">${escapeHtml(shortName)}:</span> "${escapeHtml(msg)}"`;
-        }
-      } catch (_) {}
-    }, 6000);
 
     // High-speed real-time sync for Community Posts, Chats, and Registered Citizen Profiles
     let _syncProfilesTick = 0;
